@@ -536,3 +536,6 @@ build/
 contrib/Distribution/**/*.dll
 contrib/Distribution/**/*.pdb
 contrib/Distribution/**/*.pex
+
+build.ps1
+data/scripts/*.pex
