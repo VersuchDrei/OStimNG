@@ -1,0 +1,12 @@
+{
+	"type": "tongue",
+	"name": "Snake Tongue Double Piercing",
+	"mod": "OStim.esp",
+	"formid": "0xDD4",
+	"variants":{
+		"cum":{
+			"mod": "OStim.esp",
+			"formid": "0xDD5"
+		}
+	}
+}

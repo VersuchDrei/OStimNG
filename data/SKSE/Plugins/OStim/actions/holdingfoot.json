@@ -1,0 +1,18 @@
+{
+	"actor":{
+		"requirements":[
+			"hand"
+		],
+		"strippingSlots":[
+			33
+		]
+	},
+	"target":{
+		"requirements":[
+			"foot"
+		],
+		"strippingSlots":[
+			37
+		]
+	}
+}

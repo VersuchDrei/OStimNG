@@ -1,0 +1,12 @@
+{
+	"type": "tongue",
+	"name": "Long Tongue Double Piercing",
+	"mod": "OStim.esp",
+	"formid": "0xDCE",
+	"variants":{
+		"cum":{
+			"mod": "OStim.esp",
+			"formid": "0xDCF"
+		}
+	}
+}

@@ -1,0 +1,51 @@
+{
+	"actionActors": [
+		"cunnilingus",
+		"lickingnipples",
+		"lickingpenis",
+		"lickingtesticles",
+		"lickingvagina",
+		"rimjob",
+		"suckingnipples"
+	],
+	"female": {
+		"expression": {
+			"type": 1,
+			"baseValue": 30
+		},
+		"phonemes": [{
+			"type": 1,
+			"baseValue": 70
+		}, {
+			"type": 8,
+			"baseValue": 70
+		}],
+		"modifiers": [{
+			"type": 12,
+			"baseValue": 30
+		}, {
+			"type": 13,
+			"baseValue": 30
+		}]
+	},
+	"male": {
+		"expression": {
+			"type": 4,
+			"baseValue": 50
+		},
+		"phonemes": [{
+			"type": 1,
+			"baseValue": 30
+		}, {
+			"type": 11,
+			"baseValue": 30
+		}],
+		"modifiers": [{
+			"type": 11,
+			"baseValue": 50
+		}, {
+			"type": 6,
+			"baseValue": 60
+		}]
+	}
+}

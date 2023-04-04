@@ -1,0 +1,60 @@
+{
+	"actionTargets": [
+		"analfisting",
+		"analsex",
+		"vaginalfisting",
+		"vaginalsex"
+	],
+	"female": {
+		"expression": {
+			"type": 3,
+			"baseValue": 50,
+			"excitementMultiplier": 0.5
+		},
+		"phonemes": [{
+			"type": 4,
+			"baseValue": 20,
+			"excitementMultiplier": 0.3
+		}, {
+			"type": 8,
+			"excitementMultiplier": 0.3
+		}],
+		"modifiers": [{
+			"type": 12,
+			"baseValue": 80
+		}, {
+			"type": 13,
+			"baseValue": 80
+		}, {
+			"type": 0,
+			"baseValue": 80
+		}, {
+			"type": 1,
+			"baseValue": 80
+		}]
+	},
+	"male": {
+		"expression": {
+			"type": 0,
+			"baseValue": 50,
+			"excitementMultiplier": 0.2
+		},
+		"modifiers": [{
+			"type": 2,
+			"baseValue": 45
+		}, {
+			"type": 3,
+			"baseValue": 45
+		}, {
+			"type": 0,
+			"baseValue": 25
+		}, {
+			"type": 1,
+			"baseValue": 25
+		}],
+		"phonemes": [{
+			"type": 8,
+			"baseValue": 60
+		}]
+	}
+}

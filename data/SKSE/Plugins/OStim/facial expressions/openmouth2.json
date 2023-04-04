@@ -1,0 +1,37 @@
+{
+	"sets": [
+		"openmouth"
+	],
+	"female": {
+		"phonemes": [
+			{
+				"type": 0,
+				"baseValue": 100
+			},
+			{
+				"type": 1,
+				"baseValue": 100
+			},
+            {
+				"type": 5,
+				"baseValue": 45
+			}
+		]
+	},
+	"male": {
+		"phonemes": [
+			{
+				"type": 0,
+				"baseValue": 100
+			},
+			{
+				"type": 1,
+				"baseValue": 100
+			},
+            {
+				"type": 5,
+				"baseValue": 45
+			}
+		]
+	}
+}

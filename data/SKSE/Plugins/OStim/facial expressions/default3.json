@@ -1,0 +1,46 @@
+{
+	"sets": [
+		"default"
+	],
+	"female": {
+		"expression": {
+			"type": 3,
+			"baseValue": 35,
+			"excitementMultiplier": 0.3
+		},
+		"phonemes": [{
+			"type": 8,
+			"baseValue": 30,
+			"excitementMultiplier": 0.2
+		}],
+		"modifiers": [{
+			"type": 6,
+			"baseValue": 30,
+			"excitementMultiplier": 0.4
+		}, {
+			"type": 7,
+			"baseValue": 30,
+			"excitementMultiplier": 0.4
+		}]
+	},
+	"male": {
+		"expression": {
+			"type": 2,
+			"baseValue": 40,
+			"excitementMultiplier": 0.2
+		},
+		"modifiers": [{
+			"type": 12,
+			"baseValue": 10,
+			"excitementMultiplier": 0.3
+		}, {
+			"type": 13,
+			"baseValue": 10,
+			"excitementMultiplier": 0.3
+		}],
+		"phonemes": [{
+			"type": 5,
+			"baseValue": 20
+		}]
+	}
+}

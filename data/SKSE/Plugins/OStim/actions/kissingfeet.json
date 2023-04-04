@@ -1,0 +1,28 @@
+{
+	"actor":{
+		"stimulation":0.1,
+		"maxStimulation":50,
+		"requirements":[
+			"mouth"
+		],
+		"strippingSlots":[
+			30,
+			31,
+			44,
+			55
+		]
+	},
+	"target":{
+		"stimulation":0.1,
+		"maxStimulation":50,
+		"requirements":[
+			"feet"
+		],
+		"strippingSlots":[
+			37
+		]
+	},
+	"tags":[
+		"sensual"
+	]
+}

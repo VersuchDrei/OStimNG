@@ -1,0 +1,45 @@
+{
+	"actionActors": [
+		"sleeping"
+	],
+	"female": {
+		"expression": {
+			"type": 2,
+			"baseValue": 20
+		},
+		"modifiers": [{
+			"type": 0,
+			"baseValue": 60
+		}, {
+			"type": 1,
+			"baseValue": 60
+		}, {
+			"type": 12,
+			"baseValue": 50
+		}, {
+			"type": 13,
+			"baseValue": 50
+           
+		}]
+	},
+	"male": {
+		"expression": {
+			"type": 2,
+			"baseValue": 20
+		},
+		"modifiers": [{
+			"type": 0,
+			"baseValue": 60
+		}, {
+			"type": 1,
+			"baseValue": 60
+		}, {
+			"type": 12,
+			"baseValue": 50
+		}, {
+			"type": 13,
+			"baseValue": 50
+           
+		}]
+	}
+}

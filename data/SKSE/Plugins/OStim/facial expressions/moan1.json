@@ -1,0 +1,25 @@
+{
+	"events": [
+		"moan"
+	],
+	"female": {
+		"duration": 0.5,
+		"phonemes": [{
+			"type": 0,
+			"baseValue": 30,
+			"excitementMultiplier": 0.2
+		}, {
+			"type": 5,
+			"baseValue": 30,
+			"excitementMultiplier": 0.5
+		}]
+	},
+	"male": {
+		"duration": 0.5,
+		"phonemes": [{
+			"type": 0,
+			"baseValue": 30,
+			"excitementMultiplier": 0.4
+		}]
+	}
+}

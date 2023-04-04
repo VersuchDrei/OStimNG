@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<SliderGroups>
+    <Group name="3BA">
+        <Member name="OStim Calyps Strap-On 3BA"/>
+        <Member name="OStim Calyps Strap-On Simple 3BA"/>
+    </Group>
+    <Group name="OStim 3BA">
+        <Member name="OStim Calyps Strap-On 3BA"/>
+        <Member name="OStim Calyps Strap-On Simple 3BA"/>
+    </Group>
+</SliderGroups>

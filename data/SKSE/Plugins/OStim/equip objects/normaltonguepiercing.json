@@ -1,0 +1,12 @@
+{
+	"type": "tongue",
+	"name": "Normal Tongue Piercing",
+	"mod": "OStim.esp",
+	"formid": "0xDC8",
+	"variants":{
+		"cum":{
+			"mod": "OStim.esp",
+			"formid": "0xDC9"
+		}
+	}
+}

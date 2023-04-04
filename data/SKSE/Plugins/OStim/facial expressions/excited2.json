@@ -1,0 +1,68 @@
+{
+	"actionActors": [
+		"analfingering",
+		"analfisting",
+		"analsex",
+		"blowjob",
+		"boobjob",
+		"buttjob",
+		"footjob",
+		"gropingbreast",
+		"gropingbutt",
+		"handjob",
+		"pullinghair",
+		"rubbingclitoris",
+		"thighjob",
+		"vaginalfingering",
+		"vaginalfisting",
+		"vaginalsex"
+	],
+	"actionTargets": [
+		"gropingbutt",
+		"kissingfeet",
+		"kissingneck",
+		"pullinghair",
+		"rubbingpenisagainstface"
+	],
+	"female": {
+		"expression": {
+			"type": 1,
+			"baseValue": 75,
+			"excitementMultiplier": 0.2
+		},
+		"phonemes": [{
+			"type": 7,
+			"baseValue": 30,
+			"excitementMultiplier": 0.2
+		}],
+		"modifiers": [{
+			"type": 12,
+			"baseValue": 75,
+			"excitementMultiplier": 0.25
+		}, {
+			"type": 13,
+			"baseValue": 75,
+			"excitementMultiplier": 0.25
+		}]
+	},
+	"male": {
+		"expression": {
+			"type": 0,
+			"baseValue": 30,
+			"excitementMultiplier": 0.2
+		},
+		"modifiers": [{
+			"type": 2,
+			"baseValue": 40,
+			"excitementMultiplier": 0.3
+		}, {
+			"type": 3,
+			"baseValue": 40,
+			"excitementMultiplier": 0.3
+		}],
+		"phonemes": [{
+			"type": 7,
+			"baseValue": 30
+		}]
+	}
+}

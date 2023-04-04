@@ -1,0 +1,43 @@
+{
+	"actionTargets": [
+		"ticklingfeet"
+	],
+	"female": {
+		"expression": {
+			"type": 2,
+			"baseValue": 100
+		},
+		"phonemes": [{
+			"type": 4,
+			"baseValue": 20
+		}],
+		"modifiers": [{
+				"type": 0,
+				"baseValue": 0
+			},
+			{
+				"type": 1,
+				"baseValue": 0
+			}
+		]
+	},
+	"male": {
+		"expression": {
+			"type": 2,
+			"baseValue": 100
+		},
+		"phonemes": [{
+			"type": 4,
+			"baseValue": 20
+		}],
+		"modifiers": [{
+				"type": 0,
+				"baseValue": 0
+			},
+			{
+				"type": 1,
+				"baseValue": 0
+			}
+		]
+	}
+}

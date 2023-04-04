@@ -1,0 +1,12 @@
+{
+	"type": "tongue",
+	"name": "Snake Tongue",
+	"mod": "OStim.esp",
+	"formid": "0xDD0",
+	"variants":{
+		"cum":{
+			"mod": "OStim.esp",
+			"formid": "0xDD1"
+		}
+	}
+}

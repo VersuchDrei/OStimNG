@@ -1,0 +1,621 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<SliderSetInfo version="1">
+    <SliderSet name="OStim Calyps Strap-On 3BA">
+        <DataFolder>OStim 3BA</DataFolder>
+        <SourceFile>OStim Calyps Strap-On.nif</SourceFile>
+        <OutputPath>meshes\OStim\strapons</OutputPath>
+        <OutputFile GenWeights="true">CalypsStrapOn</OutputFile>
+        <Shape target="Dildo">Dildo</Shape>
+        <Shape target="DildoCollision">DildoCollision</Shape>
+        <Shape target="GearCore">GearCore</Shape>
+        <Shape target="GearExtra">GearExtra</Shape>
+        <Slider name="AppleCheeks" invert="false" small="0" big="0">
+            <Data name="GearCoreAppleCheeks" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreAppleCheeks</Data>
+            <Data name="DildoAppleCheeks" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoAppleCheeks</Data>
+            <Data name="GearExtraAppleCheeks" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraAppleCheeks</Data>
+        </Slider>
+        <Slider name="Back" invert="false" small="0" big="0">
+            <Data name="GearCoreBack" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreBack</Data>
+            <Data name="GearExtraBack" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraBack</Data>
+        </Slider>
+        <Slider name="BackArch" invert="false" small="0" big="0">
+            <Data name="GearExtraBackArch" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraBackArch</Data>
+        </Slider>
+        <Slider name="BackValley_v2" invert="false" small="0" big="0">
+            <Data name="GearExtraBackValley_v2" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraBackValley_v2</Data>
+        </Slider>
+        <Slider name="Belly" invert="false" small="0" big="0">
+            <Data name="GearCoreBelly" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreBelly</Data>
+            <Data name="GearExtraBelly" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraBelly</Data>
+        </Slider>
+        <Slider name="BellyFrontUpFat_v2" invert="false" small="0" big="0">
+            <Data name="GearExtraBellyFrontUpFat_v2" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraBellyFrontUpFat_v2</Data>
+        </Slider>
+        <Slider name="BellyFrontDownFat_v2" invert="false" small="0" big="0">
+            <Data name="GearExtraBellyFrontDownFat_v2" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraBellyFrontDownFat_v2</Data>
+        </Slider>
+        <Slider name="BellySideUpFat_v2" invert="false" small="0" big="0">
+            <Data name="GearExtraBellySideUpFat_v2" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraBellySideUpFat_v2</Data>
+        </Slider>
+        <Slider name="BellySideDownFat_v2" invert="false" small="0" big="0">
+            <Data name="GearExtraBellySideDownFat_v2" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraBellySideDownFat_v2</Data>
+        </Slider>
+        <Slider name="BellyUnder_v2" invert="false" small="0" big="0">
+            <Data name="GearCoreBellyUnder_v2" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreBellyUnder_v2</Data>
+            <Data name="DildoBellyUnder_v2" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoBellyUnder_v2</Data>
+            <Data name="GearExtraBellyUnder_v2" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraBellyUnder_v2</Data>
+        </Slider>
+        <Slider name="BigBelly" invert="false" small="0" big="0">
+            <Data name="GearCoreBigBelly" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreBigBelly</Data>
+            <Data name="DildoBigBelly" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoBigBelly</Data>
+            <Data name="GearExtraBigBelly" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraBigBelly</Data>
+        </Slider>
+        <Slider name="BigButt" invert="false" small="0" big="0">
+            <Data name="GearCoreBigButt" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreBigButt</Data>
+            <Data name="DildoBigButt" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoBigButt</Data>
+            <Data name="GearExtraBigButt" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraBigButt</Data>
+        </Slider>
+        <Slider name="BigTorso" invert="false" small="0" big="0">
+            <Data name="GearCoreBigTorso" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreBigTorso</Data>
+            <Data name="GearExtraBigTorso" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraBigTorso</Data>
+        </Slider>
+        <Slider name="BreastHeight" invert="false" small="0" big="0">
+            <Data name="GearExtraBreastHeight" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraBreastHeight</Data>
+        </Slider>
+        <Slider name="BreastsSmall" invert="false" small="0" big="0">
+            <Data name="GearExtraBreastsSmall" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraBreastsSmall</Data>
+        </Slider>
+        <Slider name="BreastsSmall2" invert="false" small="0" big="0">
+            <Data name="GearExtraBreastsSmall2" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraBreastsSmall2</Data>
+        </Slider>
+        <Slider name="BreastSideShape" invert="false" small="0" big="0">
+            <Data name="GearExtraBreastSideShape" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraBreastSideShape</Data>
+        </Slider>
+        <Slider name="BreastUnderDepth" invert="false" small="0" big="0">
+            <Data name="GearExtraBreastUnderDepth" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraBreastUnderDepth</Data>
+        </Slider>
+        <Slider name="Butt" invert="false" small="0" big="0">
+            <Data name="GearCoreButt" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreButt</Data>
+            <Data name="DildoButt" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoButt</Data>
+            <Data name="GearExtraButt" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraButt</Data>
+        </Slider>
+        <Slider name="ButtSaggy_v2" invert="false" small="0" big="0">
+            <Data name="GearCoreButtSaggy_v2" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreButtSaggy_v2</Data>
+            <Data name="GearExtraButtSaggy_v2" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraButtSaggy_v2</Data>
+        </Slider>
+        <Slider name="ButtClassic" invert="false" small="0" big="0">
+            <Data name="GearCoreButtClassic" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreButtClassic</Data>
+            <Data name="DildoButtClassic" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoButtClassic</Data>
+            <Data name="GearExtraButtClassic" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraButtClassic</Data>
+        </Slider>
+        <Slider name="ButtCrack" invert="false" small="0" big="0">
+            <Data name="GearCoreButtCrack" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreButtCrack</Data>
+            <Data name="DildoButtCrack" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoButtCrack</Data>
+            <Data name="GearExtraButtCrack" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraButtCrack</Data>
+        </Slider>
+        <Slider name="ButtShape2" invert="false" small="0" big="0">
+            <Data name="GearCoreButtShape2" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreButtShape2</Data>
+            <Data name="DildoButtShape2" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoButtShape2</Data>
+            <Data name="GearExtraButtShape2" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraButtShape2</Data>
+        </Slider>
+        <Slider name="ButtSmall" invert="false" small="0" big="0">
+            <Data name="GearCoreButtSmall" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreButtSmall</Data>
+            <Data name="DildoButtSmall" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoButtSmall</Data>
+            <Data name="GearExtraButtSmall" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraButtSmall</Data>
+        </Slider>
+        <Slider name="ButtDimples" invert="false" small="0" big="0">
+            <Data name="GearExtraButtDimples" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraButtDimples</Data>
+        </Slider>
+        <Slider name="ButtUnderFold" invert="false" small="0" big="0">
+            <Data name="GearCoreButtUnderFold" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreButtUnderFold</Data>
+            <Data name="DildoButtUnderFold" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoButtUnderFold</Data>
+            <Data name="GearExtraButtUnderFold" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraButtUnderFold</Data>
+        </Slider>
+        <Slider name="ButtPressed_v2" invert="false" small="0" big="0">
+            <Data name="GearCoreButtPressed_v2" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreButtPressed_v2</Data>
+            <Data name="GearExtraButtPressed_v2" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraButtPressed_v2</Data>
+        </Slider>
+        <Slider name="ButtNarrow_v2" invert="false" small="0" big="0">
+            <Data name="GearCoreButtNarrow_v2" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreButtNarrow_v2</Data>
+            <Data name="GearExtraButtNarrow_v2" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraButtNarrow_v2</Data>
+        </Slider>
+        <Slider name="ChestDepth" invert="false" small="0" big="0">
+            <Data name="GearCoreChestDepth" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreChestDepth</Data>
+            <Data name="GearExtraChestDepth" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraChestDepth</Data>
+        </Slider>
+        <Slider name="ChestWidth" invert="false" small="0" big="0">
+            <Data name="GearExtraChestWidth" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraChestWidth</Data>
+        </Slider>
+        <Slider name="ChubbyButt" invert="false" small="0" big="0">
+            <Data name="GearCoreChubbyButt" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreChubbyButt</Data>
+            <Data name="DildoChubbyButt" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoChubbyButt</Data>
+            <Data name="GearExtraChubbyButt" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraChubbyButt</Data>
+        </Slider>
+        <Slider name="ChubbyLegs" invert="false" small="0" big="0">
+            <Data name="GearCoreChubbyLegs" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreChubbyLegs</Data>
+            <Data name="DildoChubbyLegs" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoChubbyLegs</Data>
+            <Data name="GearExtraChubbyLegs" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraChubbyLegs</Data>
+        </Slider>
+        <Slider name="ChubbyWaist" invert="false" small="0" big="0">
+            <Data name="GearCoreChubbyWaist" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreChubbyWaist</Data>
+            <Data name="DildoChubbyWaist" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoChubbyWaist</Data>
+            <Data name="GearExtraChubbyWaist" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraChubbyWaist</Data>
+        </Slider>
+        <Slider name="CrotchBack" invert="false" small="0" big="0">
+            <Data name="GearCoreCrotchBack" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreCrotchBack</Data>
+            <Data name="DildoCrotchBack" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoCrotchBack</Data>
+            <Data name="GearExtraCrotchBack" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraCrotchBack</Data>
+        </Slider>
+        <Slider name="Groin" invert="false" small="0" big="0">
+            <Data name="GearCoreGroin" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreGroin</Data>
+            <Data name="DildoGroin" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoGroin</Data>
+            <Data name="GearExtraGroin" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraGroin</Data>
+        </Slider>
+        <Slider name="HipBone" invert="false" small="0" big="0">
+            <Data name="GearCoreHipBone" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreHipBone</Data>
+            <Data name="DildoHipBone" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoHipBone</Data>
+            <Data name="GearExtraHipBone" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraHipBone</Data>
+        </Slider>
+        <Slider name="HipForward" invert="false" small="0" big="0">
+            <Data name="GearCoreHipForward" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreHipForward</Data>
+            <Data name="DildoHipForward" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoHipForward</Data>
+            <Data name="GearExtraHipForward" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraHipForward</Data>
+        </Slider>
+        <Slider name="Hips" invert="false" small="0" big="0">
+            <Data name="GearCoreHips" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreHips</Data>
+            <Data name="DildoHips" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoHips</Data>
+            <Data name="GearExtraHips" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraHips</Data>
+        </Slider>
+        <Slider name="HipUpperWidth" invert="false" small="0" big="0">
+            <Data name="GearCoreHipUpperWidth" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreHipUpperWidth</Data>
+            <Data name="GearExtraHipUpperWidth" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraHipUpperWidth</Data>
+        </Slider>
+        <Slider name="HipCarved" invert="false" small="0" big="0">
+            <Data name="GearCoreHipCarved" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreHipCarved</Data>
+            <Data name="DildoHipCarved" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoHipCarved</Data>
+            <Data name="GearExtraHipCarved" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraHipCarved</Data>
+        </Slider>
+        <Slider name="HipNarrow_v2" invert="false" small="0" big="0">
+            <Data name="GearCoreHipNarrow_v2" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreHipNarrow_v2</Data>
+            <Data name="GearExtraHipNarrow_v2" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraHipNarrow_v2</Data>
+        </Slider>
+        <Slider name="LegShapeClassic" invert="false" small="0" big="0">
+            <Data name="GearExtraLegShapeClassic" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraLegShapeClassic</Data>
+        </Slider>
+        <Slider name="LegsThin" invert="false" small="0" big="0">
+            <Data name="GearCoreLegsThin" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreLegsThin</Data>
+            <Data name="DildoLegsThin" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoLegsThin</Data>
+            <Data name="GearExtraLegsThin" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraLegsThin</Data>
+        </Slider>
+        <Slider name="MuscleAbs" invert="false" small="0" big="0">
+            <Data name="GearCoreMuscleAbs" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreMuscleAbs</Data>
+            <Data name="DildoMuscleAbs" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoMuscleAbs</Data>
+            <Data name="GearExtraMuscleAbs" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraMuscleAbs</Data>
+        </Slider>
+        <Slider name="MuscleButt" invert="false" small="0" big="0">
+            <Data name="GearCoreMuscleButt" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreMuscleButt</Data>
+            <Data name="GearExtraMuscleButt" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraMuscleButt</Data>
+        </Slider>
+        <Slider name="MuscleLegs" invert="false" small="0" big="0">
+            <Data name="GearCoreMuscleLegs" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreMuscleLegs</Data>
+            <Data name="DildoMuscleLegs" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoMuscleLegs</Data>
+            <Data name="GearExtraMuscleLegs" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraMuscleLegs</Data>
+        </Slider>
+        <Slider name="MuscleBack_v2" invert="false" small="0" big="0">
+            <Data name="GearExtraMuscleBack_v2" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraMuscleBack_v2</Data>
+        </Slider>
+        <Slider name="MuscleMoreAbs_v2" invert="false" small="0" big="0">
+            <Data name="GearCoreMuscleMoreAbs_v2" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreMuscleMoreAbs_v2</Data>
+            <Data name="GearExtraMuscleMoreAbs_v2" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraMuscleMoreAbs_v2</Data>
+        </Slider>
+        <Slider name="MuscleMoreLegs_v2" invert="false" small="0" big="0">
+            <Data name="GearCoreMuscleMoreLegs_v2" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreMuscleMoreLegs_v2</Data>
+            <Data name="DildoMuscleMoreLegs_v2" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoMuscleMoreLegs_v2</Data>
+            <Data name="GearExtraMuscleMoreLegs_v2" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraMuscleMoreLegs_v2</Data>
+        </Slider>
+        <Slider name="NavelEven" invert="false" small="0" big="0">
+            <Data name="GearExtraNavelEven" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraNavelEven</Data>
+        </Slider>
+        <Slider name="PregnancyBelly" invert="false" small="0" big="0">
+            <Data name="GearCorePregnancyBelly" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCorePregnancyBelly</Data>
+            <Data name="DildoPregnancyBelly" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoPregnancyBelly</Data>
+            <Data name="GearExtraPregnancyBelly" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraPregnancyBelly</Data>
+        </Slider>
+        <Slider name="RibsMore_v2" invert="false" small="0" big="0">
+            <Data name="GearExtraRibsMore_v2" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraRibsMore_v2</Data>
+        </Slider>
+        <Slider name="RoundAss" invert="false" small="0" big="0">
+            <Data name="GearCoreRoundAss" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreRoundAss</Data>
+            <Data name="GearExtraRoundAss" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraRoundAss</Data>
+        </Slider>
+        <Slider name="ShoulderWidth" invert="false" small="0" big="0">
+            <Data name="GearExtraShoulderWidth" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraShoulderWidth</Data>
+        </Slider>
+        <Slider name="SlimThighs" invert="false" small="0" big="0">
+            <Data name="GearCoreSlimThighs" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreSlimThighs</Data>
+            <Data name="DildoSlimThighs" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoSlimThighs</Data>
+            <Data name="GearExtraSlimThighs" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraSlimThighs</Data>
+        </Slider>
+        <Slider name="Thighs" invert="false" small="0" big="0">
+            <Data name="GearCoreThighs" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreThighs</Data>
+            <Data name="DildoThighs" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoThighs</Data>
+            <Data name="GearExtraThighs" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraThighs</Data>
+        </Slider>
+        <Slider name="ThighOutsideThicc_v2" invert="false" small="0" big="0">
+            <Data name="GearCoreThighOutsideThicc_v2" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreThighOutsideThicc_v2</Data>
+            <Data name="GearExtraThighOutsideThicc_v2" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraThighOutsideThicc_v2</Data>
+        </Slider>
+        <Slider name="ThighInsideThicc_v2" invert="false" small="0" big="0">
+            <Data name="GearCoreThighInsideThicc_v2" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreThighInsideThicc_v2</Data>
+            <Data name="DildoThighInsideThicc_v2" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoThighInsideThicc_v2</Data>
+        </Slider>
+        <Slider name="ThighFBThicc_v2" invert="false" small="0" big="0">
+            <Data name="GearCoreThighFBThicc_v2" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreThighFBThicc_v2</Data>
+            <Data name="DildoThighFBThicc_v2" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoThighFBThicc_v2</Data>
+            <Data name="GearExtraThighFBThicc_v2" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraThighFBThicc_v2</Data>
+        </Slider>
+        <Slider name="LegSpread_v2" invert="false" small="0" big="0">
+            <Data name="GearCoreLegSpread_v2" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreLegSpread_v2</Data>
+            <Data name="DildoLegSpread_v2" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoLegSpread_v2</Data>
+            <Data name="GearExtraLegSpread_v2" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraLegSpread_v2</Data>
+        </Slider>
+        <Slider name="TummyTuck" invert="false" small="0" big="0">
+            <Data name="GearCoreTummyTuck" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreTummyTuck</Data>
+            <Data name="DildoTummyTuck" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoTummyTuck</Data>
+            <Data name="GearExtraTummyTuck" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraTummyTuck</Data>
+        </Slider>
+        <Slider name="UNPHip_v2" invert="false" small="0" big="0">
+            <Data name="GearCoreUNPHip_v2" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreUNPHip_v2</Data>
+            <Data name="DildoUNPHip_v2" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoUNPHip_v2</Data>
+            <Data name="GearExtraUNPHip_v2" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraUNPHip_v2</Data>
+        </Slider>
+        <Slider name="Waist" invert="false" small="0" big="0">
+            <Data name="GearCoreWaist" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreWaist</Data>
+            <Data name="GearExtraWaist" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraWaist</Data>
+        </Slider>
+        <Slider name="WaistHeight" invert="false" small="0" big="0">
+            <Data name="GearCoreWaistHeight" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreWaistHeight</Data>
+            <Data name="DildoWaistHeight" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoWaistHeight</Data>
+            <Data name="GearExtraWaistHeight" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraWaistHeight</Data>
+        </Slider>
+        <Slider name="WideWaistLine" invert="false" small="0" big="0">
+            <Data name="GearCoreWideWaistLine" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreWideWaistLine</Data>
+            <Data name="GearExtraWideWaistLine" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraWideWaistLine</Data>
+        </Slider>
+        <Slider name="7BLeg_v2" invert="false" small="0" big="0">
+            <Data name="GearCore7BLeg_v2" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCore7BLeg_v2</Data>
+            <Data name="Dildo7BLeg_v2" target="Dildo" local="true">OStim Calyps Strap-On.osd\Dildo7BLeg_v2</Data>
+            <Data name="GearExtra7BLeg_v2" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtra7BLeg_v2</Data>
+        </Slider>
+        <Slider name="7B Lower" invert="false" small="0" big="0">
+            <Data name="GearCore7B Lower" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCore7B Lower</Data>
+            <Data name="Dildo7B Lower" target="Dildo" local="true">OStim Calyps Strap-On.osd\Dildo7B Lower</Data>
+            <Data name="GearExtra7B Lower" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtra7B Lower</Data>
+        </Slider>
+        <Slider name="VanillaSSEHi" invert="false" small="0" big="0">
+            <Data name="GearCoreVanillaSSEHi" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreVanillaSSEHi</Data>
+            <Data name="DildoVanillaSSEHi" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoVanillaSSEHi</Data>
+            <Data name="GearExtraVanillaSSEHi" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraVanillaSSEHi</Data>
+        </Slider>
+        <Slider name="VanillaSSELo" invert="false" small="0" big="0">
+            <Data name="GearCoreVanillaSSELo" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreVanillaSSELo</Data>
+            <Data name="DildoVanillaSSELo" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoVanillaSSELo</Data>
+            <Data name="GearExtraVanillaSSELo" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraVanillaSSELo</Data>
+        </Slider>
+        <Slider name="OldBaseShape" invert="false" small="0" big="0">
+            <Data name="GearCoreOldBaseShape" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreOldBaseShape</Data>
+            <Data name="DildoOldBaseShape" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoOldBaseShape</Data>
+            <Data name="GearExtraOldBaseShape" target="GearExtra" local="true">OStim Calyps Strap-On.osd\GearExtraOldBaseShape</Data>
+        </Slider>
+        <Slider name="Innieoutie" invert="false" small="0" big="0">
+            <Data name="GearCoreInnieoutie" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreInnieoutie</Data>
+            <Data name="DildoInnieoutie" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoInnieoutie</Data>
+        </Slider>
+        <Slider name="LabiaTightUp" invert="false" small="0" big="0">
+            <Data name="GearCoreLabiaTightUp" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreLabiaTightUp</Data>
+            <Data name="DildoLabiaTightUp" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoLabiaTightUp</Data>
+        </Slider>
+        <Slider name="Labiapuffyness" invert="false" small="0" big="0">
+            <Data name="GearCoreLabiapuffyness" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreLabiapuffyness</Data>
+            <Data name="DildoLabiapuffyness" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoLabiapuffyness</Data>
+        </Slider>
+        <Slider name="LabiaMorePuffyness_v2" invert="false" small="0" big="0">
+            <Data name="GearCoreLabiaMorePuffyness_v2" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreLabiaMorePuffyness_v2</Data>
+            <Data name="DildoLabiaMorePuffyness_v2" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoLabiaMorePuffyness_v2</Data>
+        </Slider>
+        <Slider name="Labiaspread" invert="false" small="0" big="0">
+            <Data name="GearCoreLabiaspread" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreLabiaspread</Data>
+            <Data name="DildoLabiaspread" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoLabiaspread</Data>
+        </Slider>
+        <Slider name="LabiaCrumpled_v2" invert="false" small="0" big="0">
+            <Data name="DildoLabiaCrumpled_v2" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoLabiaCrumpled_v2</Data>
+        </Slider>
+        <Slider name="LabiaNeat_v2" invert="false" small="0" big="0">
+            <Data name="GearCoreLabiaNeat_v2" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreLabiaNeat_v2</Data>
+            <Data name="DildoLabiaNeat_v2" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoLabiaNeat_v2</Data>
+        </Slider>
+        <Slider name="LabiaBulgogi_v2" invert="false" small="0" big="0">
+            <Data name="GearCoreLabiaBulgogi_v2" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreLabiaBulgogi_v2</Data>
+            <Data name="DildoLabiaBulgogi_v2" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoLabiaBulgogi_v2</Data>
+        </Slider>
+        <Slider name="VaginaHole" invert="false" small="0" big="0">
+            <Data name="GearCoreVaginaHole" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreVaginaHole</Data>
+            <Data name="DildoVaginaHole" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoVaginaHole</Data>
+        </Slider>
+        <Slider name="Cutepuffyness" invert="false" small="0" big="0">
+            <Data name="GearCoreCutepuffyness" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreCutepuffyness</Data>
+            <Data name="DildoCutepuffyness" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoCutepuffyness</Data>
+        </Slider>
+        <Slider name="CBPC" invert="false" small="0" big="0">
+            <Data name="GearCoreCBPC" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreCBPC</Data>
+            <Data name="DildoCBPC" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoCBPC</Data>
+        </Slider>
+        <Slider name="CrotchGap" invert="false" small="0" big="0">
+            <Data name="GearCoreCrotchGap" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreCrotchGap</Data>
+            <Data name="DildoCrotchGap" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoCrotchGap</Data>
+        </Slider>
+        <Slider name="AnalLoose_v2" invert="false" small="0" big="0">
+            <Data name="GearCoreAnalLoose_v2" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreAnalLoose_v2</Data>
+            <Data name="DildoAnalLoose_v2" target="Dildo" local="true">OStim Calyps Strap-On.osd\DildoAnalLoose_v2</Data>
+        </Slider>
+        <Slider name="AnalPosition_v2" invert="false" small="0" big="0">
+            <Data name="GearCoreAnalPosition_v2" target="GearCore" local="true">OStim Calyps Strap-On.osd\GearCoreAnalPosition_v2</Data>
+        </Slider>
+    </SliderSet>
+    <SliderSet name="OStim Calyps Strap-On Simple 3BA">
+        <DataFolder>OStim 3BA</DataFolder>
+        <SourceFile>OStim Calyps Strap-On Simple.nif</SourceFile>
+        <OutputPath>meshes\OStim\strapons</OutputPath>
+        <OutputFile GenWeights="true">CalypsStrapOnSimple</OutputFile>
+        <Shape target="Dildo">Dildo</Shape>
+        <Shape target="DildoCollision">DildoCollision</Shape>
+        <Shape target="GearCore">GearCore</Shape>
+        <Slider name="AppleCheeks" invert="false" small="0" big="0">
+            <Data name="GearCoreAppleCheeks" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreAppleCheeks</Data>
+            <Data name="DildoAppleCheeks" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoAppleCheeks</Data>
+        </Slider>
+        <Slider name="Back" invert="false" small="0" big="0">
+            <Data name="GearCoreBack" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreBack</Data>
+        </Slider>
+        <Slider name="Belly" invert="false" small="0" big="0">
+            <Data name="GearCoreBelly" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreBelly</Data>
+        </Slider>
+        <Slider name="BellyUnder_v2" invert="false" small="0" big="0">
+            <Data name="GearCoreBellyUnder_v2" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreBellyUnder_v2</Data>
+            <Data name="DildoBellyUnder_v2" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoBellyUnder_v2</Data>
+        </Slider>
+        <Slider name="BigBelly" invert="false" small="0" big="0">
+            <Data name="GearCoreBigBelly" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreBigBelly</Data>
+            <Data name="DildoBigBelly" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoBigBelly</Data>
+        </Slider>
+        <Slider name="BigButt" invert="false" small="0" big="0">
+            <Data name="GearCoreBigButt" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreBigButt</Data>
+            <Data name="DildoBigButt" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoBigButt</Data>
+        </Slider>
+        <Slider name="BigTorso" invert="false" small="0" big="0">
+            <Data name="GearCoreBigTorso" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreBigTorso</Data>
+        </Slider>
+        <Slider name="Butt" invert="false" small="0" big="0">
+            <Data name="GearCoreButt" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreButt</Data>
+            <Data name="DildoButt" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoButt</Data>
+        </Slider>
+        <Slider name="ButtSaggy_v2" invert="false" small="0" big="0">
+            <Data name="GearCoreButtSaggy_v2" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreButtSaggy_v2</Data>
+        </Slider>
+        <Slider name="ButtClassic" invert="false" small="0" big="0">
+            <Data name="GearCoreButtClassic" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreButtClassic</Data>
+            <Data name="DildoButtClassic" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoButtClassic</Data>
+        </Slider>
+        <Slider name="ButtCrack" invert="false" small="0" big="0">
+            <Data name="GearCoreButtCrack" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreButtCrack</Data>
+            <Data name="DildoButtCrack" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoButtCrack</Data>
+        </Slider>
+        <Slider name="ButtShape2" invert="false" small="0" big="0">
+            <Data name="GearCoreButtShape2" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreButtShape2</Data>
+            <Data name="DildoButtShape2" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoButtShape2</Data>
+        </Slider>
+        <Slider name="ButtSmall" invert="false" small="0" big="0">
+            <Data name="GearCoreButtSmall" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreButtSmall</Data>
+            <Data name="DildoButtSmall" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoButtSmall</Data>
+        </Slider>
+        <Slider name="ButtUnderFold" invert="false" small="0" big="0">
+            <Data name="GearCoreButtUnderFold" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreButtUnderFold</Data>
+            <Data name="DildoButtUnderFold" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoButtUnderFold</Data>
+        </Slider>
+        <Slider name="ButtPressed_v2" invert="false" small="0" big="0">
+            <Data name="GearCoreButtPressed_v2" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreButtPressed_v2</Data>
+        </Slider>
+        <Slider name="ButtNarrow_v2" invert="false" small="0" big="0">
+            <Data name="GearCoreButtNarrow_v2" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreButtNarrow_v2</Data>
+        </Slider>
+        <Slider name="ChestDepth" invert="false" small="0" big="0">
+            <Data name="GearCoreChestDepth" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreChestDepth</Data>
+        </Slider>
+        <Slider name="ChubbyButt" invert="false" small="0" big="0">
+            <Data name="GearCoreChubbyButt" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreChubbyButt</Data>
+            <Data name="DildoChubbyButt" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoChubbyButt</Data>
+        </Slider>
+        <Slider name="ChubbyLegs" invert="false" small="0" big="0">
+            <Data name="GearCoreChubbyLegs" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreChubbyLegs</Data>
+            <Data name="DildoChubbyLegs" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoChubbyLegs</Data>
+        </Slider>
+        <Slider name="ChubbyWaist" invert="false" small="0" big="0">
+            <Data name="GearCoreChubbyWaist" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreChubbyWaist</Data>
+            <Data name="DildoChubbyWaist" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoChubbyWaist</Data>
+        </Slider>
+        <Slider name="CrotchBack" invert="false" small="0" big="0">
+            <Data name="GearCoreCrotchBack" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreCrotchBack</Data>
+            <Data name="DildoCrotchBack" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoCrotchBack</Data>
+        </Slider>
+        <Slider name="Groin" invert="false" small="0" big="0">
+            <Data name="GearCoreGroin" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreGroin</Data>
+            <Data name="DildoGroin" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoGroin</Data>
+        </Slider>
+        <Slider name="HipBone" invert="false" small="0" big="0">
+            <Data name="GearCoreHipBone" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreHipBone</Data>
+            <Data name="DildoHipBone" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoHipBone</Data>
+        </Slider>
+        <Slider name="HipForward" invert="false" small="0" big="0">
+            <Data name="GearCoreHipForward" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreHipForward</Data>
+            <Data name="DildoHipForward" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoHipForward</Data>
+        </Slider>
+        <Slider name="Hips" invert="false" small="0" big="0">
+            <Data name="GearCoreHips" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreHips</Data>
+            <Data name="DildoHips" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoHips</Data>
+        </Slider>
+        <Slider name="HipUpperWidth" invert="false" small="0" big="0">
+            <Data name="GearCoreHipUpperWidth" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreHipUpperWidth</Data>
+        </Slider>
+        <Slider name="HipCarved" invert="false" small="0" big="0">
+            <Data name="GearCoreHipCarved" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreHipCarved</Data>
+            <Data name="DildoHipCarved" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoHipCarved</Data>
+        </Slider>
+        <Slider name="HipNarrow_v2" invert="false" small="0" big="0">
+            <Data name="GearCoreHipNarrow_v2" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreHipNarrow_v2</Data>
+        </Slider>
+        <Slider name="LegsThin" invert="false" small="0" big="0">
+            <Data name="GearCoreLegsThin" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreLegsThin</Data>
+            <Data name="DildoLegsThin" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoLegsThin</Data>
+        </Slider>
+        <Slider name="MuscleAbs" invert="false" small="0" big="0">
+            <Data name="GearCoreMuscleAbs" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreMuscleAbs</Data>
+            <Data name="DildoMuscleAbs" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoMuscleAbs</Data>
+        </Slider>
+        <Slider name="MuscleButt" invert="false" small="0" big="0">
+            <Data name="GearCoreMuscleButt" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreMuscleButt</Data>
+        </Slider>
+        <Slider name="MuscleLegs" invert="false" small="0" big="0">
+            <Data name="GearCoreMuscleLegs" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreMuscleLegs</Data>
+            <Data name="DildoMuscleLegs" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoMuscleLegs</Data>
+        </Slider>
+        <Slider name="MuscleMoreAbs_v2" invert="false" small="0" big="0">
+            <Data name="GearCoreMuscleMoreAbs_v2" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreMuscleMoreAbs_v2</Data>
+        </Slider>
+        <Slider name="MuscleMoreLegs_v2" invert="false" small="0" big="0">
+            <Data name="GearCoreMuscleMoreLegs_v2" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreMuscleMoreLegs_v2</Data>
+            <Data name="DildoMuscleMoreLegs_v2" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoMuscleMoreLegs_v2</Data>
+        </Slider>
+        <Slider name="PregnancyBelly" invert="false" small="0" big="0">
+            <Data name="GearCorePregnancyBelly" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCorePregnancyBelly</Data>
+            <Data name="DildoPregnancyBelly" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoPregnancyBelly</Data>
+        </Slider>
+        <Slider name="RoundAss" invert="false" small="0" big="0">
+            <Data name="GearCoreRoundAss" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreRoundAss</Data>
+        </Slider>
+        <Slider name="SlimThighs" invert="false" small="0" big="0">
+            <Data name="GearCoreSlimThighs" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreSlimThighs</Data>
+            <Data name="DildoSlimThighs" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoSlimThighs</Data>
+        </Slider>
+        <Slider name="Thighs" invert="false" small="0" big="0">
+            <Data name="GearCoreThighs" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreThighs</Data>
+            <Data name="DildoThighs" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoThighs</Data>
+        </Slider>
+        <Slider name="ThighOutsideThicc_v2" invert="false" small="0" big="0">
+            <Data name="GearCoreThighOutsideThicc_v2" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreThighOutsideThicc_v2</Data>
+        </Slider>
+        <Slider name="ThighInsideThicc_v2" invert="false" small="0" big="0">
+            <Data name="GearCoreThighInsideThicc_v2" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreThighInsideThicc_v2</Data>
+            <Data name="DildoThighInsideThicc_v2" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoThighInsideThicc_v2</Data>
+        </Slider>
+        <Slider name="ThighFBThicc_v2" invert="false" small="0" big="0">
+            <Data name="GearCoreThighFBThicc_v2" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreThighFBThicc_v2</Data>
+            <Data name="DildoThighFBThicc_v2" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoThighFBThicc_v2</Data>
+        </Slider>
+        <Slider name="LegSpread_v2" invert="false" small="0" big="0">
+            <Data name="GearCoreLegSpread_v2" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreLegSpread_v2</Data>
+            <Data name="DildoLegSpread_v2" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoLegSpread_v2</Data>
+        </Slider>
+        <Slider name="TummyTuck" invert="false" small="0" big="0">
+            <Data name="GearCoreTummyTuck" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreTummyTuck</Data>
+            <Data name="DildoTummyTuck" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoTummyTuck</Data>
+        </Slider>
+        <Slider name="UNPHip_v2" invert="false" small="0" big="0">
+            <Data name="GearCoreUNPHip_v2" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreUNPHip_v2</Data>
+            <Data name="DildoUNPHip_v2" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoUNPHip_v2</Data>
+        </Slider>
+        <Slider name="Waist" invert="false" small="0" big="0">
+            <Data name="GearCoreWaist" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreWaist</Data>
+        </Slider>
+        <Slider name="WaistHeight" invert="false" small="0" big="0">
+            <Data name="GearCoreWaistHeight" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreWaistHeight</Data>
+            <Data name="DildoWaistHeight" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoWaistHeight</Data>
+        </Slider>
+        <Slider name="WideWaistLine" invert="false" small="0" big="0">
+            <Data name="GearCoreWideWaistLine" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreWideWaistLine</Data>
+        </Slider>
+        <Slider name="7BLeg_v2" invert="false" small="0" big="0">
+            <Data name="GearCore7BLeg_v2" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCore7BLeg_v2</Data>
+            <Data name="Dildo7BLeg_v2" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\Dildo7BLeg_v2</Data>
+        </Slider>
+        <Slider name="7B Lower" invert="false" small="0" big="0">
+            <Data name="GearCore7B Lower" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCore7B Lower</Data>
+            <Data name="Dildo7B Lower" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\Dildo7B Lower</Data>
+        </Slider>
+        <Slider name="VanillaSSEHi" invert="false" small="0" big="0">
+            <Data name="GearCoreVanillaSSEHi" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreVanillaSSEHi</Data>
+            <Data name="DildoVanillaSSEHi" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoVanillaSSEHi</Data>
+        </Slider>
+        <Slider name="VanillaSSELo" invert="false" small="0" big="0">
+            <Data name="GearCoreVanillaSSELo" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreVanillaSSELo</Data>
+            <Data name="DildoVanillaSSELo" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoVanillaSSELo</Data>
+        </Slider>
+        <Slider name="OldBaseShape" invert="false" small="0" big="0">
+            <Data name="GearCoreOldBaseShape" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreOldBaseShape</Data>
+            <Data name="DildoOldBaseShape" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoOldBaseShape</Data>
+        </Slider>
+        <Slider name="Innieoutie" invert="false" small="0" big="0">
+            <Data name="GearCoreInnieoutie" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreInnieoutie</Data>
+            <Data name="DildoInnieoutie" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoInnieoutie</Data>
+        </Slider>
+        <Slider name="LabiaTightUp" invert="false" small="0" big="0">
+            <Data name="GearCoreLabiaTightUp" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreLabiaTightUp</Data>
+            <Data name="DildoLabiaTightUp" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoLabiaTightUp</Data>
+        </Slider>
+        <Slider name="Labiapuffyness" invert="false" small="0" big="0">
+            <Data name="GearCoreLabiapuffyness" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreLabiapuffyness</Data>
+            <Data name="DildoLabiapuffyness" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoLabiapuffyness</Data>
+        </Slider>
+        <Slider name="LabiaMorePuffyness_v2" invert="false" small="0" big="0">
+            <Data name="GearCoreLabiaMorePuffyness_v2" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreLabiaMorePuffyness_v2</Data>
+            <Data name="DildoLabiaMorePuffyness_v2" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoLabiaMorePuffyness_v2</Data>
+        </Slider>
+        <Slider name="Labiaspread" invert="false" small="0" big="0">
+            <Data name="GearCoreLabiaspread" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreLabiaspread</Data>
+            <Data name="DildoLabiaspread" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoLabiaspread</Data>
+        </Slider>
+        <Slider name="LabiaCrumpled_v2" invert="false" small="0" big="0">
+            <Data name="DildoLabiaCrumpled_v2" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoLabiaCrumpled_v2</Data>
+        </Slider>
+        <Slider name="LabiaNeat_v2" invert="false" small="0" big="0">
+            <Data name="GearCoreLabiaNeat_v2" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreLabiaNeat_v2</Data>
+            <Data name="DildoLabiaNeat_v2" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoLabiaNeat_v2</Data>
+        </Slider>
+        <Slider name="LabiaBulgogi_v2" invert="false" small="0" big="0">
+            <Data name="GearCoreLabiaBulgogi_v2" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreLabiaBulgogi_v2</Data>
+            <Data name="DildoLabiaBulgogi_v2" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoLabiaBulgogi_v2</Data>
+        </Slider>
+        <Slider name="VaginaHole" invert="false" small="0" big="0">
+            <Data name="GearCoreVaginaHole" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreVaginaHole</Data>
+            <Data name="DildoVaginaHole" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoVaginaHole</Data>
+        </Slider>
+        <Slider name="Cutepuffyness" invert="false" small="0" big="0">
+            <Data name="GearCoreCutepuffyness" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreCutepuffyness</Data>
+            <Data name="DildoCutepuffyness" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoCutepuffyness</Data>
+        </Slider>
+        <Slider name="CBPC" invert="false" small="0" big="0">
+            <Data name="GearCoreCBPC" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreCBPC</Data>
+            <Data name="DildoCBPC" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoCBPC</Data>
+        </Slider>
+        <Slider name="CrotchGap" invert="false" small="0" big="0">
+            <Data name="GearCoreCrotchGap" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreCrotchGap</Data>
+            <Data name="DildoCrotchGap" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoCrotchGap</Data>
+        </Slider>
+        <Slider name="AnalLoose_v2" invert="false" small="0" big="0">
+            <Data name="GearCoreAnalLoose_v2" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreAnalLoose_v2</Data>
+            <Data name="DildoAnalLoose_v2" target="Dildo" local="true">OStim Calyps Strap-On Simple.osd\DildoAnalLoose_v2</Data>
+        </Slider>
+        <Slider name="AnalPosition_v2" invert="false" small="0" big="0">
+            <Data name="GearCoreAnalPosition_v2" target="GearCore" local="true">OStim Calyps Strap-On Simple.osd\GearCoreAnalPosition_v2</Data>
+        </Slider>
+    </SliderSet>
+</SliderSetInfo>

@@ -1,0 +1,23 @@
+{
+    "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg/master/scripts/vcpkg.schema.json",
+    "name": "ostim",
+    "version-string": "1.0.0",
+    "port-version": 0,
+    "description": "",
+    "homepage": "",
+    "license": "GPL-3.0",
+    "features": {
+        "plugin": {
+          "description": "Build the SKSE plugin.",
+          "dependencies": [
+            "articuno",
+            "commonlibsse-ng",
+            "pugixml",
+            "nlohmann-json"
+          ]
+        }
+    },
+    "default-features": [
+        "plugin"
+    ]
+}

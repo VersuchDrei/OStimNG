@@ -1,0 +1,53 @@
+{
+	"events": [
+		"climax"
+	],
+	"female": {
+		"duration": 3,
+		"expression": {
+			"type": 3,
+			"baseValue": 80
+		},
+		"phonemes": [{
+			"type": 1,
+			"baseValue": 50
+		}, {
+			"type": 14,
+			"baseValue": 40
+		}],
+		"modifiers": [{
+			"type": 12,
+			"baseValue": 80
+		}, {
+			"type": 13,
+			"baseValue": 80
+		}, {
+			"type": 0,
+			"baseValue": 80
+		}, {
+			"type": 1,
+			"baseValue": 80
+		}]
+	},
+	"male": {
+		"duration": 2,
+		"expression": {
+			"type": 4,
+			"baseValue": 60
+		},
+		"phonemes": [{
+			"type": 1,
+			"baseValue": 20
+		}, {
+			"type": 11,
+			"baseValue": 20
+		}],
+		"modifiers": [{
+			"type": 6,
+			"baseValue": 50
+		}, {
+			"type": 7,
+			"baseValue": 50
+		}]
+	}
+}

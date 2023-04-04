@@ -1,0 +1,14 @@
+{
+	"actor":{
+		"requirements":[
+			"hand"
+		],
+		"strippingSlots":[
+			33
+		]
+	},
+	"target":{
+		"stimulation":0.1,
+		"maxStimulation":50
+	}
+}

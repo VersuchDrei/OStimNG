@@ -1,0 +1,18 @@
+{
+	"actor":{
+		"requirements":[
+			"hand"
+		],
+		"strippingSlots":[
+			33
+		]
+	},
+	"target":{
+		"strippingSlots":[
+			30
+		]
+	},
+	"tags":[
+		"romantic"
+	]
+}

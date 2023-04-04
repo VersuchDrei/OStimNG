@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<system>
+
+	<bone name="NPC Head [Head]"/>
+
+	<bone name="SMP-0"/>
+
+	<bone-default>
+		<mass>0.21</mass>
+		<inertia x="1" y="1" z="1"/>
+		<centerOfMassTransform>
+			<basis x="0" y="0" z="0" w="1"/>
+			<origin x="0" y="0" z="0"/>
+		</centerOfMassTransform>
+		<linearDamping>0.9</linearDamping>
+		<angularDamping>0.9</angularDamping>
+		<friction>0.9</friction>
+		<rollingFriction>0.9</rollingFriction>
+		<restitution>0</restitution>
+		<gravity-factor>0.1</gravity-factor>
+	</bone-default>
+
+	<bone name="SMP-1"/>
+	<bone name="SMP-2"/>
+	<bone name="SMP-3"/>
+	<bone name="SMP-4"/>
+
+	<generic-constraint-default>
+		<frameInB>
+			<basis x="0" y="0" z="0" w="1"/>
+			<origin x="0" y="0" z="0"/>
+		</frameInB>
+		<useLinearReferenceFrameA>false</useLinearReferenceFrameA>
+		<linearLowerLimit x="0" y="0" z="0"/>
+		<linearUpperLimit x="0" y="0" z="0"/>
+		<angularLowerLimit x="-0.1" y="-0.1" z="-0.1"/>
+		<angularUpperLimit x="0.1" y="0.1" z="0.1"/>
+		<linearStiffness x="0" y="0" z="0"/>
+		<angularStiffness x="0.9" y="0.9" z="0.9"/>
+		<linearDamping x="0" y="0" z="0"/>
+		<angularDamping x="0.9" y="0.9" z="0.9"/>
+		<linearEquilibrium x="0" y="0" z="0"/>
+		<angularEquilibrium x="0" y="0" z="0"/>
+	</generic-constraint-default>
+
+	<constraint-group>
+		<generic-constraint bodyA="SMP-1" bodyB="SMP-0"/>
+		<generic-constraint bodyA="SMP-2" bodyB="SMP-1"/>
+		<generic-constraint bodyA="SMP-3" bodyB="SMP-2"/>
+		<generic-constraint bodyA="SMP-4" bodyB="SMP-3"/>
+	</constraint-group>
+	
+
+	<per-vertex-shape name="LongTongue">
+		<margin>0.1</margin>
+		<shared>external</shared>
+		<tag>Tongue</tag>
+		<no-collide-with-tag>Tongue</no-collide-with-tag>
+	</per-vertex-shape>
+</system>

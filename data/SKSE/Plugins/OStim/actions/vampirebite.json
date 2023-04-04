@@ -1,0 +1,23 @@
+{
+	"actor":{
+		"stimulation":0.0,
+		"requirements":[
+			"mouth",
+			"vampire"
+		],
+		"strippingSlots":[
+			30,
+			31,
+			44,
+			55
+		]
+	},
+	"target":{
+		"stimulation":0.25,
+		"maxStimulation":50
+	},
+	"tags":[
+		"seductive",
+		"sensual"
+	]
+}

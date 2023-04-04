@@ -1,0 +1,12 @@
+{
+	"type": "tongue",
+	"name": "Long Tongue",
+	"mod": "OStim.esp",
+	"formid": "0xDCA",
+	"variants":{
+		"cum":{
+			"mod": "OStim.esp",
+			"formid": "0xDCB"
+		}
+	}
+}

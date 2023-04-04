@@ -1,0 +1,51 @@
+{
+	"sets": [
+		"tongue"
+	],
+	"female": {
+		"expression":{
+			"type": 1,
+			"baseValue": 50
+		},
+		"phonemes": [
+			{
+				"type": 0,
+				"baseValue": 100
+			},
+			{
+				"type": 3,
+				"baseValue": 20
+			},
+			{
+				"type": 11,
+				"baseValue": 50
+			}
+		],
+		"phonemeObjects":[
+			"tongue"
+		]
+	},
+	"male": {
+		"expression":{
+			"type": 1,
+			"baseValue": 50
+		},
+		"phonemes": [
+			{
+				"type": 0,
+				"baseValue": 100
+			},
+			{
+				"type": 3,
+				"baseValue": 20
+			},
+			{
+				"type": 11,
+				"baseValue": 50
+			}
+		],
+		"phonemeObjects":[
+			"tongue"
+		]
+	}
+}

@@ -1,0 +1,65 @@
+{
+	"actionActors": [
+		"kissing",
+		"kissingfeet",
+		"kissingneck"
+	],
+	"actionTargets": [
+		"kissing"
+	],
+	"female": {
+		"expression": {
+			"type": 3,
+			"baseValue": 75
+		},
+		"phonemes": [{
+			"type": 11,
+			"baseValue": 20
+		}, {
+			"type": 12,
+			"baseValue": 30
+		}],
+		"modifiers": [{
+			"type": 0,
+			"baseValue": 30
+		}, {
+            "type": 1,
+			"baseValue": 30
+		}, {
+            "type": 8,
+			"baseValue": 75
+		}, {
+			"type": 12,
+			"baseValue": 100
+		}, {
+			"type": 13,
+			"baseValue": 100
+		}]
+	},
+	"male": {
+		"expression": {
+			"type": 0,
+			"baseValue": 50
+		},
+		"modifiers": [{
+			"type": 0,
+			"baseValue": 30
+		}, {
+            "type": 1,
+			"baseValue": 30
+		}, {
+            "type": 8,
+			"baseValue": 75
+		}, {
+			"type": 12,
+			"baseValue": 80
+		}, {
+			"type": 13,
+			"baseValue": 80
+		}],
+		"phonemes": [{
+			"type": 12,
+			"baseValue": 50
+		}]
+	}
+}

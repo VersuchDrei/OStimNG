@@ -1,0 +1,32 @@
+{
+	"actor":{
+		"stimulation":0.0,
+		"requirements":[
+			"hand"
+		],
+		"strippingSlots":[
+			33
+		]
+	},
+	"target":{
+		"stimulation":0.9,
+		"fullStrip":true,
+		"requirements":[
+			"vagina"
+		],
+		"strippingSlots":[
+			32,
+			49,
+			52,
+			53
+		]
+	},
+	"performer":{
+		"floats":{
+			"stamina":0.75
+		}
+	},
+	"tags":[
+		"sexual"
+	]
+}

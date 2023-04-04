@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<system>
+
+	<bone name="NPC Pelvis [Pelv]"/>
+
+	<per-vertex-shape name="DildoCollision">
+		<margin>0.1</margin>
+		<penetration>0.5</penetration>
+		<shared>internal</shared>
+		<tag>Dildo</tag>
+		<no-collide-with-tag>Dildo</no-collide-with-tag>
+	</per-vertex-shape>
+</system>

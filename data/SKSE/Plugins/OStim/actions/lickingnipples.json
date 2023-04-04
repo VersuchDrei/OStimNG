@@ -1,0 +1,35 @@
+{
+	"actor":{
+		"stimulation":0.1,
+		"maxStimulation":50,
+		"requirements":[
+			"mouth"
+		],
+		"strippingSlots":[
+			30,
+			31,
+			44,
+			55
+		]
+	},
+	"target":{
+		"stimulation":0.6,
+		"fullStrip":true,
+		"requirements":[
+			"nipple"
+		],
+		"strippingSlots":[
+			32,
+			46,
+			56
+		]
+	},
+	"performer":{
+		"floats":{
+			"stamina":0.5
+		}
+	},
+	"tags":[
+		"sexual"
+	]
+}

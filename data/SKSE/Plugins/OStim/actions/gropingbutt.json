@@ -1,0 +1,24 @@
+{
+	"actor":{
+		"stimulation":0.1,
+		"maxStimulation":50,
+		"requirements":[
+			"hand"
+		],
+		"strippingSlots":[
+			33
+		]
+	},
+	"target":{
+		"stimulation":0.1,
+		"maxStimulation":50
+	},
+	"performer":{
+		"floats":{
+			"stamina":0.5
+		}
+	},
+	"tags":[
+		"sensual"
+	]
+}
