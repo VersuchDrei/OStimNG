@@ -17,7 +17,7 @@ Qudix for [OSA-SKSE](https://github.com/Qudix/OSA-SKSE)
 
 [kannonfodder](https://github.com/kannonfodder)
 
-### additional contributors
+### additional credits
 
 Egilvar for the tongue meshes
 
