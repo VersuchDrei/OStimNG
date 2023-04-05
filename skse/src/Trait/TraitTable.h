@@ -35,8 +35,6 @@ namespace Trait {
             return actor->IsInFaction(noFacialExpressionsFaction);
         }
 
-        static bool hasSchlong(RE::Actor* actor);
-
     private:
         static void parseGender(nlohmann::json json, GenderExpression* genderExpression);
         static FaceModifier parseModifier(nlohmann::json json);
@@ -52,7 +50,5 @@ namespace Trait {
 
         inline static RE::TESFaction* excitementFaction;
         inline static RE::TESFaction* noFacialExpressionsFaction;
-
-        inline static RE::TESFaction* SOS_SchlongifiedFaction = nullptr;
     };
 }

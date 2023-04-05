@@ -60,6 +60,7 @@ set(sources
     src/UI/UIState.cpp
     src/Util/ActorUtil.cpp
     src/Util/CameraUtil.cpp
+    src/Util/CompatibilityTable.cpp
     src/Util/FormUtil.cpp
     src/Util/MathUtil.cpp
     src/Util/MCMTable.cpp

@@ -13,6 +13,7 @@
 #include "Serial/Manager.h"
 #include "Trait/TraitTable.h"
 #include "UI/Align/AlignMenu.h"
+#include "Util/CompatibilityTable.h"
 #include "Util/MCMTable.h"
 
 using namespace RE::BSScript;
@@ -64,6 +65,7 @@ namespace {
                 }
             } break;
             case SKSE::MessagingInterface::kDataLoaded: {
+                Compatibility::CompatibilityTable::setupForms();
                 Graph::LookupTable::setupForms();
                 Trait::TraitTable::setupForms();
                 MCM::MCMTable::setupForms();

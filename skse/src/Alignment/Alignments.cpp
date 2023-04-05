@@ -9,14 +9,14 @@ namespace Alignment {
         logger::info("loading alignment data");
         fs::path rootPath{ALIGNMENT_DATA_FILE_PATH};
         if (!fs::exists(rootPath)) {
-            logger::warn("file path ({}) does not exist", ALIGNMENT_DATA_FILE_PATH);
+            logger::info("alignment file ({}) does not exist", ALIGNMENT_DATA_FILE_PATH);
             return;
         }
         std::ifstream ifs(ALIGNMENT_DATA_FILE_PATH);
         json json = json::parse(ifs, nullptr, false);
 
         if (json.is_discarded()) {
-            logger::warn("file {} is malformed", ALIGNMENT_DATA_FILE_PATH);
+            logger::warn("alignment file {} is malformed", ALIGNMENT_DATA_FILE_PATH);
             return;
         }
 

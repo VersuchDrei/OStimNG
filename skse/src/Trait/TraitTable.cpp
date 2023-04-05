@@ -71,12 +71,6 @@ namespace Trait {
         excitementFaction = handler->LookupForm<RE::TESFaction>(0xD93, "OStim.esp");
         noFacialExpressionsFaction = handler->LookupForm<RE::TESFaction>(0xD92, "OStim.esp");
 
-        if (handler->GetModIndex("Schlongs of Skyrim.esp")) {
-            SOS_SchlongifiedFaction = handler->LookupForm<RE::TESFaction>(0x00Aff8, "Schlongs of Skyrim.esp");
-        } else {
-            logger::info("SoS full is not installed.");
-        }
-
         // this needs to go in setupForms because it requires the kDataLoaded event
         Util::JsonFileLoader::LoadFilesInFolder(EQUIP_OBJECT_FILE_PATH, [&](std::string path, std::string filename, json json) {
             std::string id = filename;
@@ -356,13 +350,5 @@ namespace Trait {
 
     void TraitTable::setEquipObjectID(RE::FormID formID, std::string type, std::string id) {
         Serialization::setEquipObject(formID, type, id);
-    }
-
-    bool TraitTable::hasSchlong(RE::Actor* actor) {
-        if (SOS_SchlongifiedFaction) {
-            return actor->IsInFaction(SOS_SchlongifiedFaction);
-        } else {
-            return actor->GetActorBase()->GetSex() == RE::SEX::kMale;
-        }
     }
 }

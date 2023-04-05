@@ -35,6 +35,7 @@ namespace OStim {
 
         void changeNode(Graph::Actor* graphActor, std::vector<Trait::FacialExpression*>* nodeExpressions, std::vector<Trait::FacialExpression*>* overrideExpressions);
         void changeSpeed(int speed);
+        void setScaleMult(float scaleMult);
         void setSoSBend(int sosBend);
 
         void handleNiNodeUpdate();
@@ -129,6 +130,7 @@ namespace OStim {
 
         Graph::Actor* graphActor = nullptr;
         int speed = 0;
+        float scaleMult = 1.0;
         int sosBend = 0;
 
         bool undressed = false;

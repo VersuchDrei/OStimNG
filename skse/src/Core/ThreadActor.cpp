@@ -5,18 +5,18 @@
 #include "Graph/LookupTable.h"
 #include "Trait/TraitTable.h"
 #include "Util/ActorUtil.h"
+#include "Util/CompatibilityTable.h"
 #include "Util/FormUtil.h"
 #include "Util/Constants.h"
 #include "Util/MCMTable.h"
 #include "Util/ObjectRefUtil.h"
-#include "Trait/TraitTable.h"
 #include "Util/VectorUtil.h"
 
 namespace OStim {
     ThreadActor::ThreadActor(int threadId, RE::Actor* actor) : threadId{threadId}, actor{actor} {
         scaleBefore = actor->GetReferenceRuntimeData().refScale / 100.0f;
         isFemale = actor->GetActorBase()->GetSex() == RE::SEX::kFemale;
-        hasSchlong = Trait::TraitTable::hasSchlong(actor);
+        hasSchlong = Compatibility::CompatibilityTable::hasSchlong(actor);
         isPlayer = actor == RE::PlayerCharacter::GetSingleton();
         Trait::TraitTable::addToExcitementFaction(actor);
         heelOffset = ActorUtil::getHeelOffset(actor);
@@ -238,7 +238,6 @@ namespace OStim {
 
         // heel stuff
         checkHeelOffset();
-        scale();
 
         // facial expressions
         this->nodeExpressions = nodeExpressions;
@@ -270,6 +269,11 @@ namespace OStim {
 
     void ThreadActor::changeSpeed(int speed) {
         this->speed = speed;
+    }
+
+    void ThreadActor::setScaleMult(float scaleMult) {
+        this->scaleMult = scaleMult;
+        scale();
     }
 
     void ThreadActor::setSoSBend(int sosBend) {
@@ -396,11 +400,16 @@ namespace OStim {
     }
 
     void ThreadActor::scale() {
-        if (MCM::MCMTable::isScalingDisabled() || !graphActor) {
+        if (MCM::MCMTable::isScalingDisabled) {
+            ActorUtil::setScale(actor, scaleBefore * scaleMult);
             return;
         }
 
-        float newScale = graphActor->scale / (actor->GetActorBase()->GetHeight() * rmHeight);
+        if (!graphActor) {
+            return;
+        }
+
+        float newScale = (graphActor->scale * scaleMult) / (actor->GetActorBase()->GetHeight() * rmHeight);
         if (!heelOffsetRemoved && heelOffset != 0) {
             newScale *= graphActor->scaleHeight / (graphActor->scaleHeight + heelOffset);
         }
