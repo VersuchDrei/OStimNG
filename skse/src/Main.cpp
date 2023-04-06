@@ -1,6 +1,7 @@
 #include <stddef.h>
 
 #include "Alignment/Alignments.h"
+#include "Core/ThreadInterface.h"
 #include "Events/EventListener.h"
 #include "Furniture/FurnitureTable.h"
 #include "Game/Patch.h"
@@ -114,6 +115,7 @@ SKSEPluginLoad(const LoadInterface* skse) {
     Init(skse);
 
     InterfaceMap::GetSingleton()->AddInterface("Messaging", Messaging::MessagingRegistry::GetSingleton());
+    InterfaceMap::GetSingleton()->AddInterface("Threads", Interfaces::ThreadInterface::GetSingleton());
 
     auto message = SKSE::GetMessagingInterface();
     if (!message->RegisterListener(MessageHandler)) {
