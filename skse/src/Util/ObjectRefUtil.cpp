@@ -1,5 +1,6 @@
 #include "ObjectRefUtil.h"
 
+#include "ExtraDataUtil.h"
 #include "MathUtil.h"
 #include "StringUtil.h"
 
@@ -78,5 +79,18 @@ namespace ObjectRefUtil {
 
     void ObjectRefUtil::translateToRadians(RE::TESObjectREFR* object, float x, float y, float z, float angleX, float angleY, float angleZ, float speed, float maxRotationSpeed) {
         TranslateTo(nullptr, 0, object, x, y, z, MathUtil::toDegrees(angleX), MathUtil::toDegrees(angleY), MathUtil::toDegrees(angleZ), speed, maxRotationSpeed);
+    }
+
+    RE::TESForm* ObjectRefUtil::getOwner(RE::TESObjectREFR* object) {
+        auto xOwnership = object->extraList.GetByType<RE::ExtraOwnership>();
+        if (xOwnership && xOwnership->owner) {
+            return xOwnership->owner;
+        } else {
+            return nullptr;
+        }
+    }
+
+    void ObjectRefUtil::setOwner(RE::TESObjectREFR* object, RE::TESForm* owner) {
+        ExtraDataUtil::setOwnerForm(&object->extraList, owner);
     }
 }

@@ -142,6 +142,22 @@ namespace Serialization {
                     errors |= DeserializationError::FURNITURE;
                 }
             }
+
+            serial->ReadRecordData(&oldID, sizeof(oldID));
+            if (oldID != 0) {
+                if (serial->ResolveFormID(oldID, newID)) {
+                    RE::TESForm* form = RE::TESForm::LookupByID(newID);
+                    if (form) {
+                        thread.furnitureOwner = form;
+                    } else {
+                        logger::error("cannot find furniture owner with id: {}", newID);
+                        errors |= DeserializationError::FURNITURE;
+                    }
+                } else {
+                    logger::error("cannot resolve furniture owner id {:x}", oldID);
+                    errors |= DeserializationError::FURNITURE;
+                }
+            }
             
             size_t size;
             serial->ReadRecordData(&size, sizeof(size));
@@ -154,6 +170,7 @@ namespace Serialization {
 
         RE::TESObjectREFR* vehicle = nullptr;
         RE::TESObjectREFR* furniture = nullptr;
+        RE::TESForm* furnitureOwner = nullptr;
         std::vector<OldThreadActor> actors;
 
         inline void serialize(SKSE::SerializationInterface* serial) {
@@ -162,6 +179,9 @@ namespace Serialization {
 
             RE::FormID furnitureID = furniture ? furniture->GetFormID() : 0;
             serial->WriteRecordData(&furnitureID, sizeof(furnitureID));
+
+            RE::FormID furnitureOwnerID = furnitureOwner ? furnitureOwner->GetFormID() : 0;
+            serial->WriteRecordData(&furnitureOwnerID, sizeof(furnitureOwnerID));
 
             size_t size = actors.size();
             serial->WriteRecordData(&size, sizeof(size));
@@ -177,7 +197,7 @@ namespace Serialization {
             }
 
             if (furniture) {
-                Furniture::freeFurniture(furniture);   
+                Furniture::freeFurniture(furniture, furnitureOwner);   
             }
 
             for (OldThreadActor actor : actors) {

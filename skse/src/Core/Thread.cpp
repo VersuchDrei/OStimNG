@@ -9,6 +9,7 @@
 #include "Util/Constants.h"
 #include "Util/MathUtil.h"
 #include "Util/MCMTable.h"
+#include "Util/ObjectRefUtil.h"
 #include "Util/StringUtil.h"
 #include "Util.h"
 
@@ -19,6 +20,9 @@ namespace OStim {
         vehicle = center->PlaceObjectAtMe(Graph::LookupTable::OStimVehicle, false).get();
 
         if (furniture) {
+            furnitureOwner = ObjectRefUtil::getOwner(furniture);
+            Furniture::lockFurniture(furniture);
+
             std::vector<float> offset = Furniture::getOffset(furniture);
             float angle = furniture->GetAngleZ();
             float sin = std::sin(angle);
@@ -30,14 +34,6 @@ namespace OStim {
             
         } else {
             vehicle->MoveTo(center);
-        }
-
-        // --- locking the furniture --- //
-        if (furniture) {
-            if (!Furniture::isFurnitureInUse(furniture, false)) {
-                Furniture::lockFurniture(furniture, actors[0]);
-                furnitureLocked = true;
-            }
         }
 
         RE::Actor* player = RE::PlayerCharacter::GetSingleton();
@@ -57,6 +53,14 @@ namespace OStim {
                         CameraUtil::toggleFlyCam();
                     });
                     camThread.detach();
+                }
+            } else if (MCM::MCMTable::supportImprovedCam()) {
+                const auto skyrimVM = RE::SkyrimVM::GetSingleton();
+                auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+                if (vm) {
+                    RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
+                    auto args = RE::MakeFunctionArguments(std::move(false));
+                    vm->DispatchStaticCall("OSKSE", "ToggleImprovedCamera", args, callback);
                 }
             }
 
@@ -338,6 +342,10 @@ namespace OStim {
             actorIt.second.free();
         }
 
+        if (furniture) {
+            Furniture::freeFurniture(furniture, furnitureOwner);
+        }
+
         if (isPlayerThread) {
             RE::PlayerCamera* camera = RE::PlayerCamera::GetSingleton();
             
@@ -353,8 +361,6 @@ namespace OStim {
 
             camera->worldFOV = worldFOVbefore;
         }
-        
-        
     }
 
     void Thread::addActorSink(RE::Actor* a_actor) {
@@ -465,8 +471,9 @@ namespace OStim {
         Serialization::OldThread oldThread;
 
         oldThread.vehicle = vehicle;
-        if (furnitureLocked) {
+        if (furniture) {
             oldThread.furniture = furniture;
+            oldThread.furnitureOwner = furnitureOwner;
         }
 
         for (auto& actorIt : m_actors) {

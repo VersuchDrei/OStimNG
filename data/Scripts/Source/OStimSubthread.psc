@@ -198,7 +198,7 @@ Function StartAI()
 EndFunction
 
 Event OnUpdate()
-	CurrentScene = OSA.MakeStage()
+	CurrentScene = OSA.MakeStage(false)
 	Password = CurrentScene[0] as int
 
 	OSA.SetActorsStim(CurrentScene, Actors)

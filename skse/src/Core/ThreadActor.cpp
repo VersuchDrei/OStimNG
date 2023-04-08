@@ -400,7 +400,7 @@ namespace OStim {
     }
 
     void ThreadActor::scale() {
-        if (MCM::MCMTable::isScalingDisabled) {
+        if (MCM::MCMTable::isScalingDisabled()) {
             ActorUtil::setScale(actor, scaleBefore * scaleMult);
             return;
         }

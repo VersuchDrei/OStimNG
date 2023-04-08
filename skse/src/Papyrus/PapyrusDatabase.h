@@ -11,8 +11,8 @@ namespace PapyrusDatabase {
     std::set<std::string> aggressive_class{"Ro", "HhPJ", "HhBj", "HhPo", "SJ"};
     std::set<std::string> aggressive_mod{"BG", "BB"};
 
-    json BuildJson(pugi::xml_document& xml_doc, const fs::path& mod_path, const fs::path& cls_path) {
-        auto node = new Graph::Node();
+    json BuildJson(pugi::xml_document& xml_doc, const fs::path& mod_path, const fs::path& cls_path, std::unordered_map<Graph::Node*, std::vector<std::string>>& navigations) {
+        Graph::Node* node = new Graph::Node();
         auto j_obj = json::object();
 
         std::vector<std::string> split_id;
@@ -54,6 +54,7 @@ namespace PapyrusDatabase {
                     if (trans_str == "T"s) {
                         is_transitory = 1;
                         is_hub = 0;
+                        navigations[node] = { anim.attribute("dest").value() };
                     }
                 }
 
@@ -91,6 +92,19 @@ namespace PapyrusDatabase {
                             }
                         }
                             
+                    }
+                }
+            }
+
+            auto nav = scene.child("nav");
+            if (nav) {
+                navigations[node] = {};
+                for (auto& tab : nav.children("tab")) {
+                    for (auto& page : tab.children("page")) {
+                        for (auto& option : tab.children("option")) {
+                            auto go = option.attribute("go");
+                            navigations[node].push_back(go.value());
+                        }
                     }
                 }
             }
@@ -415,6 +429,8 @@ namespace PapyrusDatabase {
             return;
         }
 
+        std::unordered_map<Graph::Node*, std::vector<std::string>> navigations;
+
         auto j_root = json::array();
         for (auto const& mod : fs::directory_iterator(root_path)) {
             if (!mod.is_directory()) continue;
@@ -449,10 +465,16 @@ namespace PapyrusDatabase {
                             continue;
                         }
 
-                        auto j_build = BuildJson(xml_doc, mod_path, cls_path);
+                        auto j_build = BuildJson(xml_doc, mod_path, cls_path, navigations);
                         j_root.push_back(j_build);
                     }
                 }
+            }
+        }
+
+        for (auto& [node, list] : navigations) {
+            for (auto& navigation : list) {
+                node->tryAddNavigation(navigation);
             }
         }
 

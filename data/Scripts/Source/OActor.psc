@@ -146,6 +146,28 @@ bool Function SetObjectVariant(Actor Act, string Type, string Variant, float Dur
 Function UnsetObjectVariant(Actor Act, string Type) Global Native
 
 
+; ██╗   ██╗████████╗██╗██╗     ██╗████████╗██╗   ██╗
+; ██║   ██║╚══██╔══╝██║██║     ██║╚══██╔══╝╚██╗ ██╔╝
+; ██║   ██║   ██║   ██║██║     ██║   ██║    ╚████╔╝
+; ██║   ██║   ██║   ██║██║     ██║   ██║     ╚██╔╝
+; ╚██████╔╝   ██║   ██║███████╗██║   ██║      ██║
+;  ╚═════╝    ╚═╝   ╚═╝╚══════╝╚═╝   ╚═╝      ╚═╝
+
+;/* HasSchlong
+* * checks if the actor has a schlong
+* * if SoS full is not installed this will simply check for the actors sex
+* * if SoS full is installed this will check for the SOS_SchlongifiedFaction
+* * additionally it will check for SOS - No Futanari Schlong and SOS Female Pubic Hair
+* * (to not consider those schlongified even though they are in the faction)
+* *	this function even works on actors that are not in a scene
+* * 
+* * @param: Act, the actor to check
+* *
+* * @return: true if the actor has a schlong, otherwise false
+*/;
+bool Function HasSchlong(Actor Act) Global Native
+
+
 ; ██████╗ ███████╗██████╗ ██████╗ ███████╗ ██████╗ █████╗ ████████╗███████╗██████╗ 
 ; ██╔══██╗██╔════╝██╔══██╗██╔══██╗██╔════╝██╔════╝██╔══██╗╚══██╔══╝██╔════╝██╔══██╗
 ; ██║  ██║█████╗  ██████╔╝██████╔╝█████╗  ██║     ███████║   ██║   █████╗  ██║  ██║

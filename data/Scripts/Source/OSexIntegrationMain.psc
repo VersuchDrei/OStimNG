@@ -1132,7 +1132,7 @@ Event OnUpdate() ;OStim main logic loop
 
 	;profile()
 
-	CurrScene = OSA.MakeStage()
+	CurrScene = OSA.MakeStage(true)
 	Password = CurrScene[0] as int
 	OSA.SetActorsStim(currScene, Actors)
 	OSA.SetModule(CurrScene, "0Sex", StartingAnimation, "")

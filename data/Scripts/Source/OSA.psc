@@ -230,8 +230,13 @@ EndFunction
 
 ; Creates an actionscript shell for the stage with all properties.
 ; This allows the scene to be configured before being launched.
-String[] Function MakeStage() Global
-    String Password = OSANative.RandomInt(0, 999999) as String
+String[] Function MakeStage(bool PlayerStage) Global
+    String Password
+    If PlayerStage
+        Password = "0"
+    Else
+        Password = OSANative.RandomInt(1, 999999) as String
+    EndIf
     OGlyphS(".glyph.makeStage", Password)
     String[] SceneBuilder = new String[20]
     SceneBuilder[0] = oGlyphGS(".glyph.ref." + Password)

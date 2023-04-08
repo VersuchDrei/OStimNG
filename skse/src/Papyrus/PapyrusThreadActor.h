@@ -2,6 +2,7 @@
 
 #include "Core/ThreadManager.h"
 #include "Trait/TraitTable.h"
+#include "Util/CompatibilityTable.h"
 #include "Util/StringUtil.h"
 #include "Util/VectorUtil.h"
 
@@ -115,6 +116,11 @@ namespace PapyrusThreadActor {
         }
     }
 
+
+    bool HasSchlong(RE::StaticFunctionTag*, RE::Actor* actor) {
+        return Compatibility::CompatibilityTable::hasSchlong(actor);
+    }
+
     bool Bind(VM* a_vm) {
         const auto obj = "OActor"sv;
 
@@ -133,6 +139,8 @@ namespace PapyrusThreadActor {
         BIND(IsObjectEquipped);
         BIND(SetObjectVariant);
         BIND(UnsetObjectVariant);
+
+        BIND(HasSchlong);
 
         return true;
     }

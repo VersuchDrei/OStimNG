@@ -24,6 +24,21 @@ namespace Graph {
         }
     }
 
+    void Node::tryAddNavigation(std::string destination) {
+        Node* navigationDestination = LookupTable::getNodeById(destination);
+        if (!navigationDestination) {
+            return;
+        }
+
+        for (auto& navigation : navigations) {
+            if (navigation.destination == navigationDestination) {
+                return;
+            }
+        }
+
+        navigations.push_back({.destination = navigationDestination});
+    }
+
     bool Node::fulfilledBy(std::vector<Trait::ActorConditions> conditions) {
         int size = actors.size();
         if (size < conditions.size()) {

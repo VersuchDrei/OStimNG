@@ -191,29 +191,14 @@ namespace Furniture {
         return IsFurnitureInUse(nullptr, 0, object, ignoreReserved);
     }
 
-    void Furniture::lockFurniture(RE::TESObjectREFR* furniture, RE::Actor* actor) {
+    void Furniture::lockFurniture(RE::TESObjectREFR* furniture) {
         furniture->SetActivationBlocked(true);
-
-        auto size = getMarkers(furniture).size();
-        auto markers = furniture->extraList.GetByType<RE::ExtraUsedMarkers>();
-        if (!markers) {
-            return;
-        }
-
-        for (uint32_t i = 0; i < size; i++) {
-            RE::MarkerUsedData data{.actorinMarker = RE::BSPointerHandleManagerInterface<RE::Actor>::GetHandle(actor), .markerID = i, .expiration = {.timeStamp=FLT_MAX}};
-            markers->usedMarkers.push_back(data);
-        }
+        ObjectRefUtil::setOwner(furniture, Graph::LookupTable::OStimEmptyFaction);
     }
 
-    void Furniture::freeFurniture(RE::TESObjectREFR* furniture) {
+    void Furniture::freeFurniture(RE::TESObjectREFR* furniture, RE::TESForm* owner) {
         furniture->SetActivationBlocked(false);
-
-        auto markers = furniture->extraList.GetByType<RE::ExtraUsedMarkers>();
-        if (!markers) {
-            return;
-        }
-        markers->usedMarkers.clear();
+        ObjectRefUtil::setOwner(furniture, owner);
     }
 
     void Furniture::resetClutter(RE::TESObjectREFR* centerRef, float radius) {

@@ -1,22 +1,21 @@
 #include "Alignments.h"
 
 #include "ThreadAlignment.h"
+#include "Util.h"
 
 namespace Alignment {
-    const char* ALIGNMENT_DATA_FILE_PATH{"Data/SKSE/Plugins/OStim/alignment.json"};
-
     void Alignments::LoadAlignments() {
         logger::info("loading alignment data");
-        fs::path rootPath{ALIGNMENT_DATA_FILE_PATH};
-        if (!fs::exists(rootPath)) {
-            logger::info("alignment file ({}) does not exist", ALIGNMENT_DATA_FILE_PATH);
+        auto alignPath = util::alignment_path();
+        if (!fs::exists(*alignPath)) {
+            logger::info("alignment file does not exist");
             return;
         }
-        std::ifstream ifs(ALIGNMENT_DATA_FILE_PATH);
+        std::ifstream ifs(*alignPath);
         json json = json::parse(ifs, nullptr, false);
 
         if (json.is_discarded()) {
-            logger::warn("alignment file {} is malformed", ALIGNMENT_DATA_FILE_PATH);
+            logger::warn("alignment file is malformed");
             return;
         }
 
@@ -82,8 +81,11 @@ namespace Alignment {
             }
         }
 
-        std::ofstream db_file(ALIGNMENT_DATA_FILE_PATH);
-        db_file << std::setw(2) << json << std::endl;
+        auto ostimPath = util::ostim_path();
+        std::filesystem::create_directory(*ostimPath);
+        auto alignPath = util::alignment_path();
+        std::ofstream alignFile(*alignPath);
+        alignFile << std::setw(2) << json << std::endl;
     }
 
     ActorAlignment Alignments::getActorAlignment(std::string threadKey, Graph::Node* node, int index) {

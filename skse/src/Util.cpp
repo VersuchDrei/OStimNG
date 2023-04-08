@@ -82,6 +82,15 @@ namespace util {
         return path;
     }
 
+    std::optional<fs::path> ostim_path() {
+        auto path = documents_path();
+        if (!path) return std::nullopt;
+
+        *path /= "OStim/"sv;
+
+        return path;
+    }
+
     std::optional<fs::path> database_path() {
         auto path = documents_path();
         if (!path) return std::nullopt;
@@ -97,6 +106,16 @@ namespace util {
 
         *path /= "JCUser/OstimMCMSettings.json"sv;
 
+        return path;
+    }
+
+    std::optional<fs::path> alignment_path() {
+        auto path = ostim_path();
+        if (!path) {
+            return std::nullopt;
+        }
+
+        *path /= "alignment.json"sv;
         return path;
     }
 

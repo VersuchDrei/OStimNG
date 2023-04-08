@@ -459,7 +459,7 @@ Event OnStartModuleUI(String EventName, String DataString, Float NumArg, Form Se
     EndWhile
 
     If (!InScene)
-        String[] NewScene = OSA.MakeStage()
+        String[] NewScene = OSA.MakeStage(false)
         OSA.SetActors(NewScene, Actra)
         OSA.SetModule(NewScene, Data[0])
         OSA.Start(NewScene)

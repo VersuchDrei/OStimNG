@@ -53,7 +53,7 @@ namespace OStim {
         ThreadId m_threadId;        
         bool isPlayerThread = false;
         RE::TESObjectREFR* furniture;
-        bool furnitureLocked = false;
+        RE::TESForm* furnitureOwner = nullptr;
         RE::TESObjectREFR* vehicle;
         std::map<int32_t, ThreadActor> m_actors;
         std::shared_mutex nodeLock;

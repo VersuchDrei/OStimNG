@@ -6,6 +6,8 @@
 #include "Trait/FacialExpression.h"
 
 namespace Graph {
+    struct Node; // this line is necessary for the Navigation struct to work
+
     struct Speed {
     public:
         std::string animation;
@@ -26,6 +28,10 @@ namespace Graph {
         std::unordered_map<std::string, std::string> autotransitions;
     };
 
+    struct Navigation {
+        Node* destination;
+    };
+
     struct Node {
     public:
         std::string scene_id;
@@ -43,12 +49,14 @@ namespace Graph {
         std::vector<std::string> tags;
         std::vector<Actor*> actors;
         std::vector<Action*> actions;
+        std::vector<Navigation> navigations;
 
         // maybe remove this in a later iteration?
         std::string sourceModule;
         std::string animClass;
 
         void mergeActionRequirementsIntoActors();
+        void tryAddNavigation(std::string destination);
 
         bool fulfilledBy(std::vector<Trait::ActorConditions> conditions);
 
