@@ -42,6 +42,8 @@ namespace OStim {
 
         void setEventExpression(Trait::FacialExpression* expression);
         void clearEventExpression();
+        void playEventExpression(std::string expression);
+        void playEventExpression(Trait::FacialExpression* expression);
         void setLooking(std::unordered_map<int, Trait::FaceModifier> eyeballOverride);
         void unsetLooking();
         void resetLooking();
@@ -150,6 +152,7 @@ namespace OStim {
         int underlyingExpressionCooldown = 999999;
         std::unordered_map<int, Trait::FaceModifier> eyeballModifierOverride;
         Trait::GenderExpression* eventExpression = nullptr;
+        int eventExpressionCooldown = 0;
         std::vector<Trait::FacialExpression*>* overrideExpressions = nullptr;
         Trait::GenderExpression* overrideExpression = nullptr;
         int overwriteExpressionCooldown = 0;

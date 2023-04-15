@@ -28,6 +28,8 @@ namespace OStim {
         void ChangeNode(Graph::Node* a_node);
         Graph::Node* getCurrentNode();
 
+        void navigateTo(Graph::Node* node);
+
         void AddActor(RE::Actor* a_actor);
         void RemoveActor();
 

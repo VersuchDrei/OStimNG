@@ -6,6 +6,7 @@ namespace Graph {
         float stimulation = 0.0;
         float maxStimulation = 100.0;
         bool fullStrip = false;
+        std::string expressionOverride = "";
         uint32_t requirements = 0;
 		uint32_t strippingMask = 0;
 		std::unordered_map<std::string, int> ints;

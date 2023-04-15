@@ -115,8 +115,8 @@ namespace ActorUtil {
                 if (data.partClone) {
                     RE::TESForm* bipedArmor = data.item;
 
-                    // some, but not all, weapon meshes CTD if you check them for "HH_OFFSET", so we skip those
-                    if (bipedArmor->formType == RE::TESObjectWEAP::FORMTYPE || bipedArmor->formType == RE::TESAmmo::FORMTYPE || bipedArmor->formType == RE::TESObjectLIGH::FORMTYPE || bipedArmor->As<RE::BGSKeywordForm>()->HasKeywordString("ArmorShield")){
+                    // only check slot 37, as too many objects cause weird crashed here and heel offsets should only be on the shoes anyways
+                    if (bipedArmor->formType != RE::TESObjectARMO::FORMTYPE || !data.addon->HasPartOf(RE::BIPED_MODEL::BipedObjectSlot::kFeet)){
                         continue;
                     }
 

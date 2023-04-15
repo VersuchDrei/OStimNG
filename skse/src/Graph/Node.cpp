@@ -27,6 +27,17 @@ namespace Graph {
     void Node::tryAddNavigation(std::string destination) {
         Node* navigationDestination = LookupTable::getNodeById(destination);
         if (!navigationDestination) {
+            logger::warn("Couldn't add navigation from {} to {} because {} doesn't exist.", scene_id, destination, destination);
+            return;
+        }
+
+        if (furnitureType != navigationDestination->furnitureType) {
+            logger::warn("Couldn't add navigation from {} to {} because their furniture types don't match.", scene_id, destination);
+            return;
+        }
+
+        if (actors.size() != navigationDestination->actors.size()) {
+            logger::warn("Couldn't add navigation from {} to {} because their actor counts don't match.", scene_id, destination);
             return;
         }
 
@@ -52,6 +63,46 @@ namespace Graph {
         }
 
         return true;
+    }
+
+    Node* Node::getRandomNodeInRange(int distance, std::vector<Trait::ActorConditions> actorConditions, std::function<bool(Node*)> nodeCondition) {
+        std::vector<Node*> nodes;
+        std::vector<Node*> lastLevel = {this};
+        std::vector<Node*> nextLevel;
+
+        for (int i = 0; i < distance; i++) {
+            for (Node* node : lastLevel) {
+                for (Navigation nav : node->navigations) {
+                    Node* dest = nav.destination;
+                    if (dest->isTransition) {
+                        if (dest->navigations.empty()) {
+                            continue;
+                        } else {
+                            dest = dest->navigations[0].destination;
+                        }
+                    }
+                    if (!VectorUtil::contains(nodes, dest) && dest->fulfilledBy(actorConditions)) {
+                        nodes.push_back(dest);
+                        nextLevel.push_back(dest);
+                    }
+                }
+            }
+
+            if (nextLevel.empty()) {
+                break;
+            }
+
+            lastLevel = nextLevel;
+            nextLevel.clear();
+        }
+
+        for (auto& node : nodes) {
+            if (!node->noRandomSelection && nodeCondition(node)) {
+                return node;
+            }
+        }
+
+        return nullptr;
     }
 
     uint32_t Node::getStrippingMask(int position) {
@@ -209,12 +260,39 @@ namespace Graph {
     }
 
     std::vector<Trait::FacialExpression*>* Node::getOverrideExpressions(int position) {
-        if (hasActorTag(position, "openmouth") || findAnyActionForActor(position, {"blowjob", "cunnilingus", "suckingnipples"}) != -1) {
-            return Trait::TraitTable::getExpressionsForSet("openmouth");
+        if (actors.size() <= position) {
+            return nullptr;
         }
-        if (hasActorTag(position, "licking") || findAnyActionForActor(position, {"lickingnipples", "lickingpenis", "lickingtesticles", "lickingvagina", "rimjob"}) != -1) {
-            return Trait::TraitTable::getExpressionsForSet("tongue");
+
+        std::vector<Trait::FacialExpression*>* expression;
+        if (!actors[position]->expressionOverride.empty()) {
+            expression = Trait::TraitTable::getExpressionsForSet(actors[position]->expressionOverride);
+            if (expression) {
+                return expression;
+            }
         }
+
+        for (Action* action : actions) {
+            if (action->actor == position && !action->attributes->actor.expressionOverride.empty()) {
+                expression = Trait::TraitTable::getExpressionsForSet(action->attributes->actor.expressionOverride);
+                if (expression) {
+                    return expression;
+                }
+            }
+            if (action->target == position && !action->attributes->target.expressionOverride.empty()) {
+                expression = Trait::TraitTable::getExpressionsForSet(action->attributes->target.expressionOverride);
+                if (expression) {
+                    return expression;
+                }
+            }
+            if (action->performer == position && !action->attributes->performer.expressionOverride.empty()) {
+                expression = Trait::TraitTable::getExpressionsForSet(action->attributes->performer.expressionOverride);
+                if (expression) {
+                    return expression;
+                }
+            }
+        }
+
         return nullptr;
     }
 }

@@ -209,6 +209,10 @@ namespace OStim {
         return m_currentNode;
     }
 
+    void Thread::navigateTo(Graph::Node* node) {
+
+    }
+
     void Thread::AddActor(RE::Actor* actor) {
         int index = m_actors.size();
         addActorInner(index, actor);
@@ -326,7 +330,7 @@ namespace OStim {
                     }
                 }
 
-                float speedMod = 1 + speed / m_currentNode->speeds.size();
+                float speedMod = 1.0 + static_cast<float>(speed) / static_cast<float>(m_currentNode->speeds.size());
                 actorIt.second.loopExcitementInc = actorIt.second.baseExcitementInc * actorIt.second.baseExcitementMultiplier * speedMod * Constants::LOOP_TIME_SECONDS;
             }
 
@@ -460,8 +464,8 @@ namespace OStim {
             GetActor(actor)->unsetLooking();
         } else if (tag == "OStimResetLooking") {
             GetActor(actor)->resetLooking();
-        } else if (tag == "OStimEvent") {
-            
+        } else if (tag == "OStimPlayExpression") {
+            GetActor(actor)->playEventExpression(a_event->payload.c_str());
         }
 
         return RE::BSEventNotifyControl::kContinue;

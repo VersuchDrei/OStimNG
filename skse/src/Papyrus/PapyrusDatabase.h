@@ -236,6 +236,11 @@ namespace PapyrusDatabase {
                                 for (std::string tag : StringUtil::toTagVector(tags.as_string())) {
                                     node->actors[pos]->tags.push_back(tag);
                                 }
+                                if (VectorUtil::contains(node->actors[pos]->tags, std::string("openmouth"))) {
+                                    node->actors[pos]->expressionOverride = "openmouth";
+                                } else if (VectorUtil::contains(node->actors[pos]->tags, std::string("licking"))) {
+                                    node->actors[pos]->expressionOverride = "tongue";
+                                }
                             }
 
                             if (auto feetOnGround = actor.attribute("feetOnGround")) {

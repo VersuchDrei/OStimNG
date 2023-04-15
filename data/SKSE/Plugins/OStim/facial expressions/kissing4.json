@@ -7,6 +7,9 @@
 	"actionTargets": [
 		"kissing"
 	],
+	"events":[
+		"kiss"
+	],
 	"female": {
 		"expression": {
 			"type": 1,

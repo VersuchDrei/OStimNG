@@ -128,6 +128,11 @@ namespace Graph {
             actor.fullStrip = json["fullStrip"];
         }
 
+        if (json.contains("expressionOverride")) {
+            actor.expressionOverride = json["expressionOverride"];
+            StringUtil::toLower(&actor.expressionOverride);
+        }
+
         if (json.contains("requirements")) {
             for (auto& req : json["requirements"]) {
                 actor.requirements |= LookupTable::getRequirement(req);

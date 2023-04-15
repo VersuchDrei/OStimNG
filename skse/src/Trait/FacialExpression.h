@@ -35,7 +35,7 @@ namespace Trait {
 
     struct GenderExpression {
     public:
-        float duration = 0;
+        float duration = 0.5;
         int typeMask = 0;
         FaceModifier expression;
         std::unordered_map<int, FaceModifier> eyelidModifiers;

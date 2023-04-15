@@ -22,6 +22,7 @@ namespace Graph {
         float scaleHeight = 120.748;
         bool feetOnGround;
         int expressionAction = -1;
+        std::string expressionOverride = "";
         std::unordered_map<int, Trait::FaceModifier> eyeballModifierOverride;
         std::vector<std::string> tags;
         Trait::ActorConditions conditions;
@@ -59,6 +60,8 @@ namespace Graph {
         void tryAddNavigation(std::string destination);
 
         bool fulfilledBy(std::vector<Trait::ActorConditions> conditions);
+
+        Node* getRandomNodeInRange(int distance, std::vector<Trait::ActorConditions> actorConditions, std::function<bool(Node*)> nodeCondition);
 
         std::vector<Trait::FacialExpression*>* getFacialExpressions(int position);
         std::vector<Trait::FacialExpression*>* getOverrideExpressions(int position);

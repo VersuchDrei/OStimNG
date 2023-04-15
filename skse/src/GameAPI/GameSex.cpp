@@ -15,6 +15,19 @@ namespace GameAPI {
         return GameSex::NONE;
     }
 
+    GameSex GameSexAPI::fromGame(RE::SEX sex) {
+        switch (sex) {
+            case RE::SEX::kNone:
+                return GameSex::NONE;
+            case RE::SEX::kMale:
+                return GameSex::MALE;
+            case RE::SEX::kFemale:
+                return GameSex::FEMALE;
+            default:
+                return GameSex::NONE;
+        }
+    }
+
     std::string GameSexAPI::toIcon(GameSex sex) {
         switch (sex) {
             case NONE:

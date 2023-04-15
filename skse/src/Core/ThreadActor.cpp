@@ -10,6 +10,7 @@
 #include "Util/Constants.h"
 #include "Util/MCMTable.h"
 #include "Util/ObjectRefUtil.h"
+#include "Util/StringUtil.h"
 #include "Util/VectorUtil.h"
 
 namespace OStim {
@@ -313,6 +314,14 @@ namespace OStim {
                 updateOverrideExpression();
             }
         }
+
+        if (eventExpressionCooldown > 0) {
+            eventExpressionCooldown -= Constants::LOOP_TIME_MILLISECONDS;
+            if (eventExpressionCooldown <= 0) {
+                clearEventExpression();
+            }
+        }
+
         if ((underlyingExpressionCooldown -= Constants::LOOP_TIME_MILLISECONDS) < 0) {
             updateUnderlyingExpression();
 
@@ -404,7 +413,7 @@ namespace OStim {
             ActorUtil::setScale(actor, scaleBefore * scaleMult);
             return;
         }
-
+        
         if (!graphActor) {
             return;
         }
@@ -569,6 +578,21 @@ namespace OStim {
             eventExpression = nullptr;
             wakeExpressions(mask);
         }
+    }
+
+    void ThreadActor::playEventExpression(std::string expression) {
+        StringUtil::toLower(&expression);
+        std::vector<Trait::FacialExpression*>* expressions = Trait::TraitTable::getExpressionsForEvent(expression);
+        if (!expressions) {
+            return;
+        }
+
+        playEventExpression(VectorUtil::randomElement(expressions));
+    }
+
+    void ThreadActor::playEventExpression(Trait::FacialExpression* expression) {
+        setEventExpression(expression);
+        eventExpressionCooldown = expression->getDuration(actor) * 1000;
     }
 
     void ThreadActor::setLooking(std::unordered_map<int, Trait::FaceModifier> eyeballOverride) {
