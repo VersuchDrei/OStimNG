@@ -1079,14 +1079,9 @@ Function ExportSettings()
 	JMap.SetInt(OstimSettingsFile, "SetEndOnBothOrgasm", Main.RequireBothOrgasmsToFinish as Int)
 	JMap.SetInt(OstimSettingsFile, "SetActorSpeedControl", Main.EnableActorSpeedControl as Int)
 	JMap.SetInt(OstimSettingsFile, "SetResetPosition", Main.ResetPosAfterSceneEnd as Int)
-	JMap.SetFlt(OstimSettingsFile, "SetsexExcitementMult", Main.MaleSexExcitementMult as Float)
-	JMap.SetFlt(OstimSettingsFile, "SetFemaleSexExcitementMult", Main.FemaleSexExcitementMult as Float)
-	JMap.SetInt(OstimSettingsFile, "SetClipinglessFirstPerson", Main.EnableImprovedCamSupport as Int)
 	JMap.SetInt(OstimSettingsFile, "SetEndAfterActorHit", Main.EndAfterActorHit as Int)
 	JMap.SetInt(OstimSettingsFile, "SetUseRumble", Main.UseRumble as Int)
 	JMap.SetInt(OstimSettingsFile, "SetUseScreenShake", Main.UseScreenShake as Int)
-	JMap.SetInt(OstimSettingsFile, "SetScaling", Main.DisableScaling as Int)
-	JMap.SetInt(OstimSettingsFile, "SetSchlongBending", Main.DisableSchlongBending As Int)
 	JMap.SetInt(OStimSettingsFile, "SetUseIntroScenes", Main.UseIntroScenes As Int)
 	JMap.SetInt(OstimSettingsFile, "SetOnlyGayAnimsInGayScenes", Main.OnlyGayAnimsInGayScenes as Int)
 
@@ -1095,15 +1090,6 @@ Function ExportSettings()
 	JMap.SetInt(OstimSettingsFile, "PlayerAlwaysSubGay", main.PlayerAlwaysSubGay as Int)
 	JMap.SetInt(OstimSettingsFile, "PlayerAlwaysDomStraight", main.PlayerAlwaysDomStraight as Int)
 	JMap.SetInt(OstimSettingsFile, "PlayerAlwaysDomGay", main.PlayerAlwaysDomGay as Int)
-	
-	; Clothes settings export.
-	JMap.SetInt(OstimSettingsFile, "SetAlwaysUndressAtStart", Main.AlwaysUndressAtAnimStart as Int)
-	JMap.SetInt(OstimSettingsFile, "SetRemoveWeaponsAtStart", Main.RemoveWeaponsAtStart as Int)
-	JMap.SetInt(OstimSettingsFile, "SetUndressIfNeed", Main.AutoUndressIfNeeded as Int)
-	JMap.SetInt(OstimSettingsFile, "SetPartialUndressing", Main.PartialUndressing as Int)
-	JMap.SetInt(OstimSettingsFile, "SetRemoveWeaponsWithSlot", Main.RemoveWeaponsWithSlot as Int)
-	JMap.SetInt(OstimSettingsFile, "SetAnimateRedress", Main.FullyAnimateRedress as Int)
-	JMap.SetInt(OstimSettingsFile, "SetUndressingSlotMask", OData.GetUndressingSlotMask())
 
 	; Bar settings export.
 	JMap.SetInt(OstimSettingsFile, "SetSubBar", Main.EnableSubBar as Int)
@@ -1131,7 +1117,6 @@ Function ExportSettings()
 	JMap.SetInt(OstimSettingsFile, "SetKeyDown", Main.SpeedDownKey as Int)
 	JMap.SetInt(OstimSettingsFile, "SetPullOut", Main.PullOutKey as Int)
 	JMap.SetInt(OstimSettingsFile, "SetControlToggle", Main.ControlToggleKey as Int)
-	JMap.SetInt(OstimSettingsFile, "SetFreecamToggleKey", Main.FreecamKey as Int)
 
 	; Bed settings export.
 	JMap.SetInt(OstimSettingsFile, "SetEnableFurniture", Main.UseFurniture as Int)
@@ -1140,10 +1125,6 @@ Function ExportSettings()
 	JMap.SetInt(OstimSettingsFile, "SetResetClutter", Main.ResetClutter as Int)
 	JMap.SetInt(OstimSettingsFile, "SetResetClutterRadius", Main.ResetClutterRadius)
 	JMap.SetInt(OstimSettingsFile, "SetBedRealignment", Main.BedRealignment as Int)
-
-	; Expressions
-	JMap.SetInt(OstimSettingsFile, "SetExpressionDurationMin", Main.ExpressionDurationMin)
-	JMap.SetInt(OstimSettingsFile, "SetExpressionDurationMax", Main.ExpressionDurationMax)
 
 	; Ai/Control settings export.
 	JMap.SetInt(OstimSettingsFile, "SetAIControl", Main.UseAIControl as Int)
@@ -1154,9 +1135,6 @@ Function ExportSettings()
 	JMap.SetInt(OstimSettingsFile, "SetAIChangeChance", Main.AiSwitchChance as Int)
 
 	; Camera settings export.
-	JMap.SetInt(OstimSettingsFile, "SetUseFreeCam", Main.UseFreeCam as Int)
-	JMap.SetInt(OstimSettingsFile, "SetFreeCamFOV", Main.FreecamFOV as Int)
-	JMap.SetInt(OstimSettingsFile, "SetCameraSpeed", Main.FreecamSpeed as Int)
 	JMap.SetInt(OstimSettingsFile, "SetForceFirstPerson", Main.ForceFirstPersonAfter as Int)
 
 	; OSA keys settings export.
@@ -1279,14 +1257,9 @@ Function ImportSettings(bool default = false)
 	Main.RequireBothOrgasmsToFinish = JMap.GetInt(OstimSettingsFile, "SetEndOnBothOrgasm")
 	Main.EnableActorSpeedControl = JMap.GetInt(OstimSettingsFile, "SetActorSpeedControl")
 	Main.ResetPosAfterSceneEnd = JMap.GetInt(OstimSettingsFile, "SetResetPosition", 1)
-	Main.MaleSexExcitementMult = JMap.GetFlt(OstimSettingsFile, "SetsexExcitementMult", 1.0)
-	Main.FemaleSexExcitementMult = JMap.GetFlt(OstimSettingsFile, "SetFemaleSexExcitementMult", 1.0)
-	Main.EnableImprovedCamSupport = JMap.GetInt(OstimSettingsFile, "SetClipinglessFirstPerson")
 	Main.EndAfterActorHit = JMap.GetInt(OstimSettingsFile, "SetEndAfterActorHit")
 	Main.UseRumble = JMap.GetInt(OstimSettingsFile, "SetUseRumble")
 	Main.UseScreenShake = JMap.GetInt(OstimSettingsFile, "SetUseScreenShake")
-	Main.DisableScaling = JMap.GetInt(OstimSettingsFile, "SetScaling")
-	Main.DisableSchlongBending = JMap.GetInt(OstimSettingsFile, "SetSchlongBending")
 	Main.UseIntroScenes = JMap.GetInt(OstimSettingsFile, "SetUseIntroScenes", 1)
 	Main.OnlyGayAnimsInGayScenes = JMap.GetInt(OstimSettingsFile, "SetOnlyGayAnimsInGayScenes")
 
@@ -1295,15 +1268,6 @@ Function ImportSettings(bool default = false)
 	Main.PlayerAlwaysSubGay = Jmap.GetInt(OstimSettingsFile, "PlayerAlwaysSubGay")
 	Main.PlayerAlwaysDomStraight = Jmap.GetInt(OstimSettingsFile, "PlayerAlwaysDomStraight")
 	Main.PlayerAlwaysDomGay = Jmap.GetInt(OstimSettingsFile, "PlayerAlwaysDomGay")
-	
-	; Clothes settings import.
-	Main.AlwaysUndressAtAnimStart = JMap.GetInt(OstimSettingsFile, "SetAlwaysUndressAtStart")
-	Main.RemoveWeaponsAtStart = JMap.GetInt(OstimSettingsFile, "SetRemoveWeaponsAtStart", 1)
-	Main.AutoUndressIfNeeded = JMap.GetInt(OstimSettingsFile, "SetUndressIfNeed", 1)
-	Main.PartialUndressing = JMap.GetInt(OstimSettingsFile, "SetPartialUndressing", 1)
-	Main.RemoveWeaponsWithSlot = JMap.GetInt(OstimSettingsFile, "SetRemoveWeaponsWithSlot", 32)
-	Main.FullyAnimateRedress = JMap.GetInt(OstimSettingsFile, "SetAnimateRedress")
-	OData.SetUndressingSlotMask(JMap.GetInt(OstimSettingsFile, "SetUndressingSlotMask", 0x3D8BC39D))
 	
 	; Bar settings import.
 	Main.EnableSubBar = JMap.GetInt(OstimSettingsFile, "SetSubBar")
@@ -1322,17 +1286,10 @@ Function ImportSettings(bool default = false)
 	
 	; Keys settings import.
 	Main.KeyMap = JMap.GetInt(OstimSettingsFile, "SetKeymap")
-	Main.RemapStartKey(Main.KeyMap)
 	Main.SpeedUpKey = JMap.GetInt(OstimSettingsFile, "SetKeyUp")
-	Main.RemapSpeedUpKey(Main.SpeedUpKey)
 	Main.SpeedDownKey = JMap.GetInt(OstimSettingsFile, "SetKeyDown")
-	Main.RemapSpeedDownKey(Main.SpeedDownKey)
 	Main.PullOutKey = JMap.GetInt(OstimSettingsFile, "SetPullOut")
-	Main.RemapPullOutKey(Main.PullOutKey)
 	Main.ControlToggleKey = JMap.GetInt(OstimSettingsFile, "SetControlToggle")
-	Main.RemapControlToggleKey(Main.ControlToggleKey)
-	Main.FreecamKey = JMap.GetInt(OstimSettingsFile, "SetFreecamToggleKey")
-	Main.RemapFreecamKey(main.FreecamKey)
 
 	; OSA keys settings import.
 	OSAControl.osaMainMenuKey =  JMap.GetInt(OstimSettingsFile, "SetOsaMainMenuKey", 156)
@@ -1352,10 +1309,6 @@ Function ImportSettings(bool default = false)
 	Main.ResetClutterRadius = JMap.GetInt(OstimSettingsFile, "SetResetClutterRadius", 5)
 	Main.BedRealignment = JMap.GetInt(OstimSettingsFile, "SetBedRealignment")
 	Main.AiSwitchChance = JMap.GetInt(OstimSettingsFile, "SetAIChangeChance")
-
-	; Expressions
-	Main.ExpressionDurationMin = JMap.GetInt(OstimSettingsFile, "SetExpressionDurationMin", 1000)
-	Main.ExpressionDurationMin = JMap.GetInt(OstimSettingsFile, "SetExpressionDurationMin", 3000)
 	
 	;Orgasm settings
 	Main.SlowMoOnOrgasm = JMap.GetInt(OstimSettingsFile, "SetSlowMoOrgasms", 1)
@@ -1370,9 +1323,6 @@ Function ImportSettings(bool default = false)
 	Main.UseAIMasturbation = JMap.GetInt(OstimSettingsFile, "SetForceAIForMasturbation")
 	
 	; Camera settings export.
-	Main.UseFreeCam = JMap.GetInt(OstimSettingsFile, "SetUseFreeCam")
-	Main.FreecamFOV = JMap.GetInt(OstimSettingsFile, "SetFreeCamFOV")
-	Main.FreecamSpeed = JMap.GetInt(OstimSettingsFile, "SetCameraSpeed")
 	Main.ForceFirstPersonAfter = JMap.GetInt(OstimSettingsFile, "SetForceFirstPerson")
 
 	; Misc settings export.

@@ -47,6 +47,8 @@ set(sources
     src/Graph/LookupTable.cpp
     src/Graph/Node.cpp
     src/InterfaceSpec/PluginInterface.cpp
+    src/MCM/MCMSetting.cpp
+    src/MCM/MCMTable.cpp
     src/Messaging/MessagingRegistry.cpp
 	src/PCH.h
 	src/Papyrus/Papyrus.cpp
@@ -63,7 +65,6 @@ set(sources
     src/Util/CompatibilityTable.cpp
     src/Util/FormUtil.cpp
     src/Util/MathUtil.cpp
-    src/Util/MCMTable.cpp
     src/Util/ObjectRefUtil.cpp
     src/Util/SerializationUtil.cpp
     src/Util/StringUtil.cpp

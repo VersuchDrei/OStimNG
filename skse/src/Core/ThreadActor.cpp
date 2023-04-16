@@ -8,7 +8,7 @@
 #include "Util/CompatibilityTable.h"
 #include "Util/FormUtil.h"
 #include "Util/Constants.h"
-#include "Util/MCMTable.h"
+#include "MCM/MCMTable.h"
 #include "Util/ObjectRefUtil.h"
 #include "Util/StringUtil.h"
 #include "Util/VectorUtil.h"

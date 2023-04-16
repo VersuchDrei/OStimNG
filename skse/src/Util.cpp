@@ -180,4 +180,43 @@ namespace util {
             }
         }
     }
+
+    uint32_t gamepadMaskToKeyCode(uint32_t mask) {
+        switch (mask) {
+            case 0x1:
+                return 266;
+            case 0x2:
+                return 267;
+            case 0x4:
+                return 268;
+            case 0x8:
+                return 269;
+            case 0x10:
+                return 270;
+            case 0x20:
+                return 271;
+            case 0x40:
+                return 272;
+            case 0x80:
+                return 273;
+            case 0x100:
+                return 274;
+            case 0x200:
+                return 275;
+            case 0x1000:
+                return 276;
+            case 0x2000:
+                return 277;
+            case 0x4000:
+                return 278;
+            case 0x8000:
+                return 279;
+            case 0x9:
+                return 280;
+            case 0xA:
+                return 281;
+            default:
+                return 282;  // Invalid
+        }
+    }
 }  // namespace util

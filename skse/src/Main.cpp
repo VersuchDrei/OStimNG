@@ -14,7 +14,7 @@
 #include "Trait/TraitTable.h"
 #include "UI/Align/AlignMenu.h"
 #include "Util/CompatibilityTable.h"
-#include "Util/MCMTable.h"
+#include "MCM/MCMTable.h"
 
 using namespace RE::BSScript;
 using namespace SKSE;
@@ -63,6 +63,9 @@ namespace {
                 if (message) {
                     message->RegisterListener(nullptr, UnspecificedSenderMessageHandler);
                 }
+            } break;
+            case SKSE::MessagingInterface::kInputLoaded: {
+                RE::BSInputDeviceManager::GetSingleton()->AddEventSink(Events::EventListener::GetSingleton());
             } break;
             case SKSE::MessagingInterface::kDataLoaded: {
                 Compatibility::CompatibilityTable::setupForms();

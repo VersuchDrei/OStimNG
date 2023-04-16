@@ -70,6 +70,16 @@ namespace OStim {
         return m_threadMap.size() > 0;
     }
 
+    bool ThreadManager::playerThreadRunning() {
+        std::shared_lock<std::shared_mutex> lock(m_threadMapMtx);
+        for (auto& [id, thread] : m_threadMap) {
+            if (thread->playerThread()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     ThreadActor* ThreadManager::findActor(RE::Actor* actor) {
         for (auto&[id, thread] : m_threadMap) {
             ThreadActor* threadActor = thread->GetActor(actor);

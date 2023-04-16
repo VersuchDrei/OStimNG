@@ -1,6 +1,6 @@
 #include "CameraUtil.h"
 
-#include "MCMTable.h"
+#include "MCM/MCMTable.h"
 
 namespace CameraUtil {
     void toggleFlyCam() {

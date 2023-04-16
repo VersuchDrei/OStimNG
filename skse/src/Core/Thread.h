@@ -20,6 +20,8 @@ namespace OStim {
 
         void initContinue();
 
+        bool playerThread();
+
         std::string getAlignmentKey();
         Alignment::ActorAlignment getActorAlignment(int index);
         void updateActorAlignment(int index, Alignment::ActorAlignment alignment);

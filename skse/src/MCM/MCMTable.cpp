@@ -8,6 +8,12 @@ namespace MCM {
         auto dataHandler = RE::TESDataHandler::GetSingleton();
 
         OStimKeyAlignment = dataHandler->LookupForm<RE::TESGlobal>(0xDE2, "OStim.esp");
+        OStimKeySceneStart = dataHandler->LookupForm<RE::TESGlobal>(0xDE7, "OStim.esp");
+        OStimKeySpeedUp = dataHandler->LookupForm<RE::TESGlobal>(0xDE8, "OStim.esp");
+        OStimKeySpeedDown = dataHandler->LookupForm<RE::TESGlobal>(0xDE9, "OStim.esp");
+        OStimKeyPullOut = dataHandler->LookupForm<RE::TESGlobal>(0xDEA, "OStim.esp");
+        OStimKeyAutoMode = dataHandler->LookupForm<RE::TESGlobal>(0xDEB, "OStim.esp");
+        OStimKeyFreeCam = dataHandler->LookupForm<RE::TESGlobal>(0xDEC, "OStim.esp");
 
         OStimUseFreeCam = dataHandler->LookupForm<RE::TESGlobal>(0xDDE, "OStim.esp");
         OStimFreeCamSpeed = dataHandler->LookupForm<RE::TESGlobal>(0xDDF, "OStim.esp");
@@ -51,6 +57,34 @@ namespace MCM {
     bool MCMTable::useFreeCam() {
         return OStimUseFreeCam->value != 0;
     }
+
+    int MCMTable::keyAlignment() {
+        return static_cast<int>(OStimKeyAlignment->value); }
+
+    int MCMTable::keySceneStart() {
+        return static_cast<int>(OStimKeySceneStart->value);
+    }
+
+    int MCMTable::keySpeedUp() {
+        return static_cast<int>(OStimKeySpeedUp->value);
+    }
+
+    int MCMTable::keySpeedDown() {
+        return static_cast<int>(OStimKeySpeedDown->value);
+    }
+
+    int MCMTable::keyPullOut() {
+        return static_cast<int>(OStimKeyPullOut->value);
+    }
+
+    int MCMTable::keyAutoMode() {
+        return static_cast<int>(OStimKeyAutoMode->value);
+    }
+
+    int MCMTable::keyFreeCam() {
+        return static_cast<int>(OStimKeyFreeCam->value);
+    }
+
 
     float MCMTable::freeCamSpeed() {
         return OStimFreeCamSpeed->value;
@@ -187,7 +221,35 @@ namespace MCM {
         }
 
         json["keyAlignment"] = OStimKeyAlignment->value;
+        json["SetFreeCamToggleKey"] = OStimKeyFreeCam->value;
 
+        json["SetUseFreeCam"] = OStimUseFreeCam->value;
+        json["SetCameraSpeed"] = OStimFreeCamSpeed->value;
+        json["SetFreeCamFOV"] = OStimFreeCamFOV->value;
+        json["SetClipinglessFirstPerson"] = OStimImprovedCamSupport->value;
+
+        json["SetsexExcitementMult"] = maleExcitementMultSetting->value;
+        json["SetFemaleSexExcitementMult"] = femaleExcitementMultSetting->value;
+        json["excitementDecayRate"] = OStimExcitementDecayRate->value;
+        json["excitementDecayGracePeriod"] = OStimExcitementDecayGracePeriod->value;
+
+        json["SetAlwaysUndressAtStart"] = OStimUndressAtStart->value;
+        json["SetRemoveWeaponsAtStart"] = OStimRemoveWeaponsAtStart->value;
+        json["SetUndressIfNeed"] = OStimUndressMidScene->value;
+        json["SetPartialUndressing"] = OStimPartialUndressing->value;
+        json["SetRemoveWeaponsWithSlot"] = OStimRemoveWeaponsWithSlot->value;
+        json["SetAnimateRedress"] = OStimAnimateRedress->value;
+        json["SetUndressingSlotMask"] = undressingMask;
+
+        json["SetExpressionDurationMin"] = OStimExpressionDurationMin->value;
+        json["SetExpressionDurationMax"] = OStimExpressionDurationMax->value;
+
+        json["equipStrapOnIfNeeded"] = OStimEquipStrapOnIfNeeded->value;
+        json["unequipStrapOnIfNotNeeded"] = OStimUnequipStrapOnIfNotNeeded->value;
+        json["unequipStrapOnIfInWay"] = OStimUnequipStrapOnIfInWay->value;
+
+        json["SetScaling"] = OStimDisableScaling->value;
+        json["SetSchlongBending"] = OStimDisableSchlongBending->value;
         json["alignmentGroupBySex"] = OStimAlignmentGroupBySex->value;
         json["alignmentGroupByHeight"] = OStimAlignmentGroupByHeight->value;
         json["alignmentGroupByHeels"] = OStimAlignmentGroupByHeels->value;
@@ -214,7 +276,39 @@ namespace MCM {
         }
 
         importSetting(json, OStimKeyAlignment, "keyAlignment", 38);
+        importSetting(json, OStimKeyFreeCam, "SetFreeCamToggleKey", 181);
 
+        importSetting(json, OStimUseFreeCam, "SetUseFreeCam", 1);
+        importSetting(json, OStimFreeCamSpeed, "SetCameraSpeed", 3);
+        importSetting(json, OStimFreeCamFOV, "SetFreeCamFOV", 45);
+        importSetting(json, OStimImprovedCamSupport, "SetClipinglessFirstPerson", 0);
+
+        importSetting(json, maleExcitementMultSetting, "SetsexExcitementMult", 1);
+        importSetting(json, femaleExcitementMultSetting, "SetFemaleSexExcitementMult", 1);
+        importSetting(json, OStimExcitementDecayRate, "excitementDecayRate", 0);
+        importSetting(json, OStimExcitementDecayGracePeriod, "excitementDecayGracePeriod", 0);
+
+        importSetting(json, OStimUndressAtStart, "SetAlwaysUndressAtStart", 0);
+        importSetting(json, OStimRemoveWeaponsAtStart, "SetRemoveWeaponsAtStart", 1);
+        importSetting(json, OStimUndressMidScene, "SetUndressIfNeed", 1);
+        importSetting(json, OStimPartialUndressing, "SetPartialUndressing", 1);
+        importSetting(json, OStimRemoveWeaponsWithSlot, "SetRemoveWeaponsWithSlot", 32);
+        importSetting(json, OStimAnimateRedress, "SetAnimateRedress", 0);
+        if (json.contains("SetUndressingSlotMask")) {
+            undressingMask = json["SetUndressingSlotMask"];
+        } else {
+            undressingMask = 0x3D8BC39D;
+        }
+
+        importSetting(json, OStimExpressionDurationMin, "SetExpressionDurationMin", 1000);
+        importSetting(json, OStimExpressionDurationMax, "SetExpressionDurationMax", 3000);
+
+        importSetting(json, OStimEquipStrapOnIfNeeded, "equipStrapOnIfNeeded", 1);
+        importSetting(json, OStimUnequipStrapOnIfNotNeeded, "unequipStrapOnIfNotNeeded", 0);
+        importSetting(json, OStimUnequipStrapOnIfInWay, "unequipStrapOnIfInWay", 1);
+
+        importSetting(json, OStimDisableScaling, "SetScaling", 0);
+        importSetting(json, OStimDisableSchlongBending, "SetSchlongBending", 0);
         importSetting(json, OStimAlignmentGroupBySex, "alignmentGroupBySex", 1);
         importSetting(json, OStimAlignmentGroupByHeight, "alignmentGroupByHeight", 0);
         importSetting(json, OStimAlignmentGroupByHeels, "alignmentGroupByHeels", 0);

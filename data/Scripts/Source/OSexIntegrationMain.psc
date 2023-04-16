@@ -222,11 +222,7 @@ int property FreecamKey
 		Return OStimKeyFreeCam.value As int
 	EndFunction
 	Function Set(int Value)
-		UnregisterForKey(OStimKeyFreeCam.value As int)
 		OStimKeyFreeCam.value = Value
-		If Value != 1
-			RegisterForKey(Value)
-		EndIf
 	EndFunction
 EndProperty
 
@@ -236,11 +232,7 @@ int Property AlignmentKey
 		Return OStimKeyAlignment.value As int
 	EndFunction
 	Function Set(int Value)
-		UnregisterForKey(OStimKeyAlignment.value As int)
 		OStimKeyAlignment.value = Value
-		If Value != 1
-			RegisterForKey(Value)
-		EndIf
 	EndFunction
 EndProperty
 
@@ -2953,11 +2945,6 @@ Event OnKeyDown(Int KeyPress)
 		Return
 	EndIf
 
-	if(KeyPress == AlignmentKey)
-		OAlign.ToggleMenu()
-	endIf
-
-
 	If (KeyPress == KeyMap)
 		Actor Target = Game.GetCurrentCrosshairRef() as Actor
 		If (Target)
@@ -2977,11 +2964,6 @@ Event OnKeyDown(Int KeyPress)
 			endif 
 			return
 		EndIf
-	elseif (KeyPress == freecamkey)
-		if animationrunning()
-			OSANative.ToggleFlyCam()
-			return
-		endif 
 	EndIf
 
 	If (DisableOSAControls)
@@ -3265,8 +3247,12 @@ Function OnLoadGame()
 			RegisterForKey(KeyMap)
 		EndIf
 
+		; these are now handled in C++ and no longer need Papyrus listeners
 		If AlignmentKey != 1
-			RegisterForKey(AlignmentKey)
+			UnregisterForKey(AlignmentKey)
+		EndIf
+		If FreecamKey != 1
+			UnregisterForKey(FreecamKey)
 		EndIf
 		
 
@@ -3524,7 +3510,6 @@ Function ToggleFreeCam(Bool On = True)
 EndFunction
 
 Function RemapStartKey(Int zKey)
-	UnregisterForKey(KeyMap)
 	KeyMap = zKey
 EndFunction
 

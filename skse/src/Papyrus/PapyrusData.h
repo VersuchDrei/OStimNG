@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Trait/TraitTable.h"
-#include "Util/MCMTable.h"
+#include "MCM/MCMTable.h"
 #include "Util/StringUtil.h"
 
 namespace PapyrusData {

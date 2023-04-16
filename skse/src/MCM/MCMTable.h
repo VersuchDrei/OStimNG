@@ -1,10 +1,20 @@
 #pragma once
 
+#include "MCMSetting.h"
+
 namespace MCM {
     class MCMTable {
     public:
         static void setupForms();
         static void resetDefaults();
+
+        static int keyAlignment();
+        static int keySceneStart();
+        static int keySpeedUp();
+        static int keySpeedDown();
+        static int keyPullOut();
+        static int keyAutoMode();
+        static int keyFreeCam();
 
         static bool useFreeCam();
         static float freeCamSpeed();
@@ -48,6 +58,12 @@ namespace MCM {
 
     private:
         inline static RE::TESGlobal* OStimKeyAlignment;
+        inline static RE::TESGlobal* OStimKeySceneStart;
+        inline static RE::TESGlobal* OStimKeySpeedUp;
+        inline static RE::TESGlobal* OStimKeySpeedDown;
+        inline static RE::TESGlobal* OStimKeyPullOut;
+        inline static RE::TESGlobal* OStimKeyAutoMode;
+        inline static RE::TESGlobal* OStimKeyFreeCam;
 
         inline static RE::TESGlobal* OStimUseFreeCam;
         inline static RE::TESGlobal* OStimFreeCamSpeed;
@@ -58,9 +74,6 @@ namespace MCM {
         inline static RE::TESGlobal* femaleExcitementMultSetting;
         inline static RE::TESGlobal* OStimExcitementDecayRate;
         inline static RE::TESGlobal* OStimExcitementDecayGracePeriod;
-
-        inline static RE::TESGlobal* OStimDisableScaling;
-        inline static RE::TESGlobal* OStimDisableSchlongBending;
 
         inline static RE::TESGlobal* OStimUndressAtStart;
         inline static RE::TESGlobal* OStimRemoveWeaponsAtStart;
@@ -80,6 +93,8 @@ namespace MCM {
         inline static RE::TESGlobal* OStimUnequipStrapOnIfNotNeeded;
         inline static RE::TESGlobal* OStimUnequipStrapOnIfInWay;
 
+        inline static RE::TESGlobal* OStimDisableScaling;
+        inline static RE::TESGlobal* OStimDisableSchlongBending;
         inline static RE::TESGlobal* OStimAlignmentGroupBySex;
         inline static RE::TESGlobal* OStimAlignmentGroupByHeight;
         inline static RE::TESGlobal* OStimAlignmentGroupByHeels;

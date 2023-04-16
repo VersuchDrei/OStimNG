@@ -1,7 +1,7 @@
 #include "FormUtil.h"
 
 #include "Graph/LookupTable.h"
-#include "Util/MCMTable.h"
+#include "MCM/MCMTable.h"
 
 namespace FormUtil {
     bool isWig(RE::Actor* actor, RE::TESObjectARMO* armor) {

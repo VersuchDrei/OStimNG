@@ -8,7 +8,7 @@
 #include "Util/CameraUtil.h"
 #include "Util/Constants.h"
 #include "Util/MathUtil.h"
-#include "Util/MCMTable.h"
+#include "MCM/MCMTable.h"
 #include "Util/ObjectRefUtil.h"
 #include "Util/StringUtil.h"
 #include "Util.h"
@@ -95,6 +95,10 @@ namespace OStim {
         if (isPlayerThread) {
             UI::Align::AlignMenu::SetThread(this);
         }
+    }
+
+    bool Thread::playerThread() {
+        return isPlayerThread;
     }
 
     void Thread::rebuildAlignmentKey() {
