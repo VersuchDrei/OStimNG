@@ -45,6 +45,7 @@ namespace UI::Align {
             ui->Register(MENU_NAME, Creator);
 
             AlignMenu::Show();
+            RE::GPtr<RE::IMenu> alignMenu = RE::UI::GetSingleton()->GetMenu(MENU_NAME);
         }
     }
 

@@ -4,6 +4,7 @@
 #include "Graph/Node.h"
 #include <Messaging/IMessages.h>
 #include "UI/Align/AlignMenu.h"
+#include "UI/Scene/SceneMenu.h"
 #include "UI/UIState.h"
 #include "Util/CameraUtil.h"
 #include "Util/Constants.h"
@@ -94,6 +95,8 @@ namespace OStim {
 
         if (isPlayerThread) {
             UI::Align::AlignMenu::SetThread(this);
+            UI::Scene::SceneMenu::SetThread(this);
+            UI::Scene::SceneMenu::Show();
         }
     }
 
@@ -200,6 +203,8 @@ namespace OStim {
         }
 
         alignActors();
+
+        UI::Scene::SceneMenu::NodeChanged(this, m_currentNode);
 
         auto messaging = SKSE::GetMessagingInterface();
 

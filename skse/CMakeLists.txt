@@ -60,6 +60,7 @@ set(sources
     src/Trait/TraitTable.cpp
     src/UI/Align/AlignMenu.cpp
     src/UI/Align/IncrementValue.cpp
+    src/UI/Scene/SceneMenu.cpp
     src/UI/UIState.cpp
     src/Util/ActorUtil.cpp
     src/Util/CameraUtil.cpp

@@ -1,5 +1,6 @@
 #include "UI/UIState.h"
 #include "UI/Align/AlignMenu.h"
+#include "UI/Scene/SceneMenu.h"
 #include "Core/ThreadManager.h"
 
 namespace UI {
@@ -9,14 +10,15 @@ namespace UI {
         }
         switch (activeMenu) {
         case MenuType::kSceneMenu: {
-                auto menu = GetHud();
+            /*    auto menu = GetHud();
                 if (menu) {
                     auto ui = GetOSAControlUIRoot(menu, glyph);
                     auto direction = GetControlString(control);
                     if (direction != "") {
                         ui.Invoke(direction.c_str());
                     }
-                }
+                }*/
+            UI::Scene::SceneMenu::Handle(control);
             } break;
         case MenuType::kAlignMenu: {
                 UI::Align::AlignMenu::Handle(control);
@@ -36,6 +38,7 @@ namespace UI {
     void UIState::hideAllMenues() {
         if (activeMenu == MenuType::kAlignMenu) {
             UI::Align::AlignMenu::Hide();
+            UI::Scene::SceneMenu::Hide();
         }
     }
 }  // namespace UI

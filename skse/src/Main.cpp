@@ -14,8 +14,14 @@
 #include "Serial/Manager.h"
 #include "Trait/TraitTable.h"
 #include "UI/Align/AlignMenu.h"
+<<<<<<< HEAD
 #include "Util/CompatibilityTable.h"
 #include "MCM/MCMTable.h"
+=======
+#include "UI/Scene/SceneMenu.h"
+#include "Util/MCMTable.h"
+#include <UI/UIState.h>
+>>>>>>> dbc8a8c (First pass Add new Scene Menu)
 
 using namespace RE::BSScript;
 using namespace SKSE;
@@ -75,16 +81,16 @@ namespace {
                 MCM::MCMTable::setupForms();
                 Furniture::FurnitureTable::setupForms();
 
-                UI::Align::AlignMenu::Register();
+                UI::RegisterMenus();
                 
                 // we are installing this hook so late because we need it to overwrite the PapyrusUtil hook
                 Events::PackageStart::Install();
             } break;
             case SKSE::MessagingInterface::kNewGame: {
-                UI::Align::AlignMenu::Show();
+                UI::ShowMenus();
             }break;
             case SKSE::MessagingInterface::kPostPostLoad: {
-                UI::Align::AlignMenu::Show();
+                UI::ShowMenus();
                 SKEE::InterfaceExchangeMessage msg;
                 auto intfc = SKSE::GetMessagingInterface();
                 intfc->Dispatch(SKEE::InterfaceExchangeMessage::kExchangeInterface, (void*)&msg, sizeof(SKEE::InterfaceExchangeMessage*), "skee");
