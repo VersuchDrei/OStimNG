@@ -20,15 +20,6 @@ Int SetDomBar
 Int SetThirdBar
 Int SetAutoHideBar
 Int SetMatchColorToGender
-int SetHideNPCOnNPCBars
-
-; orgasm settings
-Int SetSlowMoOrgasms
-Int SetBlurOrgasms
-Int SetEndOnOrgasm
-Int SetEndOnSubOrgasm
-Int SetEndOnBothOrgasm
-int SetAutoClimaxAnims
 
 ; light settings
 Int SetDomLightMode
@@ -268,15 +259,6 @@ Event OnPageReset(String Page)
 		SetResetPosition = AddToggleOption("$ostim_reset_position", Main.ResetPosAfterSceneEnd) 		
 		AddEmptyOption()
 
-		AddColoredHeader("$ostim_header_orgasms")
-		SetEndOnOrgasm = AddToggleOption("$ostim_orgasm_end_dom", Main.EndOnDomOrgasm)
-		SetEndOnSubOrgasm = AddToggleOption("$ostim_orgasm_end_sub", Main.EndOnSubOrgasm)
-		SetEndOnBothOrgasm = AddToggleOption("$ostim_orgasm_end_both", Main.RequireBothOrgasmsToFinish)
-		SetSlowMoOrgasms = AddToggleOption("$ostim_slowmo_orgasm", Main.SlowMoOnOrgasm)
-		SetBlurOrgasms = AddToggleOption("$ostim_blur_orgasm", Main.BlurOnOrgasm)
-		SetAutoClimaxAnims = AddToggleOption("$ostim_auto_climax_anims", Main.AutoClimaxAnimations)
-		AddEmptyOption()
-
 		AddColoredHeader("$ostim_header_furniture")
 		SetEnableFurniture = AddToggleOption("$ostim_use_furniture", Main.UseFurniture)
 		SetSelectFurniture = AddToggleOption("$ostim_select_furniture", Main.SelectFurniture)
@@ -292,7 +274,6 @@ Event OnPageReset(String Page)
 		SetThirdBar = AddToggleOption("$ostim_third_bar", Main.EnableThirdBar)
 		SetAutoHideBar = AddToggleOption("$ostim_auto_hide_bar", Main.AutoHideBars)
 		SetMatchColorToGender = AddToggleOption("$ostim_match_color_gender", Main.MatchBarColorToGender)
-		SetHideNPCOnNPCBars = AddToggleOption("$ostim_hide_npc_bars", Main.HideBarsInNPCScenes)
 		AddEmptyOption()
 
 		AddColoredHeader("$ostim_header_system")
@@ -496,16 +477,7 @@ Event OnOptionSelect(Int Option)
 		return
 	EndIf
 
-	If (Option == SetEndOnOrgasm)
-		Main.EndOnDomOrgasm = !Main.EndOnDomOrgasm
-		SetToggleOptionValue(SetEndOnOrgasm, Main.EndOnDomOrgasm)
-	ElseIf (Option == SetEndOnSubOrgasm)
-		Main.EndOnSubOrgasm = !Main.EndOnSubOrgasm
-		SetToggleOptionValue(SetEndOnSubOrgasm, Main.EndOnSubOrgasm)
-	ElseIf (Option == SetEndOnBothOrgasm)
-		Main.RequireBothOrgasmsToFinish = !Main.RequireBothOrgasmsToFinish
-		SetToggleOptionValue(SetEndOnBothOrgasm, Main.RequireBothOrgasmsToFinish)
-	ElseIf (Option == SetResetState)
+	If (Option == SetResetState)
 		Main.ResetState()
 		ShowMessage("$ostim_message_reset_state", false)
 	ElseIf (Option == SetUpdate)
@@ -556,9 +528,6 @@ Event OnOptionSelect(Int Option)
 	ElseIf (Option == SetMatchColorToGender)
 		Main.MatchBarColorToGender = !Main.MatchBarColorToGender
 		SetToggleOptionValue(Option, Main.MatchBarColorToGender)
-	ElseIf (Option == SetHideNPCOnNPCBars)
-		Main.HideBarsInNPCScenes = !Main.HideBarsInNPCScenes
-		SetToggleOptionValue(Option, Main.HideBarsInNPCScenes)
 	ElseIf (Option == SetEndAfterActorHit)
 		Main.EndAfterActorHit = !Main.EndAfterActorHit
 		SetToggleOptionValue(Option, Main.EndAfterActorHit)
@@ -589,15 +558,6 @@ Event OnOptionSelect(Int Option)
 	ElseIf (Option == SetAutoHideBar)
 		Main.AutoHideBars = !Main.AutoHideBars
 		SetToggleOptionValue(Option, Main.AutoHideBars)
-	ElseIf (Option == SetSlowMoOrgasms)
-		Main.SlowMoOnOrgasm = !Main.SlowMoOnOrgasm
-		SetToggleOptionValue(Option, Main.SlowMoOnOrgasm)
-	ElseIf (Option == SetBlurOrgasms)
-		Main.BlurOnOrgasm = !Main.BlurOnOrgasm
-		SetToggleOptionValue(Option, Main.BlurOnOrgasm)
-	ElseIf (Option == SetAutoClimaxAnims)
-		Main.AutoClimaxAnimations = !Main.AutoClimaxAnimations
-		SetToggleOptionValue(Option, Main.AutoClimaxAnimations)
 	ElseIf (Option == SetUseFades)
 		Main.UseFades = !Main.UseFades
 		SetToggleOptionValue(Option, Main.UseFades)
@@ -663,13 +623,7 @@ Event OnOptionHighlight(Int Option)
 
 		return
 	EndIf
-	If (Option == SetEndOnOrgasm)
-		SetInfoText("$ostim_tooltip_orgasm_end_dom")
-	ElseIf (Option == SetEndOnSubOrgasm)
-		SetInfoText("$ostim_tooltip_orgasm_end_sub")
-	ElseIf (Option == SetEndOnBothOrgasm)
-		SetInfoText("$ostim_tooltip_orgasm_end_both")
-	ElseIf (Option == SetResetState)
+	If (Option == SetResetState)
 		SetInfoText("$ostim_tooltip_reset")
 	ElseIf (Option == SetForceAIIfAttacked)
 		SetInfoText("$ostim_tooltip_ai_attacked")
@@ -691,8 +645,6 @@ Event OnOptionHighlight(Int Option)
 		SetInfoText("$ostim_tooltip_rumble")
 	ElseIf (Option == SetMatchColorToGender)
 		SetInfoText("$ostim_tooltip_gendered_colors")
-	ElseIf (Option == SetHideNPCOnNPCBars)
-		SetInfoText("$ostim_tooltip_npc_bars")
 	ElseIf (Option == SetEndAfterActorHit)
 		SetInfoText("$ostim_tooltip_end_on_hit")
 	ElseIf (Option == SetForceFirstPerson)
@@ -733,12 +685,6 @@ Event OnOptionHighlight(Int Option)
 		SetInfoText("$ostim_tooltip_enable_ai")
 	ElseIf (Option == SetAutoHideBar)
 		SetInfoText("$ostim_tooltip_auto_hide_bar")
-	ElseIf (Option == SetSlowMoOrgasms)
-		SetInfoText("$ostim_tooltip_slowmo_orgasms")
-	ElseIf (Option == SetBlurOrgasms)
-		SetInfoText("$ostim_tooltip_blur_orgasms")
-	ElseIf (Option == SetAutoClimaxAnims)
-		SetInfoText("$ostim_tooltip_auto_climax_anims")
 	ElseIf (Option == SetDomLightMode)
 		SetInfoText("$ostim_tooltip_dom_light")
 	ElseIf (Option == SetSubLightMode)
@@ -915,7 +861,6 @@ Function OnSlotSelect(int option)
 		i -= 1
 		If SlotSets[i] == option
 			int Mask = Math.Pow(2, i) as int
-			OSexIntegrationMain.Console(Mask)
 			UndressingSlotMask = Math.LogicalXor(UndressingSlotMask, Mask)
 			OData.SetUndressingSlotMask(UndressingSlotMask)
 			SetToggleOptionValue(option, Math.LogicalAnd(UndressingSlotMask, Mask))
@@ -974,9 +919,6 @@ Function ExportSettings()
 	osexintegrationmain.Console("Saving Ostim settings.")
 
 	; Sex settings export.
-	JMap.SetInt(OstimSettingsFile, "SetEndOnOrgasm", Main.EndOnDomOrgasm as Int)
-	JMap.SetInt(OstimSettingsFile, "SetEndOnSubOrgasm", Main.EndOnSubOrgasm as Int)
-	JMap.SetInt(OstimSettingsFile, "SetEndOnBothOrgasm", Main.RequireBothOrgasmsToFinish as Int)
 	JMap.SetInt(OstimSettingsFile, "SetActorSpeedControl", Main.EnableActorSpeedControl as Int)
 	JMap.SetInt(OstimSettingsFile, "SetResetPosition", Main.ResetPosAfterSceneEnd as Int)
 	JMap.SetInt(OstimSettingsFile, "SetEndAfterActorHit", Main.EndAfterActorHit as Int)
@@ -989,11 +931,6 @@ Function ExportSettings()
 	JMap.SetInt(OstimSettingsFile, "SetThirdBar", Main.EnableThirdBar as Int)
 	JMap.SetInt(OstimSettingsFile, "SetAutoHideBar", Main.AutoHideBars as Int)
 	JMap.SetInt(OstimSettingsFile, "SetMatchColorToGender", Main.MatchBarColorToGender as Int)
-	JMap.SetInt(OstimSettingsFile, "SetHideNPCOnNPCBars", Main.HideBarsInNPCScenes as Int)
-
-	; Orgasm settings export.
-	JMap.SetInt(OstimSettingsFile, "SetSlowMoOrgasms", Main.SlowMoOnOrgasm as Int)
-	JMap.SetInt(OstimSettingsFile, "SetBlurOrgasms", Main.BlurOnOrgasm as Int)
 
 	; Light settings export.
 	Jmap.SetInt(OstimSettingsFile, "SetDomLightMode", Main.DomLightPos as Int)
@@ -1138,9 +1075,6 @@ Function ImportSettings(bool default = false)
 	endif
 	
 	; Sex settings import.
-	Main.EndOnDomOrgasm = Jmap.GetInt(OstimSettingsFile, "SetEndOnOrgasm")
-	Main.EndOnSubOrgasm = JMap.GetInt(OstimSettingsFile, "SetEndOnSubOrgasm")
-	Main.RequireBothOrgasmsToFinish = JMap.GetInt(OstimSettingsFile, "SetEndOnBothOrgasm")
 	Main.EnableActorSpeedControl = JMap.GetInt(OstimSettingsFile, "SetActorSpeedControl")
 	Main.ResetPosAfterSceneEnd = JMap.GetInt(OstimSettingsFile, "SetResetPosition", 1)
 	Main.EndAfterActorHit = JMap.GetInt(OstimSettingsFile, "SetEndAfterActorHit")
@@ -1153,7 +1087,6 @@ Function ImportSettings(bool default = false)
 	Main.EnableThirdBar = JMap.GetInt(OstimSettingsFile, "SetThirdBar")
 	Main.AutoHideBars = JMap.GetInt(OstimSettingsFile, "SetAutoHideBar")
 	Main.MatchBarColorToGender = JMap.GetInt(OstimSettingsFile, "SetMatchColorToGender")
-	Main.HideBarsInNPCScenes = JMap.GetInt(OstimSettingsFile, "SetHideNPCOnNPCBars")
 
 	; Light settings export.
 	Main.DomLightPos = Jmap.GetInt(OstimSettingsFile, "SetDomLightMode")
@@ -1182,10 +1115,6 @@ Function ImportSettings(bool default = false)
 	; Furniture settings export.
 	Main.BedRealignment = JMap.GetInt(OstimSettingsFile, "SetBedRealignment")
 	Main.AiSwitchChance = JMap.GetInt(OstimSettingsFile, "SetAIChangeChance")
-	
-	;Orgasm settings
-	Main.SlowMoOnOrgasm = JMap.GetInt(OstimSettingsFile, "SetSlowMoOrgasms", 1)
-	Main.BlurOnOrgasm = JMap.GetInt(OstimSettingsFile, "SetBlurOrgasms", 1)
 	
 	; Ai/Control settings export.
 	Main.UseAIControl = JMap.GetInt(OstimSettingsFile, "SetAIControl")
@@ -1508,14 +1437,34 @@ EndState
 Function DrawExcitementPage()
 	SetCursorFillMode(TOP_TO_BOTTOM)
 	SetCursorPosition(0)
-	AddSliderOptionST("OID_MaleExcitementMult", "$ostim_excitement_mult_male", Main.MaleSexExcitementMult, "{1} x")
+	AddColoredHeader("$ostim_header_excitement_calculation")
 	SetCursorPosition(2)
+	AddSliderOptionST("OID_MaleExcitementMult", "$ostim_excitement_mult_male", Main.MaleSexExcitementMult, "{1} x")
+	SetCursorPosition(4)
 	AddSliderOptionST("OID_FemaleExcitementMult", "$ostim_excitement_mult_female", Main.FemaleSexExcitementMult, "{1} x")
+	SetCursorPosition(6)
+	AddSliderOptionST("OID_ExcitementDecayRate", "$ostim_excitement_decay_rate", Main.ExcitementDecayRate, "{2} /s")
+	SetCursorPosition(8)
+	AddSliderOptionST("OID_ExcitementDecayGracePeriod", "$ostim_excitement_decay_grace_period", Main.ExcitementDecayGracePeriod / 1000, "{1} s")
 
 	SetCursorPosition(1)
-	AddSliderOptionST("OID_ExcitementDecayRate", "$ostim_excitement_decay_rate", Main.ExcitementDecayRate, "{2} /s")
+	AddColoredHeader("$ostim_header_orgasms")
 	SetCursorPosition(3)
-	AddSliderOptionST("OID_ExcitementDecayGracePeriod", "$ostim_excitement_decay_grace_period", Main.ExcitementDecayGracePeriod / 1000, "{1} s")
+	int EndOnSingleOrgasmFlags = OPTION_FLAG_NONE
+	If Main.EndOnAllOrgasm
+		EndOnSingleOrgasmFlags = OPTION_FLAG_DISABLED
+	EndIf
+	AddToggleOptionST("OID_EndOnMaleOrgasm", "$ostim_orgasm_end_male", Main.EndOnMaleOrgasm, EndOnSingleOrgasmFlags)
+	SetCursorPosition(5)
+	AddToggleOptionST("OID_EndOnFemaleOrgasm", "$ostim_orgasm_end_female", Main.EndOnFemaleOrgasm, EndOnSingleOrgasmFlags)
+	SetCursorPosition(7)
+	AddToggleOptionST("OID_EndOnAllOrgasm", "$ostim_orgasm_end_all", Main.EndOnAllOrgasm)
+	SetCursorPosition(9)
+	AddToggleOptionST("OID_SlowMoOnOrgasm", "$ostim_slowmo_orgasm", Main.SlowMoOnOrgasm)
+	SetCursorPosition(11)
+	AddToggleOptionST("OID_BlurOnOrgasm", "$ostim_blur_orgasm", Main.BlurOnOrgasm)
+	SetCursorPosition(13)
+	AddToggleOptionST("OID_AutoClimaxAnimations", "$ostim_auto_climax_anims", Main.AutoClimaxAnimations)
 EndFunction
 
 State OID_MaleExcitementMult
@@ -1587,6 +1536,80 @@ State OID_ExcitementDecayGracePeriod
 	Event OnSliderAcceptST(float Value)
 		Main.ExcitementDecayGracePeriod = (Value * 1000) as int
 		SetSliderOptionValueST(Value, "{1} s")
+	EndEvent
+EndState
+
+
+State OID_EndOnMaleOrgasm
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_orgasm_end_male")
+	EndEvent
+
+	Event OnSelectST()
+		Main.EndOnMaleOrgasm = !Main.EndOnMaleOrgasm
+		SetToggleOptionValueST(Main.EndOnMaleOrgasm)
+	EndEvent
+EndState
+
+State OID_EndOnFemaleOrgasm
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_orgasm_end_female")
+	EndEvent
+
+	Event OnSelectST()
+		Main.EndOnFemaleOrgasm = !Main.EndOnFemaleOrgasm
+		SetToggleOptionValueST(Main.EndOnFemaleOrgasm)
+	EndEvent
+EndState
+
+State OID_EndOnAllOrgasm
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_orgasm_end_all")
+	EndEvent
+
+	Event OnSelectST()
+		Main.EndOnAllOrgasm = !Main.EndOnAllOrgasm
+		SetToggleOptionValueST(Main.EndOnAllOrgasm)
+
+		int EndOnSingleOrgasmFlags = OPTION_FLAG_NONE
+		If Main.EndOnAllOrgasm
+			EndOnSingleOrgasmFlags = OPTION_FLAG_DISABLED
+		EndIf
+		SetOptionFlagsST(EndOnSingleOrgasmFlags, false, "OID_EndOnMaleOrgasm")
+		SetOptionFlagsST(EndOnSingleOrgasmFlags, false, "OID_EndOnFemaleOrgasm")
+	EndEvent
+EndState
+
+State OID_SlowMoOnOrgasm
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_slowmo_orgasms")
+	EndEvent
+
+	Event OnSelectST()
+		Main.SlowMoOnOrgasm = !Main.SlowMoOnOrgasm
+		SetToggleOptionValueST(Main.SlowMoOnOrgasm)
+	EndEvent
+EndState
+
+State OID_BlurOnOrgasm
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_blur_orgasms")
+	EndEvent
+
+	Event OnSelectST()
+		Main.BlurOnOrgasm = !Main.BlurOnOrgasm
+		SetToggleOptionValueST(Main.BlurOnOrgasm)
+	EndEvent
+EndState
+
+State OID_AutoClimaxAnimations
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_auto_climax_anims")
+	EndEvent
+
+	Event OnSelectST()
+		Main.AutoClimaxAnimations = !Main.AutoClimaxAnimations
+		SetToggleOptionValueST(Main.AutoClimaxAnimations)
 	EndEvent
 EndState
 

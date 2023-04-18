@@ -83,6 +83,13 @@ namespace MCM {
             {0xDB5, {0.5, "excitementDecayRate"}},
             {0xDB4, {5000, "excitementDecayGracePeriod"}},
 
+            {0xDA9, {1, "autoClimaxAnimations"}},
+            {0xDF9, {1, "SetEndOnOrgasm"}},
+            {0xDFA, {0, "SetEndOnSubOrgasm"}},
+            {0xDFB, {0, "SetEndOnBothOrgasm"}},
+            {0xDFC, {1, "SetSlowMoOrgasms"}},
+            {0xDFD, {1, "SetBlurOrgasms"}},
+
             {0xDAA, {0, "SetAlwaysUndressAtStart"}},
             {0xDAB, {1, "SetRemoveWeaponsAtStart"}},
             {0xDAC, {1, "SetUndressIfNeed"}},

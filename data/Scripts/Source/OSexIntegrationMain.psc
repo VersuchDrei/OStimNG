@@ -63,7 +63,6 @@ Bool Property EnableSubBar Auto
 Bool Property EnableThirdBar Auto
 Bool Property AutoHideBars Auto
 Bool Property MatchBarColorToGender auto
-Bool Property HideBarsInNPCScenes auto
 
 Bool Property EnableActorSpeedControl Auto
 
@@ -331,6 +330,93 @@ int Property ExcitementDecayGracePeriod
 EndProperty
 
 ; -------------------------------------------------------------------------------------------------
+; ORGASM SETTINGS  --------------------------------------------------------------------------------
+
+GlobalVariable Property OStimEndOnMaleOrgasm Auto
+Bool Property EndOnMaleOrgasm
+	bool Function Get()
+		Return OStimEndOnMaleOrgasm.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimEndOnMaleOrgasm.value = 1
+		Else
+			OStimEndOnMaleOrgasm.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimEndOnFemaleOrgasm Auto
+Bool Property EndOnFemaleOrgasm
+	bool Function Get()
+		Return OStimEndOnFemaleOrgasm.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimEndOnFemaleOrgasm.value = 1
+		Else
+			OStimEndOnFemaleOrgasm.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimEndOnAllOrgasm Auto
+Bool Property EndOnAllOrgasm
+	bool Function Get()
+		Return OStimEndOnAllOrgasm.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimEndOnAllOrgasm.value = 1
+		Else
+			OStimEndOnAllOrgasm.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimSlowMotionOnOrgasm Auto
+Bool Property SlowMoOnOrgasm
+	bool Function Get()
+		Return OStimSlowMotionOnOrgasm.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimSlowMotionOnOrgasm.value = 1
+		Else
+			OStimSlowMotionOnOrgasm.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimBlurOnOrgasm Auto
+Bool Property BlurOnOrgasm
+	bool Function Get()
+		Return OStimBlurOnOrgasm.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimBlurOnOrgasm.value = 1
+		Else
+			OStimBlurOnOrgasm.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimAutoClimaxAnimations Auto
+bool Property AutoClimaxAnimations
+	bool Function Get()
+		Return OStimAutoClimaxAnimations.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimAutoClimaxAnimations.value = 1
+		Else
+			OStimAutoClimaxAnimations.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+; -------------------------------------------------------------------------------------------------
 ; UNDRESSING SETTINGS  ----------------------------------------------------------------------------
 
 GlobalVariable Property OStimUndressAtStart Auto
@@ -439,29 +525,6 @@ EndProperty
 
 ; todo turn this into a slotmask
 Int[] Property StrippingSlots Auto
-
-; -------------------------------------------------------------------------------------------------
-; ORGASM SETTINGS  --------------------------------------------------------------------------------
-
-Bool Property EndOnDomOrgasm Auto
-Bool Property EndOnSubOrgasm Auto
-Bool Property RequireBothOrgasmsToFinish Auto
-Bool Property SlowMoOnOrgasm Auto
-Bool Property BlurOnOrgasm Auto
-
-GlobalVariable Property OStimAutoClimaxAnimations Auto
-bool Property AutoClimaxAnimations
-	bool Function Get()
-		Return OStimAutoClimaxAnimations.value != 0
-	EndFunction
-	Function Set(bool Value)
-		If Value
-			OStimAutoClimaxAnimations.value = 1
-		Else
-			OStimAutoClimaxAnimations.value = 0
-		EndIf
-	EndFunction
-EndProperty
 
 ; -------------------------------------------------------------------------------------------------
 ; GENDER ROLE SETTINGS  ---------------------------------------------------------------------------
@@ -1441,36 +1504,7 @@ Event OnUpdate() ;OStim main logic loop
 			AutoIncreaseSpeed()
 		EndIf
 
-		If (GetActorExcitement(SubActor) >= 100.0)
-			SubTimesOrgasm += 1
-			Orgasm(SubActor)
-			If (EndOnSubOrgasm)
-				If !RequireBothOrgasmsToFinish || DomTimesOrgasm > 0
-					SetCurrentAnimationSpeed(0)
-					Utility.Wait(4)
-					EndAnimation()
-				EndIf
-			EndIf
-		EndIf
-
-		If (GetActorExcitement(ThirdActor) >= 100.0)
-			ThirdTimesOrgasm += 1
-			Orgasm(ThirdActor)
-		EndIf
-
-		If (GetActorExcitement(DomActor) >= 100.0)
-			DomTimesOrgasm += 1
-			Orgasm(DomActor)
-			If (EndOnDomOrgasm)
-				If !RequireBothOrgasmsToFinish || SubTimesOrgasm > 0
-					SetCurrentAnimationSpeed(0)
-					Utility.Wait(4)
-					EndAnimation()
-				EndIf
-			EndIf
-		EndIf
-
-		i = 3
+		i = 0
 		While i < Actors.Length
 			If GetActorExcitement(Actors[i]) >= 100.0
 				Orgasm(Actors[i])
@@ -2552,7 +2586,7 @@ Function Climax(Actor Act)
 		ShakeController(0.5, 0.7)
 	EndIf
 
-	If (Act == DomActor)
+	If !AppearsFemale(Act)
 		SetCurrentAnimationSpeed(OMetadata.GetDefaultSpeed(CurrentSceneID))
 	EndIf
 
@@ -2570,6 +2604,22 @@ Function Climax(Actor Act)
 	EndIf
 
 	Act.DamageActorValue("stamina", 250.0)
+
+	bool End = false
+	If EndOnAllOrgasm
+		End = DomTimesOrgasm > 0 && (SubActor == None || SubTimesOrgasm > 0) && (ThirdActor == None || ThirdTimesOrgasm > 0)
+	Else
+		If AppearsFemale(Act)
+			End = EndOnFemaleOrgasm
+		Else
+			End = EndOnMaleOrgasm
+		EndIf
+	EndIf
+	If End
+		SetCurrentAnimationSpeed(0)
+		Utility.Wait(4)
+		EndAnimation()
+	EndIf
 EndFunction
 
 Function Orgasm(Actor Act)
@@ -2905,13 +2955,9 @@ Event DisplayToastEvent(string txt, float time)
 EndEvent
 
 Function SetDefaultSettings()
-	EndOnDomOrgasm = True
-	EndOnSubOrgasm = False 
-	RequireBothOrgasmsToFinish = False
 	EnableSubBar = True
 	EnableDomBar = True
 	EnableThirdBar = True
-	HideBarsInNPCScenes = True
 	EnableActorSpeedControl = True
 	ResetPosAfterSceneEnd = true 
 
@@ -2938,8 +2984,6 @@ UseFreeCam
 	SpeedUpSpeed = 1.5
 
 	DisableStimulationCalculation = false
-	SlowMoOnOrgasm = True
-	BlurOnOrgasm = True
 
 	UseAIControl = False
 	PauseAI = False
@@ -3483,7 +3527,7 @@ EndFunction
 
 ; all of these are only here to not break old addons, don't use them in new addons, use whatever they're calling instead
 
-Int Property DefaultFOV
+int Property DefaultFOV
 	int Function Get()
 		Return 85
 	EndFunction
@@ -3491,7 +3535,15 @@ Int Property DefaultFOV
 	EndFunction
 EndProperty
 
-Bool Property UseStrongerUnequipMethod
+bool Property HideBarsInNPCScenes
+	bool Function Get()
+		return true
+	EndFunction
+	Function Set(bool Value)
+	EndFunction
+EndProperty
+
+bool Property UseStrongerUnequipMethod
 	bool Function Get()
 		Return false
 	EndFunction
@@ -3499,7 +3551,7 @@ Bool Property UseStrongerUnequipMethod
 	EndFunction
 EndProperty
 
-Bool Property TossClothesOntoGround
+bool Property TossClothesOntoGround
 	bool Function Get()
 		Return false
 	EndFunction
@@ -3515,7 +3567,7 @@ bool Property OrgasmIncreasesRelationship
 	EndFunction
 EndProperty
 
-Bool Property UseNativeFunctions
+bool Property UseNativeFunctions
 	bool Function Get()
 		Return true
 	EndFunction
@@ -3548,12 +3600,40 @@ bool Property AllowUnlimitedSpanking
 	Function Set(bool Value)
 	EndFunction
 EndProperty
-Bool Property OnlyGayAnimsInGayScenes
+
+bool Property OnlyGayAnimsInGayScenes
 	bool Function Get()
 		Return IntendedSexOnly
 	EndFunction
 	Function Set(bool Value)
 		IntendedSexOnly = Value
+	EndFunction
+EndProperty
+
+bool Property EndOnDomOrgasm
+	bool Function Get()
+		Return EndOnMaleOrgasm
+	EndFunction
+	Function Set(bool Value)
+		EndOnMaleOrgasm = Value
+	EndFunction
+EndProperty
+
+bool Property EndOnSubOrgasm
+	bool Function Get()
+		Return EndOnFemaleOrgasm
+	EndFunction
+	Function Set(bool Value)
+		EndOnFemaleOrgasm = Value
+	EndFunction
+EndProperty
+
+bool Property RequireBothOrgasmsToFinish
+	bool Function Get()
+		Return EndOnAllOrgasm
+	EndFunction
+	Function Set(bool Value)
+		EndOnAllOrgasm = Value
 	EndFunction
 EndProperty
 
