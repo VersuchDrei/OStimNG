@@ -9,13 +9,6 @@ Int SetUseScreenShake
 int SetUseIntroScenes
 int SetResetPosition
 
-; clothes settings
-Int SetAlwaysUndressAtStart
-int SetRemoveWeaponsAtStart
-Int SetUndressIfNeed
-int SetPartialUndressing
-int SetRemoveWeaponsWithSlot
-int SetAnimateRedress
 int[] SlotSets
 int UndressingSlotMask
 
@@ -401,31 +394,7 @@ Event OnPageReset(String Page)
 	ElseIf Page == "$ostim_page_gender_roles"
 		DrawGenderRolesPage()
 	ElseIf (Page == "$ostim_page_undress")
-		LoadCustomContent("Ostim/logo.dds", 184, 31)
-		Main.PlayTickBig()
-		UnloadCustomContent()
-		SetInfoText(" ")
-		Main.playTickBig()
-
-		SetCursorFillMode(LEFT_TO_RIGHT)
-		SetAlwaysUndressAtStart = AddToggleOption("$ostim_undress_start", Main.AlwaysUndressAtAnimStart)
-		SetRemoveWeaponsAtStart = AddToggleOption("$ostim_remove_weapons_start", Main.RemoveWeaponsAtStart)
-		SetUndressIfneed = AddToggleOption("$ostim_undress_need", Main.AutoUndressIfNeeded)
-		AddEmptyOption()
-		SetPartialUndressing = AddToggleOption("$ostim_partial_undressing", Main.PartialUndressing)
-		SetRemoveWeaponsWithSlot = AddSliderOption("$ostim_remove_weapons_slot", Main.RemoveWeaponsWithSlot, "{0}")
-		SetAnimateRedress= AddToggleOption("$ostim_animate_redress", Main.FullyAnimateRedress)
-
-		SetCursorPosition(10)
-		SetUndressingAbout = AddTextOption("$ostim_undress_about", "")
-		SetCursorPosition(11)
-		AddTextOption("$ostim_undress_text{OStim}", "")
-		SetCursorPosition(12)
-		AddColoredHeader("$ostim_undress_slots_header")
-		AddColoredHeader("")
-
-		DrawSlotPage()
-
+		DrawUndressingPage()
 	ElseIf Page == "$ostim_page_expression"
 		DrawExpressionPage()
 	ElseIf Page == "$ostim_page_alignment"
@@ -491,24 +460,7 @@ endfunction
 Event OnOptionSelect(Int Option)
 	Main.PlayTickBig()
 	if currPage == "$ostim_page_undress"
-		If Option == SetAlwaysUndressAtStart
-			Main.AlwaysUndressAtAnimStart = !Main.AlwaysUndressAtAnimStart
-			SetToggleOptionValue(Option, Main.AlwaysUndressAtAnimStart)
-		ElseIf Option == SetRemoveWeaponsAtStart
-			Main.RemoveWeaponsAtStart = !Main.RemoveWeaponsAtStart
-			SetToggleOptionValue(Option, Main.RemoveWeaponsAtStart)
-		ElseIf Option == SetUndressIfneed
-			Main.AutoUndressIfNeeded = !Main.AutoUndressIfNeeded
-			SetToggleOptionValue(Option, Main.AutoUndressIfNeeded)
-		ElseIf Option == SetPartialUndressing
-			Main.PartialUndressing = !Main.PartialUndressing
-			SetToggleOptionValue(Option, Main.PartialUndressing)
-		ElseIf Option == SetAnimateRedress
-			Main.FullyAnimateRedress = !Main.FullyAnimateRedress
-			SetToggleOptionValue(Option, Main.FullyAnimateRedress)
-		Else
-			OnSlotSelect(option)
-		EndIf
+		OnSlotSelect(option)
 	elseif currPage == "$ostim_page_addons"
 		if option == SetORSexuality
 			SetExternalBool(oromance, GVORSexuality, !GetExternalBool(oromance, GVORSexuality))
@@ -670,23 +622,7 @@ EndEvent
 Event OnOptionHighlight(Int Option)
 	;Main.playTickSmall()
 	if currPage == "$ostim_page_undress"
-		If Option == SetAlwaysUndressAtStart
-			SetInfoText("$ostim_tooltip_always_undress")
-		ElseIf Option == SetRemoveWeaponsAtStart
-			SetInfoText("$ostim_tooltip_remove_weapons_start")
-		ElseIf Option == SetUndressIfNeed
-			SetInfoText("$ostim_tooltip_undress_if_need")
-		ElseIf Option == SetPartialUndressing
-			SetInfoText("$ostim_tooltip_partial_undressing")
-		ElseIf Option == SetRemoveWeaponsWithSlot
-			SetInfoText("$ostim_tooltip_remove_weapons_slot")
-		ElseIf Option == SetAnimateRedress
-			SetInfoText("$ostim_tooltip_animate_redress")
-		ElseIf Option == SetUndressingAbout
-			SetInfoText("$ostim_tooltip_undressing_about")
-		Else
-			OnSlotMouseOver(option)
-		EndIf
+		OnSlotMouseOver(option)
 		Return
 	elseif currPage == "$ostim_page_addons"
 		If (Option == SetORKey)
@@ -867,17 +803,6 @@ EndEvent
 Event OnOptionSliderOpen(Int Option)
 	Main.PlayTickBig()
 
-	If currPage == "$ostim_page_undress"
-		If Option == SetRemoveWeaponsWithSlot
-			SetSliderDialogStartValue(Main.RemoveWeaponsWithSlot)
-			SetSliderDialogDefaultValue(32)
-			SetSliderDialogRange(30, 60)
-			SetSliderDialogInterval(1)
-		EndIf
-
-		Return
-	EndIf
-
 	If (Option == SetFurnitureSearchDistance)
 		SetSliderDialogStartValue(Main.FurnitureSearchDistance)
 		SetSliderDialogDefaultValue(15.0)
@@ -934,15 +859,6 @@ EndEvent
 Event OnOptionSliderAccept(Int Option, Float Value)
 	Main.PlayTickBig()
 
-	If currPage == "$ostim_page_undress"
-		If Option == SetRemoveWeaponsWithSlot
-			Main.RemoveWeaponsWithSlot = Value as int
-			SetSliderOptionValue(SetRemoveWeaponsWithSlot, Value, "{0}")
-		EndIf
-
-		Return
-	EndIf
-
 	if (option == SetORDifficulty)
 		SetExternalInt(oromance, GVORDifficulty, value as int)
 		SetSliderOptionValue(SetORDifficulty, Value as int, "{0}")
@@ -992,22 +908,6 @@ Event OnOptionKeyMapChange(Int Option, Int KeyCode, String ConflictControl, Stri
 		SetKeyMapOptionValue(Option, KeyCode)
 	Endif
 EndEvent
-
-function DrawSlotPage()
-	UndressingSlotMask = OData.GetUndressingSlotMask()
-	SlotSets = new int[31]
-
-	int i = 0
-	int slot = 1
-
-	While i < 31
-		; TODO update to slotmask
-		SlotSets[i] = AddToggleOption("$ostim_slot_" + (30 + i), Math.LogicalAnd(UndressingSlotMask, slot))
-		i += 1
-		slot *= 2
-	EndWhile
-
-endfunction
 
 Function OnSlotSelect(int option)
 	int i = SlotSets.Length
@@ -1082,14 +982,6 @@ Function ExportSettings()
 	JMap.SetInt(OstimSettingsFile, "SetEndAfterActorHit", Main.EndAfterActorHit as Int)
 	JMap.SetInt(OstimSettingsFile, "SetUseRumble", Main.UseRumble as Int)
 	JMap.SetInt(OstimSettingsFile, "SetUseScreenShake", Main.UseScreenShake as Int)
-	JMap.SetInt(OStimSettingsFile, "SetUseIntroScenes", Main.UseIntroScenes As Int)
-	JMap.SetInt(OstimSettingsFile, "SetOnlyGayAnimsInGayScenes", Main.OnlyGayAnimsInGayScenes as Int)
-
-	; Player roles settings.
-	JMap.SetInt(OstimSettingsFile, "PlayerAlwaysSubStraight", main.PlayerAlwaysSubStraight as Int)
-	JMap.SetInt(OstimSettingsFile, "PlayerAlwaysSubGay", main.PlayerAlwaysSubGay as Int)
-	JMap.SetInt(OstimSettingsFile, "PlayerAlwaysDomStraight", main.PlayerAlwaysDomStraight as Int)
-	JMap.SetInt(OstimSettingsFile, "PlayerAlwaysDomGay", main.PlayerAlwaysDomGay as Int)
 
 	; Bar settings export.
 	JMap.SetInt(OstimSettingsFile, "SetSubBar", Main.EnableSubBar as Int)
@@ -1102,7 +994,6 @@ Function ExportSettings()
 	; Orgasm settings export.
 	JMap.SetInt(OstimSettingsFile, "SetSlowMoOrgasms", Main.SlowMoOnOrgasm as Int)
 	JMap.SetInt(OstimSettingsFile, "SetBlurOrgasms", Main.BlurOnOrgasm as Int)
-	JMap.SetInt(OstimSettingsFile, "SetAutoClimaxAnims", Main.AutoClimaxAnimations as Int)
 
 	; Light settings export.
 	Jmap.SetInt(OstimSettingsFile, "SetDomLightMode", Main.DomLightPos as Int)
@@ -1119,11 +1010,6 @@ Function ExportSettings()
 	JMap.SetInt(OstimSettingsFile, "SetControlToggle", Main.ControlToggleKey as Int)
 
 	; Bed settings export.
-	JMap.SetInt(OstimSettingsFile, "SetEnableFurniture", Main.UseFurniture as Int)
-	JMap.SetInt(OstimSettingsFile, "SetSelectFurniture", Main.SelectFurniture as Int)
-	JMap.SetInt(OstimSettingsFile, "SetFurnitureSearchDistance", Main.FurnitureSearchDistance as Int)
-	JMap.SetInt(OstimSettingsFile, "SetResetClutter", Main.ResetClutter as Int)
-	JMap.SetInt(OstimSettingsFile, "SetResetClutterRadius", Main.ResetClutterRadius)
 	JMap.SetInt(OstimSettingsFile, "SetBedRealignment", Main.BedRealignment as Int)
 
 	; Ai/Control settings export.
@@ -1260,14 +1146,6 @@ Function ImportSettings(bool default = false)
 	Main.EndAfterActorHit = JMap.GetInt(OstimSettingsFile, "SetEndAfterActorHit")
 	Main.UseRumble = JMap.GetInt(OstimSettingsFile, "SetUseRumble")
 	Main.UseScreenShake = JMap.GetInt(OstimSettingsFile, "SetUseScreenShake")
-	Main.UseIntroScenes = JMap.GetInt(OstimSettingsFile, "SetUseIntroScenes", 1)
-	Main.OnlyGayAnimsInGayScenes = JMap.GetInt(OstimSettingsFile, "SetOnlyGayAnimsInGayScenes")
-
-	;Player Roles settings
-	Main.PlayerAlwaysSubStraight = Jmap.GetInt(OstimSettingsFile, "PlayerAlwaysSubStraight")
-	Main.PlayerAlwaysSubGay = Jmap.GetInt(OstimSettingsFile, "PlayerAlwaysSubGay")
-	Main.PlayerAlwaysDomStraight = Jmap.GetInt(OstimSettingsFile, "PlayerAlwaysDomStraight")
-	Main.PlayerAlwaysDomGay = Jmap.GetInt(OstimSettingsFile, "PlayerAlwaysDomGay")
 	
 	; Bar settings import.
 	Main.EnableSubBar = JMap.GetInt(OstimSettingsFile, "SetSubBar")
@@ -1302,18 +1180,12 @@ Function ImportSettings(bool default = false)
 	OSAControl.osaEndKey = JMap.GetInt(OstimSettingsFile, "SetOsaEndKey", 83)
 
 	; Furniture settings export.
-	Main.UseFurniture = JMap.GetInt(OstimSettingsFile, "SetEnableFurniture",1)
-	Main.SelectFurniture = JMap.GetInt(OstimSettingsFile, "SetSelectFurniture", 1)
-	Main.FurnitureSearchDistance = JMap.GetInt(OstimSettingsFile, "SetFurnitureSearchDistance", 15)
-	Main.ResetClutter = JMap.GetInt(OstimSettingsFile, "SetResetClutter", 1)
-	Main.ResetClutterRadius = JMap.GetInt(OstimSettingsFile, "SetResetClutterRadius", 5)
 	Main.BedRealignment = JMap.GetInt(OstimSettingsFile, "SetBedRealignment")
 	Main.AiSwitchChance = JMap.GetInt(OstimSettingsFile, "SetAIChangeChance")
 	
 	;Orgasm settings
 	Main.SlowMoOnOrgasm = JMap.GetInt(OstimSettingsFile, "SetSlowMoOrgasms", 1)
 	Main.BlurOnOrgasm = JMap.GetInt(OstimSettingsFile, "SetBlurOrgasms", 1)
-	Main.AutoClimaxAnimations = JMap.GetInt(OstimSettingsFile, "SetAutoClimaxAnims")
 	
 	; Ai/Control settings export.
 	Main.UseAIControl = JMap.GetInt(OstimSettingsFile, "SetAIControl")
@@ -1731,18 +1603,40 @@ Function DrawGenderRolesPage()
 	SetCursorPosition(0)
 	AddColoredHeader("$ostim_header_animation_settings")
 	SetCursorPosition(2)
-	AddToggleOptionST("OID_ForceGayAnims", "$ostim_force_gay_anims", Main.OnlyGayAnimsInGayScenes)
+	AddToggleOptionST("OID_ForceGayAnims", "$ostim_intended_sex_only", Main.IntendedSexOnly)
 
 	SetCursorPosition(6)
 	AddColoredHeader("$ostim_header_player_roles")
 	SetCursorPosition(8)
-	AddToggleOptionST("OID_PlayerAlwaysDomStraight", "$ostim_always_dom_straight", Main.PlayerAlwaysDomStraight)
+	int PlayerAlwaysDomStraightFlags = OPTION_FLAG_NONE
+	If Main.PlayerSelectRoleStraight
+		PlayerAlwaysDomStraightFlags = OPTION_FLAG_DISABLED
+	EndIf
+	AddToggleOptionST("OID_PlayerAlwaysDomStraight", "$ostim_always_dom_straight", Main.PlayerAlwaysDomStraight, PlayerAlwaysDomStraightFlags)
 	SetCursorPosition(10)
-	AddToggleOptionST("OID_PlayerAlwaysSubStraight", "$ostim_always_sub_straight", Main.PlayerAlwaysSubStraight)
+	int PlayerAlwaysSubStraightFlags = OPTION_FLAG_NONE
+	If Main.PlayerSelectRoleStraight || Main.PlayerAlwaysDomStraight
+		PlayerAlwaysSubStraightFlags = OPTION_FLAG_DISABLED
+	EndIf
+	AddToggleOptionST("OID_PlayerAlwaysSubStraight", "$ostim_always_sub_straight", Main.PlayerAlwaysSubStraight, PlayerAlwaysSubStraightFlags)
 	SetCursorPosition(12)
-	AddToggleOptionST("OID_PlayerAlwaysDomGay", "$ostim_always_dom_gay", Main.PlayerAlwaysDomGay)
+	int PlayerAlwaysDomGayFlags = OPTION_FLAG_NONE
+	If Main.PlayerSelectRoleGay
+		PlayerAlwaysDomGayFlags = OPTION_FLAG_DISABLED
+	EndIf
+	AddToggleOptionST("OID_PlayerAlwaysDomGay", "$ostim_always_dom_gay", Main.PlayerAlwaysDomGay, PlayerAlwaysDomGayFlags)
 	SetCursorPosition(14)
-	AddToggleOptionST("OID_PlayerAlwaysSubGay", "$ostim_always_sub_gay", Main.PlayerAlwaysSubGay)
+	int PlayerAlwaysSubGayFlags = OPTION_FLAG_NONE
+	If Main.PlayerSelectRoleGay || Main.PlayerAlwaysDomGay
+		PlayerAlwaysSubGayFlags = OPTION_FLAG_DISABLED
+	EndIf
+	AddToggleOptionST("OID_PlayerAlwaysSubGay", "$ostim_always_sub_gay", Main.PlayerAlwaysSubGay, PlayerAlwaysSubGayFlags)
+	SetCursorPosition(16)
+	AddToggleOptionST("OID_PlayerSelectRoleStraight", "$ostim_select_role_straight", Main.PlayerSelectRoleStraight)
+	SetCursorPosition(18)
+	AddToggleOptionST("OID_PlayerSelectRoleGay", "$ostim_select_role_gay", Main.PlayerSelectRoleGay)
+	SetCursorPosition(20)
+	AddToggleOptionST("OID_PlayerSelectRoleThreesome", "$ostim_select_role_threesome", Main.PlayerSelectRoleThreesome)
 
 
 	SetCursorPosition(1)
@@ -1766,12 +1660,12 @@ EndFunction
 
 State OID_ForceGayAnims
 	Event OnHighlightST()
-		SetInfoText("$ostim_tooltip_force_gay_anims")
+		SetInfoText("$ostim_tooltip_intended_sex_only")
 	EndEvent
 
 	Event OnSelectST()
-		Main.OnlyGayAnimsInGayScenes = !Main.OnlyGayAnimsInGayScenes
-		SetToggleOptionValueST(Main.OnlyGayAnimsInGayScenes)
+		Main.IntendedSexOnly = !Main.IntendedSexOnly
+		SetToggleOptionValueST(Main.IntendedSexOnly)
 	EndEvent
 EndState
 
@@ -1783,6 +1677,12 @@ State OID_PlayerAlwaysDomStraight
 	Event OnSelectST()
 		Main.PlayerAlwaysDomStraight = !Main.PlayerAlwaysDomStraight
 		SetToggleOptionValueST(Main.PlayerAlwaysDomStraight)
+
+		int PlayerAlwaysSubStraightFlags = OPTION_FLAG_NONE
+		If Main.PlayerAlwaysDomStraight
+			PlayerAlwaysSubStraightFlags = OPTION_FLAG_DISABLED
+		EndIf
+		SetOptionFlagsST(PlayerAlwaysSubStraightFlags, false, "OID_PlayerAlwaysSubStraight")
 	EndEvent
 EndState
 
@@ -1805,6 +1705,12 @@ State OID_PlayerAlwaysDomGay
 	Event OnSelectST()
 		Main.PlayerAlwaysDomGay = !Main.PlayerAlwaysDomGay
 		SetToggleOptionValueST(Main.PlayerAlwaysDomGay)
+		
+		int PlayerAlwaysSubGayFlags = OPTION_FLAG_NONE
+		If Main.PlayerAlwaysDomGay
+			PlayerAlwaysSubGayFlags = OPTION_FLAG_DISABLED
+		EndIf
+		SetOptionFlagsST(PlayerAlwaysSubGayFlags, false, "OID_PlayerAlwaysSubGay")
 	EndEvent
 EndState
 
@@ -1818,6 +1724,64 @@ State OID_PlayerAlwaysSubGay
 		SetToggleOptionValueST(Main.PlayerAlwaysSubGay)
 	EndEvent
 EndState
+
+State OID_PlayerSelectRoleStraight
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_select_role_straight")
+	EndEvent
+
+	Event OnSelectST()
+		Main.PlayerSelectRoleStraight = !Main.PlayerSelectRoleStraight
+		SetToggleOptionValueST(Main.PlayerSelectRoleStraight)
+
+		int PlayerAlwaysDomStraightFlags = OPTION_FLAG_NONE
+		If Main.PlayerSelectRoleStraight
+			PlayerAlwaysDomStraightFlags = OPTION_FLAG_DISABLED
+		EndIf
+		SetOptionFlagsST(PlayerAlwaysDomStraightFlags, false, "OID_PlayerAlwaysDomStraight")
+
+		int PlayerAlwaysSubStraightFlags = OPTION_FLAG_NONE
+		If Main.PlayerSelectRoleStraight || Main.PlayerAlwaysDomStraight
+			PlayerAlwaysSubStraightFlags = OPTION_FLAG_DISABLED
+		EndIf
+		SetOptionFlagsST(PlayerAlwaysSubStraightFlags, false, "OID_PlayerAlwaysSubStraight")
+	EndEvent
+EndState
+
+State OID_PlayerSelectRoleGay
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_select_role_gay")
+	EndEvent
+
+	Event OnSelectST()
+		Main.PlayerSelectRoleGay = !Main.PlayerSelectRoleGay
+		SetToggleOptionValueST(Main.PlayerSelectRoleGay)
+
+		int PlayerAlwaysDomGayFlags = OPTION_FLAG_NONE
+		If Main.PlayerSelectRoleGay
+			PlayerAlwaysDomGayFlags = OPTION_FLAG_DISABLED
+		EndIf
+		SetOptionFlagsST(PlayerAlwaysDomGayFlags, false, "OID_PlayerAlwaysDomGay")
+
+		int PlayerAlwaysSubGayFlags = OPTION_FLAG_NONE
+		If Main.PlayerSelectRoleGay || Main.PlayerAlwaysDomGay
+			PlayerAlwaysSubGayFlags = OPTION_FLAG_DISABLED
+		EndIf
+		SetOptionFlagsST(PlayerAlwaysSubGayFlags, false, "OID_PlayerAlwaysSubGay")
+	EndEvent
+EndState
+
+State OID_PlayerSelectRoleThreesome
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_select_role_threesome")
+	EndEvent
+
+	Event OnSelectST()
+		Main.PlayerSelectRoleThreesome = !Main.PlayerSelectRoleThreesome
+		SetToggleOptionValueST(Main.PlayerSelectRoleThreesome)
+	EndEvent
+EndState
+
 
 State OID_EquipStrapOnIfNeeded
 	Event OnHighlightST()
@@ -1902,6 +1866,147 @@ EndState
 ; ╚██████╔╝██║ ╚████║██████╔╝██║  ██║███████╗███████║███████║██║██║ ╚████║╚██████╔╝
 ;  ╚═════╝ ╚═╝  ╚═══╝╚═════╝ ╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝╚═╝╚═╝  ╚═══╝ ╚═════╝ 
 
+Function DrawUndressingPage()
+		SetCursorFillMode(LEFT_TO_RIGHT)
+		SetCursorPosition(0)
+		AddToggleOptionST("OID_FullyUndressAtStart", "$ostim_undress_start", Main.AlwaysUndressAtAnimStart)
+		SetCursorPosition(2)
+		AddToggleOptionST("OID_FullyUndressMidScene", "$ostim_undress_need", Main.AutoUndressIfNeeded)
+		SetCursorPosition(4)
+		AddToggleOptionST("OID_PartialUndressing", "$ostim_partial_undressing", Main.PartialUndressing)
+		SetCursorPosition(6)
+		AddToggleOptionST("OID_AnimateRedress", "$ostim_animate_redress", Main.FullyAnimateRedress)
+
+		SetCursorPosition(1)
+		int RemoveWeaponsAtStartFlags = OPTION_FLAG_NONE
+		If Main.AlwaysUndressAtAnimStart
+			RemoveWeaponsAtStartFlags = OPTION_FLAG_DISABLED
+		EndIf
+		AddToggleOptionST("OID_RemoveWeaponsAtStart", "$ostim_remove_weapons_start", Main.RemoveWeaponsAtStart, RemoveWeaponsAtStartFlags)
+		SetCursorPosition(3)
+		AddSliderOptionST("OID_RemoveWeaponsWithSlot" ,"$ostim_remove_weapons_slot", Main.RemoveWeaponsWithSlot, "{0}")
+		SetCursorPosition(5)
+		AddToggleOptionST("OID_UndressWigs", "$ostim_undress_wigs", Main.UndressWigs)
+
+		SetCursorPosition(10)
+		AddTextOptionST("OID_UndressAbout", "$ostim_undress_about", "")
+		SetCursorPosition(11)
+		AddTextOption("$ostim_undress_text{OStim}", "")
+		SetCursorPosition(12)
+		AddColoredHeader("$ostim_undress_slots_header")
+		SetCursorPosition(13)
+		AddColoredHeader("")
+
+	; undressing slots
+	SetCursorPosition(14)
+	UndressingSlotMask = OData.GetUndressingSlotMask()
+	SlotSets = new int[31]
+
+	int i = 0
+	int slot = 1
+
+	While i < 31
+		SlotSets[i] = AddToggleOption("$ostim_slot_" + (30 + i), Math.LogicalAnd(UndressingSlotMask, slot))
+		i += 1
+		slot *= 2
+	EndWhile
+EndFunction
+
+State OID_FullyUndressAtStart
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_always_undress")
+	EndEvent
+
+	Event OnSelectST()
+		Main.AlwaysUndressAtAnimStart = !Main.AlwaysUndressAtAnimStart
+		SetToggleOptionValueST(Main.AlwaysUndressAtAnimStart)
+
+		int RemoveWeaponsAtStartFlags = OPTION_FLAG_NONE
+		If Main.AlwaysUndressAtAnimStart
+			RemoveWeaponsAtStartFlags = OPTION_FLAG_DISABLED
+		EndIf
+		SetOptionFlagsST(RemoveWeaponsAtStartFlags, false, "OID_RemoveWeaponsAtStart")
+	EndEvent
+EndState
+
+State OID_FullyUndressMidScene
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_undress_if_need")
+	EndEvent
+
+	Event OnSelectST()
+		Main.AutoUndressIfNeeded = !Main.AutoUndressIfNeeded
+		SetToggleOptionValueST(Main.AutoUndressIfNeeded)
+	EndEvent
+EndState
+
+State OID_PartialUndressing
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_partial_undressing")
+	EndEvent
+
+	Event OnSelectST()
+		Main.PartialUndressing = !Main.PartialUndressing
+		SetToggleOptionValueST(Main.PartialUndressing)
+	EndEvent
+EndState
+
+State OID_AnimateRedress
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_animate_redress")
+	EndEvent
+
+	Event OnSelectST()
+		Main.FullyAnimateRedress = !Main.FullyAnimateRedress
+		SetToggleOptionValueST(Main.FullyAnimateRedress)
+	EndEvent
+EndState
+
+State OID_RemoveWeaponsAtStart
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_remove_weapons_start")
+	EndEvent
+
+	Event OnSelectST()
+		Main.RemoveWeaponsAtStart = !Main.RemoveWeaponsAtStart
+		SetToggleOptionValueST(Main.RemoveWeaponsAtStart)
+	EndEvent
+EndState
+
+State OID_RemoveWeaponsWithSlot
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_remove_weapons_slot")
+	EndEvent
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(Main.RemoveWeaponsWithSlot)
+		SetSliderDialogDefaultValue(32)
+		SetSliderDialogRange(30, 60)
+		SetSliderDialogInterval(1)
+	EndEvent
+
+	Event OnSliderAcceptST(float Value)
+		Main.RemoveWeaponsWithSlot = Value as int
+		SetSliderOptionValueST(Value, "{0}")
+	EndEvent
+EndState
+
+State OID_UndressWigs
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_undress_wigs")
+	EndEvent
+
+	Event OnSelectST()
+		Main.UndressWigs = !Main.UndressWigs
+		SetToggleOptionValueST(Main.UndressWigs)
+	EndEvent
+EndState
+
+State OID_UndressAbout
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_undressing_about")
+	EndEvent
+EndState
 
 
 ; ███████╗██╗  ██╗██████╗ ██████╗ ███████╗███████╗███████╗██╗ ██████╗ ███╗   ██╗███████╗

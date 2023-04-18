@@ -74,7 +74,7 @@ namespace OStim {
             }
             
             auto armor = obj->As<RE::TESObjectARMO>();
-            if (FormUtil::isWig(actor, armor)) {
+            if (!MCM::MCMTable::undressWigs() && FormUtil::isWig(actor, armor)) {
                 continue;
             }
 

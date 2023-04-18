@@ -38,6 +38,11 @@ namespace PapyrusData {
         Trait::TraitTable::setEquipObjectID(formID, type, id);
 	}
 
+
+	void ResetSettings(RE::StaticFunctionTag*) {
+		MCM::MCMTable::restoreDefaults();
+	}
+
 	void ExportSettings(RE::StaticFunctionTag*) {
 		MCM::MCMTable::exportSettings();
 	}
@@ -58,7 +63,8 @@ namespace PapyrusData {
         BIND(GetEquipObjectName);
         BIND(SetEquipObjectID);
 
-		BIND(ExportSettings);
+		BIND(ResetSettings);
+        BIND(ExportSettings);
         BIND(ImportSettings);
 
         return true;

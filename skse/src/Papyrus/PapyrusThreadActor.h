@@ -121,6 +121,34 @@ namespace PapyrusThreadActor {
         return Compatibility::CompatibilityTable::hasSchlong(actor);
     }
 
+    std::vector<RE::Actor*> SortActors(RE::StaticFunctionTag*, std::vector<RE::Actor*> actors, int playerIndex) {
+        std::stable_sort(actors.begin(), actors.end(), [&](RE::Actor* actorA, RE::Actor* actorB) {
+            return Compatibility::CompatibilityTable::hasSchlong(actorA) && !Compatibility::CompatibilityTable::hasSchlong(actorB);
+        });
+
+        if (playerIndex >= 0 && playerIndex < actors.size()) {
+            RE::Actor* player = RE::PlayerCharacter::GetSingleton();
+            int currentPlayerIndex = VectorUtil::getIndex(actors, player);
+            if (currentPlayerIndex >= 0) {
+                if (currentPlayerIndex < playerIndex) {
+                    while (currentPlayerIndex < playerIndex) {
+                        actors[currentPlayerIndex] = actors[currentPlayerIndex + 1];
+                        currentPlayerIndex++;
+                    }
+                    actors[playerIndex] = player;
+                } else if (currentPlayerIndex > playerIndex) {
+                    while (currentPlayerIndex > playerIndex) {
+                        actors[currentPlayerIndex] = actors[currentPlayerIndex - 1];
+                        currentPlayerIndex--;
+                    }
+                    actors[playerIndex] = player;
+                }
+            }
+        }
+
+        return actors;
+    }
+
     bool Bind(VM* a_vm) {
         const auto obj = "OActor"sv;
 
@@ -141,6 +169,7 @@ namespace PapyrusThreadActor {
         BIND(UnsetObjectVariant);
 
         BIND(HasSchlong);
+        BIND(SortActors);
 
         return true;
     }

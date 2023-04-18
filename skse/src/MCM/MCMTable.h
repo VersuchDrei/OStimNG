@@ -6,7 +6,8 @@ namespace MCM {
     class MCMTable {
     public:
         static void setupForms();
-        static void resetDefaults();
+        static void resetValues();
+        static void restoreDefaults();
 
         static int keyAlignment();
         static int keySceneStart();
@@ -35,6 +36,7 @@ namespace MCM {
         static bool partialUndressing();
         static uint32_t removeWeaponsWithSlot();
         static bool animateRedress();
+        static bool undressWigs();
         static uint32_t getUndressingMask();
         static void setUndressingMask(uint32_t mask);
 
@@ -57,48 +59,69 @@ namespace MCM {
         static void importSettings();
 
     private:
-        inline static RE::TESGlobal* OStimKeyAlignment;
+        inline static std::unordered_map<uint32_t, MCMSetting> settings {
+            {0xDE2, {38, "keyAlignment"}},
+            {0xDEC, {181, "SetFreeCamToggleKey"}},
+
+            {0xDA1, {1, "SetUseIntroScenes"}},
+
+            {0xDA6, {1, "SetEnableFurniture"}},
+            {0xDA7, {1, "SetSelectFurniture"}},
+            {0xDA8, {15, "SetFurnitureSearchDistance"}},
+            {0xDA4, {1, "SetResetClutter"}},
+            {0xDA5, {5, "SetResetClutterRadius"}},
+
+            {0xDA9, {1, "SetAutoClimaxAnims"}},
+
+            {0xDDE, {1, "SetUseFreeCam"}},
+            {0xDDF, {3, "SetCameraSpeed"}},
+            {0xDE0, {45, "SetFreeCamFOV"}},
+            {0xDE6, {0, "SetClipinglessFirstPerson"}},
+
+            {0xDA2, {1, "SetsexExcitementMult"}},
+            {0xDA3, {1, "SetFemaleSexExcitementMult"}},
+            {0xDB5, {0.5, "excitementDecayRate"}},
+            {0xDB4, {5000, "excitementDecayGracePeriod"}},
+
+            {0xDAA, {0, "SetAlwaysUndressAtStart"}},
+            {0xDAB, {1, "SetRemoveWeaponsAtStart"}},
+            {0xDAC, {1, "SetUndressIfNeed"}},
+            {0xDAD, {1, "SetPartialUndressing"}},
+            {0xDAE, {32, "SetRemoveWeaponsWithSlot"}},
+            {0xDAF, {0, "SetAnimateRedress"}},
+            {0xDF8, {0, "undressWigs"}},
+
+            {0xDB2, {1000, "SetExpressionDurationMin"}},
+            {0xDB3, {3000, "SetExpressionDurationMax"}},
+
+            {0xDEE, {0, "SetOnlyGayAnimsInGayScenes"}},  // intended sex only
+            {0XDEF, {0, "PlayerAlwaysDomStraight"}},
+            {0XDF0, {0, "PlayerAlwaysSubStraight"}},
+            {0XDF1, {0, "PlayerAlwaysDomGay"}},
+            {0XDF2, {0, "PlayerAlwaysSubGay"}},
+            {0XDF3, {0, "playerSelectRoleStraight"}},
+            {0XDF4, {1, "playerSelectRoleGay"}},
+            {0XDF5, {0, "playerSelectRoleThreesome"}},
+            {0xDDB, {1, "equipStrapOnIfNeeded"}},
+            {0xDDC, {0, "unequipStrapOnIfNotNeeded"}},
+            {0xDDD, {1, "unequipStrapOnIfInWay"}},
+            
+            {0xD94, {0, "SetScaling"}},
+            {0xD97, {0, "SetSchlongBending"}},
+            {0xDE3, {1, "alignmentGroupBySex"}},
+            {0xDE4, {0, "alignmentGroupByHeight"}},
+            {0xDE5, {1, "alignmentGroupByHeels"}}
+        };
+
         inline static RE::TESGlobal* OStimKeySceneStart;
         inline static RE::TESGlobal* OStimKeySpeedUp;
         inline static RE::TESGlobal* OStimKeySpeedDown;
         inline static RE::TESGlobal* OStimKeyPullOut;
         inline static RE::TESGlobal* OStimKeyAutoMode;
-        inline static RE::TESGlobal* OStimKeyFreeCam;
 
-        inline static RE::TESGlobal* OStimUseFreeCam;
-        inline static RE::TESGlobal* OStimFreeCamSpeed;
-        inline static RE::TESGlobal* OStimFreeCamFOV;
-        inline static RE::TESGlobal* OStimImprovedCamSupport;
-
-        inline static RE::TESGlobal* maleExcitementMultSetting;
-        inline static RE::TESGlobal* femaleExcitementMultSetting;
-        inline static RE::TESGlobal* OStimExcitementDecayRate;
-        inline static RE::TESGlobal* OStimExcitementDecayGracePeriod;
-
-        inline static RE::TESGlobal* OStimUndressAtStart;
-        inline static RE::TESGlobal* OStimRemoveWeaponsAtStart;
-        inline static RE::TESGlobal* OStimUndressMidScene;
-        inline static RE::TESGlobal* OStimPartialUndressing;
-        inline static RE::TESGlobal* OStimRemoveWeaponsWithSlot;
-        inline static RE::TESGlobal* OStimAnimateRedress;
         inline static uint32_t undressingMask = 0x3D8BC39D;
 
         inline static bool doPapyrusUndressing = false;
         inline static RE::TESGlobal* OStimUsePapyrusUndressing;
-
-        inline static RE::TESGlobal* OStimExpressionDurationMin;
-        inline static RE::TESGlobal* OStimExpressionDurationMax;
-
-        inline static RE::TESGlobal* OStimEquipStrapOnIfNeeded;
-        inline static RE::TESGlobal* OStimUnequipStrapOnIfNotNeeded;
-        inline static RE::TESGlobal* OStimUnequipStrapOnIfInWay;
-
-        inline static RE::TESGlobal* OStimDisableScaling;
-        inline static RE::TESGlobal* OStimDisableSchlongBending;
-        inline static RE::TESGlobal* OStimAlignmentGroupBySex;
-        inline static RE::TESGlobal* OStimAlignmentGroupByHeight;
-        inline static RE::TESGlobal* OStimAlignmentGroupByHeels;
-
-        static void importSetting(json json, RE::TESGlobal* setting, std::string key, float fallback);
     };
 }

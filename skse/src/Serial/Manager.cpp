@@ -122,7 +122,7 @@ namespace Serialization {
         auto locker = Locker::GetSingleton();
         locker->Revert(serial);
         OStim::ThreadManager::GetSingleton()->UntrackAllThreads();
-        MCM::MCMTable::resetDefaults();
+        MCM::MCMTable::resetValues();
     }
 
     void exportSettings(json& json) {

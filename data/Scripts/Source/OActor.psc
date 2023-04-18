@@ -2,6 +2,7 @@
 * * collection of methods to modify scene actors
 * * all of these only affect actors that are currently in a scene
 * * if you pass them an actor that is not in a scene nothing will happen
+* * (except for a few functions where it is explicitly stated that they work on actors that are not in a scene)
 */;
 ScriptName OActor
 
@@ -166,6 +167,18 @@ Function UnsetObjectVariant(Actor Act, string Type) Global Native
 * * @return: true if the actor has a schlong, otherwise false
 */;
 bool Function HasSchlong(Actor Act) Global Native
+
+;/* SortActors
+* * sorts all actors with schlongs to the front of the array and all actors without schlong to the end
+* * other than this the order is not altered (i.e. the sorting algorithm is stable)
+* * this function even works on actors that are not in a scene
+* *
+* * @param: Actors, the array of actors to sort
+* * @param: PlayerIndex, if given the player will be sorted to this index, independent on them having a schlong or not
+* *
+* * @return: the sorted array 
+*/;
+Actor[] Function SortActors(Actor[] Actors, int PlayerIndex = -1) Global Native
 
 
 ; ██████╗ ███████╗██████╗ ██████╗ ███████╗ ██████╗ █████╗ ████████╗███████╗██████╗ 

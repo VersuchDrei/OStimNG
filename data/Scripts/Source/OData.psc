@@ -17,6 +17,8 @@ string Function GetEquipObjectName(int FormID, string Type) Global Native
 
 Function SetEquipObjectID(int FormID, string Type, string ID) Global Native
 
+Function ResetSettings() Global Native
+
 Function ExportSettings() Global Native
 
 Function ImportSettings() Global Native
