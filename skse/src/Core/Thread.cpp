@@ -83,7 +83,7 @@ namespace OStim {
         }
 
         if (isPlayerThread) {
-            UI::UIState::GetSingleton()->hideAllMenues();
+            UI::HideMenus();
         }
     }
 
@@ -360,6 +360,7 @@ namespace OStim {
         }
 
         if (isPlayerThread) {
+            UI::HideMenus();
             RE::PlayerCamera* camera = RE::PlayerCamera::GetSingleton();
             
             if (camera->IsInFreeCameraMode()) {

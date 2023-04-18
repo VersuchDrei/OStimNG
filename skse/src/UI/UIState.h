@@ -15,12 +15,17 @@ namespace UI {
         UI::Align::AlignMenu::Register();
         UI::Scene::SceneMenu::Register();
     }
+
+    inline static void HideMenus() {
+        UI::Align::AlignMenu::Hide();
+        UI::Scene::SceneMenu::Hide();
+    }
+
     enum MenuType { kSceneMenu, kAlignMenu };
     class UIState : public OStim::ISingleton<UIState> {
     public:
         void HandleControl(Controls control, int64_t glyph);
         void SwitchActiveMenu(MenuType type);
-        void hideAllMenues();
         inline MenuType GetActiveMenu() { return activeMenu; }
     private:
         MenuType activeMenu = MenuType::kSceneMenu;

@@ -34,11 +34,4 @@ namespace UI {
             UI::Align::AlignMenu::Hide();
         }
     }
-
-    void UIState::hideAllMenues() {
-        if (activeMenu == MenuType::kAlignMenu) {
-            UI::Align::AlignMenu::Hide();
-            UI::Scene::SceneMenu::Hide();
-        }
-    }
 }  // namespace UI

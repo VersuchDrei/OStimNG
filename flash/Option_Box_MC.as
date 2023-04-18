@@ -1,7 +1,8 @@
-﻿// by osmosis-wrench 2022
+﻿// original script by osmosis-wrench 2022
 import skse;
 import gfx.managers.FocusHandler;
 import Mouse;
+import com.greensock.*;
 
 class Option_Box_MC extends MovieClip
 {
@@ -18,8 +19,11 @@ class Option_Box_MC extends MovieClip
 	var o10 : MovieClip;
 	var o11 : MovieClip; 
 	
+	var bg : MovieClip;
+	
 	var Options: Array = new Array(12);
 	var CurrentlyHighlightedIdx: Number;
+	var maxOptionIdx :Number = -1;
 	
 	public function Option_Box_MC()
 	{
@@ -29,7 +33,8 @@ class Option_Box_MC extends MovieClip
 		
 		for (var i in Options){
 			Options[i].myIdx = Number(i);
-			Options[i].onRollOver = function(){
+			//Mouse func
+			/*Options[i].onRollOver = function(){
 				this.OnHighlight();
 			};
 			Options[i].onRollOut = function(){
@@ -40,13 +45,16 @@ class Option_Box_MC extends MovieClip
 				if (Mouse.getTopMostEntity()._parent == this){
 					this.OnSelect();
 				}
-			};
+			};*/
 		}
 	}
 	
 	public function HandleKeyboardInput(e:Number)
 	{
 		// 0 = up, 1 = down, 2 = left, 3 = right, 4 = select;
+		
+		if(maxOptionIdx == -1){return;}
+		
 		// Sanitize starting idx
 		trace("Handle "+CurrentlyHighlightedIdx);
 		if (CurrentlyHighlightedIdx < 0) {
@@ -55,22 +63,32 @@ class Option_Box_MC extends MovieClip
 		} else {
 			Options[CurrentlyHighlightedIdx].OnUnHighlight();
 			trace("inner "+CurrentlyHighlightedIdx);
+			
+			var col = CurrentlyHighlightedIdx % 3;
+			var row = Math.floor(CurrentlyHighlightedIdx / 3);
+			
+			var colMin = col;
+			var colMax = maxOptionIdx - (((maxOptionIdx % 3) - col ) %3 );
+			
+			var rowMin = 3 * row;
+			var rowMax = Math.min(maxOptionIdx, (3 * row) + 2);
+			
 			switch(e){
 				case 0:
 					trace("up");
-					CurrentlyHighlightedIdx + 3 > 11 ? CurrentlyHighlightedIdx = CurrentlyHighlightedIdx - 9 : CurrentlyHighlightedIdx = CurrentlyHighlightedIdx + 3;
+					CurrentlyHighlightedIdx = RollOver(CurrentlyHighlightedIdx + 3, colMin, colMax);
 					break;
 				case 1:
 					trace("down");
-					CurrentlyHighlightedIdx - 3 < 0 ? CurrentlyHighlightedIdx = CurrentlyHighlightedIdx + 9 : CurrentlyHighlightedIdx = CurrentlyHighlightedIdx - 3;
+					CurrentlyHighlightedIdx = RollOver(CurrentlyHighlightedIdx - 3, colMin, colMax);
 					break;
 				case 2:
 					trace("left");
-					CurrentlyHighlightedIdx = CurrentlyHighlightedIdx - 1;
+					CurrentlyHighlightedIdx = RollOver(CurrentlyHighlightedIdx - 1, rowMin, rowMax);
 					break;
 				case 3:
 					trace("right");
-					CurrentlyHighlightedIdx = CurrentlyHighlightedIdx + 1;
+					CurrentlyHighlightedIdx = RollOver(CurrentlyHighlightedIdx + 1, rowMin, rowMax);
 					break;
 				case 4:
 					trace("select");
@@ -78,11 +96,22 @@ class Option_Box_MC extends MovieClip
 					break;
 			}
 		}
-		CurrentlyHighlightedIdx > 11 ? CurrentlyHighlightedIdx = 0 : null;
-		CurrentlyHighlightedIdx < 0 ? CurrentlyHighlightedIdx = 11 : null;
+		
 		Options[CurrentlyHighlightedIdx].OnHighlight();
 		trace("Out "+CurrentlyHighlightedIdx);
 		trace("---");
+	}
+	
+	
+	function RollOver(val: Number,min :Number, max: Number) : Number{
+		if(val < min){
+			return max;
+		} else if (val > max){
+			return min;
+		} else{
+			return val;
+		}
+		
 	}
 	
 	
@@ -98,12 +127,16 @@ class Option_Box_MC extends MovieClip
 		skse.SendModEvent("UI_SpeedRequest", null, SpeedIdx);
 	}
 	
-	public function AssignData(Edges:Object)
+	public function AssignData(Edges:Array)
 	{
 		var i;
 		for(i in Edges){
-			Options[i-1].SetData(Edges[i]);
+			Options[i].SetData(Edges[i]);
 		}
+		maxOptionIdx = Edges.length-1;
+		var maxOptionRow = Math.floor(maxOptionIdx / 3)
+		var noOfCols = maxOptionIdx > 3 ? 3 : maxOptionIdx;
+		TweenLite.to(bg, 0.5, {_width: (48 + (noOfCols * 86) + ((noOfCols - 1) * 14)), _height: (48 + ((maxOptionRow + 1) * 86) + maxOptionRow * 14)});
 	}
 	
 	function log(str:String)
