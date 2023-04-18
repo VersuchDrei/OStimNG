@@ -21,13 +21,14 @@ namespace UI::Align {
         auto scaleformManager = RE::BSScaleformManager::GetSingleton();
 
         inputContext = Context::kNone;
-        depthPriority = 0;
 
         auto menu = static_cast<Super*>(this);
-        menu->depthPriority = SORT_PRIORITY;
+        menu->depthPriority = 0;
 
-        menuFlags.set(RE::UI_MENU_FLAGS::kAlwaysOpen);
-        menuFlags.set(RE::UI_MENU_FLAGS::kRequiresUpdate);
+        menuFlags.set(
+            RE::UI_MENU_FLAGS::kAlwaysOpen,
+            RE::UI_MENU_FLAGS::kRequiresUpdate,
+            RE::UI_MENU_FLAGS::kAllowSaving);
 
         if (uiMovie) {
             uiMovie->SetMouseCursorCount(0);  // disable input
