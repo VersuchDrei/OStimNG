@@ -20,6 +20,7 @@ class Option_Box_MC extends MovieClip
 	var o11 : MovieClip; 
 	
 	var bg : MovieClip;
+	var optionDesc: TextField;
 	
 	var Options: Array = new Array(12);
 	var CurrentlyHighlightedIdx: Number;
@@ -98,6 +99,7 @@ class Option_Box_MC extends MovieClip
 		}
 		
 		Options[CurrentlyHighlightedIdx].OnHighlight();
+		optionDesc.text = Options[CurrentlyHighlightedIdx].Description;
 		trace("Out "+CurrentlyHighlightedIdx);
 		trace("---");
 	}
@@ -136,7 +138,10 @@ class Option_Box_MC extends MovieClip
 		maxOptionIdx = Edges.length-1;
 		var maxOptionRow = Math.floor(maxOptionIdx / 3)
 		var noOfCols = maxOptionIdx > 3 ? 3 : maxOptionIdx;
-		TweenLite.to(bg, 0.5, {_width: (48 + (noOfCols * 86) + ((noOfCols - 1) * 14)), _height: (48 + ((maxOptionRow + 1) * 86) + maxOptionRow * 14)});
+		TweenLite.to(bg, 0.5, {
+					 _width: (48 + (noOfCols * 86) + ((noOfCols - 1) * 14)), 
+					 _height: (48 + ((maxOptionRow + 1) * 86) + maxOptionRow * 14) + 50
+					 });
 	}
 	
 	function log(str:String)
