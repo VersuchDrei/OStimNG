@@ -9,6 +9,46 @@
 namespace PapyrusThreadActor {
     using VM = RE::BSScript::IVirtualMachine;
 
+    float GetExcitement(RE::StaticFunctionTag*, RE::Actor* actor) {
+        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        if (threadActor) {
+            return threadActor->excitement;
+        }
+
+        return -1;
+    }
+
+    void SetExcitement(RE::StaticFunctionTag*, RE::Actor* actor, float excitement) {
+        if (excitement < 0) {
+            excitement = 0;
+        } else if (excitement > 100) {
+            excitement = 100;
+        }
+
+        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        if (threadActor) {
+            threadActor->excitement = excitement;
+        }
+    }
+
+    void ModifyExcitement(RE::StaticFunctionTag*, RE::Actor* actor, float excitement, bool respectMultiplier) {
+        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        if (threadActor) {
+            if (respectMultiplier) {
+                excitement *= threadActor->baseExcitementMultiplier;
+            }
+
+            threadActor->excitement += excitement;
+
+            if (threadActor->excitement < 0) {
+                threadActor->excitement = 0;
+            } else if (threadActor->excitement > 100) {
+                threadActor->excitement = 100;
+            }
+        }
+    }
+
+
     float PlayExpression(RE::StaticFunctionTag*, RE::Actor* actor, std::string expression) {
         StringUtil::toLower(&expression);
         std::vector<Trait::FacialExpression*>* expressions = Trait::TraitTable::getExpressionsForEvent(expression);
@@ -151,6 +191,10 @@ namespace PapyrusThreadActor {
 
     bool Bind(VM* a_vm) {
         const auto obj = "OActor"sv;
+
+        BIND(GetExcitement);
+        BIND(SetExcitement);
+        BIND(ModifyExcitement);
 
         BIND(PlayExpression);
         BIND(ClearExpression);

@@ -470,6 +470,11 @@ namespace OStim {
             GetActor(actor)->resetLooking();
         } else if (tag == "OStimPlayExpression") {
             GetActor(actor)->playEventExpression(a_event->payload.c_str());
+        } else if (tag == "OStimBendSoS") {
+            int bend = std::stoi(a_event->payload.c_str());
+            GetActor(actor)->offsetSoSBend(bend);
+        } else if (tag == "OStimResetSoS") {
+            GetActor(actor)->offsetSoSBend(0);
         }
 
         return RE::BSEventNotifyControl::kContinue;

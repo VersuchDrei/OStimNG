@@ -2586,7 +2586,7 @@ Function Climax(Actor Act)
 		ShakeController(0.5, 0.7)
 	EndIf
 
-	If !AppearsFemale(Act)
+	If !IsFemale(Act)
 		SetCurrentAnimationSpeed(OMetadata.GetDefaultSpeed(CurrentSceneID))
 	EndIf
 

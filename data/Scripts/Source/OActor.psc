@@ -6,6 +6,42 @@
 */;
 ScriptName OActor
 
+; ███████╗████████╗██╗███╗   ███╗██╗   ██╗██╗      █████╗ ████████╗██╗ ██████╗ ███╗   ██╗
+; ██╔════╝╚══██╔══╝██║████╗ ████║██║   ██║██║     ██╔══██╗╚══██╔══╝██║██╔═══██╗████╗  ██║
+; ███████╗   ██║   ██║██╔████╔██║██║   ██║██║     ███████║   ██║   ██║██║   ██║██╔██╗ ██║
+; ╚════██║   ██║   ██║██║╚██╔╝██║██║   ██║██║     ██╔══██║   ██║   ██║██║   ██║██║╚██╗██║
+; ███████║   ██║   ██║██║ ╚═╝ ██║╚██████╔╝███████╗██║  ██║   ██║   ██║╚██████╔╝██║ ╚████║
+; ╚══════╝   ╚═╝   ╚═╝╚═╝     ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝
+
+;/* GetExcitement
+* * returns the actors current excitement level
+* *
+* * @param: Act, the actor to get the excitement for
+* *
+* * @return: the current excitement of the actor
+*/;
+float Function GetExcitement(Actor Act) Global Native
+
+;/* SetExcitement
+* * sets the excitement of an actor
+* * values less than 0 will round up to 0, values greater than 100 will round down to 100
+* *
+* * @param: Act, the actor to set the excitement for
+* * @param: Excitement, the value to set the excitement to
+*/;
+Function SetExcitement(Actor Act, float Excitement) Global Native
+
+;/* ModifyExcitement
+* * modifies the excitement of the actor by the given value
+* * if the result is less than 0 it will round up to 0, if it is greater than 100 it will round down to 100
+* *
+* * @param: Act, the actor to modify the excitement for
+* * @param: Excitement, the value to modify the excitement by, negative values reduce excitement
+* * @param: RespectMultiplier, if true the passed value will be multiplied by the actors excitement multiplier set in the MCM before being applied
+*/;
+Function ModifyExcitement(Actor Act, float Excitement, bool RespectMultiplier = false) Global Native
+
+
 ; ███████╗██╗  ██╗██████╗ ██████╗ ███████╗███████╗███████╗██╗ ██████╗ ███╗   ██╗███████╗
 ; ██╔════╝╚██╗██╔╝██╔══██╗██╔══██╗██╔════╝██╔════╝██╔════╝██║██╔═══██╗████╗  ██║██╔════╝
 ; █████╗   ╚███╔╝ ██████╔╝██████╔╝█████╗  ███████╗███████╗██║██║   ██║██╔██╗ ██║███████╗

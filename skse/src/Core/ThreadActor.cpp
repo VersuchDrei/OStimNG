@@ -237,6 +237,8 @@ namespace OStim {
     void ThreadActor::changeNode(Graph::Actor* graphActor, std::vector<Trait::FacialExpression*>* nodeExpressions, std::vector<Trait::FacialExpression*>* overrideExpressions) {
         this->graphActor = graphActor;
 
+        sosOffset = 0;
+
         // heel stuff
         checkHeelOffset();
 
@@ -279,6 +281,11 @@ namespace OStim {
 
     void ThreadActor::setSoSBend(int sosBend) {
         this->sosBend = sosBend;
+        bendSchlong();
+    }
+
+    void ThreadActor::offsetSoSBend(int soSOffset) {
+        this->sosOffset = sosOffset;
         bendSchlong();
     }
 
@@ -404,7 +411,13 @@ namespace OStim {
 
     void ThreadActor::bendSchlong() {
         if (!MCM::MCMTable::isSchlongBendingDisabled()) {
-            actor->NotifyAnimationGraph("SOSBend" + std::to_string(sosBend));
+            int totalBend = sosBend + sosOffset;
+            if (totalBend > 9) {
+                totalBend = 9;
+            } else if (totalBend < -10) {
+                totalBend = -10;
+            }
+            actor->NotifyAnimationGraph(totalBend == -10 ? "SOSFlaccid" : "SOSBend" + std::to_string(sosBend));
         }
     }
 
