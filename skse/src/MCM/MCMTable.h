@@ -71,8 +71,6 @@ namespace MCM {
             {0xDA4, {1, "SetResetClutter"}},
             {0xDA5, {5, "SetResetClutterRadius"}},
 
-            {0xDA9, {1, "SetAutoClimaxAnims"}},
-
             {0xDDE, {1, "SetUseFreeCam"}},
             {0xDDF, {3, "SetCameraSpeed"}},
             {0xDE0, {45, "SetFreeCamFOV"}},
@@ -83,7 +81,7 @@ namespace MCM {
             {0xDB5, {0.5, "excitementDecayRate"}},
             {0xDB4, {5000, "excitementDecayGracePeriod"}},
 
-            {0xDA9, {1, "autoClimaxAnimations"}},
+            {0xDA9, {1, "SetAutoClimaxAnims"}},
             {0xDF9, {1, "SetEndOnOrgasm"}},
             {0xDFA, {0, "SetEndOnSubOrgasm"}},
             {0xDFB, {0, "SetEndOnBothOrgasm"}},

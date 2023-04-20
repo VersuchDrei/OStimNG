@@ -129,8 +129,8 @@ namespace Furniture {
             switch (getFurnitureType(object, false)) {
                 case BED:
                     if (!object->HasKeyword(FurnitureTable::FurnitureBedRoll)) {
-                        ret[1] += 50;
-                        ret[2] += 8;
+                        ret[1] += 40;
+                        ret[2] += 3;
                     }
                     ret[0] = 0;
                     ret[3] += 2 * std::acos(0); // basically += math.pi
