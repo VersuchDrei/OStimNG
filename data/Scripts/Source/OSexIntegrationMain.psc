@@ -58,12 +58,6 @@ Faction Property NVCustomOrgasmFaction Auto
 ; -------------------------------------------------------------------------------------------------
 ; SETTINGS  ---------------------------------------------------------------------------------------
 
-Bool Property EnableDomBar Auto
-Bool Property EnableSubBar Auto
-Bool Property EnableThirdBar Auto
-Bool Property AutoHideBars Auto
-Bool Property MatchBarColorToGender auto
-
 Bool Property EnableActorSpeedControl Auto
 
 Bool Property ResetPosAfterSceneEnd Auto
@@ -117,8 +111,6 @@ bool Property SkipEndingFadein Auto
 Bool Property EndAfterActorHit Auto
 
 Bool Property GetInBedAfterBedScene Auto
-
-Int Property BedRealignment Auto
 
 Bool Property ForceFirstPersonAfter Auto
 
@@ -326,6 +318,65 @@ int Property ExcitementDecayGracePeriod
 	EndFunction
 	Function Set(int Value)
 		OStimExcitementDecayGracePeriod.value = Value
+	EndFunction
+EndProperty
+
+; -------------------------------------------------------------------------------------------------
+; EXCITEMENT BAR SETTINGS  ------------------------------------------------------------------------
+
+GlobalVariable Property OStimEnablePlayerBar Auto
+bool Property EnablePlayerBar
+	bool Function Get()
+		Return OStimEnablePlayerBar.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimEnablePlayerBar.value = 1
+		Else
+			OStimEnablePlayerBar.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimEnableNpcBar Auto
+bool Property EnableNpcBar
+	bool Function Get()
+		Return OStimEnableNpcBar.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimEnableNpcBar.value = 1
+		Else
+			OStimEnableNpcBar.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimAutoHideBars Auto
+Bool Property AutoHideBars
+	bool Function Get()
+		Return OStimAutoHideBars.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimAutoHideBars.value = 1
+		Else
+			OStimAutoHideBars.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimMatchBarColorToGender Auto
+Bool Property MatchBarColorToGender
+	bool Function Get()
+		Return OStimMatchBarColorToGender.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimMatchBarColorToGender.value = 1
+		Else
+			OStimMatchBarColorToGender.value = 0
+		EndIf
 	EndFunction
 EndProperty
 
@@ -836,6 +887,26 @@ int Property ResetClutterRadius
 	EndFunction
 	Function Set(int Value)
 		OStimResetClutterRadius.value = Value
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimBedRealignment Auto
+float Property BedRealignment
+	float Function Get()
+		Return OStimBedRealignment.value
+	EndFunction
+	Function Set(float Value)
+		OStimBedRealignment.value = Value
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimBedOffset Auto
+float Property BedOffset
+	float Function Get()
+		Return OStimBedOffset.value
+	EndFunction
+	Function Set(float Value)
+		OStimBedOffset.value = Value
 	EndFunction
 EndProperty
 
@@ -2955,9 +3026,6 @@ Event DisplayToastEvent(string txt, float time)
 EndEvent
 
 Function SetDefaultSettings()
-	EnableSubBar = True
-	EnableDomBar = True
-	EnableThirdBar = True
 	EnableActorSpeedControl = True
 	ResetPosAfterSceneEnd = true 
 
@@ -2987,8 +3055,6 @@ UseFreeCam
 
 	UseAIControl = False
 	PauseAI = False
-	AutoHideBars = False
-	MatchBarColorToGender = false
 
 	AISwitchChance = 6
 
@@ -3002,8 +3068,6 @@ UseFreeCam
 	disableOSAControls = false
 
 	Forcefirstpersonafter = !UseFreeCam
-
-	BedRealignment = 0
 
 	UseRumble = Game.UsingGamepad()
 	UseScreenShake = False
@@ -3634,6 +3698,33 @@ bool Property RequireBothOrgasmsToFinish
 	EndFunction
 	Function Set(bool Value)
 		EndOnAllOrgasm = Value
+	EndFunction
+EndProperty
+
+Bool Property EnableDomBar
+	bool Function Get()
+		Return EnablePlayerBar
+	EndFunction
+	Function Set(bool Value)
+		EnablePlayerBar = Value
+	EndFunction
+EndProperty
+
+Bool Property EnableSubBar
+	bool Function Get()
+		Return EnableNpcBar
+	EndFunction
+	Function Set(bool Value)
+		EnableNpcBar = Value
+	EndFunction
+EndProperty
+
+Bool Property EnableThirdBar
+	bool Function Get()
+		Return EnableNpcBar
+	EndFunction
+	Function Set(bool Value)
+		EnableNpcBar = Value
 	EndFunction
 EndProperty
 

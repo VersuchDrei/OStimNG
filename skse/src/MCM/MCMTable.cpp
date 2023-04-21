@@ -187,6 +187,14 @@ namespace MCM {
         return settings[0xDE5].asBool();
     }
 
+    float MCMTable::bedRealignment() {
+        return settings[0xDFE].asFloat();
+    }
+
+    float MCMTable::bedOffset() {
+        return settings[0xDFF].asFloat();
+    }
+
 
     void MCMTable::exportSettings() {
         const auto settings_path = util::settings_path();

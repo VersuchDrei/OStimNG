@@ -608,6 +608,10 @@ namespace OStim {
         eventExpressionCooldown = expression->getDuration(actor) * 1000;
     }
 
+    bool ThreadActor::hasExpressionOverride() {
+        return overrideExpressions;
+    }
+
     void ThreadActor::setLooking(std::unordered_map<int, Trait::FaceModifier> eyeballOverride) {
         eyeballModifierOverride = eyeballOverride;
         checkForEyeballOverride();

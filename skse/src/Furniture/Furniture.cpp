@@ -2,6 +2,7 @@
 
 #include "FurnitureTable.h"
 #include "Graph/LookupTable.h"
+#include "MCM/MCMTable.h"
 #include "Util/ObjectRefUtil.h"
 #include "Util/StringUtil.h"
 #include "Util.h"
@@ -129,8 +130,8 @@ namespace Furniture {
             switch (getFurnitureType(object, false)) {
                 case BED:
                     if (!object->HasKeyword(FurnitureTable::FurnitureBedRoll)) {
-                        ret[1] += 40;
-                        ret[2] += 3;
+                        ret[1] += 35 + MCM::MCMTable::bedRealignment();
+                        ret[2] += 3 + MCM::MCMTable::bedOffset();
                     }
                     ret[0] = 0;
                     ret[3] += 2 * std::acos(0); // basically += math.pi

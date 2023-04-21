@@ -54,6 +54,9 @@ namespace MCM {
         static bool groupAlignmentBySex();
         static bool groupAlignmentByHeight();
         static bool groupAlignmentByHeels();
+        
+        static float bedRealignment();
+        static float bedOffset();
 
         static void exportSettings();
         static void importSettings();
@@ -70,6 +73,8 @@ namespace MCM {
             {0xDA8, {15, "SetFurnitureSearchDistance"}},
             {0xDA4, {1, "SetResetClutter"}},
             {0xDA5, {5, "SetResetClutterRadius"}},
+            {0xDFE, {0, "SetBedRealignment"}},
+            {0xDFF, {3, "bedOffset"}},
 
             {0xDDE, {1, "SetUseFreeCam"}},
             {0xDDF, {3, "SetCameraSpeed"}},
@@ -80,6 +85,11 @@ namespace MCM {
             {0xDA3, {1, "SetFemaleSexExcitementMult"}},
             {0xDB5, {0.5, "excitementDecayRate"}},
             {0xDB4, {5000, "excitementDecayGracePeriod"}},
+
+            {0xE00, {1, "enablePlayerBar"}},
+            {0xE01, {1, "enableNpcBar"}},
+            {0xE02, {0, "SetAutoHideBar"}},
+            {0xE03, {0, "SetMatchColorToGender"}},
 
             {0xDA9, {1, "SetAutoClimaxAnims"}},
             {0xDF9, {1, "SetEndOnOrgasm"}},

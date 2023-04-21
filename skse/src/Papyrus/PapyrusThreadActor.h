@@ -73,6 +73,15 @@ namespace PapyrusThreadActor {
         }
     }
 
+    bool HasExpressionOverride(RE::StaticFunctionTag*, RE::Actor* actor) {
+        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        if (threadActor) {
+            return threadActor->hasExpressionOverride();
+        }
+        return false;
+    }
+
+
     void Undress(RE::StaticFunctionTag*, RE::Actor* actor) {
         OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
         if (threadActor) {
@@ -198,6 +207,7 @@ namespace PapyrusThreadActor {
 
         BIND(PlayExpression);
         BIND(ClearExpression);
+        BIND(HasExpressionOverride);
 
         BIND(Undress);
         BIND(Redress);

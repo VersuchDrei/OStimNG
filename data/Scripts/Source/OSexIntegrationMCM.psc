@@ -14,13 +14,6 @@ int UndressingSlotMask
 
 ; actor role settings
 
-; bar settings
-Int SetSubBar
-Int SetDomBar
-Int SetThirdBar
-Int SetAutoHideBar
-Int SetMatchColorToGender
-
 ; light settings
 Int SetDomLightMode
 Int SetSubLightMode
@@ -38,14 +31,6 @@ String[] SubLightModeList
 
 String[] SubLightBrightList
 String[] DomLightBrightList
-
-; bed settings
-Int SetEnableFurniture
-Int SetSelectFurniture
-Int SetFurnitureSearchDistance
-int SetResetClutter
-int SetResetClutterRadius
-Int SetBedRealignment
 
 ; ai control settings
 Int SetAIControl
@@ -180,7 +165,7 @@ Function Init()
 EndFunction
 
 int Function GetVersion()
-	Return 4
+	Return 5
 EndFunction
 
 Event OnVersionUpdate(int version)
@@ -188,16 +173,17 @@ Event OnVersionUpdate(int version)
 EndEvent
 
 Function SetupPages()
-	Pages = new string[9]
+	Pages = new string[10]
 	Pages[0] = "$ostim_page_configuration"
 	Pages[1] = "$ostim_page_controls"
 	Pages[2] = "$ostim_page_excitement"
 	Pages[3] = "$ostim_page_gender_roles"
-	Pages[4] = "$ostim_page_undress"
-	Pages[5] = "$ostim_page_expression"
-	Pages[6] = "$ostim_page_alignment"
-	Pages[7] = "$ostim_page_addons"
-	Pages[8] = "$ostim_page_about"
+	Pages[4] = "$ostim_page_furniture"
+	Pages[5] = "$ostim_page_undress"
+	Pages[6] = "$ostim_page_expression"
+	Pages[7] = "$ostim_page_alignment"
+	Pages[8] = "$ostim_page_addons"
+	Pages[9] = "$ostim_page_about"
 EndFunction
 
 Event OnConfigRegister()
@@ -259,27 +245,11 @@ Event OnPageReset(String Page)
 		SetResetPosition = AddToggleOption("$ostim_reset_position", Main.ResetPosAfterSceneEnd) 		
 		AddEmptyOption()
 
-		AddColoredHeader("$ostim_header_furniture")
-		SetEnableFurniture = AddToggleOption("$ostim_use_furniture", Main.UseFurniture)
-		SetSelectFurniture = AddToggleOption("$ostim_select_furniture", Main.SelectFurniture)
-		SetFurnitureSearchDistance = AddSliderOption("$ostim_furniture_search_rad", Main.FurnitureSearchDistance, "{0} meters")
-		SetResetClutter = AddToggleOption("$ostim_reset_clutter", Main.ResetClutter)
-		SetResetClutterRadius = AddSliderOption("$ostim_reset_clutter_radius", Main.ResetClutterRadius, "{0} meters")
-		SetBedRealignment = AddSliderOption("$ostim_bed_realignment", Main.BedRealignment, "{0} units")
-		AddEmptyOption()
-
-		AddColoredHeader("$ostim_header_excitement_bars")
-		SetDomBar = AddToggleOption("$ostim_dom_bar", Main.EnableDomBar)
-		SetSubBar = AddToggleOption("$ostim_sub_bar", Main.EnableSubBar)
-		SetThirdBar = AddToggleOption("$ostim_third_bar", Main.EnableThirdBar)
-		SetAutoHideBar = AddToggleOption("$ostim_auto_hide_bar", Main.AutoHideBars)
-		SetMatchColorToGender = AddToggleOption("$ostim_match_color_gender", Main.MatchBarColorToGender)
-		AddEmptyOption()
-
 		AddColoredHeader("$ostim_header_system")
 		SetResetState = AddTextOption("$ostim_reset_state", "")
 		SetUpdate = AddTextOption("$ostim_update", "")
 		SetTutorialMessages = AddToggleOption("$ostim_tutorial", Main.ShowTutorials)
+		AddTextOptionST("OID_BootstrapMCM", "$ostim_bootstrap_mcm", "")
 		;SetUseCosaveWorkaround = AddToggleOption("$ostim_cosave", Main.useBrokenCosaveWorkaround)
 		AddEmptyOption()
 
@@ -374,6 +344,8 @@ Event OnPageReset(String Page)
 		DrawExcitementPage()
 	ElseIf Page == "$ostim_page_gender_roles"
 		DrawGenderRolesPage()
+	ElseIf Page == "$ostim_page_furniture"
+		DrawFurniturePage()
 	ElseIf (Page == "$ostim_page_undress")
 		DrawUndressingPage()
 	ElseIf Page == "$ostim_page_expression"
@@ -489,15 +461,6 @@ Event OnOptionSelect(Int Option)
 	ElseIf (Option == SetResetPosition)
 		Main.ResetPosAfterSceneEnd = !Main.ResetPosAfterSceneEnd
 		SetToggleOptionValue(Option, Main.ResetPosAfterSceneEnd)
-	ElseIf (Option == SetEnableFurniture)
-		Main.UseFurniture = !Main.UseFurniture
-		SetToggleOptionValue(Option, Main.UseFurniture)
-	ElseIf (Option == SetSelectFurniture)
-		Main.SelectFurniture = !Main.SelectFurniture
-		SetToggleOptionValue(Option, Main.SelectFurniture)
-	ElseIf Option == SetResetClutter
-		Main.ResetClutter = !Main.ResetClutter
-		SetToggleOptionValue(Option, Main.ResetClutter)	
 	ElseIf (Option == SetTutorialMessages)
 		Main.ShowTutorials = !Main.ShowTutorials
 		SetToggleOptionValue(Option, Main.ShowTutorials)
@@ -525,9 +488,6 @@ Event OnOptionSelect(Int Option)
 	ElseIf (Option == SetUseAutoFades)
 		Main.UseAutoFades = !Main.UseAutoFades
 		SetToggleOptionValue(Option, Main.UseAutoFades)
-	ElseIf (Option == SetMatchColorToGender)
-		Main.MatchBarColorToGender = !Main.MatchBarColorToGender
-		SetToggleOptionValue(Option, Main.MatchBarColorToGender)
 	ElseIf (Option == SetEndAfterActorHit)
 		Main.EndAfterActorHit = !Main.EndAfterActorHit
 		SetToggleOptionValue(Option, Main.EndAfterActorHit)
@@ -546,18 +506,6 @@ Event OnOptionSelect(Int Option)
 	ElseIf (Option == SetAIControl)
 		Main.UseAIControl = !Main.UseAIControl
 		SetToggleOptionValue(Option, Main.UseAIControl)
-	ElseIf (Option == SetDomBar)
-		Main.EnableDomBar = !Main.EnableDomBar
-		SetToggleOptionValue(Option, Main.EnableDomBar)
-	ElseIf (Option == SetThirdBar)
-		Main.EnableThirdBar = !Main.EnableThirdBar
-		SetToggleOptionValue(Option, Main.EnableThirdBar)
-	ElseIf (Option == SetSubBar)
-		Main.EnableSubBar = !Main.EnableSubBar
-		SetToggleOptionValue(Option, Main.EnableSubBar)
-	ElseIf (Option == SetAutoHideBar)
-		Main.AutoHideBars = !Main.AutoHideBars
-		SetToggleOptionValue(Option, Main.AutoHideBars)
 	ElseIf (Option == SetUseFades)
 		Main.UseFades = !Main.UseFades
 		SetToggleOptionValue(Option, Main.UseFades)
@@ -643,8 +591,6 @@ Event OnOptionHighlight(Int Option)
 		SetInfoText("$ostim_tooltip_fov")
 	ElseIf (Option == SetUseRumble)
 		SetInfoText("$ostim_tooltip_rumble")
-	ElseIf (Option == SetMatchColorToGender)
-		SetInfoText("$ostim_tooltip_gendered_colors")
 	ElseIf (Option == SetEndAfterActorHit)
 		SetInfoText("$ostim_tooltip_end_on_hit")
 	ElseIf (Option == SetForceFirstPerson)
@@ -661,30 +607,12 @@ Event OnOptionHighlight(Int Option)
 		SetInfoText("$ostim_tooltip_auto_fades")
 	ElseIf (Option == SetAIChangeChance)
 		SetInfoText("$ostim_tooltip_ai_change_chance")
-	ElseIf (Option == SetDomBar)
-		SetInfoText("$ostim_tooltip_dom_bar")
-	ElseIf (Option == SetthirdBar)
-		SetInfoText("$ostim_tooltip_third_bar")
-	ElseIf (Option == SetSubBar)
-		SetInfoText("$ostim_tooltip_sub_bar")
-	ElseIf (Option == SetEnableFurniture)
-		SetInfoText("$ostim_tooltip_enable_furniture")
-	ElseIf (Option == SetSelectFurniture)
-		SetInfoText("$ostim_tooltip_select_furniture")
-	ElseIf (Option == SetFurnitureSearchDistance)
-		SetInfoText("$ostim_tooltip_furniture_search_dist")
-	ElseIf Option == SetResetClutter
-		SetInfoText("$ostim_tooltip_reset_clutter")
-	Elseif Option == SetResetClutterRadius
-		SetInfoText("$ostim_tooltip_reset_clutter_radius")
 	ElseIf (Option == SetTutorialMessages)
 		SetInfoText("$ostim_tooltip_enable_tutorial")
 	ElseIf (Option == setupdate)
 		SetInfoText("$ostim_tooltip_update")
 	ElseIf (Option == SetAIControl)
 		SetInfoText("$ostim_tooltip_enable_ai")
-	ElseIf (Option == SetAutoHideBar)
-		SetInfoText("$ostim_tooltip_auto_hide_bar")
 	ElseIf (Option == SetDomLightMode)
 		SetInfoText("$ostim_tooltip_dom_light")
 	ElseIf (Option == SetSubLightMode)
@@ -701,8 +629,6 @@ Event OnOptionHighlight(Int Option)
 		SetInfoText("$ostim_tooltip_dark_light")
 	ElseIf (Option == SetUseScreenShake)
 		SetInfoText("$ostim_tooltip_screen_shake")
-	ElseIf (Option == SetBedRealignment)
-		SetInfoText("$ostim_tooltip_bed_realignment")
 	ElseIf (Option == SetThanks)
 		SetInfoText("$ostim_tooltip_thanks")
 	ElseIf (Option == ExportSettings)
@@ -749,17 +675,7 @@ EndEvent
 Event OnOptionSliderOpen(Int Option)
 	Main.PlayTickBig()
 
-	If (Option == SetFurnitureSearchDistance)
-		SetSliderDialogStartValue(Main.FurnitureSearchDistance)
-		SetSliderDialogDefaultValue(15.0)
-		SetSliderDialogRange(1, 30)
-		SetSliderDialogInterval(1)
-	ElseIf Option == SetResetClutterRadius
-		SetSliderDialogStartValue(Main.ResetClutterRadius)
-		SetSliderDialogDefaultValue(5.0)
-		SetSliderDialogRange(1, 30)
-		SetSliderDialogInterval(1)
-	ElseIf (Option == SetCustomTimescale)
+	If (Option == SetCustomTimescale)
 		SetSliderDialogStartValue(Main.CustomTimescale)
 		SetSliderDialogDefaultValue(0.0)
 		SetSliderDialogRange(0, 40)
@@ -774,11 +690,6 @@ Event OnOptionSliderOpen(Int Option)
 		SetSliderDialogDefaultValue(3.0)
 		SetSliderDialogRange(1, 20)
 		SetSliderDialogInterval(0.5)
-	ElseIf (Option == SetBedRealignment)
-		SetSliderDialogStartValue(Main.BedRealignment)
-		SetSliderDialogDefaultValue(0.0)
-		SetSliderDialogRange(-250, 250)
-		SetSliderDialogInterval(1)
 	ElseIf (Option == SetAIChangeChance)
 		SetSliderDialogStartValue(Main.AiSwitchChance)
 		SetSliderDialogDefaultValue(6.0)
@@ -814,9 +725,6 @@ Event OnOptionSliderAccept(Int Option, Float Value)
 	Elseif (option == SetOPFreq)
 		StorageUtil.SetIntValue(none, SUOPFreq, value as int)
 		SetSliderOptionValue(SetOPFreq, Value, "{0}")
-	ElseIf (Option == SetFurnitureSearchDistance)
-		Main.FurnitureSearchDistance = (Value as Int)
-		SetSliderOptionValue(Option, Value, "{0} Meters")
 	ElseIf (Option == SetCustomTimescale)
 		Main.CustomTimescale = (Value as Int)
 		SetSliderOptionValue(Option, Value, "{0}")
@@ -826,9 +734,6 @@ Event OnOptionSliderAccept(Int Option, Float Value)
 	ElseIf (Option == SetCameraSpeed)
 		Main.FreecamSpeed = Value
 		SetSliderOptionValue(Option, Value, "{1}")
-	ElseIf (Option == SetBedRealignment)
-		Main.BedRealignment = (Value as Int)
-		SetSliderOptionValue(Option, Value, "{0} Units")
 	ElseIf (Option == SetAIChangeChance)
 		Main.AiSwitchChance = (Value as Int)
 		SetSliderOptionValue(Option, Value, "{0}")
@@ -924,13 +829,6 @@ Function ExportSettings()
 	JMap.SetInt(OstimSettingsFile, "SetEndAfterActorHit", Main.EndAfterActorHit as Int)
 	JMap.SetInt(OstimSettingsFile, "SetUseRumble", Main.UseRumble as Int)
 	JMap.SetInt(OstimSettingsFile, "SetUseScreenShake", Main.UseScreenShake as Int)
-
-	; Bar settings export.
-	JMap.SetInt(OstimSettingsFile, "SetSubBar", Main.EnableSubBar as Int)
-	JMap.SetInt(OstimSettingsFile, "SetDomBar", Main.EnableDomBar as Int)
-	JMap.SetInt(OstimSettingsFile, "SetThirdBar", Main.EnableThirdBar as Int)
-	JMap.SetInt(OstimSettingsFile, "SetAutoHideBar", Main.AutoHideBars as Int)
-	JMap.SetInt(OstimSettingsFile, "SetMatchColorToGender", Main.MatchBarColorToGender as Int)
 
 	; Light settings export.
 	Jmap.SetInt(OstimSettingsFile, "SetDomLightMode", Main.DomLightPos as Int)
@@ -1080,13 +978,6 @@ Function ImportSettings(bool default = false)
 	Main.EndAfterActorHit = JMap.GetInt(OstimSettingsFile, "SetEndAfterActorHit")
 	Main.UseRumble = JMap.GetInt(OstimSettingsFile, "SetUseRumble")
 	Main.UseScreenShake = JMap.GetInt(OstimSettingsFile, "SetUseScreenShake")
-	
-	; Bar settings import.
-	Main.EnableSubBar = JMap.GetInt(OstimSettingsFile, "SetSubBar")
-	Main.EnableDomBar = JMap.GetInt(OstimSettingsFile, "SetDomBar")
-	Main.EnableThirdBar = JMap.GetInt(OstimSettingsFile, "SetThirdBar")
-	Main.AutoHideBars = JMap.GetInt(OstimSettingsFile, "SetAutoHideBar")
-	Main.MatchBarColorToGender = JMap.GetInt(OstimSettingsFile, "SetMatchColorToGender")
 
 	; Light settings export.
 	Main.DomLightPos = Jmap.GetInt(OstimSettingsFile, "SetDomLightMode")
@@ -1175,6 +1066,17 @@ Function ImportSettings(bool default = false)
 	; Force page reset to show updated changes.
 	ForcePageReset()
 EndFunction
+
+State OID_BootstrapMCM
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_bootstrap_mcm")
+	EndEvent
+
+	Event OnSelectST()
+		SetupPages()
+		ShowMessage("$ostim_message_bootstrap_mcm", false)
+	EndEvent
+EndState
 
 
 ;  ██████╗ ██████╗ ███╗   ██╗████████╗██████╗  ██████╗ ██╗     ███████╗
@@ -1447,6 +1349,17 @@ Function DrawExcitementPage()
 	SetCursorPosition(8)
 	AddSliderOptionST("OID_ExcitementDecayGracePeriod", "$ostim_excitement_decay_grace_period", Main.ExcitementDecayGracePeriod / 1000, "{1} s")
 
+	SetCursorPosition(12)
+	AddColoredHeader("$ostim_header_excitement_bars")
+	SetCursorPosition(14)
+	AddToggleOptionST("OID_EnablePlayerBar", "$ostim_player_bar", Main.EnablePlayerBar)
+	SetCursorPosition(16)
+	AddToggleOptionST("OID_EnableNpcBar", "$ostim_npc_bar", Main.EnableNpcBar)
+	SetCursorPosition(18)
+	AddToggleOptionST("OID_AutoHideBar", "$ostim_auto_hide_bar", Main.AutoHideBars)
+	SetCursorPosition(20)
+	AddToggleOptionST("OID_MatchBarColorToGender", "$ostim_match_color_gender", Main.MatchBarColorToGender)
+
 	SetCursorPosition(1)
 	AddColoredHeader("$ostim_header_orgasms")
 	SetCursorPosition(3)
@@ -1536,6 +1449,51 @@ State OID_ExcitementDecayGracePeriod
 	Event OnSliderAcceptST(float Value)
 		Main.ExcitementDecayGracePeriod = (Value * 1000) as int
 		SetSliderOptionValueST(Value, "{1} s")
+	EndEvent
+EndState
+
+
+State OID_EnablePlayerBar
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_player_bar")
+	EndEvent
+
+	Event OnSelectST()
+		Main.EnablePlayerBar = !Main.EnablePlayerBar
+		SetToggleOptionValueST(Main.EnablePlayerBar)
+	EndEvent
+EndState
+
+State OID_EnableNPCBar
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_npc_bar")
+	EndEvent
+
+	Event OnSelectST()
+		Main.EnableNpcBar = !Main.EnableNpcBar
+		SetToggleOptionValueST(Main.EnableNpcBar)
+	EndEvent
+EndState
+
+State OID_AutoHideBar
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_auto_hide_bar")
+	EndEvent
+
+	Event OnSelectST()
+		Main.AutoHideBars = !Main.AutoHideBars
+		SetToggleOptionValueST(Main.AutoHideBars)
+	EndEvent
+EndState
+
+State OID_MatchBarColorToGender
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_gendered_colors")
+	EndEvent
+
+	Event OnSelectST()
+		Main.MatchBarColorToGender = !Main.MatchBarColorToGender
+		SetToggleOptionValueST(Main.MatchBarColorToGender)
 	EndEvent
 EndState
 
@@ -1878,6 +1836,168 @@ State OID_PlayerStrapOn
 
 	Event OnDefaultST()
 		SetEquipObjectIDToDefault(0x7, "strapon")
+	EndEvent
+EndState
+
+; ███████╗██╗   ██╗██████╗ ███╗   ██╗██╗████████╗██╗   ██╗██████╗ ███████╗
+; ██╔════╝██║   ██║██╔══██╗████╗  ██║██║╚══██╔══╝██║   ██║██╔══██╗██╔════╝
+; █████╗  ██║   ██║██████╔╝██╔██╗ ██║██║   ██║   ██║   ██║██████╔╝█████╗  
+; ██╔══╝  ██║   ██║██╔══██╗██║╚██╗██║██║   ██║   ██║   ██║██╔══██╗██╔══╝  
+; ██║     ╚██████╔╝██║  ██║██║ ╚████║██║   ██║   ╚██████╔╝██║  ██║███████╗
+; ╚═╝      ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚══════╝
+
+Function DrawFurniturePage()
+	SetCursorPosition(0)
+	AddToggleOptionST("OID_UseFurniture", "$ostim_use_furniture", Main.UseFurniture)
+	SetCursorPosition(2)
+	int FurnitureFlags = OPTION_FLAG_NONE
+	If !Main.UseFurniture
+		FurnitureFlags = OPTION_FLAG_DISABLED
+	EndIf
+	AddToggleOptionST("OID_SelectFurniture", "$ostim_select_furniture", Main.SelectFurniture, FurnitureFlags)
+	SetCursorPosition(4)
+	AddSliderOptionST("OID_FurnitureSearchDistance", "$ostim_furniture_search_rad", Main.FurnitureSearchDistance, "{0} meters", FurnitureFlags)
+
+	SetCursorPosition(8)
+	AddToggleOptionST("OID_ResetClutter", "$ostim_reset_clutter", Main.ResetClutter, FurnitureFlags)
+	SetCursorPosition(10)
+	int ResetClutterRadiusFlags = OPTION_FLAG_NONE
+	If !Main.UseFurniture || !Main.ResetClutter
+		ResetClutterRadiusFlags = OPTION_FLAG_DISABLED
+	EndIf
+	AddSliderOptionST("OID_ResetClutterRadius", "$ostim_reset_clutter_radius", Main.ResetClutterRadius, "{0} meters", ResetClutterRadiusFlags)
+
+	SetCursorPosition(14)
+	AddSliderOptionST("OID_BedRealignment", "$ostim_bed_realignment", Main.BedRealignment, "{0} units", FurnitureFlags)
+	SetCursorPosition(16)
+	AddSliderOptionST("OID_BedOffset", "$ostim_bed_offset", Main.BedOffset, "{2} units", FurnitureFlags)
+EndFunction
+
+State OID_UseFurniture
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_enable_furniture")
+	EndEvent
+
+	Event OnSelectST()
+		Main.UseFurniture = !Main.UseFurniture
+		SetToggleOptionValueST(Main.UseFurniture)
+
+		int FurnitureFlags = OPTION_FLAG_NONE
+		If !Main.UseFurniture
+			FurnitureFlags = OPTION_FLAG_DISABLED
+		EndIf
+		SetOptionFlagsST(FurnitureFlags, false, "OID_SelectFurniture")
+		SetOptionFlagsST(FurnitureFlags, false, "OID_FurnitureSearchDistance")
+		SetOptionFlagsST(FurnitureFlags, false, "OID_ResetClutter")
+		int ResetClutterRadiusFlags = OPTION_FLAG_NONE
+		If !Main.UseFurniture || !Main.ResetClutter
+			ResetClutterRadiusFlags = OPTION_FLAG_DISABLED
+		EndIf
+		SetOptionFlagsST(ResetClutterRadiusFlags, false, "OID_ResetClutterRadius")
+		SetOptionFlagsST(FurnitureFlags, false, "OID_BedRealignment")
+		SetOptionFlagsST(FurnitureFlags, false, "OID_BedOffset")
+	EndEvent
+EndState
+
+State OID_SelectFurniture
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_select_furniture")
+	EndEvent
+
+	Event OnSelectST()
+		Main.SelectFurniture = !Main.SelectFurniture
+		SetToggleOptionValueST(Main.SelectFurniture)
+	EndEvent
+EndState
+
+State OID_FurnitureSearchDistance
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_furniture_search_dist")
+	EndEvent
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(Main.RemoveWeaponsWithSlot)
+		SetSliderDialogDefaultValue(15)
+		SetSliderDialogRange(1, 30)
+		SetSliderDialogInterval(1)
+	EndEvent
+
+	Event OnSliderAcceptST(float Value)
+		Main.FurnitureSearchDistance = Value As int
+		SetSliderOptionValueST(Value, "{0}")
+	EndEvent
+EndState
+
+
+State OID_ResetClutter
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_reset_clutter")
+	EndEvent
+
+	Event OnSelectST()
+		Main.ResetClutter = !Main.ResetClutter
+		SetToggleOptionValueST(Main.ResetClutter)
+
+		int ResetClutterRadiusFlags = OPTION_FLAG_NONE
+		If !Main.UseFurniture || !Main.ResetClutter
+			ResetClutterRadiusFlags = OPTION_FLAG_DISABLED
+		EndIf
+		SetOptionFlagsST(ResetClutterRadiusFlags, false, "OID_ResetClutterRadius")
+	EndEvent
+EndState
+
+State OID_ResetClutterRadius
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_reset_clutter_radius")
+	EndEvent
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(Main.RemoveWeaponsWithSlot)
+		SetSliderDialogDefaultValue(5)
+		SetSliderDialogRange(1, 30)
+		SetSliderDialogInterval(1)
+	EndEvent
+
+	Event OnSliderAcceptST(float Value)
+		Main.ResetClutterRadius = Value As int
+		SetSliderOptionValueST(Value, "{0}")
+	EndEvent
+EndState
+
+
+State OID_BedRealignment
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_bed_realignment")
+	EndEvent
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(Main.BedRealignment)
+		SetSliderDialogDefaultValue(0)
+		SetSliderDialogRange(-50, 50)
+		SetSliderDialogInterval(1)
+	EndEvent
+
+	Event OnSliderAcceptST(float Value)
+		Main.BedRealignment = Value
+		SetSliderOptionValueST(Value, "{0}")
+	EndEvent
+EndState
+
+State OID_BedOffset
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_bed_offset")
+	EndEvent
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(Main.BedOffset)
+		SetSliderDialogDefaultValue(3)
+		SetSliderDialogRange(-10, 10)
+		SetSliderDialogInterval(0.25)
+	EndEvent
+
+	Event OnSliderAcceptST(float Value)
+		Main.BedRealignment = Value
+		SetSliderOptionValueST(Value, "{2}")
 	EndEvent
 EndState
 

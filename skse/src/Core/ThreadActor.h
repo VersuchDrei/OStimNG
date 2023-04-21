@@ -45,6 +45,7 @@ namespace OStim {
         void clearEventExpression();
         void playEventExpression(std::string expression);
         void playEventExpression(Trait::FacialExpression* expression);
+        bool hasExpressionOverride();
         void setLooking(std::unordered_map<int, Trait::FaceModifier> eyeballOverride);
         void unsetLooking();
         void resetLooking();
