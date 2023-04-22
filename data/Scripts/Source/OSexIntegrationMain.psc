@@ -695,6 +695,8 @@ EndProperty
 Message Property OStimRoleSelectionMessage Auto
 GlobalVariable Property OStimRoleSelectionCount Auto
 
+; -------------------------------------------------------------------------------------------------
+; STRAP-ON SETTINGS  ------------------------------------------------------------------------------
 
 GlobalVariable Property OStimEquipStrapOnIfNeeded Auto
 bool Property EquipStrapOnIfNeeded
@@ -734,6 +736,37 @@ bool Property UnequipStrapOnIfInWay
 			OStimUnequipStrapOnIfInWay.value = 1
 		Else
 			OStimUnequipStrapOnIfInWay.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+; -------------------------------------------------------------------------------------------------
+; FUTANARI SETTINGS  ------------------------------------------------------------------------------
+
+GlobalVariable Property OStimUseSoSSex Auto
+bool Property UseSoSSex
+	bool Function Get()
+		Return OStimUseSoSSex.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimUseSoSSex.value = 1
+		Else
+			OStimUseSoSSex.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimFutaUseMaleExcitement Auto
+bool Property FutaUseMaleExcitement
+	bool Function Get()
+		Return OStimFutaUseMaleExcitement.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimFutaUseMaleExcitement.value = 1
+		Else
+			OStimFutaUseMaleExcitement.value = 0
 		EndIf
 	EndFunction
 EndProperty
@@ -2078,14 +2111,7 @@ EndFunction
 
 Bool Function IsFemale(Actor Act)
 	{genitalia based / has a vagina and not a penis}
-
-
-	If SoSInstalled
-		return !Act.IsInFaction(SoSFaction)
-	else
-		Return AppearsFemale(Act)
-	endif
-
+	Return !OActor.HasSchlong(Act)
 EndFunction
 
 Bool Function AppearsFemale(Actor Act) 
@@ -3311,7 +3337,7 @@ Event OnKeyDown(Int KeyPress)
 
 EndEvent
 
-Bool SoSInstalled
+Bool Property SoSInstalled Auto
 Faction SoSFaction
 
 Function ResetOSA() ; do not use, breaks osa
@@ -3419,17 +3445,6 @@ Function Startup()
 		Debug.Notification("OStim: ConsoleUtil is not installed, a few features may not work")
 	EndIf
 
-	SoSInstalled = false
-	If (Game.GetModByName("Schlongs of Skyrim.esp") != 255)
-		SoSFaction = (Game.GetFormFromFile(0x0000AFF8, "Schlongs of Skyrim.esp")) as Faction
-		If (SoSFaction)
-			Console("Schlongs of Skyrim loaded")
-			SoSInstalled = true
-
-		Endif
-
-	EndIf
-
 	
 
 	If (OSA.StimInstalledProper())
@@ -3496,6 +3511,13 @@ Function SendLoadGameEvent()
 EndFunction
 
 Function OnLoadGame()
+	If (Game.GetModByName("Schlongs of Skyrim.esp") != 255)
+		SoSFaction = (Game.GetFormFromFile(0x0000AFF8, "Schlongs of Skyrim.esp")) as Faction
+	Else
+		SoSFaction = none
+	EndIf
+	SoSInstalled = SoSFaction
+
 	If (UseBrokenCosaveWorkaround)
 		Console("Using cosave fix")
 

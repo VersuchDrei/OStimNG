@@ -844,9 +844,6 @@ Function ExportSettings()
 	JMap.SetInt(OstimSettingsFile, "SetPullOut", Main.PullOutKey as Int)
 	JMap.SetInt(OstimSettingsFile, "SetControlToggle", Main.ControlToggleKey as Int)
 
-	; Bed settings export.
-	JMap.SetInt(OstimSettingsFile, "SetBedRealignment", Main.BedRealignment as Int)
-
 	; Ai/Control settings export.
 	JMap.SetInt(OstimSettingsFile, "SetAIControl", Main.UseAIControl as Int)
 	JMap.SetInt(OstimSettingsFile, "SetForceAIIfAttacking", Main.UseAIPlayerAggressor as Int)
@@ -1003,8 +1000,6 @@ Function ImportSettings(bool default = false)
 	OSAControl.osaYesKey = JMap.GetInt(OstimSettingsFile, "SetOsaYesKey", 71)
 	OSAControl.osaEndKey = JMap.GetInt(OstimSettingsFile, "SetOsaEndKey", 83)
 
-	; Furniture settings export.
-	Main.BedRealignment = JMap.GetInt(OstimSettingsFile, "SetBedRealignment")
 	Main.AiSwitchChance = JMap.GetInt(OstimSettingsFile, "SetAIChangeChance")
 	
 	; Ai/Control settings export.
@@ -1637,7 +1632,23 @@ Function DrawGenderRolesPage()
 	AddMenuOptionST("OID_DefaultStrapOn", "$ostim_default_strap_on", OData.GetEquipObjectName(0x1, "strapon"))
 	SetCursorPosition(13)
 	AddMenuOptionST("OID_PlayerStrapOn", "$ostim_player_strap_on", OData.GetEquipObjectName(0x7, "strapon"))
+
+	SetCursorPosition(17)
+	AddColoredHeader("$ostim_header_futanari")
+	SetCursorPosition(19)
+	int UseSoSSexFlags = OPTION_FLAG_NONE
+	If !Main.SoSInstalled
+		UseSoSSexFlags = OPTION_FLAG_DISABLED
+	EndIf
+	AddToggleOptionST("OID_UseSoSSex", "$ostim_use_sos_sex", Main.UseSoSSex, UseSoSSexFlags)
+	SetCursorPosition(21)
+	int FutaFlags = OPTION_FLAG_NONE
+	If !Main.SoSInstalled || !Main.UseSoSSex
+		FutaFlags = OPTION_FLAG_DISABLED
+	EndIf
+	AddToggleOptionST("OID_FutaUseMaleExcitement", "$ostim_futa_use_male_excitement", Main.FutaUseMaleExcitement, FutaFlags)
 EndFunction
+
 
 State OID_ForceGayAnims
 	Event OnHighlightST()
@@ -1838,6 +1849,36 @@ State OID_PlayerStrapOn
 		SetEquipObjectIDToDefault(0x7, "strapon")
 	EndEvent
 EndState
+
+
+State OID_UseSoSSex
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_use_sos_sex")
+	EndEvent
+
+	Event OnSelectST()
+		Main.UseSoSSex = !Main.UseSoSSex
+		SetToggleOptionValueST(Main.UseSoSSex)
+
+		int FutaFlags = OPTION_FLAG_NONE
+		If !Main.UseSoSSex
+			FutaFlags = OPTION_FLAG_DISABLED
+		EndIf
+		SetOptionFlagsST(FutaFlags, false, "OID_FutaUseMaleExcitement")
+	EndEvent
+EndState
+
+State OID_FutaUseMaleExcitement
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_futa_use_male_excitement")
+	EndEvent
+
+	Event OnSelectST()
+		Main.FutaUseMaleExcitement = !Main.FutaUseMaleExcitement
+		SetToggleOptionValueST(Main.FutaUseMaleExcitement)
+	EndEvent
+EndState
+
 
 ; ███████╗██╗   ██╗██████╗ ███╗   ██╗██╗████████╗██╗   ██╗██████╗ ███████╗
 ; ██╔════╝██║   ██║██╔══██╗████╗  ██║██║╚══██╔══╝██║   ██║██╔══██╗██╔════╝

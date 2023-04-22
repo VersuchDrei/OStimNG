@@ -1,6 +1,7 @@
 #include "MCMTable.h"
 
 #include "Serial/Manager.h"
+#include "Util/CompatibilityTable.h"
 #include "Util.h"
 
 namespace MCM {
@@ -172,6 +173,15 @@ namespace MCM {
 
     bool MCMTable::unequipStrapOnIfInWay() {
         return settings[0xDDD].asBool();
+    }
+
+
+    bool MCMTable::useSoSSex() {
+        return Compatibility::CompatibilityTable::sosInstalled() && settings[0xE04].asBool();
+    }
+
+    bool MCMTable::futaUseMaleExcitement() {
+        return Compatibility::CompatibilityTable::sosInstalled() && settings[0xE04].asBool() && settings[0xE05].asBool();
     }
 
 

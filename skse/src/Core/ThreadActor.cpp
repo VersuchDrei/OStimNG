@@ -22,7 +22,7 @@ namespace OStim {
         Trait::TraitTable::addToExcitementFaction(actor);
         heelOffset = ActorUtil::getHeelOffset(actor);
 
-        baseExcitementMultiplier = isFemale ? MCM::MCMTable::getFemaleSexExcitementMult() : MCM::MCMTable::getMaleSexExcitementMult();
+        baseExcitementMultiplier = isFemale && (!hasSchlong || !MCM::MCMTable::futaUseMaleExcitement()) ? MCM::MCMTable::getFemaleSexExcitementMult() : MCM::MCMTable::getMaleSexExcitementMult();
         loopExcitementDecay = MCM::MCMTable::getExcitementDecayRate() * Constants::LOOP_TIME_SECONDS;
     }
 

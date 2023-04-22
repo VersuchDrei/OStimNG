@@ -201,7 +201,7 @@ Function UnsetObjectVariant(Actor Act, string Type) Global Native
 
 ;/* HasSchlong
 * * checks if the actor has a schlong
-* * if SoS full is not installed this will simply check for the actors sex
+* * if SoS full is not installed or use SoS gender was disabled in the MCM this will simply check for the actors sex
 * * if SoS full is installed this will check for the SOS_SchlongifiedFaction
 * * additionally it will check for SOS - No Futanari Schlong and SOS Female Pubic Hair
 * * (to not consider those schlongified even though they are in the faction)
@@ -214,12 +214,12 @@ Function UnsetObjectVariant(Actor Act, string Type) Global Native
 bool Function HasSchlong(Actor Act) Global Native
 
 ;/* SortActors
-* * sorts all actors with schlongs to the front of the array and all actors without schlong to the end
+* * sorts all actors with schlongs to the front of the array and all actors without schlongs to the end
 * * other than this the order is not altered (i.e. the sorting algorithm is stable)
 * * this function even works on actors that are not in a scene
 * *
 * * @param: Actors, the array of actors to sort
-* * @param: PlayerIndex, if given the player will be sorted to this index, independent on them having a schlong or not
+* * @param: PlayerIndex, if given the player will be sorted to this index, independent of them having a schlong or not
 * *
 * * @return: the sorted array 
 */;

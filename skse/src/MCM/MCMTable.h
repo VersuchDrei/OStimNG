@@ -51,6 +51,9 @@ namespace MCM {
         static bool unequipStrapOnIfNotNeeded();
         static bool unequipStrapOnIfInWay();
 
+        static bool useSoSSex();
+        static bool futaUseMaleExcitement();
+
         static bool groupAlignmentBySex();
         static bool groupAlignmentByHeight();
         static bool groupAlignmentByHeels();
@@ -62,7 +65,7 @@ namespace MCM {
         static void importSettings();
 
     private:
-        inline static std::unordered_map<uint32_t, MCMSetting> settings {
+        inline static std::unordered_map<uint32_t, MCMSetting> settings{
             {0xDE2, {38, "keyAlignment"}},
             {0xDEC, {181, "SetFreeCamToggleKey"}},
 
@@ -117,9 +120,13 @@ namespace MCM {
             {0XDF3, {0, "playerSelectRoleStraight"}},
             {0XDF4, {1, "playerSelectRoleGay"}},
             {0XDF5, {0, "playerSelectRoleThreesome"}},
+
             {0xDDB, {1, "equipStrapOnIfNeeded"}},
             {0xDDC, {0, "unequipStrapOnIfNotNeeded"}},
             {0xDDD, {1, "unequipStrapOnIfInWay"}},
+
+            {0xE04, {1, "useSoSSex"}},
+            {0xE05, {0, "futaUseMaleExcitement"}},
             
             {0xD94, {0, "SetScaling"}},
             {0xD97, {0, "SetSchlongBending"}},
