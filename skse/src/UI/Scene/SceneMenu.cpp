@@ -120,6 +120,26 @@ namespace UI::Scene {
         RE::GFxValue optionBoxes;
         root.GetMember("optionBoxes", &optionBoxes);
         optionBoxes.Invoke("AssignData", nullptr, &menuValues, 1);
+
+
+        //TEMP
+        RE::GFxValue barsData;
+        view->CreateObject(&barsData);
+        RE::GFxValue actorsData;
+        view->CreateArray(&actorsData);
+        RE::GFxValue actorData;
+        view->CreateObject(&actorData);
+        
+        RE::GFxValue actorData2;
+        view->CreateObject(&actorData2);
+        
+        actorsData.PushBack(actorData);
+        actorsData.PushBack(actorData2);
+
+        barsData.SetMember("actors", actorsData);
+        RE::GFxValue barsMgr;
+        root.GetMember("bars", &barsMgr);
+        barsMgr.Invoke("AssignData", nullptr, &barsData, 1);
     }
 
     UI::Scene::SceneMenu::MenuData SceneMenu::BuildMenuData() {
