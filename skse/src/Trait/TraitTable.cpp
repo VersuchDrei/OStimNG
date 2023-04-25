@@ -157,6 +157,10 @@ namespace Trait {
             genderExpression->typeMask |= ExpressionType::PHONEME;
         }
 
+        if (json.contains("phonemeObjectThreshold")) {
+            genderExpression->phonemeObjectThreshold = json["phonemeObjectThreshold"];
+        }
+
         if (json.contains("phonemeObjects")) {
             for (auto& object : json["phonemeObjects"]) {
                 genderExpression->phonemeObjects.push_back(object);

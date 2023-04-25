@@ -759,19 +759,25 @@ namespace OStim {
                 }
             }
 
-            for (std::string object : phonemeObjects) {
-                if (!VectorUtil::contains(expression->phonemeObjects, object)) {
+            if (excitement >= expression->phonemeObjectThreshold) {
+                for (std::string object : phonemeObjects) {
+                    if (!VectorUtil::contains(expression->phonemeObjects, object)) {
+                        unequipObject(object);
+                    }
+                }
+
+                for (std::string object : expression->phonemeObjects) {
+                    if (!VectorUtil::contains(phonemeObjects, object)) {
+                        equipObject(object);
+                    }
+                }
+
+                phonemeObjects = expression->phonemeObjects;
+            } else {
+                for (std::string object : phonemeObjects) {
                     unequipObject(object);
                 }
             }
-
-            for (std::string object : expression->phonemeObjects) {
-                if (!VectorUtil::contains(phonemeObjects, object)) {
-                    equipObject(object);
-                }
-            }
-
-            phonemeObjects = expression->phonemeObjects;
         }
     }
 

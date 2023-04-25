@@ -1158,12 +1158,12 @@ Bool Function StartScene(Actor Dom, Actor Sub, Bool zUndressDom = False, Bool zU
 	PauseAI = false
 
 	; set actor properties
-	If ThirdActor
+	If zThirdActor
 		Actors = new Actor[3]
 		Actors[0] = Dom
 		Actors[1] = Sub
 		Actors[2] = zThirdActor
-	ElseIf SubActor
+	ElseIf Sub
 		Actors = new Actor[2]
 		Actors[0] = Dom
 		Actors[1] = Sub
@@ -2111,6 +2111,10 @@ EndFunction
 
 Bool Function IsFemale(Actor Act)
 	{genitalia based / has a vagina and not a penis}
+	If !Act
+		Return False
+	EndIf
+
 	Return !OActor.HasSchlong(Act)
 EndFunction
 
