@@ -176,6 +176,9 @@ namespace Trait {
         if (json.contains("baseValue")) {
             modifier.baseValue = json["baseValue"];
         }
+        if (json.contains("variance")) {
+            modifier.variance = json["variance"];
+        }
         if (json.contains("speedMultiplier")) {
             modifier.speedMultiplier = json["speedMultiplier"];
         }
