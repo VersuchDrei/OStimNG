@@ -37,6 +37,7 @@ namespace OStim {
         void changeSpeed(int speed);
         void setScaleMult(float scaleMult);
         void setSoSBend(int sosBend);
+        void offsetSoSBend(int sosOffset);
 
         void handleNiNodeUpdate();
 
@@ -44,6 +45,7 @@ namespace OStim {
         void clearEventExpression();
         void playEventExpression(std::string expression);
         void playEventExpression(Trait::FacialExpression* expression);
+        bool hasExpressionOverride();
         void setLooking(std::unordered_map<int, Trait::FaceModifier> eyeballOverride);
         void unsetLooking();
         void resetLooking();
@@ -134,6 +136,7 @@ namespace OStim {
         int speed = 0;
         float scaleMult = 1.0;
         int sosBend = 0;
+        int sosOffset = 0;
 
         bool undressed = false;
         uint32_t undressedMask = 0;

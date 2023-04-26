@@ -5,6 +5,7 @@ namespace Compatibility {
     public:
         static void setupForms();
 
+        static bool sosInstalled();
         static bool hasSchlong(RE::Actor* actor);
     private:
         static void tryAddNoSchlongFaction(std::string modName, RE::FormID formID);

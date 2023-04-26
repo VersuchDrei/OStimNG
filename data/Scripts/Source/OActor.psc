@@ -2,8 +2,45 @@
 * * collection of methods to modify scene actors
 * * all of these only affect actors that are currently in a scene
 * * if you pass them an actor that is not in a scene nothing will happen
+* * (except for a few functions where it is explicitly stated that they work on actors that are not in a scene)
 */;
 ScriptName OActor
+
+; ███████╗██╗  ██╗ ██████╗██╗████████╗███████╗███╗   ███╗███████╗███╗   ██╗████████╗
+; ██╔════╝╚██╗██╔╝██╔════╝██║╚══██╔══╝██╔════╝████╗ ████║██╔════╝████╗  ██║╚══██╔══╝
+; █████╗   ╚███╔╝ ██║     ██║   ██║   █████╗  ██╔████╔██║█████╗  ██╔██╗ ██║   ██║
+; ██╔══╝   ██╔██╗ ██║     ██║   ██║   ██╔══╝  ██║╚██╔╝██║██╔══╝  ██║╚██╗██║   ██║
+; ███████╗██╔╝ ██╗╚██████╗██║   ██║   ███████╗██║ ╚═╝ ██║███████╗██║ ╚████║   ██║
+; ╚══════╝╚═╝  ╚═╝ ╚═════╝╚═╝   ╚═╝   ╚══════╝╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝   ╚═╝
+
+;/* GetExcitement
+* * returns the actors current excitement level
+* *
+* * @param: Act, the actor to get the excitement for
+* *
+* * @return: the current excitement of the actor
+*/;
+float Function GetExcitement(Actor Act) Global Native
+
+;/* SetExcitement
+* * sets the excitement of an actor
+* * values less than 0 will round up to 0, values greater than 100 will round down to 100
+* *
+* * @param: Act, the actor to set the excitement for
+* * @param: Excitement, the value to set the excitement to
+*/;
+Function SetExcitement(Actor Act, float Excitement) Global Native
+
+;/* ModifyExcitement
+* * modifies the excitement of the actor by the given value
+* * if the result is less than 0 it will round up to 0, if it is greater than 100 it will round down to 100
+* *
+* * @param: Act, the actor to modify the excitement for
+* * @param: Excitement, the value to modify the excitement by, negative values reduce excitement
+* * @param: RespectMultiplier, if true the passed value will be multiplied by the actors excitement multiplier set in the MCM before being applied
+*/;
+Function ModifyExcitement(Actor Act, float Excitement, bool RespectMultiplier = false) Global Native
+
 
 ; ███████╗██╗  ██╗██████╗ ██████╗ ███████╗███████╗███████╗██╗ ██████╗ ███╗   ██╗███████╗
 ; ██╔════╝╚██╗██╔╝██╔══██╗██╔══██╗██╔════╝██╔════╝██╔════╝██║██╔═══██╗████╗  ██║██╔════╝
@@ -29,6 +66,15 @@ float Function PlayExpression(Actor Act, string Expression) Global Native
 * * @param: Act, the actor to update the expression for
 */;
 Function ClearExpression(Actor Act) Global Native
+
+;/* HasExpressionOverride
+* * checks if the actor has an expression override (e.g. is performing an oral action or has their mouth otherwise open)
+* *
+* * @param: Act, the actor to check for
+* *
+* * @return: true if the actors expression is overridden
+*/;
+bool Function HasExpressionOverride(Actor Act) Global Native
 
 
 ; ██╗   ██╗███╗   ██╗██████╗ ██████╗ ███████╗███████╗███████╗██╗███╗   ██╗ ██████╗ 
@@ -155,7 +201,7 @@ Function UnsetObjectVariant(Actor Act, string Type) Global Native
 
 ;/* HasSchlong
 * * checks if the actor has a schlong
-* * if SoS full is not installed this will simply check for the actors sex
+* * if SoS full is not installed or use SoS gender was disabled in the MCM this will simply check for the actors sex
 * * if SoS full is installed this will check for the SOS_SchlongifiedFaction
 * * additionally it will check for SOS - No Futanari Schlong and SOS Female Pubic Hair
 * * (to not consider those schlongified even though they are in the faction)
@@ -166,6 +212,18 @@ Function UnsetObjectVariant(Actor Act, string Type) Global Native
 * * @return: true if the actor has a schlong, otherwise false
 */;
 bool Function HasSchlong(Actor Act) Global Native
+
+;/* SortActors
+* * sorts all actors with schlongs to the front of the array and all actors without schlongs to the end
+* * other than this the order is not altered (i.e. the sorting algorithm is stable)
+* * this function even works on actors that are not in a scene
+* *
+* * @param: Actors, the array of actors to sort
+* * @param: PlayerIndex, if given the player will be sorted to this index, independent of them having a schlong or not
+* *
+* * @return: the sorted array 
+*/;
+Actor[] Function SortActors(Actor[] Actors, int PlayerIndex = -1) Global Native
 
 
 ; ██████╗ ███████╗██████╗ ██████╗ ███████╗ ██████╗ █████╗ ████████╗███████╗██████╗ 

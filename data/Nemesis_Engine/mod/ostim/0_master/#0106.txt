@@ -1232,6 +1232,8 @@
 				<hkcstring>OStimUnsetLooking</hkcstring>
 				<hkcstring>OStimResetLooking</hkcstring>
 				<hkcstring>OStimPlayExpression</hkcstring>
+				<hkcstring>OStimBendSoS</hkcstring>
+				<hkcstring>OStimResetSoS</hkcstring>
 <!-- CLOSE -->
 			</hkparam>
 			<hkparam name="attributeNames" numelements="0"></hkparam>

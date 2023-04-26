@@ -8,7 +8,7 @@
 #include "Util/CompatibilityTable.h"
 #include "Util/FormUtil.h"
 #include "Util/Constants.h"
-#include "Util/MCMTable.h"
+#include "MCM/MCMTable.h"
 #include "Util/ObjectRefUtil.h"
 #include "Util/StringUtil.h"
 #include "Util/VectorUtil.h"
@@ -22,7 +22,7 @@ namespace OStim {
         Trait::TraitTable::addToExcitementFaction(actor);
         heelOffset = ActorUtil::getHeelOffset(actor);
 
-        baseExcitementMultiplier = isFemale ? MCM::MCMTable::getFemaleSexExcitementMult() : MCM::MCMTable::getMaleSexExcitementMult();
+        baseExcitementMultiplier = isFemale && (!hasSchlong || !MCM::MCMTable::futaUseMaleExcitement()) ? MCM::MCMTable::getFemaleSexExcitementMult() : MCM::MCMTable::getMaleSexExcitementMult();
         loopExcitementDecay = MCM::MCMTable::getExcitementDecayRate() * Constants::LOOP_TIME_SECONDS;
     }
 
@@ -74,7 +74,7 @@ namespace OStim {
             }
             
             auto armor = obj->As<RE::TESObjectARMO>();
-            if (FormUtil::isWig(actor, armor)) {
+            if (!MCM::MCMTable::undressWigs() && FormUtil::isWig(actor, armor)) {
                 continue;
             }
 
@@ -237,6 +237,8 @@ namespace OStim {
     void ThreadActor::changeNode(Graph::Actor* graphActor, std::vector<Trait::FacialExpression*>* nodeExpressions, std::vector<Trait::FacialExpression*>* overrideExpressions) {
         this->graphActor = graphActor;
 
+        sosOffset = 0;
+
         // heel stuff
         checkHeelOffset();
 
@@ -279,6 +281,11 @@ namespace OStim {
 
     void ThreadActor::setSoSBend(int sosBend) {
         this->sosBend = sosBend;
+        bendSchlong();
+    }
+
+    void ThreadActor::offsetSoSBend(int soSOffset) {
+        this->sosOffset = sosOffset;
         bendSchlong();
     }
 
@@ -404,7 +411,13 @@ namespace OStim {
 
     void ThreadActor::bendSchlong() {
         if (!MCM::MCMTable::isSchlongBendingDisabled()) {
-            actor->NotifyAnimationGraph("SOSBend" + std::to_string(sosBend));
+            int totalBend = sosBend + sosOffset;
+            if (totalBend > 9) {
+                totalBend = 9;
+            } else if (totalBend < -10) {
+                totalBend = -10;
+            }
+            actor->NotifyAnimationGraph(totalBend == -10 ? "SOSFlaccid" : "SOSBend" + std::to_string(sosBend));
         }
     }
 
@@ -595,6 +608,10 @@ namespace OStim {
         eventExpressionCooldown = expression->getDuration(actor) * 1000;
     }
 
+    bool ThreadActor::hasExpressionOverride() {
+        return overrideExpressions;
+    }
+
     void ThreadActor::setLooking(std::unordered_map<int, Trait::FaceModifier> eyeballOverride) {
         eyeballModifierOverride = eyeballOverride;
         checkForEyeballOverride();
@@ -742,19 +759,25 @@ namespace OStim {
                 }
             }
 
-            for (std::string object : phonemeObjects) {
-                if (!VectorUtil::contains(expression->phonemeObjects, object)) {
+            if (excitement >= expression->phonemeObjectThreshold) {
+                for (std::string object : phonemeObjects) {
+                    if (!VectorUtil::contains(expression->phonemeObjects, object)) {
+                        unequipObject(object);
+                    }
+                }
+
+                for (std::string object : expression->phonemeObjects) {
+                    if (!VectorUtil::contains(phonemeObjects, object)) {
+                        equipObject(object);
+                    }
+                }
+
+                phonemeObjects = expression->phonemeObjects;
+            } else {
+                for (std::string object : phonemeObjects) {
                     unequipObject(object);
                 }
             }
-
-            for (std::string object : expression->phonemeObjects) {
-                if (!VectorUtil::contains(phonemeObjects, object)) {
-                    equipObject(object);
-                }
-            }
-
-            phonemeObjects = expression->phonemeObjects;
         }
     }
 

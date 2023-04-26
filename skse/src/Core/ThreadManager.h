@@ -15,6 +15,7 @@ namespace OStim {
         void UnTrackThread(ThreadId a_id);
         void UntrackAllThreads();
         bool AnySceneRunning();
+        bool playerThreadRunning();
 
         ThreadActor* findActor(RE::Actor* actor);
 

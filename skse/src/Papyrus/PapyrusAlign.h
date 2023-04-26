@@ -16,7 +16,7 @@ namespace PapyrusAlign {
             UI::Align::AlignMenu::Hide();
             return;
         }
-        
+
         if (uiState->GetActiveMenu() != UI::MenuType::kAlignMenu) {
             uiState->SwitchActiveMenu(UI::MenuType::kAlignMenu);
         }

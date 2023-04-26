@@ -1,5 +1,7 @@
 #include "CompatibilityTable.h"
 
+#include "MCM/MCMTable.h"
+
 namespace Compatibility {
     void CompatibilityTable::setupForms() {
         RE::TESDataHandler* handler = RE::TESDataHandler::GetSingleton();
@@ -51,8 +53,12 @@ namespace Compatibility {
         }
     }
 
+    bool CompatibilityTable::sosInstalled() {
+        return SOS_SchlongifiedFaction;
+    }
+
     bool CompatibilityTable::hasSchlong(RE::Actor* actor) {
-        if (!SOS_SchlongifiedFaction) {
+        if (!MCM::MCMTable::useSoSSex()) {
             return actor->GetActorBase()->GetSex() == RE::SEX::kMale;
         }
 

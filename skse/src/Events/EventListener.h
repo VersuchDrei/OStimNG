@@ -3,13 +3,14 @@
 #include "Core/Singleton.h"
 #include "Core/ThreadManager.h"
 #include "Graph/LookupTable.h"
-#include "Util/MCMTable.h"
+#include "MCM/MCMTable.h"
 
 namespace Events {
-    class EventListener final : public OStim::ISingleton<EventListener>, public RE::BSTEventSink<RE::TESLoadGameEvent>, public RE::BSTEventSink<SKSE::NiNodeUpdateEvent> {
+    class EventListener final : public OStim::ISingleton<EventListener>, public RE::BSTEventSink<RE::TESLoadGameEvent>, public RE::BSTEventSink<SKSE::NiNodeUpdateEvent>, public RE::BSTEventSink<RE::InputEvent*> {
     public:
         virtual RE::BSEventNotifyControl ProcessEvent(const RE::TESLoadGameEvent* a_event, RE::BSTEventSource<RE::TESLoadGameEvent>* a_eventSource) override;
         virtual RE::BSEventNotifyControl ProcessEvent(const SKSE::NiNodeUpdateEvent* a_event, RE::BSTEventSource<SKSE::NiNodeUpdateEvent>* a_eventSource) override;
+        virtual RE::BSEventNotifyControl ProcessEvent(RE::InputEvent* const* a_events, RE::BSTEventSource<RE::InputEvent*>* a_eventSource) override;
 
     private:
         class CheckPapyrusUndressingCallbackFunctor : public RE::BSScript::IStackCallbackFunctor {

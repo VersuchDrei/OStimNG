@@ -58,13 +58,6 @@ Faction Property NVCustomOrgasmFaction Auto
 ; -------------------------------------------------------------------------------------------------
 ; SETTINGS  ---------------------------------------------------------------------------------------
 
-Bool Property EnableDomBar Auto
-Bool Property EnableSubBar Auto
-Bool Property EnableThirdBar Auto
-Bool Property AutoHideBars Auto
-Bool Property MatchBarColorToGender auto
-Bool Property HideBarsInNPCScenes auto
-
 Bool Property EnableActorSpeedControl Auto
 
 Bool Property ResetPosAfterSceneEnd Auto
@@ -118,8 +111,6 @@ bool Property SkipEndingFadein Auto
 Bool Property EndAfterActorHit Auto
 
 Bool Property GetInBedAfterBedScene Auto
-
-Int Property BedRealignment Auto
 
 Bool Property ForceFirstPersonAfter Auto
 
@@ -222,11 +213,7 @@ int property FreecamKey
 		Return OStimKeyFreeCam.value As int
 	EndFunction
 	Function Set(int Value)
-		UnregisterForKey(OStimKeyFreeCam.value As int)
 		OStimKeyFreeCam.value = Value
-		If Value != 1
-			RegisterForKey(Value)
-		EndIf
 	EndFunction
 EndProperty
 
@@ -236,11 +223,7 @@ int Property AlignmentKey
 		Return OStimKeyAlignment.value As int
 	EndFunction
 	Function Set(int Value)
-		UnregisterForKey(OStimKeyAlignment.value As int)
 		OStimKeyAlignment.value = Value
-		If Value != 1
-			RegisterForKey(Value)
-		EndIf
 	EndFunction
 EndProperty
 
@@ -339,6 +322,152 @@ int Property ExcitementDecayGracePeriod
 EndProperty
 
 ; -------------------------------------------------------------------------------------------------
+; EXCITEMENT BAR SETTINGS  ------------------------------------------------------------------------
+
+GlobalVariable Property OStimEnablePlayerBar Auto
+bool Property EnablePlayerBar
+	bool Function Get()
+		Return OStimEnablePlayerBar.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimEnablePlayerBar.value = 1
+		Else
+			OStimEnablePlayerBar.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimEnableNpcBar Auto
+bool Property EnableNpcBar
+	bool Function Get()
+		Return OStimEnableNpcBar.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimEnableNpcBar.value = 1
+		Else
+			OStimEnableNpcBar.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimAutoHideBars Auto
+Bool Property AutoHideBars
+	bool Function Get()
+		Return OStimAutoHideBars.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimAutoHideBars.value = 1
+		Else
+			OStimAutoHideBars.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimMatchBarColorToGender Auto
+Bool Property MatchBarColorToGender
+	bool Function Get()
+		Return OStimMatchBarColorToGender.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimMatchBarColorToGender.value = 1
+		Else
+			OStimMatchBarColorToGender.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+; -------------------------------------------------------------------------------------------------
+; ORGASM SETTINGS  --------------------------------------------------------------------------------
+
+GlobalVariable Property OStimEndOnMaleOrgasm Auto
+Bool Property EndOnMaleOrgasm
+	bool Function Get()
+		Return OStimEndOnMaleOrgasm.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimEndOnMaleOrgasm.value = 1
+		Else
+			OStimEndOnMaleOrgasm.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimEndOnFemaleOrgasm Auto
+Bool Property EndOnFemaleOrgasm
+	bool Function Get()
+		Return OStimEndOnFemaleOrgasm.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimEndOnFemaleOrgasm.value = 1
+		Else
+			OStimEndOnFemaleOrgasm.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimEndOnAllOrgasm Auto
+Bool Property EndOnAllOrgasm
+	bool Function Get()
+		Return OStimEndOnAllOrgasm.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimEndOnAllOrgasm.value = 1
+		Else
+			OStimEndOnAllOrgasm.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimSlowMotionOnOrgasm Auto
+Bool Property SlowMoOnOrgasm
+	bool Function Get()
+		Return OStimSlowMotionOnOrgasm.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimSlowMotionOnOrgasm.value = 1
+		Else
+			OStimSlowMotionOnOrgasm.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimBlurOnOrgasm Auto
+Bool Property BlurOnOrgasm
+	bool Function Get()
+		Return OStimBlurOnOrgasm.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimBlurOnOrgasm.value = 1
+		Else
+			OStimBlurOnOrgasm.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimAutoClimaxAnimations Auto
+bool Property AutoClimaxAnimations
+	bool Function Get()
+		Return OStimAutoClimaxAnimations.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimAutoClimaxAnimations.value = 1
+		Else
+			OStimAutoClimaxAnimations.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+; -------------------------------------------------------------------------------------------------
 ; UNDRESSING SETTINGS  ----------------------------------------------------------------------------
 
 GlobalVariable Property OStimUndressAtStart Auto
@@ -421,6 +550,20 @@ Bool Property FullyAnimateRedress
 	EndFunction
 EndProperty
 
+GlobalVariable Property OStimUndressWigs Auto
+Bool Property UndressWigs
+	bool Function Get()
+		Return OStimUndressWigs.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimUndressWigs.value = 1
+		Else
+			OStimUndressWigs.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
 ; changing the value of this global does not change the undressing behavior
 ; to change the undressing behavior you need to change the return value of OUndress.UsePapyrusUndressing()
 ; this global has a purely informative purpose, so consider it to be read only
@@ -435,37 +578,125 @@ EndProperty
 Int[] Property StrippingSlots Auto
 
 ; -------------------------------------------------------------------------------------------------
-; ORGASM SETTINGS  --------------------------------------------------------------------------------
+; GENDER ROLE SETTINGS  ---------------------------------------------------------------------------
 
-Bool Property EndOnDomOrgasm Auto
-Bool Property EndOnSubOrgasm Auto
-Bool Property RequireBothOrgasmsToFinish Auto
-Bool Property SlowMoOnOrgasm Auto
-Bool Property BlurOnOrgasm Auto
-
-GlobalVariable Property OStimAutoClimaxAnimations Auto
-bool Property AutoClimaxAnimations
+GlobalVariable Property OStimIntendedSexOnly Auto
+Bool Property IntendedSexOnly
 	bool Function Get()
-		Return OStimAutoClimaxAnimations.value != 0
+		Return OStimIntendedSexOnly.value != 0
 	EndFunction
 	Function Set(bool Value)
 		If Value
-			OStimAutoClimaxAnimations.value = 1
+			OStimIntendedSexOnly.value = 1
 		Else
-			OStimAutoClimaxAnimations.value = 0
+			OStimIntendedSexOnly.value = 0
 		EndIf
 	EndFunction
 EndProperty
 
+GlobalVariable Property OStimPlayerAlwaysDomStraight Auto
+Bool Property PlayerAlwaysDomStraight
+	bool Function Get()
+		Return OStimPlayerAlwaysDomStraight.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimPlayerAlwaysDomStraight.value = 1
+		Else
+			OStimPlayerAlwaysDomStraight.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimPlayerAlwaysSubStraight Auto
+Bool Property PlayerAlwaysSubStraight
+	bool Function Get()
+		Return OStimPlayerAlwaysSubStraight.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimPlayerAlwaysSubStraight.value = 1
+		Else
+			OStimPlayerAlwaysSubStraight.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimPlayerAlwaysDomGay Auto
+Bool Property PlayerAlwaysDomGay
+	bool Function Get()
+		Return OStimPlayerAlwaysDomGay.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimPlayerAlwaysDomGay.value = 1
+		Else
+			OStimPlayerAlwaysDomGay.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimPlayerAlwaysSubGay Auto
+Bool Property PlayerAlwaysSubGay
+	bool Function Get()
+		Return OStimPlayerAlwaysSubGay.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimPlayerAlwaysSubGay.value = 1
+		Else
+			OStimPlayerAlwaysSubGay.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimPlayerSelectRoleStraight Auto
+Bool Property PlayerSelectRoleStraight
+	bool Function Get()
+		Return OStimPlayerSelectRoleStraight.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimPlayerSelectRoleStraight.value = 1
+		Else
+			OStimPlayerSelectRoleStraight.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimPlayerSelectRoleGay Auto
+Bool Property PlayerSelectRoleGay
+	bool Function Get()
+		Return OStimPlayerSelectRoleGay.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimPlayerSelectRoleGay.value = 1
+		Else
+			OStimPlayerSelectRoleGay.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimPlayerSelectRoleThreesome Auto
+Bool Property PlayerSelectRoleThreesome
+	bool Function Get()
+		Return OStimPlayerSelectRoleThreesome.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimPlayerSelectRoleThreesome.value = 1
+		Else
+			OStimPlayerSelectRoleThreesome.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+Message Property OStimRoleSelectionMessage Auto
+GlobalVariable Property OStimRoleSelectionCount Auto
+
 ; -------------------------------------------------------------------------------------------------
-; GENDER ROLE SETTINGS  ---------------------------------------------------------------------------
-
-Bool Property PlayerAlwaysSubStraight auto ;mcm
-Bool Property PlayerAlwaysSubGay Auto
-Bool Property PlayerAlwaysDomStraight Auto 
-Bool Property PlayerAlwaysDomGay auto
-
-Bool Property OnlyGayAnimsInGayScenes auto
+; STRAP-ON SETTINGS  ------------------------------------------------------------------------------
 
 GlobalVariable Property OStimEquipStrapOnIfNeeded Auto
 bool Property EquipStrapOnIfNeeded
@@ -505,6 +736,37 @@ bool Property UnequipStrapOnIfInWay
 			OStimUnequipStrapOnIfInWay.value = 1
 		Else
 			OStimUnequipStrapOnIfInWay.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+; -------------------------------------------------------------------------------------------------
+; FUTANARI SETTINGS  ------------------------------------------------------------------------------
+
+GlobalVariable Property OStimUseSoSSex Auto
+bool Property UseSoSSex
+	bool Function Get()
+		Return OStimUseSoSSex.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimUseSoSSex.value = 1
+		Else
+			OStimUseSoSSex.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimFutaUseMaleExcitement Auto
+bool Property FutaUseMaleExcitement
+	bool Function Get()
+		Return OStimFutaUseMaleExcitement.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimFutaUseMaleExcitement.value = 1
+		Else
+			OStimFutaUseMaleExcitement.value = 0
 		EndIf
 	EndFunction
 EndProperty
@@ -658,6 +920,26 @@ int Property ResetClutterRadius
 	EndFunction
 	Function Set(int Value)
 		OStimResetClutterRadius.value = Value
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimBedRealignment Auto
+float Property BedRealignment
+	float Function Get()
+		Return OStimBedRealignment.value
+	EndFunction
+	Function Set(float Value)
+		OStimBedRealignment.value = Value
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimBedOffset Auto
+float Property BedOffset
+	float Function Get()
+		Return OStimBedOffset.value
+	EndFunction
+	Function Set(float Value)
+		OStimBedOffset.value = Value
 	EndFunction
 EndProperty
 
@@ -869,67 +1151,161 @@ Bool Function StartScene(Actor Dom, Actor Sub, Bool zUndressDom = False, Bool zU
 		return false
 	EndIf
 
-	; Default OSex gender order
-	DomActor = Dom
-	SubActor = Sub
-	If (SubActor && AppearsFemale(Dom) && !AppearsFemale(Sub)) ; if the dom is female and the sub is male
-		DomActor = Sub
-		SubActor = Dom
-	EndIf
-
 
 	UndressDom = zUndressDom
 	UndressSub = zUndressSub
 	StartingAnimation = zStartingAnimation
-	ThirdActor = zThirdActor
 	PauseAI = false
 
+	; set actor properties
 	If zThirdActor
-		If AppearsFemale(ThirdActor) && !AppearsFemale(SubActor)
-			SubActor = zThirdActor
-			ThirdActor = sub
+		Actors = new Actor[3]
+		Actors[0] = Dom
+		Actors[1] = Sub
+		Actors[2] = zThirdActor
+	ElseIf Sub
+		Actors = new Actor[2]
+		Actors[0] = Dom
+		Actors[1] = Sub
+	Else
+		Actors = new Actor[1]
+		Actors[0] = Dom
+	EndIf
+
+	; this actor order is a shitshow, MFM for threesomes wtf?
+	; once we get our own UI and the xml scenes will become legacy we'll change this to MMF!
+	; there has to be a better way to do this than lining up a ton of else ifs
+	; maybe just remove all the player is this and that options since there is now a selection message box?
+	; TODO: use OActor.SortActors once we went from MFM to MMF
+	OStimRoleSelectionCount.value = Actors.Length
+	If Actors.Length == 3
+		If PlayerSelectRoleThreesome
+			int PlayerIndex = OStimRoleSelectionMessage.Show()
+			If PlayerIndex == 0
+				If Actors[1] == PlayerRef
+					Actors[1] = Actors[0]
+					Actors[0] = PlayerRef
+				ElseIf Actors[2] == PlayerRef
+					Actors[2] = Actors[0]
+					Actors[0] = PlayerRef
+				EndIf
+				If AppearsFemale(Actors[2]) && !AppearsFemale(Actors[1])
+					Actor Temp = Actors[1]
+					Actors[1] = Actors[2]
+					Actors[2] = Temp
+				EndIf
+			ElseIf PlayerIndex == 1
+				If Actors[0] == PlayerRef
+					Actors[0] = Actors[1]
+					Actors[1] = PlayerRef
+				ElseIf Actors[2] == PlayerRef
+					Actors[2] = Actors[1]
+					Actors[1] = PlayerRef
+				EndIf
+				If AppearsFemale(Actors[0]) && !AppearsFemale(Actors[2])
+					Actor Temp = Actors[0]
+					Actors[0] = Actors[2]
+					Actors[2] = Temp
+				EndIf
+			Else
+				If Actors[0] == PlayerRef
+					Actors[0] = Actors[2]
+					Actors[2] = PlayerRef
+				ElseIf Actors[1] == PlayerRef
+					Actors[1] = Actors[2]
+					Actors[2] = PlayerRef
+				EndIf
+				If AppearsFemale(Actors[0]) && !AppearsFemale(Actors[1])
+					Actor Temp = Actors[0]
+					Actors[0] = Actors[1]
+					Actors[1] = Temp
+				EndIf
+			EndIf
+		Else
+			If AppearsFemale(Actors[0]) && !AppearsFemale(Actors[1])
+				Actor Temp = Actors[0]
+				Actors[0] = Actors[1]
+				Actors[1] = Temp
+			EndIf
+			If AppearsFemale(Actors[0]) && !AppearsFemale(Actors[2])
+				Actor Temp = Actors[0]
+				Actors[0] = Actors[2]
+				Actors[2] = Temp
+			EndIf
+			If AppearsFemale(Actors[2]) && !AppearsFemale(Actors[1])
+				Actor Temp = Actors[1]
+				Actors[1] = Actors[2]
+				Actors[2] = Temp
+			EndIf
+		EndIf
+	ElseIf Actors.Length == 2
+		If AppearsFemale(Actors[0]) == AppearsFemale(Actors[1]) ; gay
+			If PlayerSelectRoleGay
+				If OStimRoleSelectionMessage.Show() == 0
+					If Actors[1] == PlayerRef
+						Actors[1] = Actors[0]
+						Actors[0] = PlayerRef
+					EndIf
+				Else
+					If Actors[0] == PlayerRef
+						Actors[0] = Actors[1]
+						Actors[1] = PlayerRef
+					EndIf
+				EndIf
+			ElseIf PlayerAlwaysDomGay
+				If Actors[1] == PlayerRef
+					Actors[1] = Actors[0]
+					Actors[0] = PlayerRef
+				EndIf
+			ElseIf PlayerAlwaysSubGay
+				If Actors[0] == PlayerRef
+					Actors[0] = Actors[1]
+					Actors[1] = PlayerRef
+				EndIf
+			EndIf
+		Else
+			If PlayerSelectRoleStraight
+				If OStimRoleSelectionMessage.Show() == 0
+					If Actors[1] == PlayerRef
+						Actors[1] = Actors[0]
+						Actors[0] = PlayerRef
+					EndIf
+				Else
+					If Actors[0] == PlayerRef
+						Actors[0] = Actors[1]
+						Actors[1] = PlayerRef
+					EndIf
+				EndIf
+			ElseIf PlayerAlwaysDomStraight
+				If Actors[1] == PlayerRef
+					Actors[1] = Actors[0]
+					Actors[0] = PlayerRef
+				EndIf
+			ElseIf PlayerAlwaysSubStraight
+				If Actors[0] == PlayerRef
+					Actors[0] = Actors[1]
+					Actors[1] = PlayerRef
+				EndIf
+			Else
+				If AppearsFemale(Actors[0]) && !AppearsFemale(Actors[1])
+					Actor Temp = Actors[0]
+					Actors[0] = Actors[1]
+					Actors[1] = Temp
+				EndIf
+			EndIf
 		EndIf
 	EndIf
 
-
-	If SubActor
-		;special reordering settings
-		;todo: clean up all of the ordering code around here
-		bool gay = (AppearsFemale(dom) == AppearsFemale(sub))
-		actor playerPartner = GetSexPartner(playerref)
-
-		if gay 
-			if PlayerAlwaysDomGay
-				SubActor = playerPartner
-				DomActor = playerref
-			elseif PlayerAlwaysSubGay
-				DomActor = playerPartner
-				SubActor = playerref
-			endif
-		else 
-			if PlayerAlwaysSubStraight
-				SubActor = playerref 
-				DomActor = playerPartner
-			elseif PlayerAlwaysDomStraight
-				DomActor = playerref 
-				SubActor = playerpartner  
-			endif 
-		endif 
-	endif
-
-	; set actor properties
-	If ThirdActor
-		Actors = new Actor[3]
-		Actors[0] = DomActor
-		Actors[1] = SubActor
-		Actors[2] = ThirdActor
-	ElseIf SubActor
-		Actors = new Actor[2]
-		Actors[0] = DomActor
-		Actors[1] = SubActor
+	DomActor = Actors[0]
+	If Actors.Length >= 2
+		SubActor = Actors[1]
 	Else
-		Actors = new Actor[1]
-		Actors[0] = DomActor
+		SubActor = None
+	EndIf
+	If Actors.Length == 3
+		ThirdActor = Actors[2]
+	Else
+		ThirdActor = None
 	EndIf
 
 	If !OSA.CheckActors(Actors)
@@ -1232,36 +1608,7 @@ Event OnUpdate() ;OStim main logic loop
 			AutoIncreaseSpeed()
 		EndIf
 
-		If (GetActorExcitement(SubActor) >= 100.0)
-			SubTimesOrgasm += 1
-			Orgasm(SubActor)
-			If (EndOnSubOrgasm)
-				If !RequireBothOrgasmsToFinish || DomTimesOrgasm > 0
-					SetCurrentAnimationSpeed(0)
-					Utility.Wait(4)
-					EndAnimation()
-				EndIf
-			EndIf
-		EndIf
-
-		If (GetActorExcitement(ThirdActor) >= 100.0)
-			ThirdTimesOrgasm += 1
-			Orgasm(ThirdActor)
-		EndIf
-
-		If (GetActorExcitement(DomActor) >= 100.0)
-			DomTimesOrgasm += 1
-			Orgasm(DomActor)
-			If (EndOnDomOrgasm)
-				If !RequireBothOrgasmsToFinish || SubTimesOrgasm > 0
-					SetCurrentAnimationSpeed(0)
-					Utility.Wait(4)
-					EndAnimation()
-				EndIf
-			EndIf
-		EndIf
-
-		i = 3
+		i = 0
 		While i < Actors.Length
 			If GetActorExcitement(Actors[i]) >= 100.0
 				Orgasm(Actors[i])
@@ -1764,14 +2111,11 @@ EndFunction
 
 Bool Function IsFemale(Actor Act)
 	{genitalia based / has a vagina and not a penis}
+	If !Act
+		Return False
+	EndIf
 
-
-	If SoSInstalled
-		return !Act.IsInFaction(SoSFaction)
-	else
-		Return AppearsFemale(Act)
-	endif
-
+	Return !OActor.HasSchlong(Act)
 EndFunction
 
 Bool Function AppearsFemale(Actor Act) 
@@ -2343,7 +2687,7 @@ Function Climax(Actor Act)
 		ShakeController(0.5, 0.7)
 	EndIf
 
-	If (Act == DomActor)
+	If !IsFemale(Act)
 		SetCurrentAnimationSpeed(OMetadata.GetDefaultSpeed(CurrentSceneID))
 	EndIf
 
@@ -2361,6 +2705,22 @@ Function Climax(Actor Act)
 	EndIf
 
 	Act.DamageActorValue("stamina", 250.0)
+
+	bool End = false
+	If EndOnAllOrgasm
+		End = DomTimesOrgasm > 0 && (SubActor == None || SubTimesOrgasm > 0) && (ThirdActor == None || ThirdTimesOrgasm > 0)
+	Else
+		If AppearsFemale(Act)
+			End = EndOnFemaleOrgasm
+		Else
+			End = EndOnMaleOrgasm
+		EndIf
+	EndIf
+	If End
+		SetCurrentAnimationSpeed(0)
+		Utility.Wait(4)
+		EndAnimation()
+	EndIf
 EndFunction
 
 Function Orgasm(Actor Act)
@@ -2523,7 +2883,7 @@ Function OnSound(Actor Act, Int SoundID, Int FormNumber)
 	If (FormNumber == 60)
 		OnSpank()
 		ShakeController(0.3)
-		If (UseScreenShake && ((DomActor == PlayerRef) || (SubActor == PlayerRef)))
+		If UseScreenShake
 			ShakeCamera(0.5)
 		EndIf
 
@@ -2533,7 +2893,7 @@ Function OnSound(Actor Act, Int SoundID, Int FormNumber)
 
 	If (FormNumber == 50)
 		ShakeController(0.1)
-		If (UseScreenShake && ((DomActor == PlayerRef) || (SubActor == PlayerRef)))
+		If UseScreenShake
 			ShakeCamera(0.5)
 		EndIf
 	EndIf
@@ -2667,29 +3027,9 @@ Function ShakeCamera(Float Power, Float Duration = 0.1)
 EndFunction
 
 Function ShakeController(Float Power, Float Duration = 0.1)
-	If (UseRumble && ((DomActor == PlayerRef) || (SubActor == PlayerRef)))
+	If UseRumble
 		Game.ShakeController(Power, Power, Duration)
 	EndIf
-EndFunction
-
-Bool Function IntArrayContainsValue(Int[] Arr, Int Val) ;DEPRECIATED - moving to outils in future ver
-	return outils.IntArrayContainsValue(arr, val)
-EndFunction
-
-Bool Function StringArrayContainsValue(String[] Arr, String Val) ;DEPRECIATED - moving to outils in future ver
-	return outils.StringArrayContainsValue(arr, val)
-EndFunction
-
-bool Function StringContains(string str, string contains) ;DEPRECIATED - moving to outils in future ver
-	return outils.StringContains(str, contains)
-EndFunction
-
-bool Function IsModLoaded(string ESPFile) ;DEPRECIATED - moving to outils in future ver
-	return outils.IsModLoaded(ESPFile)
-Endfunction
-
-bool Function IsChild(actor act) ;DEPRECIATED - moving to outils in future ver
-	return OUtils.IsChild(Act)
 EndFunction
 
 Int Function GetTimeScale()
@@ -2716,20 +3056,8 @@ Event DisplayToastEvent(string txt, float time)
 EndEvent
 
 Function SetDefaultSettings()
-	EndOnDomOrgasm = True
-	EndOnSubOrgasm = False 
-	RequireBothOrgasmsToFinish = False
-	EnableSubBar = True
-	EnableDomBar = True
-	EnableThirdBar = True
-	HideBarsInNPCScenes = True
 	EnableActorSpeedControl = True
 	ResetPosAfterSceneEnd = true 
-
-	PlayerAlwaysSubStraight = false
-	PlayerAlwaysSubGay = false
-	PlayerAlwaysDomStraight = false
-	PlayerAlwaysDomGay = false
 
 	EndAfterActorHit = True
 
@@ -2743,19 +3071,7 @@ Function SetDefaultSettings()
 
 	CustomTimescale = 0
 
-	AlwaysUndressAtAnimStart = false
-	RemoveWeaponsAtStart = true
-	AutoUndressIfNeeded = true
-	PartialUndressing = true
-	RemoveWeaponsWithSlot = 32
-	FullyAnimateRedress = false
-
 	LowLightLevelLightsOnly = False
-
-	MaleSexExcitementMult = 1.0
-	FemaleSexExcitementMult = 1.0
-	ExcitementDecayRate = 0.5
-	ExcitementDecayGracePeriod = 5000
 
 	SoundFormNumberWhitelist = new int[1]
 	SoundFormNumberWhitelist[0] = 9999 ;initializing to avoid array-related bugs
@@ -2765,24 +3081,10 @@ UseFreeCam
 	SpeedUpNonSexAnimation = False ;game pauses if anim finished early
 	SpeedUpSpeed = 1.5
 
-	UseFurniture = True
-	SelectFurniture = False
-	FurnitureSearchDistance = 15
-	ResetClutter = True
-	ResetClutterRadius = 5
-
-	ExpressionDurationMin = 1000
-	ExpressionDurationMAx = 3000
-
 	DisableStimulationCalculation = false
-	SlowMoOnOrgasm = True
-	BlurOnOrgasm = True
 
 	UseAIControl = False
-	OnlyGayAnimsInGayScenes = False
 	PauseAI = False
-	AutoHideBars = False
-	MatchBarColorToGender = false
 
 	AISwitchChance = 6
 
@@ -2795,14 +3097,7 @@ UseFreeCam
 
 	disableOSAControls = false
 
-
-
-
-	UseFreeCam = True
-
 	Forcefirstpersonafter = !UseFreeCam
-
-	BedRealignment = 0
 
 	UseRumble = Game.UsingGamepad()
 	UseScreenShake = False
@@ -2813,17 +3108,12 @@ UseFreeCam
 	BlockVRInstalls = True
 
 	KeyMap = 200
-	FreecamKey = 181  
 	SpeedUpKey = 78
 	SpeedDownKey = 74
 	PullOutKey = 79
 	ControlToggleKey = 82
-	AlignmentKey = 38
 
 	MuteOSA = False
-
-	FreecamFOV = 45
-	FreecamSpeed = 3
 
 	Int[] Slots = new Int[1]
 	Slots[0] = 32
@@ -2835,6 +3125,8 @@ UseFreeCam
 	ShowTutorials = true 
 	
 	UseBrokenCosaveWorkaround = True
+
+	OData.ResetSettings()
 EndFunction
 
 Function RegisterOSexControlKey(Int zKey)
@@ -2953,11 +3245,6 @@ Event OnKeyDown(Int KeyPress)
 		Return
 	EndIf
 
-	if(KeyPress == AlignmentKey)
-		OAlign.ToggleMenu()
-	endIf
-
-
 	If (KeyPress == KeyMap)
 		Actor Target = Game.GetCurrentCrosshairRef() as Actor
 		If (Target)
@@ -2977,11 +3264,6 @@ Event OnKeyDown(Int KeyPress)
 			endif 
 			return
 		EndIf
-	elseif (KeyPress == freecamkey)
-		if animationrunning()
-			OSANative.ToggleFlyCam()
-			return
-		endif 
 	EndIf
 
 	If (DisableOSAControls)
@@ -3059,7 +3341,7 @@ Event OnKeyDown(Int KeyPress)
 
 EndEvent
 
-Bool SoSInstalled
+Bool Property SoSInstalled Auto
 Faction SoSFaction
 
 Function ResetOSA() ; do not use, breaks osa
@@ -3167,17 +3449,6 @@ Function Startup()
 		Debug.Notification("OStim: ConsoleUtil is not installed, a few features may not work")
 	EndIf
 
-	SoSInstalled = false
-	If (Game.GetModByName("Schlongs of Skyrim.esp") != 255)
-		SoSFaction = (Game.GetFormFromFile(0x0000AFF8, "Schlongs of Skyrim.esp")) as Faction
-		If (SoSFaction)
-			Console("Schlongs of Skyrim loaded")
-			SoSInstalled = true
-
-		Endif
-
-	EndIf
-
 	
 
 	If (OSA.StimInstalledProper())
@@ -3244,6 +3515,13 @@ Function SendLoadGameEvent()
 EndFunction
 
 Function OnLoadGame()
+	If (Game.GetModByName("Schlongs of Skyrim.esp") != 255)
+		SoSFaction = (Game.GetFormFromFile(0x0000AFF8, "Schlongs of Skyrim.esp")) as Faction
+	Else
+		SoSFaction = none
+	EndIf
+	SoSInstalled = SoSFaction
+
 	If (UseBrokenCosaveWorkaround)
 		Console("Using cosave fix")
 
@@ -3265,8 +3543,12 @@ Function OnLoadGame()
 			RegisterForKey(KeyMap)
 		EndIf
 
+		; these are now handled in C++ and no longer need Papyrus listeners
 		If AlignmentKey != 1
-			RegisterForKey(AlignmentKey)
+			UnregisterForKey(AlignmentKey)
+		EndIf
+		If FreecamKey != 1
+			UnregisterForKey(FreecamKey)
 		EndIf
 		
 
@@ -3335,7 +3617,7 @@ EndFunction
 
 ; all of these are only here to not break old addons, don't use them in new addons, use whatever they're calling instead
 
-Int Property DefaultFOV
+int Property DefaultFOV
 	int Function Get()
 		Return 85
 	EndFunction
@@ -3343,7 +3625,15 @@ Int Property DefaultFOV
 	EndFunction
 EndProperty
 
-Bool Property UseStrongerUnequipMethod
+bool Property HideBarsInNPCScenes
+	bool Function Get()
+		return true
+	EndFunction
+	Function Set(bool Value)
+	EndFunction
+EndProperty
+
+bool Property UseStrongerUnequipMethod
 	bool Function Get()
 		Return false
 	EndFunction
@@ -3351,7 +3641,7 @@ Bool Property UseStrongerUnequipMethod
 	EndFunction
 EndProperty
 
-Bool Property TossClothesOntoGround
+bool Property TossClothesOntoGround
 	bool Function Get()
 		Return false
 	EndFunction
@@ -3367,7 +3657,7 @@ bool Property OrgasmIncreasesRelationship
 	EndFunction
 EndProperty
 
-Bool Property UseNativeFunctions
+bool Property UseNativeFunctions
 	bool Function Get()
 		Return true
 	EndFunction
@@ -3398,6 +3688,69 @@ bool Property AllowUnlimitedSpanking
 		Return true
 	EndFunction
 	Function Set(bool Value)
+	EndFunction
+EndProperty
+
+bool Property OnlyGayAnimsInGayScenes
+	bool Function Get()
+		Return IntendedSexOnly
+	EndFunction
+	Function Set(bool Value)
+		IntendedSexOnly = Value
+	EndFunction
+EndProperty
+
+bool Property EndOnDomOrgasm
+	bool Function Get()
+		Return EndOnMaleOrgasm
+	EndFunction
+	Function Set(bool Value)
+		EndOnMaleOrgasm = Value
+	EndFunction
+EndProperty
+
+bool Property EndOnSubOrgasm
+	bool Function Get()
+		Return EndOnFemaleOrgasm
+	EndFunction
+	Function Set(bool Value)
+		EndOnFemaleOrgasm = Value
+	EndFunction
+EndProperty
+
+bool Property RequireBothOrgasmsToFinish
+	bool Function Get()
+		Return EndOnAllOrgasm
+	EndFunction
+	Function Set(bool Value)
+		EndOnAllOrgasm = Value
+	EndFunction
+EndProperty
+
+Bool Property EnableDomBar
+	bool Function Get()
+		Return EnablePlayerBar
+	EndFunction
+	Function Set(bool Value)
+		EnablePlayerBar = Value
+	EndFunction
+EndProperty
+
+Bool Property EnableSubBar
+	bool Function Get()
+		Return EnableNpcBar
+	EndFunction
+	Function Set(bool Value)
+		EnableNpcBar = Value
+	EndFunction
+EndProperty
+
+Bool Property EnableThirdBar
+	bool Function Get()
+		Return EnableNpcBar
+	EndFunction
+	Function Set(bool Value)
+		EnableNpcBar = Value
 	EndFunction
 EndProperty
 
@@ -3524,7 +3877,6 @@ Function ToggleFreeCam(Bool On = True)
 EndFunction
 
 Function RemapStartKey(Int zKey)
-	UnregisterForKey(KeyMap)
 	KeyMap = zKey
 EndFunction
 
@@ -3546,4 +3898,24 @@ EndFunction
 
 Function RemapPullOutKey(Int zKey)
 	PullOutKey = zKey
+EndFunction
+
+Bool Function IntArrayContainsValue(Int[] Arr, Int Val)
+	return outils.IntArrayContainsValue(arr, val)
+EndFunction
+
+Bool Function StringArrayContainsValue(String[] Arr, String Val)
+	return outils.StringArrayContainsValue(arr, val)
+EndFunction
+
+bool Function StringContains(string str, string contains)
+	return outils.StringContains(str, contains)
+EndFunction
+
+bool Function IsModLoaded(string ESPFile)
+	return outils.IsModLoaded(ESPFile)
+Endfunction
+
+bool Function IsChild(actor act)
+	return OUtils.IsChild(Act)
 EndFunction

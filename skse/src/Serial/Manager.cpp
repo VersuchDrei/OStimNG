@@ -4,7 +4,7 @@
 
 #include "Core/ThreadManager.h"
 #include "Game/Locker.h"
-#include "Util/MCMTable.h"
+#include "MCM/MCMTable.h"
 
 namespace Serialization {
     void closeOldThreads() {
@@ -122,7 +122,7 @@ namespace Serialization {
         auto locker = Locker::GetSingleton();
         locker->Revert(serial);
         OStim::ThreadManager::GetSingleton()->UntrackAllThreads();
-        MCM::MCMTable::resetDefaults();
+        MCM::MCMTable::resetValues();
     }
 
     void exportSettings(json& json) {

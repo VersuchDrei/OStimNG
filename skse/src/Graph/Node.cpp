@@ -4,7 +4,7 @@
 #include "Trait/Condition.h"
 #include "Trait/TraitTable.h"
 #include "Util/ActorUtil.h"
-#include "Util/MCMTable.h"
+#include "MCM/MCMTable.h"
 #include "Util/StringUtil.h"
 #include "Util/VectorUtil.h"
 #include "SKEE.h"

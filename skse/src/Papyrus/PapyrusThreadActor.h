@@ -9,6 +9,46 @@
 namespace PapyrusThreadActor {
     using VM = RE::BSScript::IVirtualMachine;
 
+    float GetExcitement(RE::StaticFunctionTag*, RE::Actor* actor) {
+        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        if (threadActor) {
+            return threadActor->excitement;
+        }
+
+        return -1;
+    }
+
+    void SetExcitement(RE::StaticFunctionTag*, RE::Actor* actor, float excitement) {
+        if (excitement < 0) {
+            excitement = 0;
+        } else if (excitement > 100) {
+            excitement = 100;
+        }
+
+        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        if (threadActor) {
+            threadActor->excitement = excitement;
+        }
+    }
+
+    void ModifyExcitement(RE::StaticFunctionTag*, RE::Actor* actor, float excitement, bool respectMultiplier) {
+        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        if (threadActor) {
+            if (respectMultiplier) {
+                excitement *= threadActor->baseExcitementMultiplier;
+            }
+
+            threadActor->excitement += excitement;
+
+            if (threadActor->excitement < 0) {
+                threadActor->excitement = 0;
+            } else if (threadActor->excitement > 100) {
+                threadActor->excitement = 100;
+            }
+        }
+    }
+
+
     float PlayExpression(RE::StaticFunctionTag*, RE::Actor* actor, std::string expression) {
         StringUtil::toLower(&expression);
         std::vector<Trait::FacialExpression*>* expressions = Trait::TraitTable::getExpressionsForEvent(expression);
@@ -32,6 +72,15 @@ namespace PapyrusThreadActor {
             threadActor->clearEventExpression();
         }
     }
+
+    bool HasExpressionOverride(RE::StaticFunctionTag*, RE::Actor* actor) {
+        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        if (threadActor) {
+            return threadActor->hasExpressionOverride();
+        }
+        return false;
+    }
+
 
     void Undress(RE::StaticFunctionTag*, RE::Actor* actor) {
         OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
@@ -121,11 +170,44 @@ namespace PapyrusThreadActor {
         return Compatibility::CompatibilityTable::hasSchlong(actor);
     }
 
+    std::vector<RE::Actor*> SortActors(RE::StaticFunctionTag*, std::vector<RE::Actor*> actors, int playerIndex) {
+        std::stable_sort(actors.begin(), actors.end(), [&](RE::Actor* actorA, RE::Actor* actorB) {
+            return Compatibility::CompatibilityTable::hasSchlong(actorA) && !Compatibility::CompatibilityTable::hasSchlong(actorB);
+        });
+
+        if (playerIndex >= 0 && playerIndex < actors.size()) {
+            RE::Actor* player = RE::PlayerCharacter::GetSingleton();
+            int currentPlayerIndex = VectorUtil::getIndex(actors, player);
+            if (currentPlayerIndex >= 0) {
+                if (currentPlayerIndex < playerIndex) {
+                    while (currentPlayerIndex < playerIndex) {
+                        actors[currentPlayerIndex] = actors[currentPlayerIndex + 1];
+                        currentPlayerIndex++;
+                    }
+                    actors[playerIndex] = player;
+                } else if (currentPlayerIndex > playerIndex) {
+                    while (currentPlayerIndex > playerIndex) {
+                        actors[currentPlayerIndex] = actors[currentPlayerIndex - 1];
+                        currentPlayerIndex--;
+                    }
+                    actors[playerIndex] = player;
+                }
+            }
+        }
+
+        return actors;
+    }
+
     bool Bind(VM* a_vm) {
         const auto obj = "OActor"sv;
 
+        BIND(GetExcitement);
+        BIND(SetExcitement);
+        BIND(ModifyExcitement);
+
         BIND(PlayExpression);
         BIND(ClearExpression);
+        BIND(HasExpressionOverride);
 
         BIND(Undress);
         BIND(Redress);
@@ -141,6 +223,7 @@ namespace PapyrusThreadActor {
         BIND(UnsetObjectVariant);
 
         BIND(HasSchlong);
+        BIND(SortActors);
 
         return true;
     }

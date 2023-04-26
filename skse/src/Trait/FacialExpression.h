@@ -19,13 +19,14 @@ namespace Trait {
     public:
         int type = 0;
         float baseValue = 0;
+        float variance = 0;
         float speedMultiplier = 0;
         float excitementMultiplier = 0;
         int delay = 0;
         int delayVariance = 0;
 
         inline int calculate(float speed, float excitement) {
-            return (int)(baseValue + speedMultiplier * speed + excitementMultiplier * excitement);
+            return (int)(baseValue + (variance == 0 ? 0 : std::uniform_int_distribution<int>(0, variance)(Constants::RNG)) + speedMultiplier * speed + excitementMultiplier * excitement);
         }
 
         inline int randomizeDelay() {
@@ -42,6 +43,7 @@ namespace Trait {
         std::unordered_map<int, FaceModifier> eyebrowModifiers;
         std::unordered_map<int, FaceModifier> eyeballModifiers;
         std::unordered_map<int, FaceModifier> phonemes;
+        float phonemeObjectThreshold = -5;
         std::vector<std::string> phonemeObjects;
     };
 

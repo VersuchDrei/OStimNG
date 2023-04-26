@@ -1,6 +1,6 @@
 #include "ActorKey.h"
 
-#include "Util/MCMTable.h"
+#include "MCM/MCMTable.h"
 
 namespace Alignment {
     ActorKey::ActorKey(bool isFemale, float scale, float heels) {

@@ -28,6 +28,9 @@ Int White
 actor PlayerRef
 bool Orgasming
 
+Float LastSmackTime
+Int LastSpeed
+
 Event OnInit()
 	OStim = (Self as Quest) as OSexIntegrationMain
 
@@ -140,17 +143,17 @@ Event OstimStart(String eventName, String strArg, Float numArg, Form sender)
 		ColorBar(ThirdBar, ColorZ = Yellow)
 	endif
 
-	If (OStim.EnableDomBar)
+	If IsBarEnabled(OStim.GetDomActor())
     	SetBarPercent(DomBar, 0.0)
     	SetBarVisible(DomBar, True)
 	EndIf
 
-	If (OStim.EnableSubBar && (OStim.GetSubActor() != None))
+	If IsBarEnabled(OStim.GetSubActor())
 		SetBarPercent(SubBar, 0.0)
     	SetBarVisible(SubBar, True)
 	EndIf
 
-	If (OStim.EnableThirdBar) && (OStim.GetThirdActor() != none)
+	If IsBarEnabled(OStim.GetThirdActor())
 		SetBarPercent(ThirdBar, 0.0)
     	SetBarVisible(ThirdBar, True)
 	EndIf
@@ -210,11 +213,7 @@ Event OStimOrgasm(String eventName, String strArg, Float numArg, Form sender)
 endevent
 
 Event OstimThirdJoin(String eventName, String strArg, Float numArg, Form sender)
-	If !OStim.IsActorActive(playerref) && OStim.HideBarsInNPCScenes
-		return 
-	EndIf 
-	
-	If (OStim.EnableThirdBar)
+	If OStim.EnableNpcBar
 		OSexIntegrationMain.Console("Launching third actor bar")
 		SetBarPercent(ThirdBar, 0.0)
     	SetBarVisible(ThirdBar, True)
@@ -227,8 +226,17 @@ Event OstimThirdLeave(String eventName, String strArg, Float numArg, Form sender
 	SetBarPercent(ThirdBar, 0.0)
 Endevent
 
-Float LastSmackTime
-Int LastSpeed
+bool Function IsBarEnabled(Actor Act)
+	If !Act
+		Return false
+	EndIf
+
+	If Act == PlayerRef
+		Return OStim.EnablePlayerBar
+	Else
+		Return OStim.EnableNpcBar
+	EndIf
+EndFunction
 
 ;/
 Event OnOSASound(string eventName, string args, float nothing, Form sender)
