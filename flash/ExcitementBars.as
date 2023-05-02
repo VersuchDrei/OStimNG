@@ -4,29 +4,28 @@ class ExcitementBars extends MovieClip
 	var bars : Array;
 	var testText : MovieClip;	
 	public function ExcitementBars(){
-		// constructor code
+		bars = new Array(0);
 	}
 	
 	public function Update(values : Array){
-		for(var i in values){
-			//bars[i].Update(val);
-		}
 	}
 	
 	public function AssignData(barsData){
-		testText.text = "AAAAA";
-		cleanUp();
+		//Come back to this later. This does work in spawning the correct number of imported bar graphics
+		return;
 		trace(barsData.actors.length);
-		for(var i in barsData.actors){
+		for(var i = 0; i < barsData.actors.length; i++){
 			var id = "excBar" + Number(i);
-			bars[i] = this.createEmptyMovieClip(id, this.getNextHighestDepth());
-			loadMovie("OstimBar.swf", bars[i]);
-			bars[i]._y = (i * -50);
-			bars[i].visible = true;
+			if(bars[i] == undefined) {
+				trace("creating new bar");
+				
+				var mc = this.attachMovie("Bar", id, i+1,{ _y: (i * -50), _width:400, _height:30});
+				trace(mc);
+				bars.push(mc);
+				
+			}
+			trace(bars[i])
+			trace("bar at " + bars[i]._y);
 		}
-	}
-	
-	public function cleanUp(){
-		
 	}
 }

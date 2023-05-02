@@ -94,4 +94,12 @@
       }
       return _loc2_;
    }
+   
+   function setPosition(xPos, yPos, xScale, yScale)
+   {
+	   this._x = -140 + xPos;
+	   this._y = 170 + yPos;
+	   this._xscale = xScale;
+	   this._yscale = yScale;
+   }
 }

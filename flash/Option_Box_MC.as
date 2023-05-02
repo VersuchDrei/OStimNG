@@ -132,7 +132,7 @@ class Option_Box_MC extends MovieClip
 	public function AssignData(Edges:Array)
 	{
 		var i;
-		for(i in Edges){
+		for(var i = 0; i < Edges.length; i++){
 			Options[i].SetData(Edges[i]);
 		}
 		maxOptionIdx = Edges.length-1;

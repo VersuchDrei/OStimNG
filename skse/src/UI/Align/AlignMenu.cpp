@@ -3,6 +3,7 @@
 #include "RE/G/GFxValue.h"
 #include "RE/G/GPtr.h"
 
+#include <UI/Settings.h>
 #include "Alignment/Alignments.h"
 
 namespace UI::Align {
@@ -65,6 +66,7 @@ namespace UI::Align {
             SetActor(0);
             SelectField(0);
         }
+        ApplyPositions();
     }
 
     void AlignMenu::SetThread(OStim::Thread* thread) {
@@ -178,6 +180,23 @@ namespace UI::Align {
                 CycleIncrement();
             } break;
         }
+    }
+
+    void AlignMenu::ApplyPositions() {
+        auto root = GetRoot();
+        if (!root.IsObject())
+            return;
+
+        auto controlPositions = &UI::Settings::positionSettings.AlignMenuPosition.ControlPosition;
+        const RE::GFxValue controlX = RE::GFxValue{ controlPositions->xPos };
+        const RE::GFxValue controlY = RE::GFxValue{ controlPositions->yPos };
+        const RE::GFxValue controlXScale = RE::GFxValue{ controlPositions->xScale };
+        const RE::GFxValue controlYScale = RE::GFxValue{ controlPositions->yScale };
+        RE::GFxValue controlPosArray[4]{ controlX, controlY, controlXScale, controlYScale };
+
+        RE::GFxValue alignmentInfo;
+        root.GetMember("alignmentInfo", &alignmentInfo);
+        alignmentInfo.Invoke("setPosition", nullptr, controlPosArray, 4);
     }
 
     void AlignMenu::SelectField(int field) {

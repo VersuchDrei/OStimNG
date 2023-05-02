@@ -1,5 +1,6 @@
 #pragma once
 #include <UI/UIInterop.h>
+#include <UI/Settings.h>
 #include <Core/Thread.h>
 
 namespace UI::Scene {
@@ -25,6 +26,7 @@ namespace UI::Scene {
 
 		
 		static void Handle(UI::Controls control);
+		static void ApplyPositions();
 
 		static void SetThread(OStim::Thread* thread);
 		static void NodeChanged(OStim::Thread* thread, Graph::Node* node);

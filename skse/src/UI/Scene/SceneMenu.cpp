@@ -111,6 +111,10 @@ namespace UI::Scene {
         }
     }
 
+    void SceneMenu::ApplyPositions() {
+
+    }
+
     void SceneMenu::UpdateMenuData() {
         RE::GFxValue menuValues;
         view->CreateArray(&menuValues);

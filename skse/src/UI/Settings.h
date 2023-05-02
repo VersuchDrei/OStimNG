@@ -1,0 +1,32 @@
+#pragma once
+
+namespace UI {
+	struct Position {
+		float xPos;
+		float yPos;
+		float xScale;
+		float yScale;
+	};
+
+	struct AlignMenuPositions {
+		Position ControlPosition;
+		Position InfoPosition;
+	};
+
+	struct SceneMenuPositions {
+		Position ControlPosition;
+		Position BarsPosition;
+	};
+
+	struct MenuPositions {
+		AlignMenuPositions AlignMenuPosition;
+		SceneMenuPositions ScenePositions;
+	};
+
+	class Settings {
+	public:
+		static void LoadSettings();
+		static void ApplyPositions();
+		inline static MenuPositions positionSettings;
+	};
+}

@@ -37,6 +37,8 @@ namespace UI::Align {
         static void Handle(UI::Controls control);
 
         static void HandleThreadRemoved(OStim::Thread* thread);
+
+        static void ApplyPositions();
     private:
         static void UpdateSceneInfo();
         static void UpdateActorInfo();

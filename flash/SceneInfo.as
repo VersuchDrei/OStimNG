@@ -15,5 +15,13 @@
       this.packData.text = packVal;
       this.animNameData.text = animNameVal;
       this.genderMapData.text = genderMapVal;
+   }   
+   
+  function SetPosition(xPos, yPos, xScale, yScale)
+   {
+	   this._x = -140 + xPos;
+	   this._y = 170 + yPos;
+	   this._xscale = xScale;
+	   this._yscale = yScale;
    }
 }

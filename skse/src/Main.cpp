@@ -86,9 +86,9 @@ namespace {
                 // we are installing this hook so late because we need it to overwrite the PapyrusUtil hook
                 Events::PackageStart::Install();
             } break;
-            case SKSE::MessagingInterface::kNewGame: {
+            case SKSE::MessagingInterface::kNewGame: {               
                 UI::ShowMenus();
-            }break;
+            } break;
             case SKSE::MessagingInterface::kPostPostLoad: {
                 UI::ShowMenus();
                 SKEE::InterfaceExchangeMessage msg;
@@ -133,6 +133,7 @@ SKSEPluginLoad(const LoadInterface* skse) {
     Graph::LookupTable::SetupActions();
     Trait::TraitTable::setup();
     Alignment::Alignments::LoadAlignments();
+    UI::Settings::LoadSettings();
     Papyrus::Build();
 
     const auto serial = SKSE::GetSerializationInterface();
