@@ -25,17 +25,9 @@ namespace UI::Align {
 
         auto menu = static_cast<Super*>(this);
         menu->depthPriority = 0;
-<<<<<<< HEAD
-
         menuFlags.set(
             RE::UI_MENU_FLAGS::kAlwaysOpen,
             RE::UI_MENU_FLAGS::kRequiresUpdate,
-=======
-        
-        menuFlags.set(
-            RE::UI_MENU_FLAGS::kAlwaysOpen, 
-            RE::UI_MENU_FLAGS::kRequiresUpdate, 
->>>>>>> 20fe521 (add description field, fix ui bug)
             RE::UI_MENU_FLAGS::kAllowSaving);
 
         if (uiMovie) {

@@ -14,14 +14,11 @@
 #include "Serial/Manager.h"
 #include "Trait/TraitTable.h"
 #include "UI/Align/AlignMenu.h"
-<<<<<<< HEAD
 #include "Util/CompatibilityTable.h"
 #include "MCM/MCMTable.h"
-=======
 #include "UI/Scene/SceneMenu.h"
-#include "Util/MCMTable.h"
-#include <UI/UIState.h>
->>>>>>> dbc8a8c (First pass Add new Scene Menu)
+#include "UI/UIState.h"
+
 
 using namespace RE::BSScript;
 using namespace SKSE;
