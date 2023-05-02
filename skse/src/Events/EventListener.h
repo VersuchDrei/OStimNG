@@ -2,8 +2,8 @@
 
 #include "Core/Singleton.h"
 #include "Core/ThreadManager.h"
-#include "Graph/LookupTable.h"
 #include "MCM/MCMTable.h"
+#include "Util/LookupTable.h"
 
 namespace Events {
     class EventListener final : public OStim::ISingleton<EventListener>, public RE::BSTEventSink<RE::TESLoadGameEvent>, public RE::BSTEventSink<SKSE::NiNodeUpdateEvent>, public RE::BSTEventSink<RE::InputEvent*> {
@@ -34,7 +34,7 @@ namespace Events {
             if (OStim::ThreadManager::GetSingleton()->findActor(actor)) {
                 // I don't know if anything else of importance happens in the orig function, so we just call it to make sure
                 PackageStartOrig(pthis, actor);
-                return Graph::LookupTable::OStimScenePackage;
+                return Util::LookupTable::OStimScenePackage;
             }
 
             return func(pthis, actor);

@@ -20,8 +20,6 @@ namespace ActorUtil {
             }
         }
 
-        actor->loadedData->flags |= RE::TESObjectREFR::RecordFlags::kDontHavokSettle;
-
         actor->SetGraphVariableBool("bHumanoidFootIKDisable", true);
     }
 

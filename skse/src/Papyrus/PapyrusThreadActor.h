@@ -82,6 +82,21 @@ namespace PapyrusThreadActor {
     }
 
 
+    void Mute(RE::StaticFunctionTag*, RE::Actor* actor) {
+        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        if (threadActor) {
+            threadActor->mute();
+        }
+    }
+
+    void Unmute(RE::StaticFunctionTag*, RE::Actor* actor) {
+        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        if (threadActor) {
+            threadActor->mute();
+        }
+    }
+
+
     void Undress(RE::StaticFunctionTag*, RE::Actor* actor) {
         OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
         if (threadActor) {
@@ -208,6 +223,9 @@ namespace PapyrusThreadActor {
         BIND(PlayExpression);
         BIND(ClearExpression);
         BIND(HasExpressionOverride);
+
+        BIND(Mute);
+        BIND(Unmute);
 
         BIND(Undress);
         BIND(Redress);

@@ -11,6 +11,7 @@
 	"target":{
 		"stimulation":0.9,
 		"fullStrip":true,
+		"moan":true,
 		"requirements":[
 			"penis"
 		],

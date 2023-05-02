@@ -173,7 +173,7 @@ Event OnVersionUpdate(int version)
 EndEvent
 
 Function SetupPages()
-	Pages = new string[10]
+	Pages = new string[11]
 	Pages[0] = "$ostim_page_configuration"
 	Pages[1] = "$ostim_page_controls"
 	Pages[2] = "$ostim_page_excitement"
@@ -181,9 +181,10 @@ Function SetupPages()
 	Pages[4] = "$ostim_page_furniture"
 	Pages[5] = "$ostim_page_undress"
 	Pages[6] = "$ostim_page_expression"
-	Pages[7] = "$ostim_page_alignment"
-	Pages[8] = "$ostim_page_addons"
-	Pages[9] = "$ostim_page_about"
+	Pages[7] = "$ostim_page_sound"
+	Pages[8] = "$ostim_page_alignment"
+	Pages[9] = "$ostim_page_addons"
+	Pages[10] = "$ostim_page_about"
 EndFunction
 
 Event OnConfigRegister()
@@ -350,6 +351,8 @@ Event OnPageReset(String Page)
 		DrawUndressingPage()
 	ElseIf Page == "$ostim_page_expression"
 		DrawExpressionPage()
+	ElseIf Page == "$ostim_page_sound"
+		DrawSoundPage()
 	ElseIf Page == "$ostim_page_alignment"
 		DrawAlignmentPage()
 	ElseIf (Page == "$ostim_page_about")
@@ -2305,6 +2308,60 @@ State OID_PlayerTongue
 
 	Event OnDefaultST()
 		SetEquipObjectIDToDefault(0x7, "tongue")
+	EndEvent
+EndState
+
+
+; ███████╗ ██████╗ ██╗   ██╗███╗   ██╗██████╗
+; ██╔════╝██╔═══██╗██║   ██║████╗  ██║██╔══██╗
+; ███████╗██║   ██║██║   ██║██╔██╗ ██║██║  ██║
+; ╚════██║██║   ██║██║   ██║██║╚██╗██║██║  ██║
+; ███████║╚██████╔╝╚██████╔╝██║ ╚████║██████╔╝
+; ╚══════╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝╚═════╝
+
+Function DrawSoundPage()
+	SetCursorFillMode(TOP_TO_BOTTOM)
+	SetCursorPosition(0)
+	AddSliderOptionST("OID_MoanIntervalMin", "$ostim_moan_interval_min", Main.MoanIntervalMin / 1000.0, "{2} s")
+	SetCursorPosition(2)
+	AddSliderOptionST("OID_MoanIntervalMax", "$ostim_moan_interval_max", Main.MoanIntervalMax / 1000.0, "{2} s")
+EndFunction
+
+State OID_MoanIntervalMin
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_moan_interval_min")
+	EndEvent
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(Main.MoanIntervalMin / 1000.0)
+		SetSliderDialogDefaultValue(2.5)
+		SetSliderDialogRange(0.1, 10)
+		SetSliderDialogInterval(0.05)
+	EndEvent
+
+	Event OnSliderAcceptST(float Value)
+		Main.MoanIntervalMin = (Value * 1000) as int
+		SetSliderOptionValueST(Main.MoanIntervalMin / 1000.0, "{2} s")
+		SetSliderOptionValueST(Main.MoanIntervalMax / 1000.0, "{2} s", false, "OID_MoanIntervalMax")
+	EndEvent
+EndState
+
+State OID_MoanIntervalMax
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_moan_interval_max")
+	EndEvent
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(Main.MoanIntervalMax / 1000.0)
+		SetSliderDialogDefaultValue(3)
+		SetSliderDialogRange(0.1, 10)
+		SetSliderDialogInterval(0.05)
+	EndEvent
+
+	Event OnSliderAcceptST(float Value)
+		Main.MoanIntervalMax = (Value * 1000) as int
+		SetSliderOptionValueST(Main.MoanIntervalMin / 1000.0, "{2} s", false, "OID_MoanIntervalMin")
+		SetSliderOptionValueST(Main.MoanIntervalMax / 1000.0, "{2} s")
 	EndEvent
 EndState
 

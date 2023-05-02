@@ -2,6 +2,7 @@
 	"actor":{
 		"stimulation":0.1,
 		"maxStimulation":50,
+		"talk":true,
 		"requirements":[
 			"hand"
 		],
@@ -12,6 +13,8 @@
 	"target":{
 		"stimulation":0.6,
 		"fullStrip":true,
+		"moan":true,
+		"talk":true,
 		"requirements":[
 			"vagina"
 		],

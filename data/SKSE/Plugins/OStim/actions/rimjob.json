@@ -2,6 +2,7 @@
 	"actor":{
 		"stimulation":0.1,
 		"maxStimulation":50,
+		"muffled":true,
 		"expressionOverride":"tongue",
 		"requirements":[
 			"mouth"
@@ -15,6 +16,8 @@
 	"target":{
 		"stimulation":0.3,
 		"fullStrip":true,
+		"moan":true,
+		"talk":true,
 		"requirements":[
 			"anus"
 		],

@@ -2,19 +2,20 @@
 
 #include "Core.h"
 #include "ThreadManager.h"
-#include "Graph/LookupTable.h"
+#include "Graph/GraphTable.h"
+#include "MCM/MCMTable.h"
 #include "Trait/TraitTable.h"
 #include "Util/ActorUtil.h"
 #include "Util/CompatibilityTable.h"
 #include "Util/FormUtil.h"
 #include "Util/Constants.h"
-#include "MCM/MCMTable.h"
+#include "Util/LookupTable.h"
 #include "Util/ObjectRefUtil.h"
 #include "Util/StringUtil.h"
 #include "Util/VectorUtil.h"
 
 namespace OStim {
-    ThreadActor::ThreadActor(int threadId, RE::Actor* actor) : threadId{threadId}, actor{actor} {
+    ThreadActor::ThreadActor(int threadId, int index, RE::Actor* actor) : threadId{threadId}, actor{actor} {
         scaleBefore = actor->GetReferenceRuntimeData().refScale / 100.0f;
         isFemale = actor->GetActorBase()->GetSex() == RE::SEX::kFemale;
         hasSchlong = Compatibility::CompatibilityTable::hasSchlong(actor);
@@ -30,7 +31,7 @@ namespace OStim {
         // for some reason the "this" keyword is not properly giving a pointer to this object when used in the constructor
         // so we do everything that uses pointers in this initContinue method
         if (REL::Module::GetRuntime() == REL::Module::Runtime::AE) {
-            auto nioInterface = Graph::LookupTable::getNiTransformInterface();
+            auto nioInterface = Util::LookupTable::niTransformInterface;
             if (nioInterface->HasNodeTransformScale(actor, false, isFemale, "NPC", "RSMPlugin")) {
                 rmHeight = nioInterface->GetNodeTransformScale(actor, false, isFemale, "NPC", "RSMPlugin");
             }
@@ -234,7 +235,7 @@ namespace OStim {
         weaponsRemoved = false;
     }
 
-    void ThreadActor::changeNode(Graph::Actor* graphActor, std::vector<Trait::FacialExpression*>* nodeExpressions, std::vector<Trait::FacialExpression*>* overrideExpressions) {
+    void ThreadActor::changeNode(Graph::GraphActor* graphActor, std::vector<Trait::FacialExpression*>* nodeExpressions, std::vector<Trait::FacialExpression*>* overrideExpressions) {
         this->graphActor = graphActor;
 
         sosOffset = 0;
@@ -253,6 +254,13 @@ namespace OStim {
             applyEyeballOverride();
         }
         updateUnderlyingExpression();
+
+        // sound
+        if (graphActor->moan) {
+            startMoanCooldown();
+        } else {
+            stopMoanCooldown();
+        }
 
         // strap-ons
         if (!hasSchlong) {
@@ -407,6 +415,15 @@ namespace OStim {
                 }
             }
         }
+
+
+        // sound
+        if (moanCooldown > 0) {
+            moanCooldown -= Constants::LOOP_TIME_MILLISECONDS;
+            if (moanCooldown <= 0) {
+                moan();
+            }
+        }
     }
 
     void ThreadActor::bendSchlong() {
@@ -463,7 +480,7 @@ namespace OStim {
         // the NiTransformInterface has only been added to RaceMenu after the AE update
         // so for SE we have to invoke Papyrus here :^(
         if (REL::Module::GetRuntime() == REL::Module::Runtime::AE) {
-            auto nioInterface = Graph::LookupTable::getNiTransformInterface();
+            auto nioInterface = Util::LookupTable::niTransformInterface;
             if (remove) {
                 // we are adding a second node transform with a different key to counter out the existing one, thereby
                 // "removing" the heel offset
@@ -504,7 +521,7 @@ namespace OStim {
         }
 
         if (REL::Module::GetRuntime() == REL::Module::Runtime::AE) {
-            auto nioInterface = Graph::LookupTable::getNiTransformInterface();
+            auto nioInterface = Util::LookupTable::niTransformInterface;
             if (oldOffset != 0) {
                 nioInterface->RemoveNodeTransformPosition(actor, false, isFemale, "NPC", "OStim");
             }
@@ -874,6 +891,45 @@ namespace OStim {
             iter->second.unsetVariant(actor);
         }
     }
+
+
+    void ThreadActor::mute() {
+        if (muted) {
+            return;
+        }
+
+        stopMoanCooldown();
+        muted = true;
+    }
+
+    void ThreadActor::unmute() {
+        if (!muted) {
+            return;
+        }
+
+        startMoanCooldown();
+        muted = false;
+    }
+
+    void ThreadActor::startMoanCooldown() {
+        moanCooldown = std::uniform_int_distribution<>(MCM::MCMTable::getMoanIntervalMin(), MCM::MCMTable::getMoanIntervalMax())(Constants::RNG);
+    }
+
+    void ThreadActor::stopMoanCooldown() {
+        moanCooldown = -1;
+    }
+
+    void ThreadActor::moan() {
+        playEventExpression("moan");
+
+        RE::BSSoundHandle handle;
+        RE::BSAudioManager::GetSingleton()->BuildSoundDataFromDescriptor(handle, isFemale ? Util::LookupTable::OStimMoanFemaleSD : Util::LookupTable::OStimMoanMaleSD, 0x10);
+        handle.SetObjectToFollow(actor->Get3D());
+        handle.Play();
+
+        startMoanCooldown();
+    }
+
 
     void ThreadActor::free() {
         for (auto& [type, object] : equipObjects) {

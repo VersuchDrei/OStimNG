@@ -1,4 +1,4 @@
-#include "Graph/LookupTable.h"
+#include "Graph/GraphTable.h"
 
 #include "Graph/Node.h"
 #include "Trait/Condition.h"
@@ -11,15 +11,7 @@
 namespace Graph {
     const char* ACTION_FILE_PATH{ "Data/SKSE/Plugins/OStim/actions" };
 
-    void LookupTable::setupForms() {
-        auto handler = RE::TESDataHandler::GetSingleton();
-        OSexIntegrationMainQuest = handler->LookupForm<RE::TESQuest>(0x801, "OStim.esp");
-        OStimVehicle = handler->LookupForm<RE::TESObjectSTAT>(0xDD6, "OStim.esp");
-        OStimScenePackage = handler->LookupForm<RE::TESPackage>(0xDE1, "OStim.esp");
-        OStimEmptyFaction = handler->LookupForm<RE::TESFaction>(0xDED, "OStim.esp");
-    }
-
-    void LookupTable::addNode(Node* node) {
+    void GraphTable::addNode(Node* node) {
         nodes.insert({node->lowercase_id, node});
         for (Graph::Speed speed : node->speeds) {
             animationNodeTable.insert({speed.animation, node});
@@ -47,7 +39,7 @@ namespace Graph {
         innerList->push_back(node);
     }
 
-    Node* LookupTable::getNodeById(std::string id) {
+    Node* GraphTable::getNodeById(std::string id) {
         StringUtil::toLower(&id);
         auto iter = nodes.find(id);
         if (iter != nodes.end()) {
@@ -56,7 +48,7 @@ namespace Graph {
         return nullptr;
     }
 
-    Node* LookupTable::getNodeByAnimation(std::string anim) {
+    Node* GraphTable::getNodeByAnimation(std::string anim) {
         auto iter = animationNodeTable.find(anim);
         if (iter != animationNodeTable.end()) {
             return iter->second;
@@ -64,7 +56,7 @@ namespace Graph {
         return nullptr;
     }
 
-    bool LookupTable::hasNodes(Furniture::FurnitureType furnitureType, int actorCount) {
+    bool GraphTable::hasNodes(Furniture::FurnitureType furnitureType, int actorCount) {
         if (furnitureType == Furniture::FurnitureType::BED) {
             furnitureType = Furniture::FurnitureType::NONE;
         }
@@ -78,7 +70,7 @@ namespace Graph {
         return iter2 != iter->second->end();
     }
 
-    Node* LookupTable::getRandomNode(Furniture::FurnitureType furnitureType, std::vector<Trait::ActorConditions> actorConditions, std::function<bool(Node*)> nodeCondition) {
+    Node* GraphTable::getRandomNode(Furniture::FurnitureType furnitureType, std::vector<Trait::ActorConditions> actorConditions, std::function<bool(Node*)> nodeCondition) {
         if (furnitureType == Furniture::FurnitureType::BED) {
             furnitureType = Furniture::FurnitureType::NONE;
         }
@@ -107,14 +99,6 @@ namespace Graph {
         return nullptr;
     }
 
-    void LookupTable::setNiTransfromInterface(SKEE::INiTransformInterface* nioInterface) {
-        niTransformInterface = nioInterface;
-    }
-
-    SKEE::INiTransformInterface* LookupTable::getNiTransformInterface() {
-        return niTransformInterface;
-    }
-
     void parseActor(json& json, ActionActor& actor) {
         if (json.contains("stimulation")) {
             actor.stimulation = json["stimulation"];
@@ -128,6 +112,18 @@ namespace Graph {
             actor.fullStrip = json["fullStrip"];
         }
 
+        if (json.contains("moan")) {
+            actor.moan = json["moan"];
+        }
+
+        if (json.contains("talk")) {
+            actor.talk = json["talk"];
+        }
+
+        if (json.contains("muffled")) {
+            actor.muffled = json["muffled"];
+        }
+
         if (json.contains("expressionOverride")) {
             actor.expressionOverride = json["expressionOverride"];
             StringUtil::toLower(&actor.expressionOverride);
@@ -135,7 +131,7 @@ namespace Graph {
 
         if (json.contains("requirements")) {
             for (auto& req : json["requirements"]) {
-                actor.requirements |= LookupTable::getRequirement(req);
+                actor.requirements |= GraphTable::getRequirement(req);
             }
         }
 
@@ -211,7 +207,7 @@ namespace Graph {
         }
     };
 
-    void LookupTable::SetupActions(){
+    void GraphTable::SetupActions(){
         Util::JsonFileLoader::LoadFilesInFolder(ACTION_FILE_PATH, [&](std::string, std::string filename, json json) {
             Graph::ActionAttributes attr;
             if(json.contains("actor")){
@@ -240,7 +236,7 @@ namespace Graph {
         });
     }
 
-    ActionAttributes* LookupTable::GetActionAttributesByType(std::string type)
+    ActionAttributes* GraphTable::GetActionAttributesByType(std::string type)
     {
         if (auto it = actions.find(type); it != actions.end()) {
             return &actions.at(type);
@@ -251,7 +247,7 @@ namespace Graph {
         }
     }
 
-    Requirement LookupTable::getRequirement(std::string string) {
+    Requirement GraphTable::getRequirement(std::string string) {
         auto iter = requirements.find(string);
         if (iter != requirements.end()) {
             return iter->second;

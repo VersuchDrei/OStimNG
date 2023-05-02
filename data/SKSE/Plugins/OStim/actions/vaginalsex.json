@@ -2,6 +2,8 @@
 	"actor":{
 		"stimulation":1.0,
 		"fullStrip":true,
+		"moan":true,
+		"talk":true,
 		"requirements":[
 			"penis"
 		],
@@ -15,6 +17,8 @@
 	"target":{
 		"stimulation":1.0,
 		"fullStrip":true,
+		"moan":true,
+		"talk":true,
 		"requirements":[
 			"vagina"
 		],

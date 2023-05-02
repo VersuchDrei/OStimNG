@@ -47,6 +47,9 @@ namespace MCM {
         static int getExpressionDurationMin();
         static int getExpressionDurationMax();
 
+        static int getMoanIntervalMin();
+        static int getMoanIntervalMax();
+
         static bool equipStrapOnIfNeeded();
         static bool unequipStrapOnIfNotNeeded();
         static bool unequipStrapOnIfInWay();
@@ -111,6 +114,9 @@ namespace MCM {
 
             {0xDB2, {1000, "SetExpressionDurationMin"}},
             {0xDB3, {3000, "SetExpressionDurationMax"}},
+
+            {0xE0A, {2500, "moanIntervalMin"}},
+            {0xE0B, {5000, "moanIntervalMax"}},
 
             {0xDEE, {0, "SetOnlyGayAnimsInGayScenes"}},  // intended sex only
             {0XDEF, {0, "PlayerAlwaysDomStraight"}},

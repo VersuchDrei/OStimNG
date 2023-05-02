@@ -44,7 +44,7 @@ set(sources
 	src/Game/Patch.h
     src/GameAPI/GameSex.cpp
     src/Graph/Action.cpp
-    src/Graph/LookupTable.cpp
+    src/Graph/GraphTable.cpp
     src/Graph/Node.cpp
     src/InterfaceSpec/PluginInterface.cpp
     src/MCM/MCMSetting.cpp
@@ -64,6 +64,7 @@ set(sources
     src/Util/CameraUtil.cpp
     src/Util/CompatibilityTable.cpp
     src/Util/FormUtil.cpp
+    src/Util/LookupTable.cpp
     src/Util/MathUtil.cpp
     src/Util/ObjectRefUtil.cpp
     src/Util/SerializationUtil.cpp

@@ -2,6 +2,7 @@
 	"actor":{
 		"stimulation":0.1,
 		"maxStimulation":50,
+		"muffled":true,
 		"requirements":[
 			"mouth"
 		],
@@ -15,6 +16,7 @@
 	"target":{
 		"stimulation":0.1,
 		"maxStimulation":50,
+		"muffled":true,
 		"requirements":[
 			"mouth"
 		],

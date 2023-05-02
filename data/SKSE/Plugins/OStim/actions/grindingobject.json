@@ -2,6 +2,7 @@
 	"actor":{
 		"stimulation":0.6,
 		"fullStrip":true,
+		"moan":true,
 		"requirements":[
 			"vagina"
 		],

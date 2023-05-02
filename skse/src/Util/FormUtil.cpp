@@ -1,6 +1,6 @@
 #include "FormUtil.h"
 
-#include "Graph/LookupTable.h"
+#include "Graph/GraphTable.h"
 #include "MCM/MCMTable.h"
 
 namespace FormUtil {

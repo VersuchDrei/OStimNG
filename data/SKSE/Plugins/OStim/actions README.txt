@@ -23,6 +23,11 @@ actor fields:
 "maxStimulation" (float): a stimulation threshold after which this action will no longer generate any stimulation
 	this for example can be used by actions like kissing to prevent the Skyrim actors climaxing from kissing alone
 "fullStrip" (bool): When true executing this action will fully strip this Skyrim actor (if fully undress mid scene is enabled in the MCM)
+"moan" (bool): When true the Skyrim actor will do moaning sounds when this action is played.
+"talk" (bool): When true the Skyrim actor will talk when this action is played.
+	This requires add-ons to add dialogue for this actor as OStim does not come with any dialogue on its own.
+"muffled" (bool): When true the Skyirm actor will only do muffled sounds when moaning and do no talking.
+	this is mainly used for when an actor has their mouth full (usually by performing an oral action)
 "expressionOverride" (string): when set executing this action will override this Skyrim actors facial expression with one for this set (see facial expression README for how to define an expression set)
 	this can be used to open the mouth and/or stick out the tongue for oral actions
 "requirements" (list<string>): a list of requirements for this Skyrim actor, if they are not met an animation containing this action will not show up in navigation

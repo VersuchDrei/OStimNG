@@ -2,6 +2,8 @@
 	"actor":{
 		"stimulation":0.6,
 		"fullStrip":true,
+		"moan":true,
+		"talk":true,
 		"requirements":[
 			"vagina"
 		],
@@ -13,6 +15,7 @@
 		]
 	},
 	"target":{
+		"talk":true,
 		"strippingSlots":[
 			32,
 			49,

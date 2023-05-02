@@ -4,7 +4,7 @@
 #include "Events/EventListener.h"
 #include "Furniture/FurnitureTable.h"
 #include "Game/Patch.h"
-#include "Graph/LookupTable.h"
+#include "Graph/GraphTable.h"
 #include "InterfaceSpec/IPluginInterface.h"
 #include "InterfaceSpec/PluginInterface.h"
 #include "Messaging/IMessages.h"
@@ -14,6 +14,7 @@
 #include "Trait/TraitTable.h"
 #include "UI/Align/AlignMenu.h"
 #include "Util/CompatibilityTable.h"
+#include "Util/LookupTable.h"
 #include "MCM/MCMTable.h"
 
 using namespace RE::BSScript;
@@ -69,7 +70,7 @@ namespace {
             } break;
             case SKSE::MessagingInterface::kDataLoaded: {
                 Compatibility::CompatibilityTable::setupForms();
-                Graph::LookupTable::setupForms();
+                Util::LookupTable::setupForms();
                 Trait::TraitTable::setupForms();
                 MCM::MCMTable::setupForms();
                 Furniture::FurnitureTable::setupForms();
@@ -95,7 +96,7 @@ namespace {
                 auto nioInterface = static_cast<SKEE::INiTransformInterface*>(msg.interfaceMap->QueryInterface("NiTransform"));
                 if (nioInterface) {
                     logger::info("NiTransform version {}", nioInterface->GetVersion());
-                    Graph::LookupTable::setNiTransfromInterface(nioInterface);
+                    Util::LookupTable::niTransformInterface = nioInterface;
                 } else {
                     logger::critical("Couldn't get NiTransformInterface!");
                 }
@@ -122,7 +123,7 @@ SKSEPluginLoad(const LoadInterface* skse) {
 
     Patch::Install();
     Papyrus::Bind();
-    Graph::LookupTable::SetupActions();
+    Graph::GraphTable::SetupActions();
     Trait::TraitTable::setup();
     Alignment::Alignments::LoadAlignments();
     Papyrus::Build();

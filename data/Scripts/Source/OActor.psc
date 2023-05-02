@@ -77,6 +77,28 @@ Function ClearExpression(Actor Act) Global Native
 bool Function HasExpressionOverride(Actor Act) Global Native
 
 
+; ███████╗ ██████╗ ██╗   ██╗███╗   ██╗██████╗
+; ██╔════╝██╔═══██╗██║   ██║████╗  ██║██╔══██╗
+; ███████╗██║   ██║██║   ██║██╔██╗ ██║██║  ██║
+; ╚════██║██║   ██║██║   ██║██║╚██╗██║██║  ██║
+; ███████║╚██████╔╝╚██████╔╝██║ ╚████║██████╔╝
+; ╚══════╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝╚═════╝
+
+;/* Mute
+* * mutes an actor, preventing them from moaning and talking
+* *
+* * @param: Act, the actor to mute
+*/;
+Function Mute(Actor Act) Global Native
+
+;/* Unmute
+* * unmutes an actor, enabling them to moan and talk again
+* *
+* * @param: Act, the actor to unmute
+*/;
+Function Unmute(Actor Act) Global Native
+
+
 ; ██╗   ██╗███╗   ██╗██████╗ ██████╗ ███████╗███████╗███████╗██╗███╗   ██╗ ██████╗ 
 ; ██║   ██║████╗  ██║██╔══██╗██╔══██╗██╔════╝██╔════╝██╔════╝██║████╗  ██║██╔════╝ 
 ; ██║   ██║██╔██╗ ██║██║  ██║██████╔╝█████╗  ███████╗███████╗██║██╔██╗ ██║██║  ███╗

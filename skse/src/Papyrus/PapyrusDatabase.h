@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Furniture/FurnitureTable.h"
-#include "Graph/LookupTable.h"
+#include "Graph/GraphTable.h"
 #include "Util/StringUtil.h"
 #include "Util/VectorUtil.h"
 
@@ -169,9 +169,9 @@ namespace PapyrusDatabase {
             }
 
             for (int i = 0; i < actorCount; i++) {
-                node->actors.push_back(new Graph::Actor());
+                node->actors.push_back({});
             }
-            node->actors[0]->scale = 1.03;
+            node->actors[0].scale = 1.03;
 
             if (auto actors = scene.child("actors")) {
                 for (auto& actor : actors.children("actor")) {
@@ -180,20 +180,22 @@ namespace PapyrusDatabase {
                         int pos = position.as_int();
                         if (pos >= 0 && pos < actorCount) {
 
-                            if (auto penisAngle = actor.attribute("penisAngle")) {
-                                node->actors[pos]->penisAngle = penisAngle.as_int();
+                            if (auto sosBend = actor.attribute("sosBend")) {
+                                node->actors[pos].sosBend = sosBend.as_int();
+                            } else if (auto penisAngle = actor.attribute("penisAngle")) {
+                                node->actors[pos].sosBend = penisAngle.as_int();
                             }
 
                             if (auto scale = actor.attribute("scale")) {
-                                node->actors[pos]->scale = scale.as_float();
+                                node->actors[pos].scale = scale.as_float();
                             }
 
                             if (auto scaleHeight = actor.attribute("scaleHeight")) {
-                                node->actors[pos]->scaleHeight = scaleHeight.as_float();
+                                node->actors[pos].scaleHeight = scaleHeight.as_float();
                             }
 
                             if (auto expressionAction = actor.attribute("expressionAction")) {
-                                node->actors[pos]->expressionAction = expressionAction.as_int();
+                                node->actors[pos].expressionAction = expressionAction.as_int();
                             }
 
                             if (auto lookUp = actor.attribute("lookUp")) {
@@ -203,7 +205,7 @@ namespace PapyrusDatabase {
                                     value *= -1;
                                     type = 8;
                                 }
-                                node->actors[pos]->eyeballModifierOverride.insert({type, {.type = type, .baseValue = value}});
+                                node->actors[pos].eyeballModifierOverride.insert({type, {.type = type, .baseValue = value}});
                             } else if (auto lookDown = actor.attribute("lookDown")) {
                                 float value = lookUp.as_float();
                                 int type = 8;
@@ -211,7 +213,7 @@ namespace PapyrusDatabase {
                                     value *= -1;
                                     type = 11;
                                 }
-                                node->actors[pos]->eyeballModifierOverride.insert({type, {.type = type, .baseValue = value}});
+                                node->actors[pos].eyeballModifierOverride.insert({type, {.type = type, .baseValue = value}});
                             }
 
                             if (auto lookLeft = actor.attribute("lookLeft")) {
@@ -221,7 +223,7 @@ namespace PapyrusDatabase {
                                     value *= -1;
                                     type = 10;
                                 }
-                                node->actors[pos]->eyeballModifierOverride.insert({type, {.type = type, .baseValue = value}});
+                                node->actors[pos].eyeballModifierOverride.insert({type, {.type = type, .baseValue = value}});
                             } else if (auto lookRight = actor.attribute("lookRight")) {
                                 float value = lookRight.as_float();
                                 int type = 10;
@@ -229,24 +231,24 @@ namespace PapyrusDatabase {
                                     value *= -1;
                                     type = 9;
                                 }
-                                node->actors[pos]->eyeballModifierOverride.insert({type, {.type = type, .baseValue = value}});
+                                node->actors[pos].eyeballModifierOverride.insert({type, {.type = type, .baseValue = value}});
                             }
 
                             if (auto tags = actor.attribute("tags")) {
                                 for (std::string tag : StringUtil::toTagVector(tags.as_string())) {
-                                    node->actors[pos]->tags.push_back(tag);
+                                    node->actors[pos].tags.push_back(tag);
                                 }
-                                if (VectorUtil::contains(node->actors[pos]->tags, std::string("openmouth"))) {
-                                    node->actors[pos]->expressionOverride = "openmouth";
-                                } else if (VectorUtil::contains(node->actors[pos]->tags, std::string("licking"))) {
-                                    node->actors[pos]->expressionOverride = "tongue";
+                                if (VectorUtil::contains(node->actors[pos].tags, std::string("openmouth"))) {
+                                    node->actors[pos].expressionOverride = "openmouth";
+                                } else if (VectorUtil::contains(node->actors[pos].tags, std::string("licking"))) {
+                                    node->actors[pos].expressionOverride = "tongue";
                                 }
                             }
 
                             if (auto feetOnGround = actor.attribute("feetOnGround")) {
-                                node->actors[pos]->feetOnGround = feetOnGround.as_bool();
+                                node->actors[pos].feetOnGround = feetOnGround.as_bool();
                             } else {
-                                node->actors[pos]->feetOnGround = VectorUtil::containsAny(node->actors[pos]->tags, {"standing", "squatting"});
+                                node->actors[pos].feetOnGround = VectorUtil::containsAny(node->actors[pos].tags, {"standing", "squatting"});
                             }
 
                             for (auto& autotransition : actor.children("autotransition")) {
@@ -255,7 +257,7 @@ namespace PapyrusDatabase {
                                 if (!type || !destination) {
                                     continue;
                                 }
-                                node->actors[pos]->autotransitions.insert({type.as_string(), destination.as_string()});
+                                node->actors[pos].autotransitions.insert({type.as_string(), destination.as_string()});
                             }
                         }
                     }
@@ -272,29 +274,27 @@ namespace PapyrusDatabase {
                         continue;
                     }
 
-                    auto actionObj = new Graph::Action();
+                    Graph::Action actionObj = {};
 
                     std::string typeStr = type.as_string();
                     StringUtil::toLower(&typeStr);
-                    actionObj->type = typeStr;
-                    actionObj->actor = actor.as_int();
+                    actionObj.type = typeStr;
+                    actionObj.actor = actor.as_int();
 
                     if (auto target = action.attribute("target")) {
-                        actionObj->target = target.as_int();
+                        actionObj.target = target.as_int();
                     } else {
-                        actionObj->target = actor.as_int();
+                        actionObj.target = actor.as_int();
                     }
 
                     if (auto performer = action.attribute("performer")) {
-                        actionObj->performer = performer.as_int();
+                        actionObj.performer = performer.as_int();
                     } else {
-                        actionObj->performer = actor.as_int();
+                        actionObj.performer = actor.as_int();
                     }
-                    actionObj->attributes = Graph::LookupTable::GetActionAttributesByType(actionObj->type);
+                    actionObj.attributes = Graph::GraphTable::GetActionAttributesByType(actionObj.type);
                     node->actions.push_back(actionObj);
                 }
-
-                node->mergeActionRequirementsIntoActors();
 
                 isOldFormat = false;
             }
@@ -410,17 +410,21 @@ namespace PapyrusDatabase {
             }
             if (actionObj) {
                 actionObj->performer = actionObj->actor;
-                actionObj->attributes = Graph::LookupTable::GetActionAttributesByType(actionObj->type);
-                node->actions.push_back(actionObj);
+                actionObj->attributes = Graph::GraphTable::GetActionAttributesByType(actionObj->type);
+                node->actions.push_back(*actionObj);
+                delete actionObj;
             }
             if (actionObj2) {
                 actionObj2->performer = actionObj2->actor;
-                actionObj2->attributes = Graph::LookupTable::GetActionAttributesByType(actionObj2->type);
-                node->actions.push_back(actionObj2);
+                actionObj2->attributes = Graph::GraphTable::GetActionAttributesByType(actionObj2->type);
+                node->actions.push_back(*actionObj2);
+                delete actionObj2;
             }
         }
 
-        Graph::LookupTable::addNode(node);
+        node->mergeActionsIntoActors();
+
+        Graph::GraphTable::addNode(node);
 
         return j_obj;
     }

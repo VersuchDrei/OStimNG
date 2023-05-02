@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Furniture/Furniture.h"
-#include "Trait/Condition.h"
 #include "Action.h"
-#include "Trait/FacialExpression.h"
+#include "GraphActor.h"
+
+#include "Furniture/Furniture.h"
 
 namespace Graph {
     struct Node; // this line is necessary for the Navigation struct to work
@@ -12,21 +12,6 @@ namespace Graph {
     public:
         std::string animation;
         float playbackSpeed = 1.0;
-    };
-
-    struct Actor {
-    public:
-        uint32_t requirements;
-        int penisAngle;
-        float scale = 1.0;
-        float scaleHeight = 120.748;
-        bool feetOnGround;
-        int expressionAction = -1;
-        std::string expressionOverride = "";
-        std::unordered_map<int, Trait::FaceModifier> eyeballModifierOverride;
-        std::vector<std::string> tags;
-        Trait::ActorConditions conditions;
-        std::unordered_map<std::string, std::string> autotransitions;
     };
 
     struct Navigation {
@@ -48,15 +33,15 @@ namespace Graph {
         bool noRandomSelection = false;
         Furniture::FurnitureType furnitureType = Furniture::FurnitureType::NONE;
         std::vector<std::string> tags;
-        std::vector<Actor*> actors;
-        std::vector<Action*> actions;
+        std::vector<GraphActor> actors;
+        std::vector<Action> actions;
         std::vector<Navigation> navigations;
 
         // maybe remove this in a later iteration?
         std::string sourceModule;
         std::string animClass;
 
-        void mergeActionRequirementsIntoActors();
+        void mergeActionsIntoActors();
         void tryAddNavigation(std::string destination);
 
         bool fulfilledBy(std::vector<Trait::ActorConditions> conditions);
@@ -76,8 +61,8 @@ namespace Graph {
         bool hasAllActorTags(int position, std::vector<std::string> tags);
         bool hasOnlyListedActorTags(int position, std::vector<std::string> tags);
 
-        int findAction(std::function<bool(Action*)> condition);
-        std::vector<int> findActions(std::function<bool(Action*)> condition);
+        int findAction(std::function<bool(Action)> condition);
+        std::vector<int> findActions(std::function<bool(Action)> condition);
 
         bool hasActionTag(std::string tag);
 

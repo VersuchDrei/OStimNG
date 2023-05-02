@@ -981,6 +981,39 @@ int Property ExpressionDurationMax
 EndProperty
 
 ; -------------------------------------------------------------------------------------------------
+; SOUND SETTINGS  ---------------------------------------------------------------------------------
+
+GlobalVariable Property OStimMoanIntervalMin Auto
+int Property MoanIntervalMin
+	int Function Get()
+		Return OStimMoanIntervalMin.value As int
+	EndFunction
+	Function Set(int Value)
+		If ExpressionDurationMax < Value
+			OStimMoanIntervalMin.value = OStimMoanIntervalMax.value
+			OStimMoanIntervalMax.value = Value
+		Else
+			OStimMoanIntervalMin.value = Value
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimMoanIntervalMax Auto
+int Property MoanIntervalMax
+	int Function Get()
+		Return OStimMoanIntervalMax.value As int
+	EndFunction
+	Function Set(int Value)
+		If ExpressionDurationMin > Value
+			OStimMoanIntervalMax.value = OStimMoanIntervalMin.value
+			OStimMoanIntervalMin.value = Value
+		Else
+			OStimMoanIntervalMax.value = Value
+		EndIf
+	EndFunction
+EndProperty
+
+; -------------------------------------------------------------------------------------------------
 ; SCRIPTWIDE VARIABLES ----------------------------------------------------------------------------
 
 
@@ -2862,6 +2895,16 @@ int[] property SoundFormNumberWhitelist auto
 ; this is useful if you only want to mute voices, for example 
 
 Function OnSound(Actor Act, Int SoundID, Int FormNumber)
+	If (FormNumber == 60)
+		OnSpank()
+		ShakeController(0.3)
+		If UseScreenShake
+			ShakeCamera(0.5)
+		EndIf
+	EndIf
+
+	Return
+
 	Int FormID = FormNumber
 	If (AppearsFemale(Act))
 		If ((FormNumber == 50) || (FormNumber == 60))

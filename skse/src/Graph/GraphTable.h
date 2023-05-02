@@ -8,24 +8,14 @@
 #include "SKEE.h"
 
 namespace Graph{
-    class LookupTable {
+    class GraphTable {
     public:
-        inline static RE::TESQuest* OSexIntegrationMainQuest;
-        inline static RE::TESObjectSTAT* OStimVehicle;
-        inline static RE::TESPackage* OStimScenePackage;
-        inline static RE::TESFaction* OStimEmptyFaction;
-
-        static void setupForms();
-
         static void addNode(Node* node);
         static Node* getNodeById(std::string id);
         static Node* getNodeByAnimation(std::string anim);
 
         static bool hasNodes(Furniture::FurnitureType furnitureType, int actorCount);
         static Node* getRandomNode(Furniture::FurnitureType furnitureType, std::vector<Trait::ActorConditions> actorConditions, std::function<bool(Node*)> nodeCondition);
-
-        static void setNiTransfromInterface(SKEE::INiTransformInterface* nioInterface);
-        static SKEE::INiTransformInterface* getNiTransformInterface();
 
         static void SetupActions();
         static ActionAttributes* GetActionAttributesByType(std::string type);

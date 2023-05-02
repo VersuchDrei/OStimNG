@@ -1,8 +1,9 @@
 #include "Furniture.h"
 
 #include "FurnitureTable.h"
-#include "Graph/LookupTable.h"
+#include "Graph/GraphTable.h"
 #include "MCM/MCMTable.h"
+#include "Util/LookupTable.h"
 #include "Util/ObjectRefUtil.h"
 #include "Util/StringUtil.h"
 #include "Util.h"
@@ -92,7 +93,7 @@ namespace Furniture {
 
             if (sameFloor == 0.0 || std::fabs(centerPos.z - refPos.z) <= sameFloor) {
                 FurnitureType type = getFurnitureType(&ref, true);
-                if (type == FurnitureType::NONE || type != FurnitureType::BED && !Graph::LookupTable::hasNodes(type, actorCount)) {
+                if (type == FurnitureType::NONE || type != FurnitureType::BED && !Graph::GraphTable::hasNodes(type, actorCount)) {
                     return RE::BSContainer::ForEachResult::kContinue;
                 }
 
@@ -194,7 +195,7 @@ namespace Furniture {
 
     void Furniture::lockFurniture(RE::TESObjectREFR* furniture) {
         furniture->SetActivationBlocked(true);
-        ObjectRefUtil::setOwner(furniture, Graph::LookupTable::OStimEmptyFaction);
+        ObjectRefUtil::setOwner(furniture, Util::LookupTable::OStimEmptyFaction);
     }
 
     void Furniture::freeFurniture(RE::TESObjectREFR* furniture, RE::TESForm* owner) {

@@ -11,7 +11,7 @@
 namespace OStim {
 	class ThreadActor {
 	public:
-        ThreadActor(int threadId, RE::Actor* actor);
+        ThreadActor(int threadId, int index, RE::Actor* actor);
         void initContinue();
 
 		float excitement = 0; // current excitement
@@ -33,7 +33,7 @@ namespace OStim {
         void redressPartial(uint32_t mask);
         void addWeapons();
 
-        void changeNode(Graph::Actor* graphActor, std::vector<Trait::FacialExpression*>* nodeExpressions, std::vector<Trait::FacialExpression*>* overrideExpressions);
+        void changeNode(Graph::GraphActor* graphActor, std::vector<Trait::FacialExpression*>* nodeExpressions, std::vector<Trait::FacialExpression*>* overrideExpressions);
         void changeSpeed(int speed);
         void setScaleMult(float scaleMult);
         void setSoSBend(int sosBend);
@@ -55,6 +55,9 @@ namespace OStim {
         bool isObjectEquipped(std::string type);
         bool setObjectVariant(std::string type, std::string variant, int duration);
         void unsetObjectVariant(std::string type);
+
+        void mute();
+        void unmute();
 
         inline bool setObjectVariant(std::string type, std::string variant) {
             return setObjectVariant(type, variant, 0);
@@ -126,13 +129,14 @@ namespace OStim {
         };
 
         int threadId;
+        int index;
 		RE::Actor* actor;
         float scaleBefore;
         bool isPlayer;
         bool isFemale;
         bool hasSchlong;
 
-        Graph::Actor* graphActor = nullptr;
+        Graph::GraphActor* graphActor = nullptr;
         int speed = 0;
         float scaleMult = 1.0;
         int sosBend = 0;
@@ -165,6 +169,9 @@ namespace OStim {
         std::unordered_map<std::string, EquipObjectHandler> equipObjects;
         std::vector<std::string> phonemeObjects;
 
+        bool muted = false;
+        int moanCooldown = -1;
+
         void scale();
         void bendSchlong();
         void checkHeelOffset();
@@ -177,6 +184,10 @@ namespace OStim {
         void applyExpression(Trait::GenderExpression* expression, int mask, int updateSpeed);
         void checkForEyeballOverride();
         void applyEyeballOverride();
+
+        void startMoanCooldown();
+        void stopMoanCooldown();
+        void moan();
 
         void papyrusUndressCallback(std::vector<RE::TESObjectARMO*> items);
         void papyrusRedressCallback(std::vector<RE::TESObjectARMO*> items);

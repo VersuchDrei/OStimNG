@@ -2,6 +2,7 @@
 	"actor":{
 		"stimulation":0.1,
 		"maxStimulation":50,
+		"talk":true,
 		"requirements":[
 			"hand"
 		],
@@ -13,6 +14,8 @@
 		"stimulation":0.4,
 		"maxStimulation":50,
 		"fullStrip":true,
+		"moan":true,
+		"talk":true,
 		"requirements":[
 			"testicles"
 		],

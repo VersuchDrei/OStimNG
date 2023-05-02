@@ -1,6 +1,7 @@
 {
 	"actor":{
 		"stimulation":0.0,
+		"muffled":true,
 		"requirements":[
 			"mouth",
 			"vampire"
@@ -14,7 +15,8 @@
 	},
 	"target":{
 		"stimulation":0.25,
-		"maxStimulation":50
+		"maxStimulation":50,
+		"moan":true
 	},
 	"tags":[
 		"seductive",

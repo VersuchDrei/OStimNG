@@ -163,6 +163,15 @@ namespace MCM {
     }
 
 
+    int MCMTable::getMoanIntervalMin() {
+        return settings[0xE0A].asInt();
+    }
+
+    int MCMTable::getMoanIntervalMax() {
+        return settings[0xE0B].asInt();
+    }
+
+
     bool MCMTable::equipStrapOnIfNeeded() {
         return settings[0xDDB].asBool();
     }

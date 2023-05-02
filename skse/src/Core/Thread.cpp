@@ -1,6 +1,6 @@
 #include "Core/Thread.h"
 #include "Furniture/Furniture.h"
-#include "Graph/LookupTable.h"
+#include "Graph/GraphTable.h"
 #include "Graph/Node.h"
 #include <Messaging/IMessages.h>
 #include "UI/Align/AlignMenu.h"
@@ -9,6 +9,7 @@
 #include "Util/Constants.h"
 #include "Util/MathUtil.h"
 #include "MCM/MCMTable.h"
+#include "Util/LookupTable.h"
 #include "Util/ObjectRefUtil.h"
 #include "Util/StringUtil.h"
 #include "Util.h"
@@ -17,7 +18,7 @@ namespace OStim {
     Thread::Thread(ThreadId id, RE::TESObjectREFR* furniture, std::vector<RE::Actor*> actors) : m_threadId{id}, furniture{furniture} {
         // --- setting up the vehicle --- //
         RE::TESObjectREFR* center = furniture ? furniture : actors[0];
-        vehicle = center->PlaceObjectAtMe(Graph::LookupTable::OStimVehicle, false).get();
+        vehicle = center->PlaceObjectAtMe(Util::LookupTable::OStimVehicle, false).get();
 
         if (furniture) {
             furnitureOwner = ObjectRefUtil::getOwner(furniture);
@@ -133,22 +134,22 @@ namespace OStim {
             actorIt.second.maxExcitement = 0;
             std::vector<float> excitementVals;
             for (auto& action : m_currentNode->actions) {
-                if (action->actor == actorIt.first && action->attributes->actor.stimulation != 0) {
-                    excitementVals.push_back(action->attributes->actor.stimulation);
-                    auto maxStim = action->attributes->actor.maxStimulation;
+                if (action.actor == actorIt.first && action.attributes->actor.stimulation != 0) {
+                    excitementVals.push_back(action.attributes->actor.stimulation);
+                    auto maxStim = action.attributes->actor.maxStimulation;
                     if (maxStim > actorIt.second.maxExcitement) {
                         actorIt.second.maxExcitement = maxStim;
                     }
                 }
-                if (action->target == actorIt.first && action->attributes->target.stimulation != 0) {
-                    excitementVals.push_back(action->attributes->target.stimulation);
-                    auto maxStim = action->attributes->target.maxStimulation;
+                if (action.target == actorIt.first && action.attributes->target.stimulation != 0) {
+                    excitementVals.push_back(action.attributes->target.stimulation);
+                    auto maxStim = action.attributes->target.maxStimulation;
                     if (maxStim > actorIt.second.maxExcitement) {
                         actorIt.second.maxExcitement = maxStim;
                     }
                 }
-                if (action->performer == actorIt.first && action->attributes->performer.stimulation != 0) {
-                    excitementVals.push_back(action->attributes->performer.stimulation);
+                if (action.performer == actorIt.first && action.attributes->performer.stimulation != 0) {
+                    excitementVals.push_back(action.attributes->performer.stimulation);
                 }
             }
 
@@ -195,7 +196,7 @@ namespace OStim {
 
             // --- scaling / heel offsets / facial expressions --- //
             if (actorIt.first < m_currentNode->actors.size()) {
-                actorIt.second.changeNode(m_currentNode->actors[actorIt.first], m_currentNode->getFacialExpressions(actorIt.first), m_currentNode->getOverrideExpressions(actorIt.first));
+                actorIt.second.changeNode(&(m_currentNode->actors[actorIt.first]), m_currentNode->getFacialExpressions(actorIt.first), m_currentNode->getOverrideExpressions(actorIt.first));
             }
         }
 
@@ -236,7 +237,7 @@ namespace OStim {
         ActorUtil::lockActor(actor);
         ActorUtil::setVehicle(actor, vehicle);
         addActorSink(actor);
-        m_actors.insert(std::make_pair(index, ThreadActor(m_threadId, actor)));
+        m_actors.insert(std::make_pair(index, ThreadActor(m_threadId, index, actor)));
         ThreadActor* threadActor = GetActor(index);
         threadActor->initContinue();
         if (MCM::MCMTable::undressAtStart()) {
@@ -417,7 +418,7 @@ namespace OStim {
             if (vm) {
                 RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
                 auto args = RE::MakeFunctionArguments(std::move(actor));
-                auto handle = skyrimVM->handlePolicy.GetHandleForObject(static_cast<RE::VMTypeID>(Graph::LookupTable::OSexIntegrationMainQuest->FORMTYPE), Graph::LookupTable::OSexIntegrationMainQuest);
+                auto handle = skyrimVM->handlePolicy.GetHandleForObject(static_cast<RE::VMTypeID>(Util::LookupTable::OSexIntegrationMainQuest->FORMTYPE), Util::LookupTable::OSexIntegrationMainQuest);
                 vm->DispatchMethodCall2(handle, "OSexIntegrationMain", "Climax", args, callback);
             }
         } else if (tag == "OStimSpank") {
