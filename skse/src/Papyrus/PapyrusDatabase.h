@@ -101,7 +101,7 @@ namespace PapyrusDatabase {
                 navigations[node] = {};
                 for (auto& tab : nav.children("tab")) {
                     for (auto& page : tab.children("page")) {
-                        for (auto& option : tab.children("option")) {
+                        for (auto& option : page.children("option")) {
                             auto go = option.attribute("go");
                             navigations[node].push_back(go.value());
                         }

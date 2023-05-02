@@ -502,4 +502,8 @@ namespace OStim {
         return oldThread;
     }
 
+    bool Thread::isSameThread(Thread* thread) {
+        return m_threadId == thread->m_threadId;
+    }
+
 }  // namespace OStim

@@ -69,7 +69,10 @@ namespace UI::Scene {
 
     void SceneMenu::NodeChanged(OStim::Thread* thread, Graph::Node* node)
     {
-        if (&thread != &currentThread) return;
+        if (!thread || !node) return;
+        if (!currentThread->isSameThread(thread)) return;
+
+        currentNode = node;
         UpdateMenuData();
     }
 
@@ -118,7 +121,8 @@ namespace UI::Scene {
     void SceneMenu::UpdateMenuData() {
         RE::GFxValue menuValues;
         view->CreateArray(&menuValues);
-        auto menuData = BuildMenuData();
+        MenuData menuData;
+        BuildMenuData(menuData);
         menuData.loadValues(menuValues);
         auto root = GetRoot();
         RE::GFxValue optionBoxes;
@@ -126,7 +130,8 @@ namespace UI::Scene {
         optionBoxes.Invoke("AssignData", nullptr, &menuValues, 1);
 
 
-        //TEMP
+        //TEMP Bars Stuff
+        /*
         RE::GFxValue barsData;
         view->CreateObject(&barsData);
         RE::GFxValue actorsData;
@@ -144,12 +149,27 @@ namespace UI::Scene {
         RE::GFxValue barsMgr;
         root.GetMember("bars", &barsMgr);
         barsMgr.Invoke("AssignData", nullptr, &barsData, 1);
+        */
     }
 
-    UI::Scene::SceneMenu::MenuData SceneMenu::BuildMenuData() {
+    void SceneMenu::BuildMenuData(MenuData& menuData) {
         // Do this when we have the node edges defined in c++
-        MenuData ret;
-        OptionData val1{"AAAA","BBBB","Ostim/logo.dds","desc"};
+        
+        if (!currentNode)
+            return;
+        
+        for(auto& nav : currentNode->navigations) {
+            
+            OptionData val{
+                nav.destination->scene_id,
+                nav.destination->scene_name,
+                "Ostim/logo.dds",
+                nav.destination->scene_name
+            };
+            menuData.options.push_back(val);
+        }
+        
+       /* OptionData val1{"AAAA","BBBB","Ostim/logo.dds","desc"};
         OptionData val2{ "CCCC","","Ostim/logo.dds","desc2" };
         OptionData val3{ "CCCC","","Ostim/logo.dds","desc2" };
         OptionData val4{ "CCCC","","Ostim/logo.dds","desc2" };
@@ -160,8 +180,8 @@ namespace UI::Scene {
         ret.options.push_back(val3);
         ret.options.push_back(val4);
         ret.options.push_back(val5);
-        ret.options.push_back(val6);
-        return ret;
+        ret.options.push_back(val6);*/
+        
     }
 
     void SceneMenu::UpdateInfoBox() {

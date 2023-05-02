@@ -76,7 +76,7 @@ namespace UI::Scene {
 		};
 
 		static void UpdateMenuData();
-		static MenuData BuildMenuData();
+		static void BuildMenuData(MenuData& menudata);
 		static void UpdateInfoBox();
 		static void SendControl(int32_t control);
 	private:
