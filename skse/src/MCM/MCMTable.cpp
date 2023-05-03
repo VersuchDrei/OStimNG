@@ -171,6 +171,14 @@ namespace MCM {
         return settings[0xE0B].asInt();
     }
 
+    float MCMTable::getMoanVolume() {
+        return settings[0xE0C].asFloat();
+    }
+
+    float MCMTable::getSoundVolume() {
+        return settings[0xE0D].asFloat();
+    }
+
 
     bool MCMTable::equipStrapOnIfNeeded() {
         return settings[0xDDB].asBool();

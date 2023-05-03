@@ -22,7 +22,7 @@ The slots are:
 So for example if a moan expression only contains phonemes and eyelid modifiers the emotional expression and eyeball and brow modifiers of the underlying expression will still be used.
 
 
-Actions will be chosen on a variety of conditions. OStim will randomly select a new one every few seconds (duration is based on MCM settings).
+Expressions will be chosen on a variety of conditions. OStim will randomly select a new one every few seconds (duration is based on MCM settings).
 
 For the underlying expression the list of actions of an animation will be parsed from top to bottom.
 It will always check the actor against the actions target first and then agains the actions actor, until one is found that has expressions defined.
@@ -34,7 +34,7 @@ For override expressions (open mouth / tongue for oral actions) an expression fo
 One exception is the "default" set, which is the expression that is used if no other expression qualifies for the actor.
 
 
-Field summary:
+field summary:
 
 expression:
 "actionActors" (list<string>): a list of actions that cause this expression if the Skyrim actor is the action actor

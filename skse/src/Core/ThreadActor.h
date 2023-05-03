@@ -5,8 +5,9 @@
 
 #include "Alignment/ActorKey.h"
 #include "Graph/Node.h"
-#include "Trait/EquipObject.h"
 #include "Serial/OldThread.h"
+#include "Trait/EquipObject.h"
+#include "Trait/VoiceSet.h"
 
 namespace OStim {
 	class ThreadActor {
@@ -169,6 +170,7 @@ namespace OStim {
         std::unordered_map<std::string, EquipObjectHandler> equipObjects;
         std::vector<std::string> phonemeObjects;
 
+        Trait::VoiceSet* voiceSet = nullptr;
         bool muted = false;
         int moanCooldown = -1;
 

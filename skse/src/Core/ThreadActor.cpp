@@ -25,6 +25,8 @@ namespace OStim {
 
         baseExcitementMultiplier = isFemale && (!hasSchlong || !MCM::MCMTable::futaUseMaleExcitement()) ? MCM::MCMTable::getFemaleSexExcitementMult() : MCM::MCMTable::getMaleSexExcitementMult();
         loopExcitementDecay = MCM::MCMTable::getExcitementDecayRate() * Constants::LOOP_TIME_SECONDS;
+
+        voiceSet = Trait::TraitTable::getVoiceSet(actor);
     }
 
     void ThreadActor::initContinue() {
@@ -912,7 +914,11 @@ namespace OStim {
     }
 
     void ThreadActor::startMoanCooldown() {
-        moanCooldown = std::uniform_int_distribution<>(MCM::MCMTable::getMoanIntervalMin(), MCM::MCMTable::getMoanIntervalMax())(Constants::RNG);
+        if (!muted && voiceSet && graphActor->moan) {
+            moanCooldown = std::uniform_int_distribution<>(MCM::MCMTable::getMoanIntervalMin(), MCM::MCMTable::getMoanIntervalMax())(Constants::RNG);
+        } else {
+            moanCooldown = -1;
+        }
     }
 
     void ThreadActor::stopMoanCooldown() {
@@ -920,11 +926,12 @@ namespace OStim {
     }
 
     void ThreadActor::moan() {
-        playEventExpression("moan");
+        playEventExpression(voiceSet->moanExpression);
 
         RE::BSSoundHandle handle;
-        RE::BSAudioManager::GetSingleton()->BuildSoundDataFromDescriptor(handle, isFemale ? Util::LookupTable::OStimMoanFemaleSD : Util::LookupTable::OStimMoanMaleSD, 0x10);
+        RE::BSAudioManager::GetSingleton()->BuildSoundDataFromDescriptor(handle, voiceSet->moan, 0x10);
         handle.SetObjectToFollow(actor->Get3D());
+        handle.SetVolume(MCM::MCMTable::getMoanVolume());
         handle.Play();
 
         startMoanCooldown();

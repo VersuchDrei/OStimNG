@@ -2322,9 +2322,18 @@ EndState
 Function DrawSoundPage()
 	SetCursorFillMode(TOP_TO_BOTTOM)
 	SetCursorPosition(0)
-	AddSliderOptionST("OID_MoanIntervalMin", "$ostim_moan_interval_min", Main.MoanIntervalMin / 1000.0, "{2} s")
+	AddColoredHeader("$ostim_header_moans")
 	SetCursorPosition(2)
+	AddSliderOptionST("OID_MoanIntervalMin", "$ostim_moan_interval_min", Main.MoanIntervalMin / 1000.0, "{2} s")
+	SetCursorPosition(4)
 	AddSliderOptionST("OID_MoanIntervalMax", "$ostim_moan_interval_max", Main.MoanIntervalMax / 1000.0, "{2} s")
+	SetCursorPosition(6)
+	AddSliderOptionST("OID_MoanVolume", "$ostim_moan_volume", Main.MoanVolume, "{2}")
+
+	SetCursorPosition(1)
+	AddColoredHeader("$ostim_header_sounds")
+	SetCursorPosition(3)
+	AddSliderOptionST("OID_SoundVolume", "$ostim_sound_volume", Main.SoundVolume, "{2}")
 EndFunction
 
 State OID_MoanIntervalMin
@@ -2353,7 +2362,7 @@ State OID_MoanIntervalMax
 
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(Main.MoanIntervalMax / 1000.0)
-		SetSliderDialogDefaultValue(3)
+		SetSliderDialogDefaultValue(5)
 		SetSliderDialogRange(0.1, 10)
 		SetSliderDialogInterval(0.05)
 	EndEvent
@@ -2362,6 +2371,42 @@ State OID_MoanIntervalMax
 		Main.MoanIntervalMax = (Value * 1000) as int
 		SetSliderOptionValueST(Main.MoanIntervalMin / 1000.0, "{2} s", false, "OID_MoanIntervalMin")
 		SetSliderOptionValueST(Main.MoanIntervalMax / 1000.0, "{2} s")
+	EndEvent
+EndState
+
+State OID_MoanVolume
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_moan_volume")
+	EndEvent
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(Main.MoanVolume)
+		SetSliderDialogDefaultValue(1)
+		SetSliderDialogRange(0.1, 1)
+		SetSliderDialogInterval(0.05)
+	EndEvent
+
+	Event OnSliderAcceptST(float Value)
+		Main.MoanVolume = Value
+		SetSliderOptionValueST(Value, "{2}")
+	EndEvent
+EndState
+
+State OID_SoundVolume
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_sound_volume")
+	EndEvent
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(Main.SoundVolume)
+		SetSliderDialogDefaultValue(1)
+		SetSliderDialogRange(0.1, 1)
+		SetSliderDialogInterval(0.05)
+	EndEvent
+
+	Event OnSliderAcceptST(float Value)
+		Main.SoundVolume = Value
+		SetSliderOptionValueST(Value, "{2}")
 	EndEvent
 EndState
 

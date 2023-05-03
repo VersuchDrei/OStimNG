@@ -49,6 +49,8 @@ namespace MCM {
 
         static int getMoanIntervalMin();
         static int getMoanIntervalMax();
+        static float getMoanVolume();
+        static float getSoundVolume();
 
         static bool equipStrapOnIfNeeded();
         static bool unequipStrapOnIfNotNeeded();
@@ -117,6 +119,8 @@ namespace MCM {
 
             {0xE0A, {2500, "moanIntervalMin"}},
             {0xE0B, {5000, "moanIntervalMax"}},
+            {0xE0C, {1, "moanVolume"}},
+            {0xE0D, {1, "soundVolume"}},
 
             {0xDEE, {0, "SetOnlyGayAnimsInGayScenes"}},  // intended sex only
             {0XDEF, {0, "PlayerAlwaysDomStraight"}},

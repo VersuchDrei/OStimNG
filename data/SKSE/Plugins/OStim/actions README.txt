@@ -7,7 +7,7 @@ so when it comes to the term "actor" there are two things it can mean depending 
 2) an action actor, this refers to the actor property of a record of the "actions" list in the scene file (which is just an int)
 
 
-Field summary:
+field summary:
 note: all string values are converted to lower case when parsed, so capitalization does not matter
 
 action fields:

@@ -99,8 +99,6 @@ Bool Property UseAIPlayerAggressed Auto
 Bool Property UseAINonAggressive Auto
 Bool Property UseAIMasturbation Auto
 
-Bool Property MuteOSA Auto
-
 Bool Property UseRumble Auto
 Bool Property UseScreenShake Auto
 
@@ -1010,6 +1008,26 @@ int Property MoanIntervalMax
 		Else
 			OStimMoanIntervalMax.value = Value
 		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimMoanVolume Auto
+float Property MoanVolume
+	float Function Get()
+		Return OStimMoanVolume.value
+	EndFunction
+	Function Set(float Value)
+		OStimMoanVolume.value = Value
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimSoundVolume Auto
+float Property SoundVolume
+	float Function Get()
+		Return OStimSoundVolume.value
+	EndFunction
+	Function Set(float Value)
+		OStimSoundVolume.value = Value
 	EndFunction
 EndProperty
 
@@ -3794,6 +3812,29 @@ Bool Property EnableThirdBar
 	EndFunction
 	Function Set(bool Value)
 		EnableNpcBar = Value
+	EndFunction
+EndProperty
+
+Bool Property MuteOSA
+	bool Function Get()
+		Return false
+	EndFunction
+	Function Set(bool Value)
+		If !AnimationRunning()
+			Return
+		EndIf
+
+		; NV used this together with a whitelist to only mute the female moans
+		; so we will do exactly that here
+		If Value
+			int i = Actors.Length
+			While i
+				i -= 1
+				If AppearsFemale(Actors[i])
+					OActor.Mute(Actors[i])
+				EndIf
+			EndWhile
+		EndIf
 	EndFunction
 EndProperty
 
