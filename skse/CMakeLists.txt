@@ -42,6 +42,8 @@ set(sources
 	src/Game/LocaleManager.h
 	src/Game/Locker.h
 	src/Game/Patch.h
+    src/GameAPI/Game.cpp
+    src/GameAPI/GameCamera.cpp
     src/GameAPI/GameSex.cpp
     src/Graph/Action.cpp
     src/Graph/GraphTable.cpp

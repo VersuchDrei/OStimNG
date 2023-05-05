@@ -51,9 +51,6 @@ string[] Property POSITION_TAGS Auto
 Faction Property OStimNoFacialExpressionsFaction Auto
 Faction Property OStimExcitementFaction Auto
 
-; for compatibility with naughty voices
-Faction Property NVCustomOrgasmFaction Auto
-
 
 ; -------------------------------------------------------------------------------------------------
 ; SETTINGS  ---------------------------------------------------------------------------------------
@@ -99,9 +96,6 @@ Bool Property UseAIPlayerAggressed Auto
 Bool Property UseAINonAggressive Auto
 Bool Property UseAIMasturbation Auto
 
-Bool Property UseRumble Auto
-Bool Property UseScreenShake Auto
-
 Bool Property UseFades Auto
 Bool Property UseAutoFades Auto
 bool Property SkipEndingFadein Auto
@@ -109,8 +103,6 @@ bool Property SkipEndingFadein Auto
 Bool Property EndAfterActorHit Auto
 
 Bool Property GetInBedAfterBedScene Auto
-
-Bool Property ForceFirstPersonAfter Auto
 
 Bool Property BlockVRInstalls Auto
 
@@ -225,6 +217,21 @@ int Property AlignmentKey
 	EndFunction
 EndProperty
 
+
+GlobalVariable Property OStimUseRumble Auto
+Bool Property UseRumble
+	bool Function Get()
+		Return OStimUseRumble.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimUseRumble.value = 1
+		Else
+			OStimUseRumble.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
 ; -------------------------------------------------------------------------------------------------
 ; CAMERA SETTINGS  --------------------------------------------------------------------------------
 
@@ -272,6 +279,34 @@ bool Property EnableImprovedCamSupport
 			OStimImprovedCamSupport.value = 1
 		Else
 			OStimImprovedCamSupport.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimForceFirstPersonOnEnd Auto
+Bool Property ForceFirstPersonAfter
+	bool Function Get()
+		Return OStimForceFirstPersonOnEnd.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimForceFirstPersonOnEnd.value = 1
+		Else
+			OStimForceFirstPersonOnEnd.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimUseScreenShake Auto
+Bool Property UseScreenShake
+	bool Function Get()
+		Return OStimUseScreenShake.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimUseScreenShake.value = 1
+		Else
+			OStimUseScreenShake.value = 0
 		EndIf
 	EndFunction
 EndProperty
@@ -1367,7 +1402,6 @@ Bool Function StartScene(Actor Dom, Actor Sub, Bool zUndressDom = False, Bool zU
 	int i = Actors.Length
 	While i
 		i -= 1
-
 		Actors[i].AddToFaction(OStimExcitementFaction)
 	EndWhile
 
@@ -2719,32 +2753,7 @@ EndFunction
 Function Climax(Actor Act)
 	MostRecentOrgasmedActor = Act
 
-	SetActorExcitement(Act, -3.0)
-	Act.SendModEvent("ostim_orgasm", CurrentSceneID, Actors.Find(act))
-	If (Act == PlayerRef)
-		If BlurOnOrgasm
-			NutEffect.Apply()
-		EndIf
-		If (SlowMoOnOrgasm)
-			SetGameSpeed("0.3")
-			Utility.Wait(2.5)
-			SetGameSpeed("1")
-		EndIf
-
-		If UseScreenShake
-			ShakeCamera(1.00, 2.0)
-		EndIf
-
-		ShakeController(0.5, 0.7)
-	EndIf
-
-	If !IsFemale(Act)
-		SetCurrentAnimationSpeed(OMetadata.GetDefaultSpeed(CurrentSceneID))
-	EndIf
-
-	While StallOrgasm
-		Utility.Wait(0.3)
-	EndWhile
+	OActor.Climax(Act, false)
 
 	int actorIndex = Actors.find(Act)
 	If actorIndex >= 0
@@ -2753,24 +2762,6 @@ Function Climax(Actor Act)
 			Actor partner = GetActor(OMetadata.GetActionActor(CurrentSceneID, actionIndex))
 			AddActorExcitement(partner, 5)
 		EndIf
-	EndIf
-
-	Act.DamageActorValue("stamina", 250.0)
-
-	bool End = false
-	If EndOnAllOrgasm
-		End = DomTimesOrgasm > 0 && (SubActor == None || SubTimesOrgasm > 0) && (ThirdActor == None || ThirdTimesOrgasm > 0)
-	Else
-		If AppearsFemale(Act)
-			End = EndOnFemaleOrgasm
-		Else
-			End = EndOnMaleOrgasm
-		EndIf
-	EndIf
-	If End
-		SetCurrentAnimationSpeed(0)
-		Utility.Wait(4)
-		EndAnimation()
 	EndIf
 EndFunction
 
@@ -2784,6 +2775,7 @@ EndFunction
 
 Event OstimOrgasm(String EventName, String sceneId, Float index, Form Sender)
 	Actor Act = Sender As Actor
+	MostRecentOrgasmedActor = Act
 
 	; Fertility Mode compatibility
 	int actionIndex = OMetadata.FindActionForActor(sceneId, index as int, "vaginalsex")
@@ -2800,12 +2792,21 @@ Event OstimOrgasm(String EventName, String sceneId, Float index, Form Sender)
 		EndIf
 	EndIf
 
-	If !Act.IsInFaction(NVCustomOrgasmFaction) && !FaceDataIsMuted(Act)
-		; if we don't mute FaceData here OSAs constant sound spamming will override the climax face after 1-2 seconds
-		MuteFaceData(Act)
-		SendExpressionEvent(Act, "climax")
-		; since SendExpressionEvent contains a Utility::Wait call this line will execute once the orgasm expression is over
-		UnMuteFaceData(Act)
+
+	bool End = false
+	If EndOnAllOrgasm
+		End = DomTimesOrgasm > 0 && (SubActor == None || SubTimesOrgasm > 0) && (ThirdActor == None || ThirdTimesOrgasm > 0)
+	Else
+		If AppearsFemale(Act)
+			End = EndOnFemaleOrgasm
+		Else
+			End = EndOnMaleOrgasm
+		EndIf
+	EndIf
+	If End
+		SetCurrentAnimationSpeed(0)
+		Utility.Wait(4)
+		EndAnimation()
 	EndIf
 EndEvent
 
@@ -2908,70 +2909,14 @@ Event OnOSASound(String EventName, String Args, Float Nothing, Form Sender)
 EndEvent
 /;
 
-int[] property SoundFormNumberWhitelist auto 
-; Sounds that match a Formnumber found in the above whitelist will always be played if osa is muted
-; this is useful if you only want to mute voices, for example 
-
 Function OnSound(Actor Act, Int SoundID, Int FormNumber)
 	If (FormNumber == 60)
+		PlayOSASound(Act, FormNumber, Soundid)
 		OnSpank()
 		ShakeController(0.3)
 		If UseScreenShake
 			ShakeCamera(0.5)
 		EndIf
-	EndIf
-
-	Return
-
-	Int FormID = FormNumber
-	If (AppearsFemale(Act))
-		If ((FormNumber == 50) || (FormNumber == 60))
-			FormID = FormNumber
-		Else
-			FormID = FormNumber + 5
-		EndIf
-	EndIf
-
-	bool PlayExpression = False
-	If (!MuteOSA) || IntArrayContainsValue(SoundFormNumberWhitelist, FormID)
-		PlayOSASound(Act, Formid, Soundid)
-		If FormNumber != 20
-			PlayExpression = True
-		EndIf
-	EndIf
-
-	String EventName = "moan"
-	If (FormNumber == 60)
-		OnSpank()
-		ShakeController(0.3)
-		If UseScreenShake
-			ShakeCamera(0.5)
-		EndIf
-
-		PlayExpression = True
-		EventName = "spank"
-	EndIf
-
-	If (FormNumber == 50)
-		ShakeController(0.1)
-		If UseScreenShake
-			ShakeCamera(0.5)
-		EndIf
-	EndIf
-
-	String Arg = "third"
-	If (Act == DomActor)
-		Arg = "dom"
-	ElseIf (Act == SubActor)
-		Arg = "sub"
-	EndIf
-
-	Arg += "," + FormId
-	Arg += "," + SoundId
-	SendModEvent("ostim_osasound", StrArg = Arg)
-	
-	If PlayExpression && !FaceDataIsMuted(Act)
-		SendExpressionEvent(Act, EventName)
 	EndIf
 EndFunction
 
@@ -3134,11 +3079,6 @@ Function SetDefaultSettings()
 
 	LowLightLevelLightsOnly = False
 
-	SoundFormNumberWhitelist = new int[1]
-	SoundFormNumberWhitelist[0] = 9999 ;initializing to avoid array-related bugs
-UseFreeCam
-	EnableImprovedCamSupport = False
-
 	SpeedUpNonSexAnimation = False ;game pauses if anim finished early
 	SpeedUpSpeed = 1.5
 
@@ -3157,11 +3097,6 @@ UseFreeCam
 
 
 	disableOSAControls = false
-
-	Forcefirstpersonafter = !UseFreeCam
-
-	UseRumble = Game.UsingGamepad()
-	UseScreenShake = False
 
 	UseFades = True
 	UseAutoFades = True
@@ -3677,6 +3612,9 @@ EndFunction
 ; ╚═════╝ ╚══════╝╚═╝     ╚═╝  ╚═╝╚══════╝ ╚═════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═════╝ 
 
 ; all of these are only here to not break old addons, don't use them in new addons, use whatever they're calling instead
+
+Faction Property NVCustomOrgasmFaction Auto
+int[] property SoundFormNumberWhitelist auto 
 
 int Property DefaultFOV
 	int Function Get()

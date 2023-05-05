@@ -1,7 +1,10 @@
 #include "ThreadActor.h"
 
 #include "Core.h"
+#include "Thread.h"
 #include "ThreadManager.h"
+#include "GameAPI/Game.h"
+#include "GameAPI/GameCamera.h"
 #include "Graph/GraphTable.h"
 #include "MCM/MCMTable.h"
 #include "Trait/TraitTable.h"
@@ -15,7 +18,7 @@
 #include "Util/VectorUtil.h"
 
 namespace OStim {
-    ThreadActor::ThreadActor(int threadId, int index, RE::Actor* actor) : threadId{threadId}, actor{actor} {
+    ThreadActor::ThreadActor(Thread* thread, int index, RE::Actor* actor) : thread{thread}, actor{actor} {
         scaleBefore = actor->GetReferenceRuntimeData().refScale / 100.0f;
         isFemale = actor->GetActorBase()->GetSex() == RE::SEX::kFemale;
         hasSchlong = Compatibility::CompatibilityTable::hasSchlong(actor);
@@ -58,7 +61,7 @@ namespace OStim {
             auto vm = skyrimVM ? skyrimVM->impl : nullptr;
             if (vm) {
                 RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback(new PapyrusUndressCallbackFunctor(this, false));
-                auto args = RE::MakeFunctionArguments(std::move(threadId), std::move(actor));
+                auto args = RE::MakeFunctionArguments(std::move(thread->m_threadId), std::move(actor));
                 vm->DispatchStaticCall("OUndress", "Undress", args, callback);
             }
             return;
@@ -92,13 +95,68 @@ namespace OStim {
         undressed = true;
     }
 
+
+    void ThreadActor::climax() {
+        excitement = -3;
+
+        if (!muted && voiceSet && voiceSet->climax) {
+            playEventExpression(voiceSet->climaxExpression);
+
+            RE::BSSoundHandle handle;
+            RE::BSAudioManager::GetSingleton()->BuildSoundDataFromDescriptor(handle, voiceSet->climax, 0x10);
+            handle.SetObjectToFollow(actor->Get3D());
+            handle.SetVolume(MCM::MCMTable::getMoanVolume());
+            handle.Play();
+        }
+
+        if (thread->isPlayerThread) {
+            FormUtil::sendModEvent(actor, "ostim_orgasm", thread->m_currentNode->scene_id, index);
+
+            if (isPlayer) {
+                if (MCM::MCMTable::getBlurOnOrgasm()) {
+                    FormUtil::apply(Util::LookupTable::OStimNutEffect, 1.0);
+                }
+            }
+
+            if (MCM::MCMTable::getSlowMotionOnOrgasm()) {
+                std::thread slowMoThread = std::thread([&]() {
+                    GameAPI::Game::setGameSpeed(0.3);
+                    std::this_thread::sleep_for(std::chrono::milliseconds(2500));
+                    GameAPI::Game::setGameSpeed(1);
+                });
+                slowMoThread.detach();
+            }
+
+            if (MCM::MCMTable::useScreenShake()) {
+                GameAPI::GameCamera::shakeCamera(1.0, 2.0, true);
+            }
+
+            if (MCM::MCMTable::useRumble()) {
+                GameAPI::Game::shakeController(0.5, 0.5, 0.7);
+            }
+        } else {
+            FormUtil::sendModEvent(actor, "ostim_subthread_orgasm", thread->m_currentNode->scene_id, thread->m_threadId);
+        }
+
+        actor->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, RE::ActorValue::kStamina, -250);
+
+        // todo give other actor excitement when in vaginalsex
+        
+
+        if (hasSchlong) {
+            // todo: enable again when we have our own UI
+            //thread->SetSpeed(0);
+        }
+    }
+
+
     void ThreadActor::undressPartial(uint32_t mask) {
         if (MCM::MCMTable::usePapyrusUndressing()) {
             const auto skyrimVM = RE::SkyrimVM::GetSingleton();
             auto vm = skyrimVM ? skyrimVM->impl : nullptr;
             if (vm) {
                 RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback(new PapyrusUndressCallbackFunctor(this, false));
-                auto args = RE::MakeFunctionArguments(std::move(threadId), std::move(actor), std::move(mask));
+                auto args = RE::MakeFunctionArguments(std::move(thread->m_threadId), std::move(actor), std::move(mask));
                 vm->DispatchStaticCall("OUndress", "UndressPartial", args, callback);
             }
             return;
@@ -163,7 +221,7 @@ namespace OStim {
             auto vm = skyrimVM ? skyrimVM->impl : nullptr;
             if (vm) {
                 RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback(new PapyrusUndressCallbackFunctor(this, true));
-                auto args = RE::MakeFunctionArguments(std::move(threadId), std::move(actor), std::move(undressedItems));
+                auto args = RE::MakeFunctionArguments(std::move(thread->m_threadId), std::move(actor), std::move(undressedItems));
                 vm->DispatchStaticCall("OUndress", "Redress", args, callback);
             }
             return;
@@ -188,7 +246,7 @@ namespace OStim {
             auto vm = skyrimVM ? skyrimVM->impl : nullptr;
             if (vm) {
                 RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback(new PapyrusUndressCallbackFunctor(this, true));
-                auto args = RE::MakeFunctionArguments(std::move(threadId), std::move(actor), std::move(undressedItems), std::move(mask));
+                auto args = RE::MakeFunctionArguments(std::move(thread->m_threadId), std::move(actor), std::move(undressedItems), std::move(mask));
                 vm->DispatchStaticCall("OUndress", "RedressPartial", args, callback);
             }
             return;
@@ -517,7 +575,7 @@ namespace OStim {
         if (!heelOffsetRemoved) {
             scale();
             if (MCM::MCMTable::groupAlignmentByHeels()) {
-                ThreadManager::GetSingleton()->GetThread(threadId)->alignActors();
+                thread->alignActors();
             }
             return;
         }
@@ -585,6 +643,8 @@ namespace OStim {
     }
 
     void ThreadActor::setEventExpression(Trait::FacialExpression* expression) {
+        stopMoanCooldown();
+
         int mask = 0;
         if (eventExpression) {
             mask = eventExpression->typeMask;
@@ -609,6 +669,8 @@ namespace OStim {
             }
             eventExpression = nullptr;
             wakeExpressions(mask);
+
+            startMoanCooldown();
         }
     }
 
@@ -905,16 +967,12 @@ namespace OStim {
     }
 
     void ThreadActor::unmute() {
-        if (!muted) {
-            return;
-        }
-
-        startMoanCooldown();
         muted = false;
+        startMoanCooldown();
     }
 
     void ThreadActor::startMoanCooldown() {
-        if (!muted && voiceSet && graphActor->moan) {
+        if (!muted && !eventExpression && voiceSet && voiceSet->moan && graphActor->moan) {
             moanCooldown = std::uniform_int_distribution<>(MCM::MCMTable::getMoanIntervalMin(), MCM::MCMTable::getMoanIntervalMax())(Constants::RNG);
         } else {
             moanCooldown = -1;
@@ -933,8 +991,6 @@ namespace OStim {
         handle.SetObjectToFollow(actor->Get3D());
         handle.SetVolume(MCM::MCMTable::getMoanVolume());
         handle.Play();
-
-        startMoanCooldown();
     }
 
 
@@ -961,7 +1017,7 @@ namespace OStim {
                 auto vm = skyrimVM ? skyrimVM->impl : nullptr;
                 if (vm) {
                     RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-                    auto args = RE::MakeFunctionArguments(std::move(threadId), std::move(actor), std::move(undressedItems));
+                    auto args = RE::MakeFunctionArguments(std::move(thread->m_threadId), std::move(actor), std::move(undressedItems));
                     vm->DispatchStaticCall("OUndress", "Redress", args, callback);
                 }
             } else {
@@ -1006,7 +1062,7 @@ namespace OStim {
         ActorUtil::setScale(threadActor->actor, currentScale / height);
 
         if (MCM::MCMTable::groupAlignmentByHeight()) {
-            ThreadManager::GetSingleton()->GetThread(threadActor->threadId)->alignActors();
+            threadActor->thread->alignActors();
         }
     }
 

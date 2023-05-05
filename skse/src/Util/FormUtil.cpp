@@ -4,6 +4,13 @@
 #include "MCM/MCMTable.h"
 
 namespace FormUtil {
+    void sendModEvent(RE::TESForm* sender, std::string eventName, std::string strArg, float numArg) {
+        SKSE::ModCallbackEvent modEvent{eventName, strArg, numArg, sender};
+
+        auto modCallbackSource = SKSE::GetModCallbackEventSource();
+        modCallbackSource->SendEvent(&modEvent);
+    }
+
     bool isWig(RE::Actor* actor, RE::TESObjectARMO* armor) {
         if (!armor || !armor->HasPartOf(RE::BGSBipedObjectForm::BipedObjectSlot::kHair)) {
             return false;
@@ -49,5 +56,9 @@ namespace FormUtil {
         }
 
         return true;
+    }
+
+    void apply(RE::TESImageSpaceModifier* modifier, float strength) {
+        Apply(nullptr, 0, modifier, strength);
     }
 }

@@ -10,9 +10,11 @@
 #include "Trait/VoiceSet.h"
 
 namespace OStim {
+    class Thread;
+
 	class ThreadActor {
 	public:
-        ThreadActor(int threadId, int index, RE::Actor* actor);
+        ThreadActor(Thread* thread, int index, RE::Actor* actor);
         void initContinue();
 
 		float excitement = 0; // current excitement
@@ -26,6 +28,8 @@ namespace OStim {
 		inline RE::Actor* getActor() { return actor; }
 
         Alignment::ActorKey getAlignmentKey();
+
+        void climax();
 
         void undress();
         void undressPartial(uint32_t mask);
@@ -129,7 +133,7 @@ namespace OStim {
             bool isRedress;
         };
 
-        int threadId;
+        Thread* thread;
         int index;
 		RE::Actor* actor;
         float scaleBefore;

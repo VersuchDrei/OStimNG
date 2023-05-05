@@ -48,6 +48,14 @@ namespace PapyrusThreadActor {
         }
     }
 
+    void Climax(RE::StaticFunctionTag*, RE::Actor* actor, bool climaxAnimation) {
+        // TODO: climax animations
+        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        if (threadActor) {
+            threadActor->climax();
+        }
+    }
+
 
     float PlayExpression(RE::StaticFunctionTag*, RE::Actor* actor, std::string expression) {
         StringUtil::toLower(&expression);
@@ -219,6 +227,7 @@ namespace PapyrusThreadActor {
         BIND(GetExcitement);
         BIND(SetExcitement);
         BIND(ModifyExcitement);
+        BIND(Climax);
 
         BIND(PlayExpression);
         BIND(ClearExpression);

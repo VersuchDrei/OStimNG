@@ -10,5 +10,6 @@ namespace Util {
         OStimVehicle = handler->LookupForm<RE::TESObjectSTAT>(0xDD6, "OStim.esp");
         OStimScenePackage = handler->LookupForm<RE::TESPackage>(0xDE1, "OStim.esp");
         OStimEmptyFaction = handler->LookupForm<RE::TESFaction>(0xDED, "OStim.esp");
+        OStimNutEffect = handler->LookupForm<RE::TESImageSpaceModifier>(0x805, "OStim.esp");
     }
 }

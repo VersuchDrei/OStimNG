@@ -2,10 +2,7 @@ ScriptName OsexIntegrationMCM Extends SKI_ConfigBase
 
 ; sex settings
 Int SetActorSpeedControl
-Int SetClipinglessFirstPerson
 Int SetEndAfterActorHit
-Int SetUseRumble
-Int SetUseScreenShake
 int SetUseIntroScenes
 int SetResetPosition
 
@@ -48,12 +45,6 @@ int SetTutorialMessages
 
 Int SetUseFades
 Int SetUseAutoFades
-
-; camera settings
-Int SetUseFreeCam
-Int SetFreeCamFOV
-Int SetCameraSpeed
-Int SetForceFirstPerson
 
 Int SetUseCosaveWorkaround
 
@@ -165,7 +156,7 @@ Function Init()
 EndFunction
 
 int Function GetVersion()
-	Return 5
+	Return 6
 EndFunction
 
 Event OnVersionUpdate(int version)
@@ -173,18 +164,19 @@ Event OnVersionUpdate(int version)
 EndEvent
 
 Function SetupPages()
-	Pages = new string[11]
+	Pages = new string[12]
 	Pages[0] = "$ostim_page_configuration"
 	Pages[1] = "$ostim_page_controls"
-	Pages[2] = "$ostim_page_excitement"
-	Pages[3] = "$ostim_page_gender_roles"
-	Pages[4] = "$ostim_page_furniture"
-	Pages[5] = "$ostim_page_undress"
-	Pages[6] = "$ostim_page_expression"
-	Pages[7] = "$ostim_page_sound"
-	Pages[8] = "$ostim_page_alignment"
-	Pages[9] = "$ostim_page_addons"
-	Pages[10] = "$ostim_page_about"
+	Pages[2] = "$ostim_page_camera"
+	Pages[3] = "$ostim_page_excitement"
+	Pages[4] = "$ostim_page_gender_roles"
+	Pages[5] = "$ostim_page_furniture"
+	Pages[6] = "$ostim_page_undress"
+	Pages[7] = "$ostim_page_expression"
+	Pages[8] = "$ostim_page_sound"
+	Pages[9] = "$ostim_page_alignment"
+	Pages[10] = "$ostim_page_addons"
+	Pages[11] = "$ostim_page_about"
 EndFunction
 
 Event OnConfigRegister()
@@ -235,13 +227,9 @@ Event OnPageReset(String Page)
 		;=============================================================================================
 		AddColoredHeader("$ostim_header_sex_scenes")
 		SetActorSpeedControl = AddToggleOption("$ostim_speed_control", Main.EnableActorSpeedControl)
-		SetClipinglessFirstPerson = AddToggleOption("$ostim_clippingless", Main.EnableImprovedCamSupport)
 		SetCustomTimescale = AddSliderOption("$ostim_timescale", Main.CustomTimescale, "{0}")
 		SetUseFades = AddToggleOption("$ostim_use_fades", Main.UseFades)
 		SetEndAfterActorHit = AddToggleOption("$ostim_end_on_hit", Main.EndAfterActorHit)
-		SetUseRumble = AddToggleOption("$ostim_use_rumble", Main.UseRumble)
-		SetUseScreenShake = AddToggleOption("$ostim_screenshake", Main.UseScreenShake)
-		SetForceFirstPerson = AddToggleOption("$ostim_force_first", Main.ForceFirstPersonAfter)
 		SetUseIntroScenes = AddToggleOption("$ostim_use_intro_scenes", Main.UseIntroScenes)
 		SetResetPosition = AddToggleOption("$ostim_reset_position", Main.ResetPosAfterSceneEnd) 		
 		AddEmptyOption()
@@ -265,12 +253,6 @@ Event OnPageReset(String Page)
 		SetForceAIForMasturbation = AddToggleOption("$ostim_force_auto_masturbation", Main.UseAIMasturbation)
 		SetUseAutoFades = AddToggleOption("$ostim_auto_fades", Main.UseAutoFades)
 		SetAIChangeChance = AddSliderOption("$ostim_ai_change_chance", Main.AiSwitchChance, "{0}")
-		AddEmptyOption()
-
-		AddColoredHeader("$ostim_header_freecam")
-		SetUseFreeCam = AddToggleOption("$ostim_freecam", Main.UseFreeCam)
-		SetFreeCamFOV = AddSliderOption("$ostim_freecam_fov", Main.FreecamFOV, "{0}")
-		SetCameraSpeed = AddSliderOption("$ostim_freecam_speed", Main.FreecamSpeed, "{1}")
 		AddEmptyOption()
 
 		AddColoredHeader("$ostim_header_lights")
@@ -341,6 +323,8 @@ Event OnPageReset(String Page)
 		endif
 	ElseIf Page == "$ostim_page_controls"
 		DrawControlsPage()
+	ElseIf Page == "$ostim_page_camera"
+		DrawCameraPage()
 	ElseIf Page == "$ostim_page_excitement"
 		DrawExcitementPage()
 	ElseIf Page == "$ostim_page_gender_roles"
@@ -470,12 +454,6 @@ Event OnOptionSelect(Int Option)
 	ElseIf (Option == SetUseIntroScenes)
 		Main.UseIntroScenes = !Main.UseIntroScenes
 		SetToggleOptionValue(Option, Main.UseIntroScenes)
-	ElseIf (Option == SetUseRumble)
-		Main.UseRumble = !Main.UseRumble
-		SetToggleOptionValue(Option, Main.UseRumble)
-	ElseIf (Option == SetUseScreenShake)
-		Main.UseScreenShake = !Main.UseScreenShake
-		SetToggleOptionValue(Option, Main.UseScreenShake)
 	ElseIf (Option == SetForceAIInConsensualScenes)
 		Main.UseAINonAggressive = !Main.UseAINonAggressive
 		SetToggleOptionValue(Option, Main.UseAINonAggressive)
@@ -485,27 +463,18 @@ Event OnOptionSelect(Int Option)
 	ElseIf (Option == SetForceAIIfAttacked)
 		Main.UseAIPlayerAggressed = !Main.UseAIPlayerAggressed
 		SetToggleOptionValue(Option, Main.UseAIPlayerAggressed)
-	ElseIf (Option == SetForceFirstPerson)
-		Main.ForceFirstPersonAfter = !Main.ForceFirstPersonAfter
-		SetToggleOptionValue(Option, Main.ForceFirstPersonAfter)
 	ElseIf (Option == SetUseAutoFades)
 		Main.UseAutoFades = !Main.UseAutoFades
 		SetToggleOptionValue(Option, Main.UseAutoFades)
 	ElseIf (Option == SetEndAfterActorHit)
 		Main.EndAfterActorHit = !Main.EndAfterActorHit
 		SetToggleOptionValue(Option, Main.EndAfterActorHit)
-	ElseIf (Option == SetUseFreeCam)
-		Main.UseFreeCam = !Main.UseFreeCam
-		SetToggleOptionValue(Option, Main.UseFreeCam)
 	ElseIf (Option == SetUseCosaveWorkaround)
 		Main.UseBrokenCosaveWorkaround = !Main.UseBrokenCosaveWorkaround
 		SetToggleOptionValue(Option, Main.UseBrokenCosaveWorkaround)
 	ElseIf (Option == SetForceAIIfAttacking)
 		Main.UseAIPlayerAggressor = !Main.UseAIPlayerAggressor
 		SetToggleOptionValue(Option, Main.UseAIPlayerAggressor)
-	ElseIf (Option == SetClipinglessFirstPerson)
-		Main.EnableImprovedCamSupport = !Main.EnableImprovedCamSupport
-		SetToggleOptionValue(Option, Main.EnableImprovedCamSupport)
 	ElseIf (Option == SetAIControl)
 		Main.UseAIControl = !Main.UseAIControl
 		SetToggleOptionValue(Option, Main.UseAIControl)
@@ -590,18 +559,10 @@ Event OnOptionHighlight(Int Option)
 		SetInfoText("$ostim_tooltip_use_intro_scenes")
 	ElseIf (Option == SetUseCosaveWorkaround)
 		SetInfoText("$ostim_tooltip_cosave")
-	ElseIf (Option == SetFreeCamFOV)
-		SetInfoText("$ostim_tooltip_fov")
-	ElseIf (Option == SetUseRumble)
-		SetInfoText("$ostim_tooltip_rumble")
 	ElseIf (Option == SetEndAfterActorHit)
 		SetInfoText("$ostim_tooltip_end_on_hit")
-	ElseIf (Option == SetForceFirstPerson)
-		SetInfoText("$ostim_tooltip_force_first")
 	ElseIf (Option == SetCustomTimescale)
 		SetInfoText("$ostim_tooltip_custom_timescale")
-	ElseIf (Option == SetClipinglessFirstPerson)
-		 SetInfoText("$ostim_tooltip_clippingless")
 	ElseIf (Option == SetActorSpeedControl)
 		SetInfoText("$ostim_tooltip_speed_control")
 	ElseIf (Option == SetResetPosition)
@@ -620,18 +581,12 @@ Event OnOptionHighlight(Int Option)
 		SetInfoText("$ostim_tooltip_dom_light")
 	ElseIf (Option == SetSubLightMode)
 		SetInfoText("$ostim_tooltip_sub_light")
-	ElseIf (Option == SetCameraSpeed)
-		SetInfoText("$ostim_tooltip_fc_speed")
-	ElseIf (Option == SetUseFreeCam)
-		SetInfoText("$ostim_tooltip_auto_fc")
 	ElseIf (Option == SetDomLightBrightness)
 		SetInfoText("$ostim_tooltip_dom_brightness")
 	ElseIf (Option == SetSubLightBrightness)
 		SetInfoText("$ostim_tooltip_sub_brightness")
 	ElseIf (Option == SetOnlyLightInDark)
 		SetInfoText("$ostim_tooltip_dark_light")
-	ElseIf (Option == SetUseScreenShake)
-		SetInfoText("$ostim_tooltip_screen_shake")
 	ElseIf (Option == SetThanks)
 		SetInfoText("$ostim_tooltip_thanks")
 	ElseIf (Option == ExportSettings)
@@ -683,16 +638,6 @@ Event OnOptionSliderOpen(Int Option)
 		SetSliderDialogDefaultValue(0.0)
 		SetSliderDialogRange(0, 40)
 		SetSliderDialogInterval(1)
-	ElseIf (Option == SetFreeCamFOV)
-		SetSliderDialogStartValue(Main.FreecamFOV)
-		SetSliderDialogDefaultValue(45.0)
-		SetSliderDialogRange(1, 120)
-		SetSliderDialogInterval(1)
-	ElseIf (Option == SetCameraSpeed)
-		SetSliderDialogStartValue(Main.FreecamSpeed)
-		SetSliderDialogDefaultValue(3.0)
-		SetSliderDialogRange(1, 20)
-		SetSliderDialogInterval(0.5)
 	ElseIf (Option == SetAIChangeChance)
 		SetSliderDialogStartValue(Main.AiSwitchChance)
 		SetSliderDialogDefaultValue(6.0)
@@ -731,12 +676,6 @@ Event OnOptionSliderAccept(Int Option, Float Value)
 	ElseIf (Option == SetCustomTimescale)
 		Main.CustomTimescale = (Value as Int)
 		SetSliderOptionValue(Option, Value, "{0}")
-	ElseIf (Option == SetFreeCamFOV)
-		Main.FreecamFOV = (Value as Int)
-		SetSliderOptionValue(Option, Value, "{0}")
-	ElseIf (Option == SetCameraSpeed)
-		Main.FreecamSpeed = Value
-		SetSliderOptionValue(Option, Value, "{1}")
 	ElseIf (Option == SetAIChangeChance)
 		Main.AiSwitchChance = (Value as Int)
 		SetSliderOptionValue(Option, Value, "{0}")
@@ -830,8 +769,6 @@ Function ExportSettings()
 	JMap.SetInt(OstimSettingsFile, "SetActorSpeedControl", Main.EnableActorSpeedControl as Int)
 	JMap.SetInt(OstimSettingsFile, "SetResetPosition", Main.ResetPosAfterSceneEnd as Int)
 	JMap.SetInt(OstimSettingsFile, "SetEndAfterActorHit", Main.EndAfterActorHit as Int)
-	JMap.SetInt(OstimSettingsFile, "SetUseRumble", Main.UseRumble as Int)
-	JMap.SetInt(OstimSettingsFile, "SetUseScreenShake", Main.UseScreenShake as Int)
 
 	; Light settings export.
 	Jmap.SetInt(OstimSettingsFile, "SetDomLightMode", Main.DomLightPos as Int)
@@ -854,9 +791,6 @@ Function ExportSettings()
 	JMap.SetInt(OstimSettingsFile, "SetForceAIInConsensualScenes", Main.UseAINonAggressive as Int)
 	JMap.SetInt(OstimSettingsFile, "SetForceAIForMasturbation", Main.UseAIMasturbation as Int)
 	JMap.SetInt(OstimSettingsFile, "SetAIChangeChance", Main.AiSwitchChance as Int)
-
-	; Camera settings export.
-	JMap.SetInt(OstimSettingsFile, "SetForceFirstPerson", Main.ForceFirstPersonAfter as Int)
 
 	; OSA keys settings export.
 	JMap.SetInt(OstimSettingsFile, "SetOsaMainMenuKey", OSAControl.osaMainMenuKey as Int)
@@ -976,8 +910,6 @@ Function ImportSettings(bool default = false)
 	Main.EnableActorSpeedControl = JMap.GetInt(OstimSettingsFile, "SetActorSpeedControl")
 	Main.ResetPosAfterSceneEnd = JMap.GetInt(OstimSettingsFile, "SetResetPosition", 1)
 	Main.EndAfterActorHit = JMap.GetInt(OstimSettingsFile, "SetEndAfterActorHit")
-	Main.UseRumble = JMap.GetInt(OstimSettingsFile, "SetUseRumble")
-	Main.UseScreenShake = JMap.GetInt(OstimSettingsFile, "SetUseScreenShake")
 
 	; Light settings export.
 	Main.DomLightPos = Jmap.GetInt(OstimSettingsFile, "SetDomLightMode")
@@ -1011,9 +943,6 @@ Function ImportSettings(bool default = false)
 	Main.UseAIPlayerAggressed = JMap.GetInt(OstimSettingsFile, "SetForceAIIfAttacked")
 	Main.UseAINonAggressive = JMap.GetInt(OstimSettingsFile, "SetForceAIInConsensualScenes")
 	Main.UseAIMasturbation = JMap.GetInt(OstimSettingsFile, "SetForceAIForMasturbation")
-	
-	; Camera settings export.
-	Main.ForceFirstPersonAfter = JMap.GetInt(OstimSettingsFile, "SetForceFirstPerson")
 
 	; Misc settings export.
 	Main.CustomTimescale = JMap.GetInt(OstimSettingsFile, "SetCustomTimescale")
@@ -1102,6 +1031,13 @@ Function DrawControlsPage()
 	AddKeyMapOptionST("OID_KeyFreeCamToggle", "$ostim_tfc_key", Main.FreecamKey)
 	SetCursorPosition(14)
 	AddKeyMapOptionST("OID_KeyAlignmentMenu", "$ostim_key_alignment_menu", Main.AlignmentKey)
+
+	SetCursorPosition(18)
+	int UseRumbleFlags = OPTION_FLAG_NONE
+	If !Game.UsingGamepad()
+		UseRumbleFlags = OPTION_FLAG_DISABLED
+	EndIf
+	AddToggleOptionST("OID_UseRumble", "$ostim_use_rumble", Main.UseRumble, UseRumbleFlags)
 
 	SetCursorPosition(1)
 	AddColoredHeader("$ostim_header_osa_keys")
@@ -1327,12 +1263,132 @@ State OID_OSA_ResetKeys
 EndState
 
 
+State OID_UseRumble
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_rumble")
+	EndEvent
+
+	Event OnSelectST()
+		Main.UseRumble = !Main.UseRumble
+		SetToggleOptionValueST(Main.UseRumble)
+	EndEvent
+EndState
+
+
+;  ██████╗ █████╗ ███╗   ███╗███████╗██████╗  █████╗
+; ██╔════╝██╔══██╗████╗ ████║██╔════╝██╔══██╗██╔══██╗
+; ██║     ███████║██╔████╔██║█████╗  ██████╔╝███████║
+; ██║     ██╔══██║██║╚██╔╝██║██╔══╝  ██╔══██╗██╔══██║
+; ╚██████╗██║  ██║██║ ╚═╝ ██║███████╗██║  ██║██║  ██║
+;  ╚═════╝╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝
+
+Function DrawCameraPage()
+	SetCursorFillMode(TOP_TO_BOTTOM)
+	SetCursorPosition(0)
+	AddColoredHeader("$ostim_header_freecam")
+	SetCursorPosition(2)
+	AddToggleOptionST("OID_UseFreeCam", "$ostim_freecam", Main.UseFreeCam)
+	SetCursorPosition(4)
+	AddSliderOptionST("OID_FreeCamFOV", "$ostim_freecam_fov", Main.FreecamFOV, "{0}")
+	SetCursorPosition(6)
+	AddSliderOptionST("OID_FreeCamSpeed", "$ostim_freecam_speed", Main.FreecamSpeed, "{1}")
+
+	SetCursorPosition(1)
+	AddToggleOptionST("OID_ImprovedCamSupport", "$ostim_clippingless", Main.EnableImprovedCamSupport)
+	SetCursorPosition(3)
+	AddToggleOptionST("OUD_UseScreenShake", "$ostim_screenshake", Main.UseScreenShake)
+	SetCursorPosition(5)
+	AddToggleOptionST("OID_ForceFirstPersonOnEnd", "$ostim_force_first", Main.ForceFirstPersonAfter)
+EndFunction
+
+State OID_UseFreeCam
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_auto_fc")
+	EndEvent
+
+	Event OnSelectST()
+		Main.UseFreeCam = !Main.UseFreeCam
+		SetToggleOptionValueST(Main.UseFreeCam)
+	EndEvent
+EndState
+
+State OID_FreeCamFOV
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_fov")
+	EndEvent
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(Main.MaleSexExcitementMult)
+		SetSliderDialogDefaultValue(45)
+		SetSliderDialogRange(1, 120)
+		SetSliderDialogInterval(1)
+	EndEvent
+
+	Event OnSliderAcceptST(float Value)
+		Main.FreecamFOV = Value As int
+		SetSliderOptionValueST(Value, "{0}")
+	EndEvent
+EndState
+
+State OID_FreeCamSpeed
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_fc_speed")
+	EndEvent
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(Main.MaleSexExcitementMult)
+		SetSliderDialogDefaultValue(3)
+		SetSliderDialogRange(1, 20)
+		SetSliderDialogInterval(0.5)
+	EndEvent
+
+	Event OnSliderAcceptST(float Value)
+		Main.FreecamSpeed = Value
+		SetSliderOptionValueST(Value, "{1}")
+	EndEvent
+EndState
+
+
+State OID_ImprovedCamSupport
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_clippingless")
+	EndEvent
+
+	Event OnSelectST()
+		Main.EnableImprovedCamSupport = !Main.EnableImprovedCamSupport
+		SetToggleOptionValueST(Main.EnableImprovedCamSupport)
+	EndEvent
+EndState
+
+State OUD_UseScreenShake
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_screen_shake")
+	EndEvent
+
+	Event OnSelectST()
+		Main.UseScreenShake = !Main.UseScreenShake
+		SetToggleOptionValueST(Main.UseScreenShake)
+	EndEvent
+EndState
+
+State OID_ForceFirstPersonOnEnd
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_force_first")
+	EndEvent
+
+	Event OnSelectST()
+		Main.ForceFirstPersonAfter = !Main.ForceFirstPersonAfter
+		SetToggleOptionValueST(Main.ForceFirstPersonAfter)
+	EndEvent
+EndState
+
+
 ; ███████╗██╗  ██╗ ██████╗██╗████████╗███████╗███╗   ███╗███████╗███╗   ██╗████████╗
 ; ██╔════╝╚██╗██╔╝██╔════╝██║╚══██╔══╝██╔════╝████╗ ████║██╔════╝████╗  ██║╚══██╔══╝
-; █████╗   ╚███╔╝ ██║     ██║   ██║   █████╗  ██╔████╔██║█████╗  ██╔██╗ ██║   ██║   
-; ██╔══╝   ██╔██╗ ██║     ██║   ██║   ██╔══╝  ██║╚██╔╝██║██╔══╝  ██║╚██╗██║   ██║   
-; ███████╗██╔╝ ██╗╚██████╗██║   ██║   ███████╗██║ ╚═╝ ██║███████╗██║ ╚████║   ██║   
-; ╚══════╝╚═╝  ╚═╝ ╚═════╝╚═╝   ╚═╝   ╚══════╝╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝   ╚═╝   
+; █████╗   ╚███╔╝ ██║     ██║   ██║   █████╗  ██╔████╔██║█████╗  ██╔██╗ ██║   ██║
+; ██╔══╝   ██╔██╗ ██║     ██║   ██║   ██╔══╝  ██║╚██╔╝██║██╔══╝  ██║╚██╗██║   ██║
+; ███████╗██╔╝ ██╗╚██████╗██║   ██║   ███████╗██║ ╚═╝ ██║███████╗██║ ╚████║   ██║
+; ╚══════╝╚═╝  ╚═╝ ╚═════╝╚═╝   ╚═╝   ╚══════╝╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝   ╚═╝
 
 Function DrawExcitementPage()
 	SetCursorFillMode(TOP_TO_BOTTOM)

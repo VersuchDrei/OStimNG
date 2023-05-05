@@ -14,13 +14,15 @@ namespace OStim {
     using ThreadId = int64_t;
     class Thread : public RE::BSTEventSink<RE::BSAnimationGraphEvent>{
     public:
+        ThreadId m_threadId;
+        Graph::Node* m_currentNode = nullptr;
+        bool isPlayerThread = false;
+
         Thread(ThreadId id, RE::TESObjectREFR* furniture, std::vector<RE::Actor*> actors);
 
         ~Thread();
 
         void initContinue();
-
-        bool playerThread();
 
         std::string getAlignmentKey();
         Alignment::ActorAlignment getActorAlignment(int index);
@@ -54,15 +56,12 @@ namespace OStim {
         Serialization::OldThread serialize();
 
     private:
-        ThreadId m_threadId;        
-        bool isPlayerThread = false;
         RE::TESObjectREFR* furniture;
         RE::TESForm* furnitureOwner = nullptr;
         RE::TESObjectREFR* vehicle;
         std::map<int32_t, ThreadActor> m_actors;
         std::shared_mutex nodeLock;
 
-        Graph::Node* m_currentNode = nullptr;
         int m_currentNodeSpeed = 0;
         std::string alignmentKey;
 

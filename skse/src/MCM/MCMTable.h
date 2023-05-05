@@ -17,15 +17,21 @@ namespace MCM {
         static int keyAutoMode();
         static int keyFreeCam();
 
+        static bool useRumble();
+
         static bool useFreeCam();
         static float freeCamSpeed();
         static float freeCamFOV();
         static bool supportImprovedCam();
+        static bool useScreenShake();
 
         static float getMaleSexExcitementMult();
         static float getFemaleSexExcitementMult();
         static float getExcitementDecayRate();
         static int getExcitementDecayGracePeriod();
+
+        static bool getSlowMotionOnOrgasm();
+        static bool getBlurOnOrgasm();
 
         static bool isScalingDisabled();
         static bool isSchlongBendingDisabled();
@@ -74,6 +80,8 @@ namespace MCM {
             {0xDE2, {38, "keyAlignment"}},
             {0xDEC, {181, "SetFreeCamToggleKey"}},
 
+            {0xE11, {1, "SetUseRumble"}},
+
             {0xDA1, {1, "SetUseIntroScenes"}},
 
             {0xDA6, {1, "SetEnableFurniture"}},
@@ -87,7 +95,10 @@ namespace MCM {
             {0xDDE, {1, "SetUseFreeCam"}},
             {0xDDF, {3, "SetCameraSpeed"}},
             {0xDE0, {45, "SetFreeCamFOV"}},
+
             {0xDE6, {0, "SetClipinglessFirstPerson"}},
+            {0xE10, {0, "SetUseScreenShake"}},
+            {0xE12, {0, "SetForceFirstPerson"}}, // on scene end
 
             {0xDA2, {1, "SetsexExcitementMult"}},
             {0xDA3, {1, "SetFemaleSexExcitementMult"}},

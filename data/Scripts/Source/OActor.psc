@@ -41,6 +41,14 @@ Function SetExcitement(Actor Act, float Excitement) Global Native
 */;
 Function ModifyExcitement(Actor Act, float Excitement, bool RespectMultiplier = false) Global Native
 
+;/* Climax
+* * causes the actor to have a climax
+* *
+* * @param: Act, the actor that should have the climax
+* * @param: ClimaxAnimation, if true the actor will play a climax animation if the animation they are in has one
+*/;
+Function Climax(Actor Act, bool ClimaxAnimation = true) Global Native
+
 
 ; ███████╗██╗  ██╗██████╗ ██████╗ ███████╗███████╗███████╗██╗ ██████╗ ███╗   ██╗███████╗
 ; ██╔════╝╚██╗██╔╝██╔══██╗██╔══██╗██╔════╝██╔════╝██╔════╝██║██╔═══██╗████╗  ██║██╔════╝

@@ -266,24 +266,7 @@ Event OnUpdate()
 EndEvent
 
 Function Orgasm(Actor Act)
-	SetActorExcitement(Act, -3.0)
-
-	Act.SendModEvent("ostim_subthread_orgasm", CurrentAnimation, id)
-
-	If (Act == DomActor)
-		SetCurrentAnimationSpeed(1)
-	EndIf
-
-	int actorIndex = Actors.find(Act)
-	If actorIndex != -1
-		int actionIndex = OMetadata.FindActionForTarget(CurrentAnimation, actorIndex, "vaginalsex")
-		If actionIndex != -1
-			Actor partner = GetActor(OMetadata.GetActionActor(CurrentAnimation, actionIndex))
-			AddActorExcitement(partner, 5)
-		EndIf
-	EndIf
-
-	Act.DamageActorValue("stamina", 250.0)
+	OActor.Climax(Act)
 EndFunction
 
 Function EndAnimation()

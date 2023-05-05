@@ -98,10 +98,6 @@ namespace OStim {
         }
     }
 
-    bool Thread::playerThread() {
-        return isPlayerThread;
-    }
-
     void Thread::rebuildAlignmentKey() {
         Alignment::ThreadKey key;
 
@@ -237,7 +233,7 @@ namespace OStim {
         ActorUtil::lockActor(actor);
         ActorUtil::setVehicle(actor, vehicle);
         addActorSink(actor);
-        m_actors.insert(std::make_pair(index, ThreadActor(m_threadId, index, actor)));
+        m_actors.insert(std::make_pair(index, ThreadActor(this, index, actor)));
         ThreadActor* threadActor = GetActor(index);
         threadActor->initContinue();
         if (MCM::MCMTable::undressAtStart()) {
@@ -413,14 +409,7 @@ namespace OStim {
         std::string tag = a_event->tag.c_str();
 
         if (tag == "OStimClimax") {
-            const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-            auto vm = skyrimVM ? skyrimVM->impl : nullptr;
-            if (vm) {
-                RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-                auto args = RE::MakeFunctionArguments(std::move(actor));
-                auto handle = skyrimVM->handlePolicy.GetHandleForObject(static_cast<RE::VMTypeID>(Util::LookupTable::OSexIntegrationMainQuest->FORMTYPE), Util::LookupTable::OSexIntegrationMainQuest);
-                vm->DispatchMethodCall2(handle, "OSexIntegrationMain", "Climax", args, callback);
-            }
+            GetActor(actor)->climax();
         } else if (tag == "OStimSpank") {
             //TODO
         } else if (tag == "OStimUndress") {

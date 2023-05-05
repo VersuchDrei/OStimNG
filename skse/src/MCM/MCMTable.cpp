@@ -66,6 +66,11 @@ namespace MCM {
     }
 
 
+    bool MCMTable::useRumble() {
+        return RE::BSInputDeviceManager::GetSingleton()->IsGamepadEnabled() && settings[0xE11].asBool();
+    }
+
+
     float MCMTable::freeCamSpeed() {
         return settings[0xDDF].asFloat();
     }
@@ -76,6 +81,10 @@ namespace MCM {
 
     bool MCMTable::supportImprovedCam() {
         return settings[0xDE6].asBool();
+    }
+
+    bool MCMTable::useScreenShake() {
+        return settings[0xE10].asBool();
     }
 
 
@@ -93,6 +102,15 @@ namespace MCM {
 
     int MCMTable::getExcitementDecayGracePeriod() {
         return settings[0xDB4].asInt();
+    }
+
+
+    bool MCMTable::getSlowMotionOnOrgasm() {
+        return settings[0xDFC].asBool();
+    }
+
+    bool MCMTable::getBlurOnOrgasm() {
+        return settings[0xDFD].asBool();
     }
 
 

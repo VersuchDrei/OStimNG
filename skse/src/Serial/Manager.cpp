@@ -129,7 +129,7 @@ namespace Serialization {
         json["actorData"] = json::object();
 
         for (auto& [formID, data] : actorData) {
-            std::string stringID = std::to_string(formID);
+            std::string stringID = std::to_string(formID & 0x00FFFFFF);
             json["actorData"][stringID] = json::object();
 
             RE::TESForm* form = RE::TESForm::LookupByID(formID);
