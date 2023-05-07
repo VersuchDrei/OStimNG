@@ -1219,7 +1219,7 @@
 				<hkcstring>SoundPlay.NPCKillDLC2HeartStone</hkcstring>
 <!-- MOD_CODE ~ostim~ OPEN -->
 				<hkcstring>OStimClimax</hkcstring>
-				<hkcstring>OStimSpank</hkcstring>
+				<hkcstring>OStimEvent</hkcstring>
 				<hkcstring>OStimUndress</hkcstring>
 				<hkcstring>OStimRedress</hkcstring>
 				<hkcstring>OStimUndressPartial</hkcstring>

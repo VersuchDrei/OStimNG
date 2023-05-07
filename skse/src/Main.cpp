@@ -74,6 +74,7 @@ namespace {
                 Trait::TraitTable::setupForms();
                 MCM::MCMTable::setupForms();
                 Furniture::FurnitureTable::setupForms();
+                Graph::GraphTable::setupEvents();
 
                 UI::Align::AlignMenu::Register();
                 

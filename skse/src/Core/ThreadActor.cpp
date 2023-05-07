@@ -9,6 +9,7 @@
 #include "MCM/MCMTable.h"
 #include "Trait/TraitTable.h"
 #include "Util/ActorUtil.h"
+#include "Util/CameraUtil.h"
 #include "Util/CompatibilityTable.h"
 #include "Util/FormUtil.h"
 #include "Util/Constants.h"
@@ -127,9 +128,7 @@ namespace OStim {
                 slowMoThread.detach();
             }
 
-            if (MCM::MCMTable::useScreenShake()) {
-                GameAPI::GameCamera::shakeCamera(1.0, 2.0, true);
-            }
+            CameraUtil::shakeCamera(1.0, 2.0, true);
 
             if (MCM::MCMTable::useRumble()) {
                 GameAPI::Game::shakeController(0.5, 0.5, 0.7);

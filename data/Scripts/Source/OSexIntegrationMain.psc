@@ -1090,7 +1090,6 @@ String CurrAnimClass
 String CurrentSceneID
 
 Bool AnimSpeedAtMax
-Int SpankCount
 
 _oOmni OSAOmni
 _oControl OControl
@@ -1545,7 +1544,6 @@ Event OnUpdate() ;OStim main logic loop
 	BlockDomFaceCommands = False
 	BlocksubFaceCommands = False
 	BlockthirdFaceCommands = False
-	SpankCount = 0
 	SubTimesOrgasm = 0
 	DomTimesOrgasm = 0
 	ThirdTimesOrgasm = 0
@@ -2284,17 +2282,6 @@ bool Function IsBeingStimulated(Actor act)
 	return (GetCurrentStimulation(act) * GetStimMult(act)) > 0.01
 EndFunction
 
-; spanking stuff
-Int Function GetSpankCount() ; 
-	{Number of spankings so far this scene}
-	Return SpankCount
-EndFunction
-
-Function SetSpankCount(Int Count) 
-	{num of spankings so far this scene}
-	SpankCount = Count
-EndFunction
-
 Function ForceStop()
 	ForceCloseOStimThread = true
 EndFunction
@@ -2667,13 +2654,6 @@ Function OnAnimationChange(string newScene, int newSpeed)
 	;Profile("Animation change time")
 EndFunction
 
-Function OnSpank()
-	SetActorExcitement(SubActor, GetActorExcitement(SubActor) + 5)	
-
-	SpankCount += 1
-	SendModEvent("ostim_spank")
-EndFunction
-
 
 Event OnActorHit(String EventName, String zAnimation, Float NumArg, Form Sender)
 	If (EndAfterActorHit)
@@ -2911,12 +2891,7 @@ EndEvent
 
 Function OnSound(Actor Act, Int SoundID, Int FormNumber)
 	If (FormNumber == 60)
-		PlayOSASound(Act, FormNumber, Soundid)
-		OnSpank()
-		ShakeController(0.3)
-		If UseScreenShake
-			ShakeCamera(0.5)
-		EndIf
+		OThread.CallEvent(Password, "spank", 0, 1)
 	EndIf
 EndFunction
 
@@ -3940,4 +3915,11 @@ Endfunction
 
 bool Function IsChild(actor act)
 	return OUtils.IsChild(Act)
+EndFunction
+
+Int Function GetSpankCount() ; 
+	Return 0
+EndFunction
+
+Function SetSpankCount(Int Count)
 EndFunction

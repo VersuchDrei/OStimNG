@@ -7,6 +7,8 @@
 #include "UI/UIState.h"
 #include "Util/CameraUtil.h"
 #include "Util/Constants.h"
+#include "Util/ControlUtil.h"
+#include "Util/FormUtil.h"
 #include "Util/MathUtil.h"
 #include "MCM/MCMTable.h"
 #include "Util/LookupTable.h"
@@ -339,6 +341,56 @@ namespace OStim {
         }
     }
 
+
+    void Thread::callEvent(std::string eventName, int actorIndex, int targetIndex, int performerIndex) {
+        if (isPlayerThread && actorIndex == 0 && targetIndex == 1 && eventName == "spank") {
+            FormUtil::sendModEvent(GetActor(0)->getActor(), "ostim_spank", "", 0);
+        }
+
+        Graph::Event* graphEvent = Graph::GraphTable::getEvent(eventName);
+        if (!graphEvent) {
+            return;
+        }
+
+        if (graphEvent->sound) {
+            RE::BSSoundHandle handle;
+            RE::BSAudioManager::GetSingleton()->BuildSoundDataFromDescriptor(handle, graphEvent->sound, 0x10);
+            handle.SetObjectToFollow(GetActor(actorIndex)->getActor()->Get3D());
+            handle.SetVolume(MCM::MCMTable::getSoundVolume());
+            handle.Play();
+        }
+
+        if (graphEvent->cameraShakeDuration > 0 && graphEvent->cameraShakeStrength > 0) {
+            CameraUtil::shakeCamera(graphEvent->cameraShakeStrength, graphEvent->cameraShakeDuration);
+        }
+
+        if (graphEvent->controllerRumbleDuration > 0 && graphEvent->controllerRumbleStrength > 0) {
+            ControlUtil::rumbleController(graphEvent->cameraShakeStrength, graphEvent->cameraShakeDuration);
+        }
+
+        if (graphEvent->actor.stimulation > 0.0) {
+            ThreadActor* actor = GetActor(actorIndex);
+            if (actor->excitement < graphEvent->actor.maxStimulation || actor->excitement < actor->maxExcitement) {
+                actor->excitement += graphEvent->actor.stimulation * actor->baseExcitementMultiplier;
+            }
+        }
+
+        if (graphEvent->target.stimulation > 0.0) {
+            ThreadActor* target = GetActor(targetIndex);
+            if (target->excitement < graphEvent->target.maxStimulation || target->excitement < target->maxExcitement) {
+                target->excitement += graphEvent->target.stimulation * target->baseExcitementMultiplier;
+            }
+        }
+
+        if (graphEvent->performer.stimulation > 0.0) {
+            ThreadActor* performer = GetActor(performerIndex);
+            if (performer->excitement < graphEvent->performer.maxStimulation || performer->excitement < performer->maxExcitement) {
+                performer->excitement += graphEvent->performer.stimulation * performer->baseExcitementMultiplier;
+            }
+        }
+    }
+
+
     void Thread::close() {
         vehicle->Disable();
         vehicle->SetDelete(true);
@@ -410,8 +462,14 @@ namespace OStim {
 
         if (tag == "OStimClimax") {
             GetActor(actor)->climax();
-        } else if (tag == "OStimSpank") {
-            //TODO
+        } else if (tag == "OStimEvent") {
+            std::vector<std::string> payloadVec = stl::string_split(a_event->payload.c_str(), ',');
+            if (payloadVec.size() == 2) {
+                int actorIndex = GetActor(actor)->index;
+                callEvent(payloadVec[0], actorIndex, std::stoi(payloadVec[1]), actorIndex);
+            } else {
+                callEvent(payloadVec[0], std::stoi(payloadVec[1]), std::stoi(payloadVec[2]), std::stoi(payloadVec[3]));
+            }
         } else if (tag == "OStimUndress") {
             GetActor(actor)->undress();
         } else if (tag == "OStimRedress") {

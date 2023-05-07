@@ -3,7 +3,7 @@
 		"stimulation":0.1,
 		"maxStimulation":50,
 		"muffled":true,
-		"expressionOverride":"openmouth",
+		"expressionOverride":"tongue",
 		"requirements":[
 			"mouth"
 		],
@@ -15,28 +15,22 @@
 		]
 	},
 	"target":{
-		"stimulation":1.4,
-		"fullStrip":true,
-		"moan":true,
-		"talk":true,
+		"stimulation":0.1,
+		"maxStimulation":50,
+		"muffled":true,
+		"expressionOverride":"tongue",
 		"requirements":[
-			"vagina"
+			"mouth"
 		],
 		"strippingSlots":[
-			32,
-			49,
-			52,
-			53,
-			54
+			30,
+			31,
+			44,
+			55
 		]
 	},
-	"performer":{
-		"floats":{
-			"stamina":0.75
-		}
-	},
 	"tags":[
-		"oral",
-		"sexual"
+		"romantic",
+		"sensual"
 	]
 }

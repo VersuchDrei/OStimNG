@@ -65,6 +65,7 @@ set(sources
     src/Util/ActorUtil.cpp
     src/Util/CameraUtil.cpp
     src/Util/CompatibilityTable.cpp
+    src/Util/ControlUtil.cpp
     src/Util/FormUtil.cpp
     src/Util/LookupTable.cpp
     src/Util/MathUtil.cpp

@@ -17,6 +17,8 @@ namespace OStim {
         ThreadActor(Thread* thread, int index, RE::Actor* actor);
         void initContinue();
 
+        int index;
+
 		float excitement = 0; // current excitement
 		float baseExcitementInc = 0; // base excitement per second without speed or MCM modifier
 		float baseExcitementMultiplier = 1.0; // multiplier from MCM
@@ -134,7 +136,6 @@ namespace OStim {
         };
 
         Thread* thread;
-        int index;
 		RE::Actor* actor;
         float scaleBefore;
         bool isPlayer;

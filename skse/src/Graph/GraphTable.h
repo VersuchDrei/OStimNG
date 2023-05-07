@@ -1,9 +1,10 @@
 #pragma once
 
+#include "Event.h"
+#include "Node.h"
 #include "Requirement.h"
 
 #include "Furniture/Furniture.h"
-#include "Graph/Node.h"
 #include "Trait/Condition.h"
 #include "SKEE.h"
 
@@ -20,6 +21,9 @@ namespace Graph{
         static void SetupActions();
         static ActionAttributes* GetActionAttributesByType(std::string type);
 
+        static void setupEvents();
+        static Event* getEvent(std::string eventName);
+
         static Requirement getRequirement(std::string string);
     private:
 
@@ -27,6 +31,7 @@ namespace Graph{
         inline static std::unordered_map<std::string, Node*> animationNodeTable;
         inline static std::unordered_map<Furniture::FurnitureType, std::unordered_map<int, std::vector<Node*>*>*> nodeList;
         inline static std::unordered_map<std::string, ActionAttributes> actions;
+        inline static std::unordered_map<std::string, Event> events;
 
         inline static std::unordered_map<std::string, Requirement> requirements = {
             {"anus", Requirement::ANUS},

@@ -17,6 +17,7 @@ namespace OStim {
         ThreadId m_threadId;
         Graph::Node* m_currentNode = nullptr;
         bool isPlayerThread = false;
+        std::map<int32_t, ThreadActor> m_actors;
 
         Thread(ThreadId id, RE::TESObjectREFR* furniture, std::vector<RE::Actor*> actors);
 
@@ -45,6 +46,8 @@ namespace OStim {
 
         void SetSpeed(int speed);
 
+        void callEvent(std::string eventName, int actorIndex, int targetIndex, int performerIndex);
+
         void close();
 
         RE::TESObjectREFR* GetStageObject() { return vehicle; }
@@ -59,7 +62,6 @@ namespace OStim {
         RE::TESObjectREFR* furniture;
         RE::TESForm* furnitureOwner = nullptr;
         RE::TESObjectREFR* vehicle;
-        std::map<int32_t, ThreadActor> m_actors;
         std::shared_mutex nodeLock;
 
         int m_currentNodeSpeed = 0;
