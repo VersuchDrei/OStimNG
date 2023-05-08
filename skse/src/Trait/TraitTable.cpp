@@ -293,9 +293,11 @@ namespace Trait {
             return &iter->second;
         }
 
-        iter = voiceSets.find(actor->GetActorBase()->voiceType->formID);
-        if (iter != voiceSets.end()) {
-            return &iter->second;
+        if (actor->GetActorBase()->voiceType) {
+            iter = voiceSets.find(actor->GetActorBase()->voiceType->formID);
+            if (iter != voiceSets.end()) {
+                return &iter->second;
+            }
         }
 
         iter = voiceSets.find(actor->GetActorBase()->race->formID);
