@@ -119,6 +119,15 @@ namespace util {
         return path;
     }
 
+    std::optional<fs::path> ui_settings_path() {
+        auto path = ostim_path();
+        if (!path) {
+            return std::nullopt;
+        }
+        *path /= "ui_settings.json"sv;
+        return path;
+    }
+
     bool within_radius(const RE::NiPoint3& a_origin, const RE::NiPoint3& a_obj, float a_radius) {
         if (a_radius <= 0.0f) return false;
 

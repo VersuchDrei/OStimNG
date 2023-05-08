@@ -77,6 +77,7 @@ namespace Events {
             if (bEvent->IsDown()) {
                 if (keyCode == MCM::MCMTable::keyAlignment()) {
                     auto uiState = UI::UIState::GetSingleton();
+                    logger::info("align key fired");
                     uiState->SwitchActiveMenu(uiState->GetActiveMenu() == UI::MenuType::kAlignMenu ? UI::MenuType::kSceneMenu : UI::MenuType::kAlignMenu);
                 } else if (keyCode == MCM::MCMTable::keyFreeCam()) {
                     CameraUtil::toggleFlyCam();

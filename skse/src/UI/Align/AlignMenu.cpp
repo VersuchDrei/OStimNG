@@ -58,7 +58,6 @@ namespace UI::Align {
             SetActor(0);
             SelectField(0);
         }
-        ApplyPositions();
     }
 
     void AlignMenu::SetThread(OStim::Thread* thread) {
@@ -189,6 +188,18 @@ namespace UI::Align {
         RE::GFxValue alignmentInfo;
         root.GetMember("alignmentInfo", &alignmentInfo);
         alignmentInfo.Invoke("setPosition", nullptr, controlPosArray, 4);
+
+
+        auto infoPositions = &UI::Settings::positionSettings.AlignMenuPosition.InfoPosition;
+        const RE::GFxValue infoX = RE::GFxValue{ infoPositions->xPos };
+        const RE::GFxValue infoY = RE::GFxValue{ infoPositions->yPos };
+        const RE::GFxValue infoXScale = RE::GFxValue{ infoPositions->xScale };
+        const RE::GFxValue infoYScale = RE::GFxValue{ infoPositions->yScale };
+        RE::GFxValue infoPosArray[4]{ infoX, infoY, infoXScale, infoYScale };
+
+        RE::GFxValue sceneInfo;
+        root.GetMember("sceneInfo", &sceneInfo);
+        sceneInfo.Invoke("setPosition", nullptr, infoPosArray, 4);
     }
 
     void AlignMenu::SelectField(int field) {

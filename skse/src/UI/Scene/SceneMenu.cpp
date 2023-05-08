@@ -1,15 +1,25 @@
 #include "UI/Scene/SceneMenu.h"
+#include <Graph/LookupTable.h>
 
 namespace UI::Scene {
 
     inline RE::GFxValue GetRoot() {
         RE::GFxValue root;
         RE::GPtr<RE::IMenu> alignMenu = RE::UI::GetSingleton()->GetMenu(SceneMenu::MENU_NAME);
-        if (!alignMenu || !alignMenu->uiMovie) {
-            return root;
-        }
+        assert(alignMenu && alignMenu->uiMovie);
+
         alignMenu->uiMovie->GetVariable(&root, "_root");
         return root;
+    }
+
+    inline RE::GFxValue GetOptionBoxes() {
+
+        auto root = GetRoot();
+        RE::GFxValue optionBoxesContainer;
+        root.GetMember("optionBoxesContainer", &optionBoxesContainer);
+        RE::GFxValue optionBoxes;
+        optionBoxesContainer.GetMember("optionBoxes", &optionBoxes);
+        return optionBoxes;
     }
 
 	SceneMenu::SceneMenu() : Super() {
@@ -33,7 +43,7 @@ namespace UI::Scene {
             a_def->SetState(RE::GFxState::StateType::kLog, RE::make_gptr<Logger>().get());
         });
 
-        view = menu->uiMovie;
+        view = menu->uiMovie;        
 	}
 
 	void SceneMenu::Register() {
@@ -46,6 +56,15 @@ namespace UI::Scene {
             RE::GPtr<RE::IMenu> alignMenu = RE::UI::GetSingleton()->GetMenu(MENU_NAME);            
         }
 	}
+
+    void SceneMenu::PostRegister() {
+        auto optionBoxes = GetOptionBoxes();
+        RE::GFxFunctionHandler* fn = new doSendTransitionRequest;
+        RE::GFxValue dst;
+        view->CreateFunction(&dst, fn);
+        optionBoxes.SetMember("doSendTransitionRequest", dst);
+    }
+
 
 	void SceneMenu::Show() {
         auto msgQ = RE::UIMessageQueue::GetSingleton();
@@ -86,9 +105,7 @@ namespace UI::Scene {
 
     void SceneMenu::SendControl(int32_t control) {
 
-        auto root = GetRoot();
-        RE::GFxValue optionBoxes;
-        root.GetMember("optionBoxes", &optionBoxes);
+        auto optionBoxes = GetOptionBoxes();
         const RE::GFxValue val{ control };
         optionBoxes.Invoke("HandleKeyboardInput", nullptr, &val, 1);
     }
@@ -109,13 +126,26 @@ namespace UI::Scene {
                 SendControl(3);
             } break;
             case Yes: { 
-                SendControl(4); 
+                SendControl(4);
             } break;
         }
     }
 
     void SceneMenu::ApplyPositions() {
+        auto root = GetRoot();
+        if (!root.IsObject())
+            return;
 
+        auto controlPositions = &UI::Settings::positionSettings.ScenePositions.ControlPosition;
+        const RE::GFxValue controlX = RE::GFxValue{ controlPositions->xPos };
+        const RE::GFxValue controlY = RE::GFxValue{ controlPositions->yPos };
+        const RE::GFxValue controlXScale = RE::GFxValue{ controlPositions->xScale };
+        const RE::GFxValue controlYScale = RE::GFxValue{ controlPositions->yScale };
+        RE::GFxValue controlPosArray[4]{ controlX, controlY, controlXScale, controlYScale };
+
+        RE::GFxValue alignmentInfo;
+        root.GetMember("optionBoxesContainer", &alignmentInfo);
+        alignmentInfo.Invoke("setPosition", nullptr, controlPosArray, 4);
     }
 
     void SceneMenu::UpdateMenuData() {
@@ -124,9 +154,7 @@ namespace UI::Scene {
         MenuData menuData;
         BuildMenuData(menuData);
         menuData.loadValues(menuValues);
-        auto root = GetRoot();
-        RE::GFxValue optionBoxes;
-        root.GetMember("optionBoxes", &optionBoxes);
+        auto optionBoxes = GetOptionBoxes();
         optionBoxes.Invoke("AssignData", nullptr, &menuValues, 1);
 
 
@@ -163,38 +191,17 @@ namespace UI::Scene {
             OptionData val{
                 nav.destination->scene_id,
                 nav.destination->scene_name,
-                "Ostim/logo.dds",
+                std::rand() % 2 == 0 ? "Ostim/logo.dds" : "SOS/logo.dds",
                 nav.destination->scene_name
             };
             menuData.options.push_back(val);
-        }
-        
-       /* OptionData val1{"AAAA","BBBB","Ostim/logo.dds","desc"};
-        OptionData val2{ "CCCC","","Ostim/logo.dds","desc2" };
-        OptionData val3{ "CCCC","","Ostim/logo.dds","desc2" };
-        OptionData val4{ "CCCC","","Ostim/logo.dds","desc2" };
-        OptionData val5{ "CCCC","","SOS/logo.dds","desc2" };
-        OptionData val6{ "CCCC","","SOS/logo.dds","desc2" };
-        ret.options.push_back(val1);
-        ret.options.push_back(val2);
-        ret.options.push_back(val3);
-        ret.options.push_back(val4);
-        ret.options.push_back(val5);
-        ret.options.push_back(val6);*/
-        
+        }        
+    }
+    
+    void SceneMenu::ChangeAnimation(std::string nodeId) {       
+        auto node = Graph::LookupTable::getNodeById(nodeId);
+        currentThread->ChangeNode(node);
     }
 
-    void SceneMenu::UpdateInfoBox() {
-        auto root = GetRoot();
-        RE::GFxValue Current;
-        Current.SetMember("NodeID", RE::GFxValue{ currentNode->scene_id.c_str()});
-        Current.SetMember("Title", RE::GFxValue{ currentNode->scene_name.c_str()});
-        Current.SetMember("CurrentSpeed", 0);
-        Current.SetMember("MaxSpeed", 1);
-        Current.SetMember("Animator", RE::GFxValue{ currentNode->sourceModule.c_str()});
-        RE::GFxValue infoBox;
-        root.GetMember("optionBoxes", &infoBox);
-        infoBox.Invoke("AssignData", nullptr, &Current,1);
-    }
     
 }

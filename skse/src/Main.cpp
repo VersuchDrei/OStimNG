@@ -78,16 +78,18 @@ namespace {
                 MCM::MCMTable::setupForms();
                 Furniture::FurnitureTable::setupForms();
 
-                UI::RegisterMenus();
                 
                 // we are installing this hook so late because we need it to overwrite the PapyrusUtil hook
                 Events::PackageStart::Install();
             } break;
             case SKSE::MessagingInterface::kNewGame: {               
-                UI::ShowMenus();
+                UI::PostGameLoad();
+            } break;
+            case SKSE::MessagingInterface::kPostLoadGame: {
+                UI::PostGameLoad();
             } break;
             case SKSE::MessagingInterface::kPostPostLoad: {
-                UI::ShowMenus();
+                                
                 SKEE::InterfaceExchangeMessage msg;
                 auto intfc = SKSE::GetMessagingInterface();
                 intfc->Dispatch(SKEE::InterfaceExchangeMessage::kExchangeInterface, (void*)&msg, sizeof(SKEE::InterfaceExchangeMessage*), "skee");
@@ -103,6 +105,7 @@ namespace {
                 } else {
                     logger::critical("Couldn't get NiTransformInterface!");
                 }
+                UI::RegisterMenus();
             } break;
         }
     }

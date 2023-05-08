@@ -211,7 +211,9 @@ namespace OStim {
         Messaging::AnimationChangedMessage msg;
         msg.newAnimation = a_node;
         logger::info("Sending animation changed event");
-        Messaging::MessagingRegistry::GetSingleton()->SendMessageToListeners(msg);     
+        Messaging::MessagingRegistry::GetSingleton()->SendMessageToListeners(msg);   
+
+        SetSpeed(0);
     }
 
     Graph::Node* Thread::getCurrentNode() {

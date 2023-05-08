@@ -26,7 +26,6 @@ namespace UI {
 	class Settings {
 	public:
 		static void LoadSettings();
-		static void ApplyPositions();
 		inline static MenuPositions positionSettings;
 	};
 }

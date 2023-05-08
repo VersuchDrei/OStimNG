@@ -7,7 +7,7 @@ class Option_MC extends MovieClip
 	var _h: Number;
 	var myIdx: Number;
 	
-	var NodeID: Number;
+	var NodeID: String;
   	var Title: String;
   	var ImagePath: String;
   	var Description: String;
@@ -23,9 +23,7 @@ class Option_MC extends MovieClip
 		_h = this._height;
 		this._alpha = 80;
 		NodeInfoBox = _parent._parent.NodeInfoBox;
-		HideOption();
-		TextureLoader = new MovieClipLoader();
-			
+		HideOption();			
 	}
 	
 	// Public Functions
@@ -61,9 +59,8 @@ class Option_MC extends MovieClip
         Title = Node["Title"];
         ImagePath = Node["ImagePath"];
         Description = Node["Description"];
-		optionText.text = String(Title);
+		optionText.text = myIdx.toString();					  
 		this.TextureLoader.loadClip(ImagePath, this.textureContainer);
-		this.TextureLoader.addListener(this);
 		NodeID != null ? this.ShowOption() : this.HideOption();
 	}
 	
@@ -77,20 +74,6 @@ class Option_MC extends MovieClip
 	{
 		this.enabled = false;
 		this._alpha = 0;
-	}
-	
-	function onLoadInit(aTargetClip)
-	{
-		if (undefined != this.TextureLoader && aTargetClip == this.textureContainer) 
-		{
-			if (undefined != this.textureContainer) 
-			{
-				this.textureContainer._width = 82;
-				this.textureContainer._height = 82;
-			}
-			this.TextureLoader.removeListener(this);
-			this.TextureLoader = undefined;
-		}
 	}
 	// Private Functions
 	

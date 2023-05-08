@@ -1,5 +1,5 @@
 #include "Core/ThreadManager.h"
-#include "UI/Align/AlignMenu.h"
+#include "UI/UIState.h"
 
 #include "Util/Constants.h"
 
@@ -14,6 +14,7 @@ namespace OStim {
                     for (auto& it : m_threadMap) {
                         it.second->loop();
                     }
+                    UI::UIState::GetSingleton()->loop();
                 }
             }
         });

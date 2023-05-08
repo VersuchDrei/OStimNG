@@ -16,6 +16,7 @@ namespace UI::Scene {
 		SceneMenu();
 
 		static void Register();
+		static void PostRegister();
 		static void Show();
 		static void Hide();
 		static void Update();
@@ -30,7 +31,8 @@ namespace UI::Scene {
 
 		static void SetThread(OStim::Thread* thread);
 		static void NodeChanged(OStim::Thread* thread, Graph::Node* node);
-		
+
+		static void ChangeAnimation(std::string nodeId);
 	private:
 		class Logger : public RE::GFxLog {
 		public:
@@ -84,5 +86,12 @@ namespace UI::Scene {
 		inline static Graph::Node* currentNode;
 
 		inline static RE::GPtr<RE::GFxMovieView> view;
+	};
+
+	class doSendTransitionRequest : public RE::GFxFunctionHandler {
+	public:
+		void Call(Params& args) override {
+			UI::Scene::SceneMenu::ChangeAnimation(args.args[0].GetString());
+		}
 	};
 }

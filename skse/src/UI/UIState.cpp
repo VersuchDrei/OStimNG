@@ -10,14 +10,14 @@ namespace UI {
         }
         switch (activeMenu) {
         case MenuType::kSceneMenu: {
-                auto menu = GetHud();
+                /*auto menu = GetHud();
                 if (menu) {
                     auto ui = GetOSAControlUIRoot(menu, glyph);
                     auto direction = GetControlString(control);
                     if (direction != "") {
                         ui.Invoke(direction.c_str());
                     }
-                }
+                }*/
             UI::Scene::SceneMenu::Handle(control);
             } break;
         case MenuType::kAlignMenu: {
@@ -34,4 +34,15 @@ namespace UI {
             UI::Align::AlignMenu::Hide();
         }
     }
+
+    void UIState::loop() {
+        refreshUIPositionCooldown -= Constants::LOOP_TIME_MILLISECONDS;
+        if (refreshUIPositionCooldown <= 0) {
+            UI::Settings::LoadSettings();
+            UI::Align::AlignMenu::ApplyPositions();
+            UI::Scene::SceneMenu::ApplyPositions();
+            refreshUIPositionCooldown = UI_UPDATE_LOOP_TIME;
+        }
+    }
+    
 }  // namespace UI

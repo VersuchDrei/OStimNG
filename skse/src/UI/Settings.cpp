@@ -1,4 +1,7 @@
 #include "UI/Settings.h"
+#include "UI/Align/AlignMenu.h"
+#include "UI/Scene/SceneMenu.h"
+#include <Util.h>
 
 namespace UI {
 	const char* SETTINGS_FILE_PATH{ "Data/SKSE/Plugins/OStim/uisettings.json" };
@@ -13,17 +16,44 @@ namespace UI {
 		if (json.contains("yScale"))
 			setting.yScale = json["yScale"];
 	}
+	void CreateDefaultLocationSettings(json& json) {
+		json["x"] = 0;
+		json["y"] = 0;
+		json["xScale"] = 100;
+		json["yScale"] = 100;
+	}
+	void CreateDefaultSettingsFile(json& json) {
 
+		json["scene"] = json::object();		
+		json["scene"]["control"] = json::object();
+		CreateDefaultLocationSettings(json["scene"]["control"]);
+		json["scene"]["bars"] = json::object();
+		CreateDefaultLocationSettings(json["scene"]["bars"]);
+
+		json["align"] = json::object();
+		json["align"]["control"] = json::object();
+		CreateDefaultLocationSettings(json["align"]["control"]);
+		json["align"]["info"] = json::object();
+		CreateDefaultLocationSettings(json["align"]["info"]);
+	}
 	void Settings::LoadSettings() {
 		logger::info("loading ui settings");
-		fs::path rootPath{ SETTINGS_FILE_PATH };
-		if (!fs::exists(rootPath))
-			logger::info("filepath ({}) does not exist", SETTINGS_FILE_PATH);
-		std::ifstream ifs(SETTINGS_FILE_PATH);
+		auto settingsPath = util::ui_settings_path();
+		if (!fs::exists(*settingsPath)) {
+			logger::info("ui settings file does not exist, creating");
+			json json = json::object();
+			CreateDefaultSettingsFile(json);
+			auto ostimPath = util::ostim_path();
+			std::filesystem::create_directory(*ostimPath);
+			std::ofstream settingsFile(*settingsPath);
+			settingsFile << std::setw(2) << json << std::endl;
+		}
+			
+		std::ifstream ifs(*settingsPath);
 		json json = json::parse(ifs, nullptr, false);
 
 		if (json.is_discarded()) {
-			logger::warn("file {} is malformed", SETTINGS_FILE_PATH);
+			logger::warn("ui settings file is malformed");
 			return;
 		}
 		if (!json.contains("align")) {
@@ -65,9 +95,5 @@ namespace UI {
 				LoadPosition(info, positionSettings.ScenePositions.BarsPosition);
 			}
 		}
-	}
-
-	void Settings::ApplyPositions() {
-
 	}
 }

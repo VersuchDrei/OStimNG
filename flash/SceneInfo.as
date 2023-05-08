@@ -17,7 +17,7 @@
       this.genderMapData.text = genderMapVal;
    }   
    
-  function SetPosition(xPos, yPos, xScale, yScale)
+  function setPosition(xPos, yPos, xScale, yScale)
    {
 	   this._x = -140 + xPos;
 	   this._y = 170 + yPos;
