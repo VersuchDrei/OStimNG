@@ -189,14 +189,13 @@ namespace UI::Scene {
             menuData.options.clear();
         } else {
             for (auto& nav : currentNode->navigations) {
-
-                OptionData val{
-                    nav.destination->scene_id,
-                    nav.destination->scene_name,
-                    nav.logo != "" ? nav.logo : "Ostim/logo.dds",
-                    nav.destination->scene_name
-                };
-                menuData.options.push_back(val);
+                menuData.options.push_back({
+                    .nodeId = nav.destination->scene_id,
+                    .title = nav.destination->scene_name,
+                    .imagePath = nav.icon,
+                    .border = nav.border,
+                    .description = nav.destination->scene_name
+                    });
             }
         }
     }

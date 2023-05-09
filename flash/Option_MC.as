@@ -62,6 +62,17 @@ class Option_MC extends MovieClip
 		//optionText.text = myIdx.toString();					  
 		this.TextureLoader.loadClip(ImagePath, this.textureContainer);
 		NodeID != null ? this.ShowOption() : this.HideOption();
+		DrawBorder(Node["Border"]);
+	}
+	
+	function DrawBorder(colorStr:String){
+		clear();
+		this.lineStyle(2, parseInt(colorStr,16),100)
+		this.moveTo(-42,-42);
+		this.lineTo(42,-42);
+		this.lineTo(42,42);
+		this.lineTo(-42,42);
+		this.lineTo(-42,-42);
 	}
 	
 	public function ShowOption()

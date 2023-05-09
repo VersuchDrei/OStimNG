@@ -29,9 +29,16 @@ namespace Graph {
         std::unordered_map<std::string, std::string> autotransitions;
     };
 
+    struct RawNavigation {
+        std::string destination;
+        std::string icon;
+        std::string border;
+    };
+
     struct Navigation {
         Node* destination;
-        std::string logo;
+        std::string icon;
+        std::string border;
         bool isTransition;
         Node* transitionNode;
     };
@@ -61,7 +68,7 @@ namespace Graph {
         std::string animClass;
 
         void mergeActionRequirementsIntoActors();
-        void tryAddNavigation(std::string destination, std::unordered_map<Graph::Node*, std::vector<std::string>>& navigationMap);
+        void tryAddNavigation(RawNavigation destination, std::unordered_map<Graph::Node*, std::vector<RawNavigation>>& navigationMap);
 
         bool fulfilledBy(std::vector<Trait::ActorConditions> conditions);
 

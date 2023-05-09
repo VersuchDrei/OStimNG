@@ -1,5 +1,4 @@
 #include "Graph/Node.h"
-
 #include "Graph/LookupTable.h"
 #include "Trait/Condition.h"
 #include "Trait/TraitTable.h"
@@ -24,20 +23,20 @@ namespace Graph {
         }
     }
 
-    void Node::tryAddNavigation(std::string destination, std::unordered_map<Graph::Node*, std::vector<std::string>>& navigationMap) {
-        Node* navigationDestination = LookupTable::getNodeById(destination);
+    void Node::tryAddNavigation(RawNavigation rawNav, std::unordered_map<Graph::Node*, std::vector<RawNavigation>>& navigationMap) {
+        Node* navigationDestination = LookupTable::getNodeById(rawNav.destination);
         if (!navigationDestination) {
-            logger::warn("Couldn't add navigation from {} to {} because {} doesn't exist.", scene_id, destination, destination);
+            logger::warn("Couldn't add navigation from {} to {} because {} doesn't exist.", scene_id, rawNav.destination, rawNav.destination);
             return;
         }
 
         if (furnitureType != navigationDestination->furnitureType) {
-            logger::warn("Couldn't add navigation from {} to {} because their furniture types don't match.", scene_id, destination);
+            logger::warn("Couldn't add navigation from {} to {} because their furniture types don't match.", scene_id, rawNav.destination);
             return;
         }
 
         if (actors.size() != navigationDestination->actors.size()) {
-            logger::warn("Couldn't add navigation from {} to {} because their actor counts don't match.", scene_id, destination);
+            logger::warn("Couldn't add navigation from {} to {} because their actor counts don't match.", scene_id, rawNav.destination);
             return;
         }
 
@@ -46,6 +45,15 @@ namespace Graph {
                 return;
             }
         }
+
+        auto border = rawNav.border;
+        std::regex hexColor("^[a-f0-9]{6}$");
+        if (!std::regex_search(rawNav.border, hexColor))
+            border = "ffffff";
+        auto icon = rawNav.icon;
+        if (icon == "")
+            icon = "Ostim/logo.dds";
+
         if (navigationDestination->isTransition) {
             
             Node* transitionNode = navigationDestination;
@@ -53,21 +61,26 @@ namespace Graph {
             for (auto nav : navigationMap) {
                 if (nav.first->scene_id == transitionNode->scene_id) {
                     if (nav.second.size() != 1) {
-                        logger::warn("Couldn't add transition from {} to destination because the navigations on {} were invalid", scene_id, destination);
+                        logger::warn("Couldn't add transition from {} to destination because the navigations on {} were invalid", scene_id, rawNav.destination);
                         return;
                     }
-                    destinationNode = LookupTable::getNodeById(nav.second[0]);
+                    destinationNode = LookupTable::getNodeById(nav.second[0].destination);
                     break;
                 }
             }
             
             navigations.push_back({
                 .destination = destinationNode,
-                .isTransition = true,
+                .icon = icon,
+                .border = border,
+                .isTransition = true,                
                 .transitionNode = transitionNode });
         }
         else {
-            navigations.push_back({ .destination = navigationDestination });
+            navigations.push_back({ 
+                .destination = navigationDestination,
+                .icon = icon,
+                .border = border, });
         }
     }
 

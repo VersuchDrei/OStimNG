@@ -56,12 +56,14 @@ namespace UI::Scene {
 			std::string nodeId;
 			std::string title;
 			std::string imagePath;
+			std::string border;
 			std::string description;
 			void loadValues(RE::GFxValue& option) {				
-				option.SetMember("NodeID", RE::GFxValue{ nodeId.c_str()});
-				option.SetMember("Title", RE::GFxValue{ title.c_str()});
-				option.SetMember("ImagePath", RE::GFxValue{ imagePath.c_str()});
-				option.SetMember("Description", RE::GFxValue{ description.c_str()});
+				option.SetMember("NodeID", RE::GFxValue{ nodeId.c_str() });
+				option.SetMember("Title", RE::GFxValue{ title.c_str() });
+				option.SetMember("ImagePath", RE::GFxValue{ imagePath.c_str() });
+				option.SetMember("Border", RE::GFxValue{ border.c_str() });
+				option.SetMember("Description", RE::GFxValue{ description.c_str() });
 			}
 		};
 
