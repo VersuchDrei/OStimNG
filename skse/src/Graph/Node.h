@@ -31,6 +31,9 @@ namespace Graph {
 
     struct Navigation {
         Node* destination;
+        std::string logo;
+        bool isTransition;
+        Node* transitionNode;
     };
 
     struct Node {
@@ -42,6 +45,7 @@ namespace Graph {
         std::vector<Speed> speeds;
         uint32_t defaultSpeed = 0;
         bool isTransition = false;
+        int animationLengthMs = 0;
         bool isHub = false;
         bool isAggresive = false;
         bool hasIdleSpeed = false;
@@ -57,7 +61,7 @@ namespace Graph {
         std::string animClass;
 
         void mergeActionRequirementsIntoActors();
-        void tryAddNavigation(std::string destination);
+        void tryAddNavigation(std::string destination, std::unordered_map<Graph::Node*, std::vector<std::string>>& navigationMap);
 
         bool fulfilledBy(std::vector<Trait::ActorConditions> conditions);
 

@@ -21,6 +21,8 @@ class Option_Box_MC extends MovieClip
 	var optionWidth = 86;
 	var optionHeight = 86;
 	
+	var minWidth = menuGutterX + 150;
+	var maxWidth = menuGutterX + 3*optionWidth + 2*optionGutterX;
 	
 	var TextureLoader; 
 
@@ -124,27 +126,33 @@ class Option_Box_MC extends MovieClip
 
 	public function AssignData(Edges:Array)
 	{
-		var i;
+		for(var j = 0; j < Options.length; j++){
+			Options[j].HideOption();
+		}
+		
+		maxOptionIdx = Edges.length - 1;
+		var maxOptionRow = Math.floor(maxOptionIdx / 3);
+		var noOfCols = maxOptionIdx >= 3 ? 3 : maxOptionIdx + 1;
+		TweenLite.to(bg, 0.5,
+						{
+							_width: Math.floor(Math.ceil(menuGutterX + (noOfCols * optionWidth) + ((noOfCols - 1) * optionGutterX), minWidth), maxWidth),
+							_height: menuGutterY + ((maxOptionRow + 1) * optionHeight) + (maxOptionRow * optionGutterY)
+						});
+
+		if(Edges.length == 0){
+			TweenLite.to(this, 0.2, {_alpha:0});
+			return;
+		} else{
+			TweenLite.to(this, 0.5, {_alpha:100});
+		}
 		for (var i = 0; i < Edges.length; i++)
 		{
 			if(Options.length <= i){
 				Options.push(GenerateOption(i, getCol(i), getRow(i)));
 			}
 			Options[i].SetData(Edges[i]);
+			Options[i].ShowOption();
 		}
-		for(var j = Edges.length; j < Options.length; j++)
-		{
-			Options[j].HideOption();
-		}
-		maxOptionIdx = Edges.length - 1;
-		var maxOptionRow = Math.floor(maxOptionIdx / 3);
-		var noOfCols = maxOptionIdx >= 3 ? 3 : maxOptionIdx + 1;
-		TweenLite.to(bg, 0.5,
-						{
-							_width: menuGutterX + (noOfCols * optionWidth) + ((noOfCols - 1) * optionGutterX),
-							_height: menuGutterY + ((maxOptionRow + 1) * optionHeight) + (maxOptionRow * optionGutterY)
-						});
-
 		CurrentlyHighlightedIdx = 0;
 		Highlight();
 	}
@@ -168,7 +176,6 @@ class Option_Box_MC extends MovieClip
 								  _height: optionHeight
 								  });
 								  
-		trace( "i" + idx + "x" + mc._x + "y" + mc._y);
 		mc.myIdx = idx;
 		mc.TextureLoader = this.TextureLoader;
 		return mc;
@@ -178,11 +185,6 @@ class Option_Box_MC extends MovieClip
 	{
 		_root.test1.text = str;
 		trace(str);
-	}
-	
-	function onLoadStart(aTargetClip)
-	{
-		trace(aTargetClip);
 	}
 	
 	function onLoadInit(aTargetClip)
@@ -195,13 +197,5 @@ class Option_Box_MC extends MovieClip
 				aTargetClip._height = 82;
 			}
 		}
-		trace(aTargetClip._visible.toString());
-		trace("name: " + aTargetClip._name + ",\t target: " + aTargetClip._target + ",\t target(2):" 
-            + eval(aTargetClip._target));
-				trace("v: " + aTargetClip._visible.toString()
-					  + " u: " + aTargetClip._url 
-					  + " w: " + aTargetClip._width.toString() 
-					  + " h: " + aTargetClip._height.toString());
-		trace(aTargetClip + "loaded");
 	}
 }

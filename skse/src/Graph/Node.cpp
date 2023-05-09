@@ -24,7 +24,7 @@ namespace Graph {
         }
     }
 
-    void Node::tryAddNavigation(std::string destination) {
+    void Node::tryAddNavigation(std::string destination, std::unordered_map<Graph::Node*, std::vector<std::string>>& navigationMap) {
         Node* navigationDestination = LookupTable::getNodeById(destination);
         if (!navigationDestination) {
             logger::warn("Couldn't add navigation from {} to {} because {} doesn't exist.", scene_id, destination, destination);
@@ -46,8 +46,29 @@ namespace Graph {
                 return;
             }
         }
-
-        navigations.push_back({.destination = navigationDestination});
+        if (navigationDestination->isTransition) {
+            
+            Node* transitionNode = navigationDestination;
+            Node* destinationNode;
+            for (auto nav : navigationMap) {
+                if (nav.first->scene_id == transitionNode->scene_id) {
+                    if (nav.second.size() != 1) {
+                        logger::warn("Couldn't add transition from {} to destination because the navigations on {} were invalid", scene_id, destination);
+                        return;
+                    }
+                    destinationNode = LookupTable::getNodeById(nav.second[0]);
+                    break;
+                }
+            }
+            
+            navigations.push_back({
+                .destination = destinationNode,
+                .isTransition = true,
+                .transitionNode = transitionNode });
+        }
+        else {
+            navigations.push_back({ .destination = navigationDestination });
+        }
     }
 
     bool Node::fulfilledBy(std::vector<Trait::ActorConditions> conditions) {
@@ -67,7 +88,7 @@ namespace Graph {
 
     Node* Node::getRandomNodeInRange(int distance, std::vector<Trait::ActorConditions> actorConditions, std::function<bool(Node*)> nodeCondition) {
         std::vector<Node*> nodes;
-        std::vector<Node*> lastLevel = {this};
+        std::vector<Node*> lastLevel = { this };
         std::vector<Node*> nextLevel;
 
         for (int i = 0; i < distance; i++) {
@@ -77,7 +98,8 @@ namespace Graph {
                     if (dest->isTransition) {
                         if (dest->navigations.empty()) {
                             continue;
-                        } else {
+                        }
+                        else {
                             dest = dest->navigations[0].destination;
                         }
                     }
@@ -203,15 +225,15 @@ namespace Graph {
     }
 
     int Node::findActionForActor(int position, std::string type) {
-        return findAction([position, type](Action* action) {return action->actor == position && action->type == type;});
+        return findAction([position, type](Action* action) {return action->actor == position && action->type == type; });
     }
 
     int Node::findAnyActionForActor(int position, std::vector<std::string> types) {
-        return findAction([position, types](Action* action) {return action->actor == position && VectorUtil::contains(types, action->type);});
+        return findAction([position, types](Action* action) {return action->actor == position && VectorUtil::contains(types, action->type); });
     }
 
     int Node::findActionForTarget(int position, std::string type) {
-        return findAction([position, type](Action* action) {return action->target == position && action->type == type;});
+        return findAction([position, type](Action* action) {return action->target == position && action->type == type; });
     }
 
     int Node::findAnyActionForTarget(int position, std::vector<std::string> types) {
@@ -221,11 +243,11 @@ namespace Graph {
     }
 
     int Node::findActionForActorAndTarget(int actorPosition, int targetPosition, std::string type) {
-        return findAction([actorPosition, targetPosition, type](Action* action) {return action->actor == actorPosition && action->target == targetPosition && action->type == type;});
+        return findAction([actorPosition, targetPosition, type](Action* action) {return action->actor == actorPosition && action->target == targetPosition && action->type == type; });
     }
 
     int Node::findAnyActionForActorAndTarget(int actorPosition, int targetPosition, std::vector<std::string> types) {
-        return findAction([actorPosition, targetPosition, types](Action* action) {return action->actor == actorPosition && action->target == targetPosition && VectorUtil::contains(types, action->type);});
+        return findAction([actorPosition, targetPosition, types](Action* action) {return action->actor == actorPosition && action->target == targetPosition && VectorUtil::contains(types, action->type); });
     }
 
     std::vector<Trait::FacialExpression*>* Node::getFacialExpressions(int position) {

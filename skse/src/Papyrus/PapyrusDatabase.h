@@ -48,15 +48,19 @@ namespace PapyrusDatabase {
             int is_transitory = 0;
             int is_hub = 1;
 
-            if (auto anim = scene.child("anim"))
+            if (auto anim = scene.child("anim")) {
                 if (auto transitory = anim.attribute("t")) {
-                    std::string trans_str{transitory.value()};
+                    std::string trans_str{ transitory.value() };
                     if (trans_str == "T"s) {
                         is_transitory = 1;
                         is_hub = 0;
                         navigations[node] = { anim.attribute("dest").value() };
                     }
                 }
+                if (auto length = anim.attribute("l")) {
+                    node->animationLengthMs = length.as_float() * 1000;
+                }
+            }
 
             j_obj["istransitory"] = is_transitory;
             node->isTransition = is_transitory;
@@ -479,7 +483,7 @@ namespace PapyrusDatabase {
 
         for (auto& [node, list] : navigations) {
             for (auto& navigation : list) {
-                node->tryAddNavigation(navigation);
+                node->tryAddNavigation(navigation, navigations);
             }
         }
 

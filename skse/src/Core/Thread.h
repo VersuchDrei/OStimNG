@@ -26,11 +26,11 @@ namespace OStim {
         Alignment::ActorAlignment getActorAlignment(int index);
         void updateActorAlignment(int index, Alignment::ActorAlignment alignment);
         void alignActors();
-        
+
+        void Navigate(std::string sceneId);
+
         void ChangeNode(Graph::Node* a_node);
         Graph::Node* getCurrentNode();
-
-        void navigateTo(Graph::Node* node);
 
         void AddActor(RE::Actor* a_actor);
         void RemoveActor();
@@ -68,6 +68,9 @@ namespace OStim {
 
         float freeCamSpeedBefore = 0;
         float worldFOVbefore = 0;
+
+        int animationTimer = 0;
+        Graph::Node* nextNode = nullptr;
 
         void addActorInner(int index, RE::Actor* actor);
         void addActorSink(RE::Actor* a_actor);

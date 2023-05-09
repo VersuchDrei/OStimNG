@@ -185,22 +185,24 @@ namespace UI::Scene {
         
         if (!currentNode)
             return;
-        
-        for(auto& nav : currentNode->navigations) {
-            
-            OptionData val{
-                nav.destination->scene_id,
-                nav.destination->scene_name,
-                std::rand() % 2 == 0 ? "Ostim/logo.dds" : "SOS/logo.dds",
-                nav.destination->scene_name
-            };
-            menuData.options.push_back(val);
-        }        
+        if (currentNode->isTransition) {
+            menuData.options.clear();
+        } else {
+            for (auto& nav : currentNode->navigations) {
+
+                OptionData val{
+                    nav.destination->scene_id,
+                    nav.destination->scene_name,
+                    nav.logo != "" ? nav.logo : "Ostim/logo.dds",
+                    nav.destination->scene_name
+                };
+                menuData.options.push_back(val);
+            }
+        }
     }
     
-    void SceneMenu::ChangeAnimation(std::string nodeId) {       
-        auto node = Graph::LookupTable::getNodeById(nodeId);
-        currentThread->ChangeNode(node);
+    void SceneMenu::ChangeAnimation(std::string nodeId) {
+        currentThread->Navigate(nodeId);
     }
 
     

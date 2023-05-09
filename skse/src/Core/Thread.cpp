@@ -126,9 +126,32 @@ namespace OStim {
         return Alignment::Alignments::getActorAlignment(alignmentKey, m_currentNode, index);
     }
 
+    void Thread::Navigate(std::string sceneId) {
+        logger::info("navigate to {}", sceneId);
+        for (auto& nav : m_currentNode->navigations) {
+            if (sceneId == nav.destination->scene_id) {
+                if (nav.isTransition)
+                {
+                    logger::info("transition {} -> {}", nav.transitionNode->scene_id, nav.destination->scene_id);
+                    ChangeNode(nav.transitionNode);
+                    nextNode = nav.destination;
+                    return;
+                }
+                else {
+                    logger::info("change -> {}", nav.destination->scene_id);
+                    ChangeNode(nav.destination);
+                    return;
+                }
+            }
+        }
+        
+    }
+
     void Thread::ChangeNode(Graph::Node* a_node) {
         std::unique_lock<std::shared_mutex> writeLock;
+        nextNode = nullptr;
         m_currentNode = a_node;
+        animationTimer = 0;
 
         for (auto& actorIt : m_actors) {
             // --- excitement calculation --- //
@@ -212,16 +235,11 @@ namespace OStim {
         msg.newAnimation = a_node;
         logger::info("Sending animation changed event");
         Messaging::MessagingRegistry::GetSingleton()->SendMessageToListeners(msg);   
-
         SetSpeed(0);
     }
 
     Graph::Node* Thread::getCurrentNode() {
         return m_currentNode;
-    }
-
-    void Thread::navigateTo(Graph::Node* node) {
-
     }
 
     void Thread::AddActor(RE::Actor* actor) {
@@ -298,6 +316,16 @@ namespace OStim {
         for (auto& actorIt : m_actors) {
             actorIt.second.loop();
         }
+
+        animationTimer += Constants::LOOP_TIME_MILLISECONDS;
+        if (animationTimer >= m_currentNode->animationLengthMs) {
+            logger::info("node looped");
+            animationTimer = 0;
+            if (nextNode != nullptr) {
+                logger::info("going to next node {}", nextNode->scene_id);
+                ChangeNode(nextNode);
+            }
+        }
     }
 
     ThreadActor* Thread::GetActor(RE::Actor* a_actor) {
@@ -327,14 +355,22 @@ namespace OStim {
         const auto skyrimVM = RE::SkyrimVM::GetSingleton();
         auto vm = skyrimVM ? skyrimVM->impl : nullptr;
 
+        
         for (auto& actorIt : m_actors) {
             if (m_currentNode) {
                 if (m_currentNode->speeds.size() > speed) {
                     RE::Actor* actor = actorIt.second.getActor();
+                    logger::info("set graph speed");
                     actor->SetGraphVariableFloat("OStimSpeed", m_currentNode->speeds[speed].playbackSpeed);
-                    actor->NotifyAnimationGraph(m_currentNode->speeds[speed].animation + "_" + std::to_string(actorIt.first));
+                    
+                    auto anim = m_currentNode->speeds[speed].animation + "_" + std::to_string(actorIt.first);
+                    logger::info("{}", anim);
+                    SKSE::GetTaskInterface()->AddTask([actor, anim]() {
+                        actor->NotifyAnimationGraph(anim);
+                    });
 
                     if (vm) {
+                        logger::info("niOverride");
                         RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
                         auto args = RE::MakeFunctionArguments<RE::TESObjectREFR*>(std::move(actor));
                         vm->DispatchStaticCall("NiOverride", "ApplyNodeOverrides", args, callback);

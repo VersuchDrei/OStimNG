@@ -59,7 +59,7 @@ class Option_MC extends MovieClip
         Title = Node["Title"];
         ImagePath = Node["ImagePath"];
         Description = Node["Description"];
-		optionText.text = myIdx.toString();					  
+		//optionText.text = myIdx.toString();					  
 		this.TextureLoader.loadClip(ImagePath, this.textureContainer);
 		NodeID != null ? this.ShowOption() : this.HideOption();
 	}
@@ -67,7 +67,7 @@ class Option_MC extends MovieClip
 	public function ShowOption()
 	{
 		this.enabled = true;
-		this._alpha = 70;
+		TweenLite.to(this, 0.5, {_alpha:70});
 	}
 	
 	public function HideOption()
