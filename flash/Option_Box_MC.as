@@ -183,7 +183,6 @@ class Option_Box_MC extends MovieClip
 
 	function log(str:String)
 	{
-		_root.test1.text = str;
 		trace(str);
 	}
 	

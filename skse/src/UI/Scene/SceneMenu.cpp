@@ -5,10 +5,10 @@ namespace UI::Scene {
 
     inline RE::GFxValue GetRoot() {
         RE::GFxValue root;
-        RE::GPtr<RE::IMenu> alignMenu = RE::UI::GetSingleton()->GetMenu(SceneMenu::MENU_NAME);
-        assert(alignMenu && alignMenu->uiMovie);
+        RE::GPtr<RE::IMenu> sceneMenu = RE::UI::GetSingleton()->GetMenu(SceneMenu::MENU_NAME);
+        assert(sceneMenu && sceneMenu->uiMovie);
 
-        alignMenu->uiMovie->GetVariable(&root, "_root");
+        sceneMenu->uiMovie->GetVariable(&root, "_root");
         return root;
     }
 
@@ -50,10 +50,14 @@ namespace UI::Scene {
         auto ui = RE::UI::GetSingleton();
         if (ui) {
             ui->Register(MENU_NAME, Creator);
-            logger::info("Registered {}", MENU_NAME);
-            SceneMenu::Show();
+            logger::info("Registered {}", MENU_NAME);           
 
-            RE::GPtr<RE::IMenu> alignMenu = RE::UI::GetSingleton()->GetMenu(MENU_NAME);            
+            RE::GPtr<RE::IMenu> alignMenu = RE::UI::GetSingleton()->GetMenu(MENU_NAME);     
+
+            auto msgQ = RE::UIMessageQueue::GetSingleton();
+            if (msgQ) {
+                msgQ->AddMessage(SceneMenu::MENU_NAME, RE::UI_MESSAGE_TYPE::kShow, nullptr);
+            }
         }
 	}
 
@@ -63,14 +67,15 @@ namespace UI::Scene {
         RE::GFxValue dst;
         view->CreateFunction(&dst, fn);
         optionBoxes.SetMember("doSendTransitionRequest", dst);
-    }
-
+    }    
 
 	void SceneMenu::Show() {
         auto msgQ = RE::UIMessageQueue::GetSingleton();
         if (msgQ) {
             msgQ->AddMessage(SceneMenu::MENU_NAME, RE::UI_MESSAGE_TYPE::kShow, nullptr);
         }
+        UI::Settings::LoadSettings();
+        ApplyPositions();
 	}
 
 	void SceneMenu::Hide() {

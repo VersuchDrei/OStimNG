@@ -148,7 +148,7 @@ namespace OStim {
     }
 
     void Thread::ChangeNode(Graph::Node* a_node) {
-        std::unique_lock<std::shared_mutex> writeLock;
+        std::unique_lock<std::shared_mutex> writeLock(nodeLock);
         nextNode = nullptr;
         m_currentNode = a_node;
         animationTimer = 0;
@@ -307,7 +307,7 @@ namespace OStim {
     }
 
     void Thread::loop() {
-        std::shared_lock<std::shared_mutex> readLock;
+        //std::shared_lock<std::shared_mutex> readLock(nodeLock);
         // TODO: Can remove this when we start scenes in c++ with a starting node
         if (!m_currentNode) {
             return;
@@ -319,11 +319,12 @@ namespace OStim {
 
         animationTimer += Constants::LOOP_TIME_MILLISECONDS;
         if (animationTimer >= m_currentNode->animationLengthMs) {
-            logger::info("node looped");
             animationTimer = 0;
             if (nextNode != nullptr) {
                 logger::info("going to next node {}", nextNode->scene_id);
-                ChangeNode(nextNode);
+                SKSE::GetTaskInterface()->AddTask([this]() {
+                    ChangeNode(nextNode);
+                });                
             }
         }
     }
@@ -365,9 +366,7 @@ namespace OStim {
                     
                     auto anim = m_currentNode->speeds[speed].animation + "_" + std::to_string(actorIt.first);
                     logger::info("{}", anim);
-                    SKSE::GetTaskInterface()->AddTask([actor, anim]() {
-                        actor->NotifyAnimationGraph(anim);
-                    });
+                    actor->NotifyAnimationGraph(anim);
 
                     if (vm) {
                         logger::info("niOverride");

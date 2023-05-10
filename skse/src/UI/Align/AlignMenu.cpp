@@ -11,9 +11,7 @@ namespace UI::Align {
     inline RE::GFxValue GetRoot() {
         RE::GFxValue root;
         RE::GPtr<RE::IMenu> alignMenu = RE::UI::GetSingleton()->GetMenu(AlignMenu::MENU_NAME);
-        if (!alignMenu || !alignMenu->uiMovie) {
-            return root;
-        }
+        assert(alignMenu && alignMenu->uiMovie);
         alignMenu->uiMovie->GetVariable(&root, "_root.rootObj");
         return root;
     }
@@ -44,8 +42,12 @@ namespace UI::Align {
         if (ui) {
             ui->Register(MENU_NAME, Creator);
 
-            AlignMenu::Show();
             RE::GPtr<RE::IMenu> alignMenu = RE::UI::GetSingleton()->GetMenu(MENU_NAME);
+
+            auto msgQ = RE::UIMessageQueue::GetSingleton();
+            if (msgQ) {
+                msgQ->AddMessage(MENU_NAME, RE::UI_MESSAGE_TYPE::kShow, nullptr);
+            }
         }
     }
 
@@ -58,6 +60,8 @@ namespace UI::Align {
             SetActor(0);
             SelectField(0);
         }
+        UI::Settings::LoadSettings();
+        ApplyPositions();
     }
 
     void AlignMenu::SetThread(OStim::Thread* thread) {

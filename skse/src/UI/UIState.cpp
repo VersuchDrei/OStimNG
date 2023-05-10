@@ -36,13 +36,13 @@ namespace UI {
     }
 
     void UIState::loop() {
-        refreshUIPositionCooldown -= Constants::LOOP_TIME_MILLISECONDS;
+        /*refreshUIPositionCooldown -= Constants::LOOP_TIME_MILLISECONDS;
         if (refreshUIPositionCooldown <= 0) {
             UI::Settings::LoadSettings();
             UI::Align::AlignMenu::ApplyPositions();
             UI::Scene::SceneMenu::ApplyPositions();
             refreshUIPositionCooldown = UI_UPDATE_LOOP_TIME;
-        }
+        }*/
     }
     
 }  // namespace UI

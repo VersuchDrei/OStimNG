@@ -419,9 +419,7 @@ namespace OStim {
             }
             auto sosString = totalBend == -10 ? "SOSFlaccid" : "SOSBend" + std::to_string(sosBend);
                 
-            SKSE::GetTaskInterface()->AddTask([this, sosString]() {
-                actor->NotifyAnimationGraph(sosString);
-            });
+            actor->NotifyAnimationGraph(sosString);
         }
     }
 

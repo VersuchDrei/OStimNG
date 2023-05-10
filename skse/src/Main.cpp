@@ -67,6 +67,7 @@ namespace {
                 if (message) {
                     message->RegisterListener(nullptr, UnspecificedSenderMessageHandler);
                 }
+                UI::RegisterMenus();
             } break;
             case SKSE::MessagingInterface::kInputLoaded: {
                 RE::BSInputDeviceManager::GetSingleton()->AddEventSink(Events::EventListener::GetSingleton());
@@ -105,7 +106,6 @@ namespace {
                 } else {
                     logger::critical("Couldn't get NiTransformInterface!");
                 }
-                UI::RegisterMenus();
             } break;
         }
     }
