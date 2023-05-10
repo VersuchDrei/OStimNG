@@ -60,7 +60,7 @@ namespace OStim {
                 auto vm = skyrimVM ? skyrimVM->impl : nullptr;
                 if (vm) {
                     RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-                    auto args = RE::MakeFunctionArguments(std::move(false));
+                    auto args = RE::MakeFunctionArguments(std::move(false));|
                     vm->DispatchStaticCall("OSKSE", "ToggleImprovedCamera", args, callback);
                 }
             }
@@ -127,18 +127,15 @@ namespace OStim {
     }
 
     void Thread::Navigate(std::string sceneId) {
-        logger::info("navigate to {}", sceneId);
         for (auto& nav : m_currentNode->navigations) {
             if (sceneId == nav.destination->scene_id) {
                 if (nav.isTransition)
                 {
-                    logger::info("transition {} -> {}", nav.transitionNode->scene_id, nav.destination->scene_id);
                     ChangeNode(nav.transitionNode);
                     nextNode = nav.destination;
                     return;
                 }
                 else {
-                    logger::info("change -> {}", nav.destination->scene_id);
                     ChangeNode(nav.destination);
                     return;
                 }
@@ -361,15 +358,12 @@ namespace OStim {
             if (m_currentNode) {
                 if (m_currentNode->speeds.size() > speed) {
                     RE::Actor* actor = actorIt.second.getActor();
-                    logger::info("set graph speed");
                     actor->SetGraphVariableFloat("OStimSpeed", m_currentNode->speeds[speed].playbackSpeed);
                     
                     auto anim = m_currentNode->speeds[speed].animation + "_" + std::to_string(actorIt.first);
-                    logger::info("{}", anim);
                     actor->NotifyAnimationGraph(anim);
 
                     if (vm) {
-                        logger::info("niOverride");
                         RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
                         auto args = RE::MakeFunctionArguments<RE::TESObjectREFR*>(std::move(actor));
                         vm->DispatchStaticCall("NiOverride", "ApplyNodeOverrides", args, callback);

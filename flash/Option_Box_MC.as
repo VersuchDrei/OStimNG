@@ -5,26 +5,24 @@ import Mouse;
 import com.greensock.*;
 class Option_Box_MC extends MovieClip
 {
-
 	var bg:MovieClip;
 	var optionDesc:TextField;
 
 	var Options:Array = new Array(0);
 	var CurrentlyHighlightedIdx:Number;
 	var maxOptionIdx:Number = -1;
-	
-	
+
 	var optionGutterX = 14;
-	var optionGutterY = 14;	
+	var optionGutterY = 14;
 	var menuGutterX = 48;
-	var menuGutterY = 98;	
+	var menuGutterY = 98;
 	var optionWidth = 86;
 	var optionHeight = 86;
-	
+
 	var minWidth = menuGutterX + 150;
-	var maxWidth = menuGutterX + 3*optionWidth + 2*optionGutterX;
-	
-	var TextureLoader; 
+	var maxWidth = menuGutterX + 3 * optionWidth + 2 * optionGutterX;
+
+	var TextureLoader;
 
 	public function Option_Box_MC()
 	{
@@ -43,48 +41,43 @@ class Option_Box_MC extends MovieClip
 		{
 			return;
 		}
-		// Sanitize starting idx 
-		if (CurrentlyHighlightedIdx < 0)
+		var col = getCol(CurrentlyHighlightedIdx);
+		var row = Math.floor(CurrentlyHighlightedIdx / 3);
+
+		var colMin = col;
+		var colMax = maxOptionIdx - (((maxOptionIdx % 3) - col) % 3);
+
+		var rowMin = 3 * row;
+		var rowMax = Math.min(maxOptionIdx, (3 * row) + 2);
+
+		switch (e)
 		{
-			CurrentlyHighlightedIdx = 0;
-			Highlight();	
+			case 0 :
+				Highlight(RollOver(CurrentlyHighlightedIdx + 3, colMin, colMax));
+				break;
+			case 1 :
+				Highlight(RollOver(CurrentlyHighlightedIdx - 3, colMin, colMax));
+				break;
+			case 2 :
+				Highlight(RollOver(CurrentlyHighlightedIdx - 1, rowMin, rowMax));
+				break;
+			case 3 :
+				Highlight(RollOver(CurrentlyHighlightedIdx + 1, rowMin, rowMax));
+				break;
+			case 4 :
+				Options[CurrentlyHighlightedIdx].OnSelect();
+				break;
 		}
-		else
+
+	}
+
+	function Highlight(idx:Number)
+	{
+		if (CurrentlyHighlightedIdx != -1)
 		{
 			Options[CurrentlyHighlightedIdx].OnUnHighlight();
-
-			var col = getCol(CurrentlyHighlightedIdx);
-			var row = Math.floor(CurrentlyHighlightedIdx / 3);
-
-			var colMin = col;
-			var colMax = maxOptionIdx - (((maxOptionIdx % 3) - col) % 3);
-
-			var rowMin = 3 * row;
-			var rowMax = Math.min(maxOptionIdx, (3 * row) + 2);
-
-			switch (e)
-			{
-				case 0 :
-					CurrentlyHighlightedIdx = RollOver(CurrentlyHighlightedIdx + 3, colMin, colMax);
-					break;
-				case 1 :
-					CurrentlyHighlightedIdx = RollOver(CurrentlyHighlightedIdx - 3, colMin, colMax);
-					break;
-				case 2 :
-					CurrentlyHighlightedIdx = RollOver(CurrentlyHighlightedIdx - 1, rowMin, rowMax);
-					break;
-				case 3 :
-					CurrentlyHighlightedIdx = RollOver(CurrentlyHighlightedIdx + 1, rowMin, rowMax);
-					break;
-				case 4 :
-					Options[CurrentlyHighlightedIdx].OnSelect();
-					break;
-			}
 		}
-		Highlight();
-	}
-	
-	function Highlight(idx: Number){
+		CurrentlyHighlightedIdx = idx;
 		Options[CurrentlyHighlightedIdx].OnHighlight();
 		optionDesc.text = Options[CurrentlyHighlightedIdx].Description;
 	}
@@ -104,7 +97,6 @@ class Option_Box_MC extends MovieClip
 		{
 			return val;
 		}
-
 	}
 
 
@@ -126,56 +118,57 @@ class Option_Box_MC extends MovieClip
 
 	public function AssignData(Edges:Array)
 	{
-		for(var j = 0; j < Options.length; j++){
+		for (var j = 0; j < Options.length; j++)
+		{
 			Options[j].HideOption();
 		}
-		
+
 		maxOptionIdx = Edges.length - 1;
 		var maxOptionRow = Math.floor(maxOptionIdx / 3);
 		var noOfCols = maxOptionIdx >= 3 ? 3 : maxOptionIdx + 1;
-		TweenLite.to(bg, 0.5,
-						{
-							_width: Math.floor(Math.ceil(menuGutterX + (noOfCols * optionWidth) + ((noOfCols - 1) * optionGutterX), minWidth), maxWidth),
-							_height: menuGutterY + ((maxOptionRow + 1) * optionHeight) + (maxOptionRow * optionGutterY)
-						});
+		TweenLite.to(bg,0.5,{_width:Math.floor(Math.ceil(menuGutterX + (noOfCols * optionWidth) + ((noOfCols - 1) * optionGutterX), minWidth), maxWidth), _height:menuGutterY + ((maxOptionRow + 1) * optionHeight) + (maxOptionRow * optionGutterY)});
 
-		if(Edges.length == 0){
-			TweenLite.to(this, 0.2, {_alpha:0});
+		if (Edges.length == 0)
+		{
+			TweenLite.to(this,0.2,{_alpha:0});
 			return;
-		} else{
-			TweenLite.to(this, 0.5, {_alpha:100});
+		}
+		else
+		{
+			TweenLite.to(this,0.5,{_alpha:100});
 		}
 		for (var i = 0; i < Edges.length; i++)
 		{
-			if(Options.length <= i){
+			if (Options.length <= i)
+			{
 				Options.push(GenerateOption(i, getCol(i), getRow(i)));
 			}
 			Options[i].SetData(Edges[i]);
 			Options[i].ShowOption();
 		}
-		CurrentlyHighlightedIdx = 0;
-		Highlight();
+		CurrentlyHighlightedIdx = -1;
+		Highlight(0);
 	}
-	
-	function getCol(idx) : Number 
+
+	function getCol(idx):Number
 	{
 		return idx % 3;
 	}
-	
-	function getRow(idx) : Number 	
+
+	function getRow(idx):Number
 	{
 		return Math.floor(idx / 3);
 	}
-	
-	public function GenerateOption(idx, colIdx, rowIdx): MovieClip
+
+	public function GenerateOption(idx, colIdx, rowIdx):MovieClip
 	{
-		var mc = this.attachMovie("Option_MC", "o"+idx, idx+1,{
-								  _x: (menuGutterX / 2) + (colIdx * (optionWidth + optionGutterX)) + (optionWidth / 2),
-								  _y: 0-((67) + (rowIdx * (optionHeight + optionGutterY)) + (optionHeight / 2)), 
-								  _width: optionWidth, 
-								  _height: optionHeight
+		var mc = this.attachMovie("Option_MC", "o" + idx, idx + 1, {
+								  _x:(menuGutterX / 2) + (colIdx * (optionWidth + optionGutterX)) + (optionWidth / 2), 
+								  _y:0 - ((67) + (rowIdx * (optionHeight + optionGutterY)) + (optionHeight / 2)), 
+								  _width:optionWidth, 
+								  _height:optionHeight
 								  });
-								  
+
 		mc.myIdx = idx;
 		mc.TextureLoader = this.TextureLoader;
 		return mc;
@@ -185,12 +178,12 @@ class Option_Box_MC extends MovieClip
 	{
 		trace(str);
 	}
-	
+
 	function onLoadInit(aTargetClip)
 	{
-		if (undefined != this.TextureLoader ) 
+		if (undefined != this.TextureLoader)
 		{
-			if (undefined != aTargetClip) 
+			if (undefined != aTargetClip)
 			{
 				aTargetClip._width = 82;
 				aTargetClip._height = 82;
