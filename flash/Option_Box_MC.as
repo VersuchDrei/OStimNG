@@ -12,15 +12,24 @@ class Option_Box_MC extends MovieClip
 	var CurrentlyHighlightedIdx:Number;
 	var maxOptionIdx:Number = -1;
 
-	var optionGutterX = 14;
-	var optionGutterY = 14;
-	var menuGutterX = 48;
-	var menuGutterY = 98;
-	var optionWidth = 86;
-	var optionHeight = 86;
 
-	var minWidth = menuGutterX + 150;
-	var maxWidth = menuGutterX + 3 * optionWidth + 2 * optionGutterX;
+	var optionGutter;
+	var optionGutterX;
+	var optionGutterY;
+	
+	var menuGutter;
+	var menuGutterX;
+	
+	var menuGutterYText;
+	var menuGutterYBase;
+	var menuGutterYTop;
+	var menuGutterY;
+	
+	var optionWidth;
+	var optionHeight;
+
+	var minWidth;
+	var maxWidth;
 
 	var TextureLoader;
 
@@ -31,6 +40,26 @@ class Option_Box_MC extends MovieClip
 
 		TextureLoader = new MovieClipLoader();
 		TextureLoader.addListener(this);
+		
+		optionGutter = 14;
+		optionGutterX = optionGutter;
+		optionGutterY = optionGutter;
+		
+		menuGutter = 24;
+		menuGutterX = menuGutter * 2;
+		
+		menuGutterYText = 67;
+		menuGutterYBase = menuGutterYText + optionGutter;	
+		menuGutterYTop = menuGutter;
+		menuGutterY = menuGutterYBase + menuGutterYTop;
+		
+		optionWidth = 86;
+		optionHeight = 86;
+	
+		minWidth = menuGutterX + 150;
+		maxWidth = menuGutterX + (3 * optionWidth) + (2 * optionGutterX);
+	
+		_width = maxWidth;
 	}
 
 	public function HandleKeyboardInput(e:Number)
@@ -126,7 +155,9 @@ class Option_Box_MC extends MovieClip
 		maxOptionIdx = Edges.length - 1;
 		var maxOptionRow = Math.floor(maxOptionIdx / 3);
 		var noOfCols = maxOptionIdx >= 3 ? 3 : maxOptionIdx + 1;
-		TweenLite.to(bg,0.5,{_width:Math.floor(Math.ceil(menuGutterX + (noOfCols * optionWidth) + ((noOfCols - 1) * optionGutterX), minWidth), maxWidth), _height:menuGutterY + ((maxOptionRow + 1) * optionHeight) + (maxOptionRow * optionGutterY)});
+		TweenLite.to(bg,0.5,{
+					 //_width:Math.floor(Math.ceil(menuGutterX + (noOfCols * optionWidth) + ((noOfCols - 1) * optionGutterX), minWidth), maxWidth), 
+					 _height:menuGutterY + ((maxOptionRow + 1) * optionHeight) + (maxOptionRow * optionGutterY)});
 
 		if (Edges.length == 0)
 		{
@@ -163,8 +194,8 @@ class Option_Box_MC extends MovieClip
 	public function GenerateOption(idx, colIdx, rowIdx):MovieClip
 	{
 		var mc = this.attachMovie("Option_MC", "o" + idx, idx + 1, {
-								  _x:(menuGutterX / 2) + (colIdx * (optionWidth + optionGutterX)) + (optionWidth / 2), 
-								  _y:0 - ((67) + (rowIdx * (optionHeight + optionGutterY)) + (optionHeight / 2)), 
+								  _x:(menuGutterX /2) + (colIdx * (optionWidth + optionGutterX)) + (optionWidth / 2), 
+								  _y:0 - ((menuGutterYBase) + (rowIdx * (optionHeight + optionGutterY)) + (optionHeight / 2)), 
 								  _width:optionWidth, 
 								  _height:optionHeight
 								  });

@@ -29,15 +29,10 @@ class Option_MC extends MovieClip
 	// Public Functions
 	public function OnHighlight()
 	{
-		//_parent.CurrentlyHighlightedIdx = myIdx;
-		if (_parent.CurrentlyHighlightedIdx != myIdx)
-		{
-			_parent.Options[_parent.CurrentlyHighlightedIdx].OnUnHighlight();
-			_parent.CurrentlyHighlightedIdx = myIdx;
-		}
 		NodeInfoBox.AssignData({Title:Title, Description:Description});
 		this._width = _w;
 		this._height = _h;
+		TweenLite.killTweensOf(this, false, {_alpha:true});
 		this._alpha = 100;
 		TweenLite.to(this,0.5,{_width:_w + 3, _height:_h + 3});
 	}
@@ -60,7 +55,6 @@ class Option_MC extends MovieClip
 		Title = Node["Title"];
 		ImagePath = Node["ImagePath"];
 		Description = Node["Description"];
-		//optionText.text = myIdx.toString();  
 		this.TextureLoader.loadClip(ImagePath,this.textureContainer);
 		NodeID != null ? this.ShowOption() : this.HideOption();
 		DrawBorder(Node["Border"]);
