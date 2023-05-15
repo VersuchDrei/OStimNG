@@ -18,14 +18,13 @@ namespace Sound {
         RE::NiAVObject* actorNode;
         RE::NiAVObject* targetNode;
 
-        int countDown = 10;
         float lastDistance = 0;
         float in = true;
 
         inline float calculateDistance() {
-            return powf((actorNode->local.translate.x - targetNode->local.translate.x) * 1000, 2) +
-                   powf((actorNode->local.translate.y - targetNode->local.translate.y) * 1000, 2) +
-                   powf((actorNode->local.translate.z - targetNode->local.translate.z) * 1000, 2);
+            return powf((actorNode->world.translate.x - targetNode->world.translate.x) * 1000, 2) +
+                   powf((actorNode->world.translate.y - targetNode->world.translate.y) * 1000, 2) +
+                   powf((actorNode->world.translate.z - targetNode->world.translate.z) * 1000, 2);
         }
     };
 }

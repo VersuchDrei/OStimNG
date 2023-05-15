@@ -2,11 +2,6 @@
 
 namespace Sound {
     void SingleNodeDistanceSoundPlayer::loop() {
-        if (countDown-- > 0) {
-            return;
-        }
-        countDown = 10;
-
         float nextDistance = calculateDistance();
 
         logger::info("in: {}, last distance: {}, next distance: {}", in, lastDistance, nextDistance);

@@ -31,7 +31,7 @@ namespace Sound {
         }
 
         if (actorNodes.size() == 1 && targetNodes.size() == 1) {
-            return new SingleNodeDistanceSoundPlayer(sound, actor->getActor(), actorNodes[0], targetNodes[0]);
+            return new SingleNodeDistanceSoundPlayer(sound, actor->getActor(), target->getActor(), actorNodes[0], targetNodes[0]);
         }
 
         return nullptr;
