@@ -14,6 +14,7 @@ action fields:
 "actor" (object): a collection of attributes for the action actor (see actor fields)
 "target" (object): a collection of attributes for the action target (see actor fields)
 "performer" (object): a collection of attributes for the action performer (see actor fields)
+"sounds" (list<object>): a list of sounds to play during this action (see sound fields)
 "tags" (list<string>): a list of tags for this action, commonly used are "oral", playful", "seductive", "sensual" and "sexual"
 	these can be used by addons to filter actions
 
@@ -41,6 +42,15 @@ actor fields:
 "strings" (map<string, string>): a map of custom strings that can be used by addons
 "stringLists" (map<string, list<string>>): a map of custom string lists that can be used by addons
 	known ones are: "cum" for the cum overlay slots for OCum
+
+form fields:
+"mod" (string): the name of the mod this form is defined in, including the file extension
+"formid" (string): the form id of the form in hexadecimal notation
+	note: json doesn't support hexadecimal notation, which is why this is a string and not an int
+
+sound fields:
+"type" (string): the type of the sound, depending on type different fields will be required (see sound types)
+"sound" (object): the sound descriptor of the climax sound (see form fields)
 
 
 F.A.Q.

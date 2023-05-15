@@ -43,8 +43,10 @@ set(sources
 	src/Game/Locker.h
 	src/Game/Patch.h
     src/GameAPI/Game.cpp
+    src/GameAPI/GameActor.cpp
     src/GameAPI/GameCamera.cpp
     src/GameAPI/GameSex.cpp
+    src/GameAPI/GameSound.cpp
     src/Graph/Action.cpp
     src/Graph/GraphTable.cpp
     src/Graph/Node.cpp
@@ -56,6 +58,10 @@ set(sources
 	src/Papyrus/Papyrus.cpp
 	src/Papyrus/Script.h
 	src/Serial/Manager.cpp
+	src/Sound/ActionSound/NodeDistanceSoundType.cpp
+	src/Sound/ActionSound/SingleNodeDistanceSoundPlayer.cpp
+	src/Sound/ActionSound/SoundType.cpp
+	src/Sound/SoundTable.cpp
     src/Trait/Condition.cpp
     src/Trait/FacialExpression.cpp
     src/Trait/TraitTable.cpp

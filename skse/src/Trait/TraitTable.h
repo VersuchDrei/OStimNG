@@ -2,7 +2,6 @@
 
 #include "EquipObject.h"
 #include "FacialExpression.h"
-#include "VoiceSet.h"
 
 namespace Trait {
     class TraitTable {
@@ -19,8 +18,6 @@ namespace Trait {
         static std::vector<FacialExpression*>* getExpressionsForActionTarget(std::string);
         static std::vector<FacialExpression*>* getExpressionsForEvent(std::string);
         static std::vector<FacialExpression*>* getExpressionsForSet(std::string);
-
-        static VoiceSet* getVoiceSet(RE::Actor* actor);
 
         static void addToExcitementFaction(RE::Actor* actor);
         static void removeFromExcitementFaction(RE::Actor* actor);
@@ -48,8 +45,6 @@ namespace Trait {
         inline static std::unordered_map<std::string, std::vector<FacialExpression*>*> expressionsByActionTargets;
         inline static std::unordered_map<std::string, std::vector<FacialExpression*>*> expressionsByEvents;
         inline static std::unordered_map<std::string, std::vector<FacialExpression*>*> expressionsBySets;
-
-        inline static std::unordered_map<uint32_t, VoiceSet> voiceSets;
 
         inline static std::unordered_map <std::string, std::unordered_map<std::string, EquipObject*>> equipObjects;
 

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Sound/ActionSound/SoundType.h"
+
 namespace Graph {
 	struct ActionActor{
 	public:
@@ -25,6 +27,7 @@ namespace Graph {
 		ActionActor actor;
 		ActionActor target;
 		ActionActor performer;
+        std::vector<Sound::SoundType*> sounds;
         std::vector<std::string> tags;
 
 		bool hasTag(std::string tag);

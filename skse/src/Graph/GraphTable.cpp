@@ -213,7 +213,7 @@ namespace Graph {
     };
 
     void GraphTable::SetupActions(){
-        Util::JsonFileLoader::LoadFilesInFolder(ACTION_FILE_PATH, [&](std::string, std::string filename, json json) {
+        Util::JsonFileLoader::LoadFilesInFolder(ACTION_FILE_PATH, [&](std::string path, std::string filename, json json) {
             Graph::ActionAttributes attr;
             if(json.contains("actor")){
                 attr.actor = parseActionActor(json["actor"]);
@@ -224,6 +224,16 @@ namespace Graph {
             if(json.contains("performer")){
                 attr.performer = parseActionActor(json["performer"]);
             }
+
+            if (json.contains("sounds")) {
+                for (auto& sound : json["sounds"]) {
+                    Sound::SoundType* type = Sound::SoundType::fromJson(path, sound);
+                    if (type) {
+                        attr.sounds.push_back(type);
+                    }
+                }
+            }
+
             if (json.contains("tags")) {
                 for (auto& tag : json["tags"]) {
                     std::string tagStr = tag.get<std::string>();

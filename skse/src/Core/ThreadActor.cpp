@@ -7,6 +7,7 @@
 #include "GameAPI/GameCamera.h"
 #include "Graph/GraphTable.h"
 #include "MCM/MCMTable.h"
+#include "Sound/SoundTable.h"
 #include "Trait/TraitTable.h"
 #include "Util/ActorUtil.h"
 #include "Util/CameraUtil.h"
@@ -19,7 +20,7 @@
 #include "Util/VectorUtil.h"
 
 namespace OStim {
-    ThreadActor::ThreadActor(Thread* thread, int index, RE::Actor* actor) : thread{thread}, actor{actor} {
+    ThreadActor::ThreadActor(Thread* thread, int index, RE::Actor* actor) : thread{thread}, index{index}, actor{actor} {
         scaleBefore = actor->GetReferenceRuntimeData().refScale / 100.0f;
         isFemale = actor->GetActorBase()->GetSex() == RE::SEX::kFemale;
         hasSchlong = Compatibility::CompatibilityTable::hasSchlong(actor);
@@ -30,7 +31,7 @@ namespace OStim {
         baseExcitementMultiplier = isFemale && (!hasSchlong || !MCM::MCMTable::futaUseMaleExcitement()) ? MCM::MCMTable::getFemaleSexExcitementMult() : MCM::MCMTable::getMaleSexExcitementMult();
         loopExcitementDecay = MCM::MCMTable::getExcitementDecayRate() * Constants::LOOP_TIME_SECONDS;
 
-        voiceSet = Trait::TraitTable::getVoiceSet(actor);
+        voiceSet = Sound::SoundTable::getVoiceSet(actor);
     }
 
     void ThreadActor::initContinue() {
@@ -102,12 +103,7 @@ namespace OStim {
 
         if (!muted && voiceSet && voiceSet->climax) {
             playEventExpression(voiceSet->climaxExpression);
-
-            RE::BSSoundHandle handle;
-            RE::BSAudioManager::GetSingleton()->BuildSoundDataFromDescriptor(handle, voiceSet->climax, 0x10);
-            handle.SetObjectToFollow(actor->Get3D());
-            handle.SetVolume(MCM::MCMTable::getMoanVolume());
-            handle.Play();
+            voiceSet->climax.play(actor, MCM::MCMTable::getMoanVolume());
         }
 
         if (thread->isPlayerThread) {
@@ -984,12 +980,7 @@ namespace OStim {
 
     void ThreadActor::moan() {
         playEventExpression(voiceSet->moanExpression);
-
-        RE::BSSoundHandle handle;
-        RE::BSAudioManager::GetSingleton()->BuildSoundDataFromDescriptor(handle, voiceSet->moan, 0x10);
-        handle.SetObjectToFollow(actor->Get3D());
-        handle.SetVolume(MCM::MCMTable::getMoanVolume());
-        handle.Play();
+        voiceSet->moan.play(actor, MCM::MCMTable::getMoanVolume());
     }
 
 

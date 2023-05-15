@@ -70,6 +70,8 @@ namespace OStim {
         float freeCamSpeedBefore = 0;
         float worldFOVbefore = 0;
 
+        std::vector<Sound::SoundPlayer*> soundPlayers;
+
         void addActorInner(int index, RE::Actor* actor);
         void addActorSink(RE::Actor* a_actor);
         void removeActorSink(RE::Actor* a_actor);

@@ -84,6 +84,10 @@ namespace OStim {
             removeActorSink(actorIt.second.getActor());
         }
 
+        for (auto& soundPlayer : soundPlayers) {
+            delete soundPlayer;
+        }
+
         if (isPlayerThread) {
             UI::UIState::GetSingleton()->hideAllMenues();
         }
@@ -123,6 +127,8 @@ namespace OStim {
     }
 
     void Thread::ChangeNode(Graph::Node* a_node) {
+        logger::info("thread {} changed to node {}", m_threadId, a_node->scene_id);
+
         std::unique_lock<std::shared_mutex> writeLock;
         m_currentNode = a_node;
 
@@ -200,12 +206,31 @@ namespace OStim {
 
         alignActors();
 
+        // sounds
+        for (Sound::SoundPlayer*& soundPlayer : soundPlayers) {
+            delete soundPlayer;
+        }
+        soundPlayers.clear();
+
+        for (Graph::Action& action : m_currentNode->actions) {
+            for (Sound::SoundType*& soundType : action.attributes->sounds) {
+                ThreadActor* actor = GetActor(action.actor);
+                ThreadActor* target = GetActor(action.target);
+                if (actor && target) {
+                    Sound::SoundPlayer* soundPlayer = soundType->create(actor, target);
+                    if (soundPlayer) {
+                        soundPlayers.push_back(soundPlayer);
+                    }
+                }
+            }
+        }
+
         auto messaging = SKSE::GetMessagingInterface();
 
         Messaging::AnimationChangedMessage msg;
         msg.newAnimation = a_node;
         logger::info("Sending animation changed event");
-        Messaging::MessagingRegistry::GetSingleton()->SendMessageToListeners(msg);     
+        Messaging::MessagingRegistry::GetSingleton()->SendMessageToListeners(msg);
     }
 
     Graph::Node* Thread::getCurrentNode() {
@@ -289,6 +314,10 @@ namespace OStim {
 
         for (auto& actorIt : m_actors) {
             actorIt.second.loop();
+        }
+
+        for (Sound::SoundPlayer*& player : soundPlayers) {
+            player->loop();
         }
     }
 

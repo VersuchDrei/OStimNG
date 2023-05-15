@@ -58,7 +58,7 @@ namespace PapyrusScenes {
                 return actor;
             }
         }
-        logger::error("Actor {} not found in scene", a_actor->GetDisplayFullName(), a_threadId);
+        logger::error("Actor {} not found in thread {}", a_actor->GetDisplayFullName(), a_threadId);
         return nullptr;
     }    
 

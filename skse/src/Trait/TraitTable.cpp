@@ -13,7 +13,6 @@
 namespace Trait {
     const char* EXPRESSION_FILE_PATH{"Data/SKSE/Plugins/OStim/facial expressions"};
     const char* EQUIP_OBJECT_FILE_PATH{"Data/SKSE/Plugins/OStim/equip objects"};
-    const char* VOICE_SET_FILE_PATH{"Data/SKSE/Plugins/OStim/voice sets"};
 
     void TraitTable::setup() {
         openMouthPhonemes.insert({0, {.type = 0, .baseValue = 100}});
@@ -74,59 +73,6 @@ namespace Trait {
         noFacialExpressionsFaction = handler->LookupForm<RE::TESFaction>(0xD92, "OStim.esp");
 
         // this needs to go in setupForms because it requires the kDataLoaded event
-        // voice sets
-        Util::JsonFileLoader::LoadFilesInFolder(VOICE_SET_FILE_PATH, [&](std::string path, std::string filename, json json) {
-            if (!json.contains("target")) {
-                logger::warn("file {} does not have field 'target' defined", path);
-                return;
-            }
-
-            auto& target = json["target"];
-            if (!target.contains("mod")) {
-                logger::warn("file {} does not have field 'target.mod' defined", path);
-                return;
-            }
-            if (!target.contains("formid")) {
-                logger::warn("file {} does not have field 'target.formid' defined", path);
-                return;
-            }
-
-            RE::TESDataHandler* dataHandler = RE::TESDataHandler::GetSingleton();
-
-            std::string stringID = target["formid"];
-            uint32_t formID = std::stoi(stringID, nullptr, 16);
-            std::string file = target["mod"];
-            if (const RE::TESFile* mod = dataHandler->LookupLoadedModByName(file)) {
-                formID += mod->GetCompileIndex() << 24;
-            } else if (const RE::TESFile* mod = dataHandler->LookupLoadedLightModByName(file)) {
-                formID += mod->GetPartialIndex() << 12;
-            }
-
-            VoiceSet voiceSet;
-
-            if (json.contains("moan")) {
-                voiceSet.moan = JsonUtil::getForm<RE::BGSSoundDescriptorForm>(path, json["moan"]);
-            }
-            if (json.contains("moanMuffled")) {
-                voiceSet.moanMuffled = JsonUtil::getForm<RE::BGSSoundDescriptorForm>(path, json["moanMuffled"]);
-            }
-            if (json.contains("moanExpression")) {
-                voiceSet.moanExpression = json["moanExpression"];
-            }
-
-            if (json.contains("climax")) {
-                voiceSet.climax = JsonUtil::getForm<RE::BGSSoundDescriptorForm>(path, json["climax"]);
-            }
-            if (json.contains("climaxMuffled")) {
-                voiceSet.climaxMuffled = JsonUtil::getForm<RE::BGSSoundDescriptorForm>(path, json["climaxMuffled"]);
-            }
-            if (json.contains("climaxExpression")) {
-                voiceSet.climaxExpression = json["climaxExpression"];
-            }
-
-            voiceSets[formID] = voiceSet;
-        });
-
         // equip objects
         Util::JsonFileLoader::LoadFilesInFolder(EQUIP_OBJECT_FILE_PATH, [&](std::string path, std::string filename, json json) {
             std::string id = filename;
@@ -283,35 +229,6 @@ namespace Trait {
         if (iter != table.end()) {
             return iter->second;
         }
-        return nullptr;
-    }
-
-
-    VoiceSet* TraitTable::getVoiceSet(RE::Actor* actor) {
-        auto iter = voiceSets.find(actor->GetActorBase()->formID);
-        if (iter != voiceSets.end()) {
-            return &iter->second;
-        }
-
-        if (actor->GetActorBase()->voiceType) {
-            iter = voiceSets.find(actor->GetActorBase()->voiceType->formID);
-            if (iter != voiceSets.end()) {
-                return &iter->second;
-            }
-        }
-
-        iter = voiceSets.find(actor->GetActorBase()->race->formID);
-        if (iter != voiceSets.end()) {
-            return &iter->second;
-        }
-
-        if (actor->HasKeyword(Util::LookupTable::ActorTypeNPC)) {
-            iter = voiceSets.find(actor->GetActorBase()->GetSex() == RE::SEX::kFemale ? 1 : 0);
-            if (iter != voiceSets.end()) {
-                return &iter->second;
-            }
-        }
-        
         return nullptr;
     }
 

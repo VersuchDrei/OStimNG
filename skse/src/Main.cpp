@@ -11,6 +11,7 @@
 #include "Papyrus/Papyrus.h"
 #include "SKEE.h"
 #include "Serial/Manager.h"
+#include "Sound/SoundTable.h"
 #include "Trait/TraitTable.h"
 #include "UI/Align/AlignMenu.h"
 #include "Util/CompatibilityTable.h"
@@ -69,6 +70,13 @@ namespace {
                 RE::BSInputDeviceManager::GetSingleton()->AddEventSink(Events::EventListener::GetSingleton());
             } break;
             case SKSE::MessagingInterface::kDataLoaded: {
+                // needs to be in here because a lot of these need to access forms
+                Sound::SoundTable::setup();
+                Graph::GraphTable::SetupActions();
+                Trait::TraitTable::setup();
+                Alignment::Alignments::LoadAlignments();
+                Papyrus::Build();
+
                 Compatibility::CompatibilityTable::setupForms();
                 Util::LookupTable::setupForms();
                 Trait::TraitTable::setupForms();
@@ -124,10 +132,6 @@ SKSEPluginLoad(const LoadInterface* skse) {
 
     Patch::Install();
     Papyrus::Bind();
-    Graph::GraphTable::SetupActions();
-    Trait::TraitTable::setup();
-    Alignment::Alignments::LoadAlignments();
-    Papyrus::Build();
 
     const auto serial = SKSE::GetSerializationInterface();
     serial->SetUniqueID(_byteswap_ulong('OST'));
