@@ -58,8 +58,13 @@ set(sources
 	src/Papyrus/Papyrus.cpp
 	src/Papyrus/Script.h
 	src/Serial/Manager.cpp
-	src/Sound/ActionSound/NodeDistanceSoundType.cpp
-	src/Sound/ActionSound/SingleNodeDistanceSoundPlayer.cpp
+	src/Sound/ActionSound/BoneDistanceSoundPlayer.cpp
+	src/Sound/ActionSound/BoneDistanceSoundType.cpp
+	src/Sound/ActionSound/LoopSoundPlayer.cpp
+	src/Sound/ActionSound/LoopSoundType.cpp
+	src/Sound/ActionSound/SingleBoneDistanceSoundPlayer.cpp
+	src/Sound/ActionSound/MultiBoneDistanceSoundPlayer.cpp
+	src/Sound/ActionSound/SoundPlayer.cpp
 	src/Sound/ActionSound/SoundType.cpp
 	src/Sound/SoundTable.cpp
     src/Trait/Condition.cpp

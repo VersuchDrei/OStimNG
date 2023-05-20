@@ -18,6 +18,17 @@
 		"maxStimulation":50,
 		"moan":true
 	},
+	"sounds":[
+		{
+			"type":"loop",
+			"sound":{
+				"mod":"OStim.esp",
+				"formid":"0xE15"
+			},
+			"muteWithActor": true,
+			"delay":1000
+		}	
+	],
 	"tags":[
 		"seductive",
 		"sensual"

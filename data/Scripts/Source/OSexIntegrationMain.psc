@@ -2990,10 +2990,6 @@ Function Console(String In) Global
 	MiscUtil.PrintConsole("OStim: " + In)
 EndFunction
 
-Function SetGameSpeed(String In)
-	ConsoleUtil.ExecuteCommand("sgtm " + In)
-EndFunction
-
 Bool Function ChanceRoll(Int Chance) ; input 60: 60% of returning true ;DEPRECIATED - moving to outils in future ver
 
 
@@ -3409,18 +3405,9 @@ Function Startup()
 		Return
 	EndIf
 
-	If (ODatabase.GetLengthOArray(ODatabase.GetDatabaseOArray()) < 1)
-		Debug.Notification("OStim install failed.")
-		Return
-	Else
+	If (ODatabase.GetLengthOArray(ODatabase.GetDatabaseOArray()) >= 1)
 		ODatabase.Unload()
 	EndIf
-
-	If (SKSE.GetPluginVersion("ConsoleUtilSSE") == -1)
-		Debug.Notification("OStim: ConsoleUtil is not installed, a few features may not work")
-	EndIf
-
-	
 
 	If (OSA.StimInstalledProper())
 		Console("OSA is installed correctly")
@@ -3922,4 +3909,10 @@ Int Function GetSpankCount() ;
 EndFunction
 
 Function SetSpankCount(Int Count)
+EndFunction
+
+Function SetGameSpeed(String In)
+	; the body was left in in case some addons call this
+	; but we will not list ConsoleUtil as a requirement
+	ConsoleUtil.ExecuteCommand("sgtm " + In)
 EndFunction

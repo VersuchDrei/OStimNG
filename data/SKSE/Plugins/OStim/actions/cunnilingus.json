@@ -35,6 +35,17 @@
 			"stamina":0.75
 		}
 	},
+	"sounds":[
+		{
+			"type":"loop",
+			"sound":{
+				"mod":"OStim.esp",
+				"formid":"0xE15"
+			},
+			"muteWithActor": true,
+			"delay":1000
+		}	
+	],
 	"tags":[
 		"oral",
 		"sexual"

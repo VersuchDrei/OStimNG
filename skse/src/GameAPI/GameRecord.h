@@ -1,8 +1,11 @@
 #pragma once
 
+#include "GamePointer.h"
+
 namespace GameAPI {
     template<class T>
     struct GameRecord {
+    public:
         T* form = nullptr;
 
         inline operator bool() const { return form; }
@@ -30,6 +33,10 @@ namespace GameAPI {
 
         inline void loadFile(std::string mod, uint32_t formID) {
             form = RE::TESDataHandler::GetSingleton()->LookupForm<T>(formID, mod);
+        }
+
+        inline uint32_t getFormID() {
+            return form->formID;
         }
     };
 }

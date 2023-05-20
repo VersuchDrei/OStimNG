@@ -1,20 +1,8 @@
 #include "GameActor.h"
 
 namespace GameAPI {
-    GameActor::GameActor(RE::Actor* actor) : actor{actor} {}
-    
-
-    uint32_t GameActor::getFormID() {
-        return actor->GetFormID();
-    }
-
-    uint32_t GameActor::getBaseFormID() {
-        return actor->GetActorBase()->formID;
-    }
-
-
     bool GameActor::isSex(GameSex sex) {
-        RE::SEX actorSex = actor->GetActorBase()->GetSex();
+        RE::SEX actorSex = form->GetActorBase()->GetSex();
         switch (sex) {
             case MALE:
                 return actorSex == RE::SEX::kMale;
@@ -27,34 +15,24 @@ namespace GameAPI {
     }
 
     bool GameActor::isRace(GameRace race) {
-        return actor->GetActorBase()->GetRace() == race.race;
+        return form->GetActorBase()->GetRace() == race.race;
     }
 
 
     float GameActor::getActorValue(GameActorValue actorValue) {
-        return actor->AsActorValueOwner()->GetBaseActorValue(actorValue.actorValue);
+        return form->AsActorValueOwner()->GetBaseActorValue(actorValue.actorValue);
     }
-
-
-    bool GameActor::hasKeyword(GameKeyword keyword) {
-        return actor->HasKeyword(keyword.keyword);
-    }
-
-    bool GameActor::hasKeyword(std::string keyword) {
-        return actor->HasKeywordString(keyword);
-    }
-
 
     bool GameActor::isInFaction(GameFaction faction) {
-        return actor->IsInFaction(faction.faction);
+        return form->IsInFaction(faction.faction);
     }
 
     bool GameActor::hasCrimeFaction(GameFaction faction) {
-        return actor->GetCrimeFaction() == faction.faction;
+        return form->GetCrimeFaction() == faction.faction;
     }
 
     int GameActor::getFactionRank(GameFaction faction) {
-        for (RE::FACTION_RANK rank : actor->GetActorBase()->factions) {
+        for (RE::FACTION_RANK rank : form->GetActorBase()->factions) {
             if (rank.faction == faction.faction) {
                 return rank.rank;
             }
@@ -64,6 +42,6 @@ namespace GameAPI {
     }
 
     int GameActor::getRelationshipRank(GameActor other) {
-        return 4 - RE::BGSRelationship::GetRelationship(actor->GetActorBase(), other.actor->GetActorBase())->level.underlying();
+        return 4 - RE::BGSRelationship::GetRelationship(form->GetActorBase(), other.form->GetActorBase())->level.underlying();
     }
 }

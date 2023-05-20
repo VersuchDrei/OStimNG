@@ -51,6 +51,25 @@ form fields:
 sound fields:
 "type" (string): the type of the sound, depending on type different fields will be required (see sound types)
 "sound" (object): the sound descriptor of the climax sound (see form fields)
+"muteWithActor" (bool): when set the sound will not play while the actor is muted
+"muteWithTarget" (bool): when set the sound will not play while the target is muted
+
+sound types:
+
+"bonedistance":
+	the sound will be played whenever the given bones are closest to each other
+"actorBone" (string/list<string>): the bone / list of bones of the actor to check the distance against
+"targetBone" (string/list<string>): the bone / list of bones of the target to check the distance against
+"inverse" (bool): if true the sound will be played when the bones are furthest apart rather than closest together
+"minInterval" (int): if set the amount of miliseconds that two sound triggers will need to be apart in order for the sound to be played
+	this can be used to not play the sound at fast speeds
+"maxInterval" (int): if set the amount of miliseconds that the time between two triggers cannot exceed in order for the sound to be played
+	this can be used to not play the sound at slow speeds
+
+"loop":
+	the sound will be played on a loop
+"delay" (int): the time in milliseconds before a new sound is played
+	this timer starts after the previous sound is done playing, not when it starts playing
 
 
 F.A.Q.

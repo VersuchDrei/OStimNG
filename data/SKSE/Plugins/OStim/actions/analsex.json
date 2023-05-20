@@ -41,6 +41,18 @@
 			"stamina":1.0
 		}
 	},
+	"sounds":[
+		{
+			"type":"nodedistance",
+			"sound":{
+				"mod":"OStim.esp",
+				"formid":"0xE14"
+			},
+			"actorBone":"NPC Genitals01 [Gen01]",
+			"targetBone":"NPC Anus Deep1",
+			"maxInterval":700
+		}	
+	],
 	"tags":[
 		"sexual"
 	]

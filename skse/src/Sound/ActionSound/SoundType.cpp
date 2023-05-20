@@ -1,6 +1,7 @@
 #include "SoundType.h"
 
-#include "NodeDistanceSoundType.h"
+#include "BoneDistanceSoundType.h"
+#include "LoopSoundType.h"
 
 namespace Sound {
     SoundType* SoundType::fromJson(std::string path, json json) {
@@ -20,8 +21,18 @@ namespace Sound {
             return nullptr;
         }
 
+        bool muteWithActor = false;
+        if (json.contains("muteWithActor")) {
+            muteWithActor = json["muteWithActor"];
+        }
+
+        bool muteWithTarget = false;
+        if (json.contains("muteWithTarget")) {
+            muteWithTarget = json["muteWithTarget"];
+        }
+
         std::string type = json["type"];
-        if (type == "nodedistance") {
+        if (type == "bonedistance") {
             if (!json.contains("actorBone")) {
                 logger::warn("file {} does not have field 'sound.actorBone' defined", path);
                 return nullptr;
@@ -52,7 +63,30 @@ namespace Sound {
                 targetBones.push_back(tBones);
             }
 
-            return new NodeDistanceSoundType(sound, actorBones, targetBones);
+            bool inverse = false;
+            if (json.contains("inverse")) {
+                inverse = json["inverse"];
+            }
+
+            // default of 150 to prevent sound double playing from weird animation behavior
+            int minInterval = 150;
+            if (json.contains("minInterval")) {
+                minInterval = json["minInterval"];
+            }
+
+            int maxInterval = 0;
+            if (json.contains("maxInterval")) {
+                maxInterval = json["maxInterval"];
+            }
+
+            return new BoneDistanceSoundType(sound, muteWithActor, muteWithTarget, inverse, minInterval, maxInterval, actorBones, targetBones);
+        } else if (type == "loop") {
+            int delay = 0;
+            if (json.contains("delay")) {
+                delay = json["delay"];
+            }
+
+            return new LoopSoundType(sound, muteWithActor, muteWithTarget, delay);
         }
 
         logger::warn("file {} has unknown sound type {}", path, type);

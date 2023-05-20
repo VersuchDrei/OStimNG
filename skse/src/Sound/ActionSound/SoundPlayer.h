@@ -3,22 +3,26 @@
 #include "GameAPI/GameSound.h"
 #include "MCM/MCMTable.h"
 
+// this is required because C++ can't do circular references in header files
+namespace OStim {
+    class ThreadActor;
+}
+
 namespace Sound {
     class SoundPlayer {
     public:
-        inline SoundPlayer(GameAPI::GameSound sound, GameAPI::GameActor actor, GameAPI::GameActor target) : sound{sound}, actor{actor}, target{target} {};
+        inline SoundPlayer(GameAPI::GameSound sound, bool muteWithActor, bool muteWithTarget, OStim::ThreadActor* actor, OStim::ThreadActor* target)
+            : sound{sound}, muteWithActor{muteWithActor}, muteWithTarget{muteWithTarget}, actor{actor}, target{target} {};
 
         virtual void loop() = 0;
 
-        inline void play() {
-            sound.play(actor, MCM::MCMTable::getSoundVolume());
-        }
-
-    private:
-        GameAPI::GameSound sound;
-
     protected:
-        GameAPI::GameActor actor;
-        GameAPI::GameActor target;
+        GameAPI::GameSound sound;
+        bool muteWithActor;
+        bool muteWithTarget;
+        OStim::ThreadActor* actor;
+        OStim::ThreadActor* target;
+
+        void play();
     };
 }

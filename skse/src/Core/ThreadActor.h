@@ -65,6 +65,9 @@ namespace OStim {
 
         void mute();
         void unmute();
+        inline bool isMuted() {
+            return muted;
+        }
 
         inline bool setObjectVariant(std::string type, std::string variant) {
             return setObjectVariant(type, variant, 0);
