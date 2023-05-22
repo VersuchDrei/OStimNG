@@ -31,12 +31,8 @@ namespace GameAPI {
             }
         }
 
-        inline void loadFile(std::string mod, uint32_t formID) {
-            form = RE::TESDataHandler::GetSingleton()->LookupForm<T>(formID, mod);
-        }
+        inline void loadFile(std::string mod, uint32_t formID) {form = RE::TESDataHandler::GetSingleton()->LookupForm<T>(formID, mod); }
 
-        inline uint32_t getFormID() {
-            return form->formID;
-        }
+        inline uint32_t getFormID() const {return form->formID; }
     };
 }

@@ -14,4 +14,8 @@ namespace GameAPI {
         inline bool operator==(const GameActorValue other) { return actorValue == other.actorValue; }
         inline bool operator!=(const GameActorValue other) { return actorValue != other.actorValue; }
     };
+
+    namespace GameActorValues {
+        inline static GameActorValue STAMINA = GameActorValue(RE::ActorValue::kStamina);
+    }
 }

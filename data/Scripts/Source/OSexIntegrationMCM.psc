@@ -4,7 +4,6 @@ ScriptName OsexIntegrationMCM Extends SKI_ConfigBase
 Int SetActorSpeedControl
 Int SetEndAfterActorHit
 int SetUseIntroScenes
-int SetResetPosition
 
 int[] SlotSets
 int UndressingSlotMask
@@ -231,7 +230,6 @@ Event OnPageReset(String Page)
 		SetUseFades = AddToggleOption("$ostim_use_fades", Main.UseFades)
 		SetEndAfterActorHit = AddToggleOption("$ostim_end_on_hit", Main.EndAfterActorHit)
 		SetUseIntroScenes = AddToggleOption("$ostim_use_intro_scenes", Main.UseIntroScenes)
-		SetResetPosition = AddToggleOption("$ostim_reset_position", Main.ResetPosAfterSceneEnd) 		
 		AddEmptyOption()
 
 		AddColoredHeader("$ostim_header_system")
@@ -445,9 +443,6 @@ Event OnOptionSelect(Int Option)
 	ElseIf (Option == SetActorSpeedControl)
 		Main.EnableActorSpeedControl = !Main.EnableActorSpeedControl
 		SetToggleOptionValue(Option, Main.EnableActorSpeedControl)
-	ElseIf (Option == SetResetPosition)
-		Main.ResetPosAfterSceneEnd = !Main.ResetPosAfterSceneEnd
-		SetToggleOptionValue(Option, Main.ResetPosAfterSceneEnd)
 	ElseIf (Option == SetTutorialMessages)
 		Main.ShowTutorials = !Main.ShowTutorials
 		SetToggleOptionValue(Option, Main.ShowTutorials)
@@ -565,8 +560,6 @@ Event OnOptionHighlight(Int Option)
 		SetInfoText("$ostim_tooltip_custom_timescale")
 	ElseIf (Option == SetActorSpeedControl)
 		SetInfoText("$ostim_tooltip_speed_control")
-	ElseIf (Option == SetResetPosition)
-		SetInfoText("$ostim_tooltip_reset_position")
 	ElseIf (Option == SetUseAutoFades)
 		SetInfoText("$ostim_tooltip_auto_fades")
 	ElseIf (Option == SetAIChangeChance)
@@ -767,7 +760,6 @@ Function ExportSettings()
 
 	; Sex settings export.
 	JMap.SetInt(OstimSettingsFile, "SetActorSpeedControl", Main.EnableActorSpeedControl as Int)
-	JMap.SetInt(OstimSettingsFile, "SetResetPosition", Main.ResetPosAfterSceneEnd as Int)
 	JMap.SetInt(OstimSettingsFile, "SetEndAfterActorHit", Main.EndAfterActorHit as Int)
 
 	; Light settings export.
@@ -908,7 +900,6 @@ Function ImportSettings(bool default = false)
 	
 	; Sex settings import.
 	Main.EnableActorSpeedControl = JMap.GetInt(OstimSettingsFile, "SetActorSpeedControl")
-	Main.ResetPosAfterSceneEnd = JMap.GetInt(OstimSettingsFile, "SetResetPosition", 1)
 	Main.EndAfterActorHit = JMap.GetInt(OstimSettingsFile, "SetEndAfterActorHit")
 
 	; Light settings export.
@@ -1002,6 +993,31 @@ State OID_BootstrapMCM
 	Event OnSelectST()
 		SetupPages()
 		ShowMessage("$ostim_message_bootstrap_mcm", false)
+	EndEvent
+EndState
+
+
+;  ██████╗ ███████╗███╗   ██╗███████╗██████╗  █████╗ ██╗     
+; ██╔════╝ ██╔════╝████╗  ██║██╔════╝██╔══██╗██╔══██╗██║     
+; ██║  ███╗█████╗  ██╔██╗ ██║█████╗  ██████╔╝███████║██║     
+; ██║   ██║██╔══╝  ██║╚██╗██║██╔══╝  ██╔══██╗██╔══██║██║     
+; ╚██████╔╝███████╗██║ ╚████║███████╗██║  ██║██║  ██║███████╗
+;  ╚═════╝ ╚══════╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝
+
+Function DrawGeneralPage()
+	SetCursorFillMode(LEFT_TO_RIGHT)
+	SetCursorPosition(0)
+	AddToggleOptionST("OID_ResetPosition", "$ostim_reset_position", Main.ResetPosAfterSceneEnd)
+EndFunction
+
+State OID_ResetPosition
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_reset_position")
+	EndEvent
+
+	Event OnSelectST()
+		Main.ResetPosAfterSceneEnd = !Main.ResetPosAfterSceneEnd
+		SetToggleOptionValueST(Main.ResetPosAfterSceneEnd)
 	EndEvent
 EndState
 
@@ -2096,7 +2112,7 @@ State OID_BedOffset
 	EndEvent
 
 	Event OnSliderAcceptST(float Value)
-		Main.BedRealignment = Value
+		Main.BedOffset = Value
 		SetSliderOptionValueST(Value, "{2}")
 	EndEvent
 EndState

@@ -1,18 +1,11 @@
 #pragma once
 
+#include "GameRecord.h"
+
 namespace GameAPI {
-    struct GameRace {
+    struct GameRace : public GameRecord<RE::TESRace> {
     public:
-        inline static GameRace fromFile(std::string mod, uint32_t formID) {
-            return RE::TESDataHandler::GetSingleton()->LookupForm<RE::TESRace>(formID, mod);
-        }
-
-        RE::TESRace* race;
-        
-        inline GameRace(RE::TESRace* race) : race{race} {}
-
-        inline operator bool() const { return race; }
-        inline bool operator==(const GameRace other) { return race == other.race; }
-        inline bool operator!=(const GameRace other) { return race != other.race; }
+        inline GameRace() {}
+        inline GameRace(RE::TESRace* race) { form = race; }
     };
 }

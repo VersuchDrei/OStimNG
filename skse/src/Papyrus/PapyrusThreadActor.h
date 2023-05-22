@@ -56,6 +56,14 @@ namespace PapyrusThreadActor {
         }
     }
 
+    int GetTimesClimaxed(RE::StaticFunctionTag*, RE::Actor* actor) {
+        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        if (threadActor) {
+            return threadActor->getTimexClimaxed();
+        }
+        return 0;
+    }
+
 
     float PlayExpression(RE::StaticFunctionTag*, RE::Actor* actor, std::string expression) {
         StringUtil::toLower(&expression);
@@ -102,6 +110,14 @@ namespace PapyrusThreadActor {
         if (threadActor) {
             threadActor->mute();
         }
+    }
+
+    bool IsMuted(RE::StaticFunctionTag*, RE::Actor* actor) {
+        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        if (threadActor) {
+            return threadActor->isMuted();
+        }
+        return false;
     }
 
 
@@ -228,6 +244,7 @@ namespace PapyrusThreadActor {
         BIND(SetExcitement);
         BIND(ModifyExcitement);
         BIND(Climax);
+        BIND(GetTimesClimaxed);
 
         BIND(PlayExpression);
         BIND(ClearExpression);
@@ -235,6 +252,7 @@ namespace PapyrusThreadActor {
 
         BIND(Mute);
         BIND(Unmute);
+        BIND(IsMuted);
 
         BIND(Undress);
         BIND(Redress);

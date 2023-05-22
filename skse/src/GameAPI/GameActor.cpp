@@ -1,7 +1,18 @@
 #include "GameActor.h"
 
 namespace GameAPI {
-    bool GameActor::isSex(GameSex sex) {
+    void GameActor::update3D() const {
+        const auto skyrimVM = RE::SkyrimVM::GetSingleton();
+        auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+        if (vm) {
+            RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
+            auto args = RE::MakeFunctionArguments();
+            auto handle = skyrimVM->handlePolicy.GetHandleForObject(static_cast<RE::VMTypeID>(form->FORMTYPE), form);
+            vm->DispatchMethodCall2(handle, "Actor", "QueueNiNodeUpdate", args, callback);
+        }
+    }
+
+    bool GameActor::isSex(GameSex sex) const {
         RE::SEX actorSex = form->GetActorBase()->GetSex();
         switch (sex) {
             case MALE:
@@ -14,26 +25,17 @@ namespace GameAPI {
         return false;
     }
 
-    bool GameActor::isRace(GameRace race) {
-        return form->GetActorBase()->GetRace() == race.race;
+    void GameActor::setFactionRank(GameFaction faction, int rank) const {
+        for (auto& factionInfo : form->GetActorBase()->factions) {
+            if (factionInfo.faction == faction.form) {
+                factionInfo.rank = rank;
+            }
+        }
     }
 
-
-    float GameActor::getActorValue(GameActorValue actorValue) {
-        return form->AsActorValueOwner()->GetBaseActorValue(actorValue.actorValue);
-    }
-
-    bool GameActor::isInFaction(GameFaction faction) {
-        return form->IsInFaction(faction.faction);
-    }
-
-    bool GameActor::hasCrimeFaction(GameFaction faction) {
-        return form->GetCrimeFaction() == faction.faction;
-    }
-
-    int GameActor::getFactionRank(GameFaction faction) {
+    int GameActor::getFactionRank(GameFaction faction) const {
         for (RE::FACTION_RANK rank : form->GetActorBase()->factions) {
-            if (rank.faction == faction.faction) {
+            if (rank.faction == faction.form) {
                 return rank.rank;
             }
         }
@@ -41,7 +43,7 @@ namespace GameAPI {
         return -2;
     }
 
-    int GameActor::getRelationshipRank(GameActor other) {
+    int GameActor::getRelationshipRank(GameActor other) const {
         return 4 - RE::BGSRelationship::GetRelationship(form->GetActorBase(), other.form->GetActorBase())->level.underlying();
     }
 }

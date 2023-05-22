@@ -1,8 +1,12 @@
 #pragma once
 
+#include "GameAPI/GameTable.h"
+
 namespace GameAPI {
     class Game {
     public:
+        inline static float getTimeScale() { return GameTable::getTimescale()->value; }
+        inline static void setTimeScale(float scale) { GameTable::getTimescale()->value = scale; }
         static void setGameSpeed(float speed);
         static void shakeController(float leftStrength, float rightStrength, float duration);
 

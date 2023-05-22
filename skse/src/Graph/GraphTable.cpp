@@ -348,7 +348,7 @@ namespace Graph {
             }
 
             if (json.contains("sound")) {
-                graphEvent.sound = JsonUtil::getForm<RE::BGSSoundDescriptorForm>(path, json["sound"]);
+                graphEvent.sound.loadJson(path, json["sound"]);
             }
 
             if (json.contains("cameraShakeStrength")) {

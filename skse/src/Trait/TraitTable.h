@@ -3,6 +3,8 @@
 #include "EquipObject.h"
 #include "FacialExpression.h"
 
+#include "GameAPI/GameActor.h"
+
 namespace Trait {
     class TraitTable {
     public:
@@ -19,21 +21,15 @@ namespace Trait {
         static std::vector<FacialExpression*>* getExpressionsForEvent(std::string);
         static std::vector<FacialExpression*>* getExpressionsForSet(std::string);
 
-        static void addToExcitementFaction(RE::Actor* actor);
-        static void removeFromExcitementFaction(RE::Actor* actor);
-        static void setExcitement(RE::Actor* actor, float excitement);
-        static float getExcitement(RE::Actor* actor);
-
         static EquipObject* getRandomEquipObject(std::string type);
-        static EquipObject* getEquipObject(RE::Actor* actor, std::string type);
+        static EquipObject* getEquipObject(GameAPI::GameActor actor, std::string type);
 
         static std::vector<std::string> getEquipObjectPairs(RE::FormID formID, std::string type);
         static std::string getEquipObjectName(RE::FormID formID, std::string type);
         static void setEquipObjectID(RE::FormID formID, std::string type, std::string id);
 
-        inline static bool areFacialExpressionsBlocked(RE::Actor* actor) {
-            return actor->IsInFaction(noFacialExpressionsFaction);
-        }
+        inline static GameAPI::GameFaction getExcitementFaction() { return excitementFaction; }
+        inline static bool areFacialExpressionsBlocked(RE::Actor* actor) { return actor->IsInFaction(noFacialExpressionsFaction); }
 
     private:
         static void parseGender(nlohmann::json json, GenderExpression* genderExpression);
@@ -48,7 +44,7 @@ namespace Trait {
 
         inline static std::unordered_map <std::string, std::unordered_map<std::string, EquipObject*>> equipObjects;
 
-        inline static RE::TESFaction* excitementFaction;
+        inline static GameAPI::GameFaction excitementFaction;
         inline static RE::TESFaction* noFacialExpressionsFaction;
     };
 }

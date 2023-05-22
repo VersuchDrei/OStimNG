@@ -69,7 +69,7 @@ namespace Trait {
 
     void TraitTable::setupForms() {
         RE::TESDataHandler* handler = RE::TESDataHandler::GetSingleton();
-        excitementFaction = handler->LookupForm<RE::TESFaction>(0xD93, "OStim.esp");
+        excitementFaction.loadFile("OStim.esp", 0xD93);
         noFacialExpressionsFaction = handler->LookupForm<RE::TESFaction>(0xD92, "OStim.esp");
 
         // this needs to go in setupForms because it requires the kDataLoaded event
@@ -233,31 +233,6 @@ namespace Trait {
     }
 
 
-    void TraitTable::addToExcitementFaction(RE::Actor* actor) {
-        //actor->AddToFaction(excitementFaction, 0);
-    }
-
-    void TraitTable::removeFromExcitementFaction(RE::Actor* actor) {
-        ActorUtil::removeFromFaction(actor, excitementFaction);
-    }
-
-    void TraitTable::setExcitement(RE::Actor* actor, float excitement) {
-        for (auto& factionInfo : actor->GetActorBase()->factions) {
-            if (factionInfo.faction == excitementFaction) {
-                factionInfo.rank = (int) excitement;
-            }
-        }
-    }
-
-    float TraitTable::getExcitement(RE::Actor* actor) {
-        for (auto& factionInfo : actor->GetActorBase()->factions) {
-            if (factionInfo.faction == excitementFaction) {
-                return factionInfo.rank;
-            }
-        }
-        return 0;
-    }
-
     EquipObject* TraitTable::getRandomEquipObject(std::string type) {
         auto iter = equipObjects.find(type);
         if (iter != equipObjects.end()) {
@@ -266,14 +241,13 @@ namespace Trait {
         return nullptr;
     }
 
-    EquipObject* TraitTable::getEquipObject(RE::Actor* actor, std::string type) {
+    EquipObject* TraitTable::getEquipObject(GameAPI::GameActor actor, std::string type) {
         auto iter = equipObjects.find(type);
         if (iter == equipObjects.end()) {
             return nullptr;
         }
 
-        RE::TESNPC* base = actor->GetActorBase();
-        std::string id = Serialization::getEquipObject(base->GetFormID(), type);
+        std::string id = Serialization::getEquipObject(actor.getBaseFormID(), type);
         if (id == "random") {
             return MapUtil::randomValue(iter->second);
         } else if (id != "" && id != "default") {
@@ -283,8 +257,7 @@ namespace Trait {
             }
         }
 
-        RE::TESRace* race = base->GetRace();
-        id = Serialization::getEquipObject(race->GetFormID(), type);
+        id = Serialization::getEquipObject(actor.getRace().getFormID(), type);
         if (id == "random") {
             return MapUtil::randomValue(iter->second);
         } else if (id != "" && id != "default") {
@@ -294,7 +267,7 @@ namespace Trait {
             }
         }
 
-        id = Serialization::getEquipObject(base->GetSex() == RE::SEX::kMale ? 0x0 : 0x1, type);
+        id = Serialization::getEquipObject(actor.isSex(GameAPI::GameSex::FEMALE) ? 0x1 : 0x0, type);
         if (id != "" && id != "random") {
             auto iter2 = iter->second.find(id);
             if (iter2 != iter->second.end()) {

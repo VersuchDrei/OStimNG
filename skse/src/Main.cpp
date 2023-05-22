@@ -4,6 +4,7 @@
 #include "Events/EventListener.h"
 #include "Furniture/FurnitureTable.h"
 #include "Game/Patch.h"
+#include "GameAPI/GameTable.h"
 #include "Graph/GraphTable.h"
 #include "InterfaceSpec/IPluginInterface.h"
 #include "InterfaceSpec/PluginInterface.h"
@@ -71,6 +72,8 @@ namespace {
             } break;
             case SKSE::MessagingInterface::kDataLoaded: {
                 // needs to be in here because a lot of these need to access forms
+                GameAPI::GameTable::setup();
+
                 Sound::SoundTable::setup();
                 Graph::GraphTable::SetupActions();
                 Trait::TraitTable::setup();

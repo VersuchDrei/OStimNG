@@ -9,6 +9,25 @@ ScriptName OThread
 */;
 string Function GetScene(int ThreadID) Global Native
 
+;/* GetActors
+* * returns the actors of the thread
+* *
+* * @param: ThreadID, the id of the thread
+* *
+* * @return: an array of actors
+*/;
+Actor[] Function GetActors(int ThreadID) Global Native
+
+;/* GetActor
+* * returns the actor at the given index
+* *
+* * @param: ThreadID, the id of the thread
+* * @index: the index of the actor
+* *
+* * @returns: the actor
+*/;
+Actor Function GetActor(int ThreadID, int Index) Global Native
+
 ;/* GetActorPosition
 * * returns the index of the actor in the thread
 * *

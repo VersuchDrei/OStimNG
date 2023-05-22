@@ -62,26 +62,26 @@ namespace Sound {
         });
     }
 
-    VoiceSet* SoundTable::getVoiceSet(RE::Actor* actor) {
-        auto iter = voiceSets.find(actor->GetActorBase()->formID);
+    VoiceSet* SoundTable::getVoiceSet(GameAPI::GameActor actor) {
+        auto iter = voiceSets.find(actor.getBaseFormID());
         if (iter != voiceSets.end()) {
             return &iter->second;
         }
 
-        if (actor->GetActorBase()->voiceType) {
-            iter = voiceSets.find(actor->GetActorBase()->voiceType->formID);
+        if (actor.form->GetActorBase()->voiceType) {
+            iter = voiceSets.find(actor.getVoice().getFormID());
             if (iter != voiceSets.end()) {
                 return &iter->second;
             }
         }
 
-        iter = voiceSets.find(actor->GetActorBase()->race->formID);
+        iter = voiceSets.find(actor.getRace().getFormID());
         if (iter != voiceSets.end()) {
             return &iter->second;
         }
 
-        if (actor->HasKeyword(Util::LookupTable::ActorTypeNPC)) {
-            iter = voiceSets.find(actor->GetActorBase()->GetSex() == RE::SEX::kFemale ? 1 : 0);
+        if (actor.hasKeyword(Util::LookupTable::ActorTypeNPC)) {
+            iter = voiceSets.find(actor.isSex(GameAPI::GameSex::FEMALE) ? 1 : 0);
             if (iter != voiceSets.end()) {
                 return &iter->second;
             }

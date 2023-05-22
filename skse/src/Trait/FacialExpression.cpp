@@ -7,8 +7,8 @@ namespace Trait {
         return isFemale ? &female : &male;
     }
 
-    float FacialExpression::getDuration(RE::Actor* actor) {
-        if (actor->GetActorBase()->GetSex() == RE::SEX::kFemale) {
+    float FacialExpression::getDuration(GameAPI::GameActor actor) {
+        if (actor.isSex(GameAPI::GameSex::FEMALE)) {
             return female.duration;
         } else {
             return male.duration;

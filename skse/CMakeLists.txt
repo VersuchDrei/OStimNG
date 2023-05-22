@@ -47,6 +47,7 @@ set(sources
     src/GameAPI/GameCamera.cpp
     src/GameAPI/GameSex.cpp
     src/GameAPI/GameSound.cpp
+    src/GameAPI/GameTable.cpp
     src/Graph/Action.cpp
     src/Graph/GraphTable.cpp
     src/Graph/Node.cpp

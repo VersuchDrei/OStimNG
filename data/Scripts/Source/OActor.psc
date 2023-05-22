@@ -49,6 +49,15 @@ Function ModifyExcitement(Actor Act, float Excitement, bool RespectMultiplier = 
 */;
 Function Climax(Actor Act, bool ClimaxAnimation = true) Global Native
 
+;/* GetTimesClimaxed
+* * returns the amount of climaxes the actor had in the current scene
+* *
+* * @param: Act, the actor to get the climax amount for
+* *
+* * @return: the amount of climaxes the actor had
+*/;
+int Function GetTimesClimaxed(Actor Act) Global Native
+
 
 ; ███████╗██╗  ██╗██████╗ ██████╗ ███████╗███████╗███████╗██╗ ██████╗ ███╗   ██╗███████╗
 ; ██╔════╝╚██╗██╔╝██╔══██╗██╔══██╗██╔════╝██╔════╝██╔════╝██║██╔═══██╗████╗  ██║██╔════╝
@@ -105,6 +114,15 @@ Function Mute(Actor Act) Global Native
 * * @param: Act, the actor to unmute
 */;
 Function Unmute(Actor Act) Global Native
+
+;/* IsMuted
+* * checks if an actor is muted
+* *
+* * @param: Act, the actor to check
+* *
+* * @return: true if the actor is muted, otherwise false
+*/;
+bool Function IsMuted(Actor Act) Global Native
 
 
 ; ██╗   ██╗███╗   ██╗██████╗ ██████╗ ███████╗███████╗███████╗██╗███╗   ██╗ ██████╗ 

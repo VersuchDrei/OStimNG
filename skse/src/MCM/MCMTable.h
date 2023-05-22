@@ -9,6 +9,8 @@ namespace MCM {
         static void resetValues();
         static void restoreDefaults();
 
+        inline static bool resetPosition() { return settings[0xE16].asBool(); }
+
         static int keyAlignment();
         static int keySceneStart();
         static int keySpeedUp();
@@ -77,6 +79,8 @@ namespace MCM {
 
     private:
         inline static std::unordered_map<uint32_t, MCMSetting> settings{
+            {0xE16, {1, "SetResetPosition"}},
+
             {0xDE2, {38, "keyAlignment"}},
             {0xDEC, {181, "SetFreeCamToggleKey"}},
 

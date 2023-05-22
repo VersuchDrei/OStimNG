@@ -1,5 +1,6 @@
 #pragma once
 
+#include "GameAPI/GameActor.h"
 #include "Util/Constants.h"
 
 namespace Trait {
@@ -53,6 +54,6 @@ namespace Trait {
         GenderExpression male;
 
         GenderExpression* getGenderExpression(bool isFemale);
-        float getDuration(RE::Actor* actor);
+        float getDuration(GameAPI::GameActor actor);
     };
 }

@@ -73,7 +73,7 @@ namespace OStim {
     bool ThreadManager::playerThreadRunning() {
         std::shared_lock<std::shared_mutex> lock(m_threadMapMtx);
         for (auto& [id, thread] : m_threadMap) {
-            if (thread->isPlayerThread) {
+            if (thread->isPlayerThread()) {
                 return true;
             }
         }

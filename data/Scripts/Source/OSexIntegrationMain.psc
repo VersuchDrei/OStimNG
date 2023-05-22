@@ -57,8 +57,6 @@ Faction Property OStimExcitementFaction Auto
 
 Bool Property EnableActorSpeedControl Auto
 
-Bool Property ResetPosAfterSceneEnd Auto
-
 Int Property SubLightPos Auto
 Int Property DomLightPos Auto
 Int Property SubLightBrightness Auto
@@ -119,6 +117,23 @@ Bool Property Installed auto
 int Property InstalledVersion Auto
 
 bool property ShowTutorials auto
+
+; -------------------------------------------------------------------------------------------------
+; GENERAL SETTINGS  -------------------------------------------------------------------------------
+
+GlobalVariable Property OStimResetPosition Auto
+Bool Property ResetPosAfterSceneEnd
+	bool Function Get()
+		Return OStimResetPosition.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimResetPosition.value = 1
+		Else
+			OStimResetPosition.value = 0
+		EndIf
+	EndFunction
+EndProperty
 
 ; -------------------------------------------------------------------------------------------------
 ; CONTROLS SETTINGS  ------------------------------------------------------------------------------
@@ -606,9 +621,6 @@ Bool Property UsePapyrusUndressing
 		Return OStimUsePapyrusUndressing.value != 0
 	EndFunction
 EndProperty
-
-; todo turn this into a slotmask
-Int[] Property StrippingSlots Auto
 
 ; -------------------------------------------------------------------------------------------------
 ; GENDER ROLE SETTINGS  ---------------------------------------------------------------------------
@@ -1106,10 +1118,6 @@ String StartingAnimation
 
 Bool StallOrgasm
 
-Int DomTimesOrgasm
-Int SubTimesOrgasm
-Int ThirdTimesOrgasm
-
 int FurnitureType
 ObjectReference CurrentFurniture
 
@@ -1398,12 +1406,6 @@ Bool Function StartScene(Actor Dom, Actor Sub, Bool zUndressDom = False, Bool zU
 		Return false
 	EndIf
 
-	int i = Actors.Length
-	While i
-		i -= 1
-		Actors[i].AddToFaction(OStimExcitementFaction)
-	EndWhile
-
 	If (Aggressive)
 		If (AggressingActor)
 			If ((AggressingActor != SubActor) && (AggressingActor != DomActor))
@@ -1544,9 +1546,6 @@ Event OnUpdate() ;OStim main logic loop
 	BlockDomFaceCommands = False
 	BlocksubFaceCommands = False
 	BlockthirdFaceCommands = False
-	SubTimesOrgasm = 0
-	DomTimesOrgasm = 0
-	ThirdTimesOrgasm = 0
 	MostRecentOrgasmedActor = None
 	FirstAnimate = true
 	MostRecentOSexInteractionTime = Utility.GetCurrentRealTime()
@@ -1567,23 +1566,7 @@ Event OnUpdate() ;OStim main logic loop
 		EndIf
 	EndIf
 
-	float[] domCoords
-	float[] subCoords
-
-	If ResetPosAfterSceneEnd
-		domcoords = OSANative.GetCoords(DomActor)
-		If SubActor
-			subcoords = OSANative.GetCoords(SubActor)
-		EndIf
-	EndIf
-
-	If FurnitureType == FURNITURE_TYPE_NONE
-		If (SubActor && SubActor != PlayerRef)
-			SubActor.MoveTo(DomActor)
-		ElseIf (SubActor == PlayerRef)
-			DomActor.MoveTo(SubActor)
-		EndIf
-	Else
+	If FurnitureType != FURNITURE_TYPE_NONE
 		CurrentFurniture.BlockActivation(true)
 	EndIf
 
@@ -1704,14 +1687,6 @@ Event OnUpdate() ;OStim main logic loop
 
 	Console("Ending scene")
 
-
-	i = Actors.Length
-	While i
-		i -= 1
-
-		Actors[i].RemoveFromFaction(OStimExcitementFaction)
-	EndWhile
-
 	SendModEvent("ostim_end", numArg = -1.0)
 
 	If !ForceCloseOStimThread && !DisableScaling
@@ -1723,18 +1698,6 @@ Event OnUpdate() ;OStim main logic loop
 	EndIf
 
 	ODatabase.Unload()
-
-	If ResetPosAfterSceneEnd && !ForceCloseOStimThread
-		DomActor.StopTranslation()
-		DomActor.SetPosition(domcoords[0], domcoords[1], domcoords[2])
-		If SubActor
-			SubActor.StopTranslation()
-			SubActor.SetPosition(subcoords[0], subcoords[1], subcoords[2]) ;return
-		EndIf
-		If (UseFades && EndedProper)
-			Game.FadeOutGame(False, True, 25.0, 25.0) ; keep the screen black
-		EndIf
-	EndIf
 
 	If CurrentFurniture && ResetClutter
 		OFurniture.ResetClutter(CurrentFurniture, ResetClutterRadius * 100)
@@ -2067,16 +2030,6 @@ EndFunction
 bool Function IsVictim(actor act)
 	return AggressiveThemedSexScene && (act != AggressiveActor)
 endfunction 
-
-Int Function GetTimesOrgasm(Actor Act) ; number of times the Actor has orgasmed
-	If (Act == DomActor)
-		Return DomTimesOrgasm
-	ElseIf (Act == SubActor)
-		Return SubTimesOrgasm
-	ElseIf (Act == ThirdActor)
-		return ThirdTimesOrgasm
-	EndIf
-EndFunction
 
 Actor Function GetSexPartner(Actor Char)
 	If (Char == SubActor)
@@ -2772,12 +2725,18 @@ Event OstimOrgasm(String EventName, String sceneId, Float index, Form Sender)
 		EndIf
 	EndIf
 
-
 	bool End = false
 	If EndOnAllOrgasm
-		End = DomTimesOrgasm > 0 && (SubActor == None || SubTimesOrgasm > 0) && (ThirdActor == None || ThirdTimesOrgasm > 0)
+		End = true
+		int i = Actors.Length
+		While i && End
+			i -= 1
+			If OActor.GetTimesClimaxed(Actors[i]) == 0
+				End = false
+			EndIf
+		EndWhile
 	Else
-		If AppearsFemale(Act)
+		If IsFemale(Act)
 			End = EndOnFemaleOrgasm
 		Else
 			End = EndOnMaleOrgasm
@@ -3034,7 +2993,6 @@ EndEvent
 
 Function SetDefaultSettings()
 	EnableActorSpeedControl = True
-	ResetPosAfterSceneEnd = true 
 
 	EndAfterActorHit = True
 
@@ -3081,13 +3039,6 @@ Function SetDefaultSettings()
 	ControlToggleKey = 82
 
 	MuteOSA = False
-
-	Int[] Slots = new Int[1]
-	Slots[0] = 32
-	Slots = PapyrusUtil.PushInt(Slots, 33)
-	Slots = PapyrusUtil.PushInt(Slots, 31)
-	Slots = PapyrusUtil.PushInt(Slots, 37)
-	StrippingSlots = Slots
 
 	ShowTutorials = true 
 	
@@ -3915,4 +3866,8 @@ Function SetGameSpeed(String In)
 	; the body was left in in case some addons call this
 	; but we will not list ConsoleUtil as a requirement
 	ConsoleUtil.ExecuteCommand("sgtm " + In)
+EndFunction
+
+Int Function GetTimesOrgasm(Actor Act)
+	Return OActor.GetTimesClimaxed(Act)
 EndFunction

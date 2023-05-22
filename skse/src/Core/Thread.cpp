@@ -39,14 +39,13 @@ namespace OStim {
             vehicle->MoveTo(center);
         }
 
-        RE::Actor* player = RE::PlayerCharacter::GetSingleton();
         for (int i = 0; i < actors.size(); i++) {
             RE::Actor* actor = actors[i];
             addActorInner(i, actor);
-            isPlayerThread |= actor == player;
+            playerThread |= actor->IsPlayerRef();
         }
 
-        if (isPlayerThread) {
+        if (playerThread) {
             RE::PlayerCamera* camera = RE::PlayerCamera::GetSingleton();
             if (MCM::MCMTable::useFreeCam()) {
                 if (!camera->IsInFreeCameraMode()) {
@@ -81,14 +80,14 @@ namespace OStim {
 
     Thread::~Thread() {
         for (auto& actorIt : m_actors) {
-            removeActorSink(actorIt.second.getActor());
+            removeActorSink(actorIt.second.getActor().form);
         }
 
         for (auto& soundPlayer : soundPlayers) {
             delete soundPlayer;
         }
 
-        if (isPlayerThread) {
+        if (playerThread) {
             UI::UIState::GetSingleton()->hideAllMenues();
         }
     }
@@ -96,10 +95,10 @@ namespace OStim {
     void Thread::initContinue() {
         // this stuff needs to happen after the thread has been put into the map in thread manager
         for (auto& [index, actor] : m_actors) {
-            actor.getActor()->EvaluatePackage();
+            actor.getActor().updateAI();
         }
 
-        if (isPlayerThread) {
+        if (playerThread) {
             UI::Align::AlignMenu::SetThread(this);
         }
     }
@@ -113,7 +112,7 @@ namespace OStim {
 
         alignmentKey = key.toString();
 
-        if (isPlayerThread) {
+        if (playerThread) {
             UI::Align::AlignMenu::SetNode(m_currentNode);
         }   
     }
@@ -233,10 +232,6 @@ namespace OStim {
         Messaging::MessagingRegistry::GetSingleton()->SendMessageToListeners(msg);
     }
 
-    Graph::Node* Thread::getCurrentNode() {
-        return m_currentNode;
-    }
-
     void Thread::navigateTo(Graph::Node* node) {
 
     }
@@ -250,7 +245,7 @@ namespace OStim {
     void Thread::RemoveActor() {
         int index = m_actors.size() - 1;
         ThreadActor* actor = GetActor(index);
-        removeActorSink(actor->getActor());
+        removeActorSink(actor->getActor().form);
         actor->free();
 
         m_actors.erase(index);
@@ -287,11 +282,11 @@ namespace OStim {
 
         float newAngle = vehicle->data.angle.z + MathUtil::toRadians(alignment.rotation);
 
-        RE::Actor* actor = threadActor->getActor();
+        RE::Actor* actor = threadActor->getActor().form;
 
         ObjectRefUtil::stopTranslation(actor);
 
-        actor->SetRotationZ(newAngle);       
+        actor->SetRotationZ(newAngle);
 
         ObjectRefUtil::translateTo(actor, vehicle->data.location.x + cos * alignment.offsetX + sin * alignment.offsetY, vehicle->data.location.y - sin * alignment.offsetX + cos * alignment.offsetY, vehicle->data.location.z + alignment.offsetZ,
             MathUtil::toDegrees(vehicle->data.angle.x), MathUtil::toDegrees(vehicle->data.angle.y), MathUtil::toDegrees(newAngle) + 1, 1000000, 0.0001);
@@ -321,7 +316,7 @@ namespace OStim {
         }
     }
 
-    ThreadActor* Thread::GetActor(RE::Actor* a_actor) {
+    ThreadActor* Thread::GetActor(GameAPI::GameActor a_actor) {
         for (auto& i : m_actors) {
             if (i.second.getActor() == a_actor) return &i.second;
         }
@@ -335,7 +330,7 @@ namespace OStim {
         return nullptr;
     }
 
-    int Thread::getActorPosition(RE::Actor* actor) {
+    int Thread::getActorPosition(GameAPI::GameActor actor) {
         for (auto& i : m_actors) {
             if (i.second.getActor() == actor) return i.first;
         }
@@ -351,10 +346,13 @@ namespace OStim {
         for (auto& actorIt : m_actors) {
             if (m_currentNode) {
                 if (m_currentNode->speeds.size() > speed) {
-                    RE::Actor* actor = actorIt.second.getActor();
+                    RE::Actor* actor = actorIt.second.getActor().form;
+                    // TODO how to do this with GraphActor?
                     actor->SetGraphVariableFloat("OStimSpeed", m_currentNode->speeds[speed].playbackSpeed);
-                    actor->NotifyAnimationGraph(m_currentNode->speeds[speed].animation + "_" + std::to_string(actorIt.first));
+                    actorIt.second.getActor().playAnimation(m_currentNode->speeds[speed].animation + "_" + std::to_string(actorIt.first));
 
+                    // this fixes some face bugs
+                    // TODO how to do this with GraphActor?
                     if (vm) {
                         RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
                         auto args = RE::MakeFunctionArguments<RE::TESObjectREFR*>(std::move(actor));
@@ -372,8 +370,8 @@ namespace OStim {
 
 
     void Thread::callEvent(std::string eventName, int actorIndex, int targetIndex, int performerIndex) {
-        if (isPlayerThread && actorIndex == 0 && targetIndex == 1 && eventName == "spank") {
-            FormUtil::sendModEvent(GetActor(0)->getActor(), "ostim_spank", "", 0);
+        if (playerThread && actorIndex == 0 && targetIndex == 1 && eventName == "spank") {
+            FormUtil::sendModEvent(GetActor(0)->getActor().form, "ostim_spank", "", 0);
         }
 
         Graph::Event* graphEvent = Graph::GraphTable::getEvent(eventName);
@@ -382,11 +380,7 @@ namespace OStim {
         }
 
         if (graphEvent->sound) {
-            RE::BSSoundHandle handle;
-            RE::BSAudioManager::GetSingleton()->BuildSoundDataFromDescriptor(handle, graphEvent->sound, 0x10);
-            handle.SetObjectToFollow(GetActor(actorIndex)->getActor()->Get3D());
-            handle.SetVolume(MCM::MCMTable::getSoundVolume());
-            handle.Play();
+            graphEvent->sound.play(GetActor(actorIndex)->getActor(), MCM::MCMTable::getSoundVolume());
         }
 
         if (graphEvent->cameraShakeDuration > 0 && graphEvent->cameraShakeStrength > 0) {
@@ -432,7 +426,7 @@ namespace OStim {
             Furniture::freeFurniture(furniture, furnitureOwner);
         }
 
-        if (isPlayerThread) {
+        if (playerThread) {
             RE::PlayerCamera* camera = RE::PlayerCamera::GetSingleton();
             
             if (camera->IsInFreeCameraMode()) {

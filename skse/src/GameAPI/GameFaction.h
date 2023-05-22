@@ -1,18 +1,11 @@
 #pragma once
 
+#include "GameRecord.h"
+
 namespace GameAPI {
-    struct GameFaction {
+    struct GameFaction : public GameRecord<RE::TESFaction> {
     public:
-        inline static GameFaction fromFile(std::string mod, uint32_t formID) {
-            return RE::TESDataHandler::GetSingleton()->LookupForm<RE::TESFaction>(formID, mod);
-        }
-
-        RE::TESFaction* faction;
-
-        inline GameFaction(RE::TESFaction* faction) : faction{faction} {};
-
-        inline operator bool() const { return faction; }
-        inline bool operator==(const GameFaction other) { return faction == other.faction; }
-        inline bool operator!=(const GameFaction other) { return faction != other.faction; }
+        inline GameFaction() {}
+        inline GameFaction(RE::TESFaction* faction) { form = faction; }
     };
 }

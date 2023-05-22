@@ -4,17 +4,18 @@
 #include "ExpressionUpdater.h"
 
 #include "Alignment/ActorKey.h"
+#include "GameAPI/GameActor.h"
 #include "Graph/Node.h"
 #include "Serial/OldThread.h"
-#include "Trait/EquipObject.h"
 #include "Sound/VoiceSet.h"
+#include "Trait/EquipObject.h"
 
 namespace OStim {
     class Thread;
 
 	class ThreadActor {
 	public:
-        ThreadActor(Thread* thread, int index, RE::Actor* actor);
+        ThreadActor(Thread* thread, int index, GameAPI::GameActor actor);
         void initContinue();
 
         int index;
@@ -27,11 +28,12 @@ namespace OStim {
         float loopExcitementDecay = 0; // excitement decay per loop
         int excitementDecayCooldown = 0;
 
-		inline RE::Actor* getActor() { return actor; }
+		inline GameAPI::GameActor getActor() { return actor; }
 
         Alignment::ActorKey getAlignmentKey();
 
         void climax();
+        inline int getTimexClimaxed() { return timesClimaxed; }
 
         void undress();
         void undressPartial(uint32_t mask);
@@ -139,11 +141,17 @@ namespace OStim {
         };
 
         Thread* thread;
-		RE::Actor* actor;
+		GameAPI::GameActor actor;
+
         float scaleBefore;
+        GameAPI::GamePosition positionBefore;
+        float rotationBefore = 0;
+
         bool isPlayer;
         bool isFemale;
         bool hasSchlong;
+
+        int timesClimaxed = 0;
 
         Graph::GraphActor* graphActor = nullptr;
         int speed = 0;

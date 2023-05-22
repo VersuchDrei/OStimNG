@@ -1,5 +1,7 @@
 #pragma once
 
+#include "GameAPI/GameSound.h"
+
 namespace Graph {
     struct EventActor {
         float stimulation = 0.0;
@@ -16,7 +18,7 @@ namespace Graph {
         EventActor actor;
         EventActor target;
         EventActor performer;
-        RE::BGSSoundDescriptorForm* sound = nullptr;
+        GameAPI::GameSound sound;
         float cameraShakeDuration = 0.0;
         float cameraShakeStrength = 0.0;
         float controllerRumbleDuration = 0.0;

@@ -128,7 +128,7 @@ namespace UI::Align {
         RE::GFxValue alignmentInfo;
         root.GetMember("alignmentInfo", &alignmentInfo);
 
-        const RE::GFxValue actorName = RE::GFxValue{currentThread->GetActor(selectedSlot)->getActor()->GetDisplayFullName()};
+        const RE::GFxValue actorName = RE::GFxValue{currentThread->GetActor(selectedSlot)->getActor().getName()};
         const RE::GFxValue actorSlot = selectedSlot;
 
         auto gender = "*";
