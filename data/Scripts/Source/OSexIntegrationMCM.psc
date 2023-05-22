@@ -1722,6 +1722,8 @@ Function DrawGenderRolesPage()
 		FutaFlags = OPTION_FLAG_DISABLED
 	EndIf
 	AddToggleOptionST("OID_FutaUseMaleExcitement", "$ostim_futa_use_male_excitement", Main.FutaUseMaleExcitement, FutaFlags)
+	SetCursorPosition(23)
+	AddToggleOptionST("OID_FutaUseMaleClimax", "$ostim_futa_use_male_orgasm", Main.FutaUseMaleClimax, FutaFlags)
 EndFunction
 
 
@@ -1940,6 +1942,7 @@ State OID_UseSoSSex
 			FutaFlags = OPTION_FLAG_DISABLED
 		EndIf
 		SetOptionFlagsST(FutaFlags, false, "OID_FutaUseMaleExcitement")
+		SetOptionFlagsST(FutaFlags, false, "OID_FutaUseMaleClimax")
 	EndEvent
 EndState
 
@@ -1951,6 +1954,17 @@ State OID_FutaUseMaleExcitement
 	Event OnSelectST()
 		Main.FutaUseMaleExcitement = !Main.FutaUseMaleExcitement
 		SetToggleOptionValueST(Main.FutaUseMaleExcitement)
+	EndEvent
+EndState
+
+State OID_FutaUseMaleClimax
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_futa_use_male_orgasm")
+	EndEvent
+
+	Event OnSelectST()
+		Main.FutaUseMaleClimax = !Main.FutaUseMaleClimax
+		SetToggleOptionValueST(Main.FutaUseMaleClimax)
 	EndEvent
 EndState
 

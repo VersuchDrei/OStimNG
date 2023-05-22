@@ -816,6 +816,20 @@ bool Property FutaUseMaleExcitement
 	EndFunction
 EndProperty
 
+GlobalVariable Property OStimFutaUseMaleClimax Auto
+bool Property FutaUseMaleClimax
+	bool Function Get()
+		Return OStimFutaUseMaleClimax.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimFutaUseMaleClimax.value = 1
+		Else
+			OStimFutaUseMaleClimax.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
 ; -------------------------------------------------------------------------------------------------
 ; ALIGNMENT SETTINGS  -----------------------------------------------------------------------------
 
@@ -2736,7 +2750,7 @@ Event OstimOrgasm(String EventName, String sceneId, Float index, Form Sender)
 			EndIf
 		EndWhile
 	Else
-		If IsFemale(Act)
+		If IsFemale(Act) || !FutaUseMaleClimax && AppearsFemale(Act)
 			End = EndOnFemaleOrgasm
 		Else
 			End = EndOnMaleOrgasm

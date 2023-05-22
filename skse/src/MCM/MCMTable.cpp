@@ -211,15 +211,6 @@ namespace MCM {
     }
 
 
-    bool MCMTable::useSoSSex() {
-        return Compatibility::CompatibilityTable::sosInstalled() && settings[0xE04].asBool();
-    }
-
-    bool MCMTable::futaUseMaleExcitement() {
-        return Compatibility::CompatibilityTable::sosInstalled() && settings[0xE04].asBool() && settings[0xE05].asBool();
-    }
-
-
     bool MCMTable::groupAlignmentBySex() {
         return settings[0xDE3].asBool();
     }
