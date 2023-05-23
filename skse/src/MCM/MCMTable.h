@@ -10,6 +10,7 @@ namespace MCM {
         static void restoreDefaults();
 
         inline static bool resetPosition() { return settings[0xE16].asBool(); }
+        inline static bool customTimeScale() { return settings[0xE18].asBool(); }
 
         static int keyAlignment();
         static int keySceneStart();
@@ -20,6 +21,13 @@ namespace MCM {
         static int keyFreeCam();
 
         static bool useRumble();
+
+        inline static bool useAutoModeAlways() { return settings[0xE1C].asBool(); }
+        inline static bool useAutoModeSolo() { return settings[0xE1D].asBool(); }
+        inline static bool useAutoModeDominant() { return settings[0xE1E].asBool(); }
+        inline static bool useAutoModeSubmissive() { return settings[0xE1F].asBool(); }
+        inline static bool useAutoModeVanilla() { return settings[0xE20].asBool(); }
+        inline static bool useAutoModeFades() { return settings[0xE21].asBool(); }
 
         static bool useFreeCam();
         static float freeCamSpeed();
@@ -81,13 +89,24 @@ namespace MCM {
     private:
         inline static std::unordered_map<uint32_t, MCMSetting> settings{
             {0xE16, {1, "SetResetPosition"}},
+            {0xE18, {0, "SetCustomTimescale"}},
+            {0xE19, {1, "SetUseFades"}},
+            {0xE1A, {1, "SetEndAfterActorHit"}},
+            {0xDA1, {1, "SetUseIntroScenes"}},
 
             {0xDE2, {38, "keyAlignment"}},
             {0xDEC, {181, "SetFreeCamToggleKey"}},
 
             {0xE11, {1, "SetUseRumble"}},
 
-            {0xDA1, {1, "SetUseIntroScenes"}},
+            {0xE1B, {1, "SetActorSpeedControl"}},
+
+            {0xE1C, {0, "SetAIControl"}},
+            {0xE1D, {0, "SetForceAIForMasturbation"}},
+            {0xE1E, {0, "SetForceAIIfAttacking"}},
+            {0xE1F, {0, "SetForceAIIfAttacked"}},
+            {0xE20, {0, "SetForceAIInConsensualScenes"}},
+            {0xE21, {0, "SetUseAutoFades"}},
 
             {0xDA6, {1, "SetEnableFurniture"}},
             {0xDA7, {1, "SetSelectFurniture"}},

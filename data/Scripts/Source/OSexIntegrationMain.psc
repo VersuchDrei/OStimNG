@@ -55,8 +55,6 @@ Faction Property OStimExcitementFaction Auto
 ; -------------------------------------------------------------------------------------------------
 ; SETTINGS  ---------------------------------------------------------------------------------------
 
-Bool Property EnableActorSpeedControl Auto
-
 Int Property SubLightPos Auto
 Int Property DomLightPos Auto
 Int Property SubLightBrightness Auto
@@ -80,25 +78,11 @@ EndProperty
 Bool  SpeedUpNonSexAnimation
 Float SpeedUpSpeed
 
-Int Property CustomTimescale Auto
-
 string[] scenemetadata
 string[] oldscenemetadata
-
-Bool Property UseAIControl Auto
 Bool Property PauseAI Auto
 
-Bool Property UseAINPConNPC Auto
-Bool Property UseAIPlayerAggressor Auto
-Bool Property UseAIPlayerAggressed Auto
-Bool Property UseAINonAggressive Auto
-Bool Property UseAIMasturbation Auto
-
-Bool Property UseFades Auto
-Bool Property UseAutoFades Auto
 bool Property SkipEndingFadein Auto
-
-Bool Property EndAfterActorHit Auto
 
 Bool Property GetInBedAfterBedScene Auto
 
@@ -116,8 +100,6 @@ Bool Property Installed auto
 
 int Property InstalledVersion Auto
 
-bool property ShowTutorials auto
-
 ; -------------------------------------------------------------------------------------------------
 ; GENERAL SETTINGS  -------------------------------------------------------------------------------
 
@@ -134,6 +116,59 @@ Bool Property ResetPosAfterSceneEnd
 		EndIf
 	EndFunction
 EndProperty
+
+GlobalVariable Property OStimCustomTimeScale Auto
+Int Property CustomTimescale
+	int Function Get()
+		Return OStimCustomTimeScale.value As int
+	EndFunction
+	Function Set(int Value)
+		OStimCustomTimeScale.value = Value
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimUseFades Auto
+bool Property UseFades
+	bool Function Get()
+		Return OStimUseFades.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimUseFades.value = 1
+		Else
+			OStimUseFades.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimEndWhenActorHit Auto
+Bool Property EndAfterActorHit
+	bool Function Get()
+		Return OStimEndWhenActorHit.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimEndWhenActorHit.value = 1
+		Else
+			OStimEndWhenActorHit.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimUseIntroScenes Auto
+bool Property UseIntroScenes
+	bool Function Get()
+		Return OStimUseIntroScenes.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimUseIntroScenes.value = 1
+		Else
+			OStimUseIntroScenes.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
 
 ; -------------------------------------------------------------------------------------------------
 ; CONTROLS SETTINGS  ------------------------------------------------------------------------------
@@ -246,6 +281,110 @@ Bool Property UseRumble
 		EndIf
 	EndFunction
 EndProperty
+
+
+; -------------------------------------------------------------------------------------------------
+; AUTO CONTROL SETTINGS  --------------------------------------------------------------------------
+
+GlobalVariable Property OStimAutoSpeedControl Auto
+Bool Property EnableActorSpeedControl
+	bool Function Get()
+		Return OStimAutoSpeedControl.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimAutoSpeedControl.value = 1
+		Else
+			OStimAutoSpeedControl.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+
+GlobalVariable Property OStimUseAutoModeAlways Auto
+Bool Property UseAIControl
+	bool Function Get()
+		Return OStimUseAutoModeAlways.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimUseAutoModeAlways.value = 1
+		Else
+			OStimUseAutoModeAlways.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimUseAutoModeSolo Auto
+Bool Property UseAIMasturbation
+	bool Function Get()
+		Return OStimUseAutoModeSolo.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimUseAutoModeSolo.value = 1
+		Else
+			OStimUseAutoModeSolo.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimUseAutoModeDominant Auto
+Bool Property UseAIPlayerAggressor
+	bool Function Get()
+		Return OStimUseAutoModeDominant.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimUseAutoModeDominant.value = 1
+		Else
+			OStimUseAutoModeDominant.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimUseAutoModeSubmissive Auto
+Bool Property UseAIPlayerAggressed
+	bool Function Get()
+		Return OStimUseAutoModeSubmissive.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimUseAutoModeSubmissive.value = 1
+		Else
+			OStimUseAutoModeSubmissive.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimUseAutoModeVanilla Auto
+Bool Property UseAINonAggressive
+	bool Function Get()
+		Return OStimUseAutoModeVanilla.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimUseAutoModeVanilla.value = 1
+		Else
+			OStimUseAutoModeVanilla.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimUseAutoModeFades Auto
+Bool Property UseAutoFades
+	bool Function Get()
+		Return OStimUseAutoModeFades.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimUseAutoModeFades.value = 1
+		Else
+			OStimUseAutoModeFades.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
 
 ; -------------------------------------------------------------------------------------------------
 ; CAMERA SETTINGS  --------------------------------------------------------------------------------
@@ -861,20 +1000,6 @@ bool Property DisableSchlongBending
 	EndFunction
 EndProperty
 
-GlobalVariable Property OStimUseIntroScenes Auto
-bool Property UseIntroScenes
-	bool Function Get()
-		Return OStimUseIntroScenes.value != 0
-	EndFunction
-	Function Set(bool Value)
-		If Value
-			OStimUseIntroScenes.value = 1
-		Else
-			OStimUseIntroScenes.value = 0
-		EndIf
-	EndFunction
-EndProperty
-
 GlobalVariable Property OStimAlignmentGroupBySex Auto
 bool Property AlignmentGroupBySex
 	bool Function Get()
@@ -1121,8 +1246,6 @@ _oOmni OSAOmni
 _oControl OControl
 
 Actor PlayerRef
-
-GlobalVariable Timescale
 
 Bool Property UndressDom Auto
 Bool Property UndressSub Auto
@@ -1604,14 +1727,6 @@ Event OnUpdate() ;OStim main logic loop
 	CurrentSceneID = ""
 	LastHubSceneID = ""
 
-	Int OldTimescale = 0
-
-	If (CustomTimescale > 0)
-		OldTimescale = GetTimeScale()
-		SetTimeScale(CustomTimescale)
-		Console("Using custom Timescale: " + CustomTimescale)
-	EndIf
-
 	If (LowLightLevelLightsOnly && DomActor.GetLightLevel() < 20) || (!LowLightLevelLightsOnly)
 		If (DomLightPos > 0)
 			LightActor(DomActor, DomLightPos, DomLightBrightness)
@@ -1741,11 +1856,6 @@ Event OnUpdate() ;OStim main logic loop
 			String ThirdFormID = _oGlobal.GetFormID_S(OSANative.GetLeveledActorBase(ThirdActor)) 
 			UnRegisterForModEvent("0SSO" + ThirdFormID + "_Sound")
 		EndIf
-	EndIf
-
-	If (OldTimescale > 0)
-		Console("Resetting Timescale to: " + OldTimescale)
-		SetTimeScale(OldTimescale)
 	EndIf
 
 	;SendModEvent("0SA_GameLoaded") ;for safety
@@ -2982,14 +3092,6 @@ Function ShakeController(Float Power, Float Duration = 0.1)
 	EndIf
 EndFunction
 
-Int Function GetTimeScale()
-	Return Timescale.GetValue() as Int
-EndFunction
-
-Function SetTimeScale(Int Time)
-	Timescale.SetValue(Time as Float)
-EndFunction
-
 Function DisplayToastAsync(string txt, float lengthOftime)
 
 	RegisterForModEvent("ostim_toast", "DisplayToastEvent")
@@ -3008,9 +3110,6 @@ EndEvent
 Function SetDefaultSettings()
 	EnableActorSpeedControl = True
 
-	EndAfterActorHit = True
-
-
 	ForceCloseOStimThread = false
 
 	DomLightBrightness = 0
@@ -3027,22 +3126,15 @@ Function SetDefaultSettings()
 
 	DisableStimulationCalculation = false
 
-	UseAIControl = False
 	PauseAI = False
 
 	AISwitchChance = 6
 
 	GetInBedAfterBedScene = False
-	UseAINPConNPC = True
-	UseAIPlayerAggressor = True
-	UseAIPlayerAggressed = True
-	UseAINonAggressive = False
 
 
 	disableOSAControls = false
 
-	UseFades = True
-	UseAutoFades = True
 	SkipEndingFadein = false
 	BlockVRInstalls = True
 
@@ -3053,10 +3145,6 @@ Function SetDefaultSettings()
 	ControlToggleKey = 82
 
 	MuteOSA = False
-
-	ShowTutorials = true 
-	
-	UseBrokenCosaveWorkaround = True
 
 	OData.ResetSettings()
 EndFunction
@@ -3336,8 +3424,6 @@ Function Startup()
 	OSATickSmall = Game.GetFormFromFile(0x000D6E, "Ostim.esp") as Sound
 	OSATickBig = Game.GetFormFromFile(0x000D6F, "Ostim.esp") as Sound
 
-	Timescale = (Game.GetFormFromFile(0x00003A, "Skyrim.esm")) as GlobalVariable
-
 	OControl = Quest.GetQuest("0SAControl") as _oControl
 
 	AI = ((Self as Quest) as OAiScript)
@@ -3396,8 +3482,6 @@ Function Startup()
 	OUtils.DisplayTextBanner("OStim installed.")
 EndFunction
 
-Bool Property UseBrokenCosaveWorkaround Auto
-
 Form[] LoadRegistrations 
 
 Function RegisterForGameLoadEvent(form f)
@@ -3445,43 +3529,40 @@ Function OnLoadGame()
 	EndIf
 	SoSInstalled = SoSFaction
 
-	If (UseBrokenCosaveWorkaround)
-		Console("Using cosave fix")
+	Console("Using cosave fix")
 
-		RegisterForModEvent("ostim_actorhit", "OnActorHit")
-		LoadOSexControlKeys()
-		If SpeedUpKey != 1
-			RegisterForKey(SpeedUpKey)
-		EndIf
-		If SpeedDownKey != 1
-			RegisterForKey(SpeedDownKey)
-		EndIf
-		If PullOutKey != 1
-			RegisterForKey(PullOutKey)
-		EndIf
-		If ControlToggleKey != 1
-			RegisterForKey(ControlToggleKey)
-		EndIf
-		If KeyMap != 1
-			RegisterForKey(KeyMap)
-		EndIf
+	RegisterForModEvent("ostim_actorhit", "OnActorHit")
+	LoadOSexControlKeys()
+	If SpeedUpKey != 1
+		RegisterForKey(SpeedUpKey)
+	EndIf
+	If SpeedDownKey != 1
+		RegisterForKey(SpeedDownKey)
+	EndIf
+	If PullOutKey != 1
+		RegisterForKey(PullOutKey)
+	EndIf
+	If ControlToggleKey != 1
+		RegisterForKey(ControlToggleKey)
+	EndIf
+	If KeyMap != 1
+		RegisterForKey(KeyMap)
+	EndIf
 
-		; these are now handled in C++ and no longer need Papyrus listeners
-		If AlignmentKey != 1
-			UnregisterForKey(AlignmentKey)
-		EndIf
-		If FreecamKey != 1
-			UnregisterForKey(FreecamKey)
-		EndIf
+	; these are now handled in C++ and no longer need Papyrus listeners
+	If AlignmentKey != 1
+		UnregisterForKey(AlignmentKey)
+	EndIf
+	If FreecamKey != 1
+		UnregisterForKey(FreecamKey)
+	EndIf
 		
 
-		AI.OnGameLoad()
-		OBars.OnGameLoad()
-		OControl.OPlayerControls()
+	AI.OnGameLoad()
+	OBars.OnGameLoad()
+	OControl.OPlayerControls()
 
-		SendLoadGameEvent()
-
-	EndIf
+	SendLoadGameEvent()
 
 	BBLS_FaceLightFaction = Game.GetFormFromFile(0x00755331, "BBLS_SKSE64_Patch.esp") as Faction
 	Vayne = Game.GetFormFromFile(0x0000083D, "CS_Vayne.esp") as ActorBase
@@ -3541,7 +3622,23 @@ EndFunction
 ; all of these are only here to not break old addons, don't use them in new addons, use whatever they're calling instead
 
 Faction Property NVCustomOrgasmFaction Auto
-int[] property SoundFormNumberWhitelist auto 
+int[] property SoundFormNumberWhitelist auto
+
+bool Property UseAINPConNPC
+	bool Function Get()
+		Return true
+	EndFunction
+	Function Set(bool Value)
+	EndFunction
+EndProperty
+
+bool Property ShowTutorials
+	bool Function Get()
+		Return true
+	EndFunction
+	Function Set(bool Value)
+	EndFunction
+EndProperty
 
 int Property DefaultFOV
 	int Function Get()
@@ -3677,6 +3774,14 @@ Bool Property EnableThirdBar
 	EndFunction
 	Function Set(bool Value)
 		EnableNpcBar = Value
+	EndFunction
+EndProperty
+
+Bool Property UseBrokenCosaveWorkaround
+	bool Function Get()
+		Return true
+	EndFunction
+	Function Set(bool Value)
 	EndFunction
 EndProperty
 
@@ -3884,4 +3989,12 @@ EndFunction
 
 Int Function GetTimesOrgasm(Actor Act)
 	Return OActor.GetTimesClimaxed(Act)
+EndFunction
+
+Int Function GetTimeScale()
+	Return (Game.GetFormFromFile(0x00003A, "Skyrim.esm") as GlobalVariable).GetValue() as Int
+EndFunction
+
+Function SetTimeScale(Int Time)
+	(Game.GetFormFromFile(0x00003A, "Skyrim.esm") as GlobalVariable).SetValue(Time as Float)
 EndFunction

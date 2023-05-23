@@ -1,5 +1,7 @@
 #include "Core/Thread.h"
+
 #include "Furniture/Furniture.h"
+#include "GameAPI/Game.h"
 #include "Graph/GraphTable.h"
 #include "Graph/Node.h"
 #include <Messaging/IMessages.h>
@@ -75,6 +77,11 @@ namespace OStim {
 
             worldFOVbefore = camera->worldFOV;
             camera->worldFOV = MCM::MCMTable::freeCamFOV();
+
+            timeScaleBefore = GameAPI::Game::getTimeScale();
+            if (MCM::MCMTable::customTimeScale() > 0) {
+                GameAPI::Game::setTimeScale(MCM::MCMTable::customTimeScale());
+            }
         }
     }
 
@@ -440,6 +447,10 @@ namespace OStim {
             }
 
             camera->worldFOV = worldFOVbefore;
+
+            if (MCM::MCMTable::customTimeScale() > 0) {
+                GameAPI::Game::setTimeScale(timeScaleBefore);
+            }
         }
     }
 

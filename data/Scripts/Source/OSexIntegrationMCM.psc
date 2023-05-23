@@ -1,10 +1,5 @@
 ScriptName OsexIntegrationMCM Extends SKI_ConfigBase
 
-; sex settings
-Int SetActorSpeedControl
-Int SetEndAfterActorHit
-int SetUseIntroScenes
-
 int[] SlotSets
 int UndressingSlotMask
 
@@ -29,23 +24,7 @@ String[] SubLightBrightList
 String[] DomLightBrightList
 
 ; ai control settings
-Int SetAIControl
 Int SetControlToggle
-Int SetAIChangeChance
-
-Int SetForceAIIfAttacking
-Int SetForceAIIfAttacked
-Int SetForceAIInConsensualScenes
-Int SetForceAIForMasturbation
-
-; misc settings afaik
-Int SetCustomTimescale
-int SetTutorialMessages
-
-Int SetUseFades
-Int SetUseAutoFades
-
-Int SetUseCosaveWorkaround
 
 ; mcm save/load settings
 Int ExportSettings
@@ -155,7 +134,7 @@ Function Init()
 EndFunction
 
 int Function GetVersion()
-	Return 6
+	Return 7
 EndFunction
 
 Event OnVersionUpdate(int version)
@@ -163,19 +142,20 @@ Event OnVersionUpdate(int version)
 EndEvent
 
 Function SetupPages()
-	Pages = new string[12]
+	Pages = new string[13]
 	Pages[0] = "$ostim_page_configuration"
 	Pages[1] = "$ostim_page_controls"
-	Pages[2] = "$ostim_page_camera"
-	Pages[3] = "$ostim_page_excitement"
-	Pages[4] = "$ostim_page_gender_roles"
-	Pages[5] = "$ostim_page_furniture"
-	Pages[6] = "$ostim_page_undress"
-	Pages[7] = "$ostim_page_expression"
-	Pages[8] = "$ostim_page_sound"
-	Pages[9] = "$ostim_page_alignment"
-	Pages[10] = "$ostim_page_addons"
-	Pages[11] = "$ostim_page_about"
+	Pages[2] = "$ostim_page_auto_control"
+	Pages[3] = "$ostim_page_camera"
+	Pages[4] = "$ostim_page_excitement"
+	Pages[5] = "$ostim_page_gender_roles"
+	Pages[6] = "$ostim_page_furniture"
+	Pages[7] = "$ostim_page_undress"
+	Pages[8] = "$ostim_page_expression"
+	Pages[9] = "$ostim_page_sound"
+	Pages[10] = "$ostim_page_alignment"
+	Pages[11] = "$ostim_page_addons"
+	Pages[12] = "$ostim_page_about"
 EndFunction
 
 Event OnConfigRegister()
@@ -224,34 +204,14 @@ Event OnPageReset(String Page)
 		SetCursorPosition(2)
 
 		;=============================================================================================
-		AddColoredHeader("$ostim_header_sex_scenes")
-		SetActorSpeedControl = AddToggleOption("$ostim_speed_control", Main.EnableActorSpeedControl)
-		SetCustomTimescale = AddSliderOption("$ostim_timescale", Main.CustomTimescale, "{0}")
-		SetUseFades = AddToggleOption("$ostim_use_fades", Main.UseFades)
-		SetEndAfterActorHit = AddToggleOption("$ostim_end_on_hit", Main.EndAfterActorHit)
-		SetUseIntroScenes = AddToggleOption("$ostim_use_intro_scenes", Main.UseIntroScenes)
-		AddEmptyOption()
 
 		AddColoredHeader("$ostim_header_system")
 		SetResetState = AddTextOption("$ostim_reset_state", "")
 		SetUpdate = AddTextOption("$ostim_update", "")
-		SetTutorialMessages = AddToggleOption("$ostim_tutorial", Main.ShowTutorials)
 		AddTextOptionST("OID_BootstrapMCM", "$ostim_bootstrap_mcm", "")
-		;SetUseCosaveWorkaround = AddToggleOption("$ostim_cosave", Main.useBrokenCosaveWorkaround)
 		AddEmptyOption()
 
 		;=============================================================================================
-
-		SetCursorPosition(3)
-		AddColoredHeader("$ostim_header_ai_control")
-		SetAIControl = AddToggleOption("$ostim_full_auto", Main.UseAIControl)
-		SetForceAIIfAttacking = AddToggleOption("$ostim_force_auto_attacking", Main.UseAIPlayerAggressor)
-		SetForceAIIfAttacked = AddToggleOption("$ostim_force_auto_attacked", Main.UseAIPlayerAggressed)
-		SetForceAIInConsensualScenes = AddToggleOption("$ostim_force_auto_consentual", Main.UseAINonAggressive)
-		SetForceAIForMasturbation = AddToggleOption("$ostim_force_auto_masturbation", Main.UseAIMasturbation)
-		SetUseAutoFades = AddToggleOption("$ostim_auto_fades", Main.UseAutoFades)
-		SetAIChangeChance = AddSliderOption("$ostim_ai_change_chance", Main.AiSwitchChance, "{0}")
-		AddEmptyOption()
 
 		AddColoredHeader("$ostim_header_lights")
 		SetDomLightMode = AddMenuOption("$ostim_dom_light_mode", DomLightModeList[Main.DomLightPos])
@@ -317,7 +277,6 @@ Event OnPageReset(String Page)
 			SetOARequireLowArousalBeforeEnd = AddToggleOption("$ostim_addon_oa_low_arousal_end", StorageUtil.GetIntValue(none, SUOALowArousalReq))
 			SetOAStatBuffs = AddToggleOption("$ostim_addon_oa_stat_buffs", StorageUtil.GetIntValue(none, SUOAStatBuffs))
 			SetOANudityBroadcast = AddToggleOption("$ostim_addon_oa_nudity_bc", StorageUtil.GetIntValue(none, SUOANudityBroadcast))
-
 		endif
 	ElseIf Page == "$ostim_page_controls"
 		DrawControlsPage()
@@ -329,7 +288,7 @@ Event OnPageReset(String Page)
 		DrawGenderRolesPage()
 	ElseIf Page == "$ostim_page_furniture"
 		DrawFurniturePage()
-	ElseIf (Page == "$ostim_page_undress")
+	ElseIf Page == "$ostim_page_undress"
 		DrawUndressingPage()
 	ElseIf Page == "$ostim_page_expression"
 		DrawExpressionPage()
@@ -440,42 +399,6 @@ Event OnOptionSelect(Int Option)
 	ElseIf (Option == SetUpdate)
 		ShowMessage("$ostim_message_update_close_menus", false)
 		OUtils.ForceOUpdate()
-	ElseIf (Option == SetActorSpeedControl)
-		Main.EnableActorSpeedControl = !Main.EnableActorSpeedControl
-		SetToggleOptionValue(Option, Main.EnableActorSpeedControl)
-	ElseIf (Option == SetTutorialMessages)
-		Main.ShowTutorials = !Main.ShowTutorials
-		SetToggleOptionValue(Option, Main.ShowTutorials)
-	ElseIf (Option == SetUseIntroScenes)
-		Main.UseIntroScenes = !Main.UseIntroScenes
-		SetToggleOptionValue(Option, Main.UseIntroScenes)
-	ElseIf (Option == SetForceAIInConsensualScenes)
-		Main.UseAINonAggressive = !Main.UseAINonAggressive
-		SetToggleOptionValue(Option, Main.UseAINonAggressive)
-	ElseIf (Option == SetForceAIForMasturbation)
-		Main.UseAIMasturbation = !Main.UseAIMasturbation
-		SetToggleOptionValue(Option, Main.UseAIMasturbation)
-	ElseIf (Option == SetForceAIIfAttacked)
-		Main.UseAIPlayerAggressed = !Main.UseAIPlayerAggressed
-		SetToggleOptionValue(Option, Main.UseAIPlayerAggressed)
-	ElseIf (Option == SetUseAutoFades)
-		Main.UseAutoFades = !Main.UseAutoFades
-		SetToggleOptionValue(Option, Main.UseAutoFades)
-	ElseIf (Option == SetEndAfterActorHit)
-		Main.EndAfterActorHit = !Main.EndAfterActorHit
-		SetToggleOptionValue(Option, Main.EndAfterActorHit)
-	ElseIf (Option == SetUseCosaveWorkaround)
-		Main.UseBrokenCosaveWorkaround = !Main.UseBrokenCosaveWorkaround
-		SetToggleOptionValue(Option, Main.UseBrokenCosaveWorkaround)
-	ElseIf (Option == SetForceAIIfAttacking)
-		Main.UseAIPlayerAggressor = !Main.UseAIPlayerAggressor
-		SetToggleOptionValue(Option, Main.UseAIPlayerAggressor)
-	ElseIf (Option == SetAIControl)
-		Main.UseAIControl = !Main.UseAIControl
-		SetToggleOptionValue(Option, Main.UseAIControl)
-	ElseIf (Option == SetUseFades)
-		Main.UseFades = !Main.UseFades
-		SetToggleOptionValue(Option, Main.UseFades)
 	ElseIf (Option == SetOnlyLightInDark)
 		Main.LowLightLevelLightsOnly = !Main.LowLightLevelLightsOnly
 		SetToggleOptionValue(Option, Main.LowLightLevelLightsOnly)
@@ -540,36 +463,8 @@ Event OnOptionHighlight(Int Option)
 	EndIf
 	If (Option == SetResetState)
 		SetInfoText("$ostim_tooltip_reset")
-	ElseIf (Option == SetForceAIIfAttacked)
-		SetInfoText("$ostim_tooltip_ai_attacked")
-	ElseIf (Option == SetForceAIIfAttacking)
-		SetInfoText("$ostim_tooltip_ai_attacking")
-	ElseIf (Option == SetForceAIInConsensualScenes)
-		SetInfoText("$ostim_tooltip_ai_consent")
-	ElseIf (Option == SetForceAIForMasturbation)
-		SetInfoText("$ostim_tooltip_ai_masturbation")
-	ElseIf (Option == SetUseFades)
-		SetInfoText("$ostim_tooltip_fades")
-	ElseIf (Option == SetUseIntroScenes)
-		SetInfoText("$ostim_tooltip_use_intro_scenes")
-	ElseIf (Option == SetUseCosaveWorkaround)
-		SetInfoText("$ostim_tooltip_cosave")
-	ElseIf (Option == SetEndAfterActorHit)
-		SetInfoText("$ostim_tooltip_end_on_hit")
-	ElseIf (Option == SetCustomTimescale)
-		SetInfoText("$ostim_tooltip_custom_timescale")
-	ElseIf (Option == SetActorSpeedControl)
-		SetInfoText("$ostim_tooltip_speed_control")
-	ElseIf (Option == SetUseAutoFades)
-		SetInfoText("$ostim_tooltip_auto_fades")
-	ElseIf (Option == SetAIChangeChance)
-		SetInfoText("$ostim_tooltip_ai_change_chance")
-	ElseIf (Option == SetTutorialMessages)
-		SetInfoText("$ostim_tooltip_enable_tutorial")
 	ElseIf (Option == setupdate)
 		SetInfoText("$ostim_tooltip_update")
-	ElseIf (Option == SetAIControl)
-		SetInfoText("$ostim_tooltip_enable_ai")
 	ElseIf (Option == SetDomLightMode)
 		SetInfoText("$ostim_tooltip_dom_light")
 	ElseIf (Option == SetSubLightMode)
@@ -626,17 +521,7 @@ EndEvent
 Event OnOptionSliderOpen(Int Option)
 	Main.PlayTickBig()
 
-	If (Option == SetCustomTimescale)
-		SetSliderDialogStartValue(Main.CustomTimescale)
-		SetSliderDialogDefaultValue(0.0)
-		SetSliderDialogRange(0, 40)
-		SetSliderDialogInterval(1)
-	ElseIf (Option == SetAIChangeChance)
-		SetSliderDialogStartValue(Main.AiSwitchChance)
-		SetSliderDialogDefaultValue(6.0)
-		SetSliderDialogRange(0, 100)
-		SetSliderDialogInterval(1)
-	elseif (option == SetORDifficulty)
+	if (option == SetORDifficulty)
 		SetSliderDialogStartValue(GetExternalInt(oromance, GVORDifficulty))
 		SetSliderDialogDefaultValue(0.0)
 		SetSliderDialogRange(-100, 150)
@@ -666,12 +551,6 @@ Event OnOptionSliderAccept(Int Option, Float Value)
 	Elseif (option == SetOPFreq)
 		StorageUtil.SetIntValue(none, SUOPFreq, value as int)
 		SetSliderOptionValue(SetOPFreq, Value, "{0}")
-	ElseIf (Option == SetCustomTimescale)
-		Main.CustomTimescale = (Value as Int)
-		SetSliderOptionValue(Option, Value, "{0}")
-	ElseIf (Option == SetAIChangeChance)
-		Main.AiSwitchChance = (Value as Int)
-		SetSliderOptionValue(Option, Value, "{0}")
 	EndIf
 EndEvent
 
@@ -758,10 +637,6 @@ Function ExportSettings()
 	
 	osexintegrationmain.Console("Saving Ostim settings.")
 
-	; Sex settings export.
-	JMap.SetInt(OstimSettingsFile, "SetActorSpeedControl", Main.EnableActorSpeedControl as Int)
-	JMap.SetInt(OstimSettingsFile, "SetEndAfterActorHit", Main.EndAfterActorHit as Int)
-
 	; Light settings export.
 	Jmap.SetInt(OstimSettingsFile, "SetDomLightMode", Main.DomLightPos as Int)
 	Jmap.SetInt(OstimSettingsFile, "SetSubLightMode", Main.SubLightPos as Int)
@@ -776,14 +651,6 @@ Function ExportSettings()
 	JMap.SetInt(OstimSettingsFile, "SetPullOut", Main.PullOutKey as Int)
 	JMap.SetInt(OstimSettingsFile, "SetControlToggle", Main.ControlToggleKey as Int)
 
-	; Ai/Control settings export.
-	JMap.SetInt(OstimSettingsFile, "SetAIControl", Main.UseAIControl as Int)
-	JMap.SetInt(OstimSettingsFile, "SetForceAIIfAttacking", Main.UseAIPlayerAggressor as Int)
-	JMap.SetInt(OstimSettingsFile, "SetForceAIIfAttacked", Main.UseAIPlayerAggressed as Int)
-	JMap.SetInt(OstimSettingsFile, "SetForceAIInConsensualScenes", Main.UseAINonAggressive as Int)
-	JMap.SetInt(OstimSettingsFile, "SetForceAIForMasturbation", Main.UseAIMasturbation as Int)
-	JMap.SetInt(OstimSettingsFile, "SetAIChangeChance", Main.AiSwitchChance as Int)
-
 	; OSA keys settings export.
 	JMap.SetInt(OstimSettingsFile, "SetOsaMainMenuKey", OSAControl.osaMainMenuKey as Int)
 	JMap.SetInt(OstimSettingsFile, "SetOsaUpKey", OSAControl.osaUpKey as Int)
@@ -793,59 +660,6 @@ Function ExportSettings()
 	JMap.SetInt(OstimSettingsFile, "SetOsaTogKey", OSAControl.osaTogKey as Int)
 	JMap.SetInt(OstimSettingsFile, "SetOsaYesKey", OSAControl.osaYesKey as Int)
 	JMap.SetInt(OstimSettingsFile, "SetOsaEndKey", OSAControl.osaEndKey as Int)
-
-	; Misc settings export.
-	JMap.SetInt(OstimSettingsFile, "SetCustomTimescale", Main.CustomTimescale as Int)
-
-	JMap.SetInt(OstimSettingsFile, "SetTutorialMessages", Main.ShowTutorials as Int)
-
-	JMap.SetInt(OstimSettingsFile, "SetUseFades", Main.UseFades as Int)
-	JMap.SetInt(OstimSettingsFile, "SetUseAutoFades", Main.UseAutoFades as Int)
-
-	; addon stuff
-	if main.IsModLoaded(ORomance)
-		osexintegrationmain.Console("Saving ORomance settings.")
-		JMap.setInt(OstimSettingsFile, "savedORomance", 1)
-		JMap.setInt(OstimSettingsFile, "SetORSexuality", (GetExternalBool(ORomance, GVORSexuality)) as int)
-		JMap.setInt(OstimSettingsFile, "SetORDifficulty", (GetExternalInt(ORomance, GVORDifficulty)) as int)
-		JMap.setInt(OstimSettingsFile, "SetORKey", GetExternalInt(oromance, gvorkey))
-		JMap.setInt(OstimSettingsFile, "SetORColorblind", GetExternalBool(ORomance, GVORColorblind) as int)
-		JMap.setInt(OstimSettingsFile, "SetORLeft",  GetExternalInt(oromance, GVORLeft))
-		JMap.setInt(OstimSettingsFile, "SetORRight", GetExternalInt(oromance, GVORRight))
-		JMap.setInt(OstimSettingsFile, "SetORNakadashi", GetExternalBool(ORomance, GVORNakadashi) as int)
-	Else
-		JMap.setInt(OstimSettingsFile, "savedORomance", 0)
-	endif
-
-	if main.IsModLoaded(OSearch)
-		osexintegrationmain.Console("Saving OSearch settings.")
-		JMap.setInt(OstimSettingsFile, "savedOSearch", 1)
-		JMap.setInt(OstimSettingsFile, "SetOSKey", StorageUtil.GetIntValue(none, SUOSKey))
-		JMap.setInt(OstimSettingsFile, "SetOSAllowSex", StorageUtil.GetIntValue(none, SUOSAllowSex))
-		JMap.setInt(OstimSettingsFile, "SetOSAllowHub", StorageUtil.GetIntValue(none, SUOSAllowHub))
-		JMap.setInt(OstimSettingsFile, "SetOSAllowTransitory", StorageUtil.GetIntValue(none, SUOSAllowTransitory))
-	else
-		JMap.setInt(OstimSettingsFile, "savedOSearch", 0)
-	endif
-
-	if main.IsModLoaded(OCrime)
-		osexintegrationmain.Console("Saving OCrime settings.")
-		JMap.setInt(OstimSettingsFile, "savedOCrime", 1)
-		JMap.setInt(OstimSettingsFile, "SetOCBounty", StorageUtil.GetIntValue(none, suocbounty))
-	Else
-		JMap.setInt(OstimSettingsFile, "savedOCrime", 0)
-	endif
-
-	if main.IsModLoaded(OAroused)
-		osexintegrationmain.Console("Saving OAroused settings.")
-		JMap.setInt(OstimSettingsFile, "savedOAroused", 1)
-		JMap.setInt(OstimSettingsFile, "SetOAKey", StorageUtil.GetIntValue(none, SUOAKey))
-		JMap.setInt(OstimSettingsFile, "SetOARequireLowArousalBeforeEnd", StorageUtil.GetIntValue(none, SUOALowArousalReq))
-		JMap.setInt(OstimSettingsFile, "SetOAStatBuffs", StorageUtil.GetIntValue(none, SUOAStatBuffs))
-		JMap.setInt(OstimSettingsFile, "SetOANudityBroadcast", StorageUtil.GetIntValue(none, SUOANudityBroadcast))
-	Else
-		JMap.setInt(OstimSettingsFile, "savedOAroused", 0)
-	endif
 
 	; Save to file.
 	JMap.SetInt(OstimSettingsFile, "OStimAPIVersion", outils.getostim().getapiversion())
@@ -897,10 +711,6 @@ Function ImportSettings(bool default = false)
 			return
 		endif
 	endif
-	
-	; Sex settings import.
-	Main.EnableActorSpeedControl = JMap.GetInt(OstimSettingsFile, "SetActorSpeedControl")
-	Main.EndAfterActorHit = JMap.GetInt(OstimSettingsFile, "SetEndAfterActorHit")
 
 	; Light settings export.
 	Main.DomLightPos = Jmap.GetInt(OstimSettingsFile, "SetDomLightMode")
@@ -925,58 +735,6 @@ Function ImportSettings(bool default = false)
 	OSAControl.osaTogKey = JMap.GetInt(OstimSettingsFile, "SetOsaTogKey", 73)
 	OSAControl.osaYesKey = JMap.GetInt(OstimSettingsFile, "SetOsaYesKey", 71)
 	OSAControl.osaEndKey = JMap.GetInt(OstimSettingsFile, "SetOsaEndKey", 83)
-
-	Main.AiSwitchChance = JMap.GetInt(OstimSettingsFile, "SetAIChangeChance")
-	
-	; Ai/Control settings export.
-	Main.UseAIControl = JMap.GetInt(OstimSettingsFile, "SetAIControl")
-	Main.UseAIPlayerAggressor = JMap.GetInt(OstimSettingsFile, "SetForceAIIfAttacking")
-	Main.UseAIPlayerAggressed = JMap.GetInt(OstimSettingsFile, "SetForceAIIfAttacked")
-	Main.UseAINonAggressive = JMap.GetInt(OstimSettingsFile, "SetForceAIInConsensualScenes")
-	Main.UseAIMasturbation = JMap.GetInt(OstimSettingsFile, "SetForceAIForMasturbation")
-
-	; Misc settings export.
-	Main.CustomTimescale = JMap.GetInt(OstimSettingsFile, "SetCustomTimescale")
-	
-	Main.UseFades = JMap.GetInt(OstimSettingsFile, "SetUseFades")
-	Main.UseAutoFades = JMap.GetInt(OstimSettingsFile, "SetUseAutoFades")
-
-	Main.ShowTutorials = JMap.GetInt(OstimSettingsFile, "SetTutorialMessages")
-
-	if !default ; don't load addon settings for reset to default button
-	; addon stuff
-		if main.IsModLoaded(ORomance) && JMap.getInt(OstimSettingsFile, "savedORomance") == 1
-			osexintegrationmain.Console("Loading ORomance settings.")
-			SetExternalBool(ORomance, GVORSexuality, JMap.getInt(OstimSettingsFile, "SetORSexuality") as bool)
-			SetExternalInt(ORomance, GVORDifficulty, JMap.getInt(OstimSettingsFile, "SetORDifficulty"))
-			SetExternalInt(ORomance, gvorkey, JMap.getInt(OstimSettingsFile, "SetORKey"))
-			SetExternalBool(ORomance, GVORColorblind, JMap.getInt(OstimSettingsFile, "SetORColorblind") as bool)
-			SetExternalInt(ORomance, GVORLeft, JMap.getInt(OstimSettingsFile, "SetORLeft"))
-			SetExternalInt(ORomance, GVORRight, JMap.getInt(OstimSettingsFile, "SetORRight"))
-			SetExternalBool(ORomance, GVORNakadashi, JMap.getInt(OstimSettingsFile, "SetORNakadashi") as bool)
-		endif
-
-		if main.IsModLoaded(OSearch) && JMap.getInt(OstimSettingsFile, "savedOSearch") == 1
-			osexintegrationmain.Console("Loading OSearch settings.")
-			 StorageUtil.SetIntValue(none, SUOSKey, JMap.getInt(OstimSettingsFile, "SetOSKey"))
-			 StorageUtil.SetIntValue(none, SUOSAllowSex, JMap.getInt(OstimSettingsFile, "SetOSAllowSex"))
-			 StorageUtil.SetIntValue(none, SUOSAllowHub, JMap.getInt(OstimSettingsFile, "SetOSAllowHub"))
-			 StorageUtil.SetIntValue(none, SUOSAllowTransitory, JMap.getInt(OstimSettingsFile, "SetOSAllowTransitory"))
-		endif
-
-		if main.IsModLoaded(OCrime) && JMap.getInt(OstimSettingsFile, "savedOCrime") == 1
-			osexintegrationmain.Console("Loading OCrime settings.")
-			StorageUtil.SetIntValue(none, suocbounty, JMap.getInt(OstimSettingsFile, "SetOCBounty"))
-		endif
-
-		if main.IsModLoaded(OAroused) && JMap.getInt(OstimSettingsFile, "savedOAroused") == 1
-			osexintegrationmain.Console("Loading OAroused settings.")
-			StorageUtil.SetIntValue(none, SUOAKey, JMap.getInt(OstimSettingsFile, "SetOAKey"))
-			StorageUtil.SetIntValue(none, SUOALowArousalReq, JMap.getInt(OstimSettingsFile, "SetOARequireLowArousalBeforeEnd"))
-			StorageUtil.SetIntValue(none, SUOAStatBuffs, JMap.getInt(OstimSettingsFile, "SetOAStatBuffs"))
-			StorageUtil.SetIntValue(none, SUOANudityBroadcast, JMap.getInt(OstimSettingsFile, "SetOANudityBroadcast"))
-		endif
-	endif
 
 	OData.ImportSettings()
 
@@ -1008,6 +766,14 @@ Function DrawGeneralPage()
 	SetCursorFillMode(LEFT_TO_RIGHT)
 	SetCursorPosition(0)
 	AddToggleOptionST("OID_ResetPosition", "$ostim_reset_position", Main.ResetPosAfterSceneEnd)
+	SetCursorPosition(2)
+	AddSliderOptionST("OID_CustomTimeScale", "$ostim_timescale", Main.CustomTimescale, "{0}")
+	SetCursorPosition(4)
+	AddToggleOptionST("OID_UseFades", "$ostim_use_fades", Main.UseFades)
+	SetCursorPosition(6)
+	AddToggleOptionST("OID_EndWhenActorHit", "$ostim_end_on_hit", Main.EndAfterActorHit)
+	SetCursorPosition(8)
+	AddToggleOptionST("OID_UseIntroScenes", "$ostim_use_intro_scenes", Main.UseIntroScenes)
 EndFunction
 
 State OID_ResetPosition
@@ -1018,6 +784,57 @@ State OID_ResetPosition
 	Event OnSelectST()
 		Main.ResetPosAfterSceneEnd = !Main.ResetPosAfterSceneEnd
 		SetToggleOptionValueST(Main.ResetPosAfterSceneEnd)
+	EndEvent
+EndState
+
+State OID_CustomTimeScale
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_custom_timescale")
+	EndEvent
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(Main.CustomTimescale)
+		SetSliderDialogDefaultValue(0)
+		SetSliderDialogRange(0, 40)
+		SetSliderDialogInterval(1)
+	EndEvent
+
+	Event OnSliderAcceptST(float Value)
+		Main.CustomTimescale = Value As int
+		SetSliderOptionValueST(Value, "{0}")
+	EndEvent
+EndState
+
+State OID_UseFades
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_fades")
+	EndEvent
+
+	Event OnSelectST()
+		Main.UseFades = !Main.UseFades
+		SetToggleOptionValueST(Main.UseFades)
+	EndEvent
+EndState
+
+State OID_EndWhenActorHit
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_end_on_hit")
+	EndEvent
+
+	Event OnSelectST()
+		Main.EndAfterActorHit = !Main.EndAfterActorHit
+		SetToggleOptionValueST(Main.EndAfterActorHit)
+	EndEvent
+EndState
+
+State OID_UseIntroScenes
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_use_intro_scenes")
+	EndEvent
+
+	Event OnSelectST()
+		Main.UseIntroScenes = !Main.UseIntroScenes
+		SetToggleOptionValueST(Main.UseIntroScenes)
 	EndEvent
 EndState
 
@@ -1287,6 +1104,149 @@ State OID_UseRumble
 	Event OnSelectST()
 		Main.UseRumble = !Main.UseRumble
 		SetToggleOptionValueST(Main.UseRumble)
+	EndEvent
+EndState
+
+
+;  █████╗ ██╗   ██╗████████╗ ██████╗      ██████╗ ██████╗ ███╗   ██╗████████╗██████╗  ██████╗ ██╗
+; ██╔══██╗██║   ██║╚══██╔══╝██╔═══██╗    ██╔════╝██╔═══██╗████╗  ██║╚══██╔══╝██╔══██╗██╔═══██╗██║
+; ███████║██║   ██║   ██║   ██║   ██║    ██║     ██║   ██║██╔██╗ ██║   ██║   ██████╔╝██║   ██║██║
+; ██╔══██║██║   ██║   ██║   ██║   ██║    ██║     ██║   ██║██║╚██╗██║   ██║   ██╔══██╗██║   ██║██║
+; ██║  ██║╚██████╔╝   ██║   ╚██████╔╝    ╚██████╗╚██████╔╝██║ ╚████║   ██║   ██║  ██║╚██████╔╝███████╗
+; ╚═╝  ╚═╝ ╚═════╝    ╚═╝    ╚═════╝      ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝ ╚══════╝
+
+Function DrawAutoControlPage()
+	SetCursorFillMode(TOP_TO_BOTTOM)
+	SetCursorPosition(0)
+	AddColoredHeader("$ostim_header_actor_behavior")
+	SetCursorPosition(2)
+	AddToggleOptionST("OID_AutoSpeedControl", "$ostim_speed_control", Main.EnableActorSpeedControl)
+
+	SetCursorPosition(1)
+	AddColoredHeader("$ostim_header_auto_mode")
+	SetCursorPosition(3)
+	AddToggleOptionST("OID_UseAutoModeAlways", "$ostim_use_auto_mode_always", Main.UseAIControl)
+	SetCursorPosition(5)
+	int UseAutoModeConditionalFlags = OPTION_FLAG_NONE
+	If Main.UseAIControl
+		UseAutoModeConditionalFlags = OPTION_FLAG_DISABLED
+	EndIf
+	AddToggleOptionST("OID_UseAutoModeSolo", "$ostim_use_auto_mode_solo", Main.UseAIMasturbation, UseAutoModeConditionalFlags)
+	SetCursorPosition(7)
+	AddToggleOptionST("OID_UseAutoModeDominant", "$ostim_use_auto_mode_dominant", Main.UseAIPlayerAggressor, UseAutoModeConditionalFlags)
+	SetCursorPosition(9)
+	AddToggleOptionST("OID_UseAutoModeSubmissive", "$ostim_use_auto_mode_submissive", Main.UseAIPlayerAggressed, UseAutoModeConditionalFlags)
+	SetCursorPosition(11)
+	AddToggleOptionST("OID_UseAutoModeVanilla", "$ostim_use_auto_mode_vanilla", Main.UseAINonAggressive, UseAutoModeConditionalFlags)
+	SetCursorPosition(13)
+	AddToggleOptionST("OID_UseAutoModeFades", "$ostim_use_auto_mode_fades", Main.UseAutoFades)
+	SetCursorPosition(15)
+	AddSliderOptionST("OID_AiSwitchChance", "$ostim_ai_change_chance", Main.AiSwitchChance, "{0}")
+EndFunction
+
+
+State OID_AutoSpeedControl
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_speed_control")
+	EndEvent
+
+	Event OnSelectST()
+		Main.EnableActorSpeedControl = !Main.EnableActorSpeedControl
+		SetToggleOptionValueST(Main.EnableActorSpeedControl)
+	EndEvent
+EndState
+
+
+State OID_UseAutoModeAlways
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_use_auto_mode_always")
+	EndEvent
+
+	Event OnSelectST()
+		Main.UseAIControl = !Main.UseAIControl
+		SetToggleOptionValueST(Main.UseAIControl)
+
+		int UseAutoModeConditionalFlags = OPTION_FLAG_NONE
+		If Main.UseAIControl
+			UseAutoModeConditionalFlags = OPTION_FLAG_DISABLED
+		EndIf
+		SetOptionFlagsST(UseAutoModeConditionalFlags, false, "OID_UseAutoModeSolo")
+		SetOptionFlagsST(UseAutoModeConditionalFlags, false, "OID_UseAutoModeDominant")
+		SetOptionFlagsST(UseAutoModeConditionalFlags, false, "OID_UseAutoModeSubmissive")
+		SetOptionFlagsST(UseAutoModeConditionalFlags, false, "OID_UseAutoModeVanilla")
+	EndEvent
+EndState
+
+State OID_UseAutoModeSolo
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_use_auto_mode_solo")
+	EndEvent
+
+	Event OnSelectST()
+		Main.UseAIMasturbation = !Main.UseAIMasturbation
+		SetToggleOptionValueST(Main.UseAIMasturbation)
+	EndEvent
+EndState
+
+State OID_UseAutoModeDominant
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_use_auto_mode_dominant")
+	EndEvent
+
+	Event OnSelectST()
+		Main.UseAIPlayerAggressor = !Main.UseAIPlayerAggressor
+		SetToggleOptionValueST(Main.UseAIPlayerAggressor)
+	EndEvent
+EndState
+
+State OID_UseAutoModeSubmissive
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_use_auto_mode_submissive")
+	EndEvent
+
+	Event OnSelectST()
+		Main.UseAIPlayerAggressed = !Main.UseAIPlayerAggressed
+		SetToggleOptionValueST(Main.UseAIPlayerAggressed)
+	EndEvent
+EndState
+
+State OID_UseAutoModeVanilla
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_use_auto_mode_vanilla")
+	EndEvent
+
+	Event OnSelectST()
+		Main.UseAINonAggressive = !Main.UseAINonAggressive
+		SetToggleOptionValueST(Main.UseAINonAggressive)
+	EndEvent
+EndState
+
+State OID_UseAutoModeFades
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_use_auto_mode_fades")
+	EndEvent
+
+	Event OnSelectST()
+		Main.UseAutoFades = !Main.UseAutoFades
+		SetToggleOptionValueST(Main.UseAutoFades)
+	EndEvent
+EndState
+
+State OID_AiSwitchChance
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_ai_change_chance")
+	EndEvent
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(Main.AiSwitchChance)
+		SetSliderDialogDefaultValue(6)
+		SetSliderDialogRange(0, 100)
+		SetSliderDialogInterval(1)
+	EndEvent
+
+	Event OnSliderAcceptST(float Value)
+		Main.AiSwitchChance = Value As int
+		SetSliderOptionValueST(Value, "{0}")
 	EndEvent
 EndState
 

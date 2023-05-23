@@ -79,6 +79,7 @@ namespace OStim {
 
         float freeCamSpeedBefore = 0;
         float worldFOVbefore = 0;
+        float timeScaleBefore = 0;
 
         std::vector<Sound::SoundPlayer*> soundPlayers;
 
