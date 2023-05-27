@@ -66,67 +66,10 @@ Function UpdateControls()
         ostim = OUtils.GetOStim()
 
         disableControl = false
-
-        If (!_IsKeySetup)
-            oPlayerControls()
-        EndIf
          _IsSetup = True
     EndIf
     UI.InvokeIntA("HUD Menu", "_root.WidgetContainer." + Glyph + ".widget.com.skyOKey", OKey)
 EndFunction
-
-Function OPlayerControls()
-    UnregisterForAllKeys()
-    OKey = SetOKey()
-
-    Int i = 0
-    While i < 14
-        RegisterForKey(OKey[i])
-        i += 1
-    EndWhile
-    _IsKeySetup = True
-EndFunction
-
-Event OnKeyDown(Int KeyPress)
-    If (OUtils.MenuOpen())
-        Return
-    EndIf
-
-    If (KeyPress == OKey[0])
-        ostim.EndAnimation(true)
-    ElseIf disableControl
-        If !Utility.IsInMenuMode()
-            OsexIntegrationMain.Console("OSA controls disabled by OStim property")
-        EndIf
-        return 
-    EndIf
-
-    If (KeyPress == OKey[2])
-        ;UI.Invoke("HUD Menu", "_root.WidgetContainer." + Glyph + ".widget.ctr.UP")
-        OSANative.Control(0, Glyph)
-    ElseIf (KeyPress == OKey[3])
-        ;UI.Invoke("HUD Menu", "_root.WidgetContainer." + Glyph + ".widget.ctr.DOWN")
-        OSANative.Control(1, Glyph)
-    ElseIf (KeyPress == OKey[4])
-        ;UI.Invoke("HUD Menu", "_root.WidgetContainer." + Glyph + ".widget.ctr.LEFT")
-        OSANative.Control(2, Glyph)
-    ElseIf (KeyPress == OKey[5])
-        ;UI.Invoke("HUD Menu", "_root.WidgetContainer." + Glyph + ".widget.ctr.RIGHT")
-        OSANative.Control(3, Glyph)
-    ElseIf (KeyPress == OKey[6])
-        ;UI.Invoke("HUD Menu", "_root.WidgetContainer." + Glyph + ".widget.ctr.TOG")
-        OSANative.Control(4, Glyph)
-    ElseIf (KeyPress == OKey[7])
-        ;UI.Invoke("HUD Menu", "_root.WidgetContainer." + Glyph + ".widget.ctr.YES")
-        OSANative.Control(5, Glyph)
-    ElseIf (KeyPress == OKey[8])
-        ;UI.Invoke("HUD Menu", "_root.WidgetContainer." + Glyph + ".widget.ctr.NO")
-        OSANative.Control(6, Glyph)
-    ElseIf (KeyPress == OKey[1])
-        ;UI.Invoke("HUD Menu", "_root.WidgetContainer." + Glyph + ".widget.ctr.MENU")
-        OSANative.Control(7, Glyph)
-    EndIf
-EndEvent
 
 Function PlanArr(String[] MyStage)
     String[] MyPlan = new String[22]
@@ -194,57 +137,7 @@ Function PlanString(String[] MyStage)
     MyPlan = OSA.Plan(MyPlan, "$Wait,2")
     MyPlan = OSA.Plan(MyPlan, "$EndScene")
     OSA.setPlanString(MyStage, MyPlan)
-
-    ;MyPlan += "$Wait,10"+"__"
-    ;MyPlan += "$Go,0MF|Sy6!Sy6|Ho|St6Pop"+"__"
-    ;MyPlan += "$Wait,6"+"__"
-    ;MyPlan += "$Warp,0MF|Sy6!Sy6|Ho|St6Pop+01SexSpankR"+"__"
-    ;MyPlan += "$ModEvent,0S_TestingThing"+"__"
-    ;MyPlan += "$Wait,4"+"__"
-    ;MyPlan += "$EqUndressAll,1"+"__"
-    ;MyPlan += "$Wait, 4"+"__"
-    ;MyPlan += "$Go,0MF|Sy6!Sy6|Po|StOvBa2Po"+"__"
-    ;MyPlan += "$Wait,6"+"__"
-    ;MyPlan += "$Speed,1,0"+"__"
-    ;MyPlan += "$Wait,6"+"__"
-    ;MyPlan += "$Speed,1,0"+"__"
-    ;MyPlan += "$Wait,6"+"__"
-    ;MyPlan += "$Speed,1,0"+"__"
-    ;MyPlan += "$Wait,6"+"__"
-    ;MyPlan += "$Speed,-6,0"+"__"
-    ;MyPlan += "$Wait,4"+"__"
-    ;MyPlan += "$EndScene"+"__"
 EndFunction
-
-Event OnKeyUp(Int KeyPress, Float HoldTime)
-    If (KeyPress == OKey[13])
-        If (HoldTime > 5.0)
-            UnregisterForKey(OKey[2])
-            OKey[2] = 17
-            RegisterForKey(OKey[2])
-            UnregisterForKey(OKey[3])
-            OKEY[3] = 31
-            RegisterForKey(OKey[3])
-            UnregisterForKey(OKey[4])
-            OKey[4] = 30
-            RegisterForKey(OKey[4])
-            UnregisterForKey(OKey[5])
-            OKey[5] = 32
-            RegisterForKey(OKey[5])
-            UnregisterForKey(OKey[7])
-            OKey[7] = 16
-            RegisterForKey(OKey[7])
-            UnregisterForKey(OKey[8])
-            OKey[8] = 18
-            RegisterForKey(OKey[8])
-            UnregisterForKey(OKey[1])
-            OKey[1] = 42
-            RegisterForKey(OKey[1])
-            UI.Invoke("HUD Menu", "_root.WidgetContainer." + Glyph + ".widget.com.skyEmergencyBinds")
-        EndIf
-    EndIf
-EndEvent
-
 
 Event OnInspectActraTrue(String EventName, String FormID, Float Arg, Form Actra)
     Actor InspectedActor = Actra as Actor
@@ -446,3 +339,7 @@ Event OnEqReadCuirassStyle(String EventName, String ReturnTo, Float EQForm, Form
 
     UI.InvokeStringA("HUD Menu", "_root.WidgetContainer." + Glyph + ".widget.com.skyEqReadCuirassStyle", Data)
 EndEvent
+
+Function SetGlyph()
+    OSANative.SetGlyph(Glyph)
+EndFunction

@@ -220,3 +220,5 @@ Function SetLocale(String a_locale = "") Global Native
 string Function GetSceneIdFromAnimId(string Id) Global Native
 int Function GetSpeedFromAnimId(string Id) Global Native
 string Function GetAnimClass(string Id) Global Native
+
+Function SetGlyph(int Glyph) Global Native

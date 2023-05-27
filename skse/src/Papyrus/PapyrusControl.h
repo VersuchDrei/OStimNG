@@ -7,7 +7,7 @@ namespace PapyrusControl {
     using VM = RE::BSScript::IVirtualMachine;
 
     void Control(RE::StaticFunctionTag*, UI::Controls a_direction, int64_t a_glyph) {
-        UI::UIState::GetSingleton()->HandleControl(a_direction, a_glyph);
+        UI::UIState::GetSingleton()->HandleControl(a_direction);
     }
 
     void EndPlayerDialogue(RE::StaticFunctionTag*) {

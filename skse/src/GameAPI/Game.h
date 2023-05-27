@@ -1,5 +1,6 @@
 #pragma once
 
+#include "GameAPI/GameActor.h"
 #include "GameAPI/GameTable.h"
 
 namespace GameAPI {
@@ -9,6 +10,7 @@ namespace GameAPI {
         inline static void setTimeScale(float scale) { GameTable::getTimescale()->value = scale; }
         static void setGameSpeed(float speed);
         static void shakeController(float leftStrength, float rightStrength, float duration);
+        static GameActor getCrosshairActor();
 
     private:
         inline static void ShakeController(bool leftMotor, float strength, float duration) {

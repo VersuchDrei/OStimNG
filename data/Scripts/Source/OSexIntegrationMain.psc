@@ -55,13 +55,6 @@ Faction Property OStimExcitementFaction Auto
 ; -------------------------------------------------------------------------------------------------
 ; SETTINGS  ---------------------------------------------------------------------------------------
 
-Int Property SubLightPos Auto
-Int Property DomLightPos Auto
-Int Property SubLightBrightness Auto
-Int Property DomLightBrightness Auto
-
-Bool Property LowLightLevelLightsOnly Auto
-
 bool disableosacontrolsbool
 
 Bool Property DisableOSAControls
@@ -170,8 +163,133 @@ bool Property UseIntroScenes
 EndProperty
 
 
+GlobalVariable Property OStimMaleLightMode Auto
+int Property DomLightPos
+	int Function Get()
+		Return OStimMaleLightMode.value As int
+	EndFunction
+	Function Set(int Value)
+		OStimMaleLightMode.value = Value
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimFemaleLightMode Auto
+int Property SubLightPos
+	int Function Get()
+		Return OStimFemaleLightMode.value As int
+	EndFunction
+	Function Set(int Value)
+		OStimFemaleLightMode.value = Value
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimOnlyLightInDark Auto
+bool Property LowLightLevelLightsOnly
+	bool Function Get()
+		Return OStimOnlyLightInDark.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimOnlyLightInDark.value = 1
+		Else
+			OStimOnlyLightInDark.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimMaleLightBrightness Auto
+int Property DomLightBrightness
+	int Function Get()
+		Return OStimMaleLightBrightness.value As int
+	EndFunction
+	Function Set(int Value)
+		OStimMaleLightBrightness.value = Value
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimFemaleLightBrightness Auto
+int Property SubLightBrightness
+	int Function Get()
+		Return OStimFemaleLightBrightness.value As int
+	EndFunction
+	Function Set(int Value)
+		OStimFemaleLightBrightness.value = Value
+	EndFunction
+EndProperty
+
+
 ; -------------------------------------------------------------------------------------------------
 ; CONTROLS SETTINGS  ------------------------------------------------------------------------------
+
+GlobalVariable Property OStimKeyUp Auto
+int Property KeyUp
+	int Function Get()
+		Return OStimKeyUp.value As int
+	EndFunction
+	Function Set(int Value)
+		OstimKeyUp.value = Value
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimKeyDown Auto
+int Property KeyDown
+	int Function Get()
+		Return OStimKeyDown.value As int
+	EndFunction
+	Function Set(int Value)
+		OStimKeyDown.value = Value
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimKeyLeft Auto
+int Property KeyLeft
+	int Function Get()
+		Return OStimKeyLeft.value As int
+	EndFunction
+	Function Set(int Value)
+		OStimKeyLeft.value = Value
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimKeyRight Auto
+int Property KeyRight
+	int Function Get()
+		Return OStimKeyRight.value As int
+	EndFunction
+	Function Set(int Value)
+		OStimKeyRight.value = Value
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimKeyYes Auto
+int Property KeyYes
+	int Function Get()
+		Return OStimKeyYes.value As int
+	EndFunction
+	Function Set(int Value)
+		OStimKeyYes.value = Value
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimKeyEnd Auto
+int Property KeyEnd
+	int Function Get()
+		Return OStimKeyEnd.value As int
+	EndFunction
+	Function Set(int Value)
+		OStimKeyEnd.value = Value
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimKeyToggle Auto
+int Property KeyToggle
+	int Function Get()
+		Return OStimKeyToggle.value As int
+	EndFunction
+	Function Set(int Value)
+		OStimKeyToggle.value = Value
+	EndFunction
+EndProperty
 
 GlobalVariable Property OStimKeySceneStart Auto
 int Property KeyMap
@@ -193,12 +311,7 @@ Int Property SpeedUpKey
 		Return OStimKeySpeedUp.value As int
 	EndFunction
 	Function Set(int Value)
-		UnregisterForKey(OStimKeySpeedUp.value As int)
 		OStimKeySpeedUp.value = Value
-		If Value != 1
-			RegisterForKey(Value)
-		EndIf
-		LoadOSexControlKeys()
 	EndFunction
 EndProperty
 
@@ -208,12 +321,7 @@ Int Property SpeedDownKey
 		Return OStimKeySpeedDown.value As int
 	EndFunction
 	Function Set(int Value)
-		UnregisterForKey(OStimKeySpeedDown.value As int)
 		OStimKeySpeedDown.value = Value
-		If Value != 1
-			RegisterForKey(Value)
-		EndIf
-		LoadOSexControlKeys()
 	EndFunction
 EndProperty
 
@@ -223,12 +331,7 @@ Int Property PullOutKey
 		Return OStimKeyPullOut.value As int
 	EndFunction
 	Function Set(int Value)
-		UnregisterForKey(OStimKeyPullOut.value As int)
 		OStimKeyPullOut.value = Value
-		If Value != 1
-			RegisterForKey(Value)
-		EndIf
-		LoadOSexControlKeys()
 	EndFunction
 EndProperty
 
@@ -238,12 +341,7 @@ Int Property ControlToggleKey
 		Return OStimKeyAutoMode.value As int
 	EndFunction
 	Function Set(int Value)
-		UnregisterForKey(OStimKeyAutoMode.value As int)
 		OStimKeyAutoMode.value = Value
-		If Value != 1
-			RegisterForKey(Value)
-		EndIf
-		LoadOSexControlKeys()
 	EndFunction
 EndProperty
 
@@ -969,6 +1067,20 @@ bool Property FutaUseMaleClimax
 	EndFunction
 EndProperty
 
+GlobalVariable Property OStimFutaUseMaleLight Auto
+bool Property FutaUseMaleLight
+	bool Function Get()
+		Return OStimFutaUseMaleLight.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimFutaUseMaleLight.value = 1
+		Else
+			OStimFutaUseMaleLight.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
 ; -------------------------------------------------------------------------------------------------
 ; ALIGNMENT SETTINGS  -----------------------------------------------------------------------------
 
@@ -1263,8 +1375,6 @@ Bool property EndedProper auto
 Float StartTime
 
 Float MostRecentOSexInteractionTime
-
-Int[] OSexControlKeys
 
 ;--Thank you ODatabase
 Int CurrentOID ; the OID is the JMap ID of the current animation. You can feed this in to ODatabase
@@ -1580,6 +1690,7 @@ EndFunction
 
 Event OnUpdate() ;OStim main logic loop
 	Console("Starting scene asynchronously")
+	OControl.SetGlyph()
 
 	OSANative.EndPlayerDialogue()
 
@@ -1679,7 +1790,6 @@ Event OnUpdate() ;OStim main logic loop
 	ThirdStimMult = 1.0
 	EndedProper = False
 	StallOrgasm = False
-	NavMenuHidden = false
 	BlockDomFaceCommands = False
 	BlocksubFaceCommands = False
 	BlockthirdFaceCommands = False
@@ -1832,14 +1942,6 @@ Event OnUpdate() ;OStim main logic loop
 		OFurniture.ResetClutter(CurrentFurniture, ResetClutterRadius * 100)
 	EndIf
 
-	If (ForceFirstPersonAfter)
-		While IsInFreeCam()
-			Utility.Wait(0.1)
-		EndWhile
-
-		Game.ForceFirstPerson()
-	EndIf
-
 	If (UseFades && EndedProper && !SkipEndingFadein)
 		FadeFromBlack(2)
 	EndIf
@@ -1869,6 +1971,15 @@ Event OnUpdate() ;OStim main logic loop
 
 	SceneRunning = False
 	OSANative.EndScene(Password)
+
+	If (ForceFirstPersonAfter)
+		While IsInFreeCam()
+			Utility.Wait(0.1)
+		EndWhile
+
+		Game.ForceFirstPerson()
+	EndIf
+
 	SendModEvent("ostim_totalend")
 
 	Password = 0
@@ -2299,20 +2410,6 @@ Function AllowVehicleReset()
 		i -= 1
 		SendModEvent("0SAA" + _oGlobal.GetFormID_S(OSANative.GetLeveledActorBase(Actors[i])) + "_AllowAlignStage")
 	EndWhile
-EndFunction
-
-bool NavMenuHidden
-
-Function HideNavMenu()
-	NavMenuHidden = true
-	UI.Invoke("HUD Menu", "_root.WidgetContainer." + OSAomni.glyph + ".widget.hud.NavMenu.dim")
-	UI.Invoke("HUD Menu", "_root.WidgetContainer." + OSAomni.glyph + ".widget.hud.SceneMenu.OmniDim")
-EndFunction
-
-Function ShowNavMenu()
-	NavMenuHidden = false
-	UI.Invoke("HUD Menu", "_root.WidgetContainer." + OSAomni.glyph + ".widget.hud.NavMenu.light")
-	UI.Invoke("HUD Menu", "_root.WidgetContainer." + OSAomni.glyph + ".widget.hud.SceneMenu.OmniLight")
 EndFunction
 
 Function HideAllSkyUIWidgets() ; DEPRECIATED
@@ -3108,18 +3205,7 @@ Event DisplayToastEvent(string txt, float time)
 EndEvent
 
 Function SetDefaultSettings()
-	EnableActorSpeedControl = True
-
 	ForceCloseOStimThread = false
-
-	DomLightBrightness = 0
-	SubLightBrightness = 1
-	SubLightPos = 0
-	DomLightPos = 0
-
-	CustomTimescale = 0
-
-	LowLightLevelLightsOnly = False
 
 	SpeedUpNonSexAnimation = False ;game pauses if anim finished early
 	SpeedUpSpeed = 1.5
@@ -3139,40 +3225,10 @@ Function SetDefaultSettings()
 	BlockVRInstalls = True
 
 	KeyMap = 200
-	SpeedUpKey = 78
-	SpeedDownKey = 74
-	PullOutKey = 79
-	ControlToggleKey = 82
 
 	MuteOSA = False
 
 	OData.ResetSettings()
-EndFunction
-
-Function RegisterOSexControlKey(Int zKey)
-	OSexControlKeys = PapyrusUtil.PushInt(OSexControlKeys, zKey)
-	RegisterForKey(zKey)
-EndFunction
-
-Function LoadOSexControlKeys()
-	OSexControlKeys = new Int[1]
-	OSexControlKeys = PapyrusUtil.PushInt(OSexControlKeys, SpeedUpKey)
-	OSexControlKeys = PapyrusUtil.PushInt(OSexControlKeys, SpeedDownKey)
-	OSexControlKeys = PapyrusUtil.PushInt(OSexControlKeys, PullOutKey)
-	OSexControlKeys = PapyrusUtil.PushInt(OSexControlKeys, ControlToggleKey)
-	OSexControlKeys = PapyrusUtil.PushInt(OSexControlKeys, KeyMap)
-	OSexControlKeys = PapyrusUtil.PushInt(OSexControlKeys, FreecamKey)
-
-	RegisterOSexControlKey(83)
-	RegisterOSexControlKey(156)
-	RegisterOSexControlKey(72)
-	RegisterOSexControlKey(76)
-	RegisterOSexControlKey(75)
-	RegisterOSexControlKey(77)
-	RegisterOSexControlKey(73)
-	RegisterOSexControlKey(71)
-	RegisterOSexControlKey(79)
-	RegisterOSexControlKey(209)
 EndFunction
 
 Bool Function GetGameIsVR()
@@ -3258,109 +3314,6 @@ string Function GetNPCDiasa(actor act)
 
 EndFunction
 
-
-Event OnKeyDown(Int KeyPress)
-
-	If outils.MenuOpen()
-		Return
-	EndIf
-
-	If (KeyPress == KeyMap)
-		Actor Target = Game.GetCurrentCrosshairRef() as Actor
-		If (Target)
-			If (Target.IsInDialogueWithPlayer())
-				Return
-			EndIf
-			If (!Target.IsDead() && !Target.isChild() && Target.HasKeywordString("ActorTypeNPC"))
-				AddSceneMetadata("ostim_manual_start")
-				StartScene(PlayerRef, Target)
-				return 
-			EndIf
-		Else
-			Utility.Wait(2)
-			if Input.IsKeyPressed(keymap)
-				AddSceneMetadata("ostim_manual_start")
-				Masturbate(PlayerRef)
-			endif 
-			return
-		EndIf
-	EndIf
-
-	If (DisableOSAControls)
-		if AnimationRunning()
-			LockWidget.FlashVisibililty()
-		endif 
-
-		Return
-	EndIf
-
-
-	If (AnimationRunning())
-		If (IntArrayContainsValue(OSexControlKeys, KeyPress))
-			MostRecentOSexInteractionTime = Utility.GetCurrentRealTime()
-			If (AutoHideBars)
-				If (!OBars.IsBarVisible(OBars.DomBar))
-					OBars.SetBarVisible(OBars.DomBar, True)
-				EndIf
-				If (!OBars.IsBarVisible(OBars.SubBar))
-					OBars.SetBarVisible(OBars.SubBar, True)
-				EndIf
-				If (!OBars.IsBarVisible(OBars.ThirdBar))
-					OBars.SetBarVisible(OBars.ThirdBar, True)
-				EndIf
-			EndIf
-
-			if !IsActorActive(PlayerRef) && navMenuHidden
-				ShowNavMenu()
-			EndIf
-		EndIf
-
-		If (KeyPress == SpeedUpKey)
-			IncreaseAnimationSpeed()
-			PlayTickSmall()
-		ElseIf (KeyPress == SpeedDownKey)
-			DecreaseAnimationSpeed()
-			PlayTickSmall()
-		ElseIf ((KeyPress == PullOutKey) && !AIRunning)
-			If !OMetadata.IsTransition(CurrentSceneID) && OMetadata.GetMaxSpeed(CurrentSceneID) != 0
-				If (LastHubSceneID != "")
-					TravelToAnimationIfPossible(LastHubSceneID)
-				EndIf
-			EndIf
-		EndIf
-	EndIf
-
-	If (KeyPress == ControlToggleKey)
-		If (AnimationRunning())
-			If (AIRunning)
-				AIRunning = False
-				PauseAI = True
-				Debug.Notification("Switched to manual control mode")
-			Else
-				If (PauseAI)
-					PauseAI = False
-				Else
-					AI.StartAI()
-				EndIf
-				AIRunning = True
-				Debug.Notification("Switched to automatic control mode")
-			EndIf
-		Else
-			If (UseAIControl)
-				UseAIControl = False
-				Debug.Notification("Switched to manual control mode")
-			Else
-				UseAIControl = True
-				Debug.Notification("Switched to automatic control mode")
-			EndIf
-		EndIf
-		PlayTickBig()
-	EndIf
-
-	
-
-EndEvent
-
 Bool Property SoSInstalled Auto
 Faction SoSFaction
 
@@ -3435,11 +3388,6 @@ Function Startup()
 
 	If (BlockVRInstalls && GetGameIsVR())
 		Debug.MessageBox("OStim: You appear to be using Skyrim VR. VR is not yet supported by OStim. See the OStim description for more details. If you are not using Skyrim VR by chance, update your papyrus Utilities.")
-		Return
-	EndIf
-
-	If (SKSE.GetPluginVersion("JContainers64") == -1 && SKSE.GetPluginVersion("JContainersGOG") == -1)
-		Debug.MessageBox("OStim: JContainers is not installed, please exit the game and install it to allow Ostim to function.")
 		Return
 	EndIf
 
@@ -3532,35 +3480,33 @@ Function OnLoadGame()
 	Console("Using cosave fix")
 
 	RegisterForModEvent("ostim_actorhit", "OnActorHit")
-	LoadOSexControlKeys()
-	If SpeedUpKey != 1
-		RegisterForKey(SpeedUpKey)
-	EndIf
-	If SpeedDownKey != 1
-		RegisterForKey(SpeedDownKey)
-	EndIf
-	If PullOutKey != 1
-		RegisterForKey(PullOutKey)
-	EndIf
-	If ControlToggleKey != 1
-		RegisterForKey(ControlToggleKey)
-	EndIf
-	If KeyMap != 1
-		RegisterForKey(KeyMap)
-	EndIf
 
 	; these are now handled in C++ and no longer need Papyrus listeners
+	If KeyMap != 1
+		UnregisterForKey(KeyMap)
+	EndIf
+	If SpeedUpKey != 1
+		UnregisterForKey(SpeedUpKey)
+	EndIf
+	If SpeedDownKey != 1
+		UnregisterForKey(SpeedDownKey)
+	EndIf
 	If AlignmentKey != 1
 		UnregisterForKey(AlignmentKey)
 	EndIf
 	If FreecamKey != 1
 		UnregisterForKey(FreecamKey)
 	EndIf
+	If PullOutKey != 1
+		UnregisterForKey(PullOutKey)
+	EndIf
+	If ControlToggleKey != 1
+		UnregisterForKey(ControlToggleKey)
+	EndIf
 		
 
 	AI.OnGameLoad()
 	OBars.OnGameLoad()
-	OControl.OPlayerControls()
 
 	SendLoadGameEvent()
 
@@ -3997,4 +3943,56 @@ EndFunction
 
 Function SetTimeScale(Int Time)
 	(Game.GetFormFromFile(0x00003A, "Skyrim.esm") as GlobalVariable).SetValue(Time as Float)
+EndFunction
+
+Function HideNavMenu()
+EndFunction
+
+Function ShowNavMenu()
+EndFunction
+
+Function RegisterOSexControlKey(Int zKey)
+EndFunction
+
+Function LoadOSexControlKeys()
+EndFunction
+
+; I will remove these again in the future, don't call them!
+Function ToggleAutoMode()
+	If (AIRunning)
+		AIRunning = False
+		PauseAI = True
+		Debug.Notification("Switched to manual control mode")
+	Else
+		If (PauseAI)
+			PauseAI = False
+		Else
+			AI.StartAI()
+		EndIf
+		AIRunning = True
+		Debug.Notification("Switched to automatic control mode")
+	EndIf
+EndFunction
+
+Function PullOut()
+	If !OMetadata.IsTransition(CurrentSceneID) && OMetadata.GetMaxSpeed(CurrentSceneID) != 0
+		If (LastHubSceneID != "")
+			TravelToAnimationIfPossible(LastHubSceneID)
+		EndIf
+	EndIf
+EndFunction
+
+Function ShowBars()
+	MostRecentOSexInteractionTime = Utility.GetCurrentRealTime()
+	If (AutoHideBars)
+		If (!OBars.IsBarVisible(OBars.DomBar))
+			OBars.SetBarVisible(OBars.DomBar, True)
+		EndIf
+		If (!OBars.IsBarVisible(OBars.SubBar))
+			OBars.SetBarVisible(OBars.SubBar, True)
+		EndIf
+		If (!OBars.IsBarVisible(OBars.ThirdBar))
+			OBars.SetBarVisible(OBars.ThirdBar, True)
+		EndIf
+	EndIf
 EndFunction

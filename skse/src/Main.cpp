@@ -61,6 +61,7 @@ namespace {
             case SKSE::MessagingInterface::kPostLoad: {
                 RE::ScriptEventSourceHolder::GetSingleton()->AddEventSink<RE::TESLoadGameEvent>(Events::EventListener::GetSingleton());
                 SKSE::GetNiNodeUpdateEventSource()->AddEventSink(Events::EventListener::GetSingleton());
+                SKSE::GetCrosshairRefEventSource()->AddEventSink(Events::EventListener::GetSingleton());
 
                 auto message = SKSE::GetMessagingInterface();
                 if (message) {

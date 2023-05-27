@@ -53,3 +53,38 @@ Function ToggleImprovedCamera(bool On) Global
 		Game.ForceThirdPerson()
 	EndIf
 EndFunction
+
+; TEMPORARY ONLY
+; don't call any of these, we will remove them again in later versions
+
+Function StartScene(Actor Dom, Actor Sub) Global
+	OUtils.GetOstim().StartScene(Dom, Sub)
+EndFunction
+
+Function Masturbate(Actor Act) Global
+	OUtils.GetOStim().Masturbate(Act)
+EndFunction
+
+Function ShowBars() Global
+	OUtils.GetOStim().ShowBars()
+EndFunction
+
+Function EndAnimation() Global
+	OUtils.GetOStim().EndAnimation(true)
+EndFunction
+
+Function IncreaseSpeed() Global
+	OUtils.GetOStim().IncreaseAnimationSpeed()
+EndFunction
+
+Function DecreaseSpeed() Global
+	OUtils.GetOStim().DecreaseAnimationSpeed()
+EndFunction
+
+Function ToggleAutoMode() Global
+	OUtils.GetOStim().ToggleAutoMode()
+EndFunction
+
+Function PullOut() Global
+	OUtils.GetOStim().PullOut()
+EndFunction

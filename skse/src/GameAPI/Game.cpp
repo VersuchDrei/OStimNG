@@ -16,4 +16,12 @@ namespace GameAPI {
         ShakeController(true, leftStrength, duration);
         ShakeController(true, rightStrength, duration);
     }
+
+    GameActor Game::getCrosshairActor() {
+        if (GameTable::getCurrentCrosshairRef()) {
+            return GameTable::getCurrentCrosshairRef()->As<RE::Actor>();
+        } else {
+            return {};
+        }
+    }
 }

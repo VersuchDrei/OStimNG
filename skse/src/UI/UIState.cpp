@@ -3,7 +3,7 @@
 #include "Core/ThreadManager.h"
 
 namespace UI {
-    void UIState::HandleControl(Controls control, int64_t glyph) {
+    void UIState::HandleControl(Controls control) {
         if (!OStim::ThreadManager::GetSingleton()->AnySceneRunning()) {
             return;
         }

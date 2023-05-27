@@ -6,17 +6,6 @@ int UndressingSlotMask
 ; actor role settings
 
 ; light settings
-Int SetDomLightMode
-Int SetSubLightMode
-Int SetSubLightBrightness
-Int SetDomLightBrightness
-Int SetOnlyLightInDark
-
-Int SetResetState
-
-Int SetThanks
-
-; light settings
 String[] DomLightModeList
 String[] SubLightModeList
 
@@ -25,13 +14,6 @@ String[] DomLightBrightList
 
 ; ai control settings
 Int SetControlToggle
-
-; mcm save/load settings
-Int ExportSettings
-Int ImportSettings
-Int ImportDefaultSettings
-
-int SetUpdate
 
 OsexIntegrationMain Main
 
@@ -134,7 +116,7 @@ Function Init()
 EndFunction
 
 int Function GetVersion()
-	Return 7
+	Return 8
 EndFunction
 
 Event OnVersionUpdate(int version)
@@ -143,7 +125,7 @@ EndEvent
 
 Function SetupPages()
 	Pages = new string[13]
-	Pages[0] = "$ostim_page_configuration"
+	Pages[0] = "$ostim_page_general"
 	Pages[1] = "$ostim_page_controls"
 	Pages[2] = "$ostim_page_auto_control"
 	Pages[3] = "$ostim_page_camera"
@@ -169,11 +151,6 @@ Event onConfigOpen()
 	OSAControl = Quest.GetQuest("0SAControl") as _oControl
 EndEvent
 
-Event OnConfigClose()
-	; set the OSA keys array in the _oControl script
-	OSAControl.oPlayerControls()
-EndEvent
-
 Event OnPageReset(String Page)
 	{Called when a new page is selected, including the initial empty page}
 	currPage = page
@@ -187,51 +164,12 @@ Event OnPageReset(String Page)
 	EndIf
 
 	If (Page == "$ostim_page_configuration")
-		If (!Main)
-			Init()
-			If (!Main.EndOnDomOrgasm)
-				Main.Startup()
-			EndIf
-			Debug.MessageBox("$ostim_message_main_not_initialized")
-		EndIf
-
-		SetInfoText(" ")
-		Main.playTickBig()
-		SetCursorFillMode(TOP_TO_BOTTOM)
-		SetThanks = AddTextOption("$ostim_configuration", "")
-		SetCursorPosition(1)
-		AddTextOption("$ostim_config_text", "")
-		SetCursorPosition(2)
-
-		;=============================================================================================
-
-		AddColoredHeader("$ostim_header_system")
-		SetResetState = AddTextOption("$ostim_reset_state", "")
-		SetUpdate = AddTextOption("$ostim_update", "")
 		AddTextOptionST("OID_BootstrapMCM", "$ostim_bootstrap_mcm", "")
-		AddEmptyOption()
-
-		;=============================================================================================
-
-		AddColoredHeader("$ostim_header_lights")
-		SetDomLightMode = AddMenuOption("$ostim_dom_light_mode", DomLightModeList[Main.DomLightPos])
-		SetSubLightMode = AddMenuOption("$ostim_sub_light_mode", SubLightModeList[Main.SubLightPos])
-		SetDomLightBrightness = AddMenuOption("$ostim_dom_light_brightness", DomLightBrightList[Main.DomLightBrightness])
-		SetSubLightBrightness = AddMenuOption("$ostim_sub_light_brightness", SubLightBrightList[Main.SubLightBrightness])
-		SetOnlyLightInDark = AddToggleOption("$ostim_dark_light", Main.LowLightLevelLightsOnly)
-		AddEmptyOption()
-
-		AddColoredHeader("$ostim_header_save_load")
-		ExportSettings = AddTextOption("$ostim_export", "$ostim_done")
-		ImportSettings = AddTextOption("$ostim_import", "$ostim_done")
-		ImportDefaultSettings = AddTextOption("$ostim_import_default", "$ostim_done")
-		AddEmptyOption()
 	ElseIf (Page == "$ostim_page_addons")
 		SetInfoText(" ")
 		Main.playTickBig()
 		SetCursorFillMode(TOP_TO_BOTTOM)
 		UnloadCustomContent()
-		SetThanks = AddTextOption("", "")
 		SetCursorPosition(0)
 		AddTextOption("$ostim_addon_settings_text", "")
 		SetCursorPosition(2)
@@ -278,8 +216,12 @@ Event OnPageReset(String Page)
 			SetOAStatBuffs = AddToggleOption("$ostim_addon_oa_stat_buffs", StorageUtil.GetIntValue(none, SUOAStatBuffs))
 			SetOANudityBroadcast = AddToggleOption("$ostim_addon_oa_nudity_bc", StorageUtil.GetIntValue(none, SUOANudityBroadcast))
 		endif
+	ElseIf Page == "$ostim_page_general"
+		DrawGeneralPage()
 	ElseIf Page == "$ostim_page_controls"
 		DrawControlsPage()
+	ElseIf Page == "$ostim_page_auto_control"
+		DrawAutoControlPage()
 	ElseIf Page == "$ostim_page_camera"
 		DrawCameraPage()
 	ElseIf Page == "$ostim_page_excitement"
@@ -392,29 +334,6 @@ Event OnOptionSelect(Int Option)
 		endif
 		return
 	EndIf
-
-	If (Option == SetResetState)
-		Main.ResetState()
-		ShowMessage("$ostim_message_reset_state", false)
-	ElseIf (Option == SetUpdate)
-		ShowMessage("$ostim_message_update_close_menus", false)
-		OUtils.ForceOUpdate()
-	ElseIf (Option == SetOnlyLightInDark)
-		Main.LowLightLevelLightsOnly = !Main.LowLightLevelLightsOnly
-		SetToggleOptionValue(Option, Main.LowLightLevelLightsOnly)
-	ElseIf (Option == ExportSettings)
-		If ShowMessage("$ostim_message_export_confirm", true)
-			ExportSettings()
-		EndIf
-	ElseIf (Option == ImportSettings)
-		If ShowMessage("$ostim_message_import_confirm")
-			ImportSettings()
-		EndIf
-	ElseIf (Option == ImportDefaultSettings)
-		If ShowMessage("$ostim_message_import_confirm")
-			ImportSettings(true)
-		EndIf
-	EndIf
 EndEvent
 
 Event OnOptionHighlight(Int Option)
@@ -460,61 +379,6 @@ Event OnOptionHighlight(Int Option)
 		endif 
 
 		return
-	EndIf
-	If (Option == SetResetState)
-		SetInfoText("$ostim_tooltip_reset")
-	ElseIf (Option == setupdate)
-		SetInfoText("$ostim_tooltip_update")
-	ElseIf (Option == SetDomLightMode)
-		SetInfoText("$ostim_tooltip_dom_light")
-	ElseIf (Option == SetSubLightMode)
-		SetInfoText("$ostim_tooltip_sub_light")
-	ElseIf (Option == SetDomLightBrightness)
-		SetInfoText("$ostim_tooltip_dom_brightness")
-	ElseIf (Option == SetSubLightBrightness)
-		SetInfoText("$ostim_tooltip_sub_brightness")
-	ElseIf (Option == SetOnlyLightInDark)
-		SetInfoText("$ostim_tooltip_dark_light")
-	ElseIf (Option == SetThanks)
-		SetInfoText("$ostim_tooltip_thanks")
-	ElseIf (Option == ExportSettings)
-		SetInfoText("$ostim_tooltip_export")
-	ElseIf (Option == ImportSettings)
-		SetInfoText("$ostim_tooltip_import")
-	ElseIf (Option == ImportDefaultSettings)
-		SetInfoText("$ostim_tooltip_import_default")
-	EndIf
-EndEvent
-
-Event OnOptionMenuOpen(Int Option)
-	Main.PlayTickBig()
-	If (Option == SetDomLightmode)
-		SetMenuDialogOptions(DomLightModeList)
-		;SetMenuDialogStartIndex(DifficultyIndex)
-		;SetMenuDialogDefaultIndex(1)
-	ElseIf (Option == SetSubLightMode)
-		SetMenuDialogOptions(SubLightModeList)
-	ElseIf (Option == SetDomLightBrightness)
-		SetMenuDialogOptions(DomLightBrightList)
-	ElseIf (Option == SetSubLightBrightness)
-		SetMenuDialogOptions(SubLightBrightList)
-	EndIf
-EndEvent
-
-Event OnOptionMenuAccept(Int Option, Int Index)
-	Main.PlayTickBig()
-	If (Option == SetDomLightMode)
-		Main.DomLightPos = Index
-		SetMenuOptionValue(SetDomLightMode, DomLightModeList[Index])
-	ElseIf (Option == SetSubLightMode)
-		Main.SubLightPos = Index
-		SetMenuOptionValue(Option, SubLightModeList[Index])
-	ElseIf (Option == SetDomLightBrightness)
-		Main.DomLightBrightness = Index
-		SetMenuOptionValue(Option, DomLightBrightList[Index])
-	ElseIf (Option == SetSubLightBrightness)
-		Main.SubLightBrightness = Index
-		SetMenuOptionValue(Option, SubLightBrightList[Index])
 	EndIf
 EndEvent
 
@@ -630,129 +494,24 @@ Function AddColoredHeader(String In)
 EndFunction
 
 Function ExportSettings()
-	; Export to file.
-	int OstimSettingsFile = JMap.object()
-	
 	ShowMessage("$ostim_message_export", false)
-	
+
 	osexintegrationmain.Console("Saving Ostim settings.")
-
-	; Light settings export.
-	Jmap.SetInt(OstimSettingsFile, "SetDomLightMode", Main.DomLightPos as Int)
-	Jmap.SetInt(OstimSettingsFile, "SetSubLightMode", Main.SubLightPos as Int)
-	Jmap.SetInt(OstimSettingsFile, "SetSubLightBrightness", Main.SubLightBrightness as Int)
-	Jmap.SetInt(OstimSettingsFile, "SetDomLightBrightness", Main.DomLightBrightness as Int)
-	Jmap.SetInt(OstimSettingsFile, "SetOnlyLightInDark", Main.LowLightLevelLightsOnly as Int)
-	
-	; Keys settings export.
-	JMap.SetInt(OstimSettingsFile, "SetKeymap", Main.KeyMap as Int)
-	JMap.SetInt(OstimSettingsFile, "SetKeyUp", Main.SpeedUpKey as Int)
-	JMap.SetInt(OstimSettingsFile, "SetKeyDown", Main.SpeedDownKey as Int)
-	JMap.SetInt(OstimSettingsFile, "SetPullOut", Main.PullOutKey as Int)
-	JMap.SetInt(OstimSettingsFile, "SetControlToggle", Main.ControlToggleKey as Int)
-
-	; OSA keys settings export.
-	JMap.SetInt(OstimSettingsFile, "SetOsaMainMenuKey", OSAControl.osaMainMenuKey as Int)
-	JMap.SetInt(OstimSettingsFile, "SetOsaUpKey", OSAControl.osaUpKey as Int)
-	JMap.SetInt(OstimSettingsFile, "SetOsaDownKey", OSAControl.osaDownKey as Int)
-	JMap.SetInt(OstimSettingsFile, "SetOsaLeftKey", OSAControl.osaLeftKey as Int)
-	JMap.SetInt(OstimSettingsFile, "SetOsaRightKey", OSAControl.osaRightKey as Int)
-	JMap.SetInt(OstimSettingsFile, "SetOsaTogKey", OSAControl.osaTogKey as Int)
-	JMap.SetInt(OstimSettingsFile, "SetOsaYesKey", OSAControl.osaYesKey as Int)
-	JMap.SetInt(OstimSettingsFile, "SetOsaEndKey", OSAControl.osaEndKey as Int)
-
-	; Save to file.
-	JMap.SetInt(OstimSettingsFile, "OStimAPIVersion", outils.getostim().getapiversion())
-	osexintegrationmain.Console("Saved Ostim settings.")
-	Jvalue.WriteToFile(OstimSettingsFile, JContainers.UserDirectory() + "OstimMCMSettings.json")
-	
 	OData.ExportSettings()
-
-	; Force page reset to show updated changes.
-	ForcePageReset()
+	osexintegrationmain.Console("Saved Ostim settings.")
 EndFunction
 
 Function ImportSettings(bool default = false)
 	osexintegrationmain.Console("Loading Ostim settings.")
-
-	; Import from file.
-	int OstimSettingsFile
-	if !default
-		int OstimSettingsFileAlt
-
-		if (JContainers.FileExistsAtPath(JContainers.UserDirectory() + "OstimMCMSettings.json"))
-			OstimSettingsFile = JValue.readFromFile(JContainers.UserDirectory() + "OstimMCMSettings.json")
-		endif
-
-		if (JContainers.FileExistsAtPath(".\\Data\\OstimMCMSettings.json"))
-			; Tries to import from Data folder as well, this is to allow Modlist creators to package configuration files as mods for mo2 or vortex.
-			OstimSettingsFileAlt = JValue.readFromFile(".\\Data\\OstimMCMSettings.json")
-		endif
-
-		if (OstimSettingsFile == False && OstimSettingsFileAlt == False)
-			osexintegrationmain.Console(osanative.translate("$ostim_import_no_file"))
-			return
-		ElseIf (OstimSettingsFile == False && OstimSettingsFileAlt == True)
-			OstimSettingsFile = OstimSettingsFileAlt
-			osexintegrationmain.Console(osanative.translate("$ostim_message_import_ml_settings"))
-		Else
-			osexintegrationmain.Console(osanative.translate("$ostim_message_import"))
-		EndIf
-
-		if (outils.getostim().getapiversion() != JMap.GetInt(OstimSettingsFile, "OStimAPIVersion") && !OstimSettingsFileAlt) ;if api version is different, and didn't load modlist setting file from data folder.
-			osexintegrationmain.Console(osanative.translate("$ostim_message_import_old_api"))
-			outils.getostim().DisplayToastAsync(osanative.translate("$ostim_message_import_old_api"), 10)
-		endif
+	if default
+		OData.ResetSettings()
 	Else
-		if (JContainers.FileExistsAtPath(".\\Data\\Interface\\Ostim\\DefaultOstimMCMSettings.json"))
-			OstimSettingsFile = JValue.readFromFile(".\\Data\\Interface\\Ostim\\DefaultOstimMCMSettings.json")
-		Else
-			ShowMessage("$ostim_default_missing_error", false)
-			return
-		endif
+		OData.ImportSettings()
 	endif
-
-	; Light settings export.
-	Main.DomLightPos = Jmap.GetInt(OstimSettingsFile, "SetDomLightMode")
-	Main.SubLightPos = Jmap.GetInt(OstimSettingsFile, "SetSubLightMode")
-	Main.SubLightBrightness = Jmap.GetInt(OstimSettingsFile, "SetSubLightBrightness")
-	Main.DomLightBrightness = Jmap.GetInt(OstimSettingsFile, "SetDomLightBrightness")
-	Main.LowLightLevelLightsOnly = Jmap.GetInt(OstimSettingsFile, "SetOnlyLightInDark")
-	
-	; Keys settings import.
-	Main.KeyMap = JMap.GetInt(OstimSettingsFile, "SetKeymap")
-	Main.SpeedUpKey = JMap.GetInt(OstimSettingsFile, "SetKeyUp")
-	Main.SpeedDownKey = JMap.GetInt(OstimSettingsFile, "SetKeyDown")
-	Main.PullOutKey = JMap.GetInt(OstimSettingsFile, "SetPullOut")
-	Main.ControlToggleKey = JMap.GetInt(OstimSettingsFile, "SetControlToggle")
-
-	; OSA keys settings import.
-	OSAControl.osaMainMenuKey =  JMap.GetInt(OstimSettingsFile, "SetOsaMainMenuKey", 156)
-	OSAControl.osaUpKey = JMap.GetInt(OstimSettingsFile, "SetOsaUpKey", 72)
-	OSAControl.osaDownKey = JMap.GetInt(OstimSettingsFile, "SetOsaDownKey", 76)
-	OSAControl.osaLeftKey = JMap.GetInt(OstimSettingsFile, "SetOsaLeftKey", 75)
-	OSAControl.osaRightKey = JMap.GetInt(OstimSettingsFile, "SetOsaRightKey", 77)
-	OSAControl.osaTogKey = JMap.GetInt(OstimSettingsFile, "SetOsaTogKey", 73)
-	OSAControl.osaYesKey = JMap.GetInt(OstimSettingsFile, "SetOsaYesKey", 71)
-	OSAControl.osaEndKey = JMap.GetInt(OstimSettingsFile, "SetOsaEndKey", 83)
-
-	OData.ImportSettings()
-
 	osexintegrationmain.Console("Loaded Ostim settings.")
 	; Force page reset to show updated changes.
 	ForcePageReset()
 EndFunction
-
-State OID_BootstrapMCM
-	Event OnHighlightST()
-		SetInfoText("$ostim_tooltip_bootstrap_mcm")
-	EndEvent
-
-	Event OnSelectST()
-		SetupPages()
-		ShowMessage("$ostim_message_bootstrap_mcm", false)
-	EndEvent
-EndState
 
 
 ;  ██████╗ ███████╗███╗   ██╗███████╗██████╗  █████╗ ██╗     
@@ -774,7 +533,39 @@ Function DrawGeneralPage()
 	AddToggleOptionST("OID_EndWhenActorHit", "$ostim_end_on_hit", Main.EndAfterActorHit)
 	SetCursorPosition(8)
 	AddToggleOptionST("OID_UseIntroScenes", "$ostim_use_intro_scenes", Main.UseIntroScenes)
+
+	SetCursorPosition(12)
+	AddColoredHeader("$ostim_header_lights")
+	SetCursorPosition(14)
+	AddMenuOptionST("OID_MaleLightMode", "$ostim_male_light_mode", DomLightModeList[Main.DomLightPos])
+	SetCursorPosition(16)
+	AddMenuOptionST("OID_MaleLightBrightness", "$ostim_male_light_brightness", DomLightBrightList[Main.DomLightBrightness])
+	SetCursorPosition(18)
+	AddMenuOptionST("OID_FemaleLightMode", "$ostim_female_light_mode", DomLightModeList[Main.SubLightPos])
+	SetCursorPosition(20)
+	AddMenuOptionST("OID_FemaleLightBrightness", "$ostim_female_light_brightness", DomLightBrightList[Main.SubLightBrightness])
+	SetCursorPosition(22)
+	AddToggleOptionST("OID_OnlyLightInDark", "$ostim_dark_light", Main.LowLightLevelLightsOnly)
+
+	SetCursorPosition(1)
+	AddColoredHeader("$ostim_header_system")
+	SetCursorPosition(3)
+	AddTextOptionST("OID_ResetState", "$ostim_reset_state", "")
+	SetCursorPosition(5)
+	AddTextOptionST("OID_Update", "$ostim_update", "")
+	SetCursorPosition(7)
+	AddTextOptionST("OID_BootstrapMCM", "$ostim_bootstrap_mcm", "")
+
+	SetCursorPosition(11)
+	AddColoredHeader("$ostim_header_save_load")
+	SetCursorPosition(13)
+	AddTextOptionST("OID_ExportSettings", "$ostim_export", "$ostim_done")
+	SetCursorPosition(15)
+	AddTextOptionST("OID_ImportSettings", "$ostim_import", "$ostim_done")
+	SetCursorPosition(17)
+	AddTextOptionST("OID_ResetSettings", "$ostim_import_default", "$ostim_done")
 EndFunction
+
 
 State OID_ResetPosition
 	Event OnHighlightST()
@@ -839,6 +630,163 @@ State OID_UseIntroScenes
 EndState
 
 
+State OID_MaleLightMode
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_male_light_mode")
+	EndEvent
+
+	Event OnMenuOpenST()
+		SetMenuDialogOptions(DomLightModeList)
+	EndEvent
+
+	Event OnMenuAcceptST(int Index)
+		Main.DomLightPos = Index
+		SetMenuOptionValueST(DomLightModeList[Index])
+	EndEvent
+
+	Event OnDefaultST()
+		Main.DomLightPos = 0
+		SetMenuOptionValueST(DomLightModeList[0])
+	EndEvent
+EndState
+
+State OID_MaleLightBrightness
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_male_light_brightness")
+	EndEvent
+
+	Event OnMenuOpenST()
+		SetMenuDialogOptions(DomLightBrightList)
+	EndEvent
+
+	Event OnMenuAcceptST(int Index)
+		Main.DomLightBrightness = Index
+		SetMenuOptionValueST(DomLightBrightList[Index])
+	EndEvent
+
+	Event OnDefaultST()
+		Main.DomLightBrightness = 0
+		SetMenuOptionValueST(DomLightBrightList[0])
+	EndEvent
+EndState
+
+State OID_FemaleLightMode
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_female_light_mode")
+	EndEvent
+
+	Event OnMenuOpenST()
+		SetMenuDialogOptions(DomLightModeList)
+	EndEvent
+
+	Event OnMenuAcceptST(int Index)
+		Main.SubLightPos = Index
+		SetMenuOptionValueST(DomLightModeList[Index])
+	EndEvent
+
+	Event OnDefaultST()
+		Main.SubLightPos = 0
+		SetMenuOptionValueST(DomLightModeList[0])
+	EndEvent
+EndState
+
+State OID_FemaleLightBrightness
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_female_light_brightness")
+	EndEvent
+
+	Event OnMenuOpenST()
+		SetMenuDialogOptions(DomLightBrightList)
+	EndEvent
+
+	Event OnMenuAcceptST(int Index)
+		Main.SubLightBrightness = Index
+		SetMenuOptionValueST(DomLightBrightList[Index])
+	EndEvent
+
+	Event OnDefaultST()
+		Main.SubLightBrightness = 0
+		SetMenuOptionValueST(DomLightBrightList[0])
+	EndEvent
+EndState
+
+State OID_OnlyLightInDark
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_dark_light")
+	EndEvent
+
+	Event OnSelectST()
+		Main.LowLightLevelLightsOnly = !Main.LowLightLevelLightsOnly
+		SetToggleOptionValueST(Main.LowLightLevelLightsOnly)
+	EndEvent
+EndState
+
+
+State OID_ResetState
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_reset")
+	EndEvent
+
+	Event OnSelectST()
+		Main.ResetState()
+		ShowMessage("$ostim_message_reset_state", false)
+	EndEvent
+EndState
+
+State OID_Update
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_update")
+	EndEvent
+
+	Event OnSelectST()
+		ShowMessage("$ostim_message_update_close_menus", false)
+		OUtils.ForceOUpdate()
+	EndEvent
+EndState
+
+State OID_BootstrapMCM
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_bootstrap_mcm")
+	EndEvent
+
+	Event OnSelectST()
+		SetupPages()
+		ShowMessage("$ostim_message_bootstrap_mcm", false)
+	EndEvent
+EndState
+
+
+State OID_ExportSettings
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_export")
+	EndEvent
+
+	Event OnSelectST()
+		ExportSettings()
+	EndEvent
+EndState
+
+State OID_ImportSettings
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_import")
+	EndEvent
+
+	Event OnSelectST()
+		ImportSettings()
+	EndEvent
+EndState
+
+State OID_ResetSettings
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_import_default")
+	EndEvent
+
+	Event OnSelectST()
+		ImportSettings(true)
+	EndEvent
+EndState
+
+
 ;  ██████╗ ██████╗ ███╗   ██╗████████╗██████╗  ██████╗ ██╗     ███████╗
 ; ██╔════╝██╔═══██╗████╗  ██║╚══██╔══╝██╔══██╗██╔═══██╗██║     ██╔════╝
 ; ██║     ██║   ██║██╔██╗ ██║   ██║   ██████╔╝██║   ██║██║     ███████╗
@@ -875,22 +823,20 @@ Function DrawControlsPage()
 	SetCursorPosition(1)
 	AddColoredHeader("$ostim_header_osa_keys")
 	SetCursorPosition(3)
-	AddKeyMapOptionST("OID_OSA_KeyMainMenu", "$ostim_osaKeys_mainMenu", OSAControl.osaMainMenuKey)
+	AddKeyMapOptionST("OID_OSA_KeyUp", "$ostim_osaKeys_up", Main.KeyUp)
 	SetCursorPosition(5)
-	AddKeyMapOptionST("OID_OSA_KeyUp", "$ostim_osaKeys_up", OSAControl.osaUpKey)
+	AddKeyMapOptionST("OID_OSA_KeyDown", "$ostim_osaKeys_down", Main.KeyDown)
 	SetCursorPosition(7)
-	AddKeyMapOptionST("OID_OSA_KeyDown", "$ostim_osaKeys_down", OSAControl.osaDownKey)
+	AddKeyMapOptionST("OID_OSA_KeyLeft", "$ostim_osaKeys_left", Main.KeyLeft)
 	SetCursorPosition(9)
-	AddKeyMapOptionST("OID_OSA_KeyLeft", "$ostim_osaKeys_left", OSAControl.osaLeftKey)
+	AddKeyMapOptionST("OID_OSA_KeyRight", "$ostim_osaKeys_right", Main.KeyRight)
 	SetCursorPosition(11)
-	AddKeyMapOptionST("OID_OSA_KeyRight", "$ostim_osaKeys_right", OSAControl.osaRightKey)
+	AddKeyMapOptionST("OID_OSA_KeyTog", "$ostim_osaKeys_tog", Main.KeyToggle)
 	SetCursorPosition(13)
-	AddKeyMapOptionST("OID_OSA_KeyTog", "$ostim_osaKeys_tog", OSAControl.osaTogKey)
+	AddKeyMapOptionST("OID_OSA_KeyYes", "$ostim_osaKeys_yes", Main.KeyYes)
 	SetCursorPosition(15)
-	AddKeyMapOptionST("OID_OSA_KeyYes", "$ostim_osaKeys_yes", OSAControl.osaYesKey)
+	AddKeyMapOptionST("OID_OSA_KeyEnd", "$ostim_osaKeys_end", Main.KeyEnd)
 	SetCursorPosition(17)
-	AddKeyMapOptionST("OID_OSA_KeyEnd", "$ostim_osaKeys_end", OSAControl.osaEndKey)
-	SetCursorPosition(19)
 	AddToggleOptionST("OID_OSA_ResetKeys", "$ostim_osaKeys_reset", false)
 EndFunction
 
@@ -973,24 +919,13 @@ State OID_KeyAlignmentMenu
 EndState
 
 
-State OID_OSA_KeyMainMenu
-	Event OnHighlightST()
-		SetInfoText("$ostim_tooltip_osa_main_menu")
-	EndEvent
-
-	Event OnKeyMapChangeST(int KeyCode, string ConflictControl, string ConflictName)
-		OSAControl.osaMainMenuKey = KeyCode
-		SetKeyMapOptionValueST(KeyCode)
-	EndEvent
-EndState
-
 State OID_OSA_KeyUp
 	Event OnHighlightST()
 		SetInfoText("$ostim_tooltip_osa_up")
 	EndEvent
 
 	Event OnKeyMapChangeST(int KeyCode, string ConflictControl, string ConflictName)
-		OSAControl.osaUpKey = KeyCode
+		Main.KeyUp = KeyCode
 		SetKeyMapOptionValueST(KeyCode)
 	EndEvent
 EndState
@@ -1001,7 +936,7 @@ State OID_OSA_KeyDown
 	EndEvent
 
 	Event OnKeyMapChangeST(int KeyCode, string ConflictControl, string ConflictName)
-		OSAControl.osaDownKey = KeyCode
+		Main.KeyDown= KeyCode
 		SetKeyMapOptionValueST(KeyCode)
 	EndEvent
 EndState
@@ -1012,7 +947,7 @@ State OID_OSA_KeyLeft
 	EndEvent
 
 	Event OnKeyMapChangeST(int KeyCode, string ConflictControl, string ConflictName)
-		OSAControl.osaLeftKey = KeyCode
+		Main.KeyLeft = KeyCode
 		SetKeyMapOptionValueST(KeyCode)
 	EndEvent
 EndState
@@ -1023,7 +958,7 @@ State OID_OSA_KeyRight
 	EndEvent
 
 	Event OnKeyMapChangeST(int KeyCode, string ConflictControl, string ConflictName)
-		OSAControl.osaRightKey = KeyCode
+		Main.KeyRight = KeyCode
 		SetKeyMapOptionValueST(KeyCode)
 	EndEvent
 EndState
@@ -1034,7 +969,7 @@ State OID_OSA_KeyTog
 	EndEvent
 
 	Event OnKeyMapChangeST(int KeyCode, string ConflictControl, string ConflictName)
-		OSAControl.osaTogKey = KeyCode
+		Main.KeyToggle = KeyCode
 		SetKeyMapOptionValueST(KeyCode)
 	EndEvent
 EndState
@@ -1045,7 +980,7 @@ State OID_OSA_KeyYes
 	EndEvent
 
 	Event OnKeyMapChangeST(int KeyCode, string ConflictControl, string ConflictName)
-		OSAControl.osaYesKey = KeyCode
+		Main.KeyYes = KeyCode
 		SetKeyMapOptionValueST(KeyCode)
 	EndEvent
 EndState
@@ -1056,7 +991,7 @@ State OID_OSA_KeyEnd
 	EndEvent
 
 	Event OnKeyMapChangeST(int KeyCode, string ConflictControl, string ConflictName)
-		OSAControl.osaEndKey = KeyCode
+		Main.KeyEnd = KeyCode
 		SetKeyMapOptionValueST(KeyCode)
 	EndEvent
 EndState
@@ -1067,28 +1002,25 @@ State OID_OSA_ResetKeys
 	EndEvent
 
 	Event OnSelectST()
-		OSAControl.osaMainMenuKey = osaMainMenuKeyDefault
-		SetKeyMapOptionValueST(osaMainMenuKeyDefault, false, "OID_OSA_KeyMainMenu")
-
-		OSAControl.osaUpKey = osaUpKeyDefault
+		Main.KeyUp = osaUpKeyDefault
 		SetKeyMapOptionValueST(osaUpKeyDefault, false, "OID_OSA_KeyUp")
 
-		OSAControl.osaDownKey = osaDownKeyDefault
+		Main.KeyDown = osaDownKeyDefault
 		SetKeyMapOptionValueST(osaDownKeyDefault, false, "OID_OSA_KeyDown")
 
-		OSAControl.osaLeftKey = osaLeftKeyDefault
+		Main.KeyLeft = osaLeftKeyDefault
 		SetKeyMapOptionValueST(osaLeftKeyDefault, false, "OID_OSA_KeyLeft")
 
-		OSAControl.osaRightKey = osaRightKeyDefault
+		Main.KeyRight = osaRightKeyDefault
 		SetKeyMapOptionValueST(osaRightKeyDefault, false, "OID_OSA_KeyRight")
 
-		OSAControl.osaTogKey = osaTogKeyDefault
+		Main.KeyToggle = osaTogKeyDefault
 		SetKeyMapOptionValueST(osaTogKeyDefault, false, "OID_OSA_KeyTog")
 
-		OSAControl.osaYesKey = osaYesKeyDefault
+		Main.KeyYes = osaYesKeyDefault
 		SetKeyMapOptionValueST(osaYesKeyDefault, false, "OID_OSA_KeyYes")
 
-		OSAControl.osaEndKey = osaEndKeyDefault
+		Main.KeyEnd = osaEndKeyDefault
 		SetKeyMapOptionValueST(osaEndKeyDefault, false, "OID_OSA_KeyEnd")
 
 		ShowMessage("$ostim_message_reset_osa_keys", false)
@@ -1684,6 +1616,8 @@ Function DrawGenderRolesPage()
 	AddToggleOptionST("OID_FutaUseMaleExcitement", "$ostim_futa_use_male_excitement", Main.FutaUseMaleExcitement, FutaFlags)
 	SetCursorPosition(23)
 	AddToggleOptionST("OID_FutaUseMaleClimax", "$ostim_futa_use_male_orgasm", Main.FutaUseMaleClimax, FutaFlags)
+	SetCursorPosition(25)
+	AddToggleOptionST("OID_FutaUseMaleLight", "$ostim_futa_use_male_light", Main.FutaUseMaleLight, FutaFlags)
 EndFunction
 
 
@@ -1903,6 +1837,7 @@ State OID_UseSoSSex
 		EndIf
 		SetOptionFlagsST(FutaFlags, false, "OID_FutaUseMaleExcitement")
 		SetOptionFlagsST(FutaFlags, false, "OID_FutaUseMaleClimax")
+		SetOptionFlagsST(FutaFlags, false, "OID_FutaUseMaleLight")
 	EndEvent
 EndState
 
@@ -1925,6 +1860,17 @@ State OID_FutaUseMaleClimax
 	Event OnSelectST()
 		Main.FutaUseMaleClimax = !Main.FutaUseMaleClimax
 		SetToggleOptionValueST(Main.FutaUseMaleClimax)
+	EndEvent
+EndState
+
+State OID_FutaUseMaleLight
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_futa_use_male_light")
+	EndEvent
+
+	Event OnSelectST()
+		Main.FutaUseMaleLight = !Main.FutaUseMaleLight
+		SetToggleOptionValueST(Main.FutaUseMaleLight)
 	EndEvent
 EndState
 

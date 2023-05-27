@@ -1,5 +1,7 @@
 #pragma once
 
+#include "UI/UIState.h"
+
 namespace PapyrusUtil {
     using VM = RE::BSScript::IVirtualMachine;
 
@@ -131,6 +133,10 @@ namespace PapyrusUtil {
         return "Ap";
     }
 
+    void SetGlyph(RE::StaticFunctionTag*, int glyph) {
+        UI::UIState::GetSingleton()->setGlpyh(glyph);
+    }
+
     bool Bind(VM* a_vm) {
         const auto obj = "OSANative"sv;
 
@@ -151,6 +157,8 @@ namespace PapyrusUtil {
         BIND(GetSceneIdFromAnimId);
         BIND(GetSpeedFromAnimId);
         BIND(GetAnimClass);
+
+        BIND(SetGlyph);
 
         return true;
     }

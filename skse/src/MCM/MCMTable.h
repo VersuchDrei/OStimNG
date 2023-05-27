@@ -10,15 +10,22 @@ namespace MCM {
         static void restoreDefaults();
 
         inline static bool resetPosition() { return settings[0xE16].asBool(); }
-        inline static bool customTimeScale() { return settings[0xE18].asBool(); }
+        inline static float customTimeScale() { return settings[0xE18].asFloat(); }
 
-        static int keyAlignment();
+        inline static int keyUp() { return settings[0xE28].asInt(); }
+        inline static int keyDown() { return settings[0xE29].asInt(); }
+        inline static int keyLeft() { return settings[0xE2A].asInt(); }
+        inline static int keyRight() { return settings[0xE2B].asInt(); }
+        inline static int keyYes() { return settings[0xE2C].asInt(); }
+        inline static int keyEnd() { return settings[0xE2D].asInt(); }
+        inline static int keyToggle() { return settings[0xE2E].asInt(); }
+        static int keyAlignment() { return settings[0xDE2].asInt(); }
         static int keySceneStart();
-        static int keySpeedUp();
-        static int keySpeedDown();
-        static int keyPullOut();
-        static int keyAutoMode();
-        static int keyFreeCam();
+        inline static int keySpeedUp() { return settings[0xDE8].asInt(); }
+        inline static int keySpeedDown() { return settings[0xDE9].asInt(); }
+        inline static int keyPullOut() { return settings[0xDEA].asInt(); }
+        inline static int keyAutoMode() { return settings[0xDEB].asInt(); }
+        inline static int keyFreeCam() { return settings[0xDEC].asInt(); }
 
         static bool useRumble();
 
@@ -75,6 +82,7 @@ namespace MCM {
         inline static bool useSoSSex() { return settings[0xE04].asBool(); }
         inline static bool futaUseMaleExcitement() { return settings[0xE05].asBool(); }
         inline static bool futaUseMaleClimax() { return settings[0xE17].asBool(); }
+        inline static bool futaUseMaleLight() { return settings[0xE25].asBool(); }
 
         static bool groupAlignmentBySex();
         static bool groupAlignmentByHeight();
@@ -94,6 +102,23 @@ namespace MCM {
             {0xE1A, {1, "SetEndAfterActorHit"}},
             {0xDA1, {1, "SetUseIntroScenes"}},
 
+            {0xE22, {0, "SetDomLightMode"}},
+            {0xE23, {0, "SetSubLightMode"}},
+            {0xE24, {0, "SetOnlyLightInDark"}},
+            {0xE26, {0, "SetDomLightBrightness"}},
+            {0xE27, {0, "SetSubLightBrightness"}},
+
+            {0xE28, {72, "SetOsaUpKey"}},
+            {0xE29, {76, "SetOsaDownKey"}},
+            {0xE2A, {75, "SetOsaLeftKey"}},
+            {0xE2B, {77, "SetOsaRightKey"}},
+            {0xE2C, {71, "SetOsaYesKey"}},
+            {0xE2D, {83, "SetOsaEndKey"}},
+            {0xE2E, {73, "SetOsaTogKey"}},
+            {0xDE8, {78, "SetKeyUp"}},    // speed up
+            {0xDE9, {74, "SetKeyDown"}},  // speed down
+            {0xDEA, {79, "SetPullOut"}},
+            {0xDEB, {82, "SetControlToggle"}},
             {0xDE2, {38, "keyAlignment"}},
             {0xDEC, {181, "SetFreeCamToggleKey"}},
 
@@ -173,6 +198,7 @@ namespace MCM {
             {0xE04, {1, "useSoSSex"}},
             {0xE05, {0, "futaUseMaleExcitement"}},
             {0xE17, {1, "futaUseMaleClimax"}},
+            {0xE25, {1, "futaUseMaleLight"}},
             
             {0xD94, {0, "SetScaling"}},
             {0xD97, {0, "SetSchlongBending"}},
@@ -182,10 +208,6 @@ namespace MCM {
         };
 
         inline static RE::TESGlobal* OStimKeySceneStart;
-        inline static RE::TESGlobal* OStimKeySpeedUp;
-        inline static RE::TESGlobal* OStimKeySpeedDown;
-        inline static RE::TESGlobal* OStimKeyPullOut;
-        inline static RE::TESGlobal* OStimKeyAutoMode;
 
         inline static uint32_t undressingMask = 0x3D8BC39D;
 
