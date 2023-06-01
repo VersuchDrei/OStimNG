@@ -1,6 +1,7 @@
 #pragma once
 #include "Core/Singleton.h"
 #include "Core/Thread.h"
+#include "GameAPI/GameActor.h"
 #include "Serial/OldThread.h"
 #include <shared_mutex>
 
@@ -17,7 +18,9 @@ namespace OStim {
         bool AnySceneRunning();
         bool playerThreadRunning();
 
-        ThreadActor* findActor(RE::Actor* actor);
+        Thread* findThread(GameAPI::GameActor actor);
+
+        ThreadActor* findActor(GameAPI::GameActor actor);
 
         std::vector<Serialization::OldThread> serialize();
 

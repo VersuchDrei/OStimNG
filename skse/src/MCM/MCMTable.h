@@ -79,10 +79,10 @@ namespace MCM {
         static bool unequipStrapOnIfNotNeeded();
         static bool unequipStrapOnIfInWay();
 
-        inline static bool useSoSSex() { return settings[0xE04].asBool(); }
-        inline static bool futaUseMaleExcitement() { return settings[0xE05].asBool(); }
-        inline static bool futaUseMaleClimax() { return settings[0xE17].asBool(); }
-        inline static bool futaUseMaleLight() { return settings[0xE25].asBool(); }
+        static bool useSoSSex();
+        static bool futaUseMaleExcitement();
+        static bool futaUseMaleClimax();
+        static bool futaUseMaleLight();
 
         static bool groupAlignmentBySex();
         static bool groupAlignmentByHeight();

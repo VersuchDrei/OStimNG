@@ -80,7 +80,20 @@ namespace OStim {
         return false;
     }
 
-    ThreadActor* ThreadManager::findActor(RE::Actor* actor) {
+    Thread* ThreadManager::findThread(GameAPI::GameActor actor) {
+        std::shared_lock<std::shared_mutex> lock(m_threadMapMtx);
+        for (auto& [id, thread] : m_threadMap) {
+            ThreadActor* threadActor = thread->GetActor(actor);
+            if (threadActor) {
+                return thread;
+            }
+        }
+
+        return nullptr;
+    }
+
+    ThreadActor* ThreadManager::findActor(GameAPI::GameActor actor) {
+        std::shared_lock<std::shared_mutex> lock(m_threadMapMtx);
         for (auto&[id, thread] : m_threadMap) {
             ThreadActor* threadActor = thread->GetActor(actor);
             if (threadActor) {

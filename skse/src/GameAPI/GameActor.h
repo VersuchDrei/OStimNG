@@ -35,7 +35,7 @@ namespace GameAPI {
 
 
         inline float getScale() const { return form->GetReferenceRuntimeData().refScale / 100.0f; }
-        inline bool isScale(float scale) const { return static_cast<int>(scale * 100) != form->GetReferenceRuntimeData().refScale; }
+        inline bool isScale(float scale) const { return static_cast<int>(scale * 100) == form->GetReferenceRuntimeData().refScale; }
         inline void setScale(float scale) const { SetScale(form, scale); }
         inline float getHeight() const { return form->GetActorBase()->GetHeight(); }
         inline float getRotation() const { return form->data.angle.z; }

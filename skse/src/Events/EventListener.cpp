@@ -27,6 +27,23 @@ namespace Events {
         return RE::BSEventNotifyControl::kContinue;
     }
 
+    RE::BSEventNotifyControl EventListener::ProcessEvent(const RE::TESHitEvent* a_event, RE::BSTEventSource<RE::TESHitEvent>* a_eventSource) {
+        if (!a_event->target->Is(RE::Actor::FORMTYPE)) {
+            return RE::BSEventNotifyControl::kContinue;
+        }
+
+        RE::Actor* target = a_event->target->As<RE::Actor>();
+        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->findThread(target);
+        if (!thread) {
+            return RE::BSEventNotifyControl::kContinue;
+        }
+        if (a_event->cause->Is(RE::Actor::FORMTYPE) && thread->GetActor(a_event->cause->As<RE::Actor>())) {
+            return RE::BSEventNotifyControl::kContinue;
+        }
+
+        return RE::BSEventNotifyControl::kContinue;
+    }
+
     RE::BSEventNotifyControl EventListener::ProcessEvent(const SKSE::NiNodeUpdateEvent* a_event, RE::BSTEventSource<SKSE::NiNodeUpdateEvent>* a_eventSource) {
         if (a_event->reference->Is(RE::Actor::FORMTYPE)) {
             RE::Actor* actor = a_event->reference->As<RE::Actor>();

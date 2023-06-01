@@ -7,7 +7,7 @@ namespace Compatibility {
         RE::TESDataHandler* handler = RE::TESDataHandler::GetSingleton();
 
         if (handler->GetLoadedModIndex("Schlongs of Skyrim.esp")) {
-            SOS_SchlongifiedFaction.loadFile("Schlongs of Skyrim.esp", 0x00Aff8);
+            SOS_SchlongifiedFaction.loadFile("Schlongs of Skyrim.esp", 0x00AFF8);
         } else {
             logger::info("SoS full is not installed.");
         }

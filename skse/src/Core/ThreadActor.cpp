@@ -37,7 +37,7 @@ namespace OStim {
     }
 
     void ThreadActor::initContinue() {
-        // we're creating an actor object and then copying it, which will delete the original
+        // we're creating a ThreadActor object and then copying it, which will delete the original
         // since we need the object in the callback functor though we need to do it after creating the copy
         // hence the initContinue function
         
