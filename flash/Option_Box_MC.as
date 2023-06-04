@@ -45,7 +45,7 @@ class Option_Box_MC extends MovieClip
 		optionGutterX = optionGutter;
 		optionGutterY = optionGutter;
 		
-		menuGutter = 24;
+		menuGutter = 28;
 		menuGutterX = menuGutter * 2;
 		
 		menuGutterYText = 67;
@@ -58,8 +58,11 @@ class Option_Box_MC extends MovieClip
 	
 		minWidth = menuGutterX + 150;
 		maxWidth = menuGutterX + (3 * optionWidth) + (2 * optionGutterX);
-	
-		_width = maxWidth;
+
+		bg._width = maxWidth;
+		bg._x = bg._width /2 ;
+		
+		//AssignData(generateTestData())
 	}
 
 	public function HandleKeyboardInput(e:Number)
@@ -155,9 +158,11 @@ class Option_Box_MC extends MovieClip
 		maxOptionIdx = Edges.length - 1;
 		var maxOptionRow = Math.floor(maxOptionIdx / 3);
 		var noOfCols = maxOptionIdx >= 3 ? 3 : maxOptionIdx + 1;
+		var newHeight = menuGutterY + ((maxOptionRow + 1) * optionHeight) + (maxOptionRow * optionGutterY);
 		TweenLite.to(bg,0.5,{
 					 //_width:Math.floor(Math.ceil(menuGutterX + (noOfCols * optionWidth) + ((noOfCols - 1) * optionGutterX), minWidth), maxWidth), 
-					 _height:menuGutterY + ((maxOptionRow + 1) * optionHeight) + (maxOptionRow * optionGutterY)});
+					 _height: newHeight,
+					 _y: 0 - (newHeight /2)});
 
 		if (Edges.length == 0)
 		{
@@ -220,5 +225,15 @@ class Option_Box_MC extends MovieClip
 				aTargetClip._height = 82;
 			}
 		}
+	}
+	
+	function generateTestData(){
+		var arr = new Array(15);
+		for(var i = 0; i < arr.length; i++){
+			var obj = {};
+			obj.Border = "FFFFFF";
+			arr[i] = obj;
+		}
+		return arr;
 	}
 }
