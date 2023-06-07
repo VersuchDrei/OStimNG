@@ -78,9 +78,13 @@ namespace Events {
                 if (keyCode == MCM::MCMTable::keyAlignment()) {
                     auto uiState = UI::UIState::GetSingleton();
                     logger::info("align key fired");
-                    uiState->SwitchActiveMenu(uiState->GetActiveMenu() == UI::MenuType::kAlignMenu ? UI::MenuType::kSceneMenu : UI::MenuType::kAlignMenu);
+                    uiState->ToggleActiveMenu(UI::kAlignMenu);
                 } else if (keyCode == MCM::MCMTable::keyFreeCam()) {
                     CameraUtil::toggleFlyCam();
+                }
+                else if (keyCode == 37) {
+                    auto uiState = UI::UIState::GetSingleton();
+                    uiState->ToggleActiveMenu(UI::kSearchMenu);
                 }
             }
         }

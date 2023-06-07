@@ -1,6 +1,7 @@
 #include "UI/UIState.h"
 #include "UI/Align/AlignMenu.h"
 #include "UI/Scene/SceneMenu.h"
+#include "UI/Search/SearchMenu.h"
 #include "Core/ThreadManager.h"
 
 namespace UI {
@@ -28,10 +29,27 @@ namespace UI {
 
     void UIState::SwitchActiveMenu(MenuType menu) {
         activeMenu = menu;
+        
+        UI::Align::AlignMenu::Hide();
+        UI::Search::SearchMenu::Hide();
+
         if (menu == MenuType::kAlignMenu) {
             UI::Align::AlignMenu::Show();
-        } else {
-            UI::Align::AlignMenu::Hide();
+        } else if(menu == MenuType::kSearchMenu) {
+            UI::Search::SearchMenu::Show();
+        }
+    }
+
+    void UIState::ToggleActiveMenu(MenuType menu) {
+        if (menu == kSceneMenu)
+            return;
+        if (activeMenu == kSceneMenu) {
+            SwitchActiveMenu(menu);
+            return;
+        }
+        if (activeMenu == menu) {
+            SwitchActiveMenu(kSceneMenu);
+            return;
         }
     }
 

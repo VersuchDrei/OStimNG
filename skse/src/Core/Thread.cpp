@@ -60,7 +60,7 @@ namespace OStim {
                 auto vm = skyrimVM ? skyrimVM->impl : nullptr;
                 if (vm) {
                     RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-                    auto args = RE::MakeFunctionArguments(std::move(false));|
+                    auto args = RE::MakeFunctionArguments(std::move(false));
                     vm->DispatchStaticCall("OSKSE", "ToggleImprovedCamera", args, callback);
                 }
             }

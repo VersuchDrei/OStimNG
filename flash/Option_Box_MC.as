@@ -62,7 +62,7 @@ class Option_Box_MC extends MovieClip
 		bg._width = maxWidth;
 		bg._x = bg._width /2 ;
 		
-		//AssignData(generateTestData())
+		//AssignData(generateTestData()) For testing in flash
 	}
 
 	public function HandleKeyboardInput(e:Number)

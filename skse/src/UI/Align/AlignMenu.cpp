@@ -41,6 +41,7 @@ namespace UI::Align {
         auto ui = RE::UI::GetSingleton();
         if (ui) {
             ui->Register(MENU_NAME, Creator);
+            logger::info("Registered {}", MENU_NAME);
 
             RE::GPtr<RE::IMenu> alignMenu = RE::UI::GetSingleton()->GetMenu(MENU_NAME);
 
