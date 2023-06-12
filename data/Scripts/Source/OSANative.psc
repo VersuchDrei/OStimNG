@@ -170,17 +170,6 @@ Function RemoveActor(int stageId) Global Native
 
 Function UpdateSpeed(int stageId, int speed) Global Native
 
-;███████╗██╗  ██╗ ██████╗██╗████████╗███████╗███╗   ███╗███████╗███╗   ██╗████████╗
-;██╔════╝╚██╗██╔╝██╔════╝██║╚══██╔══╝██╔════╝████╗ ████║██╔════╝████╗  ██║╚══██╔══╝
-;█████╗   ╚███╔╝ ██║     ██║   ██║   █████╗  ██╔████╔██║█████╗  ██╔██╗ ██║   ██║   
-;██╔══╝   ██╔██╗ ██║     ██║   ██║   ██╔══╝  ██║╚██╔╝██║██╔══╝  ██║╚██╗██║   ██║   
-;███████╗██╔╝ ██╗╚██████╗██║   ██║   ███████╗██║ ╚═╝ ██║███████╗██║ ╚████║   ██║   
-;╚══════╝╚═╝  ╚═╝ ╚═════╝╚═╝   ╚═╝   ╚══════╝╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝   ╚═╝   
- 
-float Function GetActorExcitement(int stageId, Actor act) Global Native
-
-Function SetActorExcitement(int stageId, Actor act, float val) Global Native
-
 ; ██╗   ██╗████████╗██╗██╗
 ; ██║   ██║╚══██╔══╝██║██║
 ; ██║   ██║   ██║   ██║██║

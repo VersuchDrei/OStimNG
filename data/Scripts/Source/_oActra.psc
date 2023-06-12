@@ -111,10 +111,6 @@ Event OnCenterActro(String EventName, String NewStageID, Float NumArg, Form Send
 	OSO.OSpell[1].cast(Actra, Actra)
 EndEvent
 
-Event OnHit(ObjectReference Aggressor, Form Source, Projectile Proj, bool PowerAttack, bool SneakAttack, bool BashAttack, bool HitBlocked)
-	SendModEvent("ostim_actorhit")
-EndEvent
-
 Event OnChangeStage(String EventName, String NewStageID, Float NumArg, Form Sender)
 	Actra.SetFactionRank(OSO.OFaction[1], NewStageID as Int)
 	StageID = NewStageID as Int

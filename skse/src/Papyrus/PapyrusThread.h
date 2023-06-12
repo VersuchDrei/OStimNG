@@ -5,6 +5,10 @@
 namespace PapyrusThread {
     using VM = RE::BSScript::IVirtualMachine;
 
+    bool IsRunning(RE::StaticFunctionTag*, int threadID) {
+        return OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+    }
+
     std::string GetScene(RE::StaticFunctionTag*, int threadID) {
         OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
         if (thread) {
@@ -15,6 +19,7 @@ namespace PapyrusThread {
         }
         return "";
     }
+
 
     std::vector<RE::Actor*> GetActors(RE::StaticFunctionTag*, int threadID) {
         OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
@@ -44,6 +49,30 @@ namespace PapyrusThread {
         return -1;
     }
 
+
+    bool IsInAutoMode(RE::StaticFunctionTag*, int threadID) {
+        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        if (thread) {
+            return thread->isInAutoMode();
+        }
+        return false;
+    }
+
+    void StartAutoMode(RE::StaticFunctionTag*, int threadID) {
+        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        if (thread) {
+            thread->startAutoMode();
+        }
+    }
+
+    void StopAutoMode(RE::StaticFunctionTag*, int threadID) {
+        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        if (thread) {
+            thread->stopAutoMode();
+        }
+    }
+
+
     void CallEvent(RE::StaticFunctionTag*, int threadID, std::string eventName, int actor, int target, int performer) {
         OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
         if (thread) {
@@ -65,11 +94,16 @@ namespace PapyrusThread {
     bool Bind(VM* a_vm) {
         const auto obj = "OThread"sv;
 
+        BIND(IsRunning);
         BIND(GetScene);
 
         BIND(GetActors);
         BIND(GetActor);
         BIND(GetActorPosition);
+
+        BIND(IsInAutoMode);
+        BIND(StartAutoMode);
+        BIND(StopAutoMode);
 
         BIND(CallEvent);
 

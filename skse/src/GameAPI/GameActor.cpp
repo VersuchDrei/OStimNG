@@ -39,7 +39,7 @@ namespace GameAPI {
                 return rank.rank;
             }
         }
-
+        
         return -2;
     }
 

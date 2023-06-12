@@ -24,13 +24,13 @@ namespace OStim {
         scaleBefore = actor.getScale();
         positionBefore = actor.getPosition();
         rotationBefore = actor.getRotation();
-        isFemale = actor.isSex(GameAPI::GameSex::FEMALE);
-        hasSchlong = Compatibility::CompatibilityTable::hasSchlong(actor);
+        female = actor.isSex(GameAPI::GameSex::FEMALE);
+        schlong = Compatibility::CompatibilityTable::hasSchlong(actor);
         isPlayer = actor.isPlayer();
         actor.addToFaction(Trait::TraitTable::getExcitementFaction());
         heelOffset = ActorUtil::getHeelOffset(actor.form);
 
-        baseExcitementMultiplier = isFemale && (!hasSchlong || !MCM::MCMTable::futaUseMaleExcitement()) ? MCM::MCMTable::getFemaleSexExcitementMult() : MCM::MCMTable::getMaleSexExcitementMult();
+        baseExcitementMultiplier = female && (!schlong || !MCM::MCMTable::futaUseMaleExcitement()) ? MCM::MCMTable::getFemaleSexExcitementMult() : MCM::MCMTable::getMaleSexExcitementMult();
         loopExcitementDecay = MCM::MCMTable::getExcitementDecayRate() * Constants::LOOP_TIME_SECONDS;
 
         voiceSet = Sound::SoundTable::getVoiceSet(actor);
@@ -40,28 +40,49 @@ namespace OStim {
         // we're creating a ThreadActor object and then copying it, which will delete the original
         // since we need the object in the callback functor though we need to do it after creating the copy
         // hence the initContinue function
-        
+
         // TODO properly use GameActor
         if (REL::Module::GetRuntime() == REL::Module::Runtime::AE) {
             auto nioInterface = Util::LookupTable::niTransformInterface;
-            if (nioInterface->HasNodeTransformScale(actor.form, false, isFemale, "NPC", "RSMPlugin")) {
-                rmHeight = nioInterface->GetNodeTransformScale(actor.form, false, isFemale, "NPC", "RSMPlugin");
+            if (nioInterface->HasNodeTransformScale(actor.form, false, female, "NPC", "RSMPlugin")) {
+                rmHeight = nioInterface->GetNodeTransformScale(actor.form, false, female, "NPC", "RSMPlugin");
             }
         } else {
             const auto skyrimVM = RE::SkyrimVM::GetSingleton();
             auto vm = skyrimVM ? skyrimVM->impl : nullptr;
             if (vm) {
                 RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback(new GetRmHeightCallbackFunctor(this));
-                auto args = RE::MakeFunctionArguments(std::move(actor.form), std::move(isFemale));
+                auto args = RE::MakeFunctionArguments(std::move(actor.form), std::move(female));
                 vm->DispatchStaticCall("OSKSE", "GetRmScale", args, callback);
             }
         }
     }
 
     Alignment::ActorKey ThreadActor::getAlignmentKey() {
-        return Alignment::ActorKey(isFemale, actor.getHeight() * rmHeight, heelOffsetRemoved ? 0 : heelOffset);
+        return Alignment::ActorKey(female, actor.getHeight() * rmHeight, heelOffsetRemoved ? 0 : heelOffset);
     }
 
+
+    void ThreadActor::setExcitement(float value) {
+        excitement = value;
+        actor.setFactionRank(Trait::TraitTable::getExcitementFaction(), (int)excitement);
+    }
+
+    void ThreadActor::addExcitement(float value, bool respectMultiplier) {
+        if (respectMultiplier) {
+            excitement += value * baseExcitementMultiplier;
+        } else {
+            excitement += value;
+        }
+
+        if (excitement < 0) {
+            excitement = 0;
+        } else if (excitement > 100) {
+            excitement = 100;
+        }
+
+        actor.setFactionRank(Trait::TraitTable::getExcitementFaction(), (int)excitement);
+    }
 
     void ThreadActor::climax() {
         excitement = -3;
@@ -88,7 +109,7 @@ namespace OStim {
                     GameAPI::Game::setGameSpeed(0.3);
                     std::this_thread::sleep_for(std::chrono::milliseconds(2500));
                     GameAPI::Game::setGameSpeed(1);
-                });
+                    });
                 slowMoThread.detach();
             }
 
@@ -99,18 +120,44 @@ namespace OStim {
             }
         } else {
             // TODO properly use GameActor here
-            FormUtil::sendModEvent(actor.form, "ostim_subthread_orgasm", thread->getCurrentNode()->scene_id,
-                                   thread->m_threadId);
+            FormUtil::sendModEvent(actor.form, "ostim_subthread_orgasm", thread->getCurrentNode()->scene_id, thread->m_threadId);
         }
 
         actor.damageActorValue(GameAPI::GameActorValues::STAMINA, 250);
 
         // todo give other actor excitement when in vaginalsex
 
-        if (hasSchlong) {
-            // TODO enable again when we have our own UI
-            // thread->SetSpeed(0);
+        if (schlong) {
+            // TODO enable for player when we have our own UI
+            if (!thread->isPlayerThread()) {
+                thread->SetSpeed(0);
+            }
         }
+
+        if (MCM::MCMTable::endOnAllOrgasm()) {
+            bool end = true;
+            for (auto& [index, threadActor] : thread->getActors()) {
+                if (threadActor.timesClimaxed == 0) {
+                    end = false;
+                    break;
+                }
+            }
+            if (end) {
+                thread->setStopTimer(4000);
+            }
+        } else {
+            if (isPlayer && MCM::MCMTable::endOnPlayerOrgasm()) {
+                thread->setStopTimer(4000);
+            }
+            if ((!female || schlong && MCM::MCMTable::futaUseMaleClimax()) ? MCM::MCMTable::endOnMaleOrgasm() : MCM::MCMTable::endOnFemaleOrgasm()){
+                thread->setStopTimer(4000);
+            }
+        }
+        if (!thread->isPlayerThread() && MCM::MCMTable::endNPCSceneOnOrgasm()) {
+            thread->setStopTimer(4000);
+        }
+
+        thread->setAutoModeToMainStage();
     }
 
 
@@ -333,7 +380,7 @@ namespace OStim {
         }
 
         // strap-ons
-        if (!hasSchlong) {
+        if (!schlong) {
             if ((graphActor->requirements & Graph::Requirement::PENIS) == Graph::Requirement::PENIS) {
                 if (MCM::MCMTable::equipStrapOnIfNeeded()) {
                     equipObject("strapon");
@@ -559,17 +606,17 @@ namespace OStim {
                 // "removing" the heel offset
                 SKEE::INiTransformInterface::Position offset{};
                 offset.z = -heelOffset;
-                nioInterface->AddNodeTransformPosition(actor.form, false, isFemale, "NPC", "OStim", offset);
+                nioInterface->AddNodeTransformPosition(actor.form, false, female, "NPC", "OStim", offset);
             } else {
-                nioInterface->RemoveNodeTransformPosition(actor.form, false, isFemale, "NPC", "OStim");
+                nioInterface->RemoveNodeTransformPosition(actor.form, false, female, "NPC", "OStim");
             }
-            nioInterface->UpdateNodeTransforms(actor.form, false, isFemale, "NPC");
+            nioInterface->UpdateNodeTransforms(actor.form, false, female, "NPC");
         } else {
             const auto skyrimVM = RE::SkyrimVM::GetSingleton();
             auto vm = skyrimVM ? skyrimVM->impl : nullptr;
             if (vm) {
                 RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-                auto args = RE::MakeFunctionArguments(std::move(actor.form), std::move(heelOffset), std::move(!remove), std::move(remove), std::move(isFemale));
+                auto args = RE::MakeFunctionArguments(std::move(actor.form), std::move(heelOffset), std::move(!remove), std::move(remove), std::move(female));
                 vm->DispatchStaticCall("OSKSE", "UpdateHeelOffset", args, callback);
             }
         }
@@ -598,20 +645,20 @@ namespace OStim {
         if (REL::Module::GetRuntime() == REL::Module::Runtime::AE) {
             auto nioInterface = Util::LookupTable::niTransformInterface;
             if (oldOffset != 0) {
-                nioInterface->RemoveNodeTransformPosition(actor.form, false, isFemale, "NPC", "OStim");
+                nioInterface->RemoveNodeTransformPosition(actor.form, false, female, "NPC", "OStim");
             }
             if (heelOffset != 0) {
                 SKEE::INiTransformInterface::Position offset{};
                 offset.z = -heelOffset;
-                nioInterface->AddNodeTransformPosition(actor.form, false, isFemale, "NPC", "OStim", offset);
+                nioInterface->AddNodeTransformPosition(actor.form, false, female, "NPC", "OStim", offset);
             }
-            nioInterface->UpdateNodeTransforms(actor.form, false, isFemale, "NPC");
+            nioInterface->UpdateNodeTransforms(actor.form, false, female, "NPC");
         } else {
             const auto skyrimVM = RE::SkyrimVM::GetSingleton();
             auto vm = skyrimVM ? skyrimVM->impl : nullptr;
             if (vm) {
                 RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-                auto args = RE::MakeFunctionArguments(std::move(actor.form), std::move(heelOffset), std::move(oldOffset != 0), std::move(heelOffset != 0), std::move(isFemale));
+                auto args = RE::MakeFunctionArguments(std::move(actor.form), std::move(heelOffset), std::move(oldOffset != 0), std::move(heelOffset != 0), std::move(female));
                 vm->DispatchStaticCall("OSKSE", "UpdateHeelOffset", args, callback);
             }
         }
@@ -624,7 +671,7 @@ namespace OStim {
             if (underlyingExpression) {
                 mask = underlyingExpression->typeMask;
             }
-            underlyingExpression = VectorUtil::randomElement(nodeExpressions)->getGenderExpression(isFemale);
+            underlyingExpression = VectorUtil::randomElement(nodeExpressions)->getGenderExpression(female);
             mask |= underlyingExpression->typeMask;
             if (!eyeballModifierOverride.empty()) {
                 mask &= ~Trait::ExpressionType::BALL_MODIFIER;
@@ -646,7 +693,7 @@ namespace OStim {
             mask = overrideExpression->typeMask;
         }
         if (overrideExpressions) {
-            overrideExpression = VectorUtil::randomElement(overrideExpressions)->getGenderExpression(isFemale);
+            overrideExpression = VectorUtil::randomElement(overrideExpressions)->getGenderExpression(female);
             mask &= ~overrideExpression->typeMask;
             applyExpression(overrideExpression, overrideExpression->typeMask, 5);
             overwriteExpressionCooldown = std::uniform_int_distribution<>(MCM::MCMTable::getExpressionDurationMin(), MCM::MCMTable::getExpressionDurationMax())(Constants::RNG);
@@ -665,7 +712,7 @@ namespace OStim {
         if (eventExpression) {
             mask = eventExpression->typeMask;
         }
-        eventExpression = expression->getGenderExpression(isFemale);
+        eventExpression = expression->getGenderExpression(female);
         if (overrideExpression) {
             applyExpression(eventExpression, eventExpression->typeMask & ~overrideExpression->typeMask, 3);
             mask &= ~eventExpression->typeMask & ~overrideExpression->typeMask;
@@ -1008,11 +1055,13 @@ namespace OStim {
 
 
     void ThreadActor::free() {
+        logger::info("freeing actor {}-{}: {}", thread->m_threadId, index, actor.getName());
         for (auto& [type, object] : equipObjects) {
             object.unequip(actor);
             object.removeItems(actor);
         }
 
+        logger::info("starting redressing");
         // TODO properly use GameActor
         if (MCM::MCMTable::animateRedress() && !isPlayer) {
             const auto skyrimVM = RE::SkyrimVM::GetSingleton();
@@ -1020,7 +1069,7 @@ namespace OStim {
             if (vm) {
                 RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
                 std::vector<RE::TESForm*> weapons = {rightHand, leftHand, ammo};
-                auto args = RE::MakeFunctionArguments(std::move(actor.form), std::move(isFemale), std::move(undressedItems), std::move(weapons));
+                auto args = RE::MakeFunctionArguments(std::move(actor.form), std::move(female), std::move(undressedItems), std::move(weapons));
                 vm->DispatchStaticCall("OUndress", "AnimateRedress", args, callback);
             }
         } else {
@@ -1040,25 +1089,38 @@ namespace OStim {
             addWeapons();
         }
 
+        logger::info("resetting scale");
         applyHeelOffset(false);
 
         actor.setScale(scaleBefore);
         
         // TODO GameActor
+        logger::info("calling free function");
         freeActor(actor.form, false);
 
+        logger::info("resetting position");
         if (MCM::MCMTable::resetPosition()) {
-            actor.setRotation(rotationBefore);
-            actor.setPosition(positionBefore);
+            // running this immediately can cause game freezes, running it in a task works fine, though
+            // for me freezes were only in a threesome, but some users reported it in twosomes or other scenarios
+            GameAPI::GameActor tempActor = actor;
+            float tempRotation = rotationBefore;
+            GameAPI::GamePosition tempPosition = positionBefore;
+            SKSE::GetTaskInterface()->AddTask([tempActor, tempRotation, tempPosition] {
+                tempActor.setRotation(tempRotation);
+                tempActor.setPosition(tempPosition);
+            });
         }
 
         // no need to do this in ActorUtil::free since facedata isn't written into the savefile anyways
         // TODO properly use GameActor
+        logger::info("resetting face data");
         auto faceData = actor.form->GetFaceGenAnimationData();
         if (faceData) {
             faceData->ClearExpressionOverride();
             faceData->Reset(0.0, true, true, true, false);
         }
+
+        logger::info("freed actor {}-{}: {}", thread->m_threadId, index, actor.getName());
     }
 
     void ThreadActor::papyrusUndressCallback(std::vector<RE::TESObjectARMO*> items) {

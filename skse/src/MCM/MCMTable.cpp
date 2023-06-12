@@ -11,8 +11,6 @@ namespace MCM {
         }
         auto dataHandler = RE::TESDataHandler::GetSingleton();
 
-        OStimKeySceneStart = dataHandler->LookupForm<RE::TESGlobal>(0xDE7, "OStim.esp");
-
         OStimUsePapyrusUndressing = dataHandler->LookupForm<RE::TESGlobal>(0xDB0, "OStim.esp");
     }
 
@@ -31,10 +29,6 @@ namespace MCM {
 
     bool MCMTable::useFreeCam() {
         return settings[0xDDE].asBool();
-    }
-
-    int MCMTable::keySceneStart() {
-        return static_cast<int>(OStimKeySceneStart->value);
     }
 
 

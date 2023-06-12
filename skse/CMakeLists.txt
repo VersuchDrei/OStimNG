@@ -31,6 +31,7 @@ set(sources
     src/Core/EquipObjectHandler.cpp
     src/Core/ExpressionUpdater.cpp
     src/Core/Singleton.h
+    src/Core/Thread/ThreadAutoMode.cpp
     src/Core/Thread.cpp
     src/Core/ThreadActor.cpp
     src/Core/ThreadManager.cpp
@@ -80,7 +81,6 @@ set(sources
     src/Util/ControlUtil.cpp
     src/Util/FormUtil.cpp
     src/Util/LookupTable.cpp
-    src/Util/MathUtil.cpp
     src/Util/ObjectRefUtil.cpp
     src/Util/SerializationUtil.cpp
     src/Util/StringUtil.cpp

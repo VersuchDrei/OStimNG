@@ -1,5 +1,14 @@
 ScriptName OThread
 
+;/* IsRunning
+* * checks if the thread is still running
+* *
+* * @param: ThreadID, the id of the thread
+* *
+* * @return: true if the thread is still running, otherwise false
+*/;
+bool Function IsRunning(int ThreadID) Global Native
+
 ;/* GetScene
 * * returns the scene id of the scene that is currently running in the thread
 * *
@@ -8,6 +17,7 @@ ScriptName OThread
 * * @return: the scene id, returns "" if the thread is still in startup or ended
 */;
 string Function GetScene(int ThreadID) Global Native
+
 
 ;/* GetActors
 * * returns the actors of the thread
@@ -37,6 +47,33 @@ Actor Function GetActor(int ThreadID, int Index) Global Native
 * * @return: the actors index, returns -1 the the thread doesn't contain the actor or ended
 */;
 int Function GetActorPosition(int ThreadID, Actor Act) Global Native
+
+
+;/* IsInAutoMode
+* * checks if the thread is currently running in automatic mode
+* *
+* * @param: ThreadID, the id of the thread
+* *
+* * @return: true if the thread is in auto mode, otherwise false
+*/;
+bool Function IsInAutoMode(int ThreadID) Global Native
+
+;/* StartAutoMode
+* * sets the thread to automatic mode
+* *
+* * @param: ThreadID, the id of the thread
+*/;
+Function StartAutoMode(int ThreadID) Global Native
+
+;/* StopAutoMode
+* * sets the thread to manual mode
+* * for the player thread that means the player is now again in control of the navigation
+* * for NPC threads this means they will need to be controlled from the outside
+* *
+* * @param: ThreadID, the id of the thread
+*/;
+Function StopAutoMode(int ThreadID) Global Native
+
 
 ;/* CallEvent
 * * calls the event for the thread, events and their properties can be defined in data/SKSE/plugins/OStim/events

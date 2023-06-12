@@ -20,17 +20,19 @@ namespace OStim {
 
         int index;
 
-		float excitement = 0; // current excitement
-		float baseExcitementInc = 0; // base excitement per second without speed or MCM modifier
-		float baseExcitementMultiplier = 1.0; // multiplier from MCM
-        float loopExcitementInc = 0; // final excitement inc per loop
-		float maxExcitement = 0;
-        float loopExcitementDecay = 0; // excitement decay per loop
-        int excitementDecayCooldown = 0;
-
 		inline GameAPI::GameActor getActor() { return actor; }
 
         Alignment::ActorKey getAlignmentKey();
+
+        inline float getExcitement() { return excitement; }
+        void setExcitement(float value);
+        void addExcitement(float value, bool respectMultiplier);
+        inline float getMaxExcitement() { return maxExcitement; }
+        inline void setMaxExcitement(float max) { maxExcitement = max; }
+        inline float getBaseExcitementInc() { return baseExcitementInc; }
+        inline void setBaseExcitementInc(float inc) { baseExcitementInc = inc; }
+        inline float getBaseExcitementMultiplier() { return baseExcitementMultiplier; }
+        inline void setLoopExcitementInc(float inc) { loopExcitementInc = inc; }
 
         void climax();
         inline int getTimexClimaxed() { return timesClimaxed; }
@@ -67,17 +69,16 @@ namespace OStim {
 
         void mute();
         void unmute();
-        inline bool isMuted() {
-            return muted;
-        }
+        inline bool isMuted() { return muted; }
 
-        inline bool setObjectVariant(std::string type, std::string variant) {
-            return setObjectVariant(type, variant, 0);
-        }
+        inline bool setObjectVariant(std::string type, std::string variant) { return setObjectVariant(type, variant, 0); }
 
         void loop();
 
         void free();
+
+        inline bool isFemale() { return female; }
+        inline bool hasSchlong() { return schlong; }
 
         Serialization::OldThreadActor serialize();
 
@@ -140,6 +141,14 @@ namespace OStim {
             bool isRedress;
         };
 
+        float excitement = 0;                  // current excitement
+        float baseExcitementInc = 0;           // base excitement per second without speed or MCM modifier
+        float baseExcitementMultiplier = 1.0;  // multiplier from MCM
+        float loopExcitementInc = 0;           // final excitement inc per loop
+        float maxExcitement = 0;
+        float loopExcitementDecay = 0;  // excitement decay per loop
+        int excitementDecayCooldown = 0;
+
         Thread* thread;
 		GameAPI::GameActor actor;
 
@@ -148,8 +157,8 @@ namespace OStim {
         float rotationBefore = 0;
 
         bool isPlayer;
-        bool isFemale;
-        bool hasSchlong;
+        bool female;
+        bool schlong;
 
         int timesClimaxed = 0;
 

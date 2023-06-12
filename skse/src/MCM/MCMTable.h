@@ -20,7 +20,7 @@ namespace MCM {
         inline static int keyEnd() { return settings[0xE2D].asInt(); }
         inline static int keyToggle() { return settings[0xE2E].asInt(); }
         static int keyAlignment() { return settings[0xDE2].asInt(); }
-        static int keySceneStart();
+        static int keySceneStart() { return settings[0xDE7].asInt(); }
         inline static int keySpeedUp() { return settings[0xDE8].asInt(); }
         inline static int keySpeedDown() { return settings[0xDE9].asInt(); }
         inline static int keyPullOut() { return settings[0xDEA].asInt(); }
@@ -29,12 +29,24 @@ namespace MCM {
 
         static bool useRumble();
 
+        inline static int npcSceneDuration() { return settings[0xE2F].asInt(); }
+        inline static int endNPCSceneOnOrgasm() { return settings[0xE31].asInt(); }
+
         inline static bool useAutoModeAlways() { return settings[0xE1C].asBool(); }
         inline static bool useAutoModeSolo() { return settings[0xE1D].asBool(); }
         inline static bool useAutoModeDominant() { return settings[0xE1E].asBool(); }
         inline static bool useAutoModeSubmissive() { return settings[0xE1F].asBool(); }
         inline static bool useAutoModeVanilla() { return settings[0xE20].asBool(); }
+
         inline static bool useAutoModeFades() { return settings[0xE21].asBool(); }
+        inline static int autoModeAnimDurationMin() { return settings[0xE32].asInt(); }
+        inline static int autoModeAnimDurationMax() { return settings[0xE33].asInt(); }
+        inline static int autoModeForeplayChance() { return settings[0xE34].asInt(); }
+        inline static int autoModeForeplayThresholdMin() { return settings[0xE35].asInt(); }
+        inline static int autoModeForeplayThresholdMax() { return settings[0xE36].asInt(); }
+        inline static int autoModePulloutChance() { return settings[0xE37].asInt(); }
+        inline static int autoModePulloutThresholdMin() { return settings[0xE38].asInt(); }
+        inline static int autoModePulloutThresholdMax() { return settings[0xE39].asInt(); }
 
         static bool useFreeCam();
         static float freeCamSpeed();
@@ -49,6 +61,12 @@ namespace MCM {
 
         static bool getSlowMotionOnOrgasm();
         static bool getBlurOnOrgasm();
+
+        inline static bool useAutoClimaxAnimations() { return settings[0xDA9].asBool(); }
+        inline static bool endOnPlayerOrgasm() { return settings[0xE30].asBool(); }
+        inline static bool endOnMaleOrgasm() { return settings[0xDF9].asBool(); }
+        inline static bool endOnFemaleOrgasm() { return settings[0xDFA].asBool(); }
+        inline static bool endOnAllOrgasm() { return settings[0xDFB].asBool(); }
 
         static bool isScalingDisabled();
         static bool isSchlongBendingDisabled();
@@ -75,6 +93,8 @@ namespace MCM {
         static float getMoanVolume();
         static float getSoundVolume();
 
+        inline static bool intendedSexOnly() { return settings[0xDEE].asBool(); }
+
         static bool equipStrapOnIfNeeded();
         static bool unequipStrapOnIfNotNeeded();
         static bool unequipStrapOnIfInWay();
@@ -99,7 +119,6 @@ namespace MCM {
             {0xE16, {1, "SetResetPosition"}},
             {0xE18, {0, "SetCustomTimescale"}},
             {0xE19, {1, "SetUseFades"}},
-            {0xE1A, {1, "SetEndAfterActorHit"}},
             {0xDA1, {1, "SetUseIntroScenes"}},
 
             {0xE22, {0, "SetDomLightMode"}},
@@ -115,6 +134,7 @@ namespace MCM {
             {0xE2C, {71, "SetOsaYesKey"}},
             {0xE2D, {83, "SetOsaEndKey"}},
             {0xE2E, {73, "SetOsaTogKey"}},
+            {0xDE7, {200, "SetKeyMap"}},  // scene start
             {0xDE8, {78, "SetKeyUp"}},    // speed up
             {0xDE9, {74, "SetKeyDown"}},  // speed down
             {0xDEA, {79, "SetPullOut"}},
@@ -126,12 +146,24 @@ namespace MCM {
 
             {0xE1B, {1, "SetActorSpeedControl"}},
 
+            {0xE2F, {300000, "NPCSceneDuration"}},
+            {0xE31, {1, "endNPCSceneOnOrgasm"}},
+
             {0xE1C, {0, "SetAIControl"}},
             {0xE1D, {0, "SetForceAIForMasturbation"}},
             {0xE1E, {0, "SetForceAIIfAttacking"}},
             {0xE1F, {0, "SetForceAIIfAttacked"}},
             {0xE20, {0, "SetForceAIInConsensualScenes"}},
+
             {0xE21, {0, "SetUseAutoFades"}},
+            {0xE32, {15000, "autoModeAnimDurationMin"}},
+            {0xE33, {30000, "autoModeAnimDurationMax"}},
+            {0xE34, {35, "autoModeForeplayChance"}},
+            {0xE35, {15, "autoModeForeplayThresholdMin"}},
+            {0xE36, {35, "autoModeForeplayThresholdMax"}},
+            {0xE37, {75, "autoModePulloutChance"}},
+            {0xE38, {80, "autoModePulloutThresholdMin"}},
+            {0xE39, {90, "autoModePulloutThresholdMax"}},
 
             {0xDA6, {1, "SetEnableFurniture"}},
             {0xDA7, {1, "SetSelectFurniture"}},
@@ -160,6 +192,7 @@ namespace MCM {
             {0xE03, {0, "SetMatchColorToGender"}},
 
             {0xDA9, {1, "SetAutoClimaxAnims"}},
+            {0xE30, {0, "endOnPlayerOrgasm"}},
             {0xDF9, {1, "SetEndOnOrgasm"}},
             {0xDFA, {0, "SetEndOnSubOrgasm"}},
             {0xDFB, {0, "SetEndOnBothOrgasm"}},

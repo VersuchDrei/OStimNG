@@ -530,21 +530,19 @@ Function DrawGeneralPage()
 	SetCursorPosition(4)
 	AddToggleOptionST("OID_UseFades", "$ostim_use_fades", Main.UseFades)
 	SetCursorPosition(6)
-	AddToggleOptionST("OID_EndWhenActorHit", "$ostim_end_on_hit", Main.EndAfterActorHit)
-	SetCursorPosition(8)
 	AddToggleOptionST("OID_UseIntroScenes", "$ostim_use_intro_scenes", Main.UseIntroScenes)
 
-	SetCursorPosition(12)
+	SetCursorPosition(10)
 	AddColoredHeader("$ostim_header_lights")
-	SetCursorPosition(14)
+	SetCursorPosition(12)
 	AddMenuOptionST("OID_MaleLightMode", "$ostim_male_light_mode", DomLightModeList[Main.DomLightPos])
-	SetCursorPosition(16)
+	SetCursorPosition(14)
 	AddMenuOptionST("OID_MaleLightBrightness", "$ostim_male_light_brightness", DomLightBrightList[Main.DomLightBrightness])
-	SetCursorPosition(18)
+	SetCursorPosition(16)
 	AddMenuOptionST("OID_FemaleLightMode", "$ostim_female_light_mode", DomLightModeList[Main.SubLightPos])
-	SetCursorPosition(20)
+	SetCursorPosition(18)
 	AddMenuOptionST("OID_FemaleLightBrightness", "$ostim_female_light_brightness", DomLightBrightList[Main.SubLightBrightness])
-	SetCursorPosition(22)
+	SetCursorPosition(20)
 	AddToggleOptionST("OID_OnlyLightInDark", "$ostim_dark_light", Main.LowLightLevelLightsOnly)
 
 	SetCursorPosition(1)
@@ -604,17 +602,6 @@ State OID_UseFades
 	Event OnSelectST()
 		Main.UseFades = !Main.UseFades
 		SetToggleOptionValueST(Main.UseFades)
-	EndEvent
-EndState
-
-State OID_EndWhenActorHit
-	Event OnHighlightST()
-		SetInfoText("$ostim_tooltip_end_on_hit")
-	EndEvent
-
-	Event OnSelectST()
-		Main.EndAfterActorHit = !Main.EndAfterActorHit
-		SetToggleOptionValueST(Main.EndAfterActorHit)
 	EndEvent
 EndState
 
@@ -1054,8 +1041,13 @@ Function DrawAutoControlPage()
 	SetCursorPosition(2)
 	AddToggleOptionST("OID_AutoSpeedControl", "$ostim_speed_control", Main.EnableActorSpeedControl)
 
+	SetCursorPosition(6)
+	AddSliderOptionST("OID_NPCSceneDuration", "$ostim_npc_scene_duration", Main.NPCSceneDuration / 1000, "{0} s")
+	SetCursorPosition(8)
+	AddToggleOptionST("OID_EndNPCSceneOnOrgasm", "$ostim_end_npc_scene_on_orgasm", Main.EndNPCSceneOnOrgasm)
+
 	SetCursorPosition(1)
-	AddColoredHeader("$ostim_header_auto_mode")
+	AddColoredHeader("$ostim_header_auto_mode_toggle")
 	SetCursorPosition(3)
 	AddToggleOptionST("OID_UseAutoModeAlways", "$ostim_use_auto_mode_always", Main.UseAIControl)
 	SetCursorPosition(5)
@@ -1070,10 +1062,27 @@ Function DrawAutoControlPage()
 	AddToggleOptionST("OID_UseAutoModeSubmissive", "$ostim_use_auto_mode_submissive", Main.UseAIPlayerAggressed, UseAutoModeConditionalFlags)
 	SetCursorPosition(11)
 	AddToggleOptionST("OID_UseAutoModeVanilla", "$ostim_use_auto_mode_vanilla", Main.UseAINonAggressive, UseAutoModeConditionalFlags)
-	SetCursorPosition(13)
-	AddToggleOptionST("OID_UseAutoModeFades", "$ostim_use_auto_mode_fades", Main.UseAutoFades)
+
 	SetCursorPosition(15)
-	AddSliderOptionST("OID_AiSwitchChance", "$ostim_ai_change_chance", Main.AiSwitchChance, "{0}")
+	AddColoredHeader("$ostim_header_auto_mode_settings")
+	SetCursorPosition(17)
+	AddToggleOptionST("OID_UseAutoModeFades", "$ostim_use_auto_mode_fades", Main.UseAutoFades)
+	SetCursorPosition(19)
+	AddSliderOptionST("OID_AutoModeAnimDurationMin", "$ostim_auto_mode_anim_duration_min", Main.AutoModeAnimDurationMin, "{0} s")
+	SetCursorPosition(21)
+	AddSliderOptionST("OID_AutoModeAnimDurationMax", "$ostim_auto_mode_anim_duration_max", Main.AutoModeAnimDurationMax, "{0} s")
+	SetCursorPosition(23)
+	AddSliderOptionST("OID_AutoModeForeplayChance", "$ostim_auto_mode_foreplay_chance", Main.AutoModeForeplayChance, "{0} %")
+	SetCursorPosition(25)
+	AddSliderOptionST("OID_AutoModeForeplayThresholdMin", "$ostim_auto_mode_foreplay_threshold_min", Main.AutoModeForeplayThresholdMin, "{0}")
+	SetCursorPosition(27)
+	AddSliderOptionST("OID_AutoModeForeplayThresholdMax", "$ostim_auto_mode_foreplay_threshold_max", Main.AutoModeForeplayThresholdMax, "{0}")
+	SetCursorPosition(29)
+	AddSliderOptionST("OID_AutoModePulloutChance", "$ostim_auto_mode_pullout_chance", Main.AutoModePulloutChance, "{0} %")
+	SetCursorPosition(31)
+	AddSliderOptionST("OID_AutoModePulloutThresholdMin", "$ostim_auto_mode_pullout_threshold_min", Main.AutoModePulloutThresholdMin, "{0}")
+	SetCursorPosition(33)
+	AddSliderOptionST("OID_AutoModePulloutThresholdMax", "$ostim_auto_mode_pullout_threshold_max", Main.AutoModePulloutThresholdMax, "{0}")
 EndFunction
 
 
@@ -1085,6 +1094,36 @@ State OID_AutoSpeedControl
 	Event OnSelectST()
 		Main.EnableActorSpeedControl = !Main.EnableActorSpeedControl
 		SetToggleOptionValueST(Main.EnableActorSpeedControl)
+	EndEvent
+EndState
+
+
+State OID_NPCSceneDuration
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_npc_scene_duration")
+	EndEvent
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(Main.NPCSceneDuration / 1000)
+		SetSliderDialogDefaultValue(300)
+		SetSliderDialogRange(0, 600)
+		SetSliderDialogInterval(15)
+	EndEvent
+
+	Event OnSliderAcceptST(float Value)
+		Main.NPCSceneDuration = (Value * 1000) as int
+		SetSliderOptionValueST(Value, "{1} s")
+	EndEvent
+EndState
+
+State OID_EndNPCSceneOnOrgasm
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_end_npc_scene_on_orgasm")
+	EndEvent
+
+	Event OnSelectST()
+		Main.EndNPCSceneOnOrgasm = !Main.EndNPCSceneOnOrgasm
+		SetToggleOptionValueST(Main.EndNPCSceneOnOrgasm)
 	EndEvent
 EndState
 
@@ -1153,6 +1192,7 @@ State OID_UseAutoModeVanilla
 	EndEvent
 EndState
 
+
 State OID_UseAutoModeFades
 	Event OnHighlightST()
 		SetInfoText("$ostim_tooltip_use_auto_mode_fades")
@@ -1164,21 +1204,153 @@ State OID_UseAutoModeFades
 	EndEvent
 EndState
 
-State OID_AiSwitchChance
+State OID_AutoModeAnimDurationMin
 	Event OnHighlightST()
-		SetInfoText("$ostim_tooltip_ai_change_chance")
+		SetInfoText("$ostim_auto_mode_anim_duration_min")
 	EndEvent
 
 	Event OnSliderOpenST()
-		SetSliderDialogStartValue(Main.AiSwitchChance)
-		SetSliderDialogDefaultValue(6)
-		SetSliderDialogRange(0, 100)
-		SetSliderDialogInterval(1)
+		SetSliderDialogStartValue(Main.AutoModeAnimDurationMin / 1000.0)
+		SetSliderDialogDefaultValue(15)
+		SetSliderDialogRange(5, 120)
+		SetSliderDialogInterval(5)
 	EndEvent
 
 	Event OnSliderAcceptST(float Value)
-		Main.AiSwitchChance = Value As int
-		SetSliderOptionValueST(Value, "{0}")
+		Main.AutoModeAnimDurationMin = (Value * 1000) as int
+		SetSliderOptionValueST(Main.AutoModeAnimDurationMin / 1000.0, "{0} s")
+		SetSliderOptionValueST(Main.AutoModeAnimDurationMax / 1000.0, "{0} s", false, "OID_AutoModeAnimDurationMax")
+	EndEvent
+EndState
+
+State OID_AutoModeAnimDurationMax
+	Event OnHighlightST()
+		SetInfoText("$ostim_auto_mode_anim_duration_max")
+	EndEvent
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(Main.AutoModeAnimDurationMax / 1000.0)
+		SetSliderDialogDefaultValue(30)
+		SetSliderDialogRange(5, 120)
+		SetSliderDialogInterval(5)
+	EndEvent
+
+	Event OnSliderAcceptST(float Value)
+		Main.AutoModeAnimDurationMax = (Value * 1000) as int
+		SetSliderOptionValueST(Main.AutoModeAnimDurationMin / 1000.0, "{0} s", false, "OID_AutoModeAnimDurationMin")
+		SetSliderOptionValueST(Main.AutoModeAnimDurationMax / 1000.0, "{0} s")
+	EndEvent
+EndState
+
+State OID_AutoModeForeplayChance
+	Event OnHighlightST()
+		SetInfoText("$ostim_auto_mode_foreplay_chance")
+	EndEvent
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(Main.AutoModeForeplayChance)
+		SetSliderDialogDefaultValue(35)
+		SetSliderDialogRange(0, 100)
+		SetSliderDialogInterval(5)
+	EndEvent
+
+	Event OnSliderAcceptST(float Value)
+		Main.AutoModeForeplayChance = Value as int
+		SetSliderOptionValueST(Value, "{0} %")
+	EndEvent
+EndState
+
+State OID_AutoModeForeplayThresholdMin
+	Event OnHighlightST()
+		SetInfoText("$ostim_auto_mode_foreplay_threshold_min")
+	EndEvent
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(Main.AutoModeForeplayThresholdMin)
+		SetSliderDialogDefaultValue(15)
+		SetSliderDialogRange(0, 100)
+		SetSliderDialogInterval(5)
+	EndEvent
+
+	Event OnSliderAcceptST(float Value)
+		Main.AutoModeForeplayThresholdMin = Value as int
+		SetSliderOptionValueST(Main.AutoModeForeplayThresholdMin, "{0}")
+		SetSliderOptionValueST(Main.AutoModeForeplayThresholdMax, "{0}", false, "OID_AutoModeForeplayThresholdMax")
+	EndEvent
+EndState
+
+State OID_AutoModeForeplayThresholdMax
+	Event OnHighlightST()
+		SetInfoText("$ostim_auto_mode_foreplay_threshold_max")
+	EndEvent
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(Main.AutoModeForeplayThresholdMax)
+		SetSliderDialogDefaultValue(35)
+		SetSliderDialogRange(0, 100)
+		SetSliderDialogInterval(5)
+	EndEvent
+
+	Event OnSliderAcceptST(float Value)
+		Main.AutoModeForeplayThresholdMax = Value as int
+		SetSliderOptionValueST(Main.AutoModeForeplayThresholdMin, "{0}", false, "OID_AutoModeForeplayThresholdMin")
+		SetSliderOptionValueST(Main.AutoModeForeplayThresholdMax, "{0}")
+	EndEvent
+EndState
+
+State OID_AutoModePulloutChance
+	Event OnHighlightST()
+		SetInfoText("$ostim_auto_mode_pullout_chance")
+	EndEvent
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(Main.AutoModePulloutChance)
+		SetSliderDialogDefaultValue(75)
+		SetSliderDialogRange(0, 100)
+		SetSliderDialogInterval(5)
+	EndEvent
+
+	Event OnSliderAcceptST(float Value)
+		Main.AutoModePulloutChance = Value as int
+		SetSliderOptionValueST(Value, "{0} %")
+	EndEvent
+EndState
+
+State OID_AutoModePulloutThresholdMin
+	Event OnHighlightST()
+		SetInfoText("$ostim_auto_mode_pullout_threshold_min")
+	EndEvent
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(Main.AutoModePulloutThresholdMin)
+		SetSliderDialogDefaultValue(80)
+		SetSliderDialogRange(0, 100)
+		SetSliderDialogInterval(5)
+	EndEvent
+
+	Event OnSliderAcceptST(float Value)
+		Main.AutoModePulloutThresholdMin = Value as int
+		SetSliderOptionValueST(Main.AutoModePulloutThresholdMin, "{0}")
+		SetSliderOptionValueST(Main.AutoModePulloutThresholdMax, "{0}", false, "OID_AutoModePulloutThresholdMax")
+	EndEvent
+EndState
+
+State OID_AutoModePulloutThresholdMax
+	Event OnHighlightST()
+		SetInfoText("$ostim_auto_mode_pullout_threshold_max")
+	EndEvent
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(Main.AutoModePulloutThresholdMax)
+		SetSliderDialogDefaultValue(90)
+		SetSliderDialogRange(0, 100)
+		SetSliderDialogInterval(5)
+	EndEvent
+
+	Event OnSliderAcceptST(float Value)
+		Main.AutoModePulloutThresholdMax = Value as int
+		SetSliderOptionValueST(Main.AutoModePulloutThresholdMin, "{0}", false, "OID_AutoModePulloutThresholdMin")
+		SetSliderOptionValueST(Main.AutoModePulloutThresholdMax, "{0}")
 	EndEvent
 EndState
 
@@ -1329,16 +1501,18 @@ Function DrawExcitementPage()
 	If Main.EndOnAllOrgasm
 		EndOnSingleOrgasmFlags = OPTION_FLAG_DISABLED
 	EndIf
-	AddToggleOptionST("OID_EndOnMaleOrgasm", "$ostim_orgasm_end_male", Main.EndOnMaleOrgasm, EndOnSingleOrgasmFlags)
+	AddToggleOptionST("OID_EndOnPlayerOrgasm", "$ostim_orgasm_end_player", Main.EndOnPlayerOrgasm, EndOnSingleOrgasmFlags)
 	SetCursorPosition(5)
-	AddToggleOptionST("OID_EndOnFemaleOrgasm", "$ostim_orgasm_end_female", Main.EndOnFemaleOrgasm, EndOnSingleOrgasmFlags)
+	AddToggleOptionST("OID_EndOnMaleOrgasm", "$ostim_orgasm_end_male", Main.EndOnMaleOrgasm, EndOnSingleOrgasmFlags)
 	SetCursorPosition(7)
-	AddToggleOptionST("OID_EndOnAllOrgasm", "$ostim_orgasm_end_all", Main.EndOnAllOrgasm)
+	AddToggleOptionST("OID_EndOnFemaleOrgasm", "$ostim_orgasm_end_female", Main.EndOnFemaleOrgasm, EndOnSingleOrgasmFlags)
 	SetCursorPosition(9)
-	AddToggleOptionST("OID_SlowMoOnOrgasm", "$ostim_slowmo_orgasm", Main.SlowMoOnOrgasm)
+	AddToggleOptionST("OID_EndOnAllOrgasm", "$ostim_orgasm_end_all", Main.EndOnAllOrgasm)
 	SetCursorPosition(11)
-	AddToggleOptionST("OID_BlurOnOrgasm", "$ostim_blur_orgasm", Main.BlurOnOrgasm)
+	AddToggleOptionST("OID_SlowMoOnOrgasm", "$ostim_slowmo_orgasm", Main.SlowMoOnOrgasm)
 	SetCursorPosition(13)
+	AddToggleOptionST("OID_BlurOnOrgasm", "$ostim_blur_orgasm", Main.BlurOnOrgasm)
+	SetCursorPosition(15)
 	AddToggleOptionST("OID_AutoClimaxAnimations", "$ostim_auto_climax_anims", Main.AutoClimaxAnimations)
 EndFunction
 
@@ -1460,6 +1634,17 @@ State OID_MatchBarColorToGender
 EndState
 
 
+State OID_EndOnPlayerOrgasm
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_orgasm_end_player")
+	EndEvent
+
+	Event OnSelectST()
+		Main.EndOnplayerOrgasm = !Main.EndOnplayerOrgasm
+		SetToggleOptionValueST(Main.EndOnplayerOrgasm)
+	EndEvent
+EndState
+
 State OID_EndOnMaleOrgasm
 	Event OnHighlightST()
 		SetInfoText("$ostim_tooltip_orgasm_end_male")
@@ -1495,6 +1680,7 @@ State OID_EndOnAllOrgasm
 		If Main.EndOnAllOrgasm
 			EndOnSingleOrgasmFlags = OPTION_FLAG_DISABLED
 		EndIf
+		SetOptionFlagsST(EndOnSingleOrgasmFlags, false, "OID_EndOnPlayerOrgasm")
 		SetOptionFlagsST(EndOnSingleOrgasmFlags, false, "OID_EndOnMaleOrgasm")
 		SetOptionFlagsST(EndOnSingleOrgasmFlags, false, "OID_EndOnFemaleOrgasm")
 	EndEvent

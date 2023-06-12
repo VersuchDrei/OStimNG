@@ -1,7 +1,14 @@
 #pragma once
 
-namespace MathUtil {
-    float toDegrees(float angle);
+#include "Util/Constants.h"
 
-    float toRadians(float angle);
+#define _USE_MATH_DEFINES
+
+#include <math.h>
+
+namespace MathUtil {
+    inline float toDegrees(float angle) { return angle * 180 / M_PI; }
+    inline float toRadians(float angle) { return angle * M_PI / 180; }
+    inline bool chanceRoll(int chance) { return chance > std::uniform_int_distribution<>(0, 99)(Constants::RNG); }
+    inline int randomInt(int min, int max) { return std::uniform_int_distribution<>(min, max)(Constants::RNG); }
 }

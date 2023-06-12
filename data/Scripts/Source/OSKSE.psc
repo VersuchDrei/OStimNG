@@ -81,10 +81,10 @@ Function DecreaseSpeed() Global
 	OUtils.GetOStim().DecreaseAnimationSpeed()
 EndFunction
 
-Function ToggleAutoMode() Global
-	OUtils.GetOStim().ToggleAutoMode()
-EndFunction
-
 Function PullOut() Global
 	OUtils.GetOStim().PullOut()
+EndFunction
+
+Function ChangeNode(string Node)
+	OUtils.GetOStim().WarpToAnimation(Node)
 EndFunction

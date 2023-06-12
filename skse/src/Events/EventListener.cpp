@@ -27,23 +27,6 @@ namespace Events {
         return RE::BSEventNotifyControl::kContinue;
     }
 
-    RE::BSEventNotifyControl EventListener::ProcessEvent(const RE::TESHitEvent* a_event, RE::BSTEventSource<RE::TESHitEvent>* a_eventSource) {
-        if (!a_event->target->Is(RE::Actor::FORMTYPE)) {
-            return RE::BSEventNotifyControl::kContinue;
-        }
-
-        RE::Actor* target = a_event->target->As<RE::Actor>();
-        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->findThread(target);
-        if (!thread) {
-            return RE::BSEventNotifyControl::kContinue;
-        }
-        if (a_event->cause->Is(RE::Actor::FORMTYPE) && thread->GetActor(a_event->cause->As<RE::Actor>())) {
-            return RE::BSEventNotifyControl::kContinue;
-        }
-
-        return RE::BSEventNotifyControl::kContinue;
-    }
-
     RE::BSEventNotifyControl EventListener::ProcessEvent(const SKSE::NiNodeUpdateEvent* a_event, RE::BSTEventSource<SKSE::NiNodeUpdateEvent>* a_eventSource) {
         if (a_event->reference->Is(RE::Actor::FORMTYPE)) {
             RE::Actor* actor = a_event->reference->As<RE::Actor>();
@@ -156,12 +139,7 @@ namespace Events {
             } else if (keyCode == MCM::MCMTable::keyToggle()) {
                 UI::UIState::GetSingleton()->HandleControl(UI::Controls::Toggle);
             } else if (keyCode == MCM::MCMTable::keyEnd()) {
-                // TODO do this internally once we don't need OSA anymore
-                if (vm) {
-                    RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-                    auto args = RE::MakeFunctionArguments();
-                    vm->DispatchStaticCall("OSKSE", "EndAnimation", args, callback);
-                }
+                OStim::ThreadManager::GetSingleton()->getPlayerThread()->stop();
             } else if (keyCode == MCM::MCMTable::keySpeedUp()) {
                 // TODO do this internally once we don't need OSA anymore
                 if (vm) {
@@ -184,11 +162,13 @@ namespace Events {
                     vm->DispatchStaticCall("OSKSE", "PullOut", args, callback);
                 }
             } else if (keyCode == MCM::MCMTable::keyAutoMode()){
-                // TODO do this internally once we don't need OSA anymore
-                if (vm) {
-                    RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-                    auto args = RE::MakeFunctionArguments();
-                    vm->DispatchStaticCall("OSKSE", "ToggleAutoMode", args, callback);
+                OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->getPlayerThread();
+                if (thread) {
+                    if (thread->isInAutoMode()) {
+                        thread->stopAutoMode();
+                    } else {
+                        thread->startAutoMode();
+                    }
                 }
             } else if (keyCode == MCM::MCMTable::keyAlignment()) {
                 auto uiState = UI::UIState::GetSingleton();

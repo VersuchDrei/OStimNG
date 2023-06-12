@@ -2,6 +2,7 @@
 
 #include <shared_mutex>
 
+#include "AutoModeStage.h"
 #include "ThreadActor.h"
 
 #include "Alignment/ActorAlignment.h"
@@ -29,6 +30,8 @@ namespace OStim {
         Alignment::ActorAlignment getActorAlignment(int index);
         void updateActorAlignment(int index, Alignment::ActorAlignment alignment);
         void alignActors();
+
+        inline void setStopTimer(int timer) { stopTimer = timer; }
         
         void ChangeNode(Graph::Node* a_node);
 
@@ -37,11 +40,11 @@ namespace OStim {
         void AddActor(RE::Actor* a_actor);
         void RemoveActor();
 
+        std::vector<Trait::ActorConditions> getActorConditions();
+
         void loop();
 
-        std::map<int32_t, ThreadActor> getActors() {
-            return m_actors;
-        }
+        inline std::map<int32_t, ThreadActor> getActors() { return m_actors; }
 
         ThreadActor* GetActor(GameAPI::GameActor a_actor);
         ThreadActor* GetActor(int a_position);
@@ -51,6 +54,7 @@ namespace OStim {
 
         void callEvent(std::string eventName, int actorIndex, int targetIndex, int performerIndex);
 
+        void stop();
         void close();
 
         inline RE::TESObjectREFR* GetStageObject() { return vehicle; }
@@ -70,6 +74,7 @@ namespace OStim {
         std::map<int32_t, ThreadActor> m_actors;
 
         RE::TESObjectREFR* furniture;
+        Furniture::FurnitureType furnitureType = Furniture::FurnitureType::NONE;
         RE::TESForm* furnitureOwner = nullptr;
         RE::TESObjectREFR* vehicle;
         std::shared_mutex nodeLock;
@@ -81,6 +86,8 @@ namespace OStim {
         float worldFOVbefore = 0;
         float timeScaleBefore = 0;
 
+        int stopTimer = 0;
+
         std::vector<Sound::SoundPlayer*> soundPlayers;
 
         void addActorInner(int index, RE::Actor* actor);
@@ -89,6 +96,27 @@ namespace OStim {
 
         void rebuildAlignmentKey();
         void alignActor(ThreadActor* threadActor, Alignment::ActorAlignment alignment);
+
+#pragma region automode
+    public:
+        inline bool isInAutoMode() { return autoMode; }
+        void startAutoMode();
+        inline void stopAutoMode() { autoMode = false; }
+
+        void setAutoModeToMainStage();
+
+    private:
+        bool autoMode = false;
+        AutoModeStage autoModeStage = AutoModeStage::NONE;
+        int foreplayThreshold = 0;
+        int pulloutThreshold = 0;
+        int autoModeCooldown = 0;
+
+        void evaluateAutoMode();
+        void startAutoModeCooldown();
+        void progressAutoMode();
+        void loopAutoMode();
+#pragma endregion
     };
 
 }  // namespace OStim

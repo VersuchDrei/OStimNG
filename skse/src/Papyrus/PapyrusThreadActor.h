@@ -12,7 +12,7 @@ namespace PapyrusThreadActor {
     float GetExcitement(RE::StaticFunctionTag*, RE::Actor* actor) {
         OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
         if (threadActor) {
-            return threadActor->excitement;
+            return threadActor->getExcitement();
         }
 
         return -1;
@@ -27,24 +27,14 @@ namespace PapyrusThreadActor {
 
         OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
         if (threadActor) {
-            threadActor->excitement = excitement;
+            threadActor->setExcitement(excitement);
         }
     }
 
     void ModifyExcitement(RE::StaticFunctionTag*, RE::Actor* actor, float excitement, bool respectMultiplier) {
         OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
         if (threadActor) {
-            if (respectMultiplier) {
-                excitement *= threadActor->baseExcitementMultiplier;
-            }
-
-            threadActor->excitement += excitement;
-
-            if (threadActor->excitement < 0) {
-                threadActor->excitement = 0;
-            } else if (threadActor->excitement > 100) {
-                threadActor->excitement = 100;
-            }
+            threadActor->addExcitement(excitement, respectMultiplier);
         }
     }
 

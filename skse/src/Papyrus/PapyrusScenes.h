@@ -60,22 +60,6 @@ namespace PapyrusScenes {
         }
         logger::error("Actor {} not found in thread {}", a_actor->GetDisplayFullName(), a_threadId);
         return nullptr;
-    }    
-
-    float GetActorExcitement(RE::StaticFunctionTag*, int64_t a_threadId, RE::Actor* a_actor) {
-        auto actor = GetActor(a_threadId, a_actor);
-        if (actor) {
-            return actor->excitement;
-        }
-        
-        return 0;
-    }
-
-    void SetActorExcitement(RE::StaticFunctionTag*, int64_t a_threadId, RE::Actor* a_actor, float a_excitement) {
-        auto actor = GetActor(a_threadId, a_actor);
-        if (actor) {
-            actor->excitement = a_excitement;
-        }
     }
 
     bool Bind(VM* a_vm) {
@@ -87,8 +71,6 @@ namespace PapyrusScenes {
         BIND(AddActor);
         BIND(RemoveActor);
         BIND(UpdateSpeed);
-        BIND(GetActorExcitement);
-        BIND(SetActorExcitement);
 
         return true;
     }

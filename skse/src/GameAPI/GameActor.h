@@ -57,6 +57,9 @@ namespace GameAPI {
         int getFactionRank(GameFaction faction) const;
 
         int getRelationshipRank(GameActor other) const;
+        inline bool isInCombat() const { return form->IsInCombat(); }
+        inline bool isDead() const { return form->IsDead(); }
+        inline bool isInSameCell(GameActor other) const {return form->parentCell == other.form->parentCell;}
 
         inline GameActorBone getBone(std::string bone) const { return form->GetNodeByName(bone); }
 

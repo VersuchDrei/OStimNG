@@ -1,4 +1,6 @@
-#include "Core/Thread.h"
+#include "Thread.h"
+
+#include "ThreadManager.h"
 
 #include "Furniture/Furniture.h"
 #include "GameAPI/Game.h"
@@ -25,6 +27,7 @@ namespace OStim {
         vehicle = center->PlaceObjectAtMe(Util::LookupTable::OStimVehicle, false).get();
 
         if (furniture) {
+            furnitureType = Furniture::getFurnitureType(furniture, false);
             furnitureOwner = ObjectRefUtil::getOwner(furniture);
             Furniture::lockFurniture(furniture);
 
@@ -82,6 +85,11 @@ namespace OStim {
             if (MCM::MCMTable::customTimeScale() > 0) {
                 GameAPI::Game::setTimeScale(MCM::MCMTable::customTimeScale());
             }
+        }
+
+        evaluateAutoMode();
+        if (!playerThread) {
+            stopTimer = MCM::MCMTable::npcSceneDuration();
         }
     }
 
@@ -141,21 +149,21 @@ namespace OStim {
         for (auto& actorIt : m_actors) {
             // --- excitement calculation --- //
             float excitementInc = 0;
-            actorIt.second.maxExcitement = 0;
+            actorIt.second.setMaxExcitement(0);
             std::vector<float> excitementVals;
             for (auto& action : m_currentNode->actions) {
                 if (action.actor == actorIt.first && action.attributes->actor.stimulation != 0) {
                     excitementVals.push_back(action.attributes->actor.stimulation);
                     auto maxStim = action.attributes->actor.maxStimulation;
-                    if (maxStim > actorIt.second.maxExcitement) {
-                        actorIt.second.maxExcitement = maxStim;
+                    if (maxStim > actorIt.second.getMaxExcitement()) {
+                        actorIt.second.setMaxExcitement(maxStim);
                     }
                 }
                 if (action.target == actorIt.first && action.attributes->target.stimulation != 0) {
                     excitementVals.push_back(action.attributes->target.stimulation);
                     auto maxStim = action.attributes->target.maxStimulation;
-                    if (maxStim > actorIt.second.maxExcitement) {
-                        actorIt.second.maxExcitement = maxStim;
+                    if (maxStim > actorIt.second.getMaxExcitement()) {
+                        actorIt.second.setMaxExcitement(maxStim);
                     }
                 }
                 if (action.performer == actorIt.first && action.attributes->performer.stimulation != 0) {
@@ -179,9 +187,9 @@ namespace OStim {
                 } break;
             }
 
-            actorIt.second.baseExcitementInc = excitementInc;
+            actorIt.second.setBaseExcitementInc(excitementInc);
             if (excitementInc <= 0) {
-                actorIt.second.maxExcitement = 0;
+                actorIt.second.setMaxExcitement(0);
             }
 
 
@@ -231,6 +239,11 @@ namespace OStim {
             }
         }
 
+        // TODO when we have our own UI do this for player thread, too
+        if (!playerThread) {
+            SetSpeed(m_currentNode->defaultSpeed);
+        }
+
         auto messaging = SKSE::GetMessagingInterface();
 
         Messaging::AnimationChangedMessage msg;
@@ -240,7 +253,18 @@ namespace OStim {
     }
 
     void Thread::navigateTo(Graph::Node* node) {
-
+        // TODO
+        if (playerThread) {
+            const auto skyrimVM = RE::SkyrimVM::GetSingleton();
+            auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+            if (vm) {
+                RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
+                auto args = RE::MakeFunctionArguments(std::move(node->scene_id));
+                vm->DispatchStaticCall("OSKSE", "ChangeNode", args, callback);
+            }
+        } else {
+            ChangeNode(node);
+        }
     }
 
     void Thread::AddActor(RE::Actor* actor) {
@@ -273,6 +297,16 @@ namespace OStim {
         }
         actor->MoveTo(vehicle);
         alignActor(threadActor, {});
+    }
+
+    std::vector<Trait::ActorConditions> Thread::getActorConditions() {
+        std::vector<Trait::ActorConditions> conditions;
+        for (int i = 0; i < m_actors.size(); i++) {
+            // TODO do this with GameActor
+            conditions.push_back(Trait::ActorConditions::create(GetActor(i)->getActor().form));
+        }
+
+        return conditions;
     }
 
     void Thread::alignActors() {
@@ -309,10 +343,32 @@ namespace OStim {
 
     void Thread::loop() {
         std::shared_lock<std::shared_mutex> readLock;
+
+        if (stopTimer > 0) {
+            if ((stopTimer -= Constants::LOOP_TIME_MILLISECONDS) <= 0) {
+                return;
+                stop();
+            }
+        }
+
+        if (!playerThread && !GetActor(0)->getActor().isInSameCell(GameAPI::GameActor::getPlayer())) {
+            stop();
+            return;
+        }
+
+        for (auto& actor : m_actors) {
+            if (actor.second.getActor().isInCombat() || actor.second.getActor().isDead()) {
+                stop();
+                return;
+            }
+        }
+
         // TODO: Can remove this when we start scenes in c++ with a starting node
         if (!m_currentNode) {
             return;
         }
+
+        loopAutoMode();
 
         for (auto& actorIt : m_actors) {
             actorIt.second.loop();
@@ -368,7 +424,7 @@ namespace OStim {
                 }
 
                 float speedMod = 1.0 + static_cast<float>(speed) / static_cast<float>(m_currentNode->speeds.size());
-                actorIt.second.loopExcitementInc = actorIt.second.baseExcitementInc * actorIt.second.baseExcitementMultiplier * speedMod * Constants::LOOP_TIME_SECONDS;
+                actorIt.second.setLoopExcitementInc(actorIt.second.getBaseExcitementInc() * actorIt.second.getBaseExcitementMultiplier() * speedMod * Constants::LOOP_TIME_SECONDS);
             }
 
             actorIt.second.changeSpeed(speed);
@@ -400,28 +456,44 @@ namespace OStim {
 
         if (graphEvent->actor.stimulation > 0.0) {
             ThreadActor* actor = GetActor(actorIndex);
-            if (actor->excitement < graphEvent->actor.maxStimulation || actor->excitement < actor->maxExcitement) {
-                actor->excitement += graphEvent->actor.stimulation * actor->baseExcitementMultiplier;
+            if (actor->getExcitement() < graphEvent->actor.maxStimulation || actor->getExcitement() < actor->getMaxExcitement()) {
+                actor->addExcitement(graphEvent->actor.stimulation, true);
             }
         }
 
         if (graphEvent->target.stimulation > 0.0) {
             ThreadActor* target = GetActor(targetIndex);
-            if (target->excitement < graphEvent->target.maxStimulation || target->excitement < target->maxExcitement) {
-                target->excitement += graphEvent->target.stimulation * target->baseExcitementMultiplier;
+            if (target->getExcitement() < graphEvent->target.maxStimulation || target->getExcitement() < target->getMaxExcitement()) {
+                target->addExcitement(graphEvent->target.stimulation, true);
             }
         }
 
         if (graphEvent->performer.stimulation > 0.0) {
             ThreadActor* performer = GetActor(performerIndex);
-            if (performer->excitement < graphEvent->performer.maxStimulation || performer->excitement < performer->maxExcitement) {
-                performer->excitement += graphEvent->performer.stimulation * performer->baseExcitementMultiplier;
+            if (performer->getExcitement() < graphEvent->performer.maxStimulation || performer->getExcitement() < performer->getMaxExcitement()) {
+                performer->addExcitement(graphEvent->performer.stimulation, true);
             }
         }
     }
 
 
+    void Thread::stop() {
+        if (playerThread) {
+            // TODO no need to reroute through papyrus once we have our own UI
+            const auto skyrimVM = RE::SkyrimVM::GetSingleton();
+            auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+            if (vm) {
+                RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
+                auto args = RE::MakeFunctionArguments();
+                vm->DispatchStaticCall("OSKSE", "EndAnimation", args, callback);
+            }
+        } else {
+            ThreadManager::GetSingleton()->queueThreadStop(m_threadId);
+        }
+    }
+
     void Thread::close() {
+        logger::info("closing thread {}", m_threadId);
         vehicle->Disable();
         vehicle->SetDelete(true);
 
@@ -452,6 +524,7 @@ namespace OStim {
                 GameAPI::Game::setTimeScale(timeScaleBefore);
             }
         }
+        logger::info("closed thread {}", m_threadId);
     }
 
     void Thread::addActorSink(RE::Actor* a_actor) {
