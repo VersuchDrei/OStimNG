@@ -51,8 +51,8 @@ namespace MCM {
         static bool useFreeCam();
         static float freeCamSpeed();
         static float freeCamFOV();
-        static bool supportImprovedCam();
         static bool useScreenShake();
+        inline static bool firstPersonAfterScene() { return settings[0xE12].asBool(); }
 
         static float getMaleSexExcitementMult();
         static float getFemaleSexExcitementMult();
@@ -156,8 +156,8 @@ namespace MCM {
             {0xE20, {0, "SetForceAIInConsensualScenes"}},
 
             {0xE21, {0, "SetUseAutoFades"}},
-            {0xE32, {15000, "autoModeAnimDurationMin"}},
-            {0xE33, {30000, "autoModeAnimDurationMax"}},
+            {0xE32, {7500, "autoModeAnimDurationMin"}},
+            {0xE33, {15000, "autoModeAnimDurationMax"}},
             {0xE34, {35, "autoModeForeplayChance"}},
             {0xE35, {15, "autoModeForeplayThresholdMin"}},
             {0xE36, {35, "autoModeForeplayThresholdMax"}},
@@ -177,7 +177,6 @@ namespace MCM {
             {0xDDF, {3, "SetCameraSpeed"}},
             {0xDE0, {45, "SetFreeCamFOV"}},
 
-            {0xDE6, {0, "SetClipinglessFirstPerson"}},
             {0xE10, {0, "SetUseScreenShake"}},
             {0xE12, {0, "SetForceFirstPerson"}}, // on scene end
 

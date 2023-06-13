@@ -45,10 +45,6 @@ namespace MCM {
         return settings[0xDE0].asFloat();
     }
 
-    bool MCMTable::supportImprovedCam() {
-        return settings[0xDE6].asBool();
-    }
-
     bool MCMTable::useScreenShake() {
         return settings[0xE10].asBool();
     }

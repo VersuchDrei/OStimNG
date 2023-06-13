@@ -51,6 +51,13 @@ string[] Property POSITION_TAGS Auto
 Faction Property OStimNoFacialExpressionsFaction Auto
 Faction Property OStimExcitementFaction Auto
 
+GlobalVariable Property OStimImprovedCamSupport Auto
+bool Property EnableImprovedCamSupport
+	bool Function Get()
+		Return OStimImprovedCamSupport.value != 0
+	EndFunction
+EndProperty
+
 
 ; -------------------------------------------------------------------------------------------------
 ; SETTINGS  ---------------------------------------------------------------------------------------
@@ -638,20 +645,6 @@ float Property FreecamSpeed
 	EndFunction
 	Function Set(float Value)
 		OStimFreeCamSpeed.value = Value
-	EndFunction
-EndProperty
-
-GlobalVariable Property OStimImprovedCamSupport Auto
-bool Property EnableImprovedCamSupport
-	bool Function Get()
-		Return OStimImprovedCamSupport.value != 0
-	EndFunction
-	Function Set(bool Value)
-		If Value
-			OStimImprovedCamSupport.value = 1
-		Else
-			OStimImprovedCamSupport.value = 0
-		EndIf
 	EndFunction
 EndProperty
 
@@ -2077,14 +2070,6 @@ Event OnUpdate() ;OStim main logic loop
 	SceneRunning = False
 	OSANative.EndScene(0)
 
-	If (ForceFirstPersonAfter)
-		While IsInFreeCam()
-			Utility.Wait(0.1)
-		EndWhile
-
-		Game.ForceFirstPerson()
-	EndIf
-
 	SendModEvent("ostim_totalend")
 
 	Password = 0
@@ -2184,8 +2169,16 @@ Int Function GetCurrentAnimationMaxSpeed()
 	Return OMetadata.GetMaxSpeed(CurrentSceneID)
 EndFunction
 
+;/* GetAPIVersion
+* * returns the current API version
+* * 26 = old OStim
+* * 27 = OStim NG 6.7 or earlier
+* * 28 = OStim NG 6.8
+* *
+* * @return: the version of the current API
+*/;
 Int Function GetAPIVersion()
-	Return 27
+	Return 28
 EndFunction
 
 Function IncreaseAnimationSpeed()
@@ -2524,10 +2517,6 @@ EndFunction
 Function ShowAllSkyUIWidgets()
 	outils.SetSkyUIWidgetsVisible(true)
 EndFunction
-
-bool function IsInFreeCam()
-	Return OSANative.IsFreeCam()
-endfunction
 
 
 float Function GetStimMult(Actor Act)
@@ -3222,12 +3211,6 @@ Bool Function ChanceRoll(Int Chance) ; input 60: 60% of returning true ;DEPRECIA
 
 EndFunction
 
-Function ShakeCamera(Float Power, Float Duration = 0.1)
-	if !OSANative.IsFreeCam()
-		Game.ShakeCamera(PlayerRef, Power, Duration)
-	endif
-EndFunction
-
 Function ShakeController(Float Power, Float Duration = 0.1)
 	If UseRumble
 		Game.ShakeController(Power, Power, Duration)
@@ -3515,6 +3498,12 @@ Function OnLoadGame()
 		SoSFaction = none
 	EndIf
 	SoSInstalled = SoSFaction
+
+	If SKSE.GetPluginVersion("ImprovedCameraSE") != -1
+		OStimImprovedCamSupport.value = 1
+	Else
+		OStimImprovedCamSupport.value = 0
+	EndIf
 
 	Console("Using cosave fix")
 
@@ -3924,7 +3913,6 @@ Function AlternateRealign()
 EndFunction
 
 Function ToggleFreeCam(Bool On = True)
-	OSANative.ToggleFlyCam()
 EndFunction
 
 Function RemapStartKey(Int zKey)
@@ -4042,4 +4030,11 @@ EndFunction
 
 Function AddActorExcitement(Actor Act, Float Value)
 	OActor.ModifyExcitement(Act, Value)
+EndFunction
+
+bool function IsInFreeCam()
+	Return false
+endfunction
+
+Function ShakeCamera(Float Power, Float Duration = 0.1)
 EndFunction

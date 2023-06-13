@@ -147,7 +147,7 @@ namespace OStim {
                     autoModeStage = AutoModeStage::MAIN;
                 }
                 if (MathUtil::chanceRoll(MCM::MCMTable::autoModePulloutChance())) {
-                    foreplayThreshold = MathUtil::randomInt(MCM::MCMTable::autoModeForeplayThresholdMin(), MCM::MCMTable::autoModeForeplayThresholdMax());
+                    pulloutThreshold = MathUtil::randomInt(MCM::MCMTable::autoModePulloutThresholdMin(), MCM::MCMTable::autoModePulloutThresholdMax());
                 }
             }
         }
@@ -196,7 +196,7 @@ namespace OStim {
         }
 
         if (next) {
-            navigateTo(next);
+            navigateTo(next, MCM::MCMTable::useAutoModeFades());
         }
         
         startAutoModeCooldown();
@@ -238,12 +238,12 @@ namespace OStim {
                 autoModeStage = AutoModeStage::PULLOUT;
                 Graph::Node* pullout = getPulledOutVersion(m_currentNode, getActorConditions(), furnitureType);
                 if (pullout) {
-                    navigateTo(pullout);
+                    navigateTo(pullout, MCM::MCMTable::useAutoModeFades());
                 }
             }
         }
 
-        if (autoModeCooldown -= Constants::LOOP_TIME_MILLISECONDS < 0) {
+        if ((autoModeCooldown -= Constants::LOOP_TIME_MILLISECONDS) < 0) {
             progressAutoMode();
         }
     }

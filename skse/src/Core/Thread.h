@@ -35,7 +35,7 @@ namespace OStim {
         
         void ChangeNode(Graph::Node* a_node);
 
-        void navigateTo(Graph::Node* node);
+        void navigateTo(Graph::Node* node, bool useFades);
 
         void AddActor(RE::Actor* a_actor);
         void RemoveActor();

@@ -41,34 +41,6 @@ form[] Function GetEquippedAmmo(actor act) Global Native
 
 bool Function IsWig(Actor act, Armor item) Global Native
 
-
-;  ██████╗ █████╗ ███╗   ███╗███████╗██████╗  █████╗
-; ██╔════╝██╔══██╗████╗ ████║██╔════╝██╔══██╗██╔══██╗
-; ██║     ███████║██╔████╔██║█████╗  ██████╔╝███████║
-; ██║     ██╔══██║██║╚██╔╝██║██╔══╝  ██╔══██╗██╔══██║
-; ╚██████╗██║  ██║██║ ╚═╝ ██║███████╗██║  ██║██║  ██║
-;  ╚═════╝╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝
-
-
-; Is FreeCam enabled
-Bool Function IsFreeCam() Global Native
-
-; Enable/Disable FreeCam
-Function EnableFreeCam(Bool StopTime = False) Global Native
-Function DisableFreeCam() Global Native
-Function ToggleFlyCam() Global Native
-
-; Set FreeCam speed (default: 10.0)
-Function SetFreeCamSpeed(Float Speed = 10.0) Global Native
-
-; Set FOV
-Function SetFOV(Float Value, Bool FirstPerson = False) Global Native
-
-; Get camera coordinates
-; Coordinates are relative to users screen right now, not recomended.
-Float[] Function GetCameraPos() Global Native
-Function SetCameraPos(Float X, Float Y, Float Z) Global Native
-
 ;  ██████╗ ██████╗ ███╗   ██╗████████╗██████╗  ██████╗ ██╗     ███████╗
 ; ██╔════╝██╔═══██╗████╗  ██║╚══██╔══╝██╔══██╗██╔═══██╗██║     ██╔════╝
 ; ██║     ██║   ██║██╔██╗ ██║   ██║   ██████╔╝██║   ██║██║     ███████╗

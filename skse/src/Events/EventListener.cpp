@@ -2,11 +2,11 @@
 
 #include "Core/ThreadManager.h"
 #include "GameAPI/Game.h"
+#include "GameAPI/GameCamera.h"
 #include "GameAPI/GameTable.h"
 #include "Serial/Manager.h"
 #include "UI/Align/AlignMenu.h"
 #include "UI/UIState.h"
-#include "Util/CameraUtil.h"
 #include "MCM/MCMTable.h"
 #include "Util.h"
 
@@ -174,7 +174,7 @@ namespace Events {
                 auto uiState = UI::UIState::GetSingleton();
                 uiState->SwitchActiveMenu(uiState->GetActiveMenu() == UI::MenuType::kAlignMenu ? UI::MenuType::kSceneMenu : UI::MenuType::kAlignMenu);
             } else if (keyCode == MCM::MCMTable::keyFreeCam()) {
-                CameraUtil::toggleFlyCam();
+                GameAPI::GameCamera::toggleFreeCam();
             }
         }
 

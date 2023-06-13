@@ -1068,9 +1068,9 @@ Function DrawAutoControlPage()
 	SetCursorPosition(17)
 	AddToggleOptionST("OID_UseAutoModeFades", "$ostim_use_auto_mode_fades", Main.UseAutoFades)
 	SetCursorPosition(19)
-	AddSliderOptionST("OID_AutoModeAnimDurationMin", "$ostim_auto_mode_anim_duration_min", Main.AutoModeAnimDurationMin, "{0} s")
+	AddSliderOptionST("OID_AutoModeAnimDurationMin", "$ostim_auto_mode_anim_duration_min", Main.AutoModeAnimDurationMin / 1000.0, "{1} s")
 	SetCursorPosition(21)
-	AddSliderOptionST("OID_AutoModeAnimDurationMax", "$ostim_auto_mode_anim_duration_max", Main.AutoModeAnimDurationMax, "{0} s")
+	AddSliderOptionST("OID_AutoModeAnimDurationMax", "$ostim_auto_mode_anim_duration_max", Main.AutoModeAnimDurationMax / 1000.0, "{1} s")
 	SetCursorPosition(23)
 	AddSliderOptionST("OID_AutoModeForeplayChance", "$ostim_auto_mode_foreplay_chance", Main.AutoModeForeplayChance, "{0} %")
 	SetCursorPosition(25)
@@ -1211,15 +1211,15 @@ State OID_AutoModeAnimDurationMin
 
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(Main.AutoModeAnimDurationMin / 1000.0)
-		SetSliderDialogDefaultValue(15)
-		SetSliderDialogRange(5, 120)
-		SetSliderDialogInterval(5)
+		SetSliderDialogDefaultValue(7.5)
+		SetSliderDialogRange(2.5, 60)
+		SetSliderDialogInterval(2.5)
 	EndEvent
 
 	Event OnSliderAcceptST(float Value)
 		Main.AutoModeAnimDurationMin = (Value * 1000) as int
-		SetSliderOptionValueST(Main.AutoModeAnimDurationMin / 1000.0, "{0} s")
-		SetSliderOptionValueST(Main.AutoModeAnimDurationMax / 1000.0, "{0} s", false, "OID_AutoModeAnimDurationMax")
+		SetSliderOptionValueST(Main.AutoModeAnimDurationMin / 1000.0, "{1} s")
+		SetSliderOptionValueST(Main.AutoModeAnimDurationMax / 1000.0, "{1} s", false, "OID_AutoModeAnimDurationMax")
 	EndEvent
 EndState
 
@@ -1230,15 +1230,15 @@ State OID_AutoModeAnimDurationMax
 
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(Main.AutoModeAnimDurationMax / 1000.0)
-		SetSliderDialogDefaultValue(30)
-		SetSliderDialogRange(5, 120)
-		SetSliderDialogInterval(5)
+		SetSliderDialogDefaultValue(15)
+		SetSliderDialogRange(2.5, 60)
+		SetSliderDialogInterval(2.5)
 	EndEvent
 
 	Event OnSliderAcceptST(float Value)
 		Main.AutoModeAnimDurationMax = (Value * 1000) as int
-		SetSliderOptionValueST(Main.AutoModeAnimDurationMin / 1000.0, "{0} s", false, "OID_AutoModeAnimDurationMin")
-		SetSliderOptionValueST(Main.AutoModeAnimDurationMax / 1000.0, "{0} s")
+		SetSliderOptionValueST(Main.AutoModeAnimDurationMin / 1000.0, "{1} s", false, "OID_AutoModeAnimDurationMin")
+		SetSliderOptionValueST(Main.AutoModeAnimDurationMax / 1000.0, "{1} s")
 	EndEvent
 EndState
 
@@ -1374,10 +1374,8 @@ Function DrawCameraPage()
 	AddSliderOptionST("OID_FreeCamSpeed", "$ostim_freecam_speed", Main.FreecamSpeed, "{1}")
 
 	SetCursorPosition(1)
-	AddToggleOptionST("OID_ImprovedCamSupport", "$ostim_clippingless", Main.EnableImprovedCamSupport)
-	SetCursorPosition(3)
 	AddToggleOptionST("OUD_UseScreenShake", "$ostim_screenshake", Main.UseScreenShake)
-	SetCursorPosition(5)
+	SetCursorPosition(3)
 	AddToggleOptionST("OID_ForceFirstPersonOnEnd", "$ostim_force_first", Main.ForceFirstPersonAfter)
 EndFunction
 
@@ -1428,17 +1426,6 @@ State OID_FreeCamSpeed
 	EndEvent
 EndState
 
-
-State OID_ImprovedCamSupport
-	Event OnHighlightST()
-		SetInfoText("$ostim_tooltip_clippingless")
-	EndEvent
-
-	Event OnSelectST()
-		Main.EnableImprovedCamSupport = !Main.EnableImprovedCamSupport
-		SetToggleOptionValueST(Main.EnableImprovedCamSupport)
-	EndEvent
-EndState
 
 State OUD_UseScreenShake
 	Event OnHighlightST()

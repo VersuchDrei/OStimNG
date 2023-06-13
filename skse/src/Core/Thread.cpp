@@ -4,6 +4,7 @@
 
 #include "Furniture/Furniture.h"
 #include "GameAPI/Game.h"
+#include "GameAPI/GameCamera.h"
 #include "Graph/GraphTable.h"
 #include "Graph/Node.h"
 #include <Messaging/IMessages.h>
@@ -51,25 +52,13 @@ namespace OStim {
         }
 
         if (playerThread) {
-            RE::PlayerCamera* camera = RE::PlayerCamera::GetSingleton();
-            if (MCM::MCMTable::useFreeCam()) {
-                if (!camera->IsInFreeCameraMode()) {
-                    camera->ForceThirdPerson();
-                    std::thread camThread = std::thread([&] {
-                        std::this_thread::sleep_for(std::chrono::milliseconds(250));
-                        CameraUtil::toggleFlyCam();
-                    });
-                    camThread.detach();
-                }
-            } else if (MCM::MCMTable::supportImprovedCam()) {
-                const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-                auto vm = skyrimVM ? skyrimVM->impl : nullptr;
-                if (vm) {
-                    RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-                    auto args = RE::MakeFunctionArguments(std::move(false));
-                    vm->DispatchStaticCall("OSKSE", "ToggleImprovedCamera", args, callback);
-                }
-            }
+            // the player moves to the scene location near instant, but not instant
+            // so the free cam toggle has to be slightly delayed or it will not be at the scene location
+            std::thread camThread = std::thread([&] {
+                std::this_thread::sleep_for(std::chrono::milliseconds(250));
+                GameAPI::GameCamera::startSceneMode(MCM::MCMTable::useFreeCam());
+            });
+            camThread.detach();
 
             RE::INISettingCollection* ini = RE::INISettingCollection::GetSingleton();
             RE::Setting* speed = ini->GetSetting("fFreeCameraTranslationSpeed:Camera");
@@ -78,8 +67,8 @@ namespace OStim {
                 speed->data.f = MCM::MCMTable::freeCamSpeed();
             }
 
-            worldFOVbefore = camera->worldFOV;
-            camera->worldFOV = MCM::MCMTable::freeCamFOV();
+            worldFOVbefore = GameAPI::GameCamera::getWorldFOV();
+            GameAPI::GameCamera::setWorldFOV(MCM::MCMTable::freeCamFOV());
 
             timeScaleBefore = GameAPI::Game::getTimeScale();
             if (MCM::MCMTable::customTimeScale() > 0) {
@@ -252,7 +241,7 @@ namespace OStim {
         Messaging::MessagingRegistry::GetSingleton()->SendMessageToListeners(msg);
     }
 
-    void Thread::navigateTo(Graph::Node* node) {
+    void Thread::navigateTo(Graph::Node* node, bool useFades) {
         // TODO
         if (playerThread) {
             const auto skyrimVM = RE::SkyrimVM::GetSingleton();
@@ -506,11 +495,7 @@ namespace OStim {
         }
 
         if (playerThread) {
-            RE::PlayerCamera* camera = RE::PlayerCamera::GetSingleton();
-            
-            if (camera->IsInFreeCameraMode()) {
-                CameraUtil::toggleFlyCam();
-            }
+            GameAPI::GameCamera::endSceneMode(MCM::MCMTable::firstPersonAfterScene());
 
             RE::INISettingCollection* ini = RE::INISettingCollection::GetSingleton();
             RE::Setting* speed = ini->GetSetting("fFreeCameraTranslationSpeed:Camera");
@@ -518,7 +503,7 @@ namespace OStim {
                 speed->data.f = freeCamSpeedBefore;
             }
 
-            camera->worldFOV = worldFOVbefore;
+            GameAPI::GameCamera::setWorldFOV(worldFOVbefore);
 
             if (MCM::MCMTable::customTimeScale() > 0) {
                 GameAPI::Game::setTimeScale(timeScaleBefore);

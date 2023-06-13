@@ -7,7 +7,6 @@
 
 #define BIND(a_method, ...) a_vm->RegisterFunction(#a_method##sv, obj, a_method __VA_OPT__(, ) __VA_ARGS__)
 #include "Papyrus/PapyrusActor.h"
-#include "Papyrus/PapyrusCamera.h"
 #include "Papyrus/PapyrusControl.h"
 #include "Papyrus/PapyrusData.h"
 #include "Papyrus/PapyrusDatabase.h"
@@ -29,7 +28,6 @@ namespace Papyrus {
         if (papyrus) {
             // old stuff
             papyrus->Register(PapyrusActor::Bind);
-            papyrus->Register(PapyrusCamera::Bind);
             papyrus->Register(PapyrusControl::Bind);
             papyrus->Register(PapyrusFace::Bind);
             papyrus->Register(PapyrusObject::Bind);
