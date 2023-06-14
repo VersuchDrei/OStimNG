@@ -42,19 +42,12 @@ namespace OStim {
         // hence the initContinue function
 
         // TODO properly use GameActor
-        if (REL::Module::GetRuntime() == REL::Module::Runtime::AE) {
-            auto nioInterface = Util::LookupTable::niTransformInterface;
-            if (nioInterface->HasNodeTransformScale(actor.form, false, female, "NPC", "RSMPlugin")) {
-                rmHeight = nioInterface->GetNodeTransformScale(actor.form, false, female, "NPC", "RSMPlugin");
-            }
-        } else {
-            const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-            auto vm = skyrimVM ? skyrimVM->impl : nullptr;
-            if (vm) {
-                RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback(new GetRmHeightCallbackFunctor(this));
-                auto args = RE::MakeFunctionArguments(std::move(actor.form), std::move(female));
-                vm->DispatchStaticCall("OSKSE", "GetRmScale", args, callback);
-            }
+        const auto skyrimVM = RE::SkyrimVM::GetSingleton();
+        auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+        if (vm) {
+            RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback(new GetRmHeightCallbackFunctor(this));
+            auto args = RE::MakeFunctionArguments(std::move(actor.form), std::move(female));
+            vm->DispatchStaticCall("OSKSE", "GetRmScale", args, callback);
         }
     }
 
@@ -596,29 +589,13 @@ namespace OStim {
             return;
         }
 
-        // the NiTransformInterface has only been added to RaceMenu after the AE update
-        // so for SE we have to invoke Papyrus here :^(
         // TODO properly use GameActor here
-        if (REL::Module::GetRuntime() == REL::Module::Runtime::AE) {
-            auto nioInterface = Util::LookupTable::niTransformInterface;
-            if (remove) {
-                // we are adding a second node transform with a different key to counter out the existing one, thereby
-                // "removing" the heel offset
-                SKEE::INiTransformInterface::Position offset{};
-                offset.z = -heelOffset;
-                nioInterface->AddNodeTransformPosition(actor.form, false, female, "NPC", "OStim", offset);
-            } else {
-                nioInterface->RemoveNodeTransformPosition(actor.form, false, female, "NPC", "OStim");
-            }
-            nioInterface->UpdateNodeTransforms(actor.form, false, female, "NPC");
-        } else {
-            const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-            auto vm = skyrimVM ? skyrimVM->impl : nullptr;
-            if (vm) {
-                RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-                auto args = RE::MakeFunctionArguments(std::move(actor.form), std::move(heelOffset), std::move(!remove), std::move(remove), std::move(female));
-                vm->DispatchStaticCall("OSKSE", "UpdateHeelOffset", args, callback);
-            }
+        const auto skyrimVM = RE::SkyrimVM::GetSingleton();
+        auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+        if (vm) {
+            RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
+            auto args = RE::MakeFunctionArguments(std::move(actor.form), std::move(heelOffset), std::move(!remove), std::move(remove), std::move(female));
+            vm->DispatchStaticCall("OSKSE", "UpdateHeelOffset", args, callback);
         }
 
         heelOffsetRemoved = remove;
@@ -642,25 +619,12 @@ namespace OStim {
         }
 
         // TODO properly use GameActor
-        if (REL::Module::GetRuntime() == REL::Module::Runtime::AE) {
-            auto nioInterface = Util::LookupTable::niTransformInterface;
-            if (oldOffset != 0) {
-                nioInterface->RemoveNodeTransformPosition(actor.form, false, female, "NPC", "OStim");
-            }
-            if (heelOffset != 0) {
-                SKEE::INiTransformInterface::Position offset{};
-                offset.z = -heelOffset;
-                nioInterface->AddNodeTransformPosition(actor.form, false, female, "NPC", "OStim", offset);
-            }
-            nioInterface->UpdateNodeTransforms(actor.form, false, female, "NPC");
-        } else {
-            const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-            auto vm = skyrimVM ? skyrimVM->impl : nullptr;
-            if (vm) {
-                RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-                auto args = RE::MakeFunctionArguments(std::move(actor.form), std::move(heelOffset), std::move(oldOffset != 0), std::move(heelOffset != 0), std::move(female));
-                vm->DispatchStaticCall("OSKSE", "UpdateHeelOffset", args, callback);
-            }
+        const auto skyrimVM = RE::SkyrimVM::GetSingleton();
+        auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+        if (vm) {
+            RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
+            auto args = RE::MakeFunctionArguments(std::move(actor.form), std::move(heelOffset), std::move(oldOffset != 0), std::move(heelOffset != 0), std::move(female));
+            vm->DispatchStaticCall("OSKSE", "UpdateHeelOffset", args, callback);
         }
     }
 

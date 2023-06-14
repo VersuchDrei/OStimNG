@@ -52,13 +52,7 @@ namespace OStim {
         }
 
         if (playerThread) {
-            // the player moves to the scene location near instant, but not instant
-            // so the free cam toggle has to be slightly delayed or it will not be at the scene location
-            std::thread camThread = std::thread([&] {
-                std::this_thread::sleep_for(std::chrono::milliseconds(250));
-                GameAPI::GameCamera::startSceneMode(MCM::MCMTable::useFreeCam());
-            });
-            camThread.detach();
+            GameAPI::GameCamera::startSceneMode(MCM::MCMTable::useFreeCam());
 
             RE::INISettingCollection* ini = RE::INISettingCollection::GetSingleton();
             RE::Setting* speed = ini->GetSetting("fFreeCameraTranslationSpeed:Camera");

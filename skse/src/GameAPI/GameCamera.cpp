@@ -18,7 +18,13 @@ namespace GameAPI {
         if (freeCam) {
             if (!camera->IsInFreeCameraMode()) {
                 camera->ForceThirdPerson();
-                toggleFlyCamInner();
+                // the player moves to the scene location near instant, but not instant
+                // so the free cam toggle has to be slightly delayed or it will not be at the scene location
+                std::thread camThread = std::thread([&] {
+                    std::this_thread::sleep_for(std::chrono::milliseconds(250));
+                    toggleFlyCamInner();
+                });
+                camThread.detach();
             }
         } else {
             if (GameTable::improvedCamSupport()) {
