@@ -22,7 +22,7 @@ namespace GameAPI {
 
         void update3D() const;
         inline void updateAI() const { form->EvaluatePackage(); }
-        inline void playAnimation(std::string animation) const { form->NotifyAnimationGraph(animation); }
+        void playAnimation(std::string animation) const;
 
         bool isSex(GameSex sex) const;
         inline bool isPlayer() const { return form->IsPlayerRef(); }
@@ -36,7 +36,7 @@ namespace GameAPI {
 
         inline float getScale() const { return form->GetReferenceRuntimeData().refScale / 100.0f; }
         inline bool isScale(float scale) const { return static_cast<int>(scale * 100) == form->GetReferenceRuntimeData().refScale; }
-        inline void setScale(float scale) const { SetScale(form, scale); }
+        void setScale(float scale) const;
         inline float getHeight() const { return form->GetActorBase()->GetHeight(); }
         inline float getRotation() const { return form->data.angle.z; }
         inline void setRotation(float rotation) const { form->SetRotationZ(rotation); }

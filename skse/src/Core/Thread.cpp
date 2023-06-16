@@ -346,8 +346,8 @@ namespace OStim {
 
         if (stopTimer > 0) {
             if ((stopTimer -= Constants::LOOP_TIME_MILLISECONDS) <= 0) {
-                return;
                 stop();
+                return;
             }
         }
 
@@ -409,10 +409,16 @@ namespace OStim {
         for (auto& actorIt : m_actors) {
             if (m_currentNode) {
                 if (m_currentNode->speeds.size() > speed) {
+                    Graph::Node* node = m_currentNode;
+                    GameAPI::GameActor gameActor = actorIt.second.getActor();
+                    int index = actorIt.first;
                     RE::Actor* actor = actorIt.second.getActor().form;
-                    // TODO how to do this with GraphActor?
-                    actor->SetGraphVariableFloat("OStimSpeed", m_currentNode->speeds[speed].playbackSpeed);
-                    actorIt.second.getActor().playAnimation(m_currentNode->speeds[speed].animation + "_" + std::to_string(actorIt.first));
+
+                    SKSE::GetTaskInterface()->AddTask([speed, node, index, gameActor]() {
+                        // TODO how to do this with GameActor?
+                        gameActor.form->SetGraphVariableFloat("OStimSpeed", node->speeds[speed].playbackSpeed);
+                    });
+                    actorIt.second.getActor().playAnimation(node->speeds[speed].animation + "_" + std::to_string(index));
 
                     // this fixes some face bugs
                     // TODO how to do this with GraphActor?

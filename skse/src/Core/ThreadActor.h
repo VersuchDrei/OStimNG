@@ -152,7 +152,7 @@ namespace OStim {
         Thread* thread;
 		GameAPI::GameActor actor;
 
-        float scaleBefore;
+        float scaleBefore = 1.0;
         GameAPI::GamePosition positionBefore;
         float rotationBefore = 0;
 

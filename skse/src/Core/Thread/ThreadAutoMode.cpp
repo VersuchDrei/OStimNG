@@ -254,8 +254,5 @@ namespace OStim {
         }
 
         autoModeStage = AutoModeStage::MAIN;
-        if (autoMode) {
-            progressAutoMode();
-        }
     }
 }

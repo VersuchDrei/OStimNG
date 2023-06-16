@@ -12,6 +12,13 @@ namespace GameAPI {
         }
     }
 
+    void GameActor::playAnimation(std::string animation) const {
+        RE::Actor* actor = form;
+        SKSE::GetTaskInterface()->AddTask([actor, animation] {
+            actor->NotifyAnimationGraph(animation);
+        });
+    }
+
     bool GameActor::isSex(GameSex sex) const {
         RE::SEX actorSex = form->GetActorBase()->GetSex();
         switch (sex) {
@@ -23,6 +30,13 @@ namespace GameAPI {
                 return actorSex == RE::SEX::kNone;
         }
         return false;
+    }
+
+    void GameActor::setScale(float scale) const {
+        RE::Actor* actor = form;
+        SKSE::GetTaskInterface()->AddTask([actor, scale] {
+            SetScale(actor, scale);
+        });
     }
 
     void GameActor::setFactionRank(GameFaction faction, int rank) const {
