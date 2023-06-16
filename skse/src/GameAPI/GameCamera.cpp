@@ -79,4 +79,14 @@ namespace GameAPI {
             delete script;
         }
     }
+
+
+    void GameCamera::fadeToBlack(float fadeDuration) {
+        ApplyCrossFade(nullptr, 0, GameTable::getFadeToBlackHoldImod(), fadeDuration);
+    }
+
+    void GameCamera::fadeFromBlack(float fadeDuration) {
+        PopTo(nullptr, 0, GameTable::getFadeToBlackHoldImod(), GameTable::getFadeToBlackBackImod(), 1.0f);
+        //RemoveCrossFade(nullptr, 0, fadeDuration);
+    }
 }

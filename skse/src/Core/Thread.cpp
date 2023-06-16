@@ -238,12 +238,29 @@ namespace OStim {
     void Thread::navigateTo(Graph::Node* node, bool useFades) {
         // TODO
         if (playerThread) {
-            const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-            auto vm = skyrimVM ? skyrimVM->impl : nullptr;
-            if (vm) {
-                RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-                auto args = RE::MakeFunctionArguments(std::move(node->scene_id));
-                vm->DispatchStaticCall("OSKSE", "ChangeNode", args, callback);
+            if (useFades) {
+                std::thread fadeThread = std::thread([node] {
+                    GameAPI::GameCamera::fadeToBlack(1);
+                    std::this_thread::sleep_for(std::chrono::milliseconds(700));
+                    const auto skyrimVM = RE::SkyrimVM::GetSingleton();
+                    auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+                    if (vm) {
+                        RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
+                        auto args = RE::MakeFunctionArguments(std::move(node->scene_id));
+                        vm->DispatchStaticCall("OSKSE", "ChangeNode", args, callback);
+                    }
+                    std::this_thread::sleep_for(std::chrono::milliseconds(550));
+                    GameAPI::GameCamera::fadeFromBlack(1);
+                });
+                fadeThread.detach();
+            } else {
+                const auto skyrimVM = RE::SkyrimVM::GetSingleton();
+                auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+                if (vm) {
+                    RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
+                    auto args = RE::MakeFunctionArguments(std::move(node->scene_id));
+                    vm->DispatchStaticCall("OSKSE", "ChangeNode", args, callback);
+                }
             }
         } else {
             ChangeNode(node);

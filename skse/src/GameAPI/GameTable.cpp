@@ -5,5 +5,8 @@ namespace GameAPI {
         RE::TESDataHandler* handler = RE::TESDataHandler::GetSingleton();
         Timescale = handler->LookupForm<RE::TESGlobal>(0x00003A, "Skyrim.esm");
         OStimImprovedCamSupport = handler->LookupForm<RE::TESGlobal>(0xDE6, "OStim.esp");
+        FadeToBlackImod = handler->LookupForm<RE::TESImageSpaceModifier>(0x0F756D, "Skyrim.esm");
+        FadeToBlackHoldImod = handler->LookupForm<RE::TESImageSpaceModifier>(0x0F756E, "Skyrim.esm");
+        FadeToBlackBackImod = handler->LookupForm<RE::TESImageSpaceModifier>(0x0F756F, "Skyrim.esm");
     }
 }

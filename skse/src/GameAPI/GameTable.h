@@ -11,9 +11,15 @@ namespace GameAPI {
         inline static RE::TESGlobal* getTimescale() { return Timescale; }
         inline static bool improvedCamSupport() { return OStimImprovedCamSupport->value != 0; }
 
+        inline static RE::TESImageSpaceModifier* getFadeToBlackHoldImod() { return FadeToBlackHoldImod; }
+        inline static RE::TESImageSpaceModifier* getFadeToBlackBackImod() { return FadeToBlackBackImod; }
+
     private:
         inline static RE::TESObjectREFR* currentCrosshairRef = nullptr;
         inline static RE::TESGlobal* Timescale = nullptr;
         inline static RE::TESGlobal* OStimImprovedCamSupport = nullptr;
+        inline static RE::TESImageSpaceModifier* FadeToBlackImod = nullptr;
+        inline static RE::TESImageSpaceModifier* FadeToBlackHoldImod = nullptr;
+        inline static RE::TESImageSpaceModifier* FadeToBlackBackImod = nullptr;
     };
 }
