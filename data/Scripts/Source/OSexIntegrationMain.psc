@@ -3104,7 +3104,7 @@ EndEvent
 
 Function OnSound(Actor Act, Int SoundID, Int FormNumber)
 	If (FormNumber == 60)
-		OThread.CallEvent(Password, "spank", 0, 1)
+		OThread.CallEvent(0, "spank", 0, 1)
 	EndIf
 EndFunction
 
