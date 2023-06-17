@@ -191,8 +191,6 @@ Event OnUpdate()
 	SendModEvent("ostim_subthread_start", numArg = id)
 
 	While OThread.IsRunning(id + 1)
-		AutoIncreaseSpeed()
-
 		If (GetActorExcitement(SubActor) >= 100.0)
 			SubTimesOrgasm += 1
 			Orgasm(SubActor)
@@ -350,28 +348,6 @@ Function SetCurrentAnimationSpeed(Int InSpeed)
 	AdjustAnimationSpeed(inspeed - CurrentSpeed)
 EndFunction
 
-Function AutoIncreaseSpeed()
-	Float MainExcitement = GetActorExcitement(DomActor)
-
-	If (MainExcitement >= 85.0)
-		If OStim.ChanceRoll(80)
-			IncreaseAnimationSpeed()
-		EndIf
-	ElseIf (MainExcitement >= 69.0)
-		If OStim.ChanceRoll(50)
-			IncreaseAnimationSpeed()
-		EndIf
-	ElseIf (MainExcitement >= 25.0)
-		If OStim.ChanceRoll(20)
-			IncreaseAnimationSpeed()
-		EndIf
-	ElseIf (MainExcitement >= 5.0)
-		If OStim.ChanceRoll(20)
-			IncreaseAnimationSpeed()
-		EndIf
-	EndIf
-EndFunction
-
 
 ; ██████╗ ███████╗██████╗ ██████╗ ███████╗ ██████╗ █████╗ ████████╗███████╗██████╗ 
 ; ██╔══██╗██╔════╝██╔══██╗██╔══██╗██╔════╝██╔════╝██╔══██╗╚══██╔══╝██╔════╝██╔══██╗
@@ -407,4 +383,26 @@ Bool Function IsAnyActorInCombat()
 EndFunction
 
 Function runOsexCommand(string cmd)
+EndFunction
+
+Function AutoIncreaseSpeed()
+	Float MainExcitement = GetActorExcitement(DomActor)
+
+	If (MainExcitement >= 85.0)
+		If OStim.ChanceRoll(80)
+			IncreaseAnimationSpeed()
+		EndIf
+	ElseIf (MainExcitement >= 69.0)
+		If OStim.ChanceRoll(50)
+			IncreaseAnimationSpeed()
+		EndIf
+	ElseIf (MainExcitement >= 25.0)
+		If OStim.ChanceRoll(20)
+			IncreaseAnimationSpeed()
+		EndIf
+	ElseIf (MainExcitement >= 5.0)
+		If OStim.ChanceRoll(20)
+			IncreaseAnimationSpeed()
+		EndIf
+	EndIf
 EndFunction

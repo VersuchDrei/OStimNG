@@ -1037,13 +1037,23 @@ EndState
 Function DrawAutoControlPage()
 	SetCursorFillMode(TOP_TO_BOTTOM)
 	SetCursorPosition(0)
-	AddColoredHeader("$ostim_header_actor_behavior")
+	AddColoredHeader("$ostim_header_auto_speed_control")
 	SetCursorPosition(2)
-	AddToggleOptionST("OID_AutoSpeedControl", "$ostim_speed_control", Main.EnableActorSpeedControl)
-
+	AddToggleOptionST("OID_AutoSpeedControl", "$ostim_auto_speed_control", Main.EnableActorSpeedControl)
+	SetCursorPosition(4)
+	AddSliderOptionST("OID_AutoSpeedControlIntervalMin", "$ostim_auto_speed_control_interval_min", Main.AutoSpeedControlIntervalMin / 1000.0, "{1} s")
 	SetCursorPosition(6)
-	AddSliderOptionST("OID_NPCSceneDuration", "$ostim_npc_scene_duration", Main.NPCSceneDuration / 1000, "{0} s")
+	AddSliderOptionST("OID_AutoSpeedControlIntervalMax", "$ostim_auto_speed_control_interval_max", Main.AutoSpeedControlIntervalMax / 1000.0, "{1} s")
 	SetCursorPosition(8)
+	AddSliderOptionST("OID_AutoSpeedControlExcitementMin", "$ostim_auto_speed_control_excitement_min", Main.AutoSpeedControlExcitementMin, "{0}")
+	SetCursorPosition(10)
+	AddSliderOptionST("OID_AutoSpeedControlExcitementMax", "$ostim_auto_speed_control_excitement_max", Main.AutoSpeedControlExcitementMax, "{0}")
+
+	SetCursorPosition(14)
+	AddColoredHeader("$ostim_header_npc_scenes")
+	SetCursorPosition(16)
+	AddSliderOptionST("OID_NPCSceneDuration", "$ostim_npc_scene_duration", Main.NPCSceneDuration / 1000, "{0} s")
+	SetCursorPosition(18)
 	AddToggleOptionST("OID_EndNPCSceneOnOrgasm", "$ostim_end_npc_scene_on_orgasm", Main.EndNPCSceneOnOrgasm)
 
 	SetCursorPosition(1)
@@ -1088,12 +1098,88 @@ EndFunction
 
 State OID_AutoSpeedControl
 	Event OnHighlightST()
-		SetInfoText("$ostim_tooltip_speed_control")
+		SetInfoText("$ostim_tooltip_auto_speed_control")
 	EndEvent
 
 	Event OnSelectST()
 		Main.EnableActorSpeedControl = !Main.EnableActorSpeedControl
 		SetToggleOptionValueST(Main.EnableActorSpeedControl)
+	EndEvent
+EndState
+
+State OID_AutoSpeedControlIntervalMin
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_auto_speed_control_interval_min")
+	EndEvent
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(Main.AutoSpeedControlIntervalMin / 1000.0)
+		SetSliderDialogDefaultValue(2.5)
+		SetSliderDialogRange(0, 10)
+		SetSliderDialogInterval(0.5)
+	EndEvent
+
+	Event OnSliderAcceptST(float Value)
+		Main.AutoSpeedControlIntervalMin = (Value * 1000) as int
+		SetSliderOptionValueST(Main.AutoSpeedControlIntervalMin / 1000.0, "{1} s")
+		SetSliderOptionValueST(Main.AutoSpeedControlIntervalMax / 1000.0, "{1} s", false, "OID_AutoSpeedControlIntervalMax")
+	EndEvent
+EndState
+
+State OID_AutoSpeedControlIntervalMax
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_auto_speed_control_interval_max")
+	EndEvent
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(Main.AutoSpeedControlIntervalMax / 1000.0)
+		SetSliderDialogDefaultValue(7.5)
+		SetSliderDialogRange(0, 10)
+		SetSliderDialogInterval(0.5)
+	EndEvent
+
+	Event OnSliderAcceptST(float Value)
+		Main.AutoSpeedControlIntervalMax = (Value * 1000) as int
+		SetSliderOptionValueST(Main.AutoSpeedControlIntervalMin / 1000.0, "{1} s", false, "OID_AutoSpeedControlIntervalMin")
+		SetSliderOptionValueST(Main.AutoSpeedControlIntervalMax / 1000.0, "{1} s")
+	EndEvent
+EndState
+
+State OID_AutoSpeedControlExcitementMin
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_auto_speed_control_excitement_min")
+	EndEvent
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(Main.AutoSpeedControlExcitementMin)
+		SetSliderDialogDefaultValue(20)
+		SetSliderDialogRange(0, 100)
+		SetSliderDialogInterval(5)
+	EndEvent
+
+	Event OnSliderAcceptST(float Value)
+		Main.AutoSpeedControlExcitementMin = Value as int
+		SetSliderOptionValueST(Main.AutoSpeedControlExcitementMin, "{0}")
+		SetSliderOptionValueST(Main.AutoSpeedControlExcitementMax, "{0}", false, "OID_AutoSpeedControlExcitementMax")
+	EndEvent
+EndState
+
+State OID_AutoSpeedControlExcitementMax
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_auto_speed_control_excitement_max")
+	EndEvent
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(Main.AutoSpeedControlExcitementMax)
+		SetSliderDialogDefaultValue(80)
+		SetSliderDialogRange(0, 100)
+		SetSliderDialogInterval(5)
+	EndEvent
+
+	Event OnSliderAcceptST(float Value)
+		Main.AutoSpeedControlExcitementMax = Value as int
+		SetSliderOptionValueST(Main.AutoSpeedControlExcitementMin, "{0}", false, "OID_AutoSpeedControlExcitementMin")
+		SetSliderOptionValueST(Main.AutoSpeedControlExcitementMax, "{0}")
 	EndEvent
 EndState
 

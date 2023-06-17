@@ -29,6 +29,12 @@ namespace MCM {
 
         static bool useRumble();
 
+        inline static bool autoSpeedControl() { return settings[0xE1B].asBool(); }
+        inline static int autoSpeedControlIntervalMin() { return settings[0xE3A].asInt(); }
+        inline static int autoSpeedControlIntervalMax() { return settings[0xE3D].asInt(); }
+        inline static int autoSpeedControlExcitementMin() { return settings[0xE3B].asInt(); }
+        inline static int autoSpeedControlExcitementMax() { return settings[0xE3C].asInt(); }
+
         inline static int npcSceneDuration() { return settings[0xE2F].asInt(); }
         inline static int endNPCSceneOnOrgasm() { return settings[0xE31].asInt(); }
 
@@ -145,6 +151,10 @@ namespace MCM {
             {0xE11, {1, "SetUseRumble"}},
 
             {0xE1B, {1, "SetActorSpeedControl"}},
+            {0xE3A, {2500, "autoSpeedControlIntervalMin"}},
+            {0xE3D, {7500, "autoSpeedControlIntervalMax"}},
+            {0xE3B, {15, "autoSpeedControlExcitementMin"}},
+            {0xE3C, {85, "autoSpeedControlExcitementMax"}},
 
             {0xE2F, {300000, "NPCSceneDuration"}},
             {0xE31, {1, "endNPCSceneOnOrgasm"}},

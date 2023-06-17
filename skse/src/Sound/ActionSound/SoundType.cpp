@@ -15,20 +15,22 @@ namespace Sound {
             return nullptr;
         }
 
-        GameAPI::GameSound sound;
-        sound.loadJson(path, json["sound"]);
-        if (!sound) {
+        SoundTypeParams params;
+        params.sound.loadJson(path, json["sound"]);
+        if (!params.sound) {
             return nullptr;
         }
 
-        bool muteWithActor = false;
         if (json.contains("muteWithActor")) {
-            muteWithActor = json["muteWithActor"];
+            params.muteWithActor = json["muteWithActor"];
         }
 
-        bool muteWithTarget = false;
         if (json.contains("muteWithTarget")) {
-            muteWithTarget = json["muteWithTarget"];
+            params.muteWithTarget = json["muteWithTarget"];
+        }
+
+        if (json.contains("playerThreadOnly")) {
+            params.playerThreadOnly = json["playerThreadOnly"];
         }
 
         std::string type = json["type"];
@@ -79,14 +81,14 @@ namespace Sound {
                 maxInterval = json["maxInterval"];
             }
 
-            return new BoneDistanceSoundType(sound, muteWithActor, muteWithTarget, inverse, minInterval, maxInterval, actorBones, targetBones);
+            return new BoneDistanceSoundType(params, inverse, minInterval, maxInterval, actorBones, targetBones);
         } else if (type == "loop") {
             int delay = 0;
             if (json.contains("delay")) {
                 delay = json["delay"];
             }
 
-            return new LoopSoundType(sound, muteWithActor, muteWithTarget, delay);
+            return new LoopSoundType(params, delay);
         }
 
         logger::warn("file {} has unknown sound type {}", path, type);

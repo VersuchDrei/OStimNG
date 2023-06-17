@@ -214,9 +214,11 @@ namespace OStim {
                 ThreadActor* actor = GetActor(action.actor);
                 ThreadActor* target = GetActor(action.target);
                 if (actor && target) {
-                    Sound::SoundPlayer* soundPlayer = soundType->create(actor, target);
-                    if (soundPlayer) {
-                        soundPlayers.push_back(soundPlayer);
+                    if (playerThread || !soundType->playPlayerThreadOnly()) {
+                        Sound::SoundPlayer* soundPlayer = soundType->create(actor, target);
+                        if (soundPlayer) {
+                            soundPlayers.push_back(soundPlayer);
+                        }
                     }
                 }
             }
@@ -368,7 +370,7 @@ namespace OStim {
             return;
         }
 
-        loopAutoMode();
+        loopAutoControl();
 
         for (auto& actorIt : m_actors) {
             actorIt.second.loop();
@@ -435,6 +437,51 @@ namespace OStim {
 
             actorIt.second.changeSpeed(speed);
         }
+    }
+
+    void Thread::increaseSpeed() {
+        // TODO do this internally once we don't need OSA anymore
+        if (playerThread) {
+            const auto skyrimVM = RE::SkyrimVM::GetSingleton();
+            auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+            if (vm) {
+                RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
+                auto args = RE::MakeFunctionArguments();
+                vm->DispatchStaticCall("OSKSE", "IncreaseSpeed", args, callback);
+            }
+        } else {
+            if (m_currentNodeSpeed < (m_currentNode->speeds.size() - 1)) {
+                SetSpeed(m_currentNodeSpeed + 1);
+            }
+        }
+    }
+
+    void Thread::decreaseSpeed() {
+        // TODO do this internally once we don't need OSA anymore
+        if (playerThread) {
+            const auto skyrimVM = RE::SkyrimVM::GetSingleton();
+            auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+            if (vm) {
+                RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
+                auto args = RE::MakeFunctionArguments();
+                vm->DispatchStaticCall("OSKSE", "DecreaseSpeed", args, callback);
+            }
+        } else {
+            if (m_currentNodeSpeed > 0) {
+                SetSpeed(m_currentNodeSpeed - 1);
+            }
+        }
+    }
+
+
+    float Thread::getMaxExcitement() {
+        float maxExcitement = 0;
+        for (auto& [index, actor] : m_actors) {
+            if (actor.getExcitement() > maxExcitement) {
+                maxExcitement = actor.getExcitement();
+            }
+        }
+        return maxExcitement;
     }
 
 

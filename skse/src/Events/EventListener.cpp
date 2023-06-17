@@ -141,19 +141,9 @@ namespace Events {
             } else if (keyCode == MCM::MCMTable::keyEnd()) {
                 OStim::ThreadManager::GetSingleton()->getPlayerThread()->stop();
             } else if (keyCode == MCM::MCMTable::keySpeedUp()) {
-                // TODO do this internally once we don't need OSA anymore
-                if (vm) {
-                    RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-                    auto args = RE::MakeFunctionArguments();
-                    vm->DispatchStaticCall("OSKSE", "IncreaseSpeed", args, callback);
-                }
+                OStim::ThreadManager::GetSingleton()->getPlayerThread()->increaseSpeed();
             } else if (keyCode == MCM::MCMTable::keySpeedDown()) {
-                // TODO do this internally once we don't need OSA anymore
-                if (vm) {
-                    RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-                    auto args = RE::MakeFunctionArguments();
-                    vm->DispatchStaticCall("OSKSE", "DecreaseSpeed", args, callback);
-                }
+                OStim::ThreadManager::GetSingleton()->getPlayerThread()->decreaseSpeed();
             } else if (keyCode == MCM::MCMTable::keyPullOut()){
                 // TODO do this internally once we don't need OSA anymore
                 if (vm) {

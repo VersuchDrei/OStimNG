@@ -5,8 +5,8 @@
 namespace Sound {
     class LoopSoundType : public SoundType{
     public:
-        inline LoopSoundType(GameAPI::GameSound sound, bool muteWithActor, bool muteWithTarget, int delay)
-            : SoundType(sound, muteWithActor, muteWithTarget), delay{delay} {};
+        inline LoopSoundType(SoundTypeParams params, int delay)
+            : SoundType(params), delay{delay} {};
 
         virtual SoundPlayer* create(OStim::ThreadActor* actor, OStim::ThreadActor* target);
 

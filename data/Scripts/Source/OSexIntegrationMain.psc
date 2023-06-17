@@ -389,6 +389,66 @@ Bool Property EnableActorSpeedControl
 	EndFunction
 EndProperty
 
+GlobalVariable Property OStimAutoSpeedControlIntervalMin Auto
+int Property AutoSpeedControlIntervalMin
+	int Function Get()
+		Return OStimAutoSpeedControlIntervalMin.value As int
+	EndFunction
+	Function Set(int Value)
+		If AutoSpeedControlIntervalMax < Value
+			OStimAutoSpeedControlIntervalMin.value = OStimAutoSpeedControlIntervalMax.value
+			OStimAutoSpeedControlIntervalMax.value = Value
+		Else
+			OStimAutoSpeedControlIntervalMin.value = Value
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimAutoSpeedControlIntervalMax Auto
+int Property AutoSpeedControlIntervalMax
+	int Function Get()
+		Return OStimAutoSpeedControlIntervalMax.value As int
+	EndFunction
+	Function Set(int Value)
+		If AutoSpeedControlIntervalMin > Value
+			OStimAutoSpeedControlIntervalMax.value = OStimAutoSpeedControlIntervalMin.value
+			OStimAutoSpeedControlIntervalMin.value = Value
+		Else
+			OStimAutoSpeedControlIntervalMax.value = Value
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimAutoSpeedControlExcitementMin Auto
+int Property AutoSpeedControlExcitementMin
+	int Function Get()
+		Return OStimAutoSpeedControlExcitementMin.value As int
+	EndFunction
+	Function Set(int Value)
+		If AutoSpeedControlExcitementMax < Value
+			OStimAutoSpeedControlExcitementMin.value = OStimAutoSpeedControlExcitementMax.value
+			OStimAutoSpeedControlExcitementMax.value = Value
+		Else
+			OStimAutoSpeedControlExcitementMin.value = Value
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimAutoSpeedControlExcitementMax Auto
+int Property AutoSpeedControlExcitementMax
+	int Function Get()
+		Return OStimAutoSpeedControlExcitementMax.value As int
+	EndFunction
+	Function Set(int Value)
+		If AutoSpeedControlExcitementMin > Value
+			OStimAutoSpeedControlExcitementMax.value = OStimAutoSpeedControlExcitementMin.value
+			OStimAutoSpeedControlExcitementMin.value = Value
+		Else
+			OStimAutoSpeedControlExcitementMax.value = Value
+		EndIf
+	EndFunction
+EndProperty
+
 
 GlobalVariable Property OStimNPCSceneDuration Auto
 int Property NPCSceneDuration
@@ -2007,10 +2067,6 @@ Event OnUpdate() ;OStim main logic loop
 		Utility.Wait(1.0 - LoopTimeTotal)
 		LoopStartTime = Utility.GetCurrentRealTime()
 
-		If (EnableActorSpeedControl && !AnimationIsAtMaxSpeed())
-			AutoIncreaseSpeed()
-		EndIf
-
 		i = 0
 		While i < Actors.Length
 			If GetActorExcitement(Actors[i]) >= 100.0
@@ -2715,63 +2771,6 @@ ObjectReference Function GetOSAStage() ; the stage is an invisible object that t
 	ObjectReference stage = OSAOmni.GlobalPosition[StageID as Int]
 	Return Stage
 EndFunction
-
-
-;
-;			███████╗██████╗ ███████╗███████╗██████╗     ██╗   ██╗████████╗██╗██╗     ██╗████████╗██╗███████╗███████╗
-;			██╔════╝██╔══██╗██╔════╝██╔════╝██╔══██╗    ██║   ██║╚══██╔══╝██║██║     ██║╚══██╔══╝██║██╔════╝██╔════╝
-;			███████╗██████╔╝█████╗  █████╗  ██║  ██║    ██║   ██║   ██║   ██║██║     ██║   ██║   ██║█████╗  ███████╗
-;			╚════██║██╔═══╝ ██╔══╝  ██╔══╝  ██║  ██║    ██║   ██║   ██║   ██║██║     ██║   ██║   ██║██╔══╝  ╚════██║
-;			███████║██║     ███████╗███████╗██████╔╝    ╚██████╔╝   ██║   ██║███████╗██║   ██║   ██║███████╗███████║
-;			╚══════╝╚═╝     ╚══════╝╚══════╝╚═════╝      ╚═════╝    ╚═╝   ╚═╝╚══════╝╚═╝   ╚═╝   ╚═╝╚══════╝╚══════╝
-;
-;				Some code related to the speed system
-
-Function AutoIncreaseSpeed()
-	If (GetTimeSinceLastPlayerInteraction() < 5.0)
-		Return
-	EndIf
-
-	String CClass = GetCurrentAnimationClass()
-	Float MainExcitement = GetActorExcitement(DomActor)
-	If (CClass == "VJ") || (CClass == "Cr") || (CClass == "Pf1") || (CClass == "Pf2")
-		MainExcitement = GetActorExcitement(SubActor)
-	EndIf
-
-	Int MaxSpeed = GetCurrentAnimationMaxSpeed()
-	Int NumSpeeds = MaxSpeed
-
-	Int AggressionBonusChance = 0
-	If (IsSceneAggressiveThemed())
-		AggressionBonusChance = 80
-		MainExcitement += 20
-	EndIf
-
-	Int Speed = GetCurrentAnimationSpeed()
-	If (Speed == 0)
-		Return
-	EndIf
-
-	If ((MainExcitement >= 85.0) && (Speed < NumSpeeds))
-		If (ChanceRoll(80))
-			IncreaseAnimationSpeed()
-		EndIf
-	ElseIf (MainExcitement >= 69.0) && (Speed <= (NumSpeeds - 1))
-		If (ChanceRoll(50))
-			IncreaseAnimationSpeed()
-		EndIf
-	ElseIf (MainExcitement >= 25.0) && (Speed <= (NumSpeeds - 2))
-		If (ChanceRoll(20 + AggressionBonusChance))
-			IncreaseAnimationSpeed()
-		EndIf
-	ElseIf (MainExcitement >= 05.0) && (Speed <= (NumSpeeds - 3))
-		If (ChanceRoll(20 + AggressionBonusChance))
-			IncreaseAnimationSpeed()
-		EndIf
-	EndIf
-EndFunction
-
-
 
 
 ;
@@ -4037,4 +4036,48 @@ bool function IsInFreeCam()
 endfunction
 
 Function ShakeCamera(Float Power, Float Duration = 0.1)
+EndFunction
+
+Function AutoIncreaseSpeed()
+	If (GetTimeSinceLastPlayerInteraction() < 5.0)
+		Return
+	EndIf
+
+	String CClass = GetCurrentAnimationClass()
+	Float MainExcitement = GetActorExcitement(DomActor)
+	If (CClass == "VJ") || (CClass == "Cr") || (CClass == "Pf1") || (CClass == "Pf2")
+		MainExcitement = GetActorExcitement(SubActor)
+	EndIf
+
+	Int MaxSpeed = GetCurrentAnimationMaxSpeed()
+	Int NumSpeeds = MaxSpeed
+
+	Int AggressionBonusChance = 0
+	If (IsSceneAggressiveThemed())
+		AggressionBonusChance = 80
+		MainExcitement += 20
+	EndIf
+
+	Int Speed = GetCurrentAnimationSpeed()
+	If (Speed == 0)
+		Return
+	EndIf
+
+	If ((MainExcitement >= 85.0) && (Speed < NumSpeeds))
+		If (ChanceRoll(80))
+			IncreaseAnimationSpeed()
+		EndIf
+	ElseIf (MainExcitement >= 69.0) && (Speed <= (NumSpeeds - 1))
+		If (ChanceRoll(50))
+			IncreaseAnimationSpeed()
+		EndIf
+	ElseIf (MainExcitement >= 25.0) && (Speed <= (NumSpeeds - 2))
+		If (ChanceRoll(20 + AggressionBonusChance))
+			IncreaseAnimationSpeed()
+		EndIf
+	ElseIf (MainExcitement >= 05.0) && (Speed <= (NumSpeeds - 3))
+		If (ChanceRoll(20 + AggressionBonusChance))
+			IncreaseAnimationSpeed()
+		EndIf
+	EndIf
 EndFunction

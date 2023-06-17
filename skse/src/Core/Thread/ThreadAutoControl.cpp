@@ -202,7 +202,28 @@ namespace OStim {
         startAutoModeCooldown();
     }
 
-    void Thread::loopAutoMode() {
+    void Thread::loopAutoControl() {
+        if (!playerThread || MCM::MCMTable::autoSpeedControl()) {
+            if ((autoSpeedControlCooldown -= Constants::LOOP_TIME_MILLISECONDS) <= 0) {
+                int excitement = getMaxExcitement();
+                int chance;
+                int min = MCM::MCMTable::autoSpeedControlExcitementMin();
+                int max = MCM::MCMTable::autoSpeedControlExcitementMax();
+                if (excitement < min) {
+                    chance = 0;
+                } else if (excitement > max) {
+                    chance = 100;
+                } else {
+                    chance = ((excitement - min) * 100) / (max - min);
+                }
+                if (MathUtil::chanceRoll(chance)) {
+                    increaseSpeed();
+                }
+                autoSpeedControlCooldown = MathUtil::randomInt(MCM::MCMTable::autoSpeedControlIntervalMin(), MCM::MCMTable::autoSpeedControlIntervalMax());
+            }
+        }
+
+
         if (!autoMode) {
             return;
         }
@@ -213,14 +234,7 @@ namespace OStim {
         }
 
         if (autoModeStage == AutoModeStage::FOREPLAY) {
-            float maxExcitement = 0;
-            for (auto& [index, actor] : m_actors) {
-                if (actor.getExcitement() > maxExcitement) {
-                    maxExcitement = actor.getExcitement();
-                }
-            }
-
-            if (maxExcitement > foreplayThreshold) {
+            if (getMaxExcitement() > foreplayThreshold) {
                 autoModeStage = AutoModeStage::MAIN;
                 autoModeCooldown = 0;
             }

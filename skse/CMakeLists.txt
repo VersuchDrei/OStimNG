@@ -31,7 +31,7 @@ set(sources
     src/Core/EquipObjectHandler.cpp
     src/Core/ExpressionUpdater.cpp
     src/Core/Singleton.h
-    src/Core/Thread/ThreadAutoMode.cpp
+    src/Core/Thread/ThreadAutoControl.cpp
     src/Core/Thread.cpp
     src/Core/ThreadActor.cpp
     src/Core/ThreadManager.cpp

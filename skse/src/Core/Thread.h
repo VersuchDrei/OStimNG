@@ -51,6 +51,10 @@ namespace OStim {
         int getActorPosition(GameAPI::GameActor actor);
 
         void SetSpeed(int speed);
+        void increaseSpeed();
+        void decreaseSpeed();
+
+        float getMaxExcitement();
 
         void callEvent(std::string eventName, int actorIndex, int targetIndex, int performerIndex);
 
@@ -59,9 +63,7 @@ namespace OStim {
 
         inline RE::TESObjectREFR* GetStageObject() { return vehicle; }
 
-        inline bool isPlayerThread() {
-            return playerThread;
-        }
+        inline bool isPlayerThread() { return playerThread; }
 
     public:
         virtual RE::BSEventNotifyControl ProcessEvent(const RE::BSAnimationGraphEvent* a_event, RE::BSTEventSource<RE::BSAnimationGraphEvent>* a_eventSource) override;
@@ -97,7 +99,7 @@ namespace OStim {
         void rebuildAlignmentKey();
         void alignActor(ThreadActor* threadActor, Alignment::ActorAlignment alignment);
 
-#pragma region automode
+#pragma region autocontrol
     public:
         inline bool isInAutoMode() { return autoMode; }
         void startAutoMode();
@@ -106,6 +108,8 @@ namespace OStim {
         void setAutoModeToMainStage();
 
     private:
+        int autoSpeedControlCooldown = 5000;
+
         bool autoMode = false;
         AutoModeStage autoModeStage = AutoModeStage::NONE;
         int foreplayThreshold = 0;
@@ -115,7 +119,7 @@ namespace OStim {
         void evaluateAutoMode();
         void startAutoModeCooldown();
         void progressAutoMode();
-        void loopAutoMode();
+        void loopAutoControl();
 #pragma endregion
     };
 
