@@ -89,6 +89,8 @@ namespace Serialization {
             for (RE::TESObjectARMO* equipObject : equipObjects) {
                 ActorUtil::unequipItem(actor, equipObject);
                 ObjectRefUtil::removeItem(actor, equipObject);
+            }
+            if (!equipObjects.empty()) {
                 ActorUtil::queueNiNodeUpdate(actor);
             }
         }
