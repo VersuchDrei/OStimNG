@@ -1,6 +1,25 @@
 #include "SearchMenu.h"
+#include "UI/UIState.h"
+#include "Graph/LookupTable.h"
 
 namespace UI::Search {
+
+    inline RE::GFxValue GetRoot() {
+        RE::GFxValue root;
+        RE::GPtr<RE::IMenu> searchMenu = RE::UI::GetSingleton()->GetMenu(SearchMenu::MENU_NAME);
+        assert(searchMenu && searchMenu->uiMovie);
+
+        searchMenu->uiMovie->GetVariable(&root, "_root");
+        return root;
+    }
+
+    inline RE::GFxValue GetSearchBox() {
+        auto root = GetRoot();
+        RE::GFxValue searchBox;
+        root.GetMember("searchMC", &searchBox);
+        return searchBox;
+    }
+
 	SearchMenu::SearchMenu() : Super() {
         auto scaleformManager = RE::BSScaleformManager::GetSingleton();
 
@@ -12,12 +31,13 @@ namespace UI::Search {
         menuFlags.set(
             RE::UI_MENU_FLAGS::kAlwaysOpen,
             RE::UI_MENU_FLAGS::kRequiresUpdate,
-            RE::UI_MENU_FLAGS::kAllowSaving,
-            RE::UI_MENU_FLAGS::kUsesCursor);
-
-        //if (uiMovie) {
-        //    uiMovie->SetMouseCursorCount(0);  // disable input            
-        //}
+            RE::UI_MENU_FLAGS::kModal,
+            RE::UI_MENU_FLAGS::kUsesCursor,
+            RE::UI_MENU_FLAGS::kPausesGame,
+            RE::UI_MENU_FLAGS::kAdvancesUnderPauseMenu,
+            RE::UI_MENU_FLAGS::kRendersUnderPauseMenu,
+            RE::UI_MENU_FLAGS::kUsesBlurredBackground
+            );
 
         scaleformManager->LoadMovieEx(this, MENU_PATH, [](RE::GFxMovieDef* a_def) -> void {
             a_def->SetState(RE::GFxState::StateType::kLog, RE::make_gptr<Logger>().get());
@@ -41,10 +61,34 @@ namespace UI::Search {
         }
     }
 
+    void SearchMenu::PostRegister() {
+        auto optionBoxes = GetSearchBox();
+
+        RE::GFxFunctionHandler* fn = new UI::doHideMenuRequest;
+        RE::GFxValue doHideFn;
+        view->CreateFunction(&doHideFn, fn);
+        optionBoxes.SetMember("doHideMenuRequest", doHideFn);
+
+        RE::GFxFunctionHandler* fn2 = new doSearchFunction;
+        RE::GFxValue doSearchFn;
+        view->CreateFunction(&doSearchFn, fn2);
+        optionBoxes.SetMember("doSearch", doSearchFn);
+
+        RE::GFxFunctionHandler* fn3 = new doSelectOptionFunction;
+        RE::GFxValue doSelectFn;
+        view->CreateFunction(&doSelectFn, fn3);
+        optionBoxes.SetMember("doSelectOption", doSelectFn);
+    }
+
     void SearchMenu::Show() {
         auto msgQ = RE::UIMessageQueue::GetSingleton();
         if (msgQ) {
             msgQ->AddMessage(SearchMenu::MENU_NAME, RE::UI_MESSAGE_TYPE::kShow, nullptr);
+            auto box = GetSearchBox();
+            auto controlMap = RE::ControlMap::GetSingleton();
+            controlMap->AllowTextInput(true);
+            const RE::GFxValue arg{ true };
+            box.Invoke("SetIsOpen", nullptr, &arg, 1);
         }
     }
 
@@ -52,10 +96,43 @@ namespace UI::Search {
         auto msgQ = RE::UIMessageQueue::GetSingleton();
         if (msgQ) {
             msgQ->AddMessage(SearchMenu::MENU_NAME, RE::UI_MESSAGE_TYPE::kHide, nullptr);
+            auto box = GetSearchBox();
+            auto controlMap = RE::ControlMap::GetSingleton();
+            controlMap->AllowTextInput(false);
+            const RE::GFxValue arg{ false };
+            box.Invoke("SetIsOpen", nullptr, &arg, 1);
         }
     }
 
     void SearchMenu::AdvanceMovie(float a_interval, std::uint32_t a_currentTime) {
         RE::IMenu::AdvanceMovie(a_interval, a_currentTime);
+    }
+
+    void SearchMenu::AssignData(std::vector<std::string>& data) {
+        auto box = GetSearchBox();
+        RE::GFxValue arg;
+        view->CreateArray(&arg);
+        for (auto& item : data) {
+            RE::GFxValue entry;
+            view->CreateObject(&entry);
+            entry.SetMember("label", RE::GFxValue{ item.c_str() });
+            arg.PushBack(entry);
+        }
+        box.Invoke("AssignData", nullptr, &arg, 1);
+    }
+
+    void SearchMenu::Search(std::string value) {
+        std::vector<Graph::Node*> results;
+        Graph::LookupTable::findNodesById(value , results);
+        std::vector<std::string> data;
+        for (int i = 0; i < results.size(); i++) {
+            data.push_back(results[i]->scene_id);
+        }
+        AssignData(data);
+    }
+
+    void SearchMenu::SelectOption(std::string val) {
+        auto node = Graph::LookupTable::getNodeById(val);
+        UI::UIState::GetSingleton()->currentThread->ChangeNode(node);
     }
 }

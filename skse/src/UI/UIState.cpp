@@ -39,6 +39,11 @@ namespace UI {
             UI::Search::SearchMenu::Show();
         }
     }
+    void UIState::CloseActiveMenu() {
+        if (activeMenu != kSceneMenu) {
+            ToggleActiveMenu(activeMenu);
+        }
+    }
 
     void UIState::ToggleActiveMenu(MenuType menu) {
         if (menu == kSceneMenu)
@@ -50,6 +55,27 @@ namespace UI {
         if (activeMenu == menu) {
             SwitchActiveMenu(kSceneMenu);
             return;
+        }
+    }
+
+    void UIState::SetThread(OStim::Thread* thread) {
+        currentThread = thread;
+        currentNode = thread->getCurrentNode();
+        UI::Align::AlignMenu::ThreadChanged();
+        UI::Scene::SceneMenu::UpdateMenuData();
+    }
+
+    void UIState::NodeChanged(OStim::Thread* thread, Graph::Node* node) {
+        if (!thread || !node) return;
+        if (!currentThread->isSameThread(thread)) return;
+
+        currentNode = node;
+        UI::Align::AlignMenu::NodeChanged();
+        UI::Scene::SceneMenu::UpdateMenuData();
+    }
+    void UIState::HandleThreadRemoved(OStim::Thread* thread) {
+        if (currentThread == thread) {
+            currentThread = nullptr;
         }
     }
 

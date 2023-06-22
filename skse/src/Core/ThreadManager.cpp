@@ -46,7 +46,7 @@ namespace OStim {
         auto it = m_threadMap.find(a_id);
         if (it != m_threadMap.end()) {
             Thread* thread = it->second;
-            UI::Align::AlignMenu::HandleThreadRemoved(thread);
+            UI::UIState::GetSingleton()->HandleThreadRemoved(thread);
             m_threadMap.erase(a_id);
             thread->close();
             delete thread;

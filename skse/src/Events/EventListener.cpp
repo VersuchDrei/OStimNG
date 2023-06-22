@@ -41,7 +41,7 @@ namespace Events {
         if (!a_events) {
             return RE::BSEventNotifyControl::kContinue;
         }
-
+        
         if (RE::UI::GetSingleton()->GameIsPaused()) {
             return RE::BSEventNotifyControl::kContinue;
         }

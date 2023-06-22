@@ -94,8 +94,9 @@ namespace OStim {
         }
 
         if (isPlayerThread) {
-            UI::Align::AlignMenu::SetThread(this);
-            UI::Scene::SceneMenu::SetThread(this);
+            auto uiState = UI::UIState::GetSingleton();
+            if(uiState)
+                uiState->SetThread(this);
             UI::Scene::SceneMenu::Show();
         }
     }
@@ -114,7 +115,7 @@ namespace OStim {
         alignmentKey = key.toString();
 
         if (isPlayerThread) {
-            UI::Align::AlignMenu::SetNode(m_currentNode);
+            UI::UIState::GetSingleton()->NodeChanged(this, m_currentNode);
         }   
     }
 
@@ -224,7 +225,7 @@ namespace OStim {
 
         alignActors();
 
-        UI::Scene::SceneMenu::NodeChanged(this, m_currentNode);
+        UI::UIState::GetSingleton()->NodeChanged(this, m_currentNode);        
 
         auto messaging = SKSE::GetMessagingInterface();
 

@@ -1,4 +1,5 @@
 #include "UI/Scene/SceneMenu.h"
+#include "UI/UIState.h"
 #include <Graph/LookupTable.h>
 
 namespace UI::Scene {
@@ -84,21 +85,6 @@ namespace UI::Scene {
             msgQ->AddMessage(SceneMenu::MENU_NAME, RE::UI_MESSAGE_TYPE::kHide, nullptr);
         }
 	}
-
-    void SceneMenu::SetThread(OStim::Thread* thread) {
-        currentThread = thread;
-        currentNode = thread->getCurrentNode();
-        UpdateMenuData();
-    }
-
-    void SceneMenu::NodeChanged(OStim::Thread* thread, Graph::Node* node)
-    {
-        if (!thread || !node) return;
-        if (!currentThread->isSameThread(thread)) return;
-
-        currentNode = node;
-        UpdateMenuData();
-    }
 
 	void SceneMenu::Update() {
 	}
@@ -187,8 +173,9 @@ namespace UI::Scene {
 
     void SceneMenu::BuildMenuData(MenuData& menuData) {
         // Do this when we have the node edges defined in c++
-        
-        if (!currentNode)
+        auto state = UI::UIState::GetSingleton();
+        auto currentNode = state->currentNode;
+        if (!state->currentNode)
             return;
         if (currentNode->isTransition) {
             menuData.options.clear();
@@ -206,7 +193,7 @@ namespace UI::Scene {
     }
     
     void SceneMenu::ChangeAnimation(std::string nodeId) {
-        currentThread->Navigate(nodeId);
+        UI::UIState::GetSingleton()->currentThread->Navigate(nodeId);
     }
 
     

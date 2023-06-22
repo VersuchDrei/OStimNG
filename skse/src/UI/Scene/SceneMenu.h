@@ -29,10 +29,8 @@ namespace UI::Scene {
 		static void Handle(UI::Controls control);
 		static void ApplyPositions();
 
-		static void SetThread(OStim::Thread* thread);
-		static void NodeChanged(OStim::Thread* thread, Graph::Node* node);
-
 		static void ChangeAnimation(std::string nodeId);
+		static void UpdateMenuData();
 	private:
 		class Logger : public RE::GFxLog {
 		public:
@@ -79,13 +77,10 @@ namespace UI::Scene {
 			}
 		};
 
-		static void UpdateMenuData();
 		static void BuildMenuData(MenuData& menudata);
 		static void UpdateInfoBox();
 		static void SendControl(int32_t control);
 	private:
-		inline static OStim::Thread* currentThread;
-		inline static Graph::Node* currentNode;
 
 		inline static RE::GPtr<RE::GFxMovieView> view;
 	};

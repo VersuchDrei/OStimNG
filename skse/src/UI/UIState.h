@@ -25,20 +25,37 @@ namespace UI {
     }
 
     inline static void PostGameLoad() {
-        UI::Scene::SceneMenu::PostRegister();        
+        UI::Scene::SceneMenu::PostRegister();      
+        UI::Search::SearchMenu::PostRegister();
     }
 
     enum MenuType { kSceneMenu, kAlignMenu, kSearchMenu };
     class UIState : public OStim::ISingleton<UIState> {
     public:
         void HandleControl(Controls control, int64_t glyph);
+        void CloseActiveMenu();
         void SwitchActiveMenu(MenuType type);
         void ToggleActiveMenu(MenuType type);
         inline MenuType GetActiveMenu() { return activeMenu; }
         void loop();
+        void SetThread(OStim::Thread* thread);
+        void NodeChanged(OStim::Thread* thread, Graph::Node* node);
+        void HandleThreadRemoved(OStim::Thread* thread);
+
+
+        OStim::Thread* currentThread;
+        Graph::Node* currentNode;
     private:
         MenuType activeMenu = MenuType::kSceneMenu;
         const short UI_UPDATE_LOOP_TIME = 10000;
         short refreshUIPositionCooldown = UI_UPDATE_LOOP_TIME;
+    };
+
+    class doHideMenuRequest : public RE::GFxFunctionHandler {
+    public:
+        void Call(Params& args) override {
+            auto uiState = UI::UIState::GetSingleton();
+            uiState->CloseActiveMenu();
+        }
     };
 }  // namespace UI

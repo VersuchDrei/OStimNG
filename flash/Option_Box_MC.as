@@ -62,7 +62,7 @@ class Option_Box_MC extends MovieClip
 		bg._width = maxWidth;
 		bg._x = bg._width /2 ;
 		
-		//AssignData(generateTestData()) For testing in flash
+		//AssignData(generateTestData())// For testing in flash
 	}
 
 	public function HandleKeyboardInput(e:Number)
@@ -232,6 +232,7 @@ class Option_Box_MC extends MovieClip
 		for(var i = 0; i < arr.length; i++){
 			var obj = {};
 			obj.Border = "FFFFFF";
+			obj.ImagePath = "test" + i + ".dds"
 			arr[i] = obj;
 		}
 		return arr;

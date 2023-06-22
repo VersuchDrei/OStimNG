@@ -4,6 +4,7 @@
 #include "RE/G/GPtr.h"
 
 #include <UI/Settings.h>
+#include "UI/UIState.h"
 #include "Alignment/Alignments.h"
 
 namespace UI::Align {
@@ -57,7 +58,9 @@ namespace UI::Align {
         if (msgQ) {
             msgQ->AddMessage(AlignMenu::MENU_NAME, RE::UI_MESSAGE_TYPE::kShow, nullptr);
         }
-        if (currentThread != nullptr) {
+        auto uiState = UI::UIState::GetSingleton();
+        if(uiState)
+        if (uiState->currentThread != nullptr) {
             SetActor(0);
             SelectField(0);
         }
@@ -65,13 +68,11 @@ namespace UI::Align {
         ApplyPositions();
     }
 
-    void AlignMenu::SetThread(OStim::Thread* thread) {
-        currentThread = thread;
+    void AlignMenu::ThreadChanged(){
         SetActor(0);
     }
 
-    void AlignMenu::SetNode(Graph::Node* node) {
-        currentNode = node;
+    void AlignMenu::NodeChanged(){
         UpdateSceneInfo();
         LoadCurrentAlignment();
         UpdateActorInfo();
@@ -84,13 +85,7 @@ namespace UI::Align {
     }
 
     void AlignMenu::LoadCurrentAlignment() {
-        currentActorInfo = currentThread->getActorAlignment(selectedSlot);
-    }
-
-    void AlignMenu::HandleThreadRemoved(OStim::Thread* thread) {
-        if (thread == currentThread) {
-            currentThread = nullptr;
-        }
+        currentActorInfo = UI::UIState::GetSingleton()->currentThread->getActorAlignment(selectedSlot);
     }
 
     void AlignMenu::Hide() {
@@ -103,6 +98,9 @@ namespace UI::Align {
     }
 
     void AlignMenu::UpdateSceneInfo() {
+        auto uiState = UI::UIState::GetSingleton();
+        auto currentThread = uiState->currentThread;
+        auto currentNode = uiState->currentNode;
         if (currentThread == nullptr || currentNode == nullptr) return;
         auto root = GetRoot();
 
@@ -129,7 +127,7 @@ namespace UI::Align {
         RE::GFxValue alignmentInfo;
         root.GetMember("alignmentInfo", &alignmentInfo);
 
-        const RE::GFxValue actorName = RE::GFxValue{currentThread->GetActor(selectedSlot)->getActor()->GetDisplayFullName()};
+        const RE::GFxValue actorName = RE::GFxValue{ UI::UIState::GetSingleton()->currentThread->GetActor(selectedSlot)->getActor()->GetDisplayFullName()};
         const RE::GFxValue actorSlot = selectedSlot;
 
         auto gender = "*";
@@ -229,7 +227,7 @@ namespace UI::Align {
 
     void AlignMenu::ToggleActor() {
         selectedSlot++;
-        if (selectedSlot > currentNode->actors.size() - 1) {
+        if (selectedSlot > UI::UIState::GetSingleton()->currentNode->actors.size() - 1) {
             selectedSlot = 0;
         }
         SetActor(selectedSlot);
@@ -274,7 +272,7 @@ namespace UI::Align {
         RE::GFxValue values[2]{*currentVal, up};
         alignmentInfo.Invoke("updateDoubleField", nullptr, values, 2);
 
-        currentThread->updateActorAlignment(selectedSlot, currentActorInfo);
+        UI::UIState::GetSingleton()->currentThread->updateActorAlignment(selectedSlot, currentActorInfo);
     }
 
     void AlignMenu::CycleIncrement() {

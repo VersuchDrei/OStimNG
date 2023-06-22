@@ -1,4 +1,5 @@
 #pragma once
+#include "UI/UIInterop.h"
 
 namespace UI::Search {
     class SearchMenu : public RE::IMenu {
@@ -13,9 +14,14 @@ namespace UI::Search {
         SearchMenu();
 
         static void Register();
+        static void PostRegister();
         static void Show();
         static void Hide();
         static void Update();
+        static void Search(std::string);
+        static void AssignData(std::vector<std::string>& data);
+        static void SelectOption(std::string val);
+
 
         static RE::stl::owner<RE::IMenu*> Creator() { return new SearchMenu(); }
 
@@ -40,5 +46,19 @@ namespace UI::Search {
         };
     private:
         inline static RE::GPtr<RE::GFxMovieView> view;
+    };
+
+    class doSearchFunction : public RE::GFxFunctionHandler {
+    public:
+        void Call(Params& args) override {
+            UI::Search::SearchMenu::Search(args.args[0].GetString());
+        }
+    };
+
+    class doSelectOptionFunction : public RE::GFxFunctionHandler {
+    public:
+        void Call(Params& args) override {
+            UI::Search::SearchMenu::SelectOption(args.args[0].GetString());
+        }
     };
 }
