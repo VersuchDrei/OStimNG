@@ -35,6 +35,10 @@ namespace UI {
 		CreateDefaultLocationSettings(json["align"]["control"]);
 		json["align"]["info"] = json::object();
 		CreateDefaultLocationSettings(json["align"]["info"]);
+
+		json["search"] = json::object();
+		json["search"]["menu"] = json::object();
+		CreateDefaultLocationSettings(json["search"]["menu"]);
 	}
 	void Settings::LoadSettings() {
 		logger::info("loading ui settings");
@@ -93,6 +97,20 @@ namespace UI {
 			else {
 				auto& info = scene["bars"];
 				LoadPosition(info, positionSettings.ScenePositions.BarsPosition);
+			}
+		}
+
+		if (!json.contains("search")) {
+			logger::warn("settings file malformed - missing search");
+		}
+		else {
+			auto& scene = json["search"];
+			if (!scene.contains("menu")) {
+				logger::warn("settings file malformed - missing search.menu");
+			}
+			else {
+				auto& menu = scene["menu"];
+				LoadPosition(menu, positionSettings.SearchPositions.MenuPosition);
 			}
 		}
 	}

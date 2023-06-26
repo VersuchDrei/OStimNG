@@ -29,6 +29,7 @@ class SearchBar extends MovieClip
 	var fields = new Array();
 	var PrevFocus:MovieClip;
 	var inputtingText:Boolean = false;
+	var fakeButton;
 
 	public function SearchBar()
 	{
@@ -54,20 +55,22 @@ class SearchBar extends MovieClip
 			{
 				if (inputtingText)
 				{
-					Search();
+					Search();					
 					ClearInput();
+					return true;
 				}
 				else
 				{
 					SelectOption();
-					ClearAndHide();
+					return true;
 				}
 			}
 			else if (details.navEquivalent == NavigationCode.TAB || details.navEquivalent == NavigationCode.ESCAPE)
 			{
 				ClearAndHide();
+				return true;
 			}
-			else if (details.navEquivalent == NavigationCode.UP)
+			else if (details.navEquivalent == NavigationCode.UP && !inputtingText)
 			{
 				if (CurrentlySelectedIdx + 1 > fields.length - 1)
 				{
@@ -79,8 +82,9 @@ class SearchBar extends MovieClip
 					CurrentlySelectedIdx++;
 					UpdateHighlight();
 				}
+				return true;
 			}
-			else if (details.navEquivalent == NavigationCode.DOWN)
+			else if (details.navEquivalent == NavigationCode.DOWN && !inputtingText)
 			{
 				if (CurrentlySelectedIdx - 1 < 0)
 				{
@@ -92,6 +96,7 @@ class SearchBar extends MovieClip
 					CurrentlySelectedIdx--;
 					UpdateHighlight();
 				}
+				return true;
 			}
 
 			var nextClip = pathToFocus.shift();
@@ -102,6 +107,14 @@ class SearchBar extends MovieClip
 		}
 
 		return false;
+	}
+
+	function onMouseDown()
+	{
+		if (Mouse.getTopMostEntity() == textInput.textField)
+		{
+			EnableTextInput();
+		}
 	}
 
 	function UpdateHighlight()
@@ -125,7 +138,15 @@ class SearchBar extends MovieClip
 	function ClearInput()
 	{
 		textInput.text = "";
+	}
+	function DisableTextInput(){		
 		inputtingText = false;
+		Selection.setFocus(fakeButton);
+	}
+	function EnableTextInput()
+	{
+		Selection.setFocus(textInput.textField);
+		inputtingText = true;
 	}
 
 	public function AssignData(data:Array)
@@ -142,6 +163,7 @@ class SearchBar extends MovieClip
 			TweenLite.to(bg,0.5,{_height:newHeight, _y:0 - (newHeight / 2)});
 
 			CurrentlySelectedIdx = -1;
+			EnableTextInput();
 		}
 		else
 		{
@@ -149,8 +171,6 @@ class SearchBar extends MovieClip
 			var optCount = data.length > maxOptions ? maxOptions : data.length;
 			var newHeight = minHeight + topGutter + ((optionGutter + lineHeight) * optCount);
 			TweenLite.to(bg,0.5,{_height:newHeight, _y:0 - (newHeight / 2)});
-
-			var inputFormat = textInput.textField.getTextFormat();
 
 			for (var i = 0; i < optCount; i++)
 			{
@@ -162,19 +182,42 @@ class SearchBar extends MovieClip
 				fields[i]._visible = true;
 
 				fields[i].optionVal.text = data[i].label;
+				fields[i].idx = i;
+				fields[i].onRollOver = function()
+				{
+					_parent.SetIdx(this);
+					_parent.UpdateHighlight();
+				};
+				fields[i].onRollOut = function()
+				{
+					this.OnUnHighlight();
+				};
+				fields[i].onMouseDown = function()
+				{
+					if (Mouse.getTopMostEntity()._parent == this)
+					{
+						_parent.SelectOption();
+					}
+				};
 			}
 			CurrentlySelectedIdx = 0;
-			Selection.setFocus(fields[0]);
+			DisableTextInput();
 		}
 		UpdateHighlight();
 	}
 
+	public function SetIdx(field)
+	{
+		CurrentlySelectedIdx = field.idx;
+	}
+
 	public function SetIsOpen(isOpen:Boolean)
 	{
+		trace(Selection.getFocus());
 		this._isOpen = isOpen;
 		if (_isOpen)
 		{
-			Selection.setFocus(textInput);
+			Selection.setFocus(textInput.textField);
 			Selection.setSelection(0,0);
 			inputtingText = true;
 		}
@@ -186,7 +229,7 @@ class SearchBar extends MovieClip
 		if (val != undefined)
 		{
 			doSelectOption(val);
-			doHideMenuRequest();
+			ClearAndHide();
 		}
 	}
 	public function doSelectOption(val:String)

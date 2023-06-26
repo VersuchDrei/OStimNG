@@ -17,10 +17,15 @@ namespace UI {
 		Position ControlPosition;
 		Position BarsPosition;
 	};
+	struct SearchMenuPositions
+	{
+		Position MenuPosition;
+	};
 
 	struct MenuPositions {
 		AlignMenuPositions AlignMenuPosition;
 		SceneMenuPositions ScenePositions;
+		SearchMenuPositions SearchPositions;
 	};
 
 	class Settings {

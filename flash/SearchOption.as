@@ -3,9 +3,14 @@
 class SearchOption extends MovieClip
 {
 	var searchOptionBg : MovieClip;
+	var idx = 0;
 	public function SearchOption()
 	{
 		// constructor code
+	}
+	
+	function handleInput(details, pathToFocus){
+		
 	}
 	
 	function OnHighlight(){

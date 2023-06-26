@@ -22,6 +22,7 @@ namespace UI::Search {
         static void AssignData(std::vector<std::string>& data);
         static void SelectOption(std::string val);
 
+        static void ApplyPositions();
 
         static RE::stl::owner<RE::IMenu*> Creator() { return new SearchMenu(); }
 

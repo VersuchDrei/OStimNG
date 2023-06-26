@@ -32,6 +32,8 @@ namespace OStim {
         void ChangeNode(Graph::Node* a_node);
         Graph::Node* getCurrentNode();
 
+        int getActorCount() { return m_actors.size(); }
+
         void AddActor(RE::Actor* a_actor);
         void RemoveActor();
 

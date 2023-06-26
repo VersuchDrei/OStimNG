@@ -15,8 +15,10 @@ namespace UI::Search {
 
     inline RE::GFxValue GetSearchBox() {
         auto root = GetRoot();
+        RE::GFxValue searchBoxContainer;
+        root.GetMember("searchMCContainer", &searchBoxContainer);
         RE::GFxValue searchBox;
-        root.GetMember("searchMC", &searchBox);
+        searchBoxContainer.GetMember("searchMC", &searchBox);
         return searchBox;
     }
 
@@ -89,6 +91,7 @@ namespace UI::Search {
             controlMap->AllowTextInput(true);
             const RE::GFxValue arg{ true };
             box.Invoke("SetIsOpen", nullptr, &arg, 1);
+            ApplyPositions();
         }
     }
 
@@ -102,6 +105,23 @@ namespace UI::Search {
             const RE::GFxValue arg{ false };
             box.Invoke("SetIsOpen", nullptr, &arg, 1);
         }
+    }
+
+    void SearchMenu::ApplyPositions() {
+        auto root = GetRoot();
+        if (!root.IsObject())
+            return;
+
+        auto controlPositions = &UI::Settings::positionSettings.ScenePositions.ControlPosition;
+        const RE::GFxValue controlX = RE::GFxValue{ controlPositions->xPos };
+        const RE::GFxValue controlY = RE::GFxValue{ controlPositions->yPos };
+        const RE::GFxValue controlXScale = RE::GFxValue{ controlPositions->xScale };
+        const RE::GFxValue controlYScale = RE::GFxValue{ controlPositions->yScale };
+        RE::GFxValue controlPosArray[4]{ controlX, controlY, controlXScale, controlYScale };
+
+        RE::GFxValue alignmentInfo;
+        root.GetMember("searchMCContainer", &alignmentInfo);
+        alignmentInfo.Invoke("setPosition", nullptr, controlPosArray, 4);
     }
 
     void SearchMenu::AdvanceMovie(float a_interval, std::uint32_t a_currentTime) {
@@ -125,7 +145,11 @@ namespace UI::Search {
         std::vector<Graph::Node*> results;
         Graph::LookupTable::findNodesById(value , results);
         std::vector<std::string> data;
+        auto state = UI::UIState::GetSingleton();
         for (int i = 0; i < results.size(); i++) {
+            if(results[i]->actors.size() == state->currentThread->getActorCount() 
+                && results[i]->furnitureType == state->currentNode->furnitureType 
+                && !results[i]->isTransition)
             data.push_back(results[i]->scene_id);
         }
         AssignData(data);
