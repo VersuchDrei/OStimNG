@@ -167,7 +167,6 @@ Event OnPageReset(String Page)
 		AddTextOptionST("OID_BootstrapMCM", "$ostim_bootstrap_mcm", "")
 	ElseIf (Page == "$ostim_page_addons")
 		SetInfoText(" ")
-		Main.playTickBig()
 		SetCursorFillMode(TOP_TO_BOTTOM)
 		UnloadCustomContent()
 		SetCursorPosition(0)
@@ -261,8 +260,6 @@ Event OnPageReset(String Page)
 		AddColoredHeader("$ostim_links")
 		AddTextOption("discord.gg/ostim", "")
 		AddTextOption("https://github.com/VersuchDrei/OStim", "")
-
-		Main.PlayDing()
 	EndIf
 EndEvent
 
@@ -297,7 +294,6 @@ float Function GetExternalfloat(string modesp, int id)
 endfunction
 
 Event OnOptionSelect(Int Option)
-	Main.PlayTickBig()
 	if currPage == "$ostim_page_undress"
 		OnSlotSelect(option)
 	elseif currPage == "$ostim_page_addons"
@@ -337,7 +333,6 @@ Event OnOptionSelect(Int Option)
 EndEvent
 
 Event OnOptionHighlight(Int Option)
-	;Main.playTickSmall()
 	if currPage == "$ostim_page_undress"
 		OnSlotMouseOver(option)
 		Return
@@ -383,8 +378,6 @@ Event OnOptionHighlight(Int Option)
 EndEvent
 
 Event OnOptionSliderOpen(Int Option)
-	Main.PlayTickBig()
-
 	if (option == SetORDifficulty)
 		SetSliderDialogStartValue(GetExternalInt(oromance, GVORDifficulty))
 		SetSliderDialogDefaultValue(0.0)
@@ -404,8 +397,6 @@ Event OnOptionSliderOpen(Int Option)
 EndEvent
 
 Event OnOptionSliderAccept(Int Option, Float Value)
-	Main.PlayTickBig()
-
 	if (option == SetORDifficulty)
 		SetExternalInt(oromance, GVORDifficulty, value as int)
 		SetSliderOptionValue(SetORDifficulty, Value as int, "{0}")
@@ -419,7 +410,6 @@ Event OnOptionSliderAccept(Int Option, Float Value)
 EndEvent
 
 Event OnOptionKeyMapChange(Int Option, Int KeyCode, String ConflictControl, String ConflictName)
-	Main.PlayTickBig()
 	If (Option == SetORKey)
 		SetExternalInt(oromance, gvorkey, KeyCode)
 		SetKeyMapOptionValue(Option, KeyCode)

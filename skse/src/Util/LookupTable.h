@@ -1,7 +1,5 @@
 #pragma once
 
-#include "SKEE.h"
-
 namespace Util {
     class LookupTable {
     public:
@@ -12,8 +10,6 @@ namespace Util {
         inline static RE::TESPackage* OStimScenePackage;
         inline static RE::TESFaction* OStimEmptyFaction;
         inline static RE::TESImageSpaceModifier* OStimNutEffect;
-
-        inline static SKEE::INiTransformInterface* niTransformInterface = nullptr;
 
         static void setupForms();
     };

@@ -10,7 +10,6 @@
 #include "InterfaceSpec/PluginInterface.h"
 #include "Messaging/IMessages.h"
 #include "Papyrus/Papyrus.h"
-#include "SKEE.h"
 #include "Serial/Manager.h"
 #include "Sound/SoundTable.h"
 #include "Trait/TraitTable.h"
@@ -98,21 +97,6 @@ namespace {
             }break;
             case SKSE::MessagingInterface::kPostPostLoad: {
                 UI::Align::AlignMenu::Show();
-                SKEE::InterfaceExchangeMessage msg;
-                auto intfc = SKSE::GetMessagingInterface();
-                intfc->Dispatch(SKEE::InterfaceExchangeMessage::kExchangeInterface, (void*)&msg, sizeof(SKEE::InterfaceExchangeMessage*), "skee");
-                if (!msg.interfaceMap) {
-                    logger::critical("Couldn't get interface map!");
-                    return;
-                }
-
-                auto nioInterface = static_cast<SKEE::INiTransformInterface*>(msg.interfaceMap->QueryInterface("NiTransform"));
-                if (nioInterface) {
-                    logger::info("NiTransform version {}", nioInterface->GetVersion());
-                    Util::LookupTable::niTransformInterface = nioInterface;
-                } else {
-                    logger::critical("Couldn't get NiTransformInterface!");
-                }
             } break;
         }
     }

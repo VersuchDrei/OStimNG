@@ -7,7 +7,6 @@
 #include "MCM/MCMTable.h"
 #include "Util/StringUtil.h"
 #include "Util/VectorUtil.h"
-#include "SKEE.h"
 
 namespace Graph {
     void Node::mergeActionsIntoActors() {

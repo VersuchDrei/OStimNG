@@ -12,7 +12,18 @@ namespace GameAPI {
         static void shakeController(float leftStrength, float rightStrength, float duration);
         static GameActor getCrosshairActor();
 
+        static void showMessageBox(std::string content, std::vector<std::string> options, std::function<void(unsigned int)> callback);
+
     private:
+        class MessageBoxCallback : public RE::IMessageBoxCallback {
+        public:
+            MessageBoxCallback(std::function<void(unsigned int)> callback) : callback{callback} {}
+            ~MessageBoxCallback() override {}
+            void Run(RE::IMessageBoxCallback::Message message) override { callback(static_cast<unsigned int>(message)); }
+        private:
+            std::function<void(unsigned int)> callback;
+        };
+
         inline static void ShakeController(bool leftMotor, float strength, float duration) {
             using func_t = decltype(ShakeController);
             REL::Relocation<func_t> func{RELOCATION_ID(67220, 68528)};

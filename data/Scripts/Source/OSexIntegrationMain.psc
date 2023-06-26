@@ -1586,11 +1586,6 @@ Faction OsaFactionStage
 
 ImageSpaceModifier NutEffect
 
-
-Sound OSADing
-Sound OSATickSmall
-Sound OSATickBig
-
 ;_oUI OSAUI
 ;---------
 
@@ -3058,18 +3053,6 @@ EndFunction
 ;
 ;				Code related to Sound
 
-Function PlayDing()
-	OSADing.Play(PlayerRef)
-EndFunction
-
-Function PlayTickSmall()
-	OSATickSmall.Play(PlayerRef)
-EndFunction
-
-Function PlayTickBig()
-	OSATickBig.Play(PlayerRef)
-EndFunction
-
 Event OnSoundDom(String EventName, String Fi, Float Ix, Form Sender)
 	OnSound(DomActor, (Fi as Int), Ix as Int)
 EndEvent
@@ -3398,9 +3381,6 @@ Function Startup()
 	subthreadquest = Game.GetFormFromFile(0x000806, "Ostim.esp") as quest
 
 	OUpdater = Game.GetFormFromFile(0x000D67, "Ostim.esp") as OStimUpdaterScript
-	OSADing = Game.GetFormFromFile(0x000D6D, "Ostim.esp") as Sound
-	OSATickSmall = Game.GetFormFromFile(0x000D6E, "Ostim.esp") as Sound
-	OSATickBig = Game.GetFormFromFile(0x000D6F, "Ostim.esp") as Sound
 
 	OControl = Quest.GetQuest("0SAControl") as _oControl
 
@@ -4080,4 +4060,13 @@ Function AutoIncreaseSpeed()
 			IncreaseAnimationSpeed()
 		EndIf
 	EndIf
+EndFunction
+
+Function PlayDing()
+EndFunction
+
+Function PlayTickSmall()
+EndFunction
+
+Function PlayTickBig()
 EndFunction

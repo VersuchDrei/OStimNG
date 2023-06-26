@@ -6,7 +6,6 @@
 #include "Util/StringUtil.h"
 #include "Util/JsonFileLoader.h"
 #include "Util/JsonUtil.h"
-#include "SKEE.h"
 
 
 namespace Graph {

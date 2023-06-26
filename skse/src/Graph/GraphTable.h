@@ -6,7 +6,6 @@
 
 #include "Furniture/Furniture.h"
 #include "Trait/Condition.h"
-#include "SKEE.h"
 
 namespace Graph{
     class GraphTable {
@@ -44,7 +43,5 @@ namespace Graph{
             {"testicles", Requirement::TESTICLES},
             {"vagina", Requirement::VAGINA}
         };
-
-        inline static SKEE::INiTransformInterface* niTransformInterface = nullptr;
     };
 }

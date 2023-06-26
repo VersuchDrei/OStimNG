@@ -40,8 +40,7 @@ namespace GameAPI {
         if (camera->IsInFreeCameraMode()) {
             toggleFlyCamInner();
         } else if (GameTable::improvedCamSupport()) {
-            auto controlMap = RE::ControlMap::GetSingleton();
-            controlMap->enabledControls.set(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch);
+            RE::ControlMap::GetSingleton()->enabledControls.set(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch);
         }
         if (firstPerson) {
             std::thread camThread = std::thread([&] {
@@ -52,12 +51,17 @@ namespace GameAPI {
     }
 
     void GameCamera::toggleFreeCam() {
+        auto camera = RE::PlayerCamera::GetSingleton();
+
         if (!GameTable::improvedCamSupport()) {
+            if (camera->IsInFirstPerson()) {
+                camera->ForceThirdPerson();
+            }
+
             toggleFlyCamInner();
             return;
         }
 
-        auto camera = RE::PlayerCamera::GetSingleton();
         if (camera->IsInFreeCameraMode()) {
             toggleFlyCamInner();
             camera->ForceFirstPerson();
