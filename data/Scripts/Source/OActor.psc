@@ -41,6 +41,23 @@ Function SetExcitement(Actor Act, float Excitement) Global Native
 */;
 Function ModifyExcitement(Actor Act, float Excitement, bool RespectMultiplier = false) Global Native
 
+;/* Climax
+* * causes the actor to have a climax
+* *
+* * @param: Act, the actor that should have the climax
+* * @param: ClimaxAnimation, if true the actor will play a climax animation if the animation they are in has one
+*/;
+Function Climax(Actor Act, bool ClimaxAnimation = true) Global Native
+
+;/* GetTimesClimaxed
+* * returns the amount of climaxes the actor had in the current scene
+* *
+* * @param: Act, the actor to get the climax amount for
+* *
+* * @return: the amount of climaxes the actor had
+*/;
+int Function GetTimesClimaxed(Actor Act) Global Native
+
 
 ; ███████╗██╗  ██╗██████╗ ██████╗ ███████╗███████╗███████╗██╗ ██████╗ ███╗   ██╗███████╗
 ; ██╔════╝╚██╗██╔╝██╔══██╗██╔══██╗██╔════╝██╔════╝██╔════╝██║██╔═══██╗████╗  ██║██╔════╝
@@ -75,6 +92,37 @@ Function ClearExpression(Actor Act) Global Native
 * * @return: true if the actors expression is overridden
 */;
 bool Function HasExpressionOverride(Actor Act) Global Native
+
+
+; ███████╗ ██████╗ ██╗   ██╗███╗   ██╗██████╗
+; ██╔════╝██╔═══██╗██║   ██║████╗  ██║██╔══██╗
+; ███████╗██║   ██║██║   ██║██╔██╗ ██║██║  ██║
+; ╚════██║██║   ██║██║   ██║██║╚██╗██║██║  ██║
+; ███████║╚██████╔╝╚██████╔╝██║ ╚████║██████╔╝
+; ╚══════╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝╚═════╝
+
+;/* Mute
+* * mutes an actor, preventing them from moaning and talking
+* *
+* * @param: Act, the actor to mute
+*/;
+Function Mute(Actor Act) Global Native
+
+;/* Unmute
+* * unmutes an actor, enabling them to moan and talk again
+* *
+* * @param: Act, the actor to unmute
+*/;
+Function Unmute(Actor Act) Global Native
+
+;/* IsMuted
+* * checks if an actor is muted
+* *
+* * @param: Act, the actor to check
+* *
+* * @return: true if the actor is muted, otherwise false
+*/;
+bool Function IsMuted(Actor Act) Global Native
 
 
 ; ██╗   ██╗███╗   ██╗██████╗ ██████╗ ███████╗███████╗███████╗██╗███╗   ██╗ ██████╗ 

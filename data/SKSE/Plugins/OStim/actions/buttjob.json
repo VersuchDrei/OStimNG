@@ -3,13 +3,15 @@
 		"stimulation":0.1,
 		"maxStimulation":50,
 		"fullStrip":true,
+		"talk":true,
 		"requirements":[
 		],
 		"strippingSlots":[
 			32,
 			49,
 			52,
-			53
+			53,
+			54
 		],
 		"stringLists":{
 			"cum":[
@@ -20,6 +22,8 @@
 	"target":{
 		"stimulation":0.8,
 		"fullStrip":true,
+		"moan":true,
+		"talk":true,
 		"requirements":[
 			"penis"
 		],
@@ -27,7 +31,8 @@
 			32,
 			49,
 			52,
-			53
+			53,
+			54
 		]
 	},
 	"performer":{

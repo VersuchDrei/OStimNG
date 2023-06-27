@@ -2,6 +2,7 @@
 	"actor":{
 		"stimulation":0.1,
 		"maxStimulation":50,
+		"muffled":true,
 		"expressionOverride":"openmouth",
 		"requirements":[
 			"mouth"
@@ -16,6 +17,8 @@
 	"target":{
 		"stimulation":0.6,
 		"fullStrip":true,
+		"moan":true,
+		"talk":true,
 		"requirements":[
 			"nipple"
 		],
@@ -30,6 +33,17 @@
 			"stamina":0.75
 		}
 	},
+	"sounds":[
+		{
+			"type":"loop",
+			"sound":{
+				"mod":"OStim.esp",
+				"formid":"0xE15"
+			},
+			"muteWithActor": true,
+			"delay":1000
+		}	
+	],
 	"tags":[
 		"oral",
 		"sexual"

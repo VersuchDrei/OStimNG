@@ -1,5 +1,7 @@
 #pragma once
 
+#include "UI/UIState.h"
+
 namespace PapyrusUtil {
     using VM = RE::BSScript::IVirtualMachine;
 
@@ -104,7 +106,7 @@ namespace PapyrusUtil {
     }
 
     std::string GetSceneIdFromAnimId(RE::StaticFunctionTag*, std::string id) {
-        if (auto node = Graph::LookupTable::getNodeByAnimation(id)) {
+        if (auto node = Graph::GraphTable::getNodeByAnimation(id)) {
             return node->scene_id;
         }
 
@@ -112,7 +114,7 @@ namespace PapyrusUtil {
     }
 
     int GetSpeedFromAnimId(RE::StaticFunctionTag*, std::string id) {
-        if (auto node = Graph::LookupTable::getNodeByAnimation(id)) {
+        if (auto node = Graph::GraphTable::getNodeByAnimation(id)) {
             for (int i = 0; i < node->speeds.size(); i++) {
                 if (node->speeds[i].animation == id) {
                     return i;
@@ -124,11 +126,15 @@ namespace PapyrusUtil {
     }
 
     std::string GetAnimClass(RE::StaticFunctionTag*, std::string id) {
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             return node->animClass;
         }
 
         return "Ap";
+    }
+
+    void SetGlyph(RE::StaticFunctionTag*, int glyph) {
+        UI::UIState::GetSingleton()->setGlpyh(glyph);
     }
 
     bool Bind(VM* a_vm) {
@@ -151,6 +157,8 @@ namespace PapyrusUtil {
         BIND(GetSceneIdFromAnimId);
         BIND(GetSpeedFromAnimId);
         BIND(GetAnimClass);
+
+        BIND(SetGlyph);
 
         return true;
     }

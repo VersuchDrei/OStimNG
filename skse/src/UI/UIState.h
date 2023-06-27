@@ -32,11 +32,12 @@ namespace UI {
     enum MenuType { kSceneMenu, kAlignMenu, kSearchMenu };
     class UIState : public OStim::ISingleton<UIState> {
     public:
-        void HandleControl(Controls control, int64_t glyph);
+        void HandleControl(Controls control);
         void CloseActiveMenu();
         void SwitchActiveMenu(MenuType type);
         void ToggleActiveMenu(MenuType type);
         inline MenuType GetActiveMenu() { return activeMenu; }
+        inline void setGlpyh(int glyph) { this->glyph = glyph; }
         void loop();
         void SetThread(OStim::Thread* thread);
         void NodeChanged(OStim::Thread* thread, Graph::Node* node);
@@ -46,6 +47,8 @@ namespace UI {
         OStim::Thread* currentThread;
         Graph::Node* currentNode;
     private:
+        // TODO remove this again when we no longer need OSA
+        int glyph = 0;
         MenuType activeMenu = MenuType::kSceneMenu;
         const short UI_UPDATE_LOOP_TIME = 10000;
         short refreshUIPositionCooldown = UI_UPDATE_LOOP_TIME;

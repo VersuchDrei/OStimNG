@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Furniture/FurnitureTable.h"
-#include "Graph/LookupTable.h"
+#include "Graph/GraphTable.h"
 #include "Trait/Condition.h"
 #include "Util/StringUtil.h"
 #include "Util/VectorUtil.h"
@@ -10,7 +10,7 @@ namespace PapyrusLibrary {
     using VM = RE::BSScript::IVirtualMachine;
 
     std::string randomScene(std::vector<RE::Actor*> actors, std::string furnitureType, std::function<bool(Graph::Node*)> condition) {
-        if (Graph::Node* node = Graph::LookupTable::getRandomNode(Furniture::FurnitureTable::getFurnitureType(furnitureType), Trait::ActorConditions::create(actors), condition)) {
+        if (Graph::Node* node = Graph::GraphTable::getRandomNode(Furniture::FurnitureTable::getFurnitureType(furnitureType), Trait::ActorConditions::create(actors), condition)) {
             return node->scene_id;
         }
         
@@ -43,15 +43,15 @@ namespace PapyrusLibrary {
     // helper functions specifically for superload
     // *********************************************************
     bool hasAction(Graph::Node* node, std::string type, std::vector<int> actors, std::vector<int> targets, std::vector<int> performers, std::vector<int> matesAny, std::vector<int> matesAll, std::vector<int> participantsAny, std::vector<int> participantsAll) {
-        for (Graph::Action* action : node->actions) {
-            if ((action->type == type || action->attributes->hasTag(type)) &&
-                (actors.empty() || VectorUtil::contains(actors, action->actor)) &&
-                (targets.empty() || VectorUtil::contains(targets, action->target)) &&
-                (performers.empty() || VectorUtil::contains(performers, action->performer)) &&
-                (matesAny.empty() || VectorUtil::containsAny(matesAny, {action->actor, action->target})) &&
-                (matesAll.empty() || VectorUtil::containsAll(matesAll, {action->actor, action->target})) &&
-                (participantsAny.empty() || VectorUtil::containsAny(participantsAny, {action->actor, action->target, action->performer})) &&
-                (participantsAll.empty() || VectorUtil::containsAll(participantsAll, {action->actor, action->target, action->performer}))) {
+        for (Graph::Action action : node->actions) {
+            if ((action.type == type || action.attributes->hasTag(type)) &&
+                (actors.empty() || VectorUtil::contains(actors, action.actor)) &&
+                (targets.empty() || VectorUtil::contains(targets, action.target)) &&
+                (performers.empty() || VectorUtil::contains(performers, action.performer)) &&
+                (matesAny.empty() || VectorUtil::containsAny(matesAny, {action.actor, action.target})) &&
+                (matesAll.empty() || VectorUtil::containsAll(matesAll, {action.actor, action.target})) &&
+                (participantsAny.empty() || VectorUtil::containsAny(participantsAny, {action.actor, action.target, action.performer})) &&
+                (participantsAll.empty() || VectorUtil::containsAll(participantsAll, {action.actor, action.target, action.performer}))) {
                 return true;
             }
         }
@@ -79,9 +79,9 @@ namespace PapyrusLibrary {
         return true;
     }
 
-    bool isActionListed(Graph::Action* action, std::vector<std::string> types, std::vector<std::vector<int>> actors, std::vector<std::vector<int>> targets, std::vector<std::vector<int>> performers, std::vector<std::vector<int>> matesAny, std::vector<std::vector<int>> matesAll, std::vector<std::vector<int>> participantsAny, std::vector<std::vector<int>> participantsAll) {
+    bool isActionListed(Graph::Action action, std::vector<std::string> types, std::vector<std::vector<int>> actors, std::vector<std::vector<int>> targets, std::vector<std::vector<int>> performers, std::vector<std::vector<int>> matesAny, std::vector<std::vector<int>> matesAll, std::vector<std::vector<int>> participantsAny, std::vector<std::vector<int>> participantsAll) {
         for (int i = 0; i < types.size(); i++) {
-            if (action->type == types[i] || action->attributes->hasTag(types[i])) {
+            if (action.type == types[i] || action.attributes->hasTag(types[i])) {
                 std::vector<int> actorsList = VectorUtil::getElementOrEmpty(actors, i);
                 std::vector<int> targetsList = VectorUtil::getElementOrEmpty(targets, i);
                 std::vector<int> performersList = VectorUtil::getElementOrEmpty(performers, i);
@@ -90,13 +90,13 @@ namespace PapyrusLibrary {
                 std::vector<int> participantsAnyList = VectorUtil::getElementOrEmpty(participantsAny, i);
                 std::vector<int> participantsAllList = VectorUtil::getElementOrEmpty(participantsAll, i);
 
-                if ((actorsList.empty() || VectorUtil::contains(actorsList, action->actor)) &&
-                    (targetsList.empty() || VectorUtil::contains(targetsList, action->target)) &&
-                    (performersList.empty() || VectorUtil::contains(performersList, action->performer)) &&
-                    (matesAnyList.empty() || VectorUtil::containsAny(matesAnyList, {action->actor, action->target})) &&
-                    (matesAllList.empty() || VectorUtil::containsAll(matesAllList, {action->actor, action->target})) &&
-                    (participantsAnyList.empty() || VectorUtil::containsAny(participantsAnyList, {action->actor, action->target, action->performer})) &&
-                    (participantsAllList.empty() || VectorUtil::containsAll(participantsAllList, {action->actor, action->target, action->performer}))) {
+                if ((actorsList.empty() || VectorUtil::contains(actorsList, action.actor)) &&
+                    (targetsList.empty() || VectorUtil::contains(targetsList, action.target)) &&
+                    (performersList.empty() || VectorUtil::contains(performersList, action.performer)) &&
+                    (matesAnyList.empty() || VectorUtil::containsAny(matesAnyList, {action.actor, action.target})) &&
+                    (matesAllList.empty() || VectorUtil::containsAll(matesAllList, {action.actor, action.target})) &&
+                    (participantsAnyList.empty() || VectorUtil::containsAny(participantsAnyList, {action.actor, action.target, action.performer})) &&
+                    (participantsAllList.empty() || VectorUtil::containsAll(participantsAllList, {action.actor, action.target, action.performer}))) {
                     return true;
                 }
                 
@@ -106,7 +106,7 @@ namespace PapyrusLibrary {
     }
 
     bool hasOnlyListedActions(Graph::Node* node, std::vector<std::string> types, std::vector<std::vector<int>> actors, std::vector<std::vector<int>> targets, std::vector<std::vector<int>> performers, std::vector<std::vector<int>> matesAny, std::vector<std::vector<int>> matesAll, std::vector<std::vector<int>> participantsAny, std::vector<std::vector<int>> participantsAll) {
-        for (Graph::Action* action : node->actions) {
+        for (Graph::Action action : node->actions) {
             if (!isActionListed(action, types, actors, targets, performers, matesAny, matesAll, participantsAny, participantsAll)) {
                 return false;
             }

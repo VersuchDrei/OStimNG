@@ -2,6 +2,7 @@
 	"actor":{
 		"stimulation":0.1,
 		"maxStimulation":75,
+		"muffled":true,
 		"expressionOverride":"openmouth",
 		"requirements":[
 			"mouth"
@@ -21,6 +22,8 @@
 	"target":{
 		"stimulation":1.4,
 		"fullStrip":true,
+		"moan":true,
+		"talk":true,
 		"requirements":[
 			"penis"
 		],
@@ -28,7 +31,8 @@
 			32,
 			49,
 			52,
-			53
+			53,
+			54
 		]
 	},
 	"performer":{
@@ -36,6 +40,17 @@
 			"stamina":0.75
 		}
 	},
+	"sounds":[
+		{
+			"type":"loop",
+			"sound":{
+				"mod":"OStim.esp",
+				"formid":"0xE15"
+			},
+			"muteWithActor": true,
+			"delay":1000
+		}	
+	],
 	"tags":[
 		"oral",
 		"sexual"

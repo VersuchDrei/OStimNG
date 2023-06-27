@@ -51,23 +51,16 @@ string[] Property POSITION_TAGS Auto
 Faction Property OStimNoFacialExpressionsFaction Auto
 Faction Property OStimExcitementFaction Auto
 
-; for compatibility with naughty voices
-Faction Property NVCustomOrgasmFaction Auto
+GlobalVariable Property OStimImprovedCamSupport Auto
+bool Property EnableImprovedCamSupport
+	bool Function Get()
+		Return OStimImprovedCamSupport.value != 0
+	EndFunction
+EndProperty
 
 
 ; -------------------------------------------------------------------------------------------------
 ; SETTINGS  ---------------------------------------------------------------------------------------
-
-Bool Property EnableActorSpeedControl Auto
-
-Bool Property ResetPosAfterSceneEnd Auto
-
-Int Property SubLightPos Auto
-Int Property DomLightPos Auto
-Int Property SubLightBrightness Auto
-Int Property DomLightBrightness Auto
-
-Bool Property LowLightLevelLightsOnly Auto
 
 bool disableosacontrolsbool
 
@@ -85,38 +78,15 @@ EndProperty
 Bool  SpeedUpNonSexAnimation
 Float SpeedUpSpeed
 
-Int Property CustomTimescale Auto
-
 string[] scenemetadata
 string[] oldscenemetadata
-
-Bool Property UseAIControl Auto
 Bool Property PauseAI Auto
 
-Bool Property UseAINPConNPC Auto
-Bool Property UseAIPlayerAggressor Auto
-Bool Property UseAIPlayerAggressed Auto
-Bool Property UseAINonAggressive Auto
-Bool Property UseAIMasturbation Auto
-
-Bool Property MuteOSA Auto
-
-Bool Property UseRumble Auto
-Bool Property UseScreenShake Auto
-
-Bool Property UseFades Auto
-Bool Property UseAutoFades Auto
 bool Property SkipEndingFadein Auto
-
-Bool Property EndAfterActorHit Auto
 
 Bool Property GetInBedAfterBedScene Auto
 
-Bool Property ForceFirstPersonAfter Auto
-
 Bool Property BlockVRInstalls Auto
-
-Int Property AiSwitchChance Auto
 
 Bool Property DisableStimulationCalculation Auto
 
@@ -128,10 +98,189 @@ Bool Property Installed auto
 
 int Property InstalledVersion Auto
 
-bool property ShowTutorials auto
+; -------------------------------------------------------------------------------------------------
+; GENERAL SETTINGS  -------------------------------------------------------------------------------
+
+GlobalVariable Property OStimResetPosition Auto
+Bool Property ResetPosAfterSceneEnd
+	bool Function Get()
+		Return OStimResetPosition.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimResetPosition.value = 1
+		Else
+			OStimResetPosition.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimCustomTimeScale Auto
+Int Property CustomTimescale
+	int Function Get()
+		Return OStimCustomTimeScale.value As int
+	EndFunction
+	Function Set(int Value)
+		OStimCustomTimeScale.value = Value
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimUseFades Auto
+bool Property UseFades
+	bool Function Get()
+		Return OStimUseFades.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimUseFades.value = 1
+		Else
+			OStimUseFades.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimUseIntroScenes Auto
+bool Property UseIntroScenes
+	bool Function Get()
+		Return OStimUseIntroScenes.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimUseIntroScenes.value = 1
+		Else
+			OStimUseIntroScenes.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+
+GlobalVariable Property OStimMaleLightMode Auto
+int Property DomLightPos
+	int Function Get()
+		Return OStimMaleLightMode.value As int
+	EndFunction
+	Function Set(int Value)
+		OStimMaleLightMode.value = Value
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimFemaleLightMode Auto
+int Property SubLightPos
+	int Function Get()
+		Return OStimFemaleLightMode.value As int
+	EndFunction
+	Function Set(int Value)
+		OStimFemaleLightMode.value = Value
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimOnlyLightInDark Auto
+bool Property LowLightLevelLightsOnly
+	bool Function Get()
+		Return OStimOnlyLightInDark.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimOnlyLightInDark.value = 1
+		Else
+			OStimOnlyLightInDark.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimMaleLightBrightness Auto
+int Property DomLightBrightness
+	int Function Get()
+		Return OStimMaleLightBrightness.value As int
+	EndFunction
+	Function Set(int Value)
+		OStimMaleLightBrightness.value = Value
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimFemaleLightBrightness Auto
+int Property SubLightBrightness
+	int Function Get()
+		Return OStimFemaleLightBrightness.value As int
+	EndFunction
+	Function Set(int Value)
+		OStimFemaleLightBrightness.value = Value
+	EndFunction
+EndProperty
+
 
 ; -------------------------------------------------------------------------------------------------
 ; CONTROLS SETTINGS  ------------------------------------------------------------------------------
+
+GlobalVariable Property OStimKeyUp Auto
+int Property KeyUp
+	int Function Get()
+		Return OStimKeyUp.value As int
+	EndFunction
+	Function Set(int Value)
+		OstimKeyUp.value = Value
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimKeyDown Auto
+int Property KeyDown
+	int Function Get()
+		Return OStimKeyDown.value As int
+	EndFunction
+	Function Set(int Value)
+		OStimKeyDown.value = Value
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimKeyLeft Auto
+int Property KeyLeft
+	int Function Get()
+		Return OStimKeyLeft.value As int
+	EndFunction
+	Function Set(int Value)
+		OStimKeyLeft.value = Value
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimKeyRight Auto
+int Property KeyRight
+	int Function Get()
+		Return OStimKeyRight.value As int
+	EndFunction
+	Function Set(int Value)
+		OStimKeyRight.value = Value
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimKeyYes Auto
+int Property KeyYes
+	int Function Get()
+		Return OStimKeyYes.value As int
+	EndFunction
+	Function Set(int Value)
+		OStimKeyYes.value = Value
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimKeyEnd Auto
+int Property KeyEnd
+	int Function Get()
+		Return OStimKeyEnd.value As int
+	EndFunction
+	Function Set(int Value)
+		OStimKeyEnd.value = Value
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimKeyToggle Auto
+int Property KeyToggle
+	int Function Get()
+		Return OStimKeyToggle.value As int
+	EndFunction
+	Function Set(int Value)
+		OStimKeyToggle.value = Value
+	EndFunction
+EndProperty
 
 GlobalVariable Property OStimKeySceneStart Auto
 int Property KeyMap
@@ -153,12 +302,7 @@ Int Property SpeedUpKey
 		Return OStimKeySpeedUp.value As int
 	EndFunction
 	Function Set(int Value)
-		UnregisterForKey(OStimKeySpeedUp.value As int)
 		OStimKeySpeedUp.value = Value
-		If Value != 1
-			RegisterForKey(Value)
-		EndIf
-		LoadOSexControlKeys()
 	EndFunction
 EndProperty
 
@@ -168,12 +312,7 @@ Int Property SpeedDownKey
 		Return OStimKeySpeedDown.value As int
 	EndFunction
 	Function Set(int Value)
-		UnregisterForKey(OStimKeySpeedDown.value As int)
 		OStimKeySpeedDown.value = Value
-		If Value != 1
-			RegisterForKey(Value)
-		EndIf
-		LoadOSexControlKeys()
 	EndFunction
 EndProperty
 
@@ -183,12 +322,7 @@ Int Property PullOutKey
 		Return OStimKeyPullOut.value As int
 	EndFunction
 	Function Set(int Value)
-		UnregisterForKey(OStimKeyPullOut.value As int)
 		OStimKeyPullOut.value = Value
-		If Value != 1
-			RegisterForKey(Value)
-		EndIf
-		LoadOSexControlKeys()
 	EndFunction
 EndProperty
 
@@ -198,12 +332,7 @@ Int Property ControlToggleKey
 		Return OStimKeyAutoMode.value As int
 	EndFunction
 	Function Set(int Value)
-		UnregisterForKey(OStimKeyAutoMode.value As int)
 		OStimKeyAutoMode.value = Value
-		If Value != 1
-			RegisterForKey(Value)
-		EndIf
-		LoadOSexControlKeys()
 	EndFunction
 EndProperty
 
@@ -226,6 +355,321 @@ int Property AlignmentKey
 		OStimKeyAlignment.value = Value
 	EndFunction
 EndProperty
+
+
+GlobalVariable Property OStimUseRumble Auto
+Bool Property UseRumble
+	bool Function Get()
+		Return OStimUseRumble.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimUseRumble.value = 1
+		Else
+			OStimUseRumble.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+
+; -------------------------------------------------------------------------------------------------
+; AUTO CONTROL SETTINGS  --------------------------------------------------------------------------
+
+GlobalVariable Property OStimAutoSpeedControl Auto
+Bool Property EnableActorSpeedControl
+	bool Function Get()
+		Return OStimAutoSpeedControl.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimAutoSpeedControl.value = 1
+		Else
+			OStimAutoSpeedControl.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimAutoSpeedControlIntervalMin Auto
+int Property AutoSpeedControlIntervalMin
+	int Function Get()
+		Return OStimAutoSpeedControlIntervalMin.value As int
+	EndFunction
+	Function Set(int Value)
+		If AutoSpeedControlIntervalMax < Value
+			OStimAutoSpeedControlIntervalMin.value = OStimAutoSpeedControlIntervalMax.value
+			OStimAutoSpeedControlIntervalMax.value = Value
+		Else
+			OStimAutoSpeedControlIntervalMin.value = Value
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimAutoSpeedControlIntervalMax Auto
+int Property AutoSpeedControlIntervalMax
+	int Function Get()
+		Return OStimAutoSpeedControlIntervalMax.value As int
+	EndFunction
+	Function Set(int Value)
+		If AutoSpeedControlIntervalMin > Value
+			OStimAutoSpeedControlIntervalMax.value = OStimAutoSpeedControlIntervalMin.value
+			OStimAutoSpeedControlIntervalMin.value = Value
+		Else
+			OStimAutoSpeedControlIntervalMax.value = Value
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimAutoSpeedControlExcitementMin Auto
+int Property AutoSpeedControlExcitementMin
+	int Function Get()
+		Return OStimAutoSpeedControlExcitementMin.value As int
+	EndFunction
+	Function Set(int Value)
+		If AutoSpeedControlExcitementMax < Value
+			OStimAutoSpeedControlExcitementMin.value = OStimAutoSpeedControlExcitementMax.value
+			OStimAutoSpeedControlExcitementMax.value = Value
+		Else
+			OStimAutoSpeedControlExcitementMin.value = Value
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimAutoSpeedControlExcitementMax Auto
+int Property AutoSpeedControlExcitementMax
+	int Function Get()
+		Return OStimAutoSpeedControlExcitementMax.value As int
+	EndFunction
+	Function Set(int Value)
+		If AutoSpeedControlExcitementMin > Value
+			OStimAutoSpeedControlExcitementMax.value = OStimAutoSpeedControlExcitementMin.value
+			OStimAutoSpeedControlExcitementMin.value = Value
+		Else
+			OStimAutoSpeedControlExcitementMax.value = Value
+		EndIf
+	EndFunction
+EndProperty
+
+
+GlobalVariable Property OStimNPCSceneDuration Auto
+int Property NPCSceneDuration
+	int Function Get()
+		Return OStimNPCSceneDuration.value As int
+	EndFunction
+	Function Set(int Value)
+		OStimNPCSceneDuration.value = Value
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimEndNPCSceneOnOrgasm Auto
+Bool Property EndNPCSceneOnOrgasm
+	bool Function Get()
+		Return OStimEndNPCSceneOnOrgasm.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimEndNPCSceneOnOrgasm.value = 1
+		Else
+			OStimEndNPCSceneOnOrgasm.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+
+GlobalVariable Property OStimUseAutoModeAlways Auto
+Bool Property UseAIControl
+	bool Function Get()
+		Return OStimUseAutoModeAlways.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimUseAutoModeAlways.value = 1
+		Else
+			OStimUseAutoModeAlways.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimUseAutoModeSolo Auto
+Bool Property UseAIMasturbation
+	bool Function Get()
+		Return OStimUseAutoModeSolo.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimUseAutoModeSolo.value = 1
+		Else
+			OStimUseAutoModeSolo.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimUseAutoModeDominant Auto
+Bool Property UseAIPlayerAggressor
+	bool Function Get()
+		Return OStimUseAutoModeDominant.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimUseAutoModeDominant.value = 1
+		Else
+			OStimUseAutoModeDominant.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimUseAutoModeSubmissive Auto
+Bool Property UseAIPlayerAggressed
+	bool Function Get()
+		Return OStimUseAutoModeSubmissive.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimUseAutoModeSubmissive.value = 1
+		Else
+			OStimUseAutoModeSubmissive.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimUseAutoModeVanilla Auto
+Bool Property UseAINonAggressive
+	bool Function Get()
+		Return OStimUseAutoModeVanilla.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimUseAutoModeVanilla.value = 1
+		Else
+			OStimUseAutoModeVanilla.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+
+GlobalVariable Property OStimUseAutoModeFades Auto
+Bool Property UseAutoFades
+	bool Function Get()
+		Return OStimUseAutoModeFades.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimUseAutoModeFades.value = 1
+		Else
+			OStimUseAutoModeFades.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimAutoModeAnimDurationMin Auto
+int Property AutoModeAnimDurationMin
+	int Function Get()
+		Return OStimAutoModeAnimDurationMin.value As int
+	EndFunction
+	Function Set(int Value)
+		If AutoModeAnimDurationMax < Value
+			OStimAutoModeAnimDurationMin.value = OStimAutoModeAnimDurationMax.value
+			OStimAutoModeAnimDurationMax.value = Value
+		Else
+			OStimAutoModeAnimDurationMin.value = Value
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimAutoModeAnimDurationMax Auto
+int Property AutoModeAnimDurationMax
+	int Function Get()
+		Return OStimAutoModeAnimDurationMax.value As int
+	EndFunction
+	Function Set(int Value)
+		If AutoModeAnimDurationMin > Value
+			OStimAutoModeAnimDurationMax.value = OStimAutoModeAnimDurationMin.value
+			OStimAutoModeAnimDurationMin.value = Value
+		Else
+			OStimAutoModeAnimDurationMax.value = Value
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimAutoModeForeplayChance Auto
+int Property AutoModeForeplayChance
+	int Function Get()
+		Return OStimAutoModeForeplayChance.value As int
+	EndFunction
+	Function Set(int Value)
+		OStimAutoModeForeplayChance.value = Value
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimAutoModeForeplayThresholdMin Auto
+int Property AutoModeForeplayThresholdMin
+	int Function Get()
+		Return OStimAutoModeForeplayThresholdMin.value As int
+	EndFunction
+	Function Set(int Value)
+		If AutoModeForeplayThresholdMax < Value
+			OStimAutoModeForeplayThresholdMin.value = OStimAutoModeForeplayThresholdMax.value
+			OStimAutoModeForeplayThresholdMax.value = Value
+		Else
+			OStimAutoModeForeplayThresholdMin.value = Value
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimAutoModeForeplayThresholdMax Auto
+int Property AutoModeForeplayThresholdMax
+	int Function Get()
+		Return OStimAutoModeForeplayThresholdMax.value As int
+	EndFunction
+	Function Set(int Value)
+		If AutoModeForeplayThresholdMin > Value
+			OStimAutoModeForeplayThresholdMax.value = OStimAutoModeForeplayThresholdMin.value
+			OStimAutoModeForeplayThresholdMin.value = Value
+		Else
+			OStimAutoModeForeplayThresholdMax.value = Value
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimAutoModePulloutChance Auto
+int Property AutoModePulloutChance
+	int Function Get()
+		Return OStimAutoModePulloutChance.value As int
+	EndFunction
+	Function Set(int Value)
+		OStimAutoModePulloutChance.value = Value
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimAutoModePulloutThresholdMin Auto
+int Property AutoModePulloutThresholdMin
+	int Function Get()
+		Return OStimAutoModePulloutThresholdMin.value As int
+	EndFunction
+	Function Set(int Value)
+		If AutoModePulloutThresholdMax < Value
+			OStimAutoModePulloutThresholdMin.value = OStimAutoModePulloutThresholdMax.value
+			OStimAutoModePulloutThresholdMax.value = Value
+		Else
+			OStimAutoModePulloutThresholdMin.value = Value
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimAutoModePulloutThresholdMax Auto
+int Property AutoModePulloutThresholdMax
+	int Function Get()
+		Return OStimAutoModePulloutThresholdMax.value As int
+	EndFunction
+	Function Set(int Value)
+		If AutoModePulloutThresholdMin > Value
+			OStimAutoModePulloutThresholdMax.value = OStimAutoModePulloutThresholdMin.value
+			OStimAutoModePulloutThresholdMin.value = Value
+		Else
+			OStimAutoModePulloutThresholdMax.value = Value
+		EndIf
+	EndFunction
+EndProperty
+
 
 ; -------------------------------------------------------------------------------------------------
 ; CAMERA SETTINGS  --------------------------------------------------------------------------------
@@ -264,16 +708,30 @@ float Property FreecamSpeed
 	EndFunction
 EndProperty
 
-GlobalVariable Property OStimImprovedCamSupport Auto
-bool Property EnableImprovedCamSupport
+GlobalVariable Property OStimForceFirstPersonOnEnd Auto
+Bool Property ForceFirstPersonAfter
 	bool Function Get()
-		Return OStimImprovedCamSupport.value != 0
+		Return OStimForceFirstPersonOnEnd.value != 0
 	EndFunction
 	Function Set(bool Value)
 		If Value
-			OStimImprovedCamSupport.value = 1
+			OStimForceFirstPersonOnEnd.value = 1
 		Else
-			OStimImprovedCamSupport.value = 0
+			OStimForceFirstPersonOnEnd.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimUseScreenShake Auto
+Bool Property UseScreenShake
+	bool Function Get()
+		Return OStimUseScreenShake.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimUseScreenShake.value = 1
+		Else
+			OStimUseScreenShake.value = 0
 		EndIf
 	EndFunction
 EndProperty
@@ -382,6 +840,20 @@ EndProperty
 
 ; -------------------------------------------------------------------------------------------------
 ; ORGASM SETTINGS  --------------------------------------------------------------------------------
+
+GlobalVariable Property OStimEndOnPlayerOrgasm Auto
+Bool Property EndOnPlayerOrgasm
+	bool Function Get()
+		Return OStimEndOnPlayerOrgasm.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimEndOnPlayerOrgasm.value = 1
+		Else
+			OStimEndOnPlayerOrgasm.value = 0
+		EndIf
+	EndFunction
+EndProperty
 
 GlobalVariable Property OStimEndOnMaleOrgasm Auto
 Bool Property EndOnMaleOrgasm
@@ -573,9 +1045,6 @@ Bool Property UsePapyrusUndressing
 		Return OStimUsePapyrusUndressing.value != 0
 	EndFunction
 EndProperty
-
-; todo turn this into a slotmask
-Int[] Property StrippingSlots Auto
 
 ; -------------------------------------------------------------------------------------------------
 ; GENDER ROLE SETTINGS  ---------------------------------------------------------------------------
@@ -771,6 +1240,34 @@ bool Property FutaUseMaleExcitement
 	EndFunction
 EndProperty
 
+GlobalVariable Property OStimFutaUseMaleClimax Auto
+bool Property FutaUseMaleClimax
+	bool Function Get()
+		Return OStimFutaUseMaleClimax.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimFutaUseMaleClimax.value = 1
+		Else
+			OStimFutaUseMaleClimax.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimFutaUseMaleLight Auto
+bool Property FutaUseMaleLight
+	bool Function Get()
+		Return OStimFutaUseMaleLight.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimFutaUseMaleLight.value = 1
+		Else
+			OStimFutaUseMaleLight.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
 ; -------------------------------------------------------------------------------------------------
 ; ALIGNMENT SETTINGS  -----------------------------------------------------------------------------
 
@@ -798,20 +1295,6 @@ bool Property DisableSchlongBending
 			OStimDisableSchlongBending.value = 1
 		Else
 			OStimDisableSchlongBending.value = 0
-		EndIf
-	EndFunction
-EndProperty
-
-GlobalVariable Property OStimUseIntroScenes Auto
-bool Property UseIntroScenes
-	bool Function Get()
-		Return OStimUseIntroScenes.value != 0
-	EndFunction
-	Function Set(bool Value)
-		If Value
-			OStimUseIntroScenes.value = 1
-		Else
-			OStimUseIntroScenes.value = 0
 		EndIf
 	EndFunction
 EndProperty
@@ -981,6 +1464,59 @@ int Property ExpressionDurationMax
 EndProperty
 
 ; -------------------------------------------------------------------------------------------------
+; SOUND SETTINGS  ---------------------------------------------------------------------------------
+
+GlobalVariable Property OStimMoanIntervalMin Auto
+int Property MoanIntervalMin
+	int Function Get()
+		Return OStimMoanIntervalMin.value As int
+	EndFunction
+	Function Set(int Value)
+		If ExpressionDurationMax < Value
+			OStimMoanIntervalMin.value = OStimMoanIntervalMax.value
+			OStimMoanIntervalMax.value = Value
+		Else
+			OStimMoanIntervalMin.value = Value
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimMoanIntervalMax Auto
+int Property MoanIntervalMax
+	int Function Get()
+		Return OStimMoanIntervalMax.value As int
+	EndFunction
+	Function Set(int Value)
+		If ExpressionDurationMin > Value
+			OStimMoanIntervalMax.value = OStimMoanIntervalMin.value
+			OStimMoanIntervalMin.value = Value
+		Else
+			OStimMoanIntervalMax.value = Value
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimMoanVolume Auto
+float Property MoanVolume
+	float Function Get()
+		Return OStimMoanVolume.value
+	EndFunction
+	Function Set(float Value)
+		OStimMoanVolume.value = Value
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimSoundVolume Auto
+float Property SoundVolume
+	float Function Get()
+		Return OStimSoundVolume.value
+	EndFunction
+	Function Set(float Value)
+		OStimSoundVolume.value = Value
+	EndFunction
+EndProperty
+
+; -------------------------------------------------------------------------------------------------
 ; SCRIPTWIDE VARIABLES ----------------------------------------------------------------------------
 
 
@@ -1004,14 +1540,11 @@ String CurrAnimClass
 String CurrentSceneID
 
 Bool AnimSpeedAtMax
-Int SpankCount
 
 _oOmni OSAOmni
 _oControl OControl
 
 Actor PlayerRef
-
-GlobalVariable Timescale
 
 Bool Property UndressDom Auto
 Bool Property UndressSub Auto
@@ -1020,10 +1553,6 @@ String StartingAnimation
 
 
 Bool StallOrgasm
-
-Int DomTimesOrgasm
-Int SubTimesOrgasm
-Int ThirdTimesOrgasm
 
 int FurnitureType
 ObjectReference CurrentFurniture
@@ -1034,19 +1563,13 @@ Float StartTime
 
 Float MostRecentOSexInteractionTime
 
-Int[] OSexControlKeys
-
-;--Thank you ODatabase
-Int CurrentOID ; the OID is the JMap ID of the current animation. You can feed this in to ODatabase
+;--
 string LastHubSceneID
 ;--
-
-Bool property AIRunning auto
 
 Bool AggressiveThemedSexScene
 Actor AggressiveActor
 
-OAIScript AI
 OBarsScript OBars
 OStimUpdaterScript OUpdater
 
@@ -1061,21 +1584,12 @@ Faction OsaFactionStage
 
 ImageSpaceModifier NutEffect
 
-
-Sound OSADing
-Sound OSATickSmall
-Sound OSATickBig
-
 ;_oUI OSAUI
 ;---------
 
 
 Actor ReroutedDomActor
 Actor ReroutedSubActor
-
-;--------- database
-ODatabaseScript ODatabase
-;---------
 
 bool FirstAnimate
 
@@ -1085,8 +1599,6 @@ String o
 Int Password
 
 quest property subthreadquest auto 
-
-_oUI_Lockwidget LockWidget
 
 
 ; -------------------------------------------------------------------------------------------------
@@ -1313,13 +1825,6 @@ Bool Function StartScene(Actor Dom, Actor Sub, Bool zUndressDom = False, Bool zU
 		Return false
 	EndIf
 
-	int i = Actors.Length
-	While i
-		i -= 1
-
-		Actors[i].AddToFaction(OStimExcitementFaction)
-	EndWhile
-
 	If (Aggressive)
 		If (AggressingActor)
 			If ((AggressingActor != SubActor) && (AggressingActor != DomActor))
@@ -1357,6 +1862,7 @@ EndFunction
 
 Event OnUpdate() ;OStim main logic loop
 	Console("Starting scene asynchronously")
+	OControl.SetGlyph()
 
 	OSANative.EndPlayerDialogue()
 
@@ -1456,14 +1962,9 @@ Event OnUpdate() ;OStim main logic loop
 	ThirdStimMult = 1.0
 	EndedProper = False
 	StallOrgasm = False
-	NavMenuHidden = false
 	BlockDomFaceCommands = False
 	BlocksubFaceCommands = False
 	BlockthirdFaceCommands = False
-	SpankCount = 0
-	SubTimesOrgasm = 0
-	DomTimesOrgasm = 0
-	ThirdTimesOrgasm = 0
 	MostRecentOrgasmedActor = None
 	FirstAnimate = true
 	MostRecentOSexInteractionTime = Utility.GetCurrentRealTime()
@@ -1484,23 +1985,7 @@ Event OnUpdate() ;OStim main logic loop
 		EndIf
 	EndIf
 
-	float[] domCoords
-	float[] subCoords
-
-	If ResetPosAfterSceneEnd
-		domcoords = OSANative.GetCoords(DomActor)
-		If SubActor
-			subcoords = OSANative.GetCoords(SubActor)
-		EndIf
-	EndIf
-
-	If FurnitureType == FURNITURE_TYPE_NONE
-		If (SubActor && SubActor != PlayerRef)
-			SubActor.MoveTo(DomActor)
-		ElseIf (SubActor == PlayerRef)
-			DomActor.MoveTo(SubActor)
-		EndIf
-	Else
+	If FurnitureType != FURNITURE_TYPE_NONE
 		CurrentFurniture.BlockActivation(true)
 	EndIf
 
@@ -1524,14 +2009,6 @@ Event OnUpdate() ;OStim main logic loop
 	CurrentSceneID = ""
 	LastHubSceneID = ""
 
-	Int OldTimescale = 0
-
-	If (CustomTimescale > 0)
-		OldTimescale = GetTimeScale()
-		SetTimeScale(CustomTimescale)
-		Console("Using custom Timescale: " + CustomTimescale)
-	EndIf
-
 	If (LowLightLevelLightsOnly && DomActor.GetLightLevel() < 20) || (!LowLightLevelLightsOnly)
 		If (DomLightPos > 0)
 			LightActor(DomActor, DomLightPos, DomLightBrightness)
@@ -1541,7 +2018,7 @@ Event OnUpdate() ;OStim main logic loop
 		EndIf
 	EndIf
 
-	OSANative.StartScene(Password, CurrentFurniture, Actors)
+	OSANative.StartScene(0, CurrentFurniture, Actors)
 	string EventName = "0SAO" + Password + "_AnimateStage"
 	RegisterForModEvent(eventName, "OnAnimate")
 	RegisterForModEvent("0SAO" + Password + "_ActraSync", "SyncActors")
@@ -1558,33 +2035,6 @@ Event OnUpdate() ;OStim main logic loop
 
 	Float LoopTimeTotal = 0
 	Float LoopStartTime
-
-	AIRunning = UseAIControl
-
-	If (AIRunning)
-		AI.StartAI()
-	EndIf
-
-	If (!AIRunning)
-		If !SubActor && UseAIMasturbation
-			Console("Masturbation scene detected. Starting AI")
-			AI.StartAI()
-			AIRunning = True
-		ElseIf (SubActor && (AggressiveActor == PlayerRef) && UseAIPlayerAggressor)
-			Console("Player aggressor. Starting AI")
-			AI.StartAI()
-			AIRunning = True
-		ElseIf (SubActor && (AggressiveActor == getSexPartner(PlayerRef)) && UseAIPlayerAggressed)
-			Console("Player aggressed. Starting AI")
-			AI.StartAI()
-			AIRunning = True
-			DisableOSAControls = true
-		ElseIf (SubActor && UseAINonAggressive)
-			Console("Non-aggressive scene. Starting AI")
-			AI.StartAI()
-			AIRunning = True
-		EndIf
-	EndIf
 
 	SendModEvent("ostim_start")
 	
@@ -1604,10 +2054,6 @@ Event OnUpdate() ;OStim main logic loop
 		Utility.Wait(1.0 - LoopTimeTotal)
 		LoopStartTime = Utility.GetCurrentRealTime()
 
-		If (EnableActorSpeedControl && !AnimationIsAtMaxSpeed())
-			AutoIncreaseSpeed()
-		EndIf
-
 		i = 0
 		While i < Actors.Length
 			If GetActorExcitement(Actors[i]) >= 100.0
@@ -1621,14 +2067,6 @@ Event OnUpdate() ;OStim main logic loop
 
 	Console("Ending scene")
 
-
-	i = Actors.Length
-	While i
-		i -= 1
-
-		Actors[i].RemoveFromFaction(OStimExcitementFaction)
-	EndWhile
-
 	SendModEvent("ostim_end", numArg = -1.0)
 
 	If !ForceCloseOStimThread && !DisableScaling
@@ -1639,30 +2077,8 @@ Event OnUpdate() ;OStim main logic loop
 		Game.EnablePlayerControls(abCamSwitch = True)
 	EndIf
 
-	ODatabase.Unload()
-
-	If ResetPosAfterSceneEnd && !ForceCloseOStimThread
-		DomActor.StopTranslation()
-		DomActor.SetPosition(domcoords[0], domcoords[1], domcoords[2])
-		If SubActor
-			SubActor.StopTranslation()
-			SubActor.SetPosition(subcoords[0], subcoords[1], subcoords[2]) ;return
-		EndIf
-		If (UseFades && EndedProper)
-			Game.FadeOutGame(False, True, 25.0, 25.0) ; keep the screen black
-		EndIf
-	EndIf
-
 	If CurrentFurniture && ResetClutter
 		OFurniture.ResetClutter(CurrentFurniture, ResetClutterRadius * 100)
-	EndIf
-
-	If (ForceFirstPersonAfter)
-		While IsInFreeCam()
-			Utility.Wait(0.1)
-		EndWhile
-
-		Game.ForceFirstPerson()
 	EndIf
 
 	If (UseFades && EndedProper && !SkipEndingFadein)
@@ -1683,11 +2099,6 @@ Event OnUpdate() ;OStim main logic loop
 		EndIf
 	EndIf
 
-	If (OldTimescale > 0)
-		Console("Resetting Timescale to: " + OldTimescale)
-		SetTimeScale(OldTimescale)
-	EndIf
-
 	;SendModEvent("0SA_GameLoaded") ;for safety
 	Console(GetTimeSinceStart() + " seconds passed")
 	DisableOSAControls = false
@@ -1698,7 +2109,8 @@ Event OnUpdate() ;OStim main logic loop
 	scenemetadata = PapyrusUtil.StringArray(0)
 
 	SceneRunning = False
-	OSANative.EndScene(Password)
+	OSANative.EndScene(0)
+
 	SendModEvent("ostim_totalend")
 
 	Password = 0
@@ -1769,14 +2181,6 @@ Bool Function IsThreesome()
 	return ThirdActor != none
 EndFunction
 
-ODatabaseScript Function GetODatabase()
-
-	While (!ODatabase)
-		Utility.Wait(0.5)
-	Endwhile
-	Return ODatabase
-EndFunction
-
 OBarsScript Function GetBarScript()
 	return obars
 EndFunction
@@ -1798,8 +2202,16 @@ Int Function GetCurrentAnimationMaxSpeed()
 	Return OMetadata.GetMaxSpeed(CurrentSceneID)
 EndFunction
 
+;/* GetAPIVersion
+* * returns the current API version
+* * 26 = old OStim
+* * 27 = OStim NG 6.7 or earlier
+* * 28 = OStim NG 6.8
+* *
+* * @return: the version of the current API
+*/;
 Int Function GetAPIVersion()
-	Return 27
+	Return 28
 EndFunction
 
 Function IncreaseAnimationSpeed()
@@ -1985,16 +2397,6 @@ bool Function IsVictim(actor act)
 	return AggressiveThemedSexScene && (act != AggressiveActor)
 endfunction 
 
-Int Function GetTimesOrgasm(Actor Act) ; number of times the Actor has orgasmed
-	If (Act == DomActor)
-		Return DomTimesOrgasm
-	ElseIf (Act == SubActor)
-		Return SubTimesOrgasm
-	ElseIf (Act == ThirdActor)
-		return ThirdTimesOrgasm
-	EndIf
-EndFunction
-
 Actor Function GetSexPartner(Actor Char)
 	If (Char == SubActor)
 		Return DomActor
@@ -2141,20 +2543,6 @@ Function AllowVehicleReset()
 	EndWhile
 EndFunction
 
-bool NavMenuHidden
-
-Function HideNavMenu()
-	NavMenuHidden = true
-	UI.Invoke("HUD Menu", "_root.WidgetContainer." + OSAomni.glyph + ".widget.hud.NavMenu.dim")
-	UI.Invoke("HUD Menu", "_root.WidgetContainer." + OSAomni.glyph + ".widget.hud.SceneMenu.OmniDim")
-EndFunction
-
-Function ShowNavMenu()
-	NavMenuHidden = false
-	UI.Invoke("HUD Menu", "_root.WidgetContainer." + OSAomni.glyph + ".widget.hud.NavMenu.light")
-	UI.Invoke("HUD Menu", "_root.WidgetContainer." + OSAomni.glyph + ".widget.hud.SceneMenu.OmniLight")
-EndFunction
-
 Function HideAllSkyUIWidgets() ; DEPRECIATED
 	outils.SetSkyUIWidgetsVisible(false)
 EndFunction
@@ -2162,10 +2550,6 @@ EndFunction
 Function ShowAllSkyUIWidgets()
 	outils.SetSkyUIWidgetsVisible(true)
 EndFunction
-
-bool function IsInFreeCam()
-	Return OSANative.IsFreeCam()
-endfunction
 
 
 float Function GetStimMult(Actor Act)
@@ -2197,17 +2581,6 @@ endfunction
 
 bool Function IsBeingStimulated(Actor act)
 	return (GetCurrentStimulation(act) * GetStimMult(act)) > 0.01
-EndFunction
-
-; spanking stuff
-Int Function GetSpankCount() ; 
-	{Number of spankings so far this scene}
-	Return SpankCount
-EndFunction
-
-Function SetSpankCount(Int Count) 
-	{num of spankings so far this scene}
-	SpankCount = Count
 EndFunction
 
 Function ForceStop()
@@ -2378,63 +2751,6 @@ EndFunction
 
 
 ;
-;			███████╗██████╗ ███████╗███████╗██████╗     ██╗   ██╗████████╗██╗██╗     ██╗████████╗██╗███████╗███████╗
-;			██╔════╝██╔══██╗██╔════╝██╔════╝██╔══██╗    ██║   ██║╚══██╔══╝██║██║     ██║╚══██╔══╝██║██╔════╝██╔════╝
-;			███████╗██████╔╝█████╗  █████╗  ██║  ██║    ██║   ██║   ██║   ██║██║     ██║   ██║   ██║█████╗  ███████╗
-;			╚════██║██╔═══╝ ██╔══╝  ██╔══╝  ██║  ██║    ██║   ██║   ██║   ██║██║     ██║   ██║   ██║██╔══╝  ╚════██║
-;			███████║██║     ███████╗███████╗██████╔╝    ╚██████╔╝   ██║   ██║███████╗██║   ██║   ██║███████╗███████║
-;			╚══════╝╚═╝     ╚══════╝╚══════╝╚═════╝      ╚═════╝    ╚═╝   ╚═╝╚══════╝╚═╝   ╚═╝   ╚═╝╚══════╝╚══════╝
-;
-;				Some code related to the speed system
-
-Function AutoIncreaseSpeed()
-	If (GetTimeSinceLastPlayerInteraction() < 5.0)
-		Return
-	EndIf
-
-	String CClass = GetCurrentAnimationClass()
-	Float MainExcitement = GetActorExcitement(DomActor)
-	If (CClass == "VJ") || (CClass == "Cr") || (CClass == "Pf1") || (CClass == "Pf2")
-		MainExcitement = GetActorExcitement(SubActor)
-	EndIf
-
-	Int MaxSpeed = GetCurrentAnimationMaxSpeed()
-	Int NumSpeeds = MaxSpeed
-
-	Int AggressionBonusChance = 0
-	If (IsSceneAggressiveThemed())
-		AggressionBonusChance = 80
-		MainExcitement += 20
-	EndIf
-
-	Int Speed = GetCurrentAnimationSpeed()
-	If (Speed == 0)
-		Return
-	EndIf
-
-	If ((MainExcitement >= 85.0) && (Speed < NumSpeeds))
-		If (ChanceRoll(80))
-			IncreaseAnimationSpeed()
-		EndIf
-	ElseIf (MainExcitement >= 69.0) && (Speed <= (NumSpeeds - 1))
-		If (ChanceRoll(50))
-			IncreaseAnimationSpeed()
-		EndIf
-	ElseIf (MainExcitement >= 25.0) && (Speed <= (NumSpeeds - 2))
-		If (ChanceRoll(20 + AggressionBonusChance))
-			IncreaseAnimationSpeed()
-		EndIf
-	ElseIf (MainExcitement >= 05.0) && (Speed <= (NumSpeeds - 3))
-		If (ChanceRoll(20 + AggressionBonusChance))
-			IncreaseAnimationSpeed()
-		EndIf
-	EndIf
-EndFunction
-
-
-
-
-;
 ;			 ██████╗ ███████╗███████╗██╗  ██╗     ██████╗ ███████╗██╗      █████╗ ████████╗███████╗██████╗     ███████╗██╗   ██╗███████╗███╗   ██╗████████╗███████╗
 ;			██╔═══██╗██╔════╝██╔════╝╚██╗██╔╝     ██╔══██╗██╔════╝██║     ██╔══██╗╚══██╔══╝██╔════╝██╔══██╗    ██╔════╝██║   ██║██╔════╝████╗  ██║╚══██╔══╝██╔════╝
 ;			██║   ██║███████╗█████╗   ╚███╔╝█████╗██████╔╝█████╗  ██║     ███████║   ██║   █████╗  ██║  ██║    █████╗  ██║   ██║█████╗  ██╔██╗ ██║   ██║   ███████╗
@@ -2515,7 +2831,7 @@ endEvent
 
 Event ActraJoin(string eventName, string actorID, float arg, Form ActraInc)
 	Actor newActor = ActraInc as Actor
-	OSANative.AddActor(Password, newActor)
+	OSANative.AddActor(0, newActor)
 	Actors = PapyrusUtil.PushActor(Actors, newActor)
 	newActor.AddToFaction(OStimExcitementFaction)
 
@@ -2532,7 +2848,7 @@ Event ActraJoin(string eventName, string actorID, float arg, Form ActraInc)
 EndEvent
 
 Event ActraRemove(string eventName, string actraIX, float arg, Form actraInc)
-	OSANative.RemoveActor(Password)
+	OSANative.RemoveActor(0)
 	int newSize = Actors.Length - 1
 	Actor oldActor = Actors[newSize]
 	oldActor.RemoveFromFaction(OStimExcitementFaction)
@@ -2551,8 +2867,8 @@ Event ActraRemove(string eventName, string actraIX, float arg, Form actraInc)
 EndEvent
 
 Function OnAnimationChange(string newScene, int newSpeed)
-	OSANative.ChangeAnimation(Password, newScene)
-	OSANative.UpdateSpeed(Password, newSpeed)
+	OSANative.ChangeAnimation(0, newScene)
+	OSANative.UpdateSpeed(0, newSpeed)
 	
 	Console("Changing animation...")
 	
@@ -2568,7 +2884,6 @@ Function OnAnimationChange(string newScene, int newSpeed)
 	CurrAnimClass = OSANative.GetAnimClass(CurrentSceneID)
 
 	CurrentAnimation = OMetadata.GetAnimationId(newScene, newSpeed)
-	CurrentOID = ODatabase.GetObjectOArray(ODatabase.GetAnimationWithAnimID(ODatabase.GetDatabaseOArray(), CurrentAnimation), 0)
 
 	if sceneChange
 		SendModEvent("ostim_scenechanged", CurrentSceneID)
@@ -2581,32 +2896,6 @@ Function OnAnimationChange(string newScene, int newSpeed)
 
 	;Profile("Animation change time")
 EndFunction
-
-Function OnSpank()
-	SetActorExcitement(SubActor, GetActorExcitement(SubActor) + 5)	
-
-	SpankCount += 1
-	SendModEvent("ostim_spank")
-EndFunction
-
-
-Event OnActorHit(String EventName, String zAnimation, Float NumArg, Form Sender)
-	If (EndAfterActorHit)
-		int i = Actors.Length
-		While i
-			i -= 1
-			; GetCombatState() returns the following values
-			; 0: Not in combat
-			; 1: In combat
-			; 2: Searching
-			; So we should consider as being in combat if actor is in either actual combat or searching for combat target
-			If Actors[i].GetCombatState() != 0
-				EndAnimation(False)
-				Return
-			EndIf
-		EndWhile
-	EndIf
-EndEvent
 
 Function RestoreScales()
 	int i = Actors.Length
@@ -2647,53 +2936,10 @@ float Function GetHighestExcitement()
 	return Highest
 EndFunction
 
-Float Function GetActorExcitement(Actor Act) ; at 100, Actor orgasms
-	if(Act)
-		return OSANative.GetActorExcitement(Password, Act)
-	endif
-	return 0
-EndFunction
-
-Function SetActorExcitement(Actor Act, Float Value)
-	if(Act)
-		OSANative.SetActorExcitement(Password, Act, Value)
-		Act.SetFactionRank(OStimExcitementFaction, Value as int)
-	endIf
-EndFunction
-
-Function AddActorExcitement(Actor Act, Float Value)
-	SetActorExcitement(Act, GetActorExcitement(Act) + Value)
-EndFunction
-
 Function Climax(Actor Act)
 	MostRecentOrgasmedActor = Act
 
-	SetActorExcitement(Act, -3.0)
-	Act.SendModEvent("ostim_orgasm", CurrentSceneID, Actors.Find(act))
-	If (Act == PlayerRef)
-		If BlurOnOrgasm
-			NutEffect.Apply()
-		EndIf
-		If (SlowMoOnOrgasm)
-			SetGameSpeed("0.3")
-			Utility.Wait(2.5)
-			SetGameSpeed("1")
-		EndIf
-
-		If UseScreenShake
-			ShakeCamera(1.00, 2.0)
-		EndIf
-
-		ShakeController(0.5, 0.7)
-	EndIf
-
-	If !IsFemale(Act)
-		SetCurrentAnimationSpeed(OMetadata.GetDefaultSpeed(CurrentSceneID))
-	EndIf
-
-	While StallOrgasm
-		Utility.Wait(0.3)
-	EndWhile
+	OActor.Climax(Act, false)
 
 	int actorIndex = Actors.find(Act)
 	If actorIndex >= 0
@@ -2702,24 +2948,6 @@ Function Climax(Actor Act)
 			Actor partner = GetActor(OMetadata.GetActionActor(CurrentSceneID, actionIndex))
 			AddActorExcitement(partner, 5)
 		EndIf
-	EndIf
-
-	Act.DamageActorValue("stamina", 250.0)
-
-	bool End = false
-	If EndOnAllOrgasm
-		End = DomTimesOrgasm > 0 && (SubActor == None || SubTimesOrgasm > 0) && (ThirdActor == None || ThirdTimesOrgasm > 0)
-	Else
-		If AppearsFemale(Act)
-			End = EndOnFemaleOrgasm
-		Else
-			End = EndOnMaleOrgasm
-		EndIf
-	EndIf
-	If End
-		SetCurrentAnimationSpeed(0)
-		Utility.Wait(4)
-		EndAnimation()
 	EndIf
 EndFunction
 
@@ -2733,6 +2961,7 @@ EndFunction
 
 Event OstimOrgasm(String EventName, String sceneId, Float index, Form Sender)
 	Actor Act = Sender As Actor
+	MostRecentOrgasmedActor = Act
 
 	; Fertility Mode compatibility
 	int actionIndex = OMetadata.FindActionForActor(sceneId, index as int, "vaginalsex")
@@ -2747,14 +2976,6 @@ Event OstimOrgasm(String EventName, String sceneId, Float index, Form Sender)
 				ModEvent.Send(handle)
 			EndIf
 		EndIf
-	EndIf
-
-	If !Act.IsInFaction(NVCustomOrgasmFaction) && !FaceDataIsMuted(Act)
-		; if we don't mute FaceData here OSAs constant sound spamming will override the climax face after 1-2 seconds
-		MuteFaceData(Act)
-		SendExpressionEvent(Act, "climax")
-		; since SendExpressionEvent contains a Utility::Wait call this line will execute once the orgasm expression is over
-		UnMuteFaceData(Act)
 	EndIf
 EndEvent
 
@@ -2813,18 +3034,6 @@ EndFunction
 ;
 ;				Code related to Sound
 
-Function PlayDing()
-	OSADing.Play(PlayerRef)
-EndFunction
-
-Function PlayTickSmall()
-	OSATickSmall.Play(PlayerRef)
-EndFunction
-
-Function PlayTickBig()
-	OSATickBig.Play(PlayerRef)
-EndFunction
-
 Event OnSoundDom(String EventName, String Fi, Float Ix, Form Sender)
 	OnSound(DomActor, (Fi as Int), Ix as Int)
 EndEvent
@@ -2857,60 +3066,9 @@ Event OnOSASound(String EventName, String Args, Float Nothing, Form Sender)
 EndEvent
 /;
 
-int[] property SoundFormNumberWhitelist auto 
-; Sounds that match a Formnumber found in the above whitelist will always be played if osa is muted
-; this is useful if you only want to mute voices, for example 
-
 Function OnSound(Actor Act, Int SoundID, Int FormNumber)
-	Int FormID = FormNumber
-	If (AppearsFemale(Act))
-		If ((FormNumber == 50) || (FormNumber == 60))
-			FormID = FormNumber
-		Else
-			FormID = FormNumber + 5
-		EndIf
-	EndIf
-
-	bool PlayExpression = False
-	If (!MuteOSA) || IntArrayContainsValue(SoundFormNumberWhitelist, FormID)
-		PlayOSASound(Act, Formid, Soundid)
-		If FormNumber != 20
-			PlayExpression = True
-		EndIf
-	EndIf
-
-	String EventName = "moan"
 	If (FormNumber == 60)
-		OnSpank()
-		ShakeController(0.3)
-		If UseScreenShake
-			ShakeCamera(0.5)
-		EndIf
-
-		PlayExpression = True
-		EventName = "spank"
-	EndIf
-
-	If (FormNumber == 50)
-		ShakeController(0.1)
-		If UseScreenShake
-			ShakeCamera(0.5)
-		EndIf
-	EndIf
-
-	String Arg = "third"
-	If (Act == DomActor)
-		Arg = "dom"
-	ElseIf (Act == SubActor)
-		Arg = "sub"
-	EndIf
-
-	Arg += "," + FormId
-	Arg += "," + SoundId
-	SendModEvent("ostim_osasound", StrArg = Arg)
-	
-	If PlayExpression && !FaceDataIsMuted(Act)
-		SendExpressionEvent(Act, EventName)
+		OThread.CallEvent(0, "spank", 0, 1)
 	EndIf
 EndFunction
 
@@ -3009,10 +3167,6 @@ Function Console(String In) Global
 	MiscUtil.PrintConsole("OStim: " + In)
 EndFunction
 
-Function SetGameSpeed(String In)
-	ConsoleUtil.ExecuteCommand("sgtm " + In)
-EndFunction
-
 Bool Function ChanceRoll(Int Chance) ; input 60: 60% of returning true ;DEPRECIATED - moving to outils in future ver
 
 
@@ -3020,24 +3174,10 @@ Bool Function ChanceRoll(Int Chance) ; input 60: 60% of returning true ;DEPRECIA
 
 EndFunction
 
-Function ShakeCamera(Float Power, Float Duration = 0.1)
-	if !OSANative.IsFreeCam()
-		Game.ShakeCamera(PlayerRef, Power, Duration)
-	endif
-EndFunction
-
 Function ShakeController(Float Power, Float Duration = 0.1)
 	If UseRumble
 		Game.ShakeController(Power, Power, Duration)
 	EndIf
-EndFunction
-
-Int Function GetTimeScale()
-	Return Timescale.GetValue() as Int
-EndFunction
-
-Function SetTimeScale(Int Time)
-	Timescale.SetValue(Time as Float)
 EndFunction
 
 Function DisplayToastAsync(string txt, float lengthOftime)
@@ -3056,103 +3196,28 @@ Event DisplayToastEvent(string txt, float time)
 EndEvent
 
 Function SetDefaultSettings()
-	EnableActorSpeedControl = True
-	ResetPosAfterSceneEnd = true 
-
-	EndAfterActorHit = True
-
-
 	ForceCloseOStimThread = false
-
-	DomLightBrightness = 0
-	SubLightBrightness = 1
-	SubLightPos = 0
-	DomLightPos = 0
-
-	CustomTimescale = 0
-
-	LowLightLevelLightsOnly = False
-
-	SoundFormNumberWhitelist = new int[1]
-	SoundFormNumberWhitelist[0] = 9999 ;initializing to avoid array-related bugs
-UseFreeCam
-	EnableImprovedCamSupport = False
 
 	SpeedUpNonSexAnimation = False ;game pauses if anim finished early
 	SpeedUpSpeed = 1.5
 
 	DisableStimulationCalculation = false
 
-	UseAIControl = False
 	PauseAI = False
 
-	AISwitchChance = 6
-
 	GetInBedAfterBedScene = False
-	UseAINPConNPC = True
-	UseAIPlayerAggressor = True
-	UseAIPlayerAggressed = True
-	UseAINonAggressive = False
 
 
 	disableOSAControls = false
 
-	Forcefirstpersonafter = !UseFreeCam
-
-	UseRumble = Game.UsingGamepad()
-	UseScreenShake = False
-
-	UseFades = True
-	UseAutoFades = True
 	SkipEndingFadein = false
 	BlockVRInstalls = True
 
 	KeyMap = 200
-	SpeedUpKey = 78
-	SpeedDownKey = 74
-	PullOutKey = 79
-	ControlToggleKey = 82
 
 	MuteOSA = False
 
-	Int[] Slots = new Int[1]
-	Slots[0] = 32
-	Slots = PapyrusUtil.PushInt(Slots, 33)
-	Slots = PapyrusUtil.PushInt(Slots, 31)
-	Slots = PapyrusUtil.PushInt(Slots, 37)
-	StrippingSlots = Slots
-
-	ShowTutorials = true 
-	
-	UseBrokenCosaveWorkaround = True
-
 	OData.ResetSettings()
-EndFunction
-
-Function RegisterOSexControlKey(Int zKey)
-	OSexControlKeys = PapyrusUtil.PushInt(OSexControlKeys, zKey)
-	RegisterForKey(zKey)
-EndFunction
-
-Function LoadOSexControlKeys()
-	OSexControlKeys = new Int[1]
-	OSexControlKeys = PapyrusUtil.PushInt(OSexControlKeys, SpeedUpKey)
-	OSexControlKeys = PapyrusUtil.PushInt(OSexControlKeys, SpeedDownKey)
-	OSexControlKeys = PapyrusUtil.PushInt(OSexControlKeys, PullOutKey)
-	OSexControlKeys = PapyrusUtil.PushInt(OSexControlKeys, ControlToggleKey)
-	OSexControlKeys = PapyrusUtil.PushInt(OSexControlKeys, KeyMap)
-	OSexControlKeys = PapyrusUtil.PushInt(OSexControlKeys, FreecamKey)
-
-	RegisterOSexControlKey(83)
-	RegisterOSexControlKey(156)
-	RegisterOSexControlKey(72)
-	RegisterOSexControlKey(76)
-	RegisterOSexControlKey(75)
-	RegisterOSexControlKey(77)
-	RegisterOSexControlKey(73)
-	RegisterOSexControlKey(71)
-	RegisterOSexControlKey(79)
-	RegisterOSexControlKey(209)
 EndFunction
 
 Bool Function GetGameIsVR()
@@ -3238,109 +3303,6 @@ string Function GetNPCDiasa(actor act)
 
 EndFunction
 
-
-Event OnKeyDown(Int KeyPress)
-
-	If outils.MenuOpen()
-		Return
-	EndIf
-
-	If (KeyPress == KeyMap)
-		Actor Target = Game.GetCurrentCrosshairRef() as Actor
-		If (Target)
-			If (Target.IsInDialogueWithPlayer())
-				Return
-			EndIf
-			If (!Target.IsDead() && !Target.isChild() && Target.HasKeywordString("ActorTypeNPC"))
-				AddSceneMetadata("ostim_manual_start")
-				StartScene(PlayerRef, Target)
-				return 
-			EndIf
-		Else
-			Utility.Wait(2)
-			if Input.IsKeyPressed(keymap)
-				AddSceneMetadata("ostim_manual_start")
-				Masturbate(PlayerRef)
-			endif 
-			return
-		EndIf
-	EndIf
-
-	If (DisableOSAControls)
-		if AnimationRunning()
-			LockWidget.FlashVisibililty()
-		endif 
-
-		Return
-	EndIf
-
-
-	If (AnimationRunning())
-		If (IntArrayContainsValue(OSexControlKeys, KeyPress))
-			MostRecentOSexInteractionTime = Utility.GetCurrentRealTime()
-			If (AutoHideBars)
-				If (!OBars.IsBarVisible(OBars.DomBar))
-					OBars.SetBarVisible(OBars.DomBar, True)
-				EndIf
-				If (!OBars.IsBarVisible(OBars.SubBar))
-					OBars.SetBarVisible(OBars.SubBar, True)
-				EndIf
-				If (!OBars.IsBarVisible(OBars.ThirdBar))
-					OBars.SetBarVisible(OBars.ThirdBar, True)
-				EndIf
-			EndIf
-
-			if !IsActorActive(PlayerRef) && navMenuHidden
-				ShowNavMenu()
-			EndIf
-		EndIf
-
-		If (KeyPress == SpeedUpKey)
-			IncreaseAnimationSpeed()
-			PlayTickSmall()
-		ElseIf (KeyPress == SpeedDownKey)
-			DecreaseAnimationSpeed()
-			PlayTickSmall()
-		ElseIf ((KeyPress == PullOutKey) && !AIRunning)
-			If !OMetadata.IsTransition(CurrentSceneID) && OMetadata.GetMaxSpeed(CurrentSceneID) != 0
-				If (LastHubSceneID != "")
-					TravelToAnimationIfPossible(LastHubSceneID)
-				EndIf
-			EndIf
-		EndIf
-	EndIf
-
-	If (KeyPress == ControlToggleKey)
-		If (AnimationRunning())
-			If (AIRunning)
-				AIRunning = False
-				PauseAI = True
-				Debug.Notification("Switched to manual control mode")
-			Else
-				If (PauseAI)
-					PauseAI = False
-				Else
-					AI.StartAI()
-				EndIf
-				AIRunning = True
-				Debug.Notification("Switched to automatic control mode")
-			EndIf
-		Else
-			If (UseAIControl)
-				UseAIControl = False
-				Debug.Notification("Switched to manual control mode")
-			Else
-				UseAIControl = True
-				Debug.Notification("Switched to automatic control mode")
-			EndIf
-		EndIf
-		PlayTickBig()
-	EndIf
-
-	
-
-EndEvent
-
 Bool Property SoSInstalled Auto
 Faction SoSFaction
 
@@ -3395,22 +3357,14 @@ Function Startup()
 ;	OSAUI = (Quest.GetQuest("0SA") as _oui)
 	PlayerRef = Game.GetPlayer()
 	NutEffect = Game.GetFormFromFile(0x000805, "Ostim.esp") as ImageSpaceModifier
-	LockWidget = (Self as Quest) as _oUI_Lockwidget
 
 	subthreadquest = Game.GetFormFromFile(0x000806, "Ostim.esp") as quest
 
 	OUpdater = Game.GetFormFromFile(0x000D67, "Ostim.esp") as OStimUpdaterScript
-	OSADing = Game.GetFormFromFile(0x000D6D, "Ostim.esp") as Sound
-	OSATickSmall = Game.GetFormFromFile(0x000D6E, "Ostim.esp") as Sound
-	OSATickBig = Game.GetFormFromFile(0x000D6F, "Ostim.esp") as Sound
-
-	Timescale = (Game.GetFormFromFile(0x00003A, "Skyrim.esm")) as GlobalVariable
 
 	OControl = Quest.GetQuest("0SAControl") as _oControl
 
-	AI = ((Self as Quest) as OAiScript)
-	OBars = ((Self as Quest) as OBarsScript)
-	;RegisterForModEvent("ostim_actorhit", "OnActorHit")
+	OBars = Game.GetFormFromFile(0x000E40, "Ostim.esp") as OBarsScript
 	SetDefaultSettings()
 	BuildSoundFormlists()
 	scenemetadata = PapyrusUtil.StringArray(0)
@@ -3420,16 +3374,8 @@ Function Startup()
 		Return
 	EndIf
 
-	If (SKSE.GetPluginVersion("JContainers64") == -1 && SKSE.GetPluginVersion("JContainersGOG") == -1)
-		Debug.MessageBox("OStim: JContainers is not installed, please exit the game and install it to allow Ostim to function.")
-		Return
-	EndIf
-
 	SMPInstalled = (SKSE.GetPluginVersion("hdtSSEPhysics") != -1)
 	Console("SMP installed: " + SMPInstalled)
-
-	ODatabase = (Self as Quest) as ODatabaseScript
-	ODatabase.InitDatabase()
 
 	If (OSAFactionStage)
 		Console("Loaded")
@@ -3438,28 +3384,12 @@ Function Startup()
 		Return
 	EndIf
 
-	If (ODatabase.GetLengthOArray(ODatabase.GetDatabaseOArray()) < 1)
-		Debug.Notification("OStim install failed.")
-		Return
-	Else
-		ODatabase.Unload()
-	EndIf
-
-	If (SKSE.GetPluginVersion("ConsoleUtilSSE") == -1)
-		Debug.Notification("OStim: ConsoleUtil is not installed, a few features may not work")
-	EndIf
-
-	
-
 	If (OSA.StimInstalledProper())
 		Console("OSA is installed correctly")
 	Else
 		Debug.MessageBox("OStim is not loaded after OSA in your mod files, please allow OStim to overwrite OSA's files and restart. Alternatively SkyUI is not loaded.")
 		Return
 	EndIf
-
-	OControl.ResetControls()
-	OControl.UpdateControls() ; uneeded?
 
 	If (!_oGlobal.OStimGlobalLoaded())
 		Debug.MessageBox("It appears you have the OSex facial expression fix installed. Please exit and remove that mod, as it is now included in OStim, and having it installed will break some things now!")
@@ -3472,8 +3402,6 @@ Function Startup()
 
 	OUtils.DisplayTextBanner("OStim installed.")
 EndFunction
-
-Bool Property UseBrokenCosaveWorkaround Auto
 
 Form[] LoadRegistrations 
 
@@ -3522,43 +3450,40 @@ Function OnLoadGame()
 	EndIf
 	SoSInstalled = SoSFaction
 
-	If (UseBrokenCosaveWorkaround)
-		Console("Using cosave fix")
-
-		RegisterForModEvent("ostim_actorhit", "OnActorHit")
-		LoadOSexControlKeys()
-		If SpeedUpKey != 1
-			RegisterForKey(SpeedUpKey)
-		EndIf
-		If SpeedDownKey != 1
-			RegisterForKey(SpeedDownKey)
-		EndIf
-		If PullOutKey != 1
-			RegisterForKey(PullOutKey)
-		EndIf
-		If ControlToggleKey != 1
-			RegisterForKey(ControlToggleKey)
-		EndIf
-		If KeyMap != 1
-			RegisterForKey(KeyMap)
-		EndIf
-
-		; these are now handled in C++ and no longer need Papyrus listeners
-		If AlignmentKey != 1
-			UnregisterForKey(AlignmentKey)
-		EndIf
-		If FreecamKey != 1
-			UnregisterForKey(FreecamKey)
-		EndIf
-		
-
-		AI.OnGameLoad()
-		OBars.OnGameLoad()
-		OControl.OPlayerControls()
-
-		SendLoadGameEvent()
-
+	If SKSE.GetPluginVersion("ImprovedCameraSE") != -1
+		OStimImprovedCamSupport.value = 1
+	Else
+		OStimImprovedCamSupport.value = 0
 	EndIf
+
+	Console("Using cosave fix")
+
+	; these are now handled in C++ and no longer need Papyrus listeners
+	If KeyMap != 1
+		UnregisterForKey(KeyMap)
+	EndIf
+	If SpeedUpKey != 1
+		UnregisterForKey(SpeedUpKey)
+	EndIf
+	If SpeedDownKey != 1
+		UnregisterForKey(SpeedDownKey)
+	EndIf
+	If AlignmentKey != 1
+		UnregisterForKey(AlignmentKey)
+	EndIf
+	If FreecamKey != 1
+		UnregisterForKey(FreecamKey)
+	EndIf
+	If PullOutKey != 1
+		UnregisterForKey(PullOutKey)
+	EndIf
+	If ControlToggleKey != 1
+		UnregisterForKey(ControlToggleKey)
+	EndIf
+		
+	OBars.OnGameLoad()
+
+	SendLoadGameEvent()
 
 	BBLS_FaceLightFaction = Game.GetFormFromFile(0x00755331, "BBLS_SKSE64_Patch.esp") as Faction
 	Vayne = Game.GetFormFromFile(0x0000083D, "CS_Vayne.esp") as ActorBase
@@ -3616,6 +3541,25 @@ EndFunction
 ; ╚═════╝ ╚══════╝╚═╝     ╚═╝  ╚═╝╚══════╝ ╚═════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═════╝ 
 
 ; all of these are only here to not break old addons, don't use them in new addons, use whatever they're calling instead
+
+Faction Property NVCustomOrgasmFaction Auto
+int[] property SoundFormNumberWhitelist auto
+
+bool Property UseAINPConNPC
+	bool Function Get()
+		Return true
+	EndFunction
+	Function Set(bool Value)
+	EndFunction
+EndProperty
+
+bool Property ShowTutorials
+	bool Function Get()
+		Return true
+	EndFunction
+	Function Set(bool Value)
+	EndFunction
+EndProperty
 
 int Property DefaultFOV
 	int Function Get()
@@ -3754,6 +3698,53 @@ Bool Property EnableThirdBar
 	EndFunction
 EndProperty
 
+Bool Property UseBrokenCosaveWorkaround
+	bool Function Get()
+		Return true
+	EndFunction
+	Function Set(bool Value)
+	EndFunction
+EndProperty
+
+Bool Property EndAfterActorHit
+	bool Function Get()
+		Return true
+	EndFunction
+	Function Set(bool Value)
+	EndFunction
+EndProperty
+
+int Property AiSwitchChance
+	int Function Get()
+		Return 0
+	EndFunction
+	Function Set(int Value)
+	EndFunction
+EndProperty
+
+Bool Property MuteOSA
+	bool Function Get()
+		Return false
+	EndFunction
+	Function Set(bool Value)
+		If !AnimationRunning()
+			Return
+		EndIf
+
+		; NV used this together with a whitelist to only mute the female moans
+		; so we will do exactly that here
+		If Value
+			int i = Actors.Length
+			While i
+				i -= 1
+				If AppearsFemale(Actors[i])
+					OActor.Mute(Actors[i])
+				EndIf
+			EndWhile
+		EndIf
+	EndFunction
+EndProperty
+
 Actor Function GetDomActor()
 	Return GetActor(0)
 EndFunction
@@ -3818,11 +3809,6 @@ String Function GetCurrentAnimationClass()
 	Return CurrAnimClass
 EndFunction
 
-Int Function GetCurrentAnimationOID()
-	; don't use ODatabase, use OMetadata
-	Return CurrentOID
-EndFunction
-
 Actor MostRecentOrgasmedActor
 Actor Function GetMostRecentOrgasmedActor()
 	; use (sender As Actor) in the ostim_orgasm event instead
@@ -3873,7 +3859,6 @@ Function AlternateRealign()
 EndFunction
 
 Function ToggleFreeCam(Bool On = True)
-	OSANative.ToggleFlyCam()
 EndFunction
 
 Function RemapStartKey(Int zKey)
@@ -3918,4 +3903,137 @@ Endfunction
 
 bool Function IsChild(actor act)
 	return OUtils.IsChild(Act)
+EndFunction
+
+Int Function GetSpankCount() ; 
+	Return 0
+EndFunction
+
+Function SetSpankCount(Int Count)
+EndFunction
+
+Function SetGameSpeed(String In)
+	; the body was left in in case some addons call this
+	; but we will not list ConsoleUtil as a requirement
+	ConsoleUtil.ExecuteCommand("sgtm " + In)
+EndFunction
+
+Int Function GetTimesOrgasm(Actor Act)
+	Return OActor.GetTimesClimaxed(Act)
+EndFunction
+
+Int Function GetTimeScale()
+	Return (Game.GetFormFromFile(0x00003A, "Skyrim.esm") as GlobalVariable).GetValue() as Int
+EndFunction
+
+Function SetTimeScale(Int Time)
+	(Game.GetFormFromFile(0x00003A, "Skyrim.esm") as GlobalVariable).SetValue(Time as Float)
+EndFunction
+
+Function HideNavMenu()
+EndFunction
+
+Function ShowNavMenu()
+EndFunction
+
+Function RegisterOSexControlKey(Int zKey)
+EndFunction
+
+Function LoadOSexControlKeys()
+EndFunction
+
+; I will remove these again in the future, don't call them!
+Function PullOut()
+	If !OMetadata.IsTransition(CurrentSceneID) && OMetadata.GetMaxSpeed(CurrentSceneID) != 0
+		If (LastHubSceneID != "")
+			TravelToAnimationIfPossible(LastHubSceneID)
+		EndIf
+	EndIf
+EndFunction
+
+Function ShowBars()
+	MostRecentOSexInteractionTime = Utility.GetCurrentRealTime()
+	If (AutoHideBars)
+		If (!OBars.IsBarVisible(OBars.DomBar))
+			OBars.SetBarVisible(OBars.DomBar, True)
+		EndIf
+		If (!OBars.IsBarVisible(OBars.SubBar))
+			OBars.SetBarVisible(OBars.SubBar, True)
+		EndIf
+		If (!OBars.IsBarVisible(OBars.ThirdBar))
+			OBars.SetBarVisible(OBars.ThirdBar, True)
+		EndIf
+	EndIf
+EndFunction
+
+Float Function GetActorExcitement(Actor Act)
+	Return OActor.GetExcitement(Act)
+EndFunction
+
+Function SetActorExcitement(Actor Act, Float Value)
+	OActor.SetExcitement(Act, Value)
+EndFunction
+
+Function AddActorExcitement(Actor Act, Float Value)
+	OActor.ModifyExcitement(Act, Value)
+EndFunction
+
+bool function IsInFreeCam()
+	Return false
+endfunction
+
+Function ShakeCamera(Float Power, Float Duration = 0.1)
+EndFunction
+
+Function AutoIncreaseSpeed()
+	If (GetTimeSinceLastPlayerInteraction() < 5.0)
+		Return
+	EndIf
+
+	String CClass = GetCurrentAnimationClass()
+	Float MainExcitement = GetActorExcitement(DomActor)
+	If (CClass == "VJ") || (CClass == "Cr") || (CClass == "Pf1") || (CClass == "Pf2")
+		MainExcitement = GetActorExcitement(SubActor)
+	EndIf
+
+	Int MaxSpeed = GetCurrentAnimationMaxSpeed()
+	Int NumSpeeds = MaxSpeed
+
+	Int AggressionBonusChance = 0
+	If (IsSceneAggressiveThemed())
+		AggressionBonusChance = 80
+		MainExcitement += 20
+	EndIf
+
+	Int Speed = GetCurrentAnimationSpeed()
+	If (Speed == 0)
+		Return
+	EndIf
+
+	If ((MainExcitement >= 85.0) && (Speed < NumSpeeds))
+		If (ChanceRoll(80))
+			IncreaseAnimationSpeed()
+		EndIf
+	ElseIf (MainExcitement >= 69.0) && (Speed <= (NumSpeeds - 1))
+		If (ChanceRoll(50))
+			IncreaseAnimationSpeed()
+		EndIf
+	ElseIf (MainExcitement >= 25.0) && (Speed <= (NumSpeeds - 2))
+		If (ChanceRoll(20 + AggressionBonusChance))
+			IncreaseAnimationSpeed()
+		EndIf
+	ElseIf (MainExcitement >= 05.0) && (Speed <= (NumSpeeds - 3))
+		If (ChanceRoll(20 + AggressionBonusChance))
+			IncreaseAnimationSpeed()
+		EndIf
+	EndIf
+EndFunction
+
+Function PlayDing()
+EndFunction
+
+Function PlayTickSmall()
+EndFunction
+
+Function PlayTickBig()
 EndFunction

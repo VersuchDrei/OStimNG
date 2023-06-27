@@ -1,10 +1,14 @@
 #include "EventListener.h"
 
+#include "Core/Core.h"
 #include "Core/ThreadManager.h"
+#include "GameAPI/Game.h"
+#include "GameAPI/GameCamera.h"
+#include "GameAPI/GameTable.h"
 #include "Serial/Manager.h"
 #include "UI/Align/AlignMenu.h"
 #include "UI/UIState.h"
-#include "Util/CameraUtil.h"
+#include "Util/MathUtil.h"
 #include "MCM/MCMTable.h"
 #include "Util.h"
 
@@ -37,16 +41,22 @@ namespace Events {
         return RE::BSEventNotifyControl::kContinue;
     }
 
+    RE::BSEventNotifyControl EventListener::ProcessEvent(const SKSE::CrosshairRefEvent* a_event, RE::BSTEventSource<SKSE::CrosshairRefEvent>* a_eventSource) {
+        if (a_event->crosshairRef) {
+            // weird As call has to be made to make it non const
+            GameAPI::GameTable::setCurrentCrosshairRef(a_event->crosshairRef->As<RE::TESObjectREFR>());
+        } else {
+            GameAPI::GameTable::setCurrentCrosshairRef(nullptr);
+        }
+        return RE::BSEventNotifyControl::kContinue;
+    }
+
     RE::BSEventNotifyControl EventListener::ProcessEvent(RE::InputEvent* const* a_events, RE::BSTEventSource<RE::InputEvent*>* a_eventSource) {
         if (!a_events) {
             return RE::BSEventNotifyControl::kContinue;
         }
         
         if (RE::UI::GetSingleton()->GameIsPaused()) {
-            return RE::BSEventNotifyControl::kContinue;
-        }
-
-        if (!OStim::ThreadManager::GetSingleton()->playerThreadRunning()) {
             return RE::BSEventNotifyControl::kContinue;
         }
 
@@ -69,23 +79,134 @@ namespace Events {
                 keyCode = keyMask;
             }
 
-            if (keyCode >= 282) {
+            if (keyCode == 0 || keyCode == 1 || keyCode >= 282) {
                 // invalid key
                 continue;
             }
 
-            if (bEvent->IsDown()) {
-                if (keyCode == MCM::MCMTable::keyAlignment()) {
-                    auto uiState = UI::UIState::GetSingleton();
-                    logger::info("align key fired");
-                    uiState->ToggleActiveMenu(UI::kAlignMenu);
-                } else if (keyCode == MCM::MCMTable::keyFreeCam()) {
-                    CameraUtil::toggleFlyCam();
+            if (keyCode == MCM::MCMTable::keySceneStart()) {
+                if (bEvent->IsDown()) {
+                    GameAPI::GameActor player = GameAPI::GameActor::getPlayer();
+                    GameAPI::GameActor target = GameAPI::Game::getCrosshairActor();
+                    if (target) {
+                        std::vector<GameAPI::GameActor> actors = GameAPI::GameActor::getPlayer().getNearbyActors(2000, [&player, &target](GameAPI::GameActor actor){
+                            return actor != player && actor != target && OStim::isEligible(actor);    
+                        });
+
+                        if (actors.empty()) {
+                            // TODO do this internally once we don't need OSA anymore
+                            const auto skyrimVM = RE::SkyrimVM::GetSingleton();
+                            auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+                            if (vm) {
+                                RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
+                                auto args = RE::MakeFunctionArguments<RE::Actor*, RE::Actor*, RE::Actor*>(std::move(RE::PlayerCharacter::GetSingleton()), std::move(target.form), std::move(nullptr));
+                                vm->DispatchStaticCall("OSKSE", "StartScene", args, callback);
+                            }
+                        } else {
+                            std::vector<std::string> options;
+
+                            int max = std::min<int>(GameAPI::Game::getMessageBoxOptionLimit() - 1, actors.size());
+                            int i = 0;
+                            while (i < max) {
+                                options.push_back(actors[i].getName());
+                                i++;
+                            }
+                            options.push_back("none");
+
+                            GameAPI::Game::showMessageBox("Add third actor?", options, [target, actors](unsigned int result) {
+                                GameAPI::GameActor third;
+                                if (result < actors.size() &&
+                                    result != GameAPI::Game::getMessageBoxOptionLimit() - 1) {
+                                    third = actors[result];
+                                }
+
+                                // TODO do this internally once we don't need OSA anymore
+                                const auto skyrimVM = RE::SkyrimVM::GetSingleton();
+                                auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+                                if (vm) {
+                                    GameAPI::GameActor targetTemp = target;
+                                    RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
+                                    auto args = RE::MakeFunctionArguments<RE::Actor*, RE::Actor*, RE::Actor*>(std::move(RE::PlayerCharacter::GetSingleton()), std::move(targetTemp.form), std::move(third.form));
+                                    vm->DispatchStaticCall("OSKSE", "StartScene", args, callback);
+                                }
+                            });
+                        }
+
+                        
+                    }
+                } else if (bEvent->IsUp() && bEvent->HeldDuration() >= 2.0) {
+                    if (!OStim::ThreadManager::GetSingleton()->playerThreadRunning()) {
+                        // TODO do this internally once we don't need OSA anymore
+                        const auto skyrimVM = RE::SkyrimVM::GetSingleton();
+                        auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+                        if (vm) {
+                            RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
+                            auto args = RE::MakeFunctionArguments<RE::Actor*>(std::move(RE::PlayerCharacter::GetSingleton()));
+                            vm->DispatchStaticCall("OSKSE", "Masturbate", args, callback);
+                        }
+                    }
                 }
-                else if (keyCode == 37) {
-                    auto uiState = UI::UIState::GetSingleton();
-                    uiState->ToggleActiveMenu(UI::kSearchMenu);
+            }
+
+            if (!bEvent->IsDown()) {
+                continue;
+            }
+
+            if (!OStim::ThreadManager::GetSingleton()->playerThreadRunning()) {
+                continue;
+            }
+
+            // TODO do this internally once we don't need OSA anymore
+            const auto skyrimVM = RE::SkyrimVM::GetSingleton();
+            auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+            if (vm) {
+                RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
+                auto args = RE::MakeFunctionArguments();
+                vm->DispatchStaticCall("OSKSE", "ShowBars", args, callback);
+            }
+
+            if (keyCode == MCM::MCMTable::keyUp()) {
+                UI::UIState::GetSingleton()->HandleControl(UI::Controls::Up);
+            } else if (keyCode == MCM::MCMTable::keyDown()) {
+                UI::UIState::GetSingleton()->HandleControl(UI::Controls::Down);
+            } else if (keyCode == MCM::MCMTable::keyLeft()) {
+                UI::UIState::GetSingleton()->HandleControl(UI::Controls::Left);
+            } else if (keyCode == MCM::MCMTable::keyRight()) {
+                UI::UIState::GetSingleton()->HandleControl(UI::Controls::Right);
+            } else if (keyCode == MCM::MCMTable::keyYes()) {
+                UI::UIState::GetSingleton()->HandleControl(UI::Controls::Yes);
+            } else if (keyCode == MCM::MCMTable::keyToggle()) {
+                UI::UIState::GetSingleton()->HandleControl(UI::Controls::Toggle);
+            } else if (keyCode == MCM::MCMTable::keyEnd()) {
+                OStim::ThreadManager::GetSingleton()->getPlayerThread()->stop();
+            } else if (keyCode == MCM::MCMTable::keySpeedUp()) {
+                OStim::ThreadManager::GetSingleton()->getPlayerThread()->increaseSpeed();
+            } else if (keyCode == MCM::MCMTable::keySpeedDown()) {
+                OStim::ThreadManager::GetSingleton()->getPlayerThread()->decreaseSpeed();
+            } else if (keyCode == MCM::MCMTable::keyPullOut()){
+                // TODO do this internally once we don't need OSA anymore
+                if (vm) {
+                    RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
+                    auto args = RE::MakeFunctionArguments();
+                    vm->DispatchStaticCall("OSKSE", "PullOut", args, callback);
                 }
+            } else if (keyCode == MCM::MCMTable::keyAutoMode()){
+                OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->getPlayerThread();
+                if (thread) {
+                    if (thread->isInAutoMode()) {
+                        thread->stopAutoMode();
+                    } else {
+                        thread->startAutoMode();
+                    }
+                }
+            } else if (keyCode == MCM::MCMTable::keyAlignment()) {
+                auto uiState = UI::UIState::GetSingleton();
+                uiState->SwitchActiveMenu(uiState->GetActiveMenu() == UI::MenuType::kAlignMenu ? UI::MenuType::kSceneMenu : UI::MenuType::kAlignMenu);
+            } else if (keyCode == MCM::MCMTable::keyFreeCam()) {
+                GameAPI::GameCamera::toggleFreeCam();
+            } else if (keyCode == 37) {
+                auto uiState = UI::UIState::GetSingleton();
+                uiState->ToggleActiveMenu(UI::kSearchMenu);
             }
         }
 

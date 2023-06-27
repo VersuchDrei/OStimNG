@@ -31,6 +31,7 @@ set(sources
     src/Core/EquipObjectHandler.cpp
     src/Core/ExpressionUpdater.cpp
     src/Core/Singleton.h
+    src/Core/Thread/ThreadAutoControl.cpp
     src/Core/Thread.cpp
     src/Core/ThreadActor.cpp
     src/Core/ThreadInterface.cpp
@@ -43,9 +44,15 @@ set(sources
 	src/Game/LocaleManager.h
 	src/Game/Locker.h
 	src/Game/Patch.h
+    src/GameAPI/Game.cpp
+    src/GameAPI/GameActor.cpp
+    src/GameAPI/GameCamera.cpp
     src/GameAPI/GameSex.cpp
+    src/GameAPI/GameSound.cpp
+    src/GameAPI/GameUtil.cpp
+    src/GameAPI/GameTable.cpp
     src/Graph/Action.cpp
-    src/Graph/LookupTable.cpp
+    src/Graph/GraphTable.cpp
     src/Graph/Node.cpp
     src/InterfaceSpec/PluginInterface.cpp
     src/MCM/MCMSetting.cpp
@@ -55,6 +62,15 @@ set(sources
 	src/Papyrus/Papyrus.cpp
 	src/Papyrus/Script.h
 	src/Serial/Manager.cpp
+	src/Sound/ActionSound/BoneDistanceSoundPlayer.cpp
+	src/Sound/ActionSound/BoneDistanceSoundType.cpp
+	src/Sound/ActionSound/LoopSoundPlayer.cpp
+	src/Sound/ActionSound/LoopSoundType.cpp
+	src/Sound/ActionSound/SingleBoneDistanceSoundPlayer.cpp
+	src/Sound/ActionSound/MultiBoneDistanceSoundPlayer.cpp
+	src/Sound/ActionSound/SoundPlayer.cpp
+	src/Sound/ActionSound/SoundType.cpp
+	src/Sound/SoundTable.cpp
     src/Trait/Condition.cpp
     src/Trait/FacialExpression.cpp
     src/Trait/TraitTable.cpp
@@ -67,8 +83,9 @@ set(sources
     src/Util/ActorUtil.cpp
     src/Util/CameraUtil.cpp
     src/Util/CompatibilityTable.cpp
+    src/Util/ControlUtil.cpp
     src/Util/FormUtil.cpp
-    src/Util/MathUtil.cpp
+    src/Util/LookupTable.cpp
     src/Util/ObjectRefUtil.cpp
     src/Util/SerializationUtil.cpp
     src/Util/StringUtil.cpp

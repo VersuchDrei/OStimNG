@@ -5,7 +5,7 @@ So you do not have to worry about removing them in the ostim_end event, as OStim
 Equip objects should be marked as non playable and not otherwise used by any mod to not create any conflicts.
 
 
-Field summary:
+field summary:
 
 equip object:
 "type" (string): the type of the equip object, types used by OStim are "strapon" and "tongue", but addons can equip any custom type you want

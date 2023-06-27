@@ -1,0 +1,21 @@
+{
+	"actor":{
+		"stimulation":2.5,
+		"maxStimulation":50
+	},
+	"target":{
+		"stimulation":5.0,
+		"maxStimulation":75
+	},
+	"sound":{
+		"mod":"OStim.esp",
+		"formid":"0xE13"
+	},
+	"cameraShakeStrength":0.5,
+	"cameraShakeDuration":0.1,
+	"controllerRumbleStrength":0.3,
+	"controllerRumbleDuration": 0.1,
+	"tags":[
+		"sensual"
+	]
+}

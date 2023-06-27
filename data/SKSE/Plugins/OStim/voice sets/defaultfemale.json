@@ -1,0 +1,14 @@
+{
+	"target":{
+		"mod":"Skyrim.esm",
+		"formid":"0x000001"
+	},
+	"moan":{
+		"mod":"OStim.esp",
+		"formid":"0xE08"
+	},
+	"climax":{
+		"mod":"OStim.esp",
+		"formid":"0xE0E"
+	}
+}

@@ -132,6 +132,6 @@ namespace Alignment {
             return {};
         }
 
-        return {.sosBend = static_cast<float>(node->actors[index]->penisAngle)};
+        return {.sosBend = static_cast<float>(node->actors[index].sosBend)};
     }
 }

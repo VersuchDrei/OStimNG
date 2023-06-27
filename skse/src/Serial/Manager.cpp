@@ -129,7 +129,7 @@ namespace Serialization {
         json["actorData"] = json::object();
 
         for (auto& [formID, data] : actorData) {
-            std::string stringID = std::to_string(formID);
+            std::string stringID = std::to_string(formID & 0x00FFFFFF);
             json["actorData"][stringID] = json::object();
 
             RE::TESForm* form = RE::TESForm::LookupByID(formID);
@@ -156,16 +156,12 @@ namespace Serialization {
 
                 if (value.contains("file")) {
                     std::string file = value["file"];
-                    const RE::TESFile* mod = dataHandler->LookupLoadedModByName(file);
-                    if (mod) {
+                    if (const RE::TESFile* mod = dataHandler->LookupLoadedModByName(file)) {
                         formID &= 0x00FFFFFF;
                         formID += mod->GetCompileIndex() << 24;
-                    } else {
-                        mod = dataHandler->LookupLoadedLightModByName(file);
-                        if (mod) {
-                            formID &= 0x00000FFF;
-                            formID += mod->GetPartialIndex() << 12;
-                        }
+                    } else if (const RE::TESFile* mod = dataHandler->LookupLoadedLightModByName(file)) {
+                        formID &= 0x00000FFF;
+                        formID += mod->GetPartialIndex() << 12;
                     }
                 }
 

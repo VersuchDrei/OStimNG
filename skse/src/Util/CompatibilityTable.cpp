@@ -7,7 +7,7 @@ namespace Compatibility {
         RE::TESDataHandler* handler = RE::TESDataHandler::GetSingleton();
 
         if (handler->GetLoadedModIndex("Schlongs of Skyrim.esp")) {
-            SOS_SchlongifiedFaction = handler->LookupForm<RE::TESFaction>(0x00Aff8, "Schlongs of Skyrim.esp");
+            SOS_SchlongifiedFaction.loadFile("Schlongs of Skyrim.esp", 0x00AFF8);
         } else {
             logger::info("SoS full is not installed.");
         }
@@ -57,17 +57,17 @@ namespace Compatibility {
         return SOS_SchlongifiedFaction;
     }
 
-    bool CompatibilityTable::hasSchlong(RE::Actor* actor) {
+    bool CompatibilityTable::hasSchlong(GameAPI::GameActor actor) {
         if (!MCM::MCMTable::useSoSSex()) {
-            return actor->GetActorBase()->GetSex() == RE::SEX::kMale;
+            return actor.isSex(GameAPI::GameSex::MALE);
         }
 
-        if (!actor->IsInFaction(SOS_SchlongifiedFaction)) {
+        if (!actor.isInFaction(SOS_SchlongifiedFaction)) {
             return false;
         }
 
-        for (RE::TESFaction* faction : noSchlongFactions) {
-            if (actor->IsInFaction(faction)) {
+        for (GameAPI::GameFaction& faction : noSchlongFactions) {
+            if (actor.isInFaction(faction)) {
                 return false;
             }
         }
@@ -76,7 +76,8 @@ namespace Compatibility {
     }
 
     void CompatibilityTable::tryAddNoSchlongFaction(std::string modName, RE::FormID formID) {
-        RE::TESFaction* faction = RE::TESDataHandler::GetSingleton()->LookupForm<RE::TESFaction>(formID, modName);
+        GameAPI::GameFaction faction;
+        faction.loadFile(modName, formID);
         if (faction) {
             noSchlongFactions.push_back(faction);
         }

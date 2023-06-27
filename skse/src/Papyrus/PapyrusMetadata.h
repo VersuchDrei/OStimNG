@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Graph/LookupTable.h"
+#include "Graph/GraphTable.h"
 #include "Util/MapUtil.h"
 #include "Util/StringUtil.h"
 #include "Util/VectorUtil.h"
@@ -10,11 +10,10 @@ namespace PapyrusMetadata {
     using VM = RE::BSScript::IVirtualMachine;
 
     int findAction(std::string id, std::function<bool(Graph::Action)> condition) {
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             size_t size = node->actions.size();
             for (int i = 0; i < size; i++) {
-                auto action = node->actions[i];
-                if (condition(*action)) {
+                if (condition(node->actions[i])) {
                     return i;
                 }
             }
@@ -24,11 +23,10 @@ namespace PapyrusMetadata {
 
     std::vector<int> findActions(std::string id, std::function<bool(Graph::Action)> condition) {
         std::vector<int> ret;
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             size_t size = node->actions.size();
             for (int i = 0; i < size; i++) {
-                auto action = node->actions[i];
-                if (condition(*action)) {
+                if (condition(node->actions[i])) {
                     ret.push_back(i);
                 }
             }
@@ -54,35 +52,35 @@ namespace PapyrusMetadata {
 
 #pragma region general
     bool IsTransition(RE::StaticFunctionTag*, std::string id) {
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             return node->isTransition;
         }
         return false;
     }
 
     int GetDefaultSpeed(RE::StaticFunctionTag*, std::string id) {
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             return node->defaultSpeed;
         }
         return 0;
     }
 
     int GetMaxSpeed(RE::StaticFunctionTag*, std::string id) {
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             return node->speeds.size() - 1;
         }
         return 0;
     }
 
     int GetActorCount(RE::StaticFunctionTag*, std::string id) {
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             return node->actors.size();
         }
         return 0;
     }
 
     std::string GetAnimationId(RE::StaticFunctionTag*, std::string id, int index) {
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (node->speeds.size() > index) {
                 return node->speeds[index].animation;
             }
@@ -91,7 +89,7 @@ namespace PapyrusMetadata {
     }
 
     std::string GetAutoTransitionForActor(RE::StaticFunctionTag*, std::string id, int position, std::string type) {
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             return node->getAutoTransitionForActor(position, type);
         }
         return "";
@@ -101,7 +99,7 @@ namespace PapyrusMetadata {
 #pragma region tags
 #pragma region scene_tags
     std::vector<std::string> GetSceneTags(RE::StaticFunctionTag*, std::string id) {
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             return node->tags;
         }
         return std::vector<std::string>();
@@ -109,7 +107,7 @@ namespace PapyrusMetadata {
 
     bool HasSceneTag(RE::StaticFunctionTag*, std::string id, std::string tag) {
         StringUtil::toLower(&tag);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             return VectorUtil::contains(node->tags, tag);
         }
         return false;
@@ -117,7 +115,7 @@ namespace PapyrusMetadata {
 
     bool HasAnySceneTag(RE::StaticFunctionTag*, std::string id, std::vector<std::string> tags) {
         StringUtil::toLower(&tags);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             return VectorUtil::containsAny(node->tags, tags);
         }
         return false;
@@ -129,7 +127,7 @@ namespace PapyrusMetadata {
 
     bool HasAllSceneTags(RE::StaticFunctionTag*, std::string id, std::vector<std::string> tags) {
         StringUtil::toLower(&tags);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             return VectorUtil::containsAll(node->tags, tags);
         }
         return false;
@@ -141,7 +139,7 @@ namespace PapyrusMetadata {
 
     std::vector<std::string> GetSceneTagOverlap(RE::StaticFunctionTag*, std::string id, std::vector<std::string> tags) {
         StringUtil::toLower(&tags);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             return VectorUtil::getOverlap(node->tags, tags);
         }
 
@@ -155,9 +153,9 @@ namespace PapyrusMetadata {
 
 #pragma region actor_tags
     std::vector<std::string> GetActorTags(RE::StaticFunctionTag*, std::string id, int position) {
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (node->actors.size() > position) {
-                return node->actors[position]->tags;
+                return node->actors[position].tags;
             }
         }
         return std::vector<std::string>();
@@ -165,7 +163,7 @@ namespace PapyrusMetadata {
 
     bool HasActorTag(RE::StaticFunctionTag*, std::string id, int position, std::string tag) {
         StringUtil::toLower(&tag);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (node->actors.size() > position) {
                 return node->hasActorTag(position, tag);
             }
@@ -175,9 +173,9 @@ namespace PapyrusMetadata {
 
     bool HasAnyActorTag(RE::StaticFunctionTag*, std::string id, int position, std::vector<std::string> tags) {
         StringUtil::toLower(&tags);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (node->actors.size() > position) {
-                return VectorUtil::containsAny(node->actors[position]->tags, tags);
+                return VectorUtil::containsAny(node->actors[position].tags, tags);
             }
         }
         return false;
@@ -189,9 +187,9 @@ namespace PapyrusMetadata {
 
     bool HasAllActorTags(RE::StaticFunctionTag*, std::string id, int position, std::vector<std::string> tags) {
         StringUtil::toLower(&tags);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (node->actors.size() > position) {
-                return VectorUtil::containsAll(node->actors[position]->tags, tags);
+                return VectorUtil::containsAll(node->actors[position].tags, tags);
             }
         }
         return false;
@@ -203,9 +201,9 @@ namespace PapyrusMetadata {
 
     std::vector<std::string> GetActorTagOverlap(RE::StaticFunctionTag*, std::string id, int position, std::vector<std::string> tags) {
         StringUtil::toLower(&tags);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (node->actors.size() > position) {
-                return VectorUtil::getOverlap(node->actors[position]->tags, tags);
+                return VectorUtil::getOverlap(node->actors[position].tags, tags);
             }
             
         }
@@ -223,7 +221,7 @@ namespace PapyrusMetadata {
 #pragma region find_action
 #pragma region actions_general
     bool HasActions(RE::StaticFunctionTag*, std::string id) {
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             return !node->actions.empty();
         }
         return false;
@@ -1424,18 +1422,18 @@ namespace PapyrusMetadata {
 #pragma region action_properties
     std::vector<std::string> GetActionTypes(RE::StaticFunctionTag*, std::string id) {
         std::vector<std::string> ret;
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             for (auto& action : node->actions) {
-                ret.push_back(action->type);
+                ret.push_back(action.type);
             }
         }
         return ret;
     }
 
     std::string GetActionType(RE::StaticFunctionTag*, std::string id, int index) {
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return node->actions[index]->type;
+                return node->actions[index].type;
             }
         }
         return "";
@@ -1443,18 +1441,18 @@ namespace PapyrusMetadata {
 
     std::vector<int> GetActionActors(RE::StaticFunctionTag*, std::string id) {
         std::vector<int> ret;
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             for (auto& action : node->actions) {
-                ret.push_back(action->actor);
+                ret.push_back(action.actor);
             }
         }
         return ret;
     }
 
     int GetActionActor(RE::StaticFunctionTag*, std::string id, int index) {
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return node->actions[index]->actor;
+                return node->actions[index].actor;
             }
         }
         return -1;
@@ -1462,18 +1460,18 @@ namespace PapyrusMetadata {
 
     std::vector<int> GetActionTargets(RE::StaticFunctionTag*, std::string id) {
         std::vector<int> ret;
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             for (auto& action : node->actions) {
-                ret.push_back(action->target);
+                ret.push_back(action.target);
             }
         }
         return ret;
     }
 
     int GetActionTarget(RE::StaticFunctionTag*, std::string id, int index) {
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return node->actions[index]->target;
+                return node->actions[index].target;
             }
         }
         return -1;
@@ -1481,18 +1479,18 @@ namespace PapyrusMetadata {
 
     std::vector<int> GetActionPerformers(RE::StaticFunctionTag*, std::string id) {
         std::vector<int> ret;
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             for (auto& action : node->actions) {
-                ret.push_back(action->performer);
+                ret.push_back(action.performer);
             }
         }
         return ret;
     }
 
     int GetActionPerformer(RE::StaticFunctionTag*, std::string id, int index) {
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return node->actions[index]->actor;
+                return node->actions[index].actor;
             }
         }
         return -1;
@@ -1501,9 +1499,9 @@ namespace PapyrusMetadata {
     
 #pragma region action_tags
     std::vector<std::string> GetActionTags(RE::StaticFunctionTag*, std::string id, int index) {
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return node->actions[index]->attributes->tags;
+                return node->actions[index].attributes->tags;
             }
         }
         return {};
@@ -1511,9 +1509,9 @@ namespace PapyrusMetadata {
 
     std::vector<std::string> GetAllActionsTags(RE::StaticFunctionTag*, std::string id) {
         std::set<std::string> tags;
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
-            for (Graph::Action* action : node->actions) {
-                for (std::string tag : action->attributes->tags) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
+            for (Graph::Action action : node->actions) {
+                for (std::string tag : action.attributes->tags) {
                     tags.insert(tag);
                 }
             }
@@ -1523,9 +1521,9 @@ namespace PapyrusMetadata {
 
     bool HasActionTag(RE::StaticFunctionTag*, std::string id, int index, std::string tag) {
         StringUtil::toLower(&tag);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::contains(node->actions[index]->attributes->tags, tag);
+                return VectorUtil::contains(node->actions[index].attributes->tags, tag);
             }
         }
         return false;
@@ -1533,9 +1531,9 @@ namespace PapyrusMetadata {
 
     bool HasActionTagOnAny(RE::StaticFunctionTag*, std::string id, std::string tag) {
         StringUtil::toLower(&tag);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
-            for (Graph::Action* action: node->actions) {
-                if (VectorUtil::contains(action->attributes->tags, tag)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
+            for (Graph::Action action: node->actions) {
+                if (VectorUtil::contains(action.attributes->tags, tag)) {
                     return true;
                 }
             }
@@ -1545,9 +1543,9 @@ namespace PapyrusMetadata {
 
     bool HasAnyActionTag(RE::StaticFunctionTag*, std::string id, int index, std::vector<std::string> tags) {
         StringUtil::toLower(&tags);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::containsAny(node->actions[index]->attributes->tags, tags);
+                return VectorUtil::containsAny(node->actions[index].attributes->tags, tags);
             }
         }
         return false;
@@ -1559,9 +1557,9 @@ namespace PapyrusMetadata {
 
     bool HasAnyActionTagOnAny(RE::StaticFunctionTag*, std::string id, std::vector<std::string> tags) {
         StringUtil::toLower(&tags);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
-            for (Graph::Action* action : node->actions) {
-                if (VectorUtil::containsAny(action->attributes->tags, tags)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
+            for (Graph::Action action : node->actions) {
+                if (VectorUtil::containsAny(action.attributes->tags, tags)) {
                     return true;
                 }
             }
@@ -1575,9 +1573,9 @@ namespace PapyrusMetadata {
 
     bool HasAllActionTags(RE::StaticFunctionTag*, std::string id, int index, std::vector<std::string> tags) {
         StringUtil::toLower(&tags);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::containsAll(node->actions[index]->attributes->tags, tags);
+                return VectorUtil::containsAll(node->actions[index].attributes->tags, tags);
             }
         }
         return false;
@@ -1589,9 +1587,9 @@ namespace PapyrusMetadata {
 
     bool HasAllActionTagsOnAny(RE::StaticFunctionTag*, std::string id, std::vector<std::string> tags) {
         StringUtil::toLower(&tags);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
-            for (Graph::Action* action : node->actions) {
-                if (VectorUtil::containsAll(action->attributes->tags, tags)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
+            for (Graph::Action action : node->actions) {
+                if (VectorUtil::containsAll(action.attributes->tags, tags)) {
                     return true;
                 }
             }
@@ -1605,9 +1603,9 @@ namespace PapyrusMetadata {
 
     bool HasAllActionTagsOverAll(RE::StaticFunctionTag*, std::string id, std::vector<std::string> tags) {
         StringUtil::toLower(&tags);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
-            for (Graph::Action* action : node->actions) {
-                std::erase_if(tags, [action](std::string tag) {return VectorUtil::contains(action->attributes->tags, tag);});
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
+            for (Graph::Action action : node->actions) {
+                std::erase_if(tags, [action](std::string tag) {return VectorUtil::contains(action.attributes->tags, tag);});
                 if (tags.empty()) {
                     return true;
                 }
@@ -1622,9 +1620,9 @@ namespace PapyrusMetadata {
 
     std::vector<std::string> GetActionTagOverlap(RE::StaticFunctionTag*, std::string id, int index, std::vector<std::string> tags) {
         StringUtil::toLower(&tags);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::getOverlap(node->actions[index]->attributes->tags, tags);
+                return VectorUtil::getOverlap(node->actions[index].attributes->tags, tags);
             }
         }
 
@@ -1639,9 +1637,9 @@ namespace PapyrusMetadata {
         StringUtil::toLower(&tags);
         std::set<std::string> ret;
 
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
-            for (Graph::Action* action : node->actions) {
-                for (auto& tag : action->attributes->tags) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
+            for (Graph::Action action : node->actions) {
+                for (auto& tag : action.attributes->tags) {
                     if (VectorUtil::contains(tags, tag)) {
                         ret.insert(tag);
                     }
@@ -1662,9 +1660,9 @@ namespace PapyrusMetadata {
 #pragma region custom_action_actor_single_data
     bool HasCustomActionActorInt(RE::StaticFunctionTag*, std::string id, int index, std::string record) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return node->actions[index]->attributes->actor.ints.contains(record);
+                return node->actions[index].attributes->actor.ints.contains(record);
             }
         }
         return false;
@@ -1672,9 +1670,9 @@ namespace PapyrusMetadata {
 
     int GetCustomActionActorInt(RE::StaticFunctionTag*, std::string id, int index, std::string record, int fallback) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return MapUtil::getOrFallback(node->actions[index]->attributes->actor.ints, record, fallback);
+                return MapUtil::getOrFallback(node->actions[index].attributes->actor.ints, record, fallback);
             }
         }
         return fallback;
@@ -1682,9 +1680,9 @@ namespace PapyrusMetadata {
 
     bool IsCustomActionActorInt(RE::StaticFunctionTag*, std::string id, int index, std::string record, int value) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return MapUtil::isValue(node->actions[index]->attributes->actor.ints, record, value);
+                return MapUtil::isValue(node->actions[index].attributes->actor.ints, record, value);
             }
         }
         return false;
@@ -1692,9 +1690,9 @@ namespace PapyrusMetadata {
 
     bool HasCustomActionActorFloat(RE::StaticFunctionTag*, std::string id, int index, std::string record) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return node->actions[index]->attributes->actor.floats.contains(record);
+                return node->actions[index].attributes->actor.floats.contains(record);
             }
         }
         return false;
@@ -1702,9 +1700,9 @@ namespace PapyrusMetadata {
 
     float GetCustomActionActorFloat(RE::StaticFunctionTag*, std::string id, int index, std::string record, float fallback) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return MapUtil::getOrFallback(node->actions[index]->attributes->actor.floats, record, fallback);
+                return MapUtil::getOrFallback(node->actions[index].attributes->actor.floats, record, fallback);
             }
         }
         return fallback;
@@ -1712,9 +1710,9 @@ namespace PapyrusMetadata {
 
     bool IsCustomActionActorFloat(RE::StaticFunctionTag*, std::string id, int index, std::string record, float value) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return MapUtil::isValue(node->actions[index]->attributes->actor.floats, record, value);
+                return MapUtil::isValue(node->actions[index].attributes->actor.floats, record, value);
             }
         }
         return false;
@@ -1722,9 +1720,9 @@ namespace PapyrusMetadata {
 
     bool HasCustomActionActorString(RE::StaticFunctionTag*, std::string id, int index, std::string record) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return node->actions[index]->attributes->actor.strings.contains(record);
+                return node->actions[index].attributes->actor.strings.contains(record);
             }
         }
         return false;
@@ -1732,9 +1730,9 @@ namespace PapyrusMetadata {
 
     std::string GetCustomActionActorString(RE::StaticFunctionTag*, std::string id, int index, std::string record, std::string fallback) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return MapUtil::getOrFallback(node->actions[index]->attributes->actor.strings, record, fallback);
+                return MapUtil::getOrFallback(node->actions[index].attributes->actor.strings, record, fallback);
             }
         }
         return fallback;
@@ -1743,9 +1741,9 @@ namespace PapyrusMetadata {
     bool IsCustomActionActorString(RE::StaticFunctionTag*, std::string id, int index, std::string record, std::string value) {
         StringUtil::toLower(&record);
         StringUtil::toLower(&value);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return MapUtil::isValue(node->actions[index]->attributes->actor.strings, record, value);
+                return MapUtil::isValue(node->actions[index].attributes->actor.strings, record, value);
             }
         }
         return false;
@@ -1755,9 +1753,9 @@ namespace PapyrusMetadata {
 #pragma region custom_action_actor_int_lists
     bool HasCustomActionActorIntList(RE::StaticFunctionTag*, std::string id, int index, std::string record) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return node->actions[index]->attributes->actor.intLists.contains(record);
+                return node->actions[index].attributes->actor.intLists.contains(record);
             }
         }
         return false;
@@ -1765,9 +1763,9 @@ namespace PapyrusMetadata {
 
     std::vector<int> GetCustomActionActorIntList(RE::StaticFunctionTag*, std::string id, int index, std::string record) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return MapUtil::getOrFallback(node->actions[index]->attributes->actor.intLists, record, {});
+                return MapUtil::getOrFallback(node->actions[index].attributes->actor.intLists, record, {});
             }
         }
         return {};
@@ -1775,9 +1773,9 @@ namespace PapyrusMetadata {
 
     bool CustomActionActorIntListContains(RE::StaticFunctionTag*, std::string id, int index, std::string record, int value) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::contains(MapUtil::getOrFallback(node->actions[index]->attributes->actor.intLists, record, {}), value);
+                return VectorUtil::contains(MapUtil::getOrFallback(node->actions[index].attributes->actor.intLists, record, {}), value);
             }
         }
         return false;
@@ -1785,9 +1783,9 @@ namespace PapyrusMetadata {
 
     bool CustomActionActorIntListContainsAny(RE::StaticFunctionTag*, std::string id, int index, std::string record, std::vector<int> values) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::containsAny(MapUtil::getOrFallback(node->actions[index]->attributes->actor.intLists, record, {}), values);
+                return VectorUtil::containsAny(MapUtil::getOrFallback(node->actions[index].attributes->actor.intLists, record, {}), values);
             }
         }
         return false;
@@ -1799,9 +1797,9 @@ namespace PapyrusMetadata {
 
     bool CustomActionActorIntListContainsAll(RE::StaticFunctionTag*, std::string id, int index, std::string record, std::vector<int> values) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::containsAll(MapUtil::getOrFallback(node->actions[index]->attributes->actor.intLists, record, {}), values);
+                return VectorUtil::containsAll(MapUtil::getOrFallback(node->actions[index].attributes->actor.intLists, record, {}), values);
             }
         }
         return false;
@@ -1813,9 +1811,9 @@ namespace PapyrusMetadata {
 
     std::vector<int> GetCustomActionActorIntListOverlap(RE::StaticFunctionTag*, std::string id, int index, std::string record, std::vector<int> values) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::getOverlap(MapUtil::getOrFallback(node->actions[index]->attributes->actor.intLists, record, {}), values);
+                return VectorUtil::getOverlap(MapUtil::getOrFallback(node->actions[index].attributes->actor.intLists, record, {}), values);
             }
         }
         return {};
@@ -1829,9 +1827,9 @@ namespace PapyrusMetadata {
 #pragma region custom_action_actor_float_lists
     bool HasCustomActionActorFloatList(RE::StaticFunctionTag*, std::string id, int index, std::string record) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return node->actions[index]->attributes->actor.floatLists.contains(record);
+                return node->actions[index].attributes->actor.floatLists.contains(record);
             }
         }
         return false;
@@ -1839,9 +1837,9 @@ namespace PapyrusMetadata {
 
     std::vector<float> GetCustomActionActorFloatList(RE::StaticFunctionTag*, std::string id, int index, std::string record) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return MapUtil::getOrFallback(node->actions[index]->attributes->actor.floatLists, record, {});
+                return MapUtil::getOrFallback(node->actions[index].attributes->actor.floatLists, record, {});
             }
         }
         return {};
@@ -1849,9 +1847,9 @@ namespace PapyrusMetadata {
 
     bool CustomActionActorFloatListContains(RE::StaticFunctionTag*, std::string id, int index, std::string record, float value) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::contains(MapUtil::getOrFallback(node->actions[index]->attributes->actor.floatLists, record, {}), value);
+                return VectorUtil::contains(MapUtil::getOrFallback(node->actions[index].attributes->actor.floatLists, record, {}), value);
             }
         }
         return false;
@@ -1859,9 +1857,9 @@ namespace PapyrusMetadata {
 
     bool CustomActionActorFloatListContainsAny(RE::StaticFunctionTag*, std::string id, int index, std::string record, std::vector<float> values) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::containsAny(MapUtil::getOrFallback(node->actions[index]->attributes->actor.floatLists, record, {}), values);
+                return VectorUtil::containsAny(MapUtil::getOrFallback(node->actions[index].attributes->actor.floatLists, record, {}), values);
             }
         }
         return false;
@@ -1873,9 +1871,9 @@ namespace PapyrusMetadata {
 
     bool CustomActionActorFloatListContainsAll(RE::StaticFunctionTag*, std::string id, int index, std::string record, std::vector<float> values) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::containsAll(MapUtil::getOrFallback(node->actions[index]->attributes->actor.floatLists, record, {}), values);
+                return VectorUtil::containsAll(MapUtil::getOrFallback(node->actions[index].attributes->actor.floatLists, record, {}), values);
             }
         }
         return false;
@@ -1887,9 +1885,9 @@ namespace PapyrusMetadata {
 
     std::vector<float> GetCustomActionActorFloatListOverlap(RE::StaticFunctionTag*, std::string id, int index, std::string record, std::vector<float> values) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::getOverlap(MapUtil::getOrFallback(node->actions[index]->attributes->actor.floatLists, record, {}), values);
+                return VectorUtil::getOverlap(MapUtil::getOrFallback(node->actions[index].attributes->actor.floatLists, record, {}), values);
             }
         }
         return {};
@@ -1903,9 +1901,9 @@ namespace PapyrusMetadata {
 #pragma region custom_action_actor_string_lists
     bool HasCustomActionActorStringList(RE::StaticFunctionTag*, std::string id, int index, std::string record) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return node->actions[index]->attributes->actor.stringLists.contains(record);
+                return node->actions[index].attributes->actor.stringLists.contains(record);
             }
         }
         return false;
@@ -1913,9 +1911,9 @@ namespace PapyrusMetadata {
 
     std::vector<std::string> GetCustomActionActorStringList(RE::StaticFunctionTag*, std::string id, int index, std::string record) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return MapUtil::getOrFallback(node->actions[index]->attributes->actor.stringLists, record, {});
+                return MapUtil::getOrFallback(node->actions[index].attributes->actor.stringLists, record, {});
             }
         }
         return {};
@@ -1924,9 +1922,9 @@ namespace PapyrusMetadata {
     bool CustomActionActorStringListContains(RE::StaticFunctionTag*, std::string id, int index, std::string record, std::string value) {
         StringUtil::toLower(&record);
         StringUtil::toLower(&value);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::contains(MapUtil::getOrFallback(node->actions[index]->attributes->actor.stringLists, record, {}), value);
+                return VectorUtil::contains(MapUtil::getOrFallback(node->actions[index].attributes->actor.stringLists, record, {}), value);
             }
         }
         return false;
@@ -1935,9 +1933,9 @@ namespace PapyrusMetadata {
     bool CustomActionActorStringListContainsAny(RE::StaticFunctionTag*, std::string id, int index, std::string record, std::vector<std::string> values) {
         StringUtil::toLower(&record);
         StringUtil::toLower(&values);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::containsAny(MapUtil::getOrFallback(node->actions[index]->attributes->actor.stringLists, record, {}), values);
+                return VectorUtil::containsAny(MapUtil::getOrFallback(node->actions[index].attributes->actor.stringLists, record, {}), values);
             }
         }
         return false;
@@ -1950,9 +1948,9 @@ namespace PapyrusMetadata {
     bool CustomActionActorStringListContainsAll(RE::StaticFunctionTag*, std::string id, int index, std::string record, std::vector<std::string> values) {
         StringUtil::toLower(&record);
         StringUtil::toLower(&values);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::containsAll(MapUtil::getOrFallback(node->actions[index]->attributes->actor.stringLists, record, {}), values);
+                return VectorUtil::containsAll(MapUtil::getOrFallback(node->actions[index].attributes->actor.stringLists, record, {}), values);
             }
         }
         return false;
@@ -1965,9 +1963,9 @@ namespace PapyrusMetadata {
     std::vector<std::string> GetCustomActionActorStringListOverlap(RE::StaticFunctionTag*, std::string id, int index, std::string record, std::vector<std::string> values) {
         StringUtil::toLower(&record);
         StringUtil::toLower(&values);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::getOverlap(MapUtil::getOrFallback(node->actions[index]->attributes->actor.stringLists, record, {}), values);
+                return VectorUtil::getOverlap(MapUtil::getOrFallback(node->actions[index].attributes->actor.stringLists, record, {}), values);
             }
         }
         return {};
@@ -1983,9 +1981,9 @@ namespace PapyrusMetadata {
 #pragma region custom_action_target_single_data
     bool HasCustomActionTargetInt(RE::StaticFunctionTag*, std::string id, int index, std::string record) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return node->actions[index]->attributes->target.ints.contains(record);
+                return node->actions[index].attributes->target.ints.contains(record);
             }
         }
         return false;
@@ -1993,9 +1991,9 @@ namespace PapyrusMetadata {
 
     int GetCustomActionTargetInt(RE::StaticFunctionTag*, std::string id, int index, std::string record, int fallback) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return MapUtil::getOrFallback(node->actions[index]->attributes->target.ints, record, fallback);
+                return MapUtil::getOrFallback(node->actions[index].attributes->target.ints, record, fallback);
             }
         }
         return fallback;
@@ -2003,9 +2001,9 @@ namespace PapyrusMetadata {
 
     bool IsCustomActionTargetInt(RE::StaticFunctionTag*, std::string id, int index, std::string record, int value) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return MapUtil::isValue(node->actions[index]->attributes->target.ints, record, value);
+                return MapUtil::isValue(node->actions[index].attributes->target.ints, record, value);
             }
         }
         return false;
@@ -2013,9 +2011,9 @@ namespace PapyrusMetadata {
 
     bool HasCustomActionTargetFloat(RE::StaticFunctionTag*, std::string id, int index, std::string record) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return node->actions[index]->attributes->target.floats.contains(record);
+                return node->actions[index].attributes->target.floats.contains(record);
             }
         }
         return false;
@@ -2023,9 +2021,9 @@ namespace PapyrusMetadata {
 
     float GetCustomActionTargetFloat(RE::StaticFunctionTag*, std::string id, int index, std::string record, float fallback) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return MapUtil::getOrFallback(node->actions[index]->attributes->target.floats, record, fallback);
+                return MapUtil::getOrFallback(node->actions[index].attributes->target.floats, record, fallback);
             }
         }
         return fallback;
@@ -2033,9 +2031,9 @@ namespace PapyrusMetadata {
 
     bool IsCustomActionTargetFloat(RE::StaticFunctionTag*, std::string id, int index, std::string record, float value) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return MapUtil::isValue(node->actions[index]->attributes->target.floats, record, value);
+                return MapUtil::isValue(node->actions[index].attributes->target.floats, record, value);
             }
         }
         return false;
@@ -2043,9 +2041,9 @@ namespace PapyrusMetadata {
 
     bool HasCustomActionTargetString(RE::StaticFunctionTag*, std::string id, int index, std::string record) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return node->actions[index]->attributes->target.strings.contains(record);
+                return node->actions[index].attributes->target.strings.contains(record);
             }
         }
         return false;
@@ -2053,9 +2051,9 @@ namespace PapyrusMetadata {
 
     std::string GetCustomActionTargetString(RE::StaticFunctionTag*, std::string id, int index, std::string record, std::string fallback) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return MapUtil::getOrFallback(node->actions[index]->attributes->target.strings, record, fallback);
+                return MapUtil::getOrFallback(node->actions[index].attributes->target.strings, record, fallback);
             }
         }
         return fallback;
@@ -2064,9 +2062,9 @@ namespace PapyrusMetadata {
     bool IsCustomActionTargetString(RE::StaticFunctionTag*, std::string id, int index, std::string record, std::string value) {
         StringUtil::toLower(&record);
         StringUtil::toLower(&value);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return MapUtil::isValue(node->actions[index]->attributes->target.strings, record, value);
+                return MapUtil::isValue(node->actions[index].attributes->target.strings, record, value);
             }
         }
         return false;
@@ -2076,9 +2074,9 @@ namespace PapyrusMetadata {
 #pragma region custom_action_target_int_lists
     bool HasCustomActionTargetIntList(RE::StaticFunctionTag*, std::string id, int index, std::string record) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return node->actions[index]->attributes->target.intLists.contains(record);
+                return node->actions[index].attributes->target.intLists.contains(record);
             }
         }
         return false;
@@ -2086,9 +2084,9 @@ namespace PapyrusMetadata {
 
     std::vector<int> GetCustomActionTargetIntList(RE::StaticFunctionTag*, std::string id, int index, std::string record) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return MapUtil::getOrFallback(node->actions[index]->attributes->target.intLists, record, {});
+                return MapUtil::getOrFallback(node->actions[index].attributes->target.intLists, record, {});
             }
         }
         return {};
@@ -2096,9 +2094,9 @@ namespace PapyrusMetadata {
 
     bool CustomActionTargetIntListContains(RE::StaticFunctionTag*, std::string id, int index, std::string record, int value) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::contains(MapUtil::getOrFallback(node->actions[index]->attributes->target.intLists, record, {}), value);
+                return VectorUtil::contains(MapUtil::getOrFallback(node->actions[index].attributes->target.intLists, record, {}), value);
             }
         }
         return false;
@@ -2106,9 +2104,9 @@ namespace PapyrusMetadata {
 
     bool CustomActionTargetIntListContainsAny(RE::StaticFunctionTag*, std::string id, int index, std::string record, std::vector<int> values) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::containsAny(MapUtil::getOrFallback(node->actions[index]->attributes->target.intLists, record, {}), values);
+                return VectorUtil::containsAny(MapUtil::getOrFallback(node->actions[index].attributes->target.intLists, record, {}), values);
             }
         }
         return false;
@@ -2120,9 +2118,9 @@ namespace PapyrusMetadata {
 
     bool CustomActionTargetIntListContainsAll(RE::StaticFunctionTag*, std::string id, int index, std::string record, std::vector<int> values) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::containsAll(MapUtil::getOrFallback(node->actions[index]->attributes->target.intLists, record, {}), values);
+                return VectorUtil::containsAll(MapUtil::getOrFallback(node->actions[index].attributes->target.intLists, record, {}), values);
             }
         }
         return false;
@@ -2134,9 +2132,9 @@ namespace PapyrusMetadata {
 
     std::vector<int> GetCustomActionTargetIntListOverlap(RE::StaticFunctionTag*, std::string id, int index, std::string record, std::vector<int> values) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::getOverlap(MapUtil::getOrFallback(node->actions[index]->attributes->target.intLists, record, {}), values);
+                return VectorUtil::getOverlap(MapUtil::getOrFallback(node->actions[index].attributes->target.intLists, record, {}), values);
             }
         }
         return {};
@@ -2150,9 +2148,9 @@ namespace PapyrusMetadata {
 #pragma region custom_action_target_float_lists
     bool HasCustomActionTargetFloatList(RE::StaticFunctionTag*, std::string id, int index, std::string record) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return node->actions[index]->attributes->target.floatLists.contains(record);
+                return node->actions[index].attributes->target.floatLists.contains(record);
             }
         }
         return false;
@@ -2160,9 +2158,9 @@ namespace PapyrusMetadata {
 
     std::vector<float> GetCustomActionTargetFloatList(RE::StaticFunctionTag*, std::string id, int index, std::string record) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return MapUtil::getOrFallback(node->actions[index]->attributes->target.floatLists, record, {});
+                return MapUtil::getOrFallback(node->actions[index].attributes->target.floatLists, record, {});
             }
         }
         return {};
@@ -2170,9 +2168,9 @@ namespace PapyrusMetadata {
 
     bool CustomActionTargetFloatListContains(RE::StaticFunctionTag*, std::string id, int index, std::string record, float value) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::contains(MapUtil::getOrFallback(node->actions[index]->attributes->target.floatLists, record, {}), value);
+                return VectorUtil::contains(MapUtil::getOrFallback(node->actions[index].attributes->target.floatLists, record, {}), value);
             }
         }
         return false;
@@ -2180,9 +2178,9 @@ namespace PapyrusMetadata {
 
     bool CustomActionTargetFloatListContainsAny(RE::StaticFunctionTag*, std::string id, int index, std::string record, std::vector<float> values) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::containsAny(MapUtil::getOrFallback(node->actions[index]->attributes->target.floatLists, record, {}), values);
+                return VectorUtil::containsAny(MapUtil::getOrFallback(node->actions[index].attributes->target.floatLists, record, {}), values);
             }
         }
         return false;
@@ -2194,9 +2192,9 @@ namespace PapyrusMetadata {
 
     bool CustomActionTargetFloatListContainsAll(RE::StaticFunctionTag*, std::string id, int index, std::string record, std::vector<float> values) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::containsAll(MapUtil::getOrFallback(node->actions[index]->attributes->target.floatLists, record, {}), values);
+                return VectorUtil::containsAll(MapUtil::getOrFallback(node->actions[index].attributes->target.floatLists, record, {}), values);
             }
         }
         return false;
@@ -2208,9 +2206,9 @@ namespace PapyrusMetadata {
 
     std::vector<float> GetCustomActionTargetFloatListOverlap(RE::StaticFunctionTag*, std::string id, int index, std::string record, std::vector<float> values) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::getOverlap(MapUtil::getOrFallback(node->actions[index]->attributes->target.floatLists, record, {}), values);
+                return VectorUtil::getOverlap(MapUtil::getOrFallback(node->actions[index].attributes->target.floatLists, record, {}), values);
             }
         }
         return {};
@@ -2224,9 +2222,9 @@ namespace PapyrusMetadata {
 #pragma region custom_action_target_string_lists
     bool HasCustomActionTargetStringList(RE::StaticFunctionTag*, std::string id, int index, std::string record) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return node->actions[index]->attributes->target.stringLists.contains(record);
+                return node->actions[index].attributes->target.stringLists.contains(record);
             }
         }
         return false;
@@ -2234,9 +2232,9 @@ namespace PapyrusMetadata {
 
     std::vector<std::string> GetCustomActionTargetStringList(RE::StaticFunctionTag*, std::string id, int index, std::string record) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return MapUtil::getOrFallback(node->actions[index]->attributes->target.stringLists, record, {});
+                return MapUtil::getOrFallback(node->actions[index].attributes->target.stringLists, record, {});
             }
         }
         return {};
@@ -2245,9 +2243,9 @@ namespace PapyrusMetadata {
     bool CustomActionTargetStringListContains(RE::StaticFunctionTag*, std::string id, int index, std::string record, std::string value) {
         StringUtil::toLower(&record);
         StringUtil::toLower(&value);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::contains(MapUtil::getOrFallback(node->actions[index]->attributes->target.stringLists, record, {}), value);
+                return VectorUtil::contains(MapUtil::getOrFallback(node->actions[index].attributes->target.stringLists, record, {}), value);
             }
         }
         return false;
@@ -2256,9 +2254,9 @@ namespace PapyrusMetadata {
     bool CustomActionTargetStringListContainsAny(RE::StaticFunctionTag*, std::string id, int index, std::string record, std::vector<std::string> values) {
         StringUtil::toLower(&record);
         StringUtil::toLower(&values);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::containsAny(MapUtil::getOrFallback(node->actions[index]->attributes->target.stringLists, record, {}), values);
+                return VectorUtil::containsAny(MapUtil::getOrFallback(node->actions[index].attributes->target.stringLists, record, {}), values);
             }
         }
         return false;
@@ -2271,9 +2269,9 @@ namespace PapyrusMetadata {
     bool CustomActionTargetStringListContainsAll(RE::StaticFunctionTag*, std::string id, int index, std::string record, std::vector<std::string> values) {
         StringUtil::toLower(&record);
         StringUtil::toLower(&values);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::containsAll(MapUtil::getOrFallback(node->actions[index]->attributes->target.stringLists, record, {}), values);
+                return VectorUtil::containsAll(MapUtil::getOrFallback(node->actions[index].attributes->target.stringLists, record, {}), values);
             }
         }
         return false;
@@ -2286,9 +2284,9 @@ namespace PapyrusMetadata {
     std::vector<std::string> GetCustomActionTargetStringListOverlap(RE::StaticFunctionTag*, std::string id, int index, std::string record, std::vector<std::string> values) {
         StringUtil::toLower(&record);
         StringUtil::toLower(&values);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::getOverlap(MapUtil::getOrFallback(node->actions[index]->attributes->target.stringLists, record, {}), values);
+                return VectorUtil::getOverlap(MapUtil::getOrFallback(node->actions[index].attributes->target.stringLists, record, {}), values);
             }
         }
         return {};
@@ -2304,9 +2302,9 @@ namespace PapyrusMetadata {
 #pragma region custom_action_performer_single_data
     bool HasCustomActionPerformerInt(RE::StaticFunctionTag*, std::string id, int index, std::string record) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return node->actions[index]->attributes->performer.ints.contains(record);
+                return node->actions[index].attributes->performer.ints.contains(record);
             }
         }
         return false;
@@ -2314,9 +2312,9 @@ namespace PapyrusMetadata {
 
     int GetCustomActionPerformerInt(RE::StaticFunctionTag*, std::string id, int index, std::string record, int fallback) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return MapUtil::getOrFallback(node->actions[index]->attributes->performer.ints, record, fallback);
+                return MapUtil::getOrFallback(node->actions[index].attributes->performer.ints, record, fallback);
             }
         }
         return fallback;
@@ -2324,9 +2322,9 @@ namespace PapyrusMetadata {
 
     bool IsCustomActionPerformerInt(RE::StaticFunctionTag*, std::string id, int index, std::string record, int value) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return MapUtil::isValue(node->actions[index]->attributes->performer.ints, record, value);
+                return MapUtil::isValue(node->actions[index].attributes->performer.ints, record, value);
             }
         }
         return false;
@@ -2334,9 +2332,9 @@ namespace PapyrusMetadata {
 
     bool HasCustomActionPerformerFloat(RE::StaticFunctionTag*, std::string id, int index, std::string record) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return node->actions[index]->attributes->performer.floats.contains(record);
+                return node->actions[index].attributes->performer.floats.contains(record);
             }
         }
         return false;
@@ -2344,9 +2342,9 @@ namespace PapyrusMetadata {
 
     float GetCustomActionPerformerFloat(RE::StaticFunctionTag*, std::string id, int index, std::string record, float fallback) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return MapUtil::getOrFallback(node->actions[index]->attributes->performer.floats, record, fallback);
+                return MapUtil::getOrFallback(node->actions[index].attributes->performer.floats, record, fallback);
             }
         }
         return fallback;
@@ -2354,9 +2352,9 @@ namespace PapyrusMetadata {
 
     bool IsCustomActionPerformerFloat(RE::StaticFunctionTag*, std::string id, int index, std::string record, float value) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return MapUtil::isValue(node->actions[index]->attributes->performer.floats, record, value);
+                return MapUtil::isValue(node->actions[index].attributes->performer.floats, record, value);
             }
         }
         return false;
@@ -2364,9 +2362,9 @@ namespace PapyrusMetadata {
 
     bool HasCustomActionPerformerString(RE::StaticFunctionTag*, std::string id, int index, std::string record) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return node->actions[index]->attributes->performer.strings.contains(record);
+                return node->actions[index].attributes->performer.strings.contains(record);
             }
         }
         return false;
@@ -2374,9 +2372,9 @@ namespace PapyrusMetadata {
 
     std::string GetCustomActionPerformerString(RE::StaticFunctionTag*, std::string id, int index, std::string record, std::string fallback) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return MapUtil::getOrFallback(node->actions[index]->attributes->performer.strings, record, fallback);
+                return MapUtil::getOrFallback(node->actions[index].attributes->performer.strings, record, fallback);
             }
         }
         return fallback;
@@ -2385,9 +2383,9 @@ namespace PapyrusMetadata {
     bool IsCustomActionPerformerString(RE::StaticFunctionTag*, std::string id, int index, std::string record, std::string value) {
         StringUtil::toLower(&record);
         StringUtil::toLower(&value);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return MapUtil::isValue(node->actions[index]->attributes->performer.strings, record, value);
+                return MapUtil::isValue(node->actions[index].attributes->performer.strings, record, value);
             }
         }
         return false;
@@ -2397,9 +2395,9 @@ namespace PapyrusMetadata {
 #pragma region custom_action_performer_int_lists
     bool HasCustomActionPerformerIntList(RE::StaticFunctionTag*, std::string id, int index, std::string record) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return node->actions[index]->attributes->performer.intLists.contains(record);
+                return node->actions[index].attributes->performer.intLists.contains(record);
             }
         }
         return false;
@@ -2407,9 +2405,9 @@ namespace PapyrusMetadata {
 
     std::vector<int> GetCustomActionPerformerIntList(RE::StaticFunctionTag*, std::string id, int index, std::string record) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return MapUtil::getOrFallback(node->actions[index]->attributes->performer.intLists, record, {});
+                return MapUtil::getOrFallback(node->actions[index].attributes->performer.intLists, record, {});
             }
         }
         return {};
@@ -2417,9 +2415,9 @@ namespace PapyrusMetadata {
 
     bool CustomActionPerformerIntListContains(RE::StaticFunctionTag*, std::string id, int index, std::string record, int value) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::contains(MapUtil::getOrFallback(node->actions[index]->attributes->performer.intLists, record, {}), value);
+                return VectorUtil::contains(MapUtil::getOrFallback(node->actions[index].attributes->performer.intLists, record, {}), value);
             }
         }
         return false;
@@ -2427,9 +2425,9 @@ namespace PapyrusMetadata {
 
     bool CustomActionPerformerIntListContainsAny(RE::StaticFunctionTag*, std::string id, int index, std::string record, std::vector<int> values) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::containsAny(MapUtil::getOrFallback(node->actions[index]->attributes->performer.intLists, record, {}), values);
+                return VectorUtil::containsAny(MapUtil::getOrFallback(node->actions[index].attributes->performer.intLists, record, {}), values);
             }
         }
         return false;
@@ -2441,9 +2439,9 @@ namespace PapyrusMetadata {
 
     bool CustomActionPerformerIntListContainsAll(RE::StaticFunctionTag*, std::string id, int index, std::string record, std::vector<int> values) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::containsAll(MapUtil::getOrFallback(node->actions[index]->attributes->performer.intLists, record, {}), values);
+                return VectorUtil::containsAll(MapUtil::getOrFallback(node->actions[index].attributes->performer.intLists, record, {}), values);
             }
         }
         return false;
@@ -2455,9 +2453,9 @@ namespace PapyrusMetadata {
 
     std::vector<int> GetCustomActionPerformerIntListOverlap(RE::StaticFunctionTag*, std::string id, int index, std::string record, std::vector<int> values) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::getOverlap(MapUtil::getOrFallback(node->actions[index]->attributes->performer.intLists, record, {}), values);
+                return VectorUtil::getOverlap(MapUtil::getOrFallback(node->actions[index].attributes->performer.intLists, record, {}), values);
             }
         }
         return {};
@@ -2471,9 +2469,9 @@ namespace PapyrusMetadata {
 #pragma region custom_action_performer_float_lists
     bool HasCustomActionPerformerFloatList(RE::StaticFunctionTag*, std::string id, int index, std::string record) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return node->actions[index]->attributes->performer.floatLists.contains(record);
+                return node->actions[index].attributes->performer.floatLists.contains(record);
             }
         }
         return false;
@@ -2481,9 +2479,9 @@ namespace PapyrusMetadata {
 
     std::vector<float> GetCustomActionPerformerFloatList(RE::StaticFunctionTag*, std::string id, int index, std::string record) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return MapUtil::getOrFallback(node->actions[index]->attributes->performer.floatLists, record, {});
+                return MapUtil::getOrFallback(node->actions[index].attributes->performer.floatLists, record, {});
             }
         }
         return {};
@@ -2491,9 +2489,9 @@ namespace PapyrusMetadata {
 
     bool CustomActionPerformerFloatListContains(RE::StaticFunctionTag*, std::string id, int index, std::string record, float value) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::contains(MapUtil::getOrFallback(node->actions[index]->attributes->performer.floatLists, record, {}), value);
+                return VectorUtil::contains(MapUtil::getOrFallback(node->actions[index].attributes->performer.floatLists, record, {}), value);
             }
         }
         return false;
@@ -2501,9 +2499,9 @@ namespace PapyrusMetadata {
 
     bool CustomActionPerformerFloatListContainsAny(RE::StaticFunctionTag*, std::string id, int index, std::string record, std::vector<float> values) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::containsAny(MapUtil::getOrFallback(node->actions[index]->attributes->performer.floatLists, record, {}), values);
+                return VectorUtil::containsAny(MapUtil::getOrFallback(node->actions[index].attributes->performer.floatLists, record, {}), values);
             }
         }
         return false;
@@ -2515,9 +2513,9 @@ namespace PapyrusMetadata {
 
     bool CustomActionPerformerFloatListContainsAll(RE::StaticFunctionTag*, std::string id, int index, std::string record, std::vector<float> values) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::containsAll(MapUtil::getOrFallback(node->actions[index]->attributes->performer.floatLists, record, {}), values);
+                return VectorUtil::containsAll(MapUtil::getOrFallback(node->actions[index].attributes->performer.floatLists, record, {}), values);
             }
         }
         return false;
@@ -2529,9 +2527,9 @@ namespace PapyrusMetadata {
 
     std::vector<float> GetCustomActionPerformerFloatListOverlap(RE::StaticFunctionTag*, std::string id, int index, std::string record, std::vector<float> values) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::getOverlap(MapUtil::getOrFallback(node->actions[index]->attributes->performer.floatLists, record, {}), values);
+                return VectorUtil::getOverlap(MapUtil::getOrFallback(node->actions[index].attributes->performer.floatLists, record, {}), values);
             }
         }
         return {};
@@ -2545,9 +2543,9 @@ namespace PapyrusMetadata {
 #pragma region custom_action_performer_string_lists
     bool HasCustomActionPerformerStringList(RE::StaticFunctionTag*, std::string id, int index, std::string record) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return node->actions[index]->attributes->performer.stringLists.contains(record);
+                return node->actions[index].attributes->performer.stringLists.contains(record);
             }
         }
         return false;
@@ -2555,9 +2553,9 @@ namespace PapyrusMetadata {
 
     std::vector<std::string> GetCustomActionPerformerStringList(RE::StaticFunctionTag*, std::string id, int index, std::string record) {
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return MapUtil::getOrFallback(node->actions[index]->attributes->performer.stringLists, record, {});
+                return MapUtil::getOrFallback(node->actions[index].attributes->performer.stringLists, record, {});
             }
         }
         return {};
@@ -2566,9 +2564,9 @@ namespace PapyrusMetadata {
     bool CustomActionPerformerStringListContains(RE::StaticFunctionTag*, std::string id, int index, std::string record, std::string value) {
         StringUtil::toLower(&record);
         StringUtil::toLower(&value);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::contains(MapUtil::getOrFallback(node->actions[index]->attributes->performer.stringLists, record, {}), value);
+                return VectorUtil::contains(MapUtil::getOrFallback(node->actions[index].attributes->performer.stringLists, record, {}), value);
             }
         }
         return false;
@@ -2577,9 +2575,9 @@ namespace PapyrusMetadata {
     bool CustomActionPerformerStringListContainsAny(RE::StaticFunctionTag*, std::string id, int index, std::string record, std::vector<std::string> values) {
         StringUtil::toLower(&record);
         StringUtil::toLower(&values);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::containsAny(MapUtil::getOrFallback(node->actions[index]->attributes->performer.stringLists, record, {}), values);
+                return VectorUtil::containsAny(MapUtil::getOrFallback(node->actions[index].attributes->performer.stringLists, record, {}), values);
             }
         }
         return false;
@@ -2592,9 +2590,9 @@ namespace PapyrusMetadata {
     bool CustomActionPerformerStringListContainsAll(RE::StaticFunctionTag*, std::string id, int index, std::string record, std::vector<std::string> values) {
         StringUtil::toLower(&record);
         StringUtil::toLower(&values);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::containsAll(MapUtil::getOrFallback(node->actions[index]->attributes->performer.stringLists, record, {}), values);
+                return VectorUtil::containsAll(MapUtil::getOrFallback(node->actions[index].attributes->performer.stringLists, record, {}), values);
             }
         }
         return false;
@@ -2607,9 +2605,9 @@ namespace PapyrusMetadata {
     std::vector<std::string> GetCustomActionPerformerStringListOverlap(RE::StaticFunctionTag*, std::string id, int index, std::string record, std::vector<std::string> values) {
         StringUtil::toLower(&record);
         StringUtil::toLower(&values);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::getOverlap(MapUtil::getOrFallback(node->actions[index]->attributes->performer.stringLists, record, {}), values);
+                return VectorUtil::getOverlap(MapUtil::getOrFallback(node->actions[index].attributes->performer.stringLists, record, {}), values);
             }
         }
         return {};
@@ -2626,27 +2624,27 @@ namespace PapyrusMetadata {
         int min = INT_MAX;
 
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
-            for (Graph::Action* action : node->actions) {
-                if (action->actor == position) {
-                    auto it = action->attributes->actor.ints.find(record);
-                    if (it != action->attributes->actor.ints.end()) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
+            for (Graph::Action action : node->actions) {
+                if (action.actor == position) {
+                    auto it = action.attributes->actor.ints.find(record);
+                    if (it != action.attributes->actor.ints.end()) {
                         if (min > it->second) {
                             min = it->second;
                         }
                     }
                 }
-                if (action->target == position) {
-                    auto it = action->attributes->target.ints.find(record);
-                    if (it != action->attributes->target.ints.end()) {
+                if (action.target == position) {
+                    auto it = action.attributes->target.ints.find(record);
+                    if (it != action.attributes->target.ints.end()) {
                         if (min > it->second) {
                             min = it->second;
                         }
                     }
                 }
-                if (action->performer == position) {
-                    auto it = action->attributes->performer.ints.find(record);
-                    if (it != action->attributes->performer.ints.end()) {
+                if (action.performer == position) {
+                    auto it = action.attributes->performer.ints.find(record);
+                    if (it != action.attributes->performer.ints.end()) {
                         if (min > it->second) {
                             min = it->second;
                         }
@@ -2662,27 +2660,27 @@ namespace PapyrusMetadata {
         int max = INT_MIN;
 
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
-            for (Graph::Action* action : node->actions) {
-                if (action->actor == position) {
-                    auto it = action->attributes->actor.ints.find(record);
-                    if (it != action->attributes->actor.ints.end()) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
+            for (Graph::Action action : node->actions) {
+                if (action.actor == position) {
+                    auto it = action.attributes->actor.ints.find(record);
+                    if (it != action.attributes->actor.ints.end()) {
                         if (max < it->second) {
                             max = it->second;
                         }
                     }
                 }
-                if (action->target == position) {
-                    auto it = action->attributes->target.ints.find(record);
-                    if (it != action->attributes->target.ints.end()) {
+                if (action.target == position) {
+                    auto it = action.attributes->target.ints.find(record);
+                    if (it != action.attributes->target.ints.end()) {
                         if (max < it->second) {
                             max = it->second;
                         }
                     }
                 }
-                if (action->performer == position) {
-                    auto it = action->attributes->performer.ints.find(record);
-                    if (it != action->attributes->performer.ints.end()) {
+                if (action.performer == position) {
+                    auto it = action.attributes->performer.ints.find(record);
+                    if (it != action.attributes->performer.ints.end()) {
                         if (max < it->second) {
                             max = it->second;
                         }
@@ -2698,23 +2696,23 @@ namespace PapyrusMetadata {
         int sum = startValue;
 
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
-            for (Graph::Action* action : node->actions) {
-                if (action->actor == position) {
-                    auto it = action->attributes->actor.ints.find(record);
-                    if (it != action->attributes->actor.ints.end()) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
+            for (Graph::Action action : node->actions) {
+                if (action.actor == position) {
+                    auto it = action.attributes->actor.ints.find(record);
+                    if (it != action.attributes->actor.ints.end()) {
                         sum += it->second;
                     }
                 }
-                if (action->target == position) {
-                    auto it = action->attributes->target.ints.find(record);
-                    if (it != action->attributes->target.ints.end()) {
+                if (action.target == position) {
+                    auto it = action.attributes->target.ints.find(record);
+                    if (it != action.attributes->target.ints.end()) {
                         sum += it->second;
                     }
                 }
-                if (action->performer == position) {
-                    auto it = action->attributes->performer.ints.find(record);
-                    if (it != action->attributes->performer.ints.end()) {
+                if (action.performer == position) {
+                    auto it = action.attributes->performer.ints.find(record);
+                    if (it != action.attributes->performer.ints.end()) {
                         sum += it->second;
                     }
                 }
@@ -2728,23 +2726,23 @@ namespace PapyrusMetadata {
         int product = startValue;
 
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
-            for (Graph::Action* action : node->actions) {
-                if (action->actor == position) {
-                    auto it = action->attributes->actor.ints.find(record);
-                    if (it != action->attributes->actor.ints.end()) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
+            for (Graph::Action action : node->actions) {
+                if (action.actor == position) {
+                    auto it = action.attributes->actor.ints.find(record);
+                    if (it != action.attributes->actor.ints.end()) {
                         product *= it->second;
                     }
                 }
-                if (action->target == position) {
-                    auto it = action->attributes->target.ints.find(record);
-                    if (it != action->attributes->target.ints.end()) {
+                if (action.target == position) {
+                    auto it = action.attributes->target.ints.find(record);
+                    if (it != action.attributes->target.ints.end()) {
                         product *= it->second;
                     }
                 }
-                if (action->performer == position) {
-                    auto it = action->attributes->performer.ints.find(record);
-                    if (it != action->attributes->performer.ints.end()) {
+                if (action.performer == position) {
+                    auto it = action.attributes->performer.ints.find(record);
+                    if (it != action.attributes->performer.ints.end()) {
                         product *= it->second;
                     }
                 }
@@ -2759,27 +2757,27 @@ namespace PapyrusMetadata {
         float min = std::numeric_limits<float>::quiet_NaN();
 
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
-            for (Graph::Action* action : node->actions) {
-                if (action->actor == position) {
-                    auto it = action->attributes->actor.floats.find(record);
-                    if (it != action->attributes->actor.floats.end()) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
+            for (Graph::Action action : node->actions) {
+                if (action.actor == position) {
+                    auto it = action.attributes->actor.floats.find(record);
+                    if (it != action.attributes->actor.floats.end()) {
                         if (isnan(min) || min > it->second) {
                             min = it->second;
                         }
                     }
                 }
-                if (action->target == position) {
-                    auto it = action->attributes->target.floats.find(record);
-                    if (it != action->attributes->target.floats.end()) {
+                if (action.target == position) {
+                    auto it = action.attributes->target.floats.find(record);
+                    if (it != action.attributes->target.floats.end()) {
                         if (isnan(min) || min > it->second) {
                             min = it->second;
                         }
                     }
                 }
-                if (action->performer == position) {
-                    auto it = action->attributes->performer.floats.find(record);
-                    if (it != action->attributes->performer.floats.end()) {
+                if (action.performer == position) {
+                    auto it = action.attributes->performer.floats.find(record);
+                    if (it != action.attributes->performer.floats.end()) {
                         if (isnan(min) || min > it->second) {
                             min = it->second;
                         }
@@ -2795,27 +2793,27 @@ namespace PapyrusMetadata {
         float max = std::numeric_limits<float>::quiet_NaN();
 
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
-            for (Graph::Action* action : node->actions) {
-                if (action->actor == position) {
-                    auto it = action->attributes->actor.floats.find(record);
-                    if (it != action->attributes->actor.floats.end()) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
+            for (Graph::Action action : node->actions) {
+                if (action.actor == position) {
+                    auto it = action.attributes->actor.floats.find(record);
+                    if (it != action.attributes->actor.floats.end()) {
                         if (isnan(max) || max < it->second) {
                             max = it->second;
                         }
                     }
                 }
-                if (action->target == position) {
-                    auto it = action->attributes->target.floats.find(record);
-                    if (it != action->attributes->target.floats.end()) {
+                if (action.target == position) {
+                    auto it = action.attributes->target.floats.find(record);
+                    if (it != action.attributes->target.floats.end()) {
                         if (isnan(max) || max < it->second) {
                             max = it->second;
                         }
                     }
                 }
-                if (action->performer == position) {
-                    auto it = action->attributes->performer.floats.find(record);
-                    if (it != action->attributes->performer.floats.end()) {
+                if (action.performer == position) {
+                    auto it = action.attributes->performer.floats.find(record);
+                    if (it != action.attributes->performer.floats.end()) {
                         if (isnan(max) || max < it->second) {
                             max = it->second;
                         }
@@ -2831,23 +2829,23 @@ namespace PapyrusMetadata {
         float sum = startValue;
 
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
-            for (Graph::Action* action : node->actions) {
-                if (action->actor == position) {
-                    auto it = action->attributes->actor.floats.find(record);
-                    if (it != action->attributes->actor.floats.end()) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
+            for (Graph::Action action : node->actions) {
+                if (action.actor == position) {
+                    auto it = action.attributes->actor.floats.find(record);
+                    if (it != action.attributes->actor.floats.end()) {
                         sum += it->second;
                     }
                 }
-                if (action->target == position) {
-                    auto it = action->attributes->target.floats.find(record);
-                    if (it != action->attributes->target.floats.end()) {
+                if (action.target == position) {
+                    auto it = action.attributes->target.floats.find(record);
+                    if (it != action.attributes->target.floats.end()) {
                         sum += it->second;
                     }
                 }
-                if (action->performer == position) {
-                    auto it = action->attributes->performer.floats.find(record);
-                    if (it != action->attributes->performer.floats.end()) {
+                if (action.performer == position) {
+                    auto it = action.attributes->performer.floats.find(record);
+                    if (it != action.attributes->performer.floats.end()) {
                         sum += it->second;
                     }
                 }
@@ -2861,23 +2859,23 @@ namespace PapyrusMetadata {
         float product = startValue;
 
         StringUtil::toLower(&record);
-        if (auto node = Graph::LookupTable::getNodeById(id)) {
-            for (Graph::Action* action : node->actions) {
-                if (action->actor == position) {
-                    auto it = action->attributes->actor.floats.find(record);
-                    if (it != action->attributes->actor.floats.end()) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
+            for (Graph::Action action : node->actions) {
+                if (action.actor == position) {
+                    auto it = action.attributes->actor.floats.find(record);
+                    if (it != action.attributes->actor.floats.end()) {
                         product *= it->second;
                     }
                 }
-                if (action->target == position) {
-                    auto it = action->attributes->target.floats.find(record);
-                    if (it != action->attributes->target.floats.end()) {
+                if (action.target == position) {
+                    auto it = action.attributes->target.floats.find(record);
+                    if (it != action.attributes->target.floats.end()) {
                         product *= it->second;
                     }
                 }
-                if (action->performer == position) {
-                    auto it = action->attributes->performer.floats.find(record);
-                    if (it != action->attributes->performer.floats.end()) {
+                if (action.performer == position) {
+                    auto it = action.attributes->performer.floats.find(record);
+                    if (it != action.attributes->performer.floats.end()) {
                         product *= it->second;
                     }
                 }

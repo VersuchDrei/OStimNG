@@ -7,13 +7,14 @@ so when it comes to the term "actor" there are two things it can mean depending 
 2) an action actor, this refers to the actor property of a record of the "actions" list in the scene file (which is just an int)
 
 
-Field summary:
+field summary:
 note: all string values are converted to lower case when parsed, so capitalization does not matter
 
 action fields:
 "actor" (object): a collection of attributes for the action actor (see actor fields)
 "target" (object): a collection of attributes for the action target (see actor fields)
 "performer" (object): a collection of attributes for the action performer (see actor fields)
+"sounds" (list<object>): a list of sounds to play during this action (see sound fields)
 "tags" (list<string>): a list of tags for this action, commonly used are "oral", playful", "seductive", "sensual" and "sexual"
 	these can be used by addons to filter actions
 
@@ -23,6 +24,11 @@ actor fields:
 "maxStimulation" (float): a stimulation threshold after which this action will no longer generate any stimulation
 	this for example can be used by actions like kissing to prevent the Skyrim actors climaxing from kissing alone
 "fullStrip" (bool): When true executing this action will fully strip this Skyrim actor (if fully undress mid scene is enabled in the MCM)
+"moan" (bool): When true the Skyrim actor will do moaning sounds when this action is played.
+"talk" (bool): When true the Skyrim actor will talk when this action is played.
+	This requires add-ons to add dialogue for this actor as OStim does not come with any dialogue on its own.
+"muffled" (bool): When true the Skyirm actor will only do muffled sounds when moaning and do no talking.
+	this is mainly used for when an actor has their mouth full (usually by performing an oral action)
 "expressionOverride" (string): when set executing this action will override this Skyrim actors facial expression with one for this set (see facial expression README for how to define an expression set)
 	this can be used to open the mouth and/or stick out the tongue for oral actions
 "requirements" (list<string>): a list of requirements for this Skyrim actor, if they are not met an animation containing this action will not show up in navigation
@@ -36,6 +42,34 @@ actor fields:
 "strings" (map<string, string>): a map of custom strings that can be used by addons
 "stringLists" (map<string, list<string>>): a map of custom string lists that can be used by addons
 	known ones are: "cum" for the cum overlay slots for OCum
+
+form fields:
+"mod" (string): the name of the mod this form is defined in, including the file extension
+"formid" (string): the form id of the form in hexadecimal notation
+	note: json doesn't support hexadecimal notation, which is why this is a string and not an int
+
+sound fields:
+"type" (string): the type of the sound, depending on type different fields will be required (see sound types)
+"sound" (object): the sound descriptor of the climax sound (see form fields)
+"muteWithActor" (bool): when set the sound will not play while the actor is muted
+"muteWithTarget" (bool): when set the sound will not play while the target is muted
+
+sound types:
+
+"bonedistance":
+	the sound will be played whenever the given bones are closest to each other
+"actorBone" (string/list<string>): the bone / list of bones of the actor to check the distance against
+"targetBone" (string/list<string>): the bone / list of bones of the target to check the distance against
+"inverse" (bool): if true the sound will be played when the bones are furthest apart rather than closest together
+"minInterval" (int): if set the amount of miliseconds that two sound triggers will need to be apart in order for the sound to be played
+	this can be used to not play the sound at fast speeds
+"maxInterval" (int): if set the amount of miliseconds that the time between two triggers cannot exceed in order for the sound to be played
+	this can be used to not play the sound at slow speeds
+
+"loop":
+	the sound will be played on a loop
+"delay" (int): the time in milliseconds before a new sound is played
+	this timer starts after the previous sound is done playing, not when it starts playing
 
 
 F.A.Q.

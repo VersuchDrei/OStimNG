@@ -1,30 +1,39 @@
 #include "Graph/Node.h"
-#include "Graph/LookupTable.h"
+
+#include "Graph/GraphTable.h"
 #include "Trait/Condition.h"
 #include "Trait/TraitTable.h"
 #include "Util/ActorUtil.h"
 #include "MCM/MCMTable.h"
 #include "Util/StringUtil.h"
 #include "Util/VectorUtil.h"
-#include "SKEE.h"
 
 namespace Graph {
-    void Node::mergeActionRequirementsIntoActors() {
-        for (Action* action : actions) {
-            if (action->actor < actors.size()) {
-                actors[action->actor]->requirements |= action->attributes->actor.requirements;
+    void Node::mergeActionsIntoActors() {
+        for (Action action : actions) {
+            if (action.actor < actors.size()) {
+                actors[action.actor].requirements |= action.attributes->actor.requirements;
+                actors[action.actor].moan |= action.attributes->actor.moan;
+                actors[action.actor].talk |= action.attributes->actor.talk;
+                actors[action.actor].muffled |= action.attributes->actor.muffled;
             }
-            if (action->target < actors.size()) {
-                actors[action->target]->requirements |= action->attributes->target.requirements;
+            if (action.target < actors.size()) {
+                actors[action.target].requirements |= action.attributes->target.requirements;
+                actors[action.target].moan |= action.attributes->target.moan;
+                actors[action.target].talk |= action.attributes->target.talk;
+                actors[action.target].muffled |= action.attributes->target.muffled;
             }
-            if (action->performer < actors.size()) {
-                actors[action->performer]->requirements |= action->attributes->performer.requirements;
+            if (action.performer < actors.size()) {
+                actors[action.performer].requirements |= action.attributes->performer.requirements;
+                actors[action.performer].moan |= action.attributes->performer.moan;
+                actors[action.performer].talk |= action.attributes->performer.talk;
+                actors[action.performer].muffled |= action.attributes->performer.muffled;
             }
         }
     }
 
     void Node::tryAddNavigation(RawNavigation rawNav, std::unordered_map<Graph::Node*, std::vector<RawNavigation>>& navigationMap) {
-        Node* navigationDestination = LookupTable::getNodeById(rawNav.destination);
+        Node* navigationDestination = GraphTable::getNodeById(rawNav.destination);
         if (!navigationDestination) {
             logger::warn("Couldn't add navigation from {} to {} because {} doesn't exist.", scene_id, rawNav.destination, rawNav.destination);
             return;
@@ -64,7 +73,7 @@ namespace Graph {
                         logger::warn("Couldn't add transition from {} to destination because the navigations on {} were invalid", scene_id, rawNav.destination);
                         return;
                     }
-                    destinationNode = LookupTable::getNodeById(nav.second[0].destination);
+                    destinationNode = GraphTable::getNodeById(nav.second[0].destination);
                     break;
                 }
             }
@@ -91,7 +100,7 @@ namespace Graph {
         }
 
         for (int i = 0; i < size; i++) {
-            if (!conditions[i].fulfills(actors[i]->conditions)) {
+            if (!conditions[i].fulfills(actors[i].conditions)) {
                 return false;
             }
         }
@@ -143,14 +152,14 @@ namespace Graph {
     uint32_t Node::getStrippingMask(int position) {
         uint32_t mask = 0;
         for (auto& action : actions) {
-            mask |= action->getStrippingMask(position);
+            mask |= action.getStrippingMask(position);
         }
         return mask;
     }
 
     bool Node::doFullStrip(int position) {
         for (auto& action : actions) {
-            if (action->doFullStrip(position)) {
+            if (action.doFullStrip(position)) {
                 return true;
             }
         }
@@ -163,8 +172,8 @@ namespace Graph {
         }
 
         StringUtil::toLower(&type);
-        auto iter = actors[position]->autotransitions.find(type);
-        if (iter != actors[position]->autotransitions.end()) {
+        auto iter = actors[position].autotransitions.find(type);
+        if (iter != actors[position].autotransitions.end()) {
             return iter->second;
         }
         return "";
@@ -175,31 +184,31 @@ namespace Graph {
         if (position < 0 || position >= actors.size()) {
             return false;
         }
-        return VectorUtil::contains(actors[position]->tags, tag);
+        return VectorUtil::contains(actors[position].tags, tag);
     }
 
     bool Node::hasAnyActorTag(int position, std::vector<std::string> tags) {
         if (position < 0 || position >= actors.size()) {
             return false;
         }
-        return VectorUtil::containsAny(actors[position]->tags, tags);
+        return VectorUtil::containsAny(actors[position].tags, tags);
     }
 
     bool Node::hasAllActorTags(int position, std::vector<std::string> tags) {
         if (position < 0 || position >= actors.size()) {
             return false;
         }
-        return VectorUtil::containsAll(actors[position]->tags, tags);
+        return VectorUtil::containsAll(actors[position].tags, tags);
     }
 
     bool Node::hasOnlyListedActorTags(int position, std::vector<std::string> tags) {
         if (position < 0 || position >= actors.size()) {
             return true;
         }
-        return VectorUtil::containsAll(tags, actors[position]->tags);
+        return VectorUtil::containsAll(tags, actors[position].tags);
     }
 
-    int Node::findAction(std::function<bool(Action*)> condition) {
+    int Node::findAction(std::function<bool(Action)> condition) {
         size_t size = actions.size();
         for (int i = 0; i < size; i++) {
             if (condition(actions[i])) {
@@ -209,7 +218,7 @@ namespace Graph {
         return -1;
     }
 
-    std::vector<int> Node::findActions(std::function<bool(Action*)> condition) {
+    std::vector<int> Node::findActions(std::function<bool(Action)> condition) {
         std::vector<int> ret;
         size_t size = actions.size();
         for (int i = 0; i < size; i++) {
@@ -222,7 +231,7 @@ namespace Graph {
 
     bool Node::hasActionTag(std::string tag) {
         for (auto& action : actions) {
-            if (action->attributes->hasTag(tag)) {
+            if (action.attributes->hasTag(tag)) {
                 return true;
             }
         }
@@ -230,62 +239,60 @@ namespace Graph {
     }
 
     int Node::findAction(std::string type) {
-        return findAction([type](Action* action) { return action->type == type; });
+        return findAction([type](Action action) { return action.type == type; });
     }
 
     int Node::findAnyAction(std::vector<std::string> types) {
-        return findAction([types](Action* action) { return VectorUtil::contains(types, action->type); });
+        return findAction([types](Action action) { return VectorUtil::contains(types, action.type); });
     }
 
     int Node::findActionForActor(int position, std::string type) {
-        return findAction([position, type](Action* action) {return action->actor == position && action->type == type; });
+        return findAction([position, type](Action action) {return action.actor == position && action.type == type;});
     }
 
     int Node::findAnyActionForActor(int position, std::vector<std::string> types) {
-        return findAction([position, types](Action* action) {return action->actor == position && VectorUtil::contains(types, action->type); });
+        return findAction([position, types](Action action) {return action.actor == position && VectorUtil::contains(types, action.type);});
     }
 
     int Node::findActionForTarget(int position, std::string type) {
-        return findAction([position, type](Action* action) {return action->target == position && action->type == type; });
+        return findAction([position, type](Action action) {return action.target == position && action.type == type;});
     }
 
     int Node::findAnyActionForTarget(int position, std::vector<std::string> types) {
-        return findAction([position, types](Action* action) {
-            return action->target == position && VectorUtil::contains(types, action->type);
-        });
+        return findAction([position, types](Action action) {return action.target == position && VectorUtil::contains(types, action.type);});
     }
 
     int Node::findActionForActorAndTarget(int actorPosition, int targetPosition, std::string type) {
-        return findAction([actorPosition, targetPosition, type](Action* action) {return action->actor == actorPosition && action->target == targetPosition && action->type == type; });
+        return findAction([actorPosition, targetPosition, type](Action action) {return action.actor == actorPosition && action.target == targetPosition && action.type == type;});
     }
 
     int Node::findAnyActionForActorAndTarget(int actorPosition, int targetPosition, std::vector<std::string> types) {
-        return findAction([actorPosition, targetPosition, types](Action* action) {return action->actor == actorPosition && action->target == targetPosition && VectorUtil::contains(types, action->type); });
+        return findAction([actorPosition, targetPosition, types](Action action) {return action.actor == actorPosition && action.target == targetPosition && VectorUtil::contains(types, action.type);});
     }
 
     std::vector<Trait::FacialExpression*>* Node::getFacialExpressions(int position) {
-        if (actors[position]->expressionAction != -1 && actors[position]->expressionAction < actions.size()) {
-            auto& action = actions[actors[position]->expressionAction];
-            if (action->target == position) {
-                if (auto expressions = Trait::TraitTable::getExpressionsForActionTarget(action->type)) {
+        if (actors[position].expressionAction != -1 && actors[position].expressionAction < actions.size()) {
+            auto& action = actions[actors[position].expressionAction];
+            if (action.target == position) {
+                if (auto expressions = Trait::TraitTable::getExpressionsForActionTarget(action.type)) {
                     return expressions;
                 }
             }
-            if (action->actor == position) {
-                if (auto expressions = Trait::TraitTable::getExpressionsForActionActor(action->type)) {
+            if (action.actor == position) {
+                if (auto expressions = Trait::TraitTable::getExpressionsForActionActor(action.type)) {
                     return expressions;
                 }
             }
         }
 
         for (auto& action : actions) {
-            if (action->target == position) {
-                if (auto expressions = Trait::TraitTable::getExpressionsForActionTarget(action->type)) {
+            if (action.target == position) {
+                if (auto expressions = Trait::TraitTable::getExpressionsForActionTarget(action.type)) {
                     return expressions;
                 }
             }
-            if (action->actor == position) {
-                if (auto expressions = Trait::TraitTable::getExpressionsForActionActor(action->type)) {
+            if (action.actor == position) {
+                if (auto expressions = Trait::TraitTable::getExpressionsForActionActor(action.type)) {
                     return expressions;
                 }
             }
@@ -300,28 +307,28 @@ namespace Graph {
         }
 
         std::vector<Trait::FacialExpression*>* expression;
-        if (!actors[position]->expressionOverride.empty()) {
-            expression = Trait::TraitTable::getExpressionsForSet(actors[position]->expressionOverride);
+        if (!actors[position].expressionOverride.empty()) {
+            expression = Trait::TraitTable::getExpressionsForSet(actors[position].expressionOverride);
             if (expression) {
                 return expression;
             }
         }
 
-        for (Action* action : actions) {
-            if (action->actor == position && !action->attributes->actor.expressionOverride.empty()) {
-                expression = Trait::TraitTable::getExpressionsForSet(action->attributes->actor.expressionOverride);
+        for (Action action : actions) {
+            if (action.actor == position && !action.attributes->actor.expressionOverride.empty()) {
+                expression = Trait::TraitTable::getExpressionsForSet(action.attributes->actor.expressionOverride);
                 if (expression) {
                     return expression;
                 }
             }
-            if (action->target == position && !action->attributes->target.expressionOverride.empty()) {
-                expression = Trait::TraitTable::getExpressionsForSet(action->attributes->target.expressionOverride);
+            if (action.target == position && !action.attributes->target.expressionOverride.empty()) {
+                expression = Trait::TraitTable::getExpressionsForSet(action.attributes->target.expressionOverride);
                 if (expression) {
                     return expression;
                 }
             }
-            if (action->performer == position && !action->attributes->performer.expressionOverride.empty()) {
-                expression = Trait::TraitTable::getExpressionsForSet(action->attributes->performer.expressionOverride);
+            if (action.performer == position && !action.attributes->performer.expressionOverride.empty()) {
+                expression = Trait::TraitTable::getExpressionsForSet(action.attributes->performer.expressionOverride);
                 if (expression) {
                     return expression;
                 }

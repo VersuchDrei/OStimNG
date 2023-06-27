@@ -93,12 +93,6 @@ Function RegisterEvents()
 	RegisterForModEvent("0SAA" + FormID + "_EqOffAutoInt", "OnEqOffAutoInt")
 	RegisterForModEvent("0SAA" + FormID + "_WepOFF", "OnWepOFF")
 	RegisterForModEvent("0SAA" + FormID + "_WepON", "OnWepON")
-
-	osexintegrationmain ostim = outils.getostim()
-	if !ostim.animationrunning() || !ostim.isactorinvolved(actra)
-		; subthread events
-		RegisterForModEvent("0SSO" + FormID + "_Sound", "OnSound")
-	endif 
 EndFunction
 
 Event OnGameLoaded(String EventName, String zAnimation, Float NumArg, Form Sender)
@@ -115,10 +109,6 @@ Event OnCenterActro(String EventName, String NewStageID, Float NumArg, Form Send
 	StageID = NewStageID as Int
 	RegisterForModEvent("0S0" + StageID + "_StageReady", "OnStageReady")
 	OSO.OSpell[1].cast(Actra, Actra)
-EndEvent
-
-Event OnHit(ObjectReference Aggressor, Form Source, Projectile Proj, bool PowerAttack, bool SneakAttack, bool BashAttack, bool HitBlocked)
-	SendModEvent("ostim_actorhit")
 EndEvent
 
 Event OnChangeStage(String EventName, String NewStageID, Float NumArg, Form Sender)
@@ -199,11 +189,6 @@ Event OnFormBind(String EventName, String zMod, Float IxID, Form Sender)
 	Int Ix = StringUtil.Substring(IxID, 0, 2) as Int
 	Int Fo = StringUtil.Substring(IxID, 2) as Int
 	OFormSuite[Ix] = Game.GetFormFromFile(Fo, zMod) as FormList
-EndEvent
-
-Event OnSound(String EventName, String Fi, Float Ix, Form Sender)
-	Int S = (OFormSuite[Ix as Int].GetAt(Fi as Int) as Sound).Play(Actra)
-	Sound.SetInstanceVolume(S, 1.0)
 EndEvent
 
 Event OnAnimate(String EventName, String zAnimation, Float NumArg, Form Sender)

@@ -5,16 +5,18 @@
 #include "Events/EventListener.h"
 #include "Furniture/FurnitureTable.h"
 #include "Game/Patch.h"
-#include "Graph/LookupTable.h"
+#include "GameAPI/GameTable.h"
+#include "Graph/GraphTable.h"
 #include "InterfaceSpec/IPluginInterface.h"
 #include "InterfaceSpec/PluginInterface.h"
 #include "Messaging/IMessages.h"
 #include "Papyrus/Papyrus.h"
-#include "SKEE.h"
 #include "Serial/Manager.h"
+#include "Sound/SoundTable.h"
 #include "Trait/TraitTable.h"
 #include "UI/Align/AlignMenu.h"
 #include "Util/CompatibilityTable.h"
+#include "Util/LookupTable.h"
 #include "MCM/MCMTable.h"
 #include "UI/Scene/SceneMenu.h"
 #include "UI/UIState.h"
@@ -62,6 +64,7 @@ namespace {
             case SKSE::MessagingInterface::kPostLoad: {
                 RE::ScriptEventSourceHolder::GetSingleton()->AddEventSink<RE::TESLoadGameEvent>(Events::EventListener::GetSingleton());
                 SKSE::GetNiNodeUpdateEventSource()->AddEventSink(Events::EventListener::GetSingleton());
+                SKSE::GetCrosshairRefEventSource()->AddEventSink(Events::EventListener::GetSingleton());
 
                 auto message = SKSE::GetMessagingInterface();
                 if (message) {
@@ -73,11 +76,21 @@ namespace {
                 RE::BSInputDeviceManager::GetSingleton()->AddEventSink(Events::EventListener::GetSingleton());
             } break;
             case SKSE::MessagingInterface::kDataLoaded: {
+                // needs to be in here because a lot of these need to access forms
+                GameAPI::GameTable::setup();
+
+                Sound::SoundTable::setup();
+                Graph::GraphTable::SetupActions();
+                Trait::TraitTable::setup();
+                Alignment::Alignments::LoadAlignments();
+                Papyrus::Build();
+
                 Compatibility::CompatibilityTable::setupForms();
-                Graph::LookupTable::setupForms();
+                Util::LookupTable::setupForms();
                 Trait::TraitTable::setupForms();
                 MCM::MCMTable::setupForms();
                 Furniture::FurnitureTable::setupForms();
+                Graph::GraphTable::setupEvents();
 
                 
                 // we are installing this hook so late because we need it to overwrite the PapyrusUtil hook
@@ -88,24 +101,6 @@ namespace {
             } break;
             case SKSE::MessagingInterface::kPostLoadGame: {
                 UI::PostGameLoad();
-            } break;
-            case SKSE::MessagingInterface::kPostPostLoad: {
-                                
-                SKEE::InterfaceExchangeMessage msg;
-                auto intfc = SKSE::GetMessagingInterface();
-                intfc->Dispatch(SKEE::InterfaceExchangeMessage::kExchangeInterface, (void*)&msg, sizeof(SKEE::InterfaceExchangeMessage*), "skee");
-                if (!msg.interfaceMap) {
-                    logger::critical("Couldn't get interface map!");
-                    return;
-                }
-
-                auto nioInterface = static_cast<SKEE::INiTransformInterface*>(msg.interfaceMap->QueryInterface("NiTransform"));
-                if (nioInterface) {
-                    logger::info("NiTransform version {}", nioInterface->GetVersion());
-                    Graph::LookupTable::setNiTransfromInterface(nioInterface);
-                } else {
-                    logger::critical("Couldn't get NiTransformInterface!");
-                }
             } break;
         }
     }
@@ -130,11 +125,7 @@ SKSEPluginLoad(const LoadInterface* skse) {
 
     Patch::Install();
     Papyrus::Bind();
-    Graph::LookupTable::SetupActions();
-    Trait::TraitTable::setup();
-    Alignment::Alignments::LoadAlignments();
     UI::Settings::LoadSettings();
-    Papyrus::Build();
 
     const auto serial = SKSE::GetSerializationInterface();
     serial->SetUniqueID(_byteswap_ulong('OST'));

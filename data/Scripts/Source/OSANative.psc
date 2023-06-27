@@ -41,34 +41,6 @@ form[] Function GetEquippedAmmo(actor act) Global Native
 
 bool Function IsWig(Actor act, Armor item) Global Native
 
-
-;  ██████╗ █████╗ ███╗   ███╗███████╗██████╗  █████╗
-; ██╔════╝██╔══██╗████╗ ████║██╔════╝██╔══██╗██╔══██╗
-; ██║     ███████║██╔████╔██║█████╗  ██████╔╝███████║
-; ██║     ██╔══██║██║╚██╔╝██║██╔══╝  ██╔══██╗██╔══██║
-; ╚██████╗██║  ██║██║ ╚═╝ ██║███████╗██║  ██║██║  ██║
-;  ╚═════╝╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝
-
-
-; Is FreeCam enabled
-Bool Function IsFreeCam() Global Native
-
-; Enable/Disable FreeCam
-Function EnableFreeCam(Bool StopTime = False) Global Native
-Function DisableFreeCam() Global Native
-Function ToggleFlyCam() Global Native
-
-; Set FreeCam speed (default: 10.0)
-Function SetFreeCamSpeed(Float Speed = 10.0) Global Native
-
-; Set FOV
-Function SetFOV(Float Value, Bool FirstPerson = False) Global Native
-
-; Get camera coordinates
-; Coordinates are relative to users screen right now, not recomended.
-Float[] Function GetCameraPos() Global Native
-Function SetCameraPos(Float X, Float Y, Float Z) Global Native
-
 ;  ██████╗ ██████╗ ███╗   ██╗████████╗██████╗  ██████╗ ██╗     ███████╗
 ; ██╔════╝██╔═══██╗████╗  ██║╚══██╔══╝██╔══██╗██╔═══██╗██║     ██╔════╝
 ; ██║     ██║   ██║██╔██╗ ██║   ██║   ██████╔╝██║   ██║██║     ███████╗
@@ -170,17 +142,6 @@ Function RemoveActor(int stageId) Global Native
 
 Function UpdateSpeed(int stageId, int speed) Global Native
 
-;███████╗██╗  ██╗ ██████╗██╗████████╗███████╗███╗   ███╗███████╗███╗   ██╗████████╗
-;██╔════╝╚██╗██╔╝██╔════╝██║╚══██╔══╝██╔════╝████╗ ████║██╔════╝████╗  ██║╚══██╔══╝
-;█████╗   ╚███╔╝ ██║     ██║   ██║   █████╗  ██╔████╔██║█████╗  ██╔██╗ ██║   ██║   
-;██╔══╝   ██╔██╗ ██║     ██║   ██║   ██╔══╝  ██║╚██╔╝██║██╔══╝  ██║╚██╗██║   ██║   
-;███████╗██╔╝ ██╗╚██████╗██║   ██║   ███████╗██║ ╚═╝ ██║███████╗██║ ╚████║   ██║   
-;╚══════╝╚═╝  ╚═╝ ╚═════╝╚═╝   ╚═╝   ╚══════╝╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝   ╚═╝   
- 
-float Function GetActorExcitement(int stageId, Actor act) Global Native
-
-Function SetActorExcitement(int stageId, Actor act, float val) Global Native
-
 ; ██╗   ██╗████████╗██╗██╗
 ; ██║   ██║╚══██╔══╝██║██║
 ; ██║   ██║   ██║   ██║██║
@@ -220,3 +181,5 @@ Function SetLocale(String a_locale = "") Global Native
 string Function GetSceneIdFromAnimId(string Id) Global Native
 int Function GetSpeedFromAnimId(string Id) Global Native
 string Function GetAnimClass(string Id) Global Native
+
+Function SetGlyph(int Glyph) Global Native

@@ -1,6 +1,6 @@
 #include "SearchMenu.h"
 #include "UI/UIState.h"
-#include "Graph/LookupTable.h"
+#include "Graph/GraphTable.h"
 
 namespace UI::Search {
 
@@ -143,7 +143,7 @@ namespace UI::Search {
 
     void SearchMenu::Search(std::string value) {
         std::vector<Graph::Node*> results;
-        Graph::LookupTable::findNodesById(value , results);
+        Graph::GraphTable::findNodesById(value , results);
         std::vector<std::string> data;
         auto state = UI::UIState::GetSingleton();
         for (int i = 0; i < results.size(); i++) {
@@ -156,7 +156,7 @@ namespace UI::Search {
     }
 
     void SearchMenu::SelectOption(std::string val) {
-        auto node = Graph::LookupTable::getNodeById(val);
+        auto node = Graph::GraphTable::getNodeById(val);
         UI::UIState::GetSingleton()->currentThread->ChangeNode(node);
     }
 }

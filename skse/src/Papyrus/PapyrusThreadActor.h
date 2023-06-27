@@ -12,7 +12,7 @@ namespace PapyrusThreadActor {
     float GetExcitement(RE::StaticFunctionTag*, RE::Actor* actor) {
         OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
         if (threadActor) {
-            return threadActor->excitement;
+            return threadActor->getExcitement();
         }
 
         return -1;
@@ -27,25 +27,31 @@ namespace PapyrusThreadActor {
 
         OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
         if (threadActor) {
-            threadActor->excitement = excitement;
+            threadActor->setExcitement(excitement);
         }
     }
 
     void ModifyExcitement(RE::StaticFunctionTag*, RE::Actor* actor, float excitement, bool respectMultiplier) {
         OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
         if (threadActor) {
-            if (respectMultiplier) {
-                excitement *= threadActor->baseExcitementMultiplier;
-            }
-
-            threadActor->excitement += excitement;
-
-            if (threadActor->excitement < 0) {
-                threadActor->excitement = 0;
-            } else if (threadActor->excitement > 100) {
-                threadActor->excitement = 100;
-            }
+            threadActor->addExcitement(excitement, respectMultiplier);
         }
+    }
+
+    void Climax(RE::StaticFunctionTag*, RE::Actor* actor, bool climaxAnimation) {
+        // TODO: climax animations
+        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        if (threadActor) {
+            threadActor->climax();
+        }
+    }
+
+    int GetTimesClimaxed(RE::StaticFunctionTag*, RE::Actor* actor) {
+        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        if (threadActor) {
+            return threadActor->getTimexClimaxed();
+        }
+        return 0;
     }
 
 
@@ -77,6 +83,29 @@ namespace PapyrusThreadActor {
         OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
         if (threadActor) {
             return threadActor->hasExpressionOverride();
+        }
+        return false;
+    }
+
+
+    void Mute(RE::StaticFunctionTag*, RE::Actor* actor) {
+        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        if (threadActor) {
+            threadActor->mute();
+        }
+    }
+
+    void Unmute(RE::StaticFunctionTag*, RE::Actor* actor) {
+        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        if (threadActor) {
+            threadActor->mute();
+        }
+    }
+
+    bool IsMuted(RE::StaticFunctionTag*, RE::Actor* actor) {
+        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        if (threadActor) {
+            return threadActor->isMuted();
         }
         return false;
     }
@@ -204,10 +233,16 @@ namespace PapyrusThreadActor {
         BIND(GetExcitement);
         BIND(SetExcitement);
         BIND(ModifyExcitement);
+        BIND(Climax);
+        BIND(GetTimesClimaxed);
 
         BIND(PlayExpression);
         BIND(ClearExpression);
         BIND(HasExpressionOverride);
+
+        BIND(Mute);
+        BIND(Unmute);
+        BIND(IsMuted);
 
         BIND(Undress);
         BIND(Redress);

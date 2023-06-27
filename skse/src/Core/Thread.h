@@ -2,10 +2,12 @@
 
 #include <shared_mutex>
 
+#include "AutoModeStage.h"
 #include "ThreadActor.h"
 
 #include "Alignment/ActorAlignment.h"
 #include "Alignment/ThreadKey.h"
+#include "GameAPI/GameActor.h"
 #include "Graph/Node.h"
 #include "Serial/OldThread.h"
 
@@ -14,40 +16,56 @@ namespace OStim {
     using ThreadId = int64_t;
     class Thread : public RE::BSTEventSink<RE::BSAnimationGraphEvent>{
     public:
+        ThreadId m_threadId;
+
         Thread(ThreadId id, RE::TESObjectREFR* furniture, std::vector<RE::Actor*> actors);
 
         ~Thread();
 
         void initContinue();
 
-        bool playerThread();
+        inline Graph::Node* getCurrentNode() { return m_currentNode; }
 
         std::string getAlignmentKey();
         Alignment::ActorAlignment getActorAlignment(int index);
         void updateActorAlignment(int index, Alignment::ActorAlignment alignment);
         void alignActors();
 
+        inline void setStopTimer(int timer) { stopTimer = timer; }
         void Navigate(std::string sceneId);
 
         void ChangeNode(Graph::Node* a_node);
-        Graph::Node* getCurrentNode();
 
+        void navigateTo(Graph::Node* node, bool useFades);
         int getActorCount() { return m_actors.size(); }
 
         void AddActor(RE::Actor* a_actor);
         void RemoveActor();
 
+        std::vector<Trait::ActorConditions> getActorConditions();
+
         void loop();
 
-        ThreadActor* GetActor(RE::Actor* a_actor);
+        inline std::map<int32_t, ThreadActor> getActors() { return m_actors; }
+
+        ThreadActor* GetActor(GameAPI::GameActor a_actor);
         ThreadActor* GetActor(int a_position);
-        int getActorPosition(RE::Actor* actor);
+        int getActorPosition(GameAPI::GameActor actor);
 
         void SetSpeed(int speed);
+        void increaseSpeed();
+        void decreaseSpeed();
 
+        float getMaxExcitement();
+
+        void callEvent(std::string eventName, int actorIndex, int targetIndex, int performerIndex);
+
+        void stop();
         void close();
 
-        RE::TESObjectREFR* GetStageObject() { return vehicle; }
+        inline RE::TESObjectREFR* GetStageObject() { return vehicle; }
+
+        inline bool isPlayerThread() { return playerThread; }
 
         bool isSameThread(Thread* thread);
     public:
@@ -56,20 +74,26 @@ namespace OStim {
         Serialization::OldThread serialize();
 
     private:
-        ThreadId m_threadId;        
-        bool isPlayerThread = false;
+        Graph::Node* m_currentNode = nullptr;
+        bool playerThread = false;
+        std::map<int32_t, ThreadActor> m_actors;
+
         RE::TESObjectREFR* furniture;
+        Furniture::FurnitureType furnitureType = Furniture::FurnitureType::NONE;
         RE::TESForm* furnitureOwner = nullptr;
         RE::TESObjectREFR* vehicle;
-        std::map<int32_t, ThreadActor> m_actors;
         std::shared_mutex nodeLock;
 
-        Graph::Node* m_currentNode = nullptr;
         int m_currentNodeSpeed = 0;
         std::string alignmentKey;
 
         float freeCamSpeedBefore = 0;
         float worldFOVbefore = 0;
+        float timeScaleBefore = 0;
+
+        int stopTimer = 0;
+
+        std::vector<Sound::SoundPlayer*> soundPlayers;
 
         int animationTimer = 0;
         Graph::Node* nextNode = nullptr;
@@ -80,6 +104,29 @@ namespace OStim {
 
         void rebuildAlignmentKey();
         void alignActor(ThreadActor* threadActor, Alignment::ActorAlignment alignment);
+
+#pragma region autocontrol
+    public:
+        inline bool isInAutoMode() { return autoMode; }
+        void startAutoMode();
+        inline void stopAutoMode() { autoMode = false; }
+
+        void setAutoModeToMainStage();
+
+    private:
+        int autoSpeedControlCooldown = 5000;
+
+        bool autoMode = false;
+        AutoModeStage autoModeStage = AutoModeStage::NONE;
+        int foreplayThreshold = 0;
+        int pulloutThreshold = 0;
+        int autoModeCooldown = 0;
+
+        void evaluateAutoMode();
+        void startAutoModeCooldown();
+        void progressAutoMode();
+        void loopAutoControl();
+#pragma endregion
     };
 
 }  // namespace OStim

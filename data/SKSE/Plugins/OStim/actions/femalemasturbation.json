@@ -11,6 +11,7 @@
 	"target":{
 		"stimulation":0.9,
 		"fullStrip":true,
+		"moan":true,
 		"requirements":[
 			"vagina"
 		],
@@ -18,7 +19,8 @@
 			32,
 			49,
 			52,
-			53
+			53,
+			54
 		]
 	},
 	"performer":{

@@ -40,16 +40,37 @@ Function UpdateHeelOffset(Actor Act, float Offset, bool Add, bool Remove, bool I
 	nioverride.UpdateNodeTransform(Act, false, IsFemale, "NPC")
 EndFunction
 
-Function ToggleImprovedCamera(bool On) Global
-	If On
-		int POVKey = Input.GetMappedKey("Toggle POV")
-		Input.HoldKey(POVKey)
-		Utility.Wait(0.025)
-		Input.ReleaseKey(POVKey)
-		Utility.Wait(0.05)
-	Else
-		Game.ForceFirstPerson()
-		Utility.Wait(0.034)
-		Game.ForceThirdPerson()
-	EndIf
+; TEMPORARY ONLY
+; don't call any of these, we will remove them again in later versions
+
+Function StartScene(Actor Dom, Actor Sub, Actor Third) Global
+	OUtils.GetOstim().StartScene(Dom, Sub, zThirdActor = Third)
+EndFunction
+
+Function Masturbate(Actor Act) Global
+	OUtils.GetOStim().Masturbate(Act)
+EndFunction
+
+Function ShowBars() Global
+	OUtils.GetOStim().ShowBars()
+EndFunction
+
+Function EndAnimation() Global
+	OUtils.GetOStim().EndAnimation(true)
+EndFunction
+
+Function IncreaseSpeed() Global
+	OUtils.GetOStim().IncreaseAnimationSpeed()
+EndFunction
+
+Function DecreaseSpeed() Global
+	OUtils.GetOStim().DecreaseAnimationSpeed()
+EndFunction
+
+Function PullOut() Global
+	OUtils.GetOStim().PullOut()
+EndFunction
+
+Function ChangeNode(string Node) Global
+	OUtils.GetOStim().WarpToAnimation(Node)
 EndFunction

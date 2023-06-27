@@ -1,0 +1,272 @@
+#include "Core/Thread.h"
+
+#include "Graph/GraphTable.h"
+#include "Util/Constants.h"
+#include "Util/MathUtil.h"
+#include "Util/VectorUtil.h"
+
+namespace OStim {
+
+#pragma region util
+    bool forAnyActor(Graph::Node* node, std::function<bool(Graph::GraphActor&)> condition) {
+        for (Graph::GraphActor& actor : node->actors) {
+            if (condition(actor)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool forAllActors(Graph::Node* node, std::function<bool(Graph::GraphActor&)> condition) {
+        for (Graph::GraphActor& actor : node->actors) {
+            if (!condition(actor)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    bool forAnyAction(Graph::Node* node, std::function<bool(Graph::Action&)> condition) {
+        for (Graph::Action& action : node->actions) {
+            if (condition(action)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    void addFurniture(std::vector<std::function<bool(Graph::Node*)>>& conditions,
+                      Furniture::FurnitureType furnitureType) {
+        if (furnitureType == Furniture::FurnitureType::NONE) {
+            conditions.push_back([&](Graph::Node* node) {
+                return forAnyActor(node, [&](Graph::GraphActor& actor) {
+                    return VectorUtil::contains(actor.tags, std::string("standing"));
+                });
+            });
+        } else if (furnitureType == Furniture::FurnitureType::BED) {
+            conditions.push_back([&](Graph::Node* node) {
+                return forAllActors(node, [&](Graph::GraphActor& actor) {
+                    return !VectorUtil::contains(actor.tags, std::string("standing"));
+                });
+            });
+        }
+    }
+
+    bool checkConditions(std::vector<std::function<bool(Graph::Node*)>>& conditions, Graph::Node* node) {
+        for (std::function<bool(Graph::Node*)> condition : conditions) {
+            if (!condition(node)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    Graph::Node* getRandomForeplayNode(std::vector<Trait::ActorConditions> actorConditions, Furniture::FurnitureType furnitureType, bool lesbian, bool gay) {
+        std::vector<std::function<bool(Graph::Node*)>> conditions;
+        conditions.push_back([&](Graph::Node* node) { return node->findAnyAction({"analsex", "tribbing", "vaginalsex"}) == -1; });
+        addFurniture(conditions, furnitureType);
+        conditions.push_back([&](Graph::Node* node) {
+            return forAnyAction(node, [&](Graph::Action& action) {
+                return VectorUtil::contains(action.attributes->tags, std::string("sexual"));
+            });
+        });
+        // TODO do this with intended sex setting instead
+        if (lesbian) {
+            conditions.push_back([&](Graph::Node* node) { return VectorUtil::contains(node->tags, std::string("lesbian")); });
+        } else if (gay) {
+            conditions.push_back([&](Graph::Node* node) { return VectorUtil::contains(node->tags, std::string("gay")); });
+        }
+
+        return Graph::GraphTable::getRandomNode(furnitureType, actorConditions, [&conditions](Graph::Node* node) { return checkConditions(conditions, node); });
+    }
+
+    Graph::Node* getRandomSexNode(std::vector<Trait::ActorConditions> actorConditions, Furniture::FurnitureType furnitureType, bool lesbian, bool gay) {
+        std::vector<std::function<bool(Graph::Node*)>> conditions;
+        // TODO let conditions handle tribbing
+        conditions.push_back([&lesbian](Graph::Node* node) { return node->findAnyAction(lesbian ? std::vector<std::string>{"analsex", "tribbing", "vaginalsex"} : std::vector<std::string>{"analsex", "vaginalsex"}) != -1;
+        });
+        addFurniture(conditions, furnitureType);
+        // TODO do this with intended sex setting instead
+        if (lesbian) {
+            conditions.push_back([&](Graph::Node* node) { return VectorUtil::contains(node->tags, std::string("lesbian")); });
+        } else if (gay) {
+            conditions.push_back([&](Graph::Node* node) { return VectorUtil::contains(node->tags, std::string("gay")); });
+        }
+
+        return Graph::GraphTable::getRandomNode(furnitureType, actorConditions, [&conditions](Graph::Node* node) { return checkConditions(conditions, node); });
+    }
+
+    Graph::Node* getPulledOutVersion(Graph::Node* node, std::vector<Trait::ActorConditions> actorConditions, Furniture::FurnitureType furnitureType) {
+        // TODO actually link this to the given node
+        std::vector<std::function<bool(Graph::Node*)>> conditions;
+        conditions.push_back([&](Graph::Node* node) { return node->findAnyAction({"analsex", "tribbing", "vaginalsex"}) == -1; });
+        addFurniture(conditions, furnitureType);
+        conditions.push_back([&](Graph::Node* node) { return node->findAction("malemasturbation") != -1; });
+
+        return Graph::GraphTable::getRandomNode(furnitureType, actorConditions, [&conditions](Graph::Node* node) { return checkConditions(conditions, node); });
+    }
+#pragma endregion
+
+    void Thread::evaluateAutoMode() {
+        if (!playerThread) {
+            startAutoMode();
+            return;
+        }
+
+        if (MCM::MCMTable::useAutoModeAlways()) {
+            startAutoMode();
+            return;
+        }
+
+        if (m_actors.size() == 1) {
+            if (MCM::MCMTable::useAutoModeSolo()) {
+                startAutoMode();
+            }
+            return;
+        }
+
+        // TODO auto mode for dominant or submissive player
+        if (MCM::MCMTable::useAutoModeVanilla()) {
+            startAutoMode();
+        }
+    }
+
+    void Thread::startAutoMode() {
+        if (autoMode) {
+            return;
+        }
+
+        if (autoModeStage == AutoModeStage::NONE) {
+            if (m_actors.size() == 1) {
+                autoModeStage = AutoModeStage::MAIN;
+            } else {
+                if (MathUtil::chanceRoll(MCM::MCMTable::autoModeForeplayChance())) {
+                    autoModeStage = AutoModeStage::FOREPLAY;
+                    foreplayThreshold = MathUtil::randomInt(MCM::MCMTable::autoModeForeplayThresholdMin(), MCM::MCMTable::autoModeForeplayThresholdMax());
+                } else {
+                    autoModeStage = AutoModeStage::MAIN;
+                }
+                if (MathUtil::chanceRoll(MCM::MCMTable::autoModePulloutChance())) {
+                    pulloutThreshold = MathUtil::randomInt(MCM::MCMTable::autoModePulloutThresholdMin(), MCM::MCMTable::autoModePulloutThresholdMax());
+                }
+            }
+        }
+
+        if (m_currentNode) {
+            if (m_currentNode->isHub) {
+                progressAutoMode();
+            } else {
+                startAutoModeCooldown();
+            }
+        }
+
+        autoMode = true;
+    }
+
+    void Thread::startAutoModeCooldown() {
+        autoModeCooldown = MathUtil::randomInt(MCM::MCMTable::autoModeAnimDurationMin(), MCM::MCMTable::autoModeAnimDurationMax());
+    }
+
+    void Thread::progressAutoMode() {
+        Graph::Node* next = nullptr;
+        if (m_actors.size() == 1) {
+            std::string action = GetActor(0)->hasSchlong() ? "malemasturbation" : "femalemasturbation";
+            next = Graph::GraphTable::getRandomNode(furnitureType, getActorConditions(), [&action](Graph::Node* node) { return node->findAction(action) != -1; });
+        } else {
+            // TODO actually do this with intended sex
+            bool lesbian = true;
+            bool gay = true;
+            if (MCM::MCMTable::intendedSexOnly()) {
+                for (auto& [index, actor] : m_actors) {
+                    if (actor.isFemale()) {
+                        gay = false;
+                    } else {
+                        lesbian = false;
+                    }
+                }
+            } else {
+                lesbian = false;
+                gay = false;
+            }
+            if (autoModeStage == AutoModeStage::FOREPLAY) {
+                next = getRandomForeplayNode(getActorConditions(), furnitureType, lesbian, gay);
+            } else if (autoModeStage == AutoModeStage::MAIN) {
+                next = getRandomSexNode(getActorConditions(), furnitureType, lesbian, gay);
+            }
+        }
+
+        if (next) {
+            navigateTo(next, MCM::MCMTable::useAutoModeFades());
+        }
+        
+        startAutoModeCooldown();
+    }
+
+    void Thread::loopAutoControl() {
+        if (!playerThread || MCM::MCMTable::autoSpeedControl()) {
+            if ((autoSpeedControlCooldown -= Constants::LOOP_TIME_MILLISECONDS) <= 0) {
+                int excitement = getMaxExcitement();
+                int chance;
+                int min = MCM::MCMTable::autoSpeedControlExcitementMin();
+                int max = MCM::MCMTable::autoSpeedControlExcitementMax();
+                if (excitement < min) {
+                    chance = 0;
+                } else if (excitement > max) {
+                    chance = 100;
+                } else {
+                    chance = ((excitement - min) * 100) / (max - min);
+                }
+                if (MathUtil::chanceRoll(chance)) {
+                    increaseSpeed();
+                }
+                autoSpeedControlCooldown = MathUtil::randomInt(MCM::MCMTable::autoSpeedControlIntervalMin(), MCM::MCMTable::autoSpeedControlIntervalMax());
+            }
+        }
+
+
+        if (!autoMode) {
+            return;
+        }
+
+        if (autoModeStage == AutoModeStage::PULLOUT) {
+            // wait for climax
+            return;
+        }
+
+        if (autoModeStage == AutoModeStage::FOREPLAY) {
+            if (getMaxExcitement() > foreplayThreshold) {
+                autoModeStage = AutoModeStage::MAIN;
+                autoModeCooldown = 0;
+            }
+        }
+
+        if (autoModeStage == AutoModeStage::MAIN && pulloutThreshold != 0) {
+            float maxExcitement = 0;
+            for (auto& [index, actor] : m_actors) {
+                if (actor.hasSchlong() && actor.getExcitement() > maxExcitement) {
+                    maxExcitement = actor.getExcitement();
+                }
+            }
+
+            if (maxExcitement > pulloutThreshold) {
+                autoModeStage = AutoModeStage::PULLOUT;
+                Graph::Node* pullout = getPulledOutVersion(m_currentNode, getActorConditions(), furnitureType);
+                if (pullout) {
+                    navigateTo(pullout, MCM::MCMTable::useAutoModeFades());
+                }
+            }
+        }
+
+        if ((autoModeCooldown -= Constants::LOOP_TIME_MILLISECONDS) < 0) {
+            progressAutoMode();
+        }
+    }
+
+    void Thread::setAutoModeToMainStage() {
+        if (autoModeStage == AutoModeStage::MAIN) {
+            return;
+        }
+
+        autoModeStage = AutoModeStage::MAIN;
+    }
+}

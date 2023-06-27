@@ -4,27 +4,38 @@
 #include "ExpressionUpdater.h"
 
 #include "Alignment/ActorKey.h"
+#include "GameAPI/GameActor.h"
 #include "Graph/Node.h"
-#include "Trait/EquipObject.h"
 #include "Serial/OldThread.h"
+#include "Sound/VoiceSet.h"
+#include "Trait/EquipObject.h"
 
 namespace OStim {
+    class Thread;
+
 	class ThreadActor {
 	public:
-        ThreadActor(int threadId, RE::Actor* actor);
+        ThreadActor(Thread* thread, int index, GameAPI::GameActor actor);
         void initContinue();
 
-		float excitement = 0; // current excitement
-		float baseExcitementInc = 0; // base excitement per second without speed or MCM modifier
-		float baseExcitementMultiplier = 1.0; // multiplier from MCM
-        float loopExcitementInc = 0; // final excitement inc per loop
-		float maxExcitement = 0;
-        float loopExcitementDecay = 0; // excitement decay per loop
-        int excitementDecayCooldown = 0;
+        int index;
 
-		inline RE::Actor* getActor() { return actor; }
+		inline GameAPI::GameActor getActor() { return actor; }
 
         Alignment::ActorKey getAlignmentKey();
+
+        inline float getExcitement() { return excitement; }
+        void setExcitement(float value);
+        void addExcitement(float value, bool respectMultiplier);
+        inline float getMaxExcitement() { return maxExcitement; }
+        inline void setMaxExcitement(float max) { maxExcitement = max; }
+        inline float getBaseExcitementInc() { return baseExcitementInc; }
+        inline void setBaseExcitementInc(float inc) { baseExcitementInc = inc; }
+        inline float getBaseExcitementMultiplier() { return baseExcitementMultiplier; }
+        inline void setLoopExcitementInc(float inc) { loopExcitementInc = inc; }
+
+        void climax();
+        inline int getTimexClimaxed() { return timesClimaxed; }
 
         void undress();
         void undressPartial(uint32_t mask);
@@ -33,7 +44,7 @@ namespace OStim {
         void redressPartial(uint32_t mask);
         void addWeapons();
 
-        void changeNode(Graph::Actor* graphActor, std::vector<Trait::FacialExpression*>* nodeExpressions, std::vector<Trait::FacialExpression*>* overrideExpressions);
+        void changeNode(Graph::GraphActor* graphActor, std::vector<Trait::FacialExpression*>* nodeExpressions, std::vector<Trait::FacialExpression*>* overrideExpressions);
         void changeSpeed(int speed);
         void setScaleMult(float scaleMult);
         void setSoSBend(int sosBend);
@@ -56,13 +67,18 @@ namespace OStim {
         bool setObjectVariant(std::string type, std::string variant, int duration);
         void unsetObjectVariant(std::string type);
 
-        inline bool setObjectVariant(std::string type, std::string variant) {
-            return setObjectVariant(type, variant, 0);
-        }
+        void mute();
+        void unmute();
+        inline bool isMuted() { return muted; }
+
+        inline bool setObjectVariant(std::string type, std::string variant) { return setObjectVariant(type, variant, 0); }
 
         void loop();
 
         void free();
+
+        inline bool isFemale() { return female; }
+        inline bool hasSchlong() { return schlong; }
 
         Serialization::OldThreadActor serialize();
 
@@ -125,14 +141,28 @@ namespace OStim {
             bool isRedress;
         };
 
-        int threadId;
-		RE::Actor* actor;
-        float scaleBefore;
-        bool isPlayer;
-        bool isFemale;
-        bool hasSchlong;
+        float excitement = 0;                  // current excitement
+        float baseExcitementInc = 0;           // base excitement per second without speed or MCM modifier
+        float baseExcitementMultiplier = 1.0;  // multiplier from MCM
+        float loopExcitementInc = 0;           // final excitement inc per loop
+        float maxExcitement = 0;
+        float loopExcitementDecay = 0;  // excitement decay per loop
+        int excitementDecayCooldown = 0;
 
-        Graph::Actor* graphActor = nullptr;
+        Thread* thread;
+		GameAPI::GameActor actor;
+
+        float scaleBefore = 1.0;
+        GameAPI::GamePosition positionBefore;
+        float rotationBefore = 0;
+
+        bool isPlayer;
+        bool female;
+        bool schlong;
+
+        int timesClimaxed = 0;
+
+        Graph::GraphActor* graphActor = nullptr;
         int speed = 0;
         float scaleMult = 1.0;
         int sosBend = 0;
@@ -165,6 +195,10 @@ namespace OStim {
         std::unordered_map<std::string, EquipObjectHandler> equipObjects;
         std::vector<std::string> phonemeObjects;
 
+        Sound::VoiceSet* voiceSet = nullptr;
+        bool muted = false;
+        int moanCooldown = -1;
+
         void scale();
         void bendSchlong();
         void checkHeelOffset();
@@ -177,6 +211,10 @@ namespace OStim {
         void applyExpression(Trait::GenderExpression* expression, int mask, int updateSpeed);
         void checkForEyeballOverride();
         void applyEyeballOverride();
+
+        void startMoanCooldown();
+        void stopMoanCooldown();
+        void moan();
 
         void papyrusUndressCallback(std::vector<RE::TESObjectARMO*> items);
         void papyrusRedressCallback(std::vector<RE::TESObjectARMO*> items);

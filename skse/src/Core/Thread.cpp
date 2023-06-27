@@ -1,6 +1,11 @@
-#include "Core/Thread.h"
+#include "Thread.h"
+
+#include "ThreadManager.h"
+
 #include "Furniture/Furniture.h"
-#include "Graph/LookupTable.h"
+#include "GameAPI/Game.h"
+#include "GameAPI/GameCamera.h"
+#include "Graph/GraphTable.h"
 #include "Graph/Node.h"
 #include <Messaging/IMessages.h>
 #include "UI/Align/AlignMenu.h"
@@ -8,8 +13,11 @@
 #include "UI/UIState.h"
 #include "Util/CameraUtil.h"
 #include "Util/Constants.h"
+#include "Util/ControlUtil.h"
+#include "Util/FormUtil.h"
 #include "Util/MathUtil.h"
 #include "MCM/MCMTable.h"
+#include "Util/LookupTable.h"
 #include "Util/ObjectRefUtil.h"
 #include "Util/StringUtil.h"
 #include "Util.h"
@@ -18,9 +26,10 @@ namespace OStim {
     Thread::Thread(ThreadId id, RE::TESObjectREFR* furniture, std::vector<RE::Actor*> actors) : m_threadId{id}, furniture{furniture} {
         // --- setting up the vehicle --- //
         RE::TESObjectREFR* center = furniture ? furniture : actors[0];
-        vehicle = center->PlaceObjectAtMe(Graph::LookupTable::OStimVehicle, false).get();
+        vehicle = center->PlaceObjectAtMe(Util::LookupTable::OStimVehicle, false).get();
 
         if (furniture) {
+            furnitureType = Furniture::getFurnitureType(furniture, false);
             furnitureOwner = ObjectRefUtil::getOwner(furniture);
             Furniture::lockFurniture(furniture);
 
@@ -37,33 +46,14 @@ namespace OStim {
             vehicle->MoveTo(center);
         }
 
-        RE::Actor* player = RE::PlayerCharacter::GetSingleton();
         for (int i = 0; i < actors.size(); i++) {
             RE::Actor* actor = actors[i];
             addActorInner(i, actor);
-            isPlayerThread |= actor == player;
+            playerThread |= actor->IsPlayerRef();
         }
 
-        if (isPlayerThread) {
-            RE::PlayerCamera* camera = RE::PlayerCamera::GetSingleton();
-            if (MCM::MCMTable::useFreeCam()) {
-                if (!camera->IsInFreeCameraMode()) {
-                    camera->ForceThirdPerson();
-                    std::thread camThread = std::thread([&] {
-                        std::this_thread::sleep_for(std::chrono::milliseconds(250));
-                        CameraUtil::toggleFlyCam();
-                    });
-                    camThread.detach();
-                }
-            } else if (MCM::MCMTable::supportImprovedCam()) {
-                const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-                auto vm = skyrimVM ? skyrimVM->impl : nullptr;
-                if (vm) {
-                    RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-                    auto args = RE::MakeFunctionArguments(std::move(false));
-                    vm->DispatchStaticCall("OSKSE", "ToggleImprovedCamera", args, callback);
-                }
-            }
+        if (playerThread) {
+            GameAPI::GameCamera::startSceneMode(MCM::MCMTable::useFreeCam());
 
             RE::INISettingCollection* ini = RE::INISettingCollection::GetSingleton();
             RE::Setting* speed = ini->GetSetting("fFreeCameraTranslationSpeed:Camera");
@@ -72,17 +62,31 @@ namespace OStim {
                 speed->data.f = MCM::MCMTable::freeCamSpeed();
             }
 
-            worldFOVbefore = camera->worldFOV;
-            camera->worldFOV = MCM::MCMTable::freeCamFOV();
+            worldFOVbefore = GameAPI::GameCamera::getWorldFOV();
+            GameAPI::GameCamera::setWorldFOV(MCM::MCMTable::freeCamFOV());
+
+            timeScaleBefore = GameAPI::Game::getTimeScale();
+            if (MCM::MCMTable::customTimeScale() > 0) {
+                GameAPI::Game::setTimeScale(MCM::MCMTable::customTimeScale());
+            }
+        }
+
+        evaluateAutoMode();
+        if (!playerThread) {
+            stopTimer = MCM::MCMTable::npcSceneDuration();
         }
     }
 
     Thread::~Thread() {
         for (auto& actorIt : m_actors) {
-            removeActorSink(actorIt.second.getActor());
+            removeActorSink(actorIt.second.getActor().form);
         }
 
-        if (isPlayerThread) {
+        for (auto& soundPlayer : soundPlayers) {
+            delete soundPlayer;
+        }
+
+        if (playerThread) {
             UI::HideMenus();
         }
     }
@@ -90,19 +94,15 @@ namespace OStim {
     void Thread::initContinue() {
         // this stuff needs to happen after the thread has been put into the map in thread manager
         for (auto& [index, actor] : m_actors) {
-            actor.getActor()->EvaluatePackage();
+            actor.getActor().updateAI();
         }
 
-        if (isPlayerThread) {
+        if (playerThread) {
             auto uiState = UI::UIState::GetSingleton();
             if(uiState)
                 uiState->SetThread(this);
             UI::Scene::SceneMenu::Show();
         }
-    }
-
-    bool Thread::playerThread() {
-        return isPlayerThread;
     }
 
     void Thread::rebuildAlignmentKey() {
@@ -114,7 +114,7 @@ namespace OStim {
 
         alignmentKey = key.toString();
 
-        if (isPlayerThread) {
+        if (playerThread) {
             UI::UIState::GetSingleton()->NodeChanged(this, m_currentNode);
         }   
     }
@@ -146,6 +146,8 @@ namespace OStim {
     }
 
     void Thread::ChangeNode(Graph::Node* a_node) {
+        logger::info("thread {} changed to node {}", m_threadId, a_node->scene_id);
+
         std::unique_lock<std::shared_mutex> writeLock(nodeLock);
         nextNode = nullptr;
         m_currentNode = a_node;
@@ -154,25 +156,25 @@ namespace OStim {
         for (auto& actorIt : m_actors) {
             // --- excitement calculation --- //
             float excitementInc = 0;
-            actorIt.second.maxExcitement = 0;
+            actorIt.second.setMaxExcitement(0);
             std::vector<float> excitementVals;
             for (auto& action : m_currentNode->actions) {
-                if (action->actor == actorIt.first && action->attributes->actor.stimulation != 0) {
-                    excitementVals.push_back(action->attributes->actor.stimulation);
-                    auto maxStim = action->attributes->actor.maxStimulation;
-                    if (maxStim > actorIt.second.maxExcitement) {
-                        actorIt.second.maxExcitement = maxStim;
+                if (action.actor == actorIt.first && action.attributes->actor.stimulation != 0) {
+                    excitementVals.push_back(action.attributes->actor.stimulation);
+                    auto maxStim = action.attributes->actor.maxStimulation;
+                    if (maxStim > actorIt.second.getMaxExcitement()) {
+                        actorIt.second.setMaxExcitement(maxStim);
                     }
                 }
-                if (action->target == actorIt.first && action->attributes->target.stimulation != 0) {
-                    excitementVals.push_back(action->attributes->target.stimulation);
-                    auto maxStim = action->attributes->target.maxStimulation;
-                    if (maxStim > actorIt.second.maxExcitement) {
-                        actorIt.second.maxExcitement = maxStim;
+                if (action.target == actorIt.first && action.attributes->target.stimulation != 0) {
+                    excitementVals.push_back(action.attributes->target.stimulation);
+                    auto maxStim = action.attributes->target.maxStimulation;
+                    if (maxStim > actorIt.second.getMaxExcitement()) {
+                        actorIt.second.setMaxExcitement(maxStim);
                     }
                 }
-                if (action->performer == actorIt.first && action->attributes->performer.stimulation != 0) {
-                    excitementVals.push_back(action->attributes->performer.stimulation);
+                if (action.performer == actorIt.first && action.attributes->performer.stimulation != 0) {
+                    excitementVals.push_back(action.attributes->performer.stimulation);
                 }
             }
 
@@ -192,9 +194,9 @@ namespace OStim {
                 } break;
             }
 
-            actorIt.second.baseExcitementInc = excitementInc;
+            actorIt.second.setBaseExcitementInc(excitementInc);
             if (excitementInc <= 0) {
-                actorIt.second.maxExcitement = 0;
+                actorIt.second.setMaxExcitement(0);
             }
 
 
@@ -219,13 +221,39 @@ namespace OStim {
 
             // --- scaling / heel offsets / facial expressions --- //
             if (actorIt.first < m_currentNode->actors.size()) {
-                actorIt.second.changeNode(m_currentNode->actors[actorIt.first], m_currentNode->getFacialExpressions(actorIt.first), m_currentNode->getOverrideExpressions(actorIt.first));
+                actorIt.second.changeNode(&(m_currentNode->actors[actorIt.first]), m_currentNode->getFacialExpressions(actorIt.first), m_currentNode->getOverrideExpressions(actorIt.first));
             }
         }
 
         alignActors();
 
-        UI::UIState::GetSingleton()->NodeChanged(this, m_currentNode);        
+        // sounds
+        for (Sound::SoundPlayer*& soundPlayer : soundPlayers) {
+            delete soundPlayer;
+        }
+        soundPlayers.clear();
+
+        for (Graph::Action& action : m_currentNode->actions) {
+            for (Sound::SoundType*& soundType : action.attributes->sounds) {
+                ThreadActor* actor = GetActor(action.actor);
+                ThreadActor* target = GetActor(action.target);
+                if (actor && target) {
+                    if (playerThread || !soundType->playPlayerThreadOnly()) {
+                        Sound::SoundPlayer* soundPlayer = soundType->create(actor, target);
+                        if (soundPlayer) {
+                            soundPlayers.push_back(soundPlayer);
+                        }
+                    }
+                }
+            }
+        }
+
+        // TODO when we have our own UI do this for player thread, too
+        if (!playerThread) {
+            SetSpeed(m_currentNode->defaultSpeed);
+        }
+
+        UI::UIState::GetSingleton()->NodeChanged(this, m_currentNode);
 
         auto messaging = SKSE::GetMessagingInterface();
 
@@ -236,8 +264,36 @@ namespace OStim {
         SetSpeed(0);
     }
 
-    Graph::Node* Thread::getCurrentNode() {
-        return m_currentNode;
+    void Thread::navigateTo(Graph::Node* node, bool useFades) {
+        // TODO
+        if (playerThread) {
+            if (useFades) {
+                std::thread fadeThread = std::thread([node] {
+                    GameAPI::GameCamera::fadeToBlack(1);
+                    std::this_thread::sleep_for(std::chrono::milliseconds(700));
+                    const auto skyrimVM = RE::SkyrimVM::GetSingleton();
+                    auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+                    if (vm) {
+                        RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
+                        auto args = RE::MakeFunctionArguments(std::move(node->scene_id));
+                        vm->DispatchStaticCall("OSKSE", "ChangeNode", args, callback);
+                    }
+                    std::this_thread::sleep_for(std::chrono::milliseconds(550));
+                    GameAPI::GameCamera::fadeFromBlack(1);
+                });
+                fadeThread.detach();
+            } else {
+                const auto skyrimVM = RE::SkyrimVM::GetSingleton();
+                auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+                if (vm) {
+                    RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
+                    auto args = RE::MakeFunctionArguments(std::move(node->scene_id));
+                    vm->DispatchStaticCall("OSKSE", "ChangeNode", args, callback);
+                }
+            }
+        } else {
+            ChangeNode(node);
+        }
     }
 
     void Thread::AddActor(RE::Actor* actor) {
@@ -249,7 +305,7 @@ namespace OStim {
     void Thread::RemoveActor() {
         int index = m_actors.size() - 1;
         ThreadActor* actor = GetActor(index);
-        removeActorSink(actor->getActor());
+        removeActorSink(actor->getActor().form);
         actor->free();
 
         m_actors.erase(index);
@@ -259,7 +315,7 @@ namespace OStim {
         ActorUtil::lockActor(actor);
         ActorUtil::setVehicle(actor, vehicle);
         addActorSink(actor);
-        m_actors.insert(std::make_pair(index, ThreadActor(m_threadId, actor)));
+        m_actors.insert(std::make_pair(index, ThreadActor(this, index, actor)));
         ThreadActor* threadActor = GetActor(index);
         threadActor->initContinue();
         if (MCM::MCMTable::undressAtStart()) {
@@ -270,6 +326,16 @@ namespace OStim {
         }
         actor->MoveTo(vehicle);
         alignActor(threadActor, {});
+    }
+
+    std::vector<Trait::ActorConditions> Thread::getActorConditions() {
+        std::vector<Trait::ActorConditions> conditions;
+        for (int i = 0; i < m_actors.size(); i++) {
+            // TODO do this with GameActor
+            conditions.push_back(Trait::ActorConditions::create(GetActor(i)->getActor().form));
+        }
+
+        return conditions;
     }
 
     void Thread::alignActors() {
@@ -286,11 +352,11 @@ namespace OStim {
 
         float newAngle = vehicle->data.angle.z + MathUtil::toRadians(alignment.rotation);
 
-        RE::Actor* actor = threadActor->getActor();
+        RE::Actor* actor = threadActor->getActor().form;
 
         ObjectRefUtil::stopTranslation(actor);
 
-        actor->SetRotationZ(newAngle);       
+        actor->SetRotationZ(newAngle);
 
         ObjectRefUtil::translateTo(actor, vehicle->data.location.x + cos * alignment.offsetX + sin * alignment.offsetY, vehicle->data.location.y - sin * alignment.offsetX + cos * alignment.offsetY, vehicle->data.location.z + alignment.offsetZ,
             MathUtil::toDegrees(vehicle->data.angle.x), MathUtil::toDegrees(vehicle->data.angle.y), MathUtil::toDegrees(newAngle) + 1, 1000000, 0.0001);
@@ -306,13 +372,39 @@ namespace OStim {
 
     void Thread::loop() {
         //std::shared_lock<std::shared_mutex> readLock(nodeLock);
+
+        if (stopTimer > 0) {
+            if ((stopTimer -= Constants::LOOP_TIME_MILLISECONDS) <= 0) {
+                stop();
+                return;
+            }
+        }
+
+        if (!playerThread && !GetActor(0)->getActor().isInSameCell(GameAPI::GameActor::getPlayer())) {
+            stop();
+            return;
+        }
+
+        for (auto& actor : m_actors) {
+            if (actor.second.getActor().isInCombat() || actor.second.getActor().isDead()) {
+                stop();
+                return;
+            }
+        }
+
         // TODO: Can remove this when we start scenes in c++ with a starting node
         if (!m_currentNode) {
             return;
         }
 
+        loopAutoControl();
+
         for (auto& actorIt : m_actors) {
             actorIt.second.loop();
+        }
+
+        for (Sound::SoundPlayer*& player : soundPlayers) {
+            player->loop();
         }
 
         animationTimer += Constants::LOOP_TIME_MILLISECONDS;
@@ -327,7 +419,7 @@ namespace OStim {
         }
     }
 
-    ThreadActor* Thread::GetActor(RE::Actor* a_actor) {
+    ThreadActor* Thread::GetActor(GameAPI::GameActor a_actor) {
         for (auto& i : m_actors) {
             if (i.second.getActor() == a_actor) return &i.second;
         }
@@ -341,7 +433,7 @@ namespace OStim {
         return nullptr;
     }
 
-    int Thread::getActorPosition(RE::Actor* actor) {
+    int Thread::getActorPosition(GameAPI::GameActor actor) {
         for (auto& i : m_actors) {
             if (i.second.getActor() == actor) return i.first;
         }
@@ -358,12 +450,20 @@ namespace OStim {
         for (auto& actorIt : m_actors) {
             if (m_currentNode) {
                 if (m_currentNode->speeds.size() > speed) {
-                    RE::Actor* actor = actorIt.second.getActor();
-                    actor->SetGraphVariableFloat("OStimSpeed", m_currentNode->speeds[speed].playbackSpeed);
-                    
-                    auto anim = m_currentNode->speeds[speed].animation + "_" + std::to_string(actorIt.first);
-                    actor->NotifyAnimationGraph(anim);
+                    Graph::Node* node = m_currentNode;
+                    GameAPI::GameActor gameActor = actorIt.second.getActor();
+                    int index = actorIt.first;
+                    RE::Actor* actor = actorIt.second.getActor().form;
 
+                    SKSE::GetTaskInterface()->AddTask([speed, node, index, gameActor]() {
+                        // TODO how to do this with GameActor?
+                        gameActor.form->SetGraphVariableFloat("OStimSpeed", node->speeds[speed].playbackSpeed);
+                    });
+                    auto anim = m_currentNode->speeds[speed].animation + "_" + std::to_string(index);
+                    actorIt.second.getActor().playAnimation(anim);
+
+                    // this fixes some face bugs
+                    // TODO how to do this with GraphActor?
                     if (vm) {
                         RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
                         auto args = RE::MakeFunctionArguments<RE::TESObjectREFR*>(std::move(actor));
@@ -372,14 +472,121 @@ namespace OStim {
                 }
 
                 float speedMod = 1.0 + static_cast<float>(speed) / static_cast<float>(m_currentNode->speeds.size());
-                actorIt.second.loopExcitementInc = actorIt.second.baseExcitementInc * actorIt.second.baseExcitementMultiplier * speedMod * Constants::LOOP_TIME_SECONDS;
+                actorIt.second.setLoopExcitementInc(actorIt.second.getBaseExcitementInc() * actorIt.second.getBaseExcitementMultiplier() * speedMod * Constants::LOOP_TIME_SECONDS);
             }
 
             actorIt.second.changeSpeed(speed);
         }
     }
 
+    void Thread::increaseSpeed() {
+        // TODO do this internally once we don't need OSA anymore
+        if (playerThread) {
+            const auto skyrimVM = RE::SkyrimVM::GetSingleton();
+            auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+            if (vm) {
+                RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
+                auto args = RE::MakeFunctionArguments();
+                vm->DispatchStaticCall("OSKSE", "IncreaseSpeed", args, callback);
+            }
+        } else {
+            if (m_currentNodeSpeed < (m_currentNode->speeds.size() - 1)) {
+                SetSpeed(m_currentNodeSpeed + 1);
+            }
+        }
+    }
+
+    void Thread::decreaseSpeed() {
+        // TODO do this internally once we don't need OSA anymore
+        if (playerThread) {
+            const auto skyrimVM = RE::SkyrimVM::GetSingleton();
+            auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+            if (vm) {
+                RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
+                auto args = RE::MakeFunctionArguments();
+                vm->DispatchStaticCall("OSKSE", "DecreaseSpeed", args, callback);
+            }
+        } else {
+            if (m_currentNodeSpeed > 0) {
+                SetSpeed(m_currentNodeSpeed - 1);
+            }
+        }
+    }
+
+
+    float Thread::getMaxExcitement() {
+        float maxExcitement = 0;
+        for (auto& [index, actor] : m_actors) {
+            if (actor.getExcitement() > maxExcitement) {
+                maxExcitement = actor.getExcitement();
+            }
+        }
+        return maxExcitement;
+    }
+
+
+    void Thread::callEvent(std::string eventName, int actorIndex, int targetIndex, int performerIndex) {
+        if (playerThread && actorIndex == 0 && targetIndex == 1 && eventName == "spank") {
+            FormUtil::sendModEvent(GetActor(0)->getActor().form, "ostim_spank", "", 0);
+        }
+
+        Graph::Event* graphEvent = Graph::GraphTable::getEvent(eventName);
+        if (!graphEvent) {
+            return;
+        }
+
+        if (graphEvent->sound) {
+            graphEvent->sound.play(GetActor(actorIndex)->getActor(), MCM::MCMTable::getSoundVolume());
+        }
+
+        if (graphEvent->cameraShakeDuration > 0 && graphEvent->cameraShakeStrength > 0) {
+            CameraUtil::shakeCamera(graphEvent->cameraShakeStrength, graphEvent->cameraShakeDuration);
+        }
+
+        if (graphEvent->controllerRumbleDuration > 0 && graphEvent->controllerRumbleStrength > 0) {
+            ControlUtil::rumbleController(graphEvent->cameraShakeStrength, graphEvent->cameraShakeDuration);
+        }
+
+        if (graphEvent->actor.stimulation > 0.0) {
+            ThreadActor* actor = GetActor(actorIndex);
+            if (actor->getExcitement() < graphEvent->actor.maxStimulation || actor->getExcitement() < actor->getMaxExcitement()) {
+                actor->addExcitement(graphEvent->actor.stimulation, true);
+            }
+        }
+
+        if (graphEvent->target.stimulation > 0.0) {
+            ThreadActor* target = GetActor(targetIndex);
+            if (target->getExcitement() < graphEvent->target.maxStimulation || target->getExcitement() < target->getMaxExcitement()) {
+                target->addExcitement(graphEvent->target.stimulation, true);
+            }
+        }
+
+        if (graphEvent->performer.stimulation > 0.0) {
+            ThreadActor* performer = GetActor(performerIndex);
+            if (performer->getExcitement() < graphEvent->performer.maxStimulation || performer->getExcitement() < performer->getMaxExcitement()) {
+                performer->addExcitement(graphEvent->performer.stimulation, true);
+            }
+        }
+    }
+
+
+    void Thread::stop() {
+        if (playerThread) {
+            // TODO no need to reroute through papyrus once we have our own UI
+            const auto skyrimVM = RE::SkyrimVM::GetSingleton();
+            auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+            if (vm) {
+                RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
+                auto args = RE::MakeFunctionArguments();
+                vm->DispatchStaticCall("OSKSE", "EndAnimation", args, callback);
+            }
+        } else {
+            ThreadManager::GetSingleton()->queueThreadStop(m_threadId);
+        }
+    }
+
     void Thread::close() {
+        logger::info("closing thread {}", m_threadId);
         vehicle->Disable();
         vehicle->SetDelete(true);
 
@@ -391,13 +598,9 @@ namespace OStim {
             Furniture::freeFurniture(furniture, furnitureOwner);
         }
 
-        if (isPlayerThread) {
+        if (playerThread) {
             UI::HideMenus();
-            RE::PlayerCamera* camera = RE::PlayerCamera::GetSingleton();
-            
-            if (camera->IsInFreeCameraMode()) {
-                CameraUtil::toggleFlyCam();
-            }
+            GameAPI::GameCamera::endSceneMode(MCM::MCMTable::firstPersonAfterScene());
 
             RE::INISettingCollection* ini = RE::INISettingCollection::GetSingleton();
             RE::Setting* speed = ini->GetSetting("fFreeCameraTranslationSpeed:Camera");
@@ -405,8 +608,13 @@ namespace OStim {
                 speed->data.f = freeCamSpeedBefore;
             }
 
-            camera->worldFOV = worldFOVbefore;
+            GameAPI::GameCamera::setWorldFOV(worldFOVbefore);
+
+            if (MCM::MCMTable::customTimeScale() > 0) {
+                GameAPI::Game::setTimeScale(timeScaleBefore);
+            }
         }
+        logger::info("closed thread {}", m_threadId);
     }
 
     void Thread::addActorSink(RE::Actor* a_actor) {
@@ -450,16 +658,15 @@ namespace OStim {
         std::string tag = a_event->tag.c_str();
 
         if (tag == "OStimClimax") {
-            const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-            auto vm = skyrimVM ? skyrimVM->impl : nullptr;
-            if (vm) {
-                RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-                auto args = RE::MakeFunctionArguments(std::move(actor));
-                auto handle = skyrimVM->handlePolicy.GetHandleForObject(static_cast<RE::VMTypeID>(Graph::LookupTable::OSexIntegrationMainQuest->FORMTYPE), Graph::LookupTable::OSexIntegrationMainQuest);
-                vm->DispatchMethodCall2(handle, "OSexIntegrationMain", "Climax", args, callback);
+            GetActor(actor)->climax();
+        } else if (tag == "OStimEvent") {
+            std::vector<std::string> payloadVec = stl::string_split(a_event->payload.c_str(), ',');
+            if (payloadVec.size() == 2) {
+                int actorIndex = GetActor(actor)->index;
+                callEvent(payloadVec[0], actorIndex, std::stoi(payloadVec[1]), actorIndex);
+            } else {
+                callEvent(payloadVec[0], std::stoi(payloadVec[1]), std::stoi(payloadVec[2]), std::stoi(payloadVec[3]));
             }
-        } else if (tag == "OStimSpank") {
-            //TODO
         } else if (tag == "OStimUndress") {
             GetActor(actor)->undress();
         } else if (tag == "OStimRedress") {

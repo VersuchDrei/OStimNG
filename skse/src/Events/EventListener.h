@@ -2,14 +2,19 @@
 
 #include "Core/Singleton.h"
 #include "Core/ThreadManager.h"
-#include "Graph/LookupTable.h"
 #include "MCM/MCMTable.h"
+#include "Util/LookupTable.h"
 
 namespace Events {
-    class EventListener final : public OStim::ISingleton<EventListener>, public RE::BSTEventSink<RE::TESLoadGameEvent>, public RE::BSTEventSink<SKSE::NiNodeUpdateEvent>, public RE::BSTEventSink<RE::InputEvent*> {
+    class EventListener final : public OStim::ISingleton<EventListener>,
+                                public RE::BSTEventSink<RE::TESLoadGameEvent>,
+                                public RE::BSTEventSink<SKSE::NiNodeUpdateEvent>, 
+                                public RE::BSTEventSink<SKSE::CrosshairRefEvent>,
+                                public RE::BSTEventSink<RE::InputEvent*> {
     public:
         virtual RE::BSEventNotifyControl ProcessEvent(const RE::TESLoadGameEvent* a_event, RE::BSTEventSource<RE::TESLoadGameEvent>* a_eventSource) override;
         virtual RE::BSEventNotifyControl ProcessEvent(const SKSE::NiNodeUpdateEvent* a_event, RE::BSTEventSource<SKSE::NiNodeUpdateEvent>* a_eventSource) override;
+        virtual RE::BSEventNotifyControl ProcessEvent(const SKSE::CrosshairRefEvent* a_event, RE::BSTEventSource<SKSE::CrosshairRefEvent>* a_eventSource) override;
         virtual RE::BSEventNotifyControl ProcessEvent(RE::InputEvent* const* a_events, RE::BSTEventSource<RE::InputEvent*>* a_eventSource) override;
 
     private:
@@ -34,7 +39,7 @@ namespace Events {
             if (OStim::ThreadManager::GetSingleton()->findActor(actor)) {
                 // I don't know if anything else of importance happens in the orig function, so we just call it to make sure
                 PackageStartOrig(pthis, actor);
-                return Graph::LookupTable::OStimScenePackage;
+                return Util::LookupTable::OStimScenePackage;
             }
 
             return func(pthis, actor);

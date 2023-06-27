@@ -2,6 +2,7 @@
 	"actor":{
 		"stimulation":0.2,
 		"fullStrip":true,
+		"talk":true,
 		"requirements":[
 		],
 		"strippingSlots":[
@@ -20,6 +21,8 @@
 	"target":{
 		"stimulation":0.9,
 		"fullStrip":true,
+		"moan":true,
+		"talk":true,
 		"requirements":[
 			"penis"
 		],
@@ -27,7 +30,8 @@
 			32,
 			49,
 			52,
-			53
+			53,
+			54
 		]
 	},
 	"performer":{

@@ -20,8 +20,6 @@ namespace ActorUtil {
             }
         }
 
-        actor->loadedData->flags |= RE::TESObjectREFR::RecordFlags::kDontHavokSettle;
-
         actor->SetGraphVariableBool("bHumanoidFootIKDisable", true);
     }
 
@@ -40,8 +38,8 @@ namespace ActorUtil {
 
         ObjectRefUtil::stopTranslation(actor);
         
-        actor->SetGraphVariableBool("bHumanoidFootIKDisable", false);
-        SKSE::GetTaskInterface()->AddTask([actor]() {
+        SKSE::GetTaskInterface()->AddTask([actor](){
+            actor->SetGraphVariableBool("bHumanoidFootIKDisable", false);
             actor->NotifyAnimationGraph("IdleForceDefaultState");
         });
     }

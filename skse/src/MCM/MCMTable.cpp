@@ -11,12 +11,6 @@ namespace MCM {
         }
         auto dataHandler = RE::TESDataHandler::GetSingleton();
 
-        OStimKeySceneStart = dataHandler->LookupForm<RE::TESGlobal>(0xDE7, "OStim.esp");
-        OStimKeySpeedUp = dataHandler->LookupForm<RE::TESGlobal>(0xDE8, "OStim.esp");
-        OStimKeySpeedDown = dataHandler->LookupForm<RE::TESGlobal>(0xDE9, "OStim.esp");
-        OStimKeyPullOut = dataHandler->LookupForm<RE::TESGlobal>(0xDEA, "OStim.esp");
-        OStimKeyAutoMode = dataHandler->LookupForm<RE::TESGlobal>(0xDEB, "OStim.esp");
-
         OStimUsePapyrusUndressing = dataHandler->LookupForm<RE::TESGlobal>(0xDB0, "OStim.esp");
     }
 
@@ -37,32 +31,9 @@ namespace MCM {
         return settings[0xDDE].asBool();
     }
 
-    int MCMTable::keyAlignment() {
-        return settings[0xDE2].asInt();
-    }
 
-    int MCMTable::keySceneStart() {
-        return static_cast<int>(OStimKeySceneStart->value);
-    }
-
-    int MCMTable::keySpeedUp() {
-        return static_cast<int>(OStimKeySpeedUp->value);
-    }
-
-    int MCMTable::keySpeedDown() {
-        return static_cast<int>(OStimKeySpeedDown->value);
-    }
-
-    int MCMTable::keyPullOut() {
-        return static_cast<int>(OStimKeyPullOut->value);
-    }
-
-    int MCMTable::keyAutoMode() {
-        return static_cast<int>(OStimKeyAutoMode->value);
-    }
-
-    int MCMTable::keyFreeCam() {
-        return settings[0xDEC].asInt();
+    bool MCMTable::useRumble() {
+        return RE::BSInputDeviceManager::GetSingleton()->IsGamepadEnabled() && settings[0xE11].asBool();
     }
 
 
@@ -74,8 +45,8 @@ namespace MCM {
         return settings[0xDE0].asFloat();
     }
 
-    bool MCMTable::supportImprovedCam() {
-        return settings[0xDE6].asBool();
+    bool MCMTable::useScreenShake() {
+        return settings[0xE10].asBool();
     }
 
 
@@ -93,6 +64,15 @@ namespace MCM {
 
     int MCMTable::getExcitementDecayGracePeriod() {
         return settings[0xDB4].asInt();
+    }
+
+
+    bool MCMTable::getSlowMotionOnOrgasm() {
+        return settings[0xDFC].asBool();
+    }
+
+    bool MCMTable::getBlurOnOrgasm() {
+        return settings[0xDFD].asBool();
     }
 
 
@@ -163,6 +143,23 @@ namespace MCM {
     }
 
 
+    int MCMTable::getMoanIntervalMin() {
+        return settings[0xE0A].asInt();
+    }
+
+    int MCMTable::getMoanIntervalMax() {
+        return settings[0xE0B].asInt();
+    }
+
+    float MCMTable::getMoanVolume() {
+        return settings[0xE0C].asFloat();
+    }
+
+    float MCMTable::getSoundVolume() {
+        return settings[0xE0D].asFloat();
+    }
+
+
     bool MCMTable::equipStrapOnIfNeeded() {
         return settings[0xDDB].asBool();
     }
@@ -182,6 +179,14 @@ namespace MCM {
 
     bool MCMTable::futaUseMaleExcitement() {
         return Compatibility::CompatibilityTable::sosInstalled() && settings[0xE04].asBool() && settings[0xE05].asBool();
+    }
+
+    bool MCMTable::futaUseMaleClimax() {
+        return Compatibility::CompatibilityTable::sosInstalled() && settings[0xE04].asBool() && settings[0xE17].asBool();
+    }
+    
+    bool MCMTable::futaUseMaleLight() {
+        return Compatibility::CompatibilityTable::sosInstalled() && settings[0xE04].asBool() && settings[0xE25].asBool();
     }
 
 
@@ -207,19 +212,7 @@ namespace MCM {
 
 
     void MCMTable::exportSettings() {
-        const auto settings_path = util::settings_path();
-        if (!fs::exists(*settings_path)) {
-            logger::warn("settings file doesn't exist or no access");
-            return;
-        }
-
-        std::ifstream ifs(*settings_path);
-        json json = json::parse(ifs, nullptr, false);
-
-        if (json.is_discarded()) {
-            logger::warn("settings file is malformed");
-            return;
-        }
+        json json = json::object();
 
         for (auto& [formID, setting] : settings) {
             setting.exportSetting(json);
@@ -229,6 +222,7 @@ namespace MCM {
 
         Serialization::exportSettings(json);
 
+        const auto settings_path = util::settings_path();
         std::ofstream file(*settings_path);
         file << std::setw(2) << json << std::endl;
     }

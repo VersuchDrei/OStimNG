@@ -5,7 +5,7 @@
 #include "Util/ObjectRefUtil.h"
 
 namespace OStim {
-    void EquipObjectHandler::equip(RE::Actor* actor) {
+    void EquipObjectHandler::equip(GameAPI::GameActor actor) {
         if (equipped) {
             return;
         }
@@ -13,7 +13,7 @@ namespace OStim {
         equipInner(actor);
     }
 
-    void EquipObjectHandler::unequip(RE::Actor* actor) {
+    void EquipObjectHandler::unequip(GameAPI::GameActor actor) {
         if (!equipped) {
             return;
         }
@@ -21,7 +21,7 @@ namespace OStim {
         unequipInner(actor);
     }
 
-    bool EquipObjectHandler::setVariant(RE::Actor* actor, std::string variant, int duration) {
+    bool EquipObjectHandler::setVariant(GameAPI::GameActor actor, std::string variant, int duration) {
         if (this->variant == variant) {
             if (duration == 0) {
                 variantDuration = 0;
@@ -46,7 +46,7 @@ namespace OStim {
         return true;
     }
 
-    void EquipObjectHandler::unsetVariant(RE::Actor* actor) {
+    void EquipObjectHandler::unsetVariant(GameAPI::GameActor actor) {
         if (variant.empty()) {
             return;
         }
@@ -60,34 +60,38 @@ namespace OStim {
         }
     }
 
-    void EquipObjectHandler::removeItems(RE::Actor* actor) {
+    void EquipObjectHandler::removeItems(GameAPI::GameActor actor) {
         for (RE::TESObjectARMO* item : toRemove) {
-            ObjectRefUtil::removeItem(actor, item, 1, true, nullptr);
+            // TODO properly use GameActor
+            ObjectRefUtil::removeItem(actor.form, item, 1, true, nullptr);
         }
     }
 
-    void EquipObjectHandler::equipInner(RE::Actor* actor) {
+    void EquipObjectHandler::equipInner(GameAPI::GameActor actor) {
         equipped = !variant.empty() ? object->variants[variant] : object->item;
-        
-        ActorUtil::equipItem(actor, equipped);
+
+        // TODO properly use GameActor
+        ActorUtil::equipItem(actor.form, equipped);
         // if we remove an item mid scene the NPC will redress
         // so we have to store all the equipped items to remove them at scene end
         toRemove.insert(equipped);
 
         // if we don't add a slight delay here we end up with a race condition where the tongue sometimes doesn't appear
-        RE::Actor* temp = actor;
+        // TODO properly use GameActor
+        GameAPI::GameActor temp = actor.form;
         std::thread ninodeThread = std::thread([temp] {
             std::this_thread::sleep_for(std::chrono::milliseconds(250));
-            ActorUtil::queueNiNodeUpdate(temp);
+            temp.update3D();
         });
         ninodeThread.detach();
     }
 
-    void EquipObjectHandler::unequipInner(RE::Actor* actor) {
-        ActorUtil::unequipItem(actor, equipped);
+    void EquipObjectHandler::unequipInner(GameAPI::GameActor actor) {
+        // TODO properly use GameActor
+        ActorUtil::unequipItem(actor.form, equipped);
 
         equipped = nullptr;
 
-        ActorUtil::queueNiNodeUpdate(actor);
+        actor.update3D();
     }
 }

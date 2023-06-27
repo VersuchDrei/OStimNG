@@ -1,15 +1,17 @@
 #include "Condition.h"
 
+#include "MCM/MCMTable.h"
+
 namespace Trait {
     ActorConditions ActorConditions::create(RE::Actor* actor) {
         // TODO: when actually implementing this make a nullptr meet all conditions, it's important for Migals stuff!
-        ActorConditions ret;
+        ActorConditions conditions;
 
         if (actor) {
-            ret.sex = GameAPI::GameSexAPI::fromGame(actor->GetActorBase()->GetSex());
+            conditions.sex = GameAPI::GameSexAPI::fromGame(actor->GetActorBase()->GetSex());
         }
 
-        return ret;
+        return conditions;
     }
 
     std::vector<ActorConditions> ActorConditions::create(std::vector<RE::Actor*> actors) {
@@ -20,7 +22,11 @@ namespace Trait {
         return ret;
     }
 
-    bool ActorConditions::fulfills(ActorConditions conditions) {
+    bool ActorConditions::fulfills(ActorConditions other) {
+        if (MCM::MCMTable::intendedSexOnly() && sex != GameAPI::GameSex::NONE && other.sex != GameAPI::GameSex::NONE && sex != other.sex) {
+            return false;
+        }
+
         return true;
     }
 }

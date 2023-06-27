@@ -1,16 +1,18 @@
 #pragma once
 
+#include "GameAPI/GameActor.h"
+
 namespace Compatibility {
     class CompatibilityTable {
     public:
         static void setupForms();
 
         static bool sosInstalled();
-        static bool hasSchlong(RE::Actor* actor);
+        static bool hasSchlong(GameAPI::GameActor actor);
     private:
         static void tryAddNoSchlongFaction(std::string modName, RE::FormID formID);
 
-        inline static RE::TESFaction* SOS_SchlongifiedFaction = nullptr;
-        inline static std::vector<RE::TESFaction*> noSchlongFactions;
+        inline static GameAPI::GameFaction SOS_SchlongifiedFaction;
+        inline static std::vector<GameAPI::GameFaction> noSchlongFactions;
     };
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Graph/LookupTable.h"
+#include "Graph/GraphTable.h"
 #include "Util/FormUtil.h"
 
 namespace PapyrusActor {

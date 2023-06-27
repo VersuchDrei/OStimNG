@@ -2,6 +2,7 @@
 	"actor":{
 		"stimulation":0.1,
 		"maxStimulation":50,
+		"moan":true,
 		"requirements":[
 			"hand"
 		],
