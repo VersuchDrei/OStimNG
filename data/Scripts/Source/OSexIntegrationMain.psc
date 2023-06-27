@@ -1563,15 +1563,13 @@ Float StartTime
 
 Float MostRecentOSexInteractionTime
 
-;--Thank you ODatabase
-Int CurrentOID ; the OID is the JMap ID of the current animation. You can feed this in to ODatabase
+;--
 string LastHubSceneID
 ;--
 
 Bool AggressiveThemedSexScene
 Actor AggressiveActor
 
-OAIScript AI
 OBarsScript OBars
 OStimUpdaterScript OUpdater
 
@@ -1593,10 +1591,6 @@ ImageSpaceModifier NutEffect
 Actor ReroutedDomActor
 Actor ReroutedSubActor
 
-;--------- database
-ODatabaseScript ODatabase
-;---------
-
 bool FirstAnimate
 
 ;--------- ID shortcuts
@@ -1605,8 +1599,6 @@ String o
 Int Password
 
 quest property subthreadquest auto 
-
-_oUI_Lockwidget LockWidget
 
 
 ; -------------------------------------------------------------------------------------------------
@@ -2085,8 +2077,6 @@ Event OnUpdate() ;OStim main logic loop
 		Game.EnablePlayerControls(abCamSwitch = True)
 	EndIf
 
-	ODatabase.Unload()
-
 	If CurrentFurniture && ResetClutter
 		OFurniture.ResetClutter(CurrentFurniture, ResetClutterRadius * 100)
 	EndIf
@@ -2189,14 +2179,6 @@ EndFunction
 
 Bool Function IsThreesome()
 	return ThirdActor != none
-EndFunction
-
-ODatabaseScript Function GetODatabase()
-
-	While (!ODatabase)
-		Utility.Wait(0.5)
-	Endwhile
-	Return ODatabase
 EndFunction
 
 OBarsScript Function GetBarScript()
@@ -2902,7 +2884,6 @@ Function OnAnimationChange(string newScene, int newSpeed)
 	CurrAnimClass = OSANative.GetAnimClass(CurrentSceneID)
 
 	CurrentAnimation = OMetadata.GetAnimationId(newScene, newSpeed)
-	CurrentOID = ODatabase.GetObjectOArray(ODatabase.GetAnimationWithAnimID(ODatabase.GetDatabaseOArray(), CurrentAnimation), 0)
 
 	if sceneChange
 		SendModEvent("ostim_scenechanged", CurrentSceneID)
@@ -3376,7 +3357,6 @@ Function Startup()
 ;	OSAUI = (Quest.GetQuest("0SA") as _oui)
 	PlayerRef = Game.GetPlayer()
 	NutEffect = Game.GetFormFromFile(0x000805, "Ostim.esp") as ImageSpaceModifier
-	LockWidget = (Self as Quest) as _oUI_Lockwidget
 
 	subthreadquest = Game.GetFormFromFile(0x000806, "Ostim.esp") as quest
 
@@ -3384,8 +3364,7 @@ Function Startup()
 
 	OControl = Quest.GetQuest("0SAControl") as _oControl
 
-	AI = ((Self as Quest) as OAiScript)
-	OBars = ((Self as Quest) as OBarsScript)
+	OBars = Game.GetFormFromFile(0x000E40, "Ostim.esp") as OBarsScript
 	SetDefaultSettings()
 	BuildSoundFormlists()
 	scenemetadata = PapyrusUtil.StringArray(0)
@@ -3398,18 +3377,11 @@ Function Startup()
 	SMPInstalled = (SKSE.GetPluginVersion("hdtSSEPhysics") != -1)
 	Console("SMP installed: " + SMPInstalled)
 
-	ODatabase = (Self as Quest) as ODatabaseScript
-	ODatabase.InitDatabase()
-
 	If (OSAFactionStage)
 		Console("Loaded")
 	Else
 		Debug.MessageBox("OSex and OSA do not appear to be installed, please do not continue using this save file.")
 		Return
-	EndIf
-
-	If (ODatabase.GetLengthOArray(ODatabase.GetDatabaseOArray()) >= 1)
-		ODatabase.Unload()
 	EndIf
 
 	If (OSA.StimInstalledProper())
@@ -3835,11 +3807,6 @@ EndFunction
 String Function GetCurrentAnimationClass()
 	; don't use anim classes, use actions from OMetadata
 	Return CurrAnimClass
-EndFunction
-
-Int Function GetCurrentAnimationOID()
-	; don't use ODatabase, use OMetadata
-	Return CurrentOID
 EndFunction
 
 Actor MostRecentOrgasmedActor

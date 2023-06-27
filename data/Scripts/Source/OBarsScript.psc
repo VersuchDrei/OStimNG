@@ -32,11 +32,11 @@ Float LastSmackTime
 Int LastSpeed
 
 Event OnInit()
-	OStim = (Self as Quest) as OSexIntegrationMain
+	OStim = OUtils.GetOStim()
 
-	DomBar = (Self as Quest) as OSexBar
-	SubBar = (Game.GetFormFromFile(0x000804, "OStim.esp")) as OSexBar
-	ThirdBar = (Game.GetFormFromFile(0x000802, "OStim.esp")) as OSexBar
+	DomBar = Game.GetFormFromFile(0xE3F, "OStim.esp") as OSexBar
+	SubBar = Game.GetFormFromFile(0x804, "OStim.esp") as OSexBar
+	ThirdBar = Game.GetFormFromFile(0x802, "OStim.esp") as OSexBar
 
 	PlayerRef = Game.getplayer()
 

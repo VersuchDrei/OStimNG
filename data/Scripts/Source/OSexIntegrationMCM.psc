@@ -89,7 +89,7 @@ EndEvent
 
 Function Init()
 	Parent.OnGameReload()
-	Main = (Self as Quest) as OsexIntegrationMain
+	Main = OUtils.GetOStim()
 	OSAControl = Quest.GetQuest("0SAControl") as _oControl
 
 	DomLightModeList = new String[3]
