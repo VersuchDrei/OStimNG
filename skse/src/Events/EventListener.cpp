@@ -1,5 +1,6 @@
 #include "EventListener.h"
 
+#include "Core/Core.h"
 #include "Core/ThreadManager.h"
 #include "GameAPI/Game.h"
 #include "GameAPI/GameCamera.h"
@@ -7,6 +8,7 @@
 #include "Serial/Manager.h"
 #include "UI/Align/AlignMenu.h"
 #include "UI/UIState.h"
+#include "Util/MathUtil.h"
 #include "MCM/MCMTable.h"
 #include "Util.h"
 
@@ -84,16 +86,53 @@ namespace Events {
 
             if (keyCode == MCM::MCMTable::keySceneStart()) {
                 if (bEvent->IsDown()) {
+                    GameAPI::GameActor player = GameAPI::GameActor::getPlayer();
                     GameAPI::GameActor target = GameAPI::Game::getCrosshairActor();
                     if (target) {
-                        // TODO do this internally once we don't need OSA anymore
-                        const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-                        auto vm = skyrimVM ? skyrimVM->impl : nullptr;
-                        if (vm) {
-                            RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-                            auto args = RE::MakeFunctionArguments<RE::Actor*, RE::Actor*>(std::move(RE::PlayerCharacter::GetSingleton()), std::move(target.form));
-                            vm->DispatchStaticCall("OSKSE", "StartScene", args, callback);
+                        std::vector<GameAPI::GameActor> actors = GameAPI::GameActor::getPlayer().getNearbyActors(2000, [&player, &target](GameAPI::GameActor actor){
+                            return actor != player && actor != target && OStim::isEligible(actor);    
+                        });
+
+                        if (actors.empty()) {
+                            // TODO do this internally once we don't need OSA anymore
+                            const auto skyrimVM = RE::SkyrimVM::GetSingleton();
+                            auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+                            if (vm) {
+                                RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
+                                auto args = RE::MakeFunctionArguments<RE::Actor*, RE::Actor*, RE::Actor*>(std::move(RE::PlayerCharacter::GetSingleton()), std::move(target.form), std::move(nullptr));
+                                vm->DispatchStaticCall("OSKSE", "StartScene", args, callback);
+                            }
+                        } else {
+                            std::vector<std::string> options;
+
+                            int max = std::min<int>(GameAPI::Game::getMessageBoxOptionLimit() - 1, actors.size());
+                            int i = 0;
+                            while (i < max) {
+                                options.push_back(actors[i].getName());
+                                i++;
+                            }
+                            options.push_back("none");
+
+                            GameAPI::Game::showMessageBox("Add third actor?", options, [target, actors](unsigned int result) {
+                                GameAPI::GameActor third;
+                                if (result < actors.size() &&
+                                    result != GameAPI::Game::getMessageBoxOptionLimit() - 1) {
+                                    third = actors[result];
+                                }
+
+                                // TODO do this internally once we don't need OSA anymore
+                                const auto skyrimVM = RE::SkyrimVM::GetSingleton();
+                                auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+                                if (vm) {
+                                    GameAPI::GameActor targetTemp = target;
+                                    RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
+                                    auto args = RE::MakeFunctionArguments<RE::Actor*, RE::Actor*, RE::Actor*>(std::move(RE::PlayerCharacter::GetSingleton()), std::move(targetTemp.form), std::move(third.form));
+                                    vm->DispatchStaticCall("OSKSE", "StartScene", args, callback);
+                                }
+                            });
                         }
+
+                        
                     }
                 } else if (bEvent->IsUp() && bEvent->HeldDuration() >= 2.0) {
                     if (!OStim::ThreadManager::GetSingleton()->playerThreadRunning()) {

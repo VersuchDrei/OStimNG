@@ -12,6 +12,7 @@ namespace GameAPI {
         static void shakeController(float leftStrength, float rightStrength, float duration);
         static GameActor getCrosshairActor();
 
+        inline static int getMessageBoxOptionLimit() { return 9; }
         static void showMessageBox(std::string content, std::vector<std::string> options, std::function<void(unsigned int)> callback);
 
     private:

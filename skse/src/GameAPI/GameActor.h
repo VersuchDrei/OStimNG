@@ -30,6 +30,7 @@ namespace GameAPI {
 
         inline GameAPI::GameRace getRace() const { return form->GetActorBase()->GetRace(); }
         inline bool isRace(GameRace race) const { return form->GetActorBase()->GetRace() == race.form; }
+        bool isHuman() const;
         inline GameAPI::GameVoice getVoice() const { return form->GetActorBase()->voiceType; }
         inline bool hasVoice(GameAPI::GameVoice voice) const { return form->GetActorBase()->voiceType == voice.form; }
 
@@ -62,6 +63,8 @@ namespace GameAPI {
         inline bool isInSameCell(GameActor other) const {return form->parentCell == other.form->parentCell;}
 
         inline GameActorBone getBone(std::string bone) const { return form->GetNodeByName(bone); }
+
+        std::vector<GameActor> getNearbyActors(float radius, std::function<bool(GameActor)> condition);
 
     private:
         inline static void SetScale(RE::Actor* actor, float scale) {

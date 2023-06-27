@@ -43,8 +43,8 @@ EndFunction
 ; TEMPORARY ONLY
 ; don't call any of these, we will remove them again in later versions
 
-Function StartScene(Actor Dom, Actor Sub) Global
-	OUtils.GetOstim().StartScene(Dom, Sub)
+Function StartScene(Actor Dom, Actor Sub, Actor Third) Global
+	OUtils.GetOstim().StartScene(Dom, Sub, zThirdActor = Third)
 EndFunction
 
 Function Masturbate(Actor Act) Global

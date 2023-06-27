@@ -1,5 +1,7 @@
 #include "Core.h"
 
+#include "ThreadManager.h"
+
 #include "MCM/MCMTable.h"
 #include "Trait/TraitTable.h"
 #include "Util/ActorUtil.h"
@@ -19,5 +21,9 @@ namespace OStim {
         ActorUtil::unlockActor(actor.form);
         
         actor.updateAI();
+    }
+
+    bool isEligible(GameAPI::GameActor actor) {
+        return actor.isHuman() && !ThreadManager::GetSingleton()->findActor(actor);
     }
 }

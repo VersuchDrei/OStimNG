@@ -1,5 +1,8 @@
 #include "GameActor.h"
 
+#include "GameTable.h"
+#include "GameUtil.h"
+
 namespace GameAPI {
     void GameActor::update3D() const {
         const auto skyrimVM = RE::SkyrimVM::GetSingleton();
@@ -32,6 +35,10 @@ namespace GameAPI {
         return false;
     }
 
+    bool GameActor::isHuman() const {
+        return !form->IsChild() && form->HasKeyword(GameTable::getNPCKeyword()) && form->GetActorBase()->GetRace() != GameTable::getManakinRace();
+    }
+
     void GameActor::setScale(float scale) const {
         RE::Actor* actor = form;
         SKSE::GetTaskInterface()->AddTask([actor, scale] {
@@ -59,5 +66,32 @@ namespace GameAPI {
 
     int GameActor::getRelationshipRank(GameActor other) const {
         return 4 - RE::BGSRelationship::GetRelationship(form->GetActorBase(), other.form->GetActorBase())->level.underlying();
+    }
+
+    std::vector<GameActor> GameActor::getNearbyActors(float radius, std::function<bool(GameActor)> condition) {
+        std::vector<GameActor> actors;
+
+        GameUtil::forEachReferenceInRange(form->GetPosition(), radius, [&actors, &condition](RE::TESObjectREFR& ref) {
+            if (!ref.Is(RE::Actor::FORMTYPE)) {
+                return RE::BSContainer::ForEachResult::kContinue;
+            }
+
+            GameActor actor = ref.As<RE::Actor>();
+
+            if (!condition(actor)) {
+                return RE::BSContainer::ForEachResult::kContinue;
+            }
+
+            actors.push_back(actor);
+
+            return RE::BSContainer::ForEachResult::kContinue;
+        });
+
+        RE::NiPoint3 center = form->GetPosition();
+        std::sort(actors.begin(), actors.end(), [&](GameActor actorA, GameActor actorB) {
+            return actorA.form->GetPosition().GetSquaredDistance(center) < actorB.form->GetPosition().GetSquaredDistance(center);
+        });
+
+        return actors;
     }
 }
