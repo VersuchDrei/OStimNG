@@ -1,5 +1,5 @@
 #include "Core/ThreadManager.h"
-#include "UI/Align/AlignMenu.h"
+#include "UI/UIState.h"
 
 #include "Util/Constants.h"
 #include "Util/VectorUtil.h"
@@ -15,10 +15,13 @@ namespace OStim {
                     for (auto& it : m_threadMap) {
                         it.second->loop();
                     }
+
                     for (ThreadId& threadID : threadStopQueue) {
                         stopThreadNoLock(threadID);
                     }
                     threadStopQueue.clear();
+
+                    UI::UIState::GetSingleton()->loop();
                 }
             }
         });
@@ -130,7 +133,7 @@ namespace OStim {
         auto it = m_threadMap.find(threadID);
         if (it != m_threadMap.end()) {
             Thread* thread = it->second;
-            UI::Align::AlignMenu::HandleThreadRemoved(thread);
+            UI::UIState::GetSingleton()->HandleThreadRemoved(thread);
             m_threadMap.erase(threadID);
             thread->close();
             delete thread;

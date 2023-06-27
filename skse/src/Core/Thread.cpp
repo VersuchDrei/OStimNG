@@ -9,6 +9,7 @@
 #include "Graph/Node.h"
 #include <Messaging/IMessages.h>
 #include "UI/Align/AlignMenu.h"
+#include "UI/Scene/SceneMenu.h"
 #include "UI/UIState.h"
 #include "Util/CameraUtil.h"
 #include "Util/Constants.h"
@@ -86,7 +87,7 @@ namespace OStim {
         }
 
         if (playerThread) {
-            UI::UIState::GetSingleton()->hideAllMenues();
+            UI::HideMenus();
         }
     }
 
@@ -97,7 +98,10 @@ namespace OStim {
         }
 
         if (playerThread) {
-            UI::Align::AlignMenu::SetThread(this);
+            auto uiState = UI::UIState::GetSingleton();
+            if(uiState)
+                uiState->SetThread(this);
+            UI::Scene::SceneMenu::Show();
         }
     }
 
@@ -111,7 +115,7 @@ namespace OStim {
         alignmentKey = key.toString();
 
         if (playerThread) {
-            UI::Align::AlignMenu::SetNode(m_currentNode);
+            UI::UIState::GetSingleton()->NodeChanged(this, m_currentNode);
         }   
     }
 
@@ -123,11 +127,31 @@ namespace OStim {
         return Alignment::Alignments::getActorAlignment(alignmentKey, m_currentNode, index);
     }
 
+    void Thread::Navigate(std::string sceneId) {
+        for (auto& nav : m_currentNode->navigations) {
+            if (sceneId == nav.destination->scene_id) {
+                if (nav.isTransition)
+                {
+                    ChangeNode(nav.transitionNode);
+                    nextNode = nav.destination;
+                    return;
+                }
+                else {
+                    ChangeNode(nav.destination);
+                    return;
+                }
+            }
+        }
+        
+    }
+
     void Thread::ChangeNode(Graph::Node* a_node) {
         logger::info("thread {} changed to node {}", m_threadId, a_node->scene_id);
 
-        std::unique_lock<std::shared_mutex> writeLock;
+        std::unique_lock<std::shared_mutex> writeLock(nodeLock);
+        nextNode = nullptr;
         m_currentNode = a_node;
+        animationTimer = 0;
 
         for (auto& actorIt : m_actors) {
             // --- excitement calculation --- //
@@ -229,12 +253,15 @@ namespace OStim {
             SetSpeed(m_currentNode->defaultSpeed);
         }
 
+        UI::UIState::GetSingleton()->NodeChanged(this, m_currentNode);
+
         auto messaging = SKSE::GetMessagingInterface();
 
         Messaging::AnimationChangedMessage msg;
         msg.newAnimation = a_node;
         logger::info("Sending animation changed event");
-        Messaging::MessagingRegistry::GetSingleton()->SendMessageToListeners(msg);
+        Messaging::MessagingRegistry::GetSingleton()->SendMessageToListeners(msg);   
+        SetSpeed(0);
     }
 
     void Thread::navigateTo(Graph::Node* node, bool useFades) {
@@ -267,6 +294,10 @@ namespace OStim {
         } else {
             ChangeNode(node);
         }
+    }
+
+    Graph::Node* Thread::getCurrentNode() {
+        return m_currentNode;
     }
 
     void Thread::AddActor(RE::Actor* actor) {
@@ -344,7 +375,7 @@ namespace OStim {
     }
 
     void Thread::loop() {
-        std::shared_lock<std::shared_mutex> readLock;
+        //std::shared_lock<std::shared_mutex> readLock(nodeLock);
 
         if (stopTimer > 0) {
             if ((stopTimer -= Constants::LOOP_TIME_MILLISECONDS) <= 0) {
@@ -379,6 +410,17 @@ namespace OStim {
         for (Sound::SoundPlayer*& player : soundPlayers) {
             player->loop();
         }
+
+        animationTimer += Constants::LOOP_TIME_MILLISECONDS;
+        if (animationTimer >= m_currentNode->animationLengthMs) {
+            animationTimer = 0;
+            if (nextNode != nullptr) {
+                logger::info("going to next node {}", nextNode->scene_id);
+                SKSE::GetTaskInterface()->AddTask([this]() {
+                    ChangeNode(nextNode);
+                });                
+            }
+        }
     }
 
     ThreadActor* Thread::GetActor(GameAPI::GameActor a_actor) {
@@ -408,6 +450,7 @@ namespace OStim {
         const auto skyrimVM = RE::SkyrimVM::GetSingleton();
         auto vm = skyrimVM ? skyrimVM->impl : nullptr;
 
+        
         for (auto& actorIt : m_actors) {
             if (m_currentNode) {
                 if (m_currentNode->speeds.size() > speed) {
@@ -420,7 +463,8 @@ namespace OStim {
                         // TODO how to do this with GameActor?
                         gameActor.form->SetGraphVariableFloat("OStimSpeed", node->speeds[speed].playbackSpeed);
                     });
-                    actorIt.second.getActor().playAnimation(node->speeds[speed].animation + "_" + std::to_string(index));
+                    auto anim = m_currentNode->speeds[speed].animation + "_" + std::to_string(index);
+                    actorIt.second.getActor().playAnimation(anim);
 
                     // this fixes some face bugs
                     // TODO how to do this with GraphActor?
@@ -559,6 +603,7 @@ namespace OStim {
         }
 
         if (playerThread) {
+            UI::HideMenus();
             GameAPI::GameCamera::endSceneMode(MCM::MCMTable::firstPersonAfterScene());
 
             RE::INISettingCollection* ini = RE::INISettingCollection::GetSingleton();
@@ -698,6 +743,10 @@ namespace OStim {
         }
 
         return oldThread;
+    }
+
+    bool Thread::isSameThread(Thread* thread) {
+        return m_threadId == thread->m_threadId;
     }
 
 }  // namespace OStim

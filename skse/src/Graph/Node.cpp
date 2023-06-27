@@ -32,20 +32,20 @@ namespace Graph {
         }
     }
 
-    void Node::tryAddNavigation(std::string destination) {
-        Node* navigationDestination = GraphTable::getNodeById(destination);
+    void Node::tryAddNavigation(RawNavigation rawNav, std::unordered_map<Graph::Node*, std::vector<RawNavigation>>& navigationMap) {
+        Node* navigationDestination = GraphTable::getNodeById(rawNav.destination);
         if (!navigationDestination) {
-            logger::warn("Couldn't add navigation from {} to {} because {} doesn't exist.", scene_id, destination, destination);
+            logger::warn("Couldn't add navigation from {} to {} because {} doesn't exist.", scene_id, rawNav.destination, rawNav.destination);
             return;
         }
 
         if (furnitureType != navigationDestination->furnitureType) {
-            logger::warn("Couldn't add navigation from {} to {} because their furniture types don't match.", scene_id, destination);
+            logger::warn("Couldn't add navigation from {} to {} because their furniture types don't match.", scene_id, rawNav.destination);
             return;
         }
 
         if (actors.size() != navigationDestination->actors.size()) {
-            logger::warn("Couldn't add navigation from {} to {} because their actor counts don't match.", scene_id, destination);
+            logger::warn("Couldn't add navigation from {} to {} because their actor counts don't match.", scene_id, rawNav.destination);
             return;
         }
 
@@ -55,7 +55,42 @@ namespace Graph {
             }
         }
 
-        navigations.push_back({.destination = navigationDestination});
+        auto border = rawNav.border;
+        std::regex hexColor("^[a-f0-9]{6}$");
+        if (!std::regex_search(rawNav.border, hexColor))
+            border = "ffffff";
+        auto icon = rawNav.icon;
+        if (icon == "")
+            icon = "Ostim/logo.dds";
+
+        if (navigationDestination->isTransition) {
+            
+            Node* transitionNode = navigationDestination;
+            Node* destinationNode;
+            for (auto nav : navigationMap) {
+                if (nav.first->scene_id == transitionNode->scene_id) {
+                    if (nav.second.size() != 1) {
+                        logger::warn("Couldn't add transition from {} to destination because the navigations on {} were invalid", scene_id, rawNav.destination);
+                        return;
+                    }
+                    destinationNode = LookupTable::getNodeById(nav.second[0].destination);
+                    break;
+                }
+            }
+            
+            navigations.push_back({
+                .destination = destinationNode,
+                .icon = icon,
+                .border = border,
+                .isTransition = true,                
+                .transitionNode = transitionNode });
+        }
+        else {
+            navigations.push_back({ 
+                .destination = navigationDestination,
+                .icon = icon,
+                .border = border, });
+        }
     }
 
     bool Node::fulfilledBy(std::vector<Trait::ActorConditions> conditions) {
@@ -75,7 +110,7 @@ namespace Graph {
 
     Node* Node::getRandomNodeInRange(int distance, std::vector<Trait::ActorConditions> actorConditions, std::function<bool(Node*)> nodeCondition) {
         std::vector<Node*> nodes;
-        std::vector<Node*> lastLevel = {this};
+        std::vector<Node*> lastLevel = { this };
         std::vector<Node*> nextLevel;
 
         for (int i = 0; i < distance; i++) {
@@ -85,7 +120,8 @@ namespace Graph {
                     if (dest->isTransition) {
                         if (dest->navigations.empty()) {
                             continue;
-                        } else {
+                        }
+                        else {
                             dest = dest->navigations[0].destination;
                         }
                     }

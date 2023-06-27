@@ -545,8 +545,10 @@ namespace OStim {
             } else if (totalBend < -10) {
                 totalBend = -10;
             }
+
             // TODO how to do this with GameAPI?
-            actor.playAnimation(totalBend == -10 ? "SOSFlaccid" : "SOSBend" + std::to_string(sosBend));
+            auto sosString = totalBend == -10 ? "SOSFlaccid" : "SOSBend" + std::to_string(sosBend);
+            actor.playAnimation(sosString);
         }
     }
 

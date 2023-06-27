@@ -49,6 +49,21 @@ namespace Graph {
         return nullptr;
     }
 
+    bool ContainsId(Node* n, std::string& id) {
+        if (n->lowercase_id.contains(id))
+            return true;
+        return false;
+    }
+
+    void GraphTable::findNodesById(std::string& id, std::vector<Node*>& results) {
+        StringUtil::toLower(&id);
+        for (auto& iter : nodes) {
+            if (ContainsId(iter.second,id)) {
+                results.push_back(iter.second);
+            }
+        }
+    }
+
     Node* GraphTable::getNodeByAnimation(std::string anim) {
         auto iter = animationNodeTable.find(anim);
         if (iter != animationNodeTable.end()) {

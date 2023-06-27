@@ -55,7 +55,7 @@ namespace Events {
         if (!a_events) {
             return RE::BSEventNotifyControl::kContinue;
         }
-
+        
         if (RE::UI::GetSingleton()->GameIsPaused()) {
             return RE::BSEventNotifyControl::kContinue;
         }
@@ -204,6 +204,9 @@ namespace Events {
                 uiState->SwitchActiveMenu(uiState->GetActiveMenu() == UI::MenuType::kAlignMenu ? UI::MenuType::kSceneMenu : UI::MenuType::kAlignMenu);
             } else if (keyCode == MCM::MCMTable::keyFreeCam()) {
                 GameAPI::GameCamera::toggleFreeCam();
+            } else if (keyCode == 37) {
+                auto uiState = UI::UIState::GetSingleton();
+                uiState->ToggleActiveMenu(UI::kSearchMenu);
             }
         }
 

@@ -34,6 +34,7 @@ set(sources
     src/Core/Thread/ThreadAutoControl.cpp
     src/Core/Thread.cpp
     src/Core/ThreadActor.cpp
+    src/Core/ThreadInterface.cpp
     src/Core/ThreadManager.cpp
     src/Core/ThreadManager.h
     src/Events/EventListener.cpp
@@ -75,6 +76,9 @@ set(sources
     src/Trait/TraitTable.cpp
     src/UI/Align/AlignMenu.cpp
     src/UI/Align/IncrementValue.cpp
+    src/UI/Scene/SceneMenu.cpp
+    src/UI/Search/SearchMenu.cpp
+    src/UI/Settings.cpp
     src/UI/UIState.cpp
     src/Util/ActorUtil.cpp
     src/Util/CameraUtil.cpp

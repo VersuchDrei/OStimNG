@@ -12,6 +12,7 @@ namespace Graph{
     public:
         static void addNode(Node* node);
         static Node* getNodeById(std::string id);
+        static void findNodesById(std::string& id, std::vector<Node*>& results);
         static Node* getNodeByAnimation(std::string anim);
 
         static bool hasNodes(Furniture::FurnitureType furnitureType, int actorCount);
