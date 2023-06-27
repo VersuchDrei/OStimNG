@@ -5,13 +5,14 @@
 #include "Util/StringUtil.h"
 #include "Util/VectorUtil.h"
 
-namespace PapyrusDatabase {
+namespace PapyrusDatabase {    
+
     using VM = RE::BSScript::IVirtualMachine;
 
     std::set<std::string> aggressive_class{"Ro", "HhPJ", "HhBj", "HhPo", "SJ"};
     std::set<std::string> aggressive_mod{"BG", "BB"};
 
-    json BuildJson(pugi::xml_document& xml_doc, const fs::path& mod_path, const fs::path& cls_path, std::unordered_map<Graph::Node*, std::vector<std::string>>& navigations) {
+    json BuildJson(pugi::xml_document& xml_doc, const fs::path& mod_path, const fs::path& cls_path, std::unordered_map<Graph::Node*, std::vector<Graph::RawNavigation>>& navigations) {
         Graph::Node* node = new Graph::Node();
         auto j_obj = json::object();
 
@@ -48,15 +49,19 @@ namespace PapyrusDatabase {
             int is_transitory = 0;
             int is_hub = 1;
 
-            if (auto anim = scene.child("anim"))
+            if (auto anim = scene.child("anim")) {
                 if (auto transitory = anim.attribute("t")) {
-                    std::string trans_str{transitory.value()};
+                    std::string trans_str{ transitory.value() };
                     if (trans_str == "T"s) {
                         is_transitory = 1;
                         is_hub = 0;
-                        navigations[node] = { anim.attribute("dest").value() };
+                        navigations[node] = { {.destination = anim.attribute("dest").value()} };
                     }
                 }
+                if (auto length = anim.attribute("l")) {
+                    node->animationLengthMs = length.as_float() * 1000;
+                }
+            }
 
             j_obj["istransitory"] = is_transitory;
             node->isTransition = is_transitory;
@@ -101,9 +106,16 @@ namespace PapyrusDatabase {
                 navigations[node] = {};
                 for (auto& tab : nav.children("tab")) {
                     for (auto& page : tab.children("page")) {
-                        for (auto& option : tab.children("option")) {
+                        for (auto& option : page.children("option")) {
                             auto go = option.attribute("go");
-                            navigations[node].push_back(go.value());
+                            auto icon = option.attribute("icon2");
+                            auto border = option.attribute("border");
+                            navigations[node].push_back(
+                                { 
+                                    .destination = go.value(),
+                                    .icon = icon.value(),
+                                    .border = border.value()
+                                });
                         }
                     }
                 }
@@ -434,7 +446,7 @@ namespace PapyrusDatabase {
             return;
         }
 
-        std::unordered_map<Graph::Node*, std::vector<std::string>> navigations;
+        std::unordered_map<Graph::Node*, std::vector<Graph::RawNavigation>> navigations;
 
         auto j_root = json::array();
         for (auto const& mod : fs::directory_iterator(root_path)) {
@@ -479,7 +491,7 @@ namespace PapyrusDatabase {
 
         for (auto& [node, list] : navigations) {
             for (auto& navigation : list) {
-                node->tryAddNavigation(navigation);
+                node->tryAddNavigation(navigation, navigations);
             }
         }
 

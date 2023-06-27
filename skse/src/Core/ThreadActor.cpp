@@ -417,7 +417,9 @@ namespace OStim {
             } else if (totalBend < -10) {
                 totalBend = -10;
             }
-            actor->NotifyAnimationGraph(totalBend == -10 ? "SOSFlaccid" : "SOSBend" + std::to_string(sosBend));
+            auto sosString = totalBend == -10 ? "SOSFlaccid" : "SOSBend" + std::to_string(sosBend);
+                
+            actor->NotifyAnimationGraph(sosString);
         }
     }
 

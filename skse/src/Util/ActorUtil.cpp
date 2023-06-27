@@ -41,7 +41,9 @@ namespace ActorUtil {
         ObjectRefUtil::stopTranslation(actor);
         
         actor->SetGraphVariableBool("bHumanoidFootIKDisable", false);
-        actor->NotifyAnimationGraph("IdleForceDefaultState");
+        SKSE::GetTaskInterface()->AddTask([actor]() {
+            actor->NotifyAnimationGraph("IdleForceDefaultState");
+        });
     }
 
     void sheatheWeapon(RE::Actor* actor) {

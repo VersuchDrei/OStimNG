@@ -1,6 +1,7 @@
 #include <stddef.h>
 
 #include "Alignment/Alignments.h"
+#include "Core/ThreadInterface.h"
 #include "Events/EventListener.h"
 #include "Furniture/FurnitureTable.h"
 #include "Game/Patch.h"
@@ -15,6 +16,9 @@
 #include "UI/Align/AlignMenu.h"
 #include "Util/CompatibilityTable.h"
 #include "MCM/MCMTable.h"
+#include "UI/Scene/SceneMenu.h"
+#include "UI/UIState.h"
+
 
 using namespace RE::BSScript;
 using namespace SKSE;
@@ -63,6 +67,7 @@ namespace {
                 if (message) {
                     message->RegisterListener(nullptr, UnspecificedSenderMessageHandler);
                 }
+                UI::RegisterMenus();
             } break;
             case SKSE::MessagingInterface::kInputLoaded: {
                 RE::BSInputDeviceManager::GetSingleton()->AddEventSink(Events::EventListener::GetSingleton());
@@ -74,16 +79,18 @@ namespace {
                 MCM::MCMTable::setupForms();
                 Furniture::FurnitureTable::setupForms();
 
-                UI::Align::AlignMenu::Register();
                 
                 // we are installing this hook so late because we need it to overwrite the PapyrusUtil hook
                 Events::PackageStart::Install();
             } break;
-            case SKSE::MessagingInterface::kNewGame: {
-                UI::Align::AlignMenu::Show();
-            }break;
+            case SKSE::MessagingInterface::kNewGame: {               
+                UI::PostGameLoad();
+            } break;
+            case SKSE::MessagingInterface::kPostLoadGame: {
+                UI::PostGameLoad();
+            } break;
             case SKSE::MessagingInterface::kPostPostLoad: {
-                UI::Align::AlignMenu::Show();
+                                
                 SKEE::InterfaceExchangeMessage msg;
                 auto intfc = SKSE::GetMessagingInterface();
                 intfc->Dispatch(SKEE::InterfaceExchangeMessage::kExchangeInterface, (void*)&msg, sizeof(SKEE::InterfaceExchangeMessage*), "skee");
@@ -114,6 +121,7 @@ SKSEPluginLoad(const LoadInterface* skse) {
     Init(skse);
 
     InterfaceMap::GetSingleton()->AddInterface("Messaging", Messaging::MessagingRegistry::GetSingleton());
+    InterfaceMap::GetSingleton()->AddInterface("Threads", Interfaces::ThreadInterface::GetSingleton());
 
     auto message = SKSE::GetMessagingInterface();
     if (!message->RegisterListener(MessageHandler)) {
@@ -125,6 +133,7 @@ SKSEPluginLoad(const LoadInterface* skse) {
     Graph::LookupTable::SetupActions();
     Trait::TraitTable::setup();
     Alignment::Alignments::LoadAlignments();
+    UI::Settings::LoadSettings();
     Papyrus::Build();
 
     const auto serial = SKSE::GetSerializationInterface();

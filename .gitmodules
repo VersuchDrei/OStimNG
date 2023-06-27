@@ -1,0 +1,3 @@
+[submodule "flash/external/greensock"]
+	path = flash/external/greensock
+	url = https://github.com/greensock/GreenSock-AS2

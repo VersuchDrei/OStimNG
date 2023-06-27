@@ -29,14 +29,15 @@ namespace UI::Align {
 
         void AdvanceMovie(float a_interval, std::uint32_t a_currentTime) override;
 
-        static void SetThread(OStim::Thread* thread);
+        static void ThreadChanged();
 
-        static void SetNode(Graph::Node* node);        
+        static void NodeChanged();     
         static void SetActor(int actor);
 
         static void Handle(UI::Controls control);
 
-        static void HandleThreadRemoved(OStim::Thread* thread);
+
+        static void ApplyPositions();
     private:
         static void UpdateSceneInfo();
         static void UpdateActorInfo();
@@ -67,8 +68,6 @@ namespace UI::Align {
         };
 
     private:
-        inline static OStim::Thread* currentThread;
-        inline static Graph::Node* currentNode;     
         inline static Alignment::ActorAlignment currentActorInfo;
 
         inline static int selectedField = 0;

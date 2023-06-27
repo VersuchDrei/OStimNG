@@ -1,4 +1,5 @@
 #pragma once
+#include <Core/Thread.h>
 
 class IPluginInterface
 {
@@ -32,4 +33,9 @@ class IMessagingRegistry : public IPluginInterface
 {
 public:
 	virtual void RegisterForMessages(std::string newListener) = 0;
+};
+
+class IThreadInterface : public IPluginInterface {
+public:
+	virtual OStim::Thread* GetThread(int64_t threadId) = 0;
 };
