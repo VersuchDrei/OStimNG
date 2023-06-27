@@ -73,7 +73,7 @@ namespace Graph {
                         logger::warn("Couldn't add transition from {} to destination because the navigations on {} were invalid", scene_id, rawNav.destination);
                         return;
                     }
-                    destinationNode = LookupTable::getNodeById(nav.second[0].destination);
+                    destinationNode = GraphTable::getNodeById(nav.second[0].destination);
                     break;
                 }
             }

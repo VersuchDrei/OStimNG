@@ -296,10 +296,6 @@ namespace OStim {
         }
     }
 
-    Graph::Node* Thread::getCurrentNode() {
-        return m_currentNode;
-    }
-
     void Thread::AddActor(RE::Actor* actor) {
         int index = m_actors.size();
         addActorInner(index, actor);

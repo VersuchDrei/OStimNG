@@ -1,6 +1,6 @@
 #include "UI/Scene/SceneMenu.h"
 #include "UI/UIState.h"
-#include <Graph/LookupTable.h>
+#include <Graph/GraphTable.h>
 
 namespace UI::Scene {
 
