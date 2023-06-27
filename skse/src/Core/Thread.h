@@ -25,6 +25,7 @@ namespace OStim {
         void initContinue();
 
         inline Graph::Node* getCurrentNode() { return m_currentNode; }
+        inline int getCurrentSpeed() { return m_currentNodeSpeed; }
 
         std::string getAlignmentKey();
         Alignment::ActorAlignment getActorAlignment(int index);

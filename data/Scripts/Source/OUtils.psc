@@ -359,8 +359,6 @@ bool Function MenuOpen() global
 EndFunction
 
 actor[] Function FilterToPlayerFollowers(actor[] acts) Global
-	;faction followerfaction = Game.GetFormFromFile(0x05C84E, "Skyrim.esm") as faction
-
 	int i = 0
 	int l = acts.Length
 	while i < l 
@@ -408,7 +406,7 @@ bool Function IsUIVisible() Global
 endfunction 
 
 objectreference Function GetBlankObject() Global
-	return game.GetPlayer().PlaceAtMe((Quest.GetQuest("0SA") as _oOmni).OBlankStatic) as ObjectReference
+	return None
 EndFunction
 
 Actor[] Function ShuffleActorArray(Actor[] arr) Global
