@@ -10,7 +10,7 @@ namespace OstimNG_API::Scene
         if (g_ostimSceneInterface) return g_ostimSceneInterface;    
 
         const auto pluginHandle = GetModuleHandle(L"Ostim.dll");
-        const auto requestAPIFunction = reinterpret_cast<_RequestPluginAPI_Scene>(GetProcAddress(pluginHandle, "RequestPluginAPI_Conditions"));
+        const auto requestAPIFunction = reinterpret_cast<_RequestPluginAPI_Scene>(GetProcAddress(pluginHandle, "RequestPluginAPI_Scene"));
          if (!requestAPIFunction) {
             return nullptr;
         }
