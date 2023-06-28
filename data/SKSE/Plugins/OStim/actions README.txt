@@ -49,10 +49,11 @@ form fields:
 	note: json doesn't support hexadecimal notation, which is why this is a string and not an int
 
 sound fields:
-"type" (string): the type of the sound, depending on type different fields will be required (see sound types)
-"sound" (object): the sound descriptor of the climax sound (see form fields)
-"muteWithActor" (bool): when set the sound will not play while the actor is muted
-"muteWithTarget" (bool): when set the sound will not play while the target is muted
+"type" (string): the type of the sound, depending on type additional fields may be required (see sound types)
+"sound" (object): the sound descriptor of the sound (see form fields)
+"muteWithActor" (bool): when set to true the sound will not play while the actor is muted
+"muteWithTarget" (bool): when set to true the sound will not play while the target is muted
+"playerThreadOnly" (bool): when set to true this sound will not play in NPCxNPC threads
 
 sound types:
 
