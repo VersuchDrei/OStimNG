@@ -182,7 +182,7 @@ namespace UI::Scene {
         } else {
             for (auto& nav : currentNode->navigations) {
                 menuData.options.push_back({
-                    .nodeId = nav.destination->scene_id,
+                    .nodeId = nav.isTransition? nav.transitionNode->scene_id: nav.destination->scene_id,
                     .title = nav.destination->scene_name,
                     .imagePath = nav.icon,
                     .border = nav.border,

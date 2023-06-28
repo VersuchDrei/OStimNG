@@ -136,19 +136,15 @@ namespace OStim {
     void Thread::Navigate(std::string sceneId) {
         for (auto& nav : m_currentNode->navigations) {
             if (sceneId == nav.destination->scene_id) {
-                if (nav.isTransition)
-                {
-                    ChangeNode(nav.transitionNode);
-                    nextNode = nav.destination;
-                    return;
-                }
-                else {
-                    ChangeNode(nav.destination);
-                    return;
-                }
+                ChangeNode(nav.destination);
+                return;
             }
-        }
-        
+            if (nav.isTransition && sceneId == nav.transitionNode->scene_id) {
+                ChangeNode(nav.transitionNode);
+                nextNode = nav.destination;
+                return;
+            }
+        }      
     }
 
     void Thread::ChangeNode(Graph::Node* a_node) {
