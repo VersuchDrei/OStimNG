@@ -15,7 +15,7 @@
                 "VCPKG_TARGET_TRIPLET": "x64-windows-skse",
                 "VCPKG_HOST_TRIPLET": "x64-windows-skse",
                 "VCPKG_OVERLAY_TRIPLETS": "${sourceDir}/cmake",
-                "CMAKE_CXX_FLAGS": "$env{COMMONLIBSSE_COMPILER} $env{COMMONLIBSSE_PLATFORM} $env{COMMONLIBSSE_TEXT}"
+                "CMAKE_CXX_FLAGS": "$env{COMMONLIBSSE_COMPILER} $env{COMMONLIBSSE_PLATFORM} $env{COMMONLIBSSE_TEXT} -DUNICODE -D_UNICODE"
             }
         },
         {
@@ -53,7 +53,8 @@
             "name": "msvc",
             "hidden": true,
             "environment": {
-                "COMMONLIBSSE_COMPILER": "/permissive- /Zc:preprocessor /EHsc $penv{CXXFLAGS}"
+                "COMMONLIBSSE_COMPILER": "/permissive- /Zc:preprocessor /EHsc $penv{CXXFLAGS}",
+                "COMMONLIBSSE_TEXT": "-DUNICODE -D_UNICODE"
             },
             "vendor": {
                 "microsoft.com/VisualStudioSettings/CMake/1.0": {

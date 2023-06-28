@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.21)
 message("Using toolchain file ${CMAKE_TOOLCHAIN_FILE}.")
 
+
 ########################################################################################################################
 ## Define project
 ########################################################################################################################
@@ -93,6 +94,10 @@ set(sources
     src/Util/VectorUtil.cpp
 	src/Util.cpp
 	src/main.cpp
+        src/ModAPI/OstimNG-API-Main.cpp 
+        src/ModAPI/OstimNG-API-Main.h
+        src/ModAPI/OstimNG-API-Scene.h 
+        src/ModAPI/OstimNG-API-Scene.cpp
 
         ${CMAKE_CURRENT_BINARY_DIR}/version.rc)
 
