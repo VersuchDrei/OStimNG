@@ -81,7 +81,7 @@ class Option_Box_MC extends MovieClip
 
 		var rowMin = 3 * row;
 		var rowMax = Math.min(maxOptionIdx, (3 * row) + 2);
-		trace("colMin "  + colMin + " colMax " + colMax + " rowMin " + rowMin + " rowMax " + rowMax)
+		
 		switch (e)
 		{
 			case 0 :
