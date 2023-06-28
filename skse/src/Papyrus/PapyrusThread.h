@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Core/ThreadManager.h"
+#include "Graph/GraphTable.h"
 
 namespace PapyrusThread {
     using VM = RE::BSScript::IVirtualMachine;
@@ -18,6 +19,37 @@ namespace PapyrusThread {
             }
         }
         return "";
+    }
+
+    void NavigateTo(RE::StaticFunctionTag*, int threadID, std::string sceneID) {
+        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        Graph::Node* node = Graph::GraphTable::getNodeById(sceneID);
+        if (thread && node) {
+            thread->navigateTo(node, true);
+        }
+    }
+
+    void WarpTo(RE::StaticFunctionTag*, int threadID, std::string sceneID) {
+        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        Graph::Node* node = Graph::GraphTable::getNodeById(sceneID);
+        if (thread && node) {
+            thread->ChangeNode(node);
+        }
+    }
+
+    int GetSpeed(RE::StaticFunctionTag*, int threadID) {
+        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        if (thread) {
+            return thread->getCurrentSpeed();
+        }
+        return -1;
+    }
+
+    void SetSpeed(RE::StaticFunctionTag*, int threadID, int speed) {
+        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        if (thread) {
+            thread->SetSpeed(speed);
+        }
     }
 
 
@@ -96,6 +128,10 @@ namespace PapyrusThread {
 
         BIND(IsRunning);
         BIND(GetScene);
+        BIND(NavigateTo);
+        BIND(WarpTo);
+        BIND(GetSpeed);
+        BIND(SetSpeed);
 
         BIND(GetActors);
         BIND(GetActor);

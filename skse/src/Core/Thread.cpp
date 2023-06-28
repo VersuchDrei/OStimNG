@@ -15,6 +15,7 @@
 #include "Util/Constants.h"
 #include "Util/ControlUtil.h"
 #include "Util/FormUtil.h"
+#include "Util/LookupTable.h"
 #include "Util/MathUtil.h"
 #include "MCM/MCMTable.h"
 #include "Util/LookupTable.h"
@@ -103,6 +104,11 @@ namespace OStim {
                 uiState->SetThread(this);
             UI::Scene::SceneMenu::Show();
         }
+
+        if (playerThread) {
+            FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_prestart", "", 0);
+            FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_start", "", 0);
+        }
     }
 
     void Thread::rebuildAlignmentKey() {
@@ -146,6 +152,10 @@ namespace OStim {
     }
 
     void Thread::ChangeNode(Graph::Node* a_node) {
+        if (m_currentNode == a_node) {
+            return;
+        }
+
         logger::info("thread {} changed to node {}", m_threadId, a_node->scene_id);
 
         std::unique_lock<std::shared_mutex> writeLock(nodeLock);
@@ -248,10 +258,7 @@ namespace OStim {
             }
         }
 
-        // TODO when we have our own UI do this for player thread, too
-        if (!playerThread) {
-            SetSpeed(m_currentNode->defaultSpeed);
-        }
+        SetSpeed(m_currentNode->defaultSpeed);
 
         UI::UIState::GetSingleton()->NodeChanged(this, m_currentNode);
 
@@ -260,37 +267,25 @@ namespace OStim {
         Messaging::AnimationChangedMessage msg;
         msg.newAnimation = a_node;
         logger::info("Sending animation changed event");
-        Messaging::MessagingRegistry::GetSingleton()->SendMessageToListeners(msg);   
-        SetSpeed(0);
+        Messaging::MessagingRegistry::GetSingleton()->SendMessageToListeners(msg);
+
+        FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_scenechanged", m_currentNode->scene_id, 0);
+        FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_scenechanged_" + m_currentNode->scene_id, "", 0);
     }
 
     void Thread::navigateTo(Graph::Node* node, bool useFades) {
-        // TODO
-        if (playerThread) {
-            if (useFades) {
-                std::thread fadeThread = std::thread([node] {
-                    GameAPI::GameCamera::fadeToBlack(1);
-                    std::this_thread::sleep_for(std::chrono::milliseconds(700));
-                    const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-                    auto vm = skyrimVM ? skyrimVM->impl : nullptr;
-                    if (vm) {
-                        RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-                        auto args = RE::MakeFunctionArguments(std::move(node->scene_id));
-                        vm->DispatchStaticCall("OSKSE", "ChangeNode", args, callback);
-                    }
-                    std::this_thread::sleep_for(std::chrono::milliseconds(550));
-                    GameAPI::GameCamera::fadeFromBlack(1);
-                });
-                fadeThread.detach();
-            } else {
-                const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-                auto vm = skyrimVM ? skyrimVM->impl : nullptr;
-                if (vm) {
-                    RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-                    auto args = RE::MakeFunctionArguments(std::move(node->scene_id));
-                    vm->DispatchStaticCall("OSKSE", "ChangeNode", args, callback);
+        if (playerThread && useFades) {
+            std::thread fadeThread = std::thread([node] {
+                GameAPI::GameCamera::fadeToBlack(1);
+                std::this_thread::sleep_for(std::chrono::milliseconds(700));
+                Thread* thread = ThreadManager::GetSingleton()->getPlayerThread();
+                if (thread) {
+                    thread->ChangeNode(node);
                 }
-            }
+                std::this_thread::sleep_for(std::chrono::milliseconds(550));
+                GameAPI::GameCamera::fadeFromBlack(1);
+            });
+            fadeThread.detach();
         } else {
             ChangeNode(node);
         }
@@ -441,6 +436,11 @@ namespace OStim {
     }
 
     void Thread::SetSpeed(int speed) {
+        if (speed < 0) {
+            speed = 0;
+        } else if (speed >= m_currentNode->speeds.size()) {
+            speed = m_currentNode->speeds.size() - 1;
+        }
         m_currentNodeSpeed = speed;
 
         const auto skyrimVM = RE::SkyrimVM::GetSingleton();
@@ -477,39 +477,19 @@ namespace OStim {
 
             actorIt.second.changeSpeed(speed);
         }
+
+        FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_animationchanged", m_currentNode->scene_id, speed);
     }
 
     void Thread::increaseSpeed() {
-        // TODO do this internally once we don't need OSA anymore
-        if (playerThread) {
-            const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-            auto vm = skyrimVM ? skyrimVM->impl : nullptr;
-            if (vm) {
-                RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-                auto args = RE::MakeFunctionArguments();
-                vm->DispatchStaticCall("OSKSE", "IncreaseSpeed", args, callback);
-            }
-        } else {
-            if (m_currentNodeSpeed < (m_currentNode->speeds.size() - 1)) {
-                SetSpeed(m_currentNodeSpeed + 1);
-            }
+        if (m_currentNodeSpeed < (m_currentNode->speeds.size() - 1)) {
+            SetSpeed(m_currentNodeSpeed + 1);
         }
     }
 
     void Thread::decreaseSpeed() {
-        // TODO do this internally once we don't need OSA anymore
-        if (playerThread) {
-            const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-            auto vm = skyrimVM ? skyrimVM->impl : nullptr;
-            if (vm) {
-                RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-                auto args = RE::MakeFunctionArguments();
-                vm->DispatchStaticCall("OSKSE", "DecreaseSpeed", args, callback);
-            }
-        } else {
-            if (m_currentNodeSpeed > 0) {
-                SetSpeed(m_currentNodeSpeed - 1);
-            }
+        if (m_currentNodeSpeed > 0) {
+            SetSpeed(m_currentNodeSpeed - 1);
         }
     }
 
@@ -526,6 +506,7 @@ namespace OStim {
 
 
     void Thread::callEvent(std::string eventName, int actorIndex, int targetIndex, int performerIndex) {
+        // legacy mod event
         if (playerThread && actorIndex == 0 && targetIndex == 1 && eventName == "spank") {
             FormUtil::sendModEvent(GetActor(0)->getActor().form, "ostim_spank", "", 0);
         }
@@ -571,18 +552,7 @@ namespace OStim {
 
 
     void Thread::stop() {
-        if (playerThread) {
-            // TODO no need to reroute through papyrus once we have our own UI
-            const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-            auto vm = skyrimVM ? skyrimVM->impl : nullptr;
-            if (vm) {
-                RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-                auto args = RE::MakeFunctionArguments();
-                vm->DispatchStaticCall("OSKSE", "EndAnimation", args, callback);
-            }
-        } else {
-            ThreadManager::GetSingleton()->queueThreadStop(m_threadId);
-        }
+        ThreadManager::GetSingleton()->queueThreadStop(m_threadId);
     }
 
     void Thread::close() {

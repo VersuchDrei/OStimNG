@@ -61,40 +61,8 @@ EndProperty
 
 ; -------------------------------------------------------------------------------------------------
 ; SETTINGS  ---------------------------------------------------------------------------------------
-
-bool disableosacontrolsbool
-
-Bool Property DisableOSAControls
-	Bool Function Get()
-		return disableosacontrolsbool
-	EndFunction
-
-	Function Set(Bool var)
-		disableosacontrolsbool = var 
-		OControl.disableControl = var
-	EndFunction
-EndProperty
-
-Bool  SpeedUpNonSexAnimation
-Float SpeedUpSpeed
-
 string[] scenemetadata
 string[] oldscenemetadata
-Bool Property PauseAI Auto
-
-bool Property SkipEndingFadein Auto
-
-Bool Property GetInBedAfterBedScene Auto
-
-Bool Property BlockVRInstalls Auto
-
-Bool Property DisableStimulationCalculation Auto
-
-Bool property ForceCloseOStimThread auto
-
-Bool SMPInstalled
-
-Bool Property Installed auto
 
 int Property InstalledVersion Auto
 
@@ -1533,18 +1501,9 @@ Float SubExcitement
 Float ThirdExcitement
 
 Bool SceneRunning
-String CurrentAnimation
-Int CurrentSpeed
 String[] CurrScene
-String CurrAnimClass
-String CurrentSceneID
 
-Bool AnimSpeedAtMax
-
-_oOmni OSAOmni
-_oControl OControl
-
-Actor PlayerRef
+Actor Property PlayerRef Auto
 
 Bool Property UndressDom Auto
 Bool Property UndressSub Auto
@@ -1570,33 +1529,14 @@ string LastHubSceneID
 Bool AggressiveThemedSexScene
 Actor AggressiveActor
 
-OBarsScript OBars
+OBarsScript Property OBars Auto
 OStimUpdaterScript OUpdater
 
 Float DomStimMult
 Float SubStimMult
 Float ThirdStimMult
-; -------------------------------------------------------------------------------------------------
-; OSA SPECIFIC  -----------------------------------------------------------------------------------
-
-MagicEffect Actra
-Faction OsaFactionStage
-
-ImageSpaceModifier NutEffect
-
-;_oUI OSAUI
-;---------
-
-
-Actor ReroutedDomActor
-Actor ReroutedSubActor
-
-bool FirstAnimate
 
 ;--------- ID shortcuts
-
-String o
-Int Password
 
 quest property subthreadquest auto 
 
@@ -1635,11 +1575,6 @@ EndEvent
 * * @param: AggressingActor, the aggressor in an aggressive scene
 */;
 Bool Function StartScene(Actor Dom, Actor Sub, Bool zUndressDom = False, Bool zUndressSub = False, Bool zAnimateUndress = False, String zStartingAnimation = "", Actor zThirdActor = None, ObjectReference Bed = None, Bool Aggressive = False, Actor AggressingActor = None)
-	if !installed 
-		debug.Notification("OStim not ready or installation failed.")
-		return false
-	endif
-
 	; If Player isn't involved, it's an NPC scene, so start it on a subthread instead
 	If PlayerRef != Dom && PlayerRef != Sub && PlayerRef != zThirdActor
 		if !GetUnusedSubthread().StartSubthreadScene(Dom, Sub, zThirdActor = zThirdActor, startingAnimation = zStartingAnimation, furnitureObj = Bed, withAI = true, isAggressive = Aggressive, aggressingActor = AggressingActor)
@@ -1650,12 +1585,12 @@ Bool Function StartScene(Actor Dom, Actor Sub, Bool zUndressDom = False, Bool zU
 	EndIf
 
 	If SceneRunning
-		Debug.Notification("OSA scene already running")
+		Debug.Notification("OStim scene already running")
 		Return false
 	EndIf
 
-	If IsActorActive(Dom) || Sub && IsActorActive(Sub) || ThirdActor && IsActorActive(ThirdActor)
-		Debug.Notification("At least one of the actors is already in an OSA scene.")
+	If OActor.IsInOStim(Dom) || Sub && OActor.IsInOStim(Sub) || ThirdActor && OActor.IsInOStim(ThirdActor)
+		Debug.Notification("At least one of the actors is already in an OStim scene.")
 		Return false
 	EndIf
 	If !dom.Is3DLoaded()
@@ -1667,7 +1602,6 @@ Bool Function StartScene(Actor Dom, Actor Sub, Bool zUndressDom = False, Bool zU
 	UndressDom = zUndressDom
 	UndressSub = zUndressSub
 	StartingAnimation = zStartingAnimation
-	PauseAI = false
 
 	; set actor properties
 	If zThirdActor
@@ -1820,7 +1754,7 @@ Bool Function StartScene(Actor Dom, Actor Sub, Bool zUndressDom = False, Bool zU
 		ThirdActor = None
 	EndIf
 
-	If !OSA.CheckActors(Actors)
+	If !OActor.VerifyActors(Actors)
 		Debug.Notification("At least one of the actors is invalid.")
 		Return false
 	EndIf
@@ -1851,8 +1785,6 @@ Bool Function StartScene(Actor Dom, Actor Sub, Bool zUndressDom = False, Bool zU
 		CurrentFurniture = None
 	EndIf
 
-	ForceCloseOStimThread = false
-
 	Console("Requesting scene start")
 	RegisterForSingleUpdate(0.01) ; start main loop
 	SceneRunning = True
@@ -1862,7 +1794,6 @@ EndFunction
 
 Event OnUpdate() ;OStim main logic loop
 	Console("Starting scene asynchronously")
-	OControl.SetGlyph()
 
 	OSANative.EndPlayerDialogue()
 
@@ -1933,8 +1864,8 @@ Event OnUpdate() ;OStim main logic loop
 	EndIf
 
 
-	If (SubActor)
-		If (SubActor.GetParentCell() != DomActor.GetParentCell())
+	If SubActor
+		If SubActor.GetParentCell() != DomActor.GetParentCell()
 			If (SubActor == playerref)
 				Domactor.moveto(SubActor)
 			Else
@@ -1945,15 +1876,12 @@ Event OnUpdate() ;OStim main logic loop
 
 	ToggleActorAI(false)
 
-	SendModEvent("ostim_prestart") ; fires as soon as the screen goes black. be careful, some settings you normally expect may not be set yet. Use ostim_start to run code when the OSA scene begins.
-
 	If (EnableImprovedCamSupport)
 		Game.DisablePlayerControls(abCamswitch = True, abMenu = False, abFighting = False, abActivate = False, abMovement = False, aiDisablePOVType = 0)
 	EndIf
 
  
 	StallOrgasm = false
-	CurrentSpeed = 0
 	DomExcitement = 0.0
 	SubExcitement = 0.0
 	ThirdExcitement = 0.0
@@ -1962,51 +1890,15 @@ Event OnUpdate() ;OStim main logic loop
 	ThirdStimMult = 1.0
 	EndedProper = False
 	StallOrgasm = False
-	BlockDomFaceCommands = False
-	BlocksubFaceCommands = False
-	BlockthirdFaceCommands = False
 	MostRecentOrgasmedActor = None
-	FirstAnimate = true
 	MostRecentOSexInteractionTime = Utility.GetCurrentRealTime()
 
-	; OBarsScript already registers for the ostim_orgasm event and is attached to the same quest
-	; so this registration will not work, but renaming the listener to OstimOrgasm will, as that is what OBarsScript registered it to
-	; if we ever split the scripts up on different quests we have to register for the event here again
-	;RegisterForModEvent("ostim_orgasm", "OnOrgasm")
-	
-	String DomFormID = _oGlobal.GetFormID_S(OSANative.GetLeveledActorBase(DomActor))
-	RegisterForModEvent("0SSO" + DomFormID + "_Sound", "OnSoundDom")
-	If (SubActor)
-		String SubFormID = _oGlobal.GetFormID_S(OSANative.GetLeveledActorBase(SubActor))
-		RegisterForModEvent("0SSO" + SubFormID + "_Sound", "OnSoundSub")
-		If (ThirdActor)
-			String ThirdFormID = _oGlobal.GetFormID_S(OSANative.GetLeveledActorBase(ThirdActor)) 
-			RegisterForModEvent("0SSO" + ThirdFormID + "_Sound", "OnSoundThird")
-		EndIf
-	EndIf
+	RegisterForModEvent("ostim_orgasm", "OstimOrgasm")
 
 	If FurnitureType != FURNITURE_TYPE_NONE
 		CurrentFurniture.BlockActivation(true)
 	EndIf
 
-	o = "_root.WidgetContainer." + OSAOmni.Glyph + ".widget"
-
-	;profile()
-
-	CurrScene = OSA.MakeStage(true)
-	Password = CurrScene[0] as int
-	OSA.SetActorsStim(currScene, Actors)
-	OSA.SetModule(CurrScene, "0Sex", StartingAnimation, "")
-	OSA.StimStart(CurrScene)
-
-	;Profile("Startup time")
-
-	; "Diasa" is basically an OSA scene thread. We need to mount it here so OStim can communicate with OSA.
-	; (I didn't pick the nonsense name, it's called that in OSA)
-	diasa = o + ".viewStage"
-
-	CurrentAnimation = ""
-	CurrentSceneID = ""
 	LastHubSceneID = ""
 
 	If (LowLightLevelLightsOnly && DomActor.GetLightLevel() < 20) || (!LowLightLevelLightsOnly)
@@ -2019,24 +1911,14 @@ Event OnUpdate() ;OStim main logic loop
 	EndIf
 
 	OSANative.StartScene(0, CurrentFurniture, Actors)
-	string EventName = "0SAO" + Password + "_AnimateStage"
-	RegisterForModEvent(eventName, "OnAnimate")
-	RegisterForModEvent("0SAO" + Password + "_ActraSync", "SyncActors")
-	RegisterForModEvent("0SAO" + Password + "_ActraJoin", "ActraJoin")
-	RegisterForModEvent("0SAO" + Password + "_ActraRemove", "ActraRemove")
-
-	SendModEvent(EventName, StartingAnimation, OMetadata.GetDefaultSpeed(StartingAnimation))
+	OSANative.ChangeAnimation(0, StartingAnimation)
+	OSANative.UpdateSpeed(0, OMetadata.GetDefaultSpeed(StartingAnimation))
 
 	StartTime = Utility.GetCurrentRealTime()
 
 	ToggleActorAI(True)
 
-	
-
-	Float LoopTimeTotal = 0
 	Float LoopStartTime
-
-	SendModEvent("ostim_start")
 	
 	If (UseFades)
 		FadeFromBlack()
@@ -2046,13 +1928,8 @@ Event OnUpdate() ;OStim main logic loop
 		OFurniture.ResetClutter(CurrentFurniture, ResetClutterRadius * 100)
 	EndIf
 
-	While (IsActorActive(Actors[0])) && !ForceCloseOStimThread ; Main OStim logic loop
-		If (LoopTimeTotal > 1)
-			LoopTimeTotal = 0
-		EndIf
-
-		Utility.Wait(1.0 - LoopTimeTotal)
-		LoopStartTime = Utility.GetCurrentRealTime()
+	While OThread.IsRunning(0)
+		Utility.Wait(1.0)
 
 		i = 0
 		While i < Actors.Length
@@ -2061,17 +1938,11 @@ Event OnUpdate() ;OStim main logic loop
 			EndIf
 			i += 1
 		EndWhile
-
-		LoopTimeTotal = Utility.GetCurrentRealTime() - LoopStartTime
 	EndWhile
 
 	Console("Ending scene")
 
 	SendModEvent("ostim_end", numArg = -1.0)
-
-	If !ForceCloseOStimThread && !DisableScaling
-		RestoreScales()
-	EndIf
 
 	If (EnableImprovedCamSupport)
 		Game.EnablePlayerControls(abCamSwitch = True)
@@ -2081,39 +1952,19 @@ Event OnUpdate() ;OStim main logic loop
 		OFurniture.ResetClutter(CurrentFurniture, ResetClutterRadius * 100)
 	EndIf
 
-	If (UseFades && EndedProper && !SkipEndingFadein)
+	If (UseFades && EndedProper)
 		FadeFromBlack(2)
-	EndIf
-
-	UnRegisterForModEvent("0SAO" + Password + "_AnimateStage")
-	UnRegisterForModEvent("0SAO" + Password + "_ActraSync")
-
-
-	UnRegisterForModEvent("0SSO" + DomFormID + "_Sound")
-	If (SubActor)
-		String SubFormID = _oGlobal.GetFormID_S(OSANative.GetLeveledActorBase(SubActor))
-		UnRegisterForModEvent("0SSO" + SubFormID + "_Sound")
-		If (ThirdActor)
-			String ThirdFormID = _oGlobal.GetFormID_S(OSANative.GetLeveledActorBase(ThirdActor)) 
-			UnRegisterForModEvent("0SSO" + ThirdFormID + "_Sound")
-		EndIf
 	EndIf
 
 	;SendModEvent("0SA_GameLoaded") ;for safety
 	Console(GetTimeSinceStart() + " seconds passed")
-	DisableOSAControls = false
-
-	ranOnce = false  
 
 	oldscenemetadata = scenemetadata
 	scenemetadata = PapyrusUtil.StringArray(0)
 
 	SceneRunning = False
-	OSANative.EndScene(0)
 
 	SendModEvent("ostim_totalend")
-
-	Password = 0
 
 	If (FurnitureType != FURNITURE_TYPE_NONE)
 		CurrentFurniture.BlockActivation(false)
@@ -2125,7 +1976,6 @@ Event OnUpdate() ;OStim main logic loop
 	CurrentFurniture = none
 
 	OSANative.EndPlayerDialogue()
-
 EndEvent
 
 Function Masturbate(Actor Masturbator, Bool zUndress = False, Bool zAnimUndress = False, ObjectReference MBed = None)
@@ -2151,55 +2001,8 @@ EndFunction
 ; Most of what you want to do in OStim is available here, i advise reading through this entire Utilities section
 
 
-Bool Function IsActorActive(Actor Act)
-	{Is the actor in an OSA scene at this moment?}
-	Return Act.HasMagicEffect(Actra)
-EndFunction
-
-Bool Function IsActorInvolved(actor act)
-	{Is or was the actor in an ostim scene}
-	; Note the following distinctions with IsActorActive()
-	; IsActorInvolved will return true during ostim startup and shutdown as well as during the osa scene
-	; IsActorInvolved can return true even after a ostim scene has ended completely. In this sense it is basically "WasActorInvolved"  in the most recent scene
-	; Generally isactoractive is preferred, since it will always return false if no ostim scene is running
-	if act == none 
-		return false 
-	endif
-
-	Return Actors.Find(act) >= 0
-EndFunction
-
-int Function GetScenePassword()
-	return Password
-endfunction
-
-Bool Function IsSoloScene()
-	return SubActor == None
-EndFunction 
-
-Bool Function IsThreesome()
-	return ThirdActor != none
-EndFunction
-
 OBarsScript Function GetBarScript()
 	return obars
-EndFunction
-
-OUndressScript function GetUndressScript()
-	; the script no longer exists
-	return None
-EndFunction
-
-Int Function GetCurrentAnimationSpeed()
-	Return CurrentSpeed
-EndFunction
-
-Bool Function AnimationIsAtMaxSpeed()
-	Return CurrentSpeed == GetCurrentAnimationMaxSpeed()
-EndFunction
-
-Int Function GetCurrentAnimationMaxSpeed()
-	Return OMetadata.GetMaxSpeed(CurrentSceneID)
 EndFunction
 
 ;/* GetAPIVersion
@@ -2213,47 +2016,6 @@ EndFunction
 Int Function GetAPIVersion()
 	Return 28
 EndFunction
-
-Function IncreaseAnimationSpeed()
-	If (AnimSpeedAtMax)
-		Return
-	EndIf
-	AdjustAnimationSpeed(1)
-EndFunction
-
-Function DecreaseAnimationSpeed()
-	If (CurrentSpeed < 1)
-		Return
-	EndIf
-	AdjustAnimationSpeed(-1)
-EndFunction
-
-Function AdjustAnimationSpeed(float amount)
-	{Increase or decrease the animation speed by the amount}
-	If amount < 0
-		int times = math.abs(amount * 2.0) as int
-		While times > 0
-			UI.Invokefloat("HUD Menu", diasa + ".scena.speedAdjust", -0.5)
-			times -= 1
-		EndWhile
-	Else
-		UI.Invokefloat("HUD Menu", diasa + ".scena.speedAdjust", amount)
-	EndIf
-EndFunction
-
-Function SetCurrentAnimationSpeed(Int InSpeed)
-	AdjustAnimationSpeed(inspeed - CurrentSpeed)
-EndFunction
-
-String Function GetCurrentAnimation()
-	{Return the animation ID of the current animation}
-	Return CurrentAnimation
-EndFunction
-
-string function GetCurrentAnimationSceneID() 
-	{Return the scene ID of the current scene i.e. BB|Sy6!KNy9|HhPo|MoShoPo}
-	return currentsceneid
-endfunction
 
 Bool Function ActorHasFacelight(Actor Act)
 	{Checks if Actor already has FaceLight. Currently we only check BBLS NPCs and Vayne}
@@ -2300,67 +2062,6 @@ Function LightActor(Actor Act, Int Pos, Int Brightness) ; pos 1 - ass, pos 2 - f
 			return
 		EndIf
 	EndIf
-
-	_oGlobal.ActorLight(Act, Which, OSAOmni.OLightSP, OSAOmni.OLightME)
-EndFunction
-
-Function TravelToAnimationIfPossible(String Animation) 
-	{Alternative to TravelToAnimation with some safety checks}
-	If OMetadata.IsTransition(Animation)
-		WarpToAnimation(Animation)
-	Else
-		TravelToAnimation(Animation)
-		String Lastanimation
-		String Lastlastanimation
-		String Current = CurrentAnimation
-		While OSANative.GetSceneIdFromAnimId(CurrentAnimation) != Animation
-			Utility.Wait(1)
-			If (Current != CurrentAnimation)
-				LastLastAnimation = Lastanimation
-				LastAnimation = Current
-				Current = CurrentAnimation
-
-				If (Current == LastLastAnimation)
-					Console("Infinite loop during travel detected. Warping")
-					WarpToAnimation(Animation)
-				EndIf
-			EndIf
-		EndWhile
-	EndIf
-EndFunction
-
-Function TravelToAnimation(String Animation)
-	{Order OSA to path to the Scene ID provided. Often fails.}
-	
-	Console("Attempting travel to: " + Animation)
-	RunOsexCommand("$Go," + Animation)
-	;string nav = diasa + ".chore.autoNav"
-
-	;UI.InvokeString("HUD Menu", nav + ".inputCommandAgenda", "" + animation)
-	;UI.InvokeString("HUD Menu", nav + ".nextMove", "" + animation)
-	;UI.Invoke("HUD Menu", nav + ".stepStandard")
-EndFunction
-
-Function WarpToAnimation(String Animation) 
-	{teleport to the provided scene. Requires a SceneID like:  BB|Sy6!KNy9|HhPo|MoShoPo}
-	Console("Warping to animation: " + Animation)
-	;RunOsexCommand("$Warp," + Animation)
-	
-	;String nav = diasa + ".chore.autoNav"
-	;UI.InvokeString("HUD Menu", nav + ".inputCommandAgenda", "WARP" + Animation)
-
-	UI.InvokeString("HUD Menu", diasa + ".menuSelection", Animation)
-
-EndFunction
-
-bool Function AutoTransitionForPosition(int Position, string Type)
-	string SceneId = OMetadata.GetAutoTransitionForActor(CurrentSceneID, Position, Type)
-	If SceneId == ""
-		Return false
-	EndIf
-
-	WarpToAnimation(SceneId)
-	Return true
 EndFunction
 
 bool Function AutoTransitionForActor(Actor Act, string Type)
@@ -2382,7 +2083,7 @@ Function EndAnimation(Bool SmoothEnding = True)
 	EndedProper = SmoothEnding
 	Console("Trying to end scene")
 
-	UI.Invoke("HUD Menu", diasa + ".endCommand")
+	OSANative.EndScene(0)
 EndFunction
 
 Bool Function IsSceneAggressiveThemed() ; if the entire situation should be themed aggressively
@@ -2444,41 +2145,12 @@ string[] Function GetAllSceneMetadata()
 	return scenemetadata
 EndFunction
 
-
-Function RunOsexCommand(String CMD)
-	String[] Plan = new String[2]
-	Plan[1] = CMD
-
-	RunLegacyAPI(Plan)
-EndFunction
-
-;https://web.archive.org/web/20161107220749/http://ceo-os.tumblr.com/osex/book/api
-Function RunLegacyAPI(String[] CMDlist)
-	OSA.SetPlan(CurrScene, CMDlist)
-	OSA.StimStart(CurrScene)
-EndFunction
-
 ; Warps to all of the scene IDs in the array.
 ; Does not do any waiting on it's own. To do that, you can add in numbers into the list, 
 ; and the function will wait that amount of time
 ; i.e. [sceneID, sceneID, "3", sceneID]
 Function PlayAnimationSequence(String[] list)
-	String[] CMDs = new String[1]
-	CMDs[0] = "$Wait,0"
-
-	int i = 0
-	int max = list.Length
-	While (i < max)
-		If !StringContains(list[i], "|")
-			CMDs = PapyrusUtil.PushString(CMDs, "$Wait," + list[i])
-		Else 
-			CMDs = PapyrusUtil.PushString(CMDs, "$Warp," + list[i])
-		EndIf
-
-		i += 1
-	EndWhile
-
-	RunLegacyAPI(CMDs)
+	; TODO
 EndFunction
 
 function FadeFromBlack(float time = 4.0)
@@ -2525,22 +2197,9 @@ Bool Function AppearsFemale(Actor Act)
 	Return OSANative.GetSex(OSANative.GetLeveledActorBase(act)) == 1
 EndFunction
 
-Bool Function AnimationRunning()
-	Return SceneRunning
-EndFunction
-
 String[] Function GetScene()
 	{this is not the sceneID, this is an internal osex thing}
 	Return CurrScene
-EndFunction
-
-Function AllowVehicleReset()
-	Console("Allowing vehicle reset...")
-	int i = Actors.Length
-	While i
-		i -= 1
-		SendModEvent("0SAA" + _oGlobal.GetFormID_S(OSANative.GetLeveledActorBase(Actors[i])) + "_AllowAlignStage")
-	EndWhile
 EndFunction
 
 Function HideAllSkyUIWidgets() ; DEPRECIATED
@@ -2579,44 +2238,18 @@ Function ModifyStimMult(actor act, float by)
 	osanative.unlock("mtx_stimmult")
 endfunction
 
+bool Function AutoTransitionForPosition(int Position, string Type)
+	string SceneId = OMetadata.GetAutoTransitionForActor(OThread.GetScene(0), Position, Type)
+	If SceneId == ""
+		Return false
+	EndIf
+
+	WarpToAnimation(SceneId)
+	Return true
+EndFunction
+
 bool Function IsBeingStimulated(Actor act)
 	return (GetCurrentStimulation(act) * GetStimMult(act)) > 0.01
-EndFunction
-
-Function ForceStop()
-	ForceCloseOStimThread = true
-EndFunction
-
-Function DisableActorsCollision()
-	actor[] a = GetActors()
-
-	int i = 0
-	int max = a.Length
-	while i < max 
-		DisableCollision(a[i])
-		i += 1
-	endwhile
-EndFunction
-
-Function EnableActorsCollision()
-	actor[] a = GetActors()
-
-	int i = 0
-	int max = a.Length
-	while i < max 
-		EnableCollision(a[i])
-		i += 1
-	endwhile
-EndFunction
-
-Function DisableCollision(actor act)
-	{Make the actor unable to moved by anything. Other actors can still touch them}
-	act.TranslateTo(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.000000000, 0.000000000)
-	
-EndFunction
-
-Function EnableCollision(actor act)
-	act.stoptranslation()
 EndFunction
 
 OStimSubthread Function GetUnusedSubthread()
@@ -2732,23 +2365,6 @@ Bool Function CheckBed(ObjectReference BedRef, Bool IgnoreUsed = True)
 	Return BedRef && BedRef.IsEnabled() && BedRef.Is3DLoaded()
 EndFunction
 
-Bool Function IsBed(ObjectReference Bed) ; trick so dirty it could only be in an adult mod
-	If (OSANative.GetDisplayName(bed) == "Bed") || (Bed.Haskeyword(Keyword.GetKeyword("FurnitureBedRoll"))) || (OSANative.GetDisplayName(bed) == "Bed (Owned)")
-		Return True
-	EndIf
-	Return False
-EndFunction
-
-Bool Function IsBedRoll(objectReference Bed)
-	Return (Bed.Haskeyword(Keyword.GetKeyword("FurnitureBedRoll")))
-EndFunction
-
-ObjectReference Function GetOSAStage() ; the stage is an invisible object that the actors are aligned on
-	Int StageID = Actors[0].GetFactionRank(OSAOmni.OFaction[1])
-	ObjectReference stage = OSAOmni.GlobalPosition[StageID as Int]
-	Return Stage
-EndFunction
-
 
 ;
 ;			 ██████╗ ███████╗███████╗██╗  ██╗     ██████╗ ███████╗██╗      █████╗ ████████╗███████╗██████╗     ███████╗██╗   ██╗███████╗███╗   ██╗████████╗███████╗
@@ -2759,151 +2375,6 @@ EndFunction
 ;			 ╚═════╝ ╚══════╝╚══════╝╚═╝  ╚═╝     ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═════╝     ╚══════╝  ╚═══╝  ╚══════╝╚═╝  ╚═══╝   ╚═╝   ╚══════╝
 ;
 ;				Event hooks that receive data from OSA
-
-
-Event OnAnimate(String EventName, String SceneId, Float Speed, Form Sender)
-	;Console("Event received")
-	If (CurrentSceneId != SceneId) || CurrentSpeed != Speed || FirstAnimate
-		FirstAnimate = false
-
-		OnAnimationChange(SceneId, Speed As int)
-
-		SendModEvent("ostim_animationchanged")
-	EndIf
-EndEvent
-
-
-bool ranOnce ; quick hack to get this to not run on scene start, better solution?
-Event SyncActors(string eventName, string strArg, float numArg, Form sender)
-	;TODO: Actor Switching
-	if !ranOnce
-		ranOnce = true 
-		Console("Skipping first actra sync event")
-		return 
-	endif
-	
-	string[] newPositions = PapyrusUtil.StringSplit(strArg,",")
-
-	int actorCount = (newPositions[0]) as int
-	string[] originalPositions = Utility.CreateStringArray(actorCount, "")
-	Actor[] originalActors = GetActors()
-	float[] originalExcitementValues = Utility.CreateFloatArray(actorCount, 0.0)
-	
-	originalPositions[0] = _oGlobal.GetFormID_S(OSANative.GetLeveledActorBase(DomActor))
-	originalExcitementValues[0] = DomExcitement
-	
-	if(SubActor)
-		originalPositions[1] = _oGlobal.GetFormID_S(OSANative.GetLeveledActorBase(SubActor))
-		originalExcitementValues[1] = SubExcitement
-		if(Thirdactor)
-			originalPositions[2] = _oGlobal.GetFormID_S(OSANative.GetLeveledActorBase(ThirdActor))
-			originalExcitementValues[2] = ThirdExcitement
-		endif
-	endif
-
-	int i = 0
-	while(i < originalPositions.length)
-		if(originalPositions[i] == newPositions[1])
-			DomActor = originalActors[i]
-			DomExcitement = originalExcitementValues[i]	
-		elseif(originalPositions[i] == newPositions[2])
-			SubActor = originalActors[i]
-			SubExcitement = originalExcitementValues[i]			
-		elseif(originalPositions[i] == newPositions[3])
-			ThirdActor = originalActors[i]
-			ThirdExcitement = originalExcitementValues[i]
-		endif
-		i = i+1
-	endWhile
-
-	bool changed = false
-	int j = 0
-	while(j < originalPositions.length)
-		if(originalPositions[j] != newPositions[j+1])
-			changed = true
-		endif
-		j = j+1
-	endwhile
-	if(changed)
-		SendModEvent("ostim_actorpositionschanged")
-	endif
-endEvent
-
-Event ActraJoin(string eventName, string actorID, float arg, Form ActraInc)
-	Actor newActor = ActraInc as Actor
-	OSANative.AddActor(0, newActor)
-	Actors = PapyrusUtil.PushActor(Actors, newActor)
-	newActor.AddToFaction(OStimExcitementFaction)
-
-	If Actors.Length == 3
-		ThirdActor = newActor
-		ActorBase thirdActorBase = OSANative.GetLeveledActorBase(ThirdActor)
-		RegisterForModEvent("0SSO" + _oGlobal.GetFormID_S(thirdActorBase) + "_Sound", "OnSoundThird")
-		SendModEvent("ostim_thirdactor_join")
-	EndIf
-
-	newActor.SendModEvent("ostim_actor_join", "", Actors.Length - 1)
-
-	Console("actor joined")
-EndEvent
-
-Event ActraRemove(string eventName, string actraIX, float arg, Form actraInc)
-	OSANative.RemoveActor(0)
-	int newSize = Actors.Length - 1
-	Actor oldActor = Actors[newSize]
-	oldActor.RemoveFromFaction(OStimExcitementFaction)
-	Actors = PapyrusUtil.ResizeActorArray(Actors, newSize)
-
-	If Actors.Length == 2
-		ActorBase thirdActorBase = OSANative.GetLeveledActorBase(ThirdActor)
-		UnRegisterForModEvent("0SSO" + _oGlobal.GetFormID_S(thirdActorBase) + "_Sound")
-		ThirdActor = none
-		SendModEvent("ostim_thirdactor_leave")
-	EndIf
-
-	oldActor.SendModEvent("ostim_actor_leave", "", Actors.Length)
-
-	Console("actor left")
-EndEvent
-
-Function OnAnimationChange(string newScene, int newSpeed)
-	OSANative.ChangeAnimation(0, newScene)
-	OSANative.UpdateSpeed(0, newSpeed)
-	
-	Console("Changing animation...")
-	
-	bool sceneChange = newScene != CurrentSceneID
-	CurrentSceneID = newScene
-	CurrentSpeed = newSpeed
-
-	If OMetadata.GetMaxSpeed(CurrentSceneID) == 0 && !OMetadata.IsTransition(CurrentSceneID)
-		LastHubSceneID = CurrentSceneID
-		Console("On new hub animation")
-	EndIf
-
-	CurrAnimClass = OSANative.GetAnimClass(CurrentSceneID)
-
-	CurrentAnimation = OMetadata.GetAnimationId(newScene, newSpeed)
-
-	if sceneChange
-		SendModEvent("ostim_scenechanged", CurrentSceneID)
-
-		SendModEvent("ostim_scenechanged_" + CurrAnimClass) ;register to scenes by class
-		SendModEvent("ostim_scenechanged_" + CurrentSceneID) ;register to scenes by scene
-	endif
-
-	Console("Current scene ID: " + CurrentSceneID)
-
-	;Profile("Animation change time")
-EndFunction
-
-Function RestoreScales()
-	int i = Actors.Length
-	While i
-		i -= 1
-		Actors[i].SetScale(1.0)
-	EndWhile
-EndFunction
 
 ;
 ;			███████╗████████╗██╗███╗   ███╗██╗   ██╗██╗      █████╗ ████████╗██╗ ██████╗ ███╗   ██╗    ███████╗██╗   ██╗███████╗████████╗███████╗███╗   ███╗
@@ -2943,9 +2414,9 @@ Function Climax(Actor Act)
 
 	int actorIndex = Actors.find(Act)
 	If actorIndex >= 0
-		int actionIndex = OMetadata.FindActionForTarget(CurrentSceneID, actorIndex, "vaginalsex")
+		int actionIndex = OMetadata.FindActionForTarget(OThread.GetScene(0), actorIndex, "vaginalsex")
 		If actionIndex != -1
-			Actor partner = GetActor(OMetadata.GetActionActor(CurrentSceneID, actionIndex))
+			Actor partner = GetActor(OMetadata.GetActionActor(OThread.GetScene(0), actionIndex))
 			AddActorExcitement(partner, 5)
 		EndIf
 	EndIf
@@ -2989,30 +2460,12 @@ EndFunction
 
 ; Faces
 
-Bool BlockDomFaceCommands
-Bool BlockSubFaceCommands
-Bool BlockThirdFaceCommands
-
 Function MuteFaceData(Actor Act)
 	Act.AddToFaction(OstimNoFacialExpressionsFaction)
-	If (Act == DomActor)
-		BlockDomFaceCommands = True
-	Elseif (Act == SubActor)
-		BlocksubFaceCommands = True
-	Elseif (Act == ThirdActor)
-		BlockthirdFaceCommands = True
-	EndIf
 EndFunction
 
 Function UnMuteFaceData(Actor Act)
 	Act.RemoveFromFaction(OstimNoFacialExpressionsFaction)
-	If (Act == DomActor)
-		BlockDomFaceCommands = False
-	Elseif (Act == SubActor)
-		BlocksubFaceCommands = False
-	Elseif (Act == ThirdActor)
-		BlockthirdFaceCommands = False
-	EndIf
 
 	int i = Actors.Find(Act)
 	If i >= 0
@@ -3034,44 +2487,6 @@ EndFunction
 ;
 ;				Code related to Sound
 
-Event OnSoundDom(String EventName, String Fi, Float Ix, Form Sender)
-	OnSound(DomActor, (Fi as Int), Ix as Int)
-EndEvent
-
-Event OnSoundSub(String EventName, String Fi, Float Ix, Form Sender)
-	OnSound(SubActor, (Fi as Int), Ix as Int)
-EndEvent
-
-Event OnSoundThird(String EventName, String Fi, Float Ix, Form Sender)
-	OnSound(ThirdActor, (Fi as Int), Ix as Int)
-EndEvent
-
-; Below is an event you can easily copy paste into your code to receive sound data
-;/
-RegisterForModEvent("ostim_osasound", "OnOSASound")
-Event OnOSASound(String EventName, String Args, Float Nothing, Form Sender)
-	String[] Argz = new String[3]
-	Argz = StringUtil.Split(Args, ",")
-
-	Actor Char
-	If (Argz[0] == "dom")
-		Char = OStim.GetDomActor()
-	ElseIf (Argz[0] == "sub")
-		Char = OStim.Getsubactor()
-	ElseIf (Argz[0] == "third")
-		Char = OStim.GetThirdActor()
-	EndIf
-	Int FormID = Argz[1] as Int
-	Int SoundID = Argz[2] as Int
-EndEvent
-/;
-
-Function OnSound(Actor Act, Int SoundID, Int FormNumber)
-	If (FormNumber == 60)
-		OThread.CallEvent(0, "spank", 0, 1)
-	EndIf
-EndFunction
-
 ;/* SendExpressionEvent
 * * plays the event expression and if it is valid resets the expression when it's over
 * * contains a Utility::Wait call, so best only call this from event listeners
@@ -3087,66 +2502,6 @@ Function SendExpressionEvent(Actor Act, string EventName)
 		Utility.Wait(Duration)
 		OActor.ClearExpression(Act)
 	EndIf
-EndFunction
-
-Event OnFormBind(String EventName, String zMod, Float IxID, Form Sender)
-	Int Ix = StringUtil.Substring(IxID, 0, 2) as Int
-	Int Fo = StringUtil.Substring(IxID, 2) as Int
-	;OFormSuite[Ix] = Game.GetFormFromFile(Fo, zMod) as FormList
-	Console("System requesting form: " + Fo + " be placed in to slot " + Ix)
-	If (zMod != "OSA.esm")
-		Console(zMod)
-	EndIf
-
-	Console(Game.GetFormFromFile(fo, "OSA.esm").GetName())
-EndEvent
-
-Function PlayOSASound(Actor Act, Int FormlistID, Int SoundID)
-	PlaySound(Act, SoundFormlists[FormlistID].GetAt(SoundID) as Sound)
-EndFunction
-
-Function PlaySound(Actor Act, Sound Snd)
-	Int S = (Snd).Play(Act)
-	Sound.SetInstanceVolume(S, 1.0)
-EndFunction
-
-;  0Guy_vo - 20
-; 0Gal_vo - 20 - s 25
-; 0Guy_ivo - 10
-; 0Gal_ivo - 10 - s 15
-;  0Gal_ivos - 11 - s 16
-; 0Gal_ivo - 11
-; FEvenTone_wvo - 80 - s 85
-;0guy_wvo - 80
-; 0bod_ibo - 50
-; 0bod_ibo - 50
-;0spank_spank - 60
-;0spank_spank - 60
-
-FormList[] SoundFormLists
-Function BuildSoundFormLists()
-	SoundFormLists = new FormList[100]
-	String Plugin = "OSA.esm"
-
-	SoundFormLists[10] = Game.GetFormFromFile(10483, Plugin) as FormList ;0Guy_ivo
-	SoundFormLists[15] = Game.GetFormFromFile(8986, Plugin) as FormList ;0Gal_ivo
-
-	SoundFormLists[11] = Game.GetFormFromFile(8986, Plugin) as FormList ;0Gal_ivo | wtf? female voice on male?
-	SoundFormLists[16] = Game.GetFormFromFile(8987, Plugin) as FormList ;0Gal_ivos
-
-	SoundFormLists[20] = Game.GetFormFromFile(17595, Plugin) as FormList ;0Guy_vo
-	SoundFormLists[25] = Game.GetFormFromFile(17570, Plugin) as FormList ;0Gal_vo
-
-	SoundFormLists[80] = Game.GetFormFromFile(13409, Plugin) as FormList ;0guy_wvo
-	SoundFormLists[85] = Game.GetFormFromFile(13400, Plugin) as FormList ;FEvenTone_wvo
-
-	SoundFormLists[50] = Game.GetFormFromFile(11972, Plugin) as FormList ;0bod_ibo
-
-	SoundFormLists[60] = Game.GetFormFromFile(9037, Plugin) as FormList ;0spank_spank
-EndFunction
-
-FormList[] Function GetSoundFormLists()
-	Return SoundFormLists
 EndFunction
 
 
@@ -3195,50 +2550,13 @@ Event DisplayToastEvent(string txt, float time)
 	outils.DisplayToastText(txt, time)
 EndEvent
 
-Function SetDefaultSettings()
-	ForceCloseOStimThread = false
-
-	SpeedUpNonSexAnimation = False ;game pauses if anim finished early
-	SpeedUpSpeed = 1.5
-
-	DisableStimulationCalculation = false
-
-	PauseAI = False
-
-	GetInBedAfterBedScene = False
-
-
-	disableOSAControls = false
-
-	SkipEndingFadein = false
-	BlockVRInstalls = True
-
-	KeyMap = 200
-
-	MuteOSA = False
-
-	OData.ResetSettings()
-EndFunction
-
 Bool Function GetGameIsVR()
 	Return (PapyrusUtil.GetScriptVersion() == 36) ;obviously this no guarantee but it's the best we've got for now
-EndFunction
-
-Function AcceptReroutingActors(Actor Act1, Actor Act2) ;compatibility thing, never call this one directly
-	ReroutedDomActor = Act1
-	ReroutedSubActor = Act2
-	Console("Recieved rerouted actors")
-EndFunction
-
-Function StartReroutedScene()
-	Console("Rerouting scene")
-	StartScene(ReroutedDomActor,  ReroutedSubActor)
 EndFunction
 
 Function ResetState()
 	Console("Resetting thread state")
 	SceneRunning = False
-	DisableOSAControls = false
 
 	int i = 0 
 	Actor[] a = GetActors()
@@ -3246,14 +2564,6 @@ Function ResetState()
 		a[i].dispelallspells()
 		i += 1
 	endwhile
-	o = "_root.WidgetContainer." + OSAOmni.Glyph + ".widget"
-    
-	UI.InvokeInt("HUD Menu", o + ".com.endCommand", 51)
-	UI.InvokeInt("HUD Menu", o + ".com.endCommand", 52)
-	UI.InvokeInt("HUD Menu", o + ".com.endCommand", 53)
-	UI.InvokeInt("HUD Menu", o + ".com.endCommand", 54)
-	UI.InvokeInt("HUD Menu", o + ".com.endCommand", 55)
-	UI.InvokeInt("HUD Menu", o + ".com.endCommand", 56)
 EndFunction
 
 Float ProfileTime 
@@ -3274,58 +2584,8 @@ Function Profile(String Name = "")
 	EndIf
 EndFunction
 
-string Function GetNPCDiasa(actor act)
-	; The player thread is easily accessible through OSA. However, NPC scenes are not.
-	; Normally, we would go through OSA's thread manager and fetch it.
-	; However, SKSE's flash interface doesn't handle flash arrays, so this is not possible.
-	; Instead, running an OSA inspect on an npc mounts their data, and within that data is a link to the scene thread they are in
-	; Closing the inspect menu would break the link, so we need to leave it open.
-	
-	o = "_root.WidgetContainer." + OSAOmni.Glyph + ".widget" ; save the path to the main script
-
-	String DomID = _oGlobal.GetFormID_S(OSANative.GetLeveledActorBase(act)) ; get actor 0's id
-
-	String InspectMenu = o + ".hud.InspectMenu" ; get the path to the inspect menu
-
-	UI.InvokeString("HUD Menu", o + ".ctr.INSPECT", domID) ; open the inspect menu on actor 0
-
-	string actraD = InspectMenu + ".actra" ; from that, get actor 0's actra
-
-
-	string ret = actraD + ".stageStatus" ; get the diasa from that actra
-
-
-
-	UI.Invoke("HUD Menu", InspectMenu + ".OmniDim") ; hide the inspect menu real quick
-
-	return ret
-
-
-EndFunction
-
 Bool Property SoSInstalled Auto
 Faction SoSFaction
-
-Function ResetOSA() ; do not use, breaks osa
-	Quest OSAQuest = Quest.GetQuest("0SA")
-	Quest UIQuest = Quest.GetQuest("0SUI")
-	Quest CtrlQuest = Quest.GetQuest("0SAControl")
-
-	OSAQuest.Reset()
-	OSAQuest.Stop()
-	UIQuest.Reset()
-	UIQuest.Stop()
-	CtrlQuest.Reset()
-	CtrlQuest.Stop()
-
-	Utility.Wait(2.0)
-
-	CtrlQuest.Start()
-	OSAQuest.Start()
-	UIQuest.Start()
-
-	Utility.Wait(1.0)
-Endfunction
 
 int rnd_s1
 int rnd_s2
@@ -3342,63 +2602,17 @@ Function ResetRandom()
 EndFunction
 
 Function Startup()
-	installed = false
-	Debug.Notification("Installing OStim. Please wait...")
-
-
 	LoadRegistrations = PapyrusUtil.FormArray(0, none)
 
 	InstalledVersion = GetAPIVersion()
 
 	SceneRunning = False
-	Actra = Game.GetFormFromFile(0x000D63, "OSA.ESM") as MagicEffect
-	OsaFactionStage = Game.GetFormFromFile(0x00182F, "OSA.ESM") as Faction
-	OSAOmni = (Quest.GetQuest("0SA") as _oOmni)
-;	OSAUI = (Quest.GetQuest("0SA") as _oui)
-	PlayerRef = Game.GetPlayer()
-	NutEffect = Game.GetFormFromFile(0x000805, "Ostim.esp") as ImageSpaceModifier
-
-	subthreadquest = Game.GetFormFromFile(0x000806, "Ostim.esp") as quest
 
 	OUpdater = Game.GetFormFromFile(0x000D67, "Ostim.esp") as OStimUpdaterScript
 
-	OControl = Quest.GetQuest("0SAControl") as _oControl
-
-	OBars = Game.GetFormFromFile(0x000E40, "Ostim.esp") as OBarsScript
-	SetDefaultSettings()
-	BuildSoundFormlists()
 	scenemetadata = PapyrusUtil.StringArray(0)
 
-	If (BlockVRInstalls && GetGameIsVR())
-		Debug.MessageBox("OStim: You appear to be using Skyrim VR. VR is not yet supported by OStim. See the OStim description for more details. If you are not using Skyrim VR by chance, update your papyrus Utilities.")
-		Return
-	EndIf
-
-	SMPInstalled = (SKSE.GetPluginVersion("hdtSSEPhysics") != -1)
-	Console("SMP installed: " + SMPInstalled)
-
-	If (OSAFactionStage)
-		Console("Loaded")
-	Else
-		Debug.MessageBox("OSex and OSA do not appear to be installed, please do not continue using this save file.")
-		Return
-	EndIf
-
-	If (OSA.StimInstalledProper())
-		Console("OSA is installed correctly")
-	Else
-		Debug.MessageBox("OStim is not loaded after OSA in your mod files, please allow OStim to overwrite OSA's files and restart. Alternatively SkyUI is not loaded.")
-		Return
-	EndIf
-
-	If (!_oGlobal.OStimGlobalLoaded())
-		Debug.MessageBox("It appears you have the OSex facial expression fix installed. Please exit and remove that mod, as it is now included in OStim, and having it installed will break some things now!")
-		return
-	EndIf
-
 	OnLoadGame()
-
-	installed = true 
 
 	OUtils.DisplayTextBanner("OStim installed.")
 EndFunction
@@ -3408,10 +2622,6 @@ Form[] LoadRegistrations
 Function RegisterForGameLoadEvent(form f)
 	{Make a "Event OnGameLoad()" in the scripts attatched to the form you send and the event is called on game load}
 	; Note the database is reset when ostim is updated so you should only use this if you also use OUpdater in your mod so you reregister
-	while !installed
-		Utility.Wait(1)
-		Console("Load registrations not ready")
-	endWhile
 
 	OUtils.lock("mtx_os_registerload")
 
@@ -3455,31 +2665,6 @@ Function OnLoadGame()
 	Else
 		OStimImprovedCamSupport.value = 0
 	EndIf
-
-	Console("Using cosave fix")
-
-	; these are now handled in C++ and no longer need Papyrus listeners
-	If KeyMap != 1
-		UnregisterForKey(KeyMap)
-	EndIf
-	If SpeedUpKey != 1
-		UnregisterForKey(SpeedUpKey)
-	EndIf
-	If SpeedDownKey != 1
-		UnregisterForKey(SpeedDownKey)
-	EndIf
-	If AlignmentKey != 1
-		UnregisterForKey(AlignmentKey)
-	EndIf
-	If FreecamKey != 1
-		UnregisterForKey(FreecamKey)
-	EndIf
-	If PullOutKey != 1
-		UnregisterForKey(PullOutKey)
-	EndIf
-	If ControlToggleKey != 1
-		UnregisterForKey(ControlToggleKey)
-	EndIf
 		
 	OBars.OnGameLoad()
 
@@ -3517,19 +2702,9 @@ Function OnLoadGame()
 	POSITION_TAGS[14] = "standing"
 	POSITION_TAGS[15] = "suspended"
 
-	MuteOSA = False
-
-	;may annoy ihud users?
-	UI.SetBool("HUD Menu", "_root.HUDMovieBaseInstance._visible", true)
-
-		; Fix for rapid animation swap bug after reload
-	o = "_root.WidgetContainer." + OSAOmni.Glyph + ".widget"
-	UI.InvokeInt("HUD Menu", o + ".com.endCommand", 51) ;todo test
-
 	if GetAPIVersion() != InstalledVersion
 		OUtils.ForceOUpdate()
-	endif 
-
+	endif
 EndFunction
 
 
@@ -3722,6 +2897,70 @@ int Property AiSwitchChance
 	EndFunction
 EndProperty
 
+Bool property ForceCloseOStimThread
+	bool Function Get()
+		Return false
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			EndAnimation(false)
+		EndIf
+	EndFunction
+EndProperty
+
+bool Property SkipEndingFadein
+	bool Function Get()
+		Return false
+	EndFunction
+	Function Set(bool Value)
+	EndFunction
+EndProperty
+
+bool Property Installed
+	bool Function Get()
+		Return true
+	EndFunction
+	Function Set(bool Value)
+	EndFunction
+EndProperty
+
+Bool Property BlockVRInstalls
+	bool Function Get()
+		Return true
+	EndFunction
+	Function Set(bool Value)
+	EndFunction
+EndProperty
+
+Bool Property DisableStimulationCalculation
+	bool Function Get()
+		Return false
+	EndFunction
+	Function Set(bool Value)
+	EndFunction
+EndProperty
+
+Bool Property PauseAI
+	bool Function Get()
+		Return OThread.IsInAutoMode(0)
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OThread.StartAutoMode(0)
+		Else
+			OThread.StopAutoMode(0)
+		EndIf
+	EndFunction
+EndProperty
+
+bool Property GetInBedAfterBedScene
+	bool Function Get()
+		Return false
+	EndFunction
+	Function Set(bool Value)
+	EndFunction
+EndProperty
+
 Bool Property MuteOSA
 	bool Function Get()
 		Return false
@@ -3742,6 +2981,14 @@ Bool Property MuteOSA
 				EndIf
 			EndWhile
 		EndIf
+	EndFunction
+EndProperty
+
+bool Property DisableOSAControls
+	bool Function Get()
+		return false
+	EndFunction
+	Function Set(bool Value)
 	EndFunction
 EndProperty
 
@@ -3776,18 +3023,18 @@ bool Function ThreesomeAnimsInstalled()
 EndFunction
 
 Bool Function IsVaginal()
-	Return OMetadata.FindAction(CurrentSceneID, "vaginalsex") != -1
+	Return OMetadata.FindAction(OThread.GetScene(0), "vaginalsex") != -1
 EndFunction
 
 Bool Function IsOral()
 	; this method did not check for animation class VJ, so to keep it working as it was we don't check for cunnilingus
-	Return OMetadata.FindAction(CurrentSceneID, "blowjob") != -1
+	Return OMetadata.FindAction(OThread.GetScene(0), "blowjob") != -1
 EndFunction
 
 Actor Function GetCurrentLeadingActor()
 	int actorIndex = 0
-	If OMetadata.HasActions(CurrentSceneID)
-		actorIndex = OMetadata.GetActionPerformer(CurrentSceneID, 0)
+	If OMetadata.HasActions(OThread.GetScene(0))
+		actorIndex = OMetadata.GetActionPerformer(OThread.GetScene(0), 0)
 	EndIf
 	Return GetActor(actorIndex)
 EndFunction
@@ -3796,7 +3043,7 @@ Bool Function GetCurrentAnimIsAggressive()
 	int i = Actors.Length
 	While i
 		i -= 1
-		If OMetadata.HasActorTag(CurrentSceneID, i, "aggressor")
+		If OMetadata.HasActorTag(OThread.GetScene(0), i, "aggressor")
 			Return true
 		EndIf
 	EndWhile
@@ -3806,7 +3053,7 @@ EndFunction
 
 String Function GetCurrentAnimationClass()
 	; don't use anim classes, use actions from OMetadata
-	Return CurrAnimClass
+	Return ""
 EndFunction
 
 Actor MostRecentOrgasmedActor
@@ -3944,7 +3191,7 @@ EndFunction
 
 ; I will remove these again in the future, don't call them!
 Function PullOut()
-	If !OMetadata.IsTransition(CurrentSceneID) && OMetadata.GetMaxSpeed(CurrentSceneID) != 0
+	If !OMetadata.IsTransition(OThread.GetScene(0)) && OMetadata.GetMaxSpeed(OThread.GetScene(0)) != 0
 		If (LastHubSceneID != "")
 			TravelToAnimationIfPossible(LastHubSceneID)
 		EndIf
@@ -4036,4 +3283,120 @@ Function PlayTickSmall()
 EndFunction
 
 Function PlayTickBig()
+EndFunction
+
+int Function GetScenePassword()
+	return 0
+endfunction
+
+string Function GetNPCDiasa(actor act)
+	return ""
+EndFunction
+
+Bool Function IsActorActive(Actor Act)
+	Return OActor.IsInOStim(Act)
+EndFunction
+
+Function RestoreScales()
+	int i = Actors.Length
+	While i
+		i -= 1
+		Actors[i].SetScale(1.0)
+	EndWhile
+EndFunction
+
+Bool Function AnimationRunning()
+	Return OThread.IsRunning(0)
+EndFunction
+
+Bool Function IsSoloScene()
+	Return OThread.GetActors(0).Length == 1
+EndFunction 
+
+Bool Function IsThreesome()
+	; did only check for existence of third actor before
+	Return OThread.GetActors(0).Length >= 3
+EndFunction
+
+Int Function GetCurrentAnimationSpeed()
+	Return OThread.GetSpeed(0)
+EndFunction
+
+Bool Function AnimationIsAtMaxSpeed()
+	Return OThread.GetSpeed(0) == OMetadata.GetMaxSpeed(OThread.GetScene(0))
+EndFunction
+
+Int Function GetCurrentAnimationMaxSpeed()
+	Return OMetadata.GetMaxSpeed(OThread.GetScene(0))
+EndFunction
+
+Function IncreaseAnimationSpeed()
+	OThread.SetSpeed(0, OThread.GetSpeed(0) + 1)
+EndFunction
+
+Function DecreaseAnimationSpeed()
+	OThread.SetSpeed(0, OThread.GetSpeed(0) - 1)
+EndFunction
+
+String Function GetCurrentAnimation()
+	Return ""
+EndFunction
+
+string function GetCurrentAnimationSceneID() 
+	Return OThread.GetScene(0)
+endfunction
+
+Function TravelToAnimationIfPossible(String Animation)
+	OThread.NavigateTo(0, Animation)
+EndFunction
+
+Function TravelToAnimation(String Animation)
+	OThread.NavigateTo(0, Animation)
+EndFunction
+
+Function WarpToAnimation(String Animation) 
+	OThread.WarpTo(0, Animation)
+EndFunction
+
+Bool Function IsActorInvolved(actor act)
+	if act == none 
+		return false 
+	endif
+
+	Return OThread.GetActors(0).Find(act) >= 0
+EndFunction
+
+Function ForceStop()
+	OSANative.EndScene(0)
+EndFunction
+
+OUndressScript function GetUndressScript()
+	return None
+EndFunction
+
+Bool Function IsBed(ObjectReference Bed)
+	If (OSANative.GetDisplayName(bed) == "Bed") || (Bed.Haskeyword(Keyword.GetKeyword("FurnitureBedRoll"))) || (OSANative.GetDisplayName(bed) == "Bed (Owned)")
+		Return True
+	EndIf
+	Return False
+EndFunction
+
+Bool Function IsBedRoll(objectReference Bed)
+	Return (Bed.Haskeyword(Keyword.GetKeyword("FurnitureBedRoll")))
+EndFunction
+
+ObjectReference Function GetOSAStage()
+	Return None
+EndFunction
+
+Function AdjustAnimationSpeed(float amount)
+	OThread.SetSpeed(0, OThread.GetSpeed(0) + (amount As int))
+EndFunction
+
+Function SetCurrentAnimationSpeed(Int InSpeed)
+	OSANative.UpdateSpeed(0, InSpeed)
+EndFunction
+
+Function SetDefaultSettings()
+	OData.ResetSettings()
 EndFunction

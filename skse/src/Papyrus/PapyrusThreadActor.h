@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Core/Core.h"
 #include "Core/ThreadManager.h"
 #include "Trait/TraitTable.h"
 #include "Util/CompatibilityTable.h"
@@ -195,8 +196,21 @@ namespace PapyrusThreadActor {
     }
 
 
+    bool IsInOStim(RE::StaticFunctionTag*, RE::Actor* actor) {
+        return OStim::ThreadManager::GetSingleton()->findActor(actor);
+    }
+
     bool HasSchlong(RE::StaticFunctionTag*, RE::Actor* actor) {
         return Compatibility::CompatibilityTable::hasSchlong(actor);
+    }
+
+    bool VerifyActors(RE::StaticFunctionTag*, std::vector<RE::Actor*> actors) {
+        for (RE::Actor*& actor : actors) {
+            if (!OStim::isEligible(actor)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     std::vector<RE::Actor*> SortActors(RE::StaticFunctionTag*, std::vector<RE::Actor*> actors, int playerIndex) {
@@ -257,7 +271,9 @@ namespace PapyrusThreadActor {
         BIND(SetObjectVariant);
         BIND(UnsetObjectVariant);
 
+        BIND(IsInOStim);
         BIND(HasSchlong);
+        BIND(VerifyActors);
         BIND(SortActors);
 
         return true;

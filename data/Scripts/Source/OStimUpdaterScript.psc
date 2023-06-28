@@ -16,11 +16,8 @@ Event OnInit()
 EndEvent
 
 Function ResetQuestDB()
-	FormsToUpdate = new Form[4]
-	FormsToUpdate[2] = Quest.GetQuest("0SA") ; 0SA
-	FormsToUpdate[1] = Game.GetFormFromFile(0x0070A4, "OSA.esm") as Quest ; 0SUI
-	FormsToUpdate[0] = Quest.GetQuest("0SAControl") as Quest ; 0SAControl
-	FormsToUpdate[3] = Game.GetFormFromFile(0x000801, "Ostim.esp") as Quest ; ostim
+	FormsToUpdate = new Form[1]
+	FormsToUpdate[0] = Game.GetFormFromFile(0x000801, "Ostim.esp") as Quest ; ostim
 EndFunction
 
 Function DoUpdate()

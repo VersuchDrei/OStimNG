@@ -55,22 +55,6 @@ Function ShowBars() Global
 	OUtils.GetOStim().ShowBars()
 EndFunction
 
-Function EndAnimation() Global
-	OUtils.GetOStim().EndAnimation(true)
-EndFunction
-
-Function IncreaseSpeed() Global
-	OUtils.GetOStim().IncreaseAnimationSpeed()
-EndFunction
-
-Function DecreaseSpeed() Global
-	OUtils.GetOStim().DecreaseAnimationSpeed()
-EndFunction
-
 Function PullOut() Global
 	OUtils.GetOStim().PullOut()
-EndFunction
-
-Function ChangeNode(string Node) Global
-	OUtils.GetOStim().WarpToAnimation(Node)
 EndFunction

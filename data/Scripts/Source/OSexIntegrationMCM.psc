@@ -15,7 +15,7 @@ String[] DomLightBrightList
 ; ai control settings
 Int SetControlToggle
 
-OsexIntegrationMain Main
+OsexIntegrationMain Property Main Auto
 
 
 string currPage
@@ -32,8 +32,6 @@ Int osaRightKeyDefault = 77 ; numpad 6
 Int osaTogKeyDefault = 73 ; numpad 9
 Int osaYesKeyDefault = 71 ; numpad 7
 Int osaEndKeyDefault = 83 ; numpad .
-
-_oControl OSAControl
 
 ;ORomance 
 int SetORDifficulty
@@ -69,16 +67,6 @@ string SUOAStatBuffs = "oaroused.modifystats"
 int SetOANudityBroadcast
 string SUOANudityBroadcast = "oaroused.EnableNudityBroadcast"
 
-string OSearch = "OSearch.esp"
-int SetOSKey
-string SUOSKey = "osearch.key"
-int SetOSAllowHub
-string SUOSAllowHub = "osearch.allowhub"
-int SetOSAllowTransitory
-string SUOSAllowTransitory = "osearch.allowTransitory"
-int SetOSAllowSex
-string SUOSAllowSex = "osearch.allowSex"
-
 string OProstitution = "OProstitution.esp"
 int SetOPFreq
 string SUOPFreq = "oprostitution.freqmod"
@@ -89,8 +77,6 @@ EndEvent
 
 Function Init()
 	Parent.OnGameReload()
-	Main = OUtils.GetOStim()
-	OSAControl = Quest.GetQuest("0SAControl") as _oControl
 
 	DomLightModeList = new String[3]
 	DomLightModeList[0] = "$ostim_light_mode_none"
@@ -144,13 +130,6 @@ Event OnConfigRegister()
 	ImportSettings()
 endEvent
 
-Event onConfigOpen()
-	; For some reason, SkyUI's OnGameReload() isn't firing properly when loading an existing game
-	; so we have to instantiate OSAControl when the menu is opened
-	; for key rebinding to work in existing saves with a previous version of OStim installed
-	OSAControl = Quest.GetQuest("0SAControl") as _oControl
-EndEvent
-
 Event OnPageReset(String Page)
 	{Called when a new page is selected, including the initial empty page}
 	currPage = page
@@ -184,14 +163,6 @@ Event OnPageReset(String Page)
 			SetORRight = AddKeyMapOption("$ostim_addon_or_right_key", GetExternalInt(oromance, GVORRight))
 			SetORNakadashi = AddToggleOption("$ostim_addon_or_nakadashi", GetExternalBool(ORomance, GVORNakadashi))
 		endif
-
-		if main.IsModLoaded(OSearch)
-			AddColoredHeader("OSearch")
-			SetOSKey = AddKeyMapOption("$ostim_addon_os_key", StorageUtil.GetIntValue(none, SUOSKey))
-			SetOSAllowSex = AddToggleOption("$ostim_addon_os_sex", StorageUtil.GetIntValue(none, SUOSAllowSex))
-			SetOSAllowHub = AddToggleOption("$ostim_addon_os_hub", StorageUtil.GetIntValue(none, SUOSAllowHub))
-			SetOSAllowTransitory = AddToggleOption("$ostim_addon_os_transitory", StorageUtil.GetIntValue(none, SUOSAllowTransitory))
-		endif 
 
 		if main.IsModLoaded(OProstitution)
 			AddColoredHeader("OProstitution")
@@ -309,18 +280,9 @@ Event OnOptionSelect(Int Option)
 		elseif option == SetORStationary
 			SetExternalBool(oromance, GVORStationaryMode, !GetExternalBool(oromance, GVORStationaryMode))
 			SetToggleOptionValue(SetORStationary, GetExternalBool(oromance, GVORStationaryMode))
-		elseif option == SetOSAllowSex
-			StorageUtil.SetIntValue(none, SUOSAllowSex, (!(StorageUtil.GetIntValue(none, SUOSAllowSex) as bool)) as int)
-			SetToggleOptionValue(SetOSAllowSex, StorageUtil.GetIntValue(none, SUOSAllowSex))
-		elseif option == SetOSAllowTransitory
-			StorageUtil.SetIntValue(none, SUOSAllowTransitory, (!(StorageUtil.GetIntValue(none, SUOSAllowTransitory) as bool)) as int)
-			SetToggleOptionValue(SetOSAllowTransitory, StorageUtil.GetIntValue(none, SUOSAllowTransitory))
 		elseif option == SetOARequireLowArousalBeforeEnd
 			StorageUtil.SetIntValue(none, SUOALowArousalReq, (!(StorageUtil.GetIntValue(none, SUOALowArousalReq) as bool)) as int)
 			SetToggleOptionValue(SetOARequireLowArousalBeforeEnd, StorageUtil.GetIntValue(none, SUOALowArousalReq))
-		elseif option == SetOSAllowHub
-			StorageUtil.SetIntValue(none, SUOSAllowHub, (!(StorageUtil.GetIntValue(none, SUOSAllowHub) as bool)) as int)
-			SetToggleOptionValue(SetOSAllowHub, StorageUtil.GetIntValue(none, SUOSAllowHub))
 		elseif option == SetOAStatBuffs
 			StorageUtil.SetIntValue(none, SUOAStatBuffs, (!(StorageUtil.GetIntValue(none, SUOAStatBuffs) as bool)) as int)
 			SetToggleOptionValue(SetOAStatBuffs, StorageUtil.GetIntValue(none, SUOAStatBuffs))
@@ -343,8 +305,6 @@ Event OnOptionHighlight(Int Option)
 			SetInfoText("$ostim_tooltip_or_difficulty")
 		elseif (option == SetOAKey)
 			SetInfoText("$ostim_tooltip_oa_key")
-		elseif (option == SetOSKey)
-			SetInfoText("$ostim_tooltip_os_key")
 		elseif (option == SetORSexuality)
 			SetInfoText("$ostim_tooltip_or_sexuality")
 		elseif (option == SetORColorblind)
@@ -361,12 +321,6 @@ Event OnOptionHighlight(Int Option)
 			SetInfoText("$ostim_tooltip_op_freq")
 		Elseif (Option == SetOARequireLowArousalBeforeEnd)
 			SetInfoText("$ostim_tooltip_oa_low_arousal_end")
-		Elseif (Option == SetOSAllowHub)
-			SetInfoText("$ostim_tooltip_os_hub")
-		Elseif (Option == SetOSAllowTransitory)
-			SetInfoText("$ostim_tooltip_os_transitory")
-		Elseif (Option == SetOSAllowSex)
-			SetInfoText("$ostim_tooltip_os_transitory")
 		Elseif (Option == SetOANudityBroadcast)
 			SetInfoText("$ostim_tooltip_oa_nudity_bc")
 		Elseif (Option == SetOAStatBuffs)
@@ -415,9 +369,6 @@ Event OnOptionKeyMapChange(Int Option, Int KeyCode, String ConflictControl, Stri
 		SetKeyMapOptionValue(Option, KeyCode)
 	Elseif (Option == SetORLeft)
 		SetExternalInt(oromance, GVORLeft, KeyCode)
-		SetKeyMapOptionValue(Option, KeyCode)
-	Elseif (Option == SetOSKey)
-		StorageUtil.SetIntValue(none, "osearch.key", keycode)
 		SetKeyMapOptionValue(Option, KeyCode)
 	Elseif (Option == SetOAKey)
 		StorageUtil.SetIntValue(none, "oaroused.key", keycode)

@@ -247,6 +247,15 @@ Function UnsetObjectVariant(Actor Act, string Type) Global Native
 ; ╚██████╔╝   ██║   ██║███████╗██║   ██║      ██║
 ;  ╚═════╝    ╚═╝   ╚═╝╚══════╝╚═╝   ╚═╝      ╚═╝
 
+;/* IsInOStim
+* * checks if the actor is currently involved in an OStim scene
+* *
+* * @param: Act, the actor to check for
+* *
+* * @return: true if the actor is in an OStim scene, otherwise false
+*/;
+bool Function IsInOStim(Actor Act) Global Native
+
 ;/* HasSchlong
 * * checks if the actor has a schlong
 * * if SoS full is not installed or use SoS gender was disabled in the MCM this will simply check for the actors sex
@@ -260,6 +269,15 @@ Function UnsetObjectVariant(Actor Act, string Type) Global Native
 * * @return: true if the actor has a schlong, otherwise false
 */;
 bool Function HasSchlong(Actor Act) Global Native
+
+;/* VerifyActors
+* * verifies if all of the given actors are eligible for OStim scenes
+* *
+* * @param: Actors, the list of actors to check
+* *
+* * @return: true if all actors are eligible, false if at least one isn't
+*/;
+bool Function VerifyActors(Actor[] Actors) Global Native
 
 ;/* SortActors
 * * sorts all actors with schlongs to the front of the array and all actors without schlongs to the end

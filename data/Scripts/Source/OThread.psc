@@ -18,6 +18,40 @@ bool Function IsRunning(int ThreadID) Global Native
 */;
 string Function GetScene(int ThreadID) Global Native
 
+;/* NavigateTo
+* * tries to naviate the thread to a new scene, if it's not possible warps it there
+* *
+* * @param: ThreadID, the id of the thread
+* * @param: SceneID, the id of the scene to naviate to
+*/;
+Function NavigateTo(int ThreadID, string SceneID) Global Native
+
+;/* WarpTo
+* * warps the thread to a new scene
+* *
+* * @param: ThreadID, the id of the thread
+* * @param: SceneID, the id of the scene to warp to
+*/;
+Function WarpTo(int ThreadID, string SceneID) Global Native
+
+;/* GetSpeed
+* * returns the speed index at which the thread is currently running
+* *
+* * @param: ThreadID, the id of the thread
+* *
+* * @return: the speed of the thread, returns -1 if the thread is still in startup or ended
+*/;
+int Function GetSpeed(int ThreadID) Global Native
+
+;/* SetSpeed
+* * sets the speed index at which the thread will run
+* * values out of range will be clamped to the available speeds
+* *
+* * @param: ThreadID, the id of the thread
+* * @param: Speed, the speed index to use
+*/;
+Function SetSpeed(int ThreadID, int Speed) Global Native
+
 
 ;/* GetActors
 * * returns the actors of the thread
