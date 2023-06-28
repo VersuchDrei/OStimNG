@@ -77,7 +77,7 @@ class Option_Box_MC extends MovieClip
 		var row = Math.floor(CurrentlyHighlightedIdx / 3);
 
 		var colMin = col;
-		var colMax = maxOptionIdx - (((maxOptionIdx % 3) - col) % 3);
+		var colMax = maxOptionIdx - ((3 - ((((maxOptionIdx % 3) - col) + 3) % 3)) % 3);
 
 		var rowMin = 3 * row;
 		var rowMax = Math.min(maxOptionIdx, (3 * row) + 2);
