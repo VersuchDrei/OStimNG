@@ -105,19 +105,18 @@ namespace Events {
                         } else {
                             std::vector<std::string> options;
 
+                            options.push_back("None");
                             int max = std::min<int>(GameAPI::Game::getMessageBoxOptionLimit() - 1, actors.size());
                             int i = 0;
                             while (i < max) {
                                 options.push_back(actors[i].getName());
                                 i++;
                             }
-                            options.push_back("none");
 
                             GameAPI::Game::showMessageBox("Add third actor?", options, [target, actors](unsigned int result) {
                                 GameAPI::GameActor third;
-                                if (result < actors.size() &&
-                                    result != GameAPI::Game::getMessageBoxOptionLimit() - 1) {
-                                    third = actors[result];
+                                if (result > 0) {
+                                    third = actors[result - 1];
                                 }
 
                                 // TODO do this internally once we don't need OSA anymore
