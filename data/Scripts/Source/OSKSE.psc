@@ -54,7 +54,3 @@ EndFunction
 Function ShowBars() Global
 	OUtils.GetOStim().ShowBars()
 EndFunction
-
-Function PullOut() Global
-	OUtils.GetOStim().PullOut()
-EndFunction

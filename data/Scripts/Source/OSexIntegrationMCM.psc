@@ -739,6 +739,8 @@ Function DrawControlsPage()
 	SetCursorPosition(12)
 	AddKeyMapOptionST("OID_KeyFreeCamToggle", "$ostim_tfc_key", Main.FreecamKey)
 	SetCursorPosition(14)
+	AddKeyMapOptionST("OID_KeySearchMenu", "$ostim_key_search_menu", Main.AlignmentKey)
+	SetCursorPosition(16)
 	AddKeyMapOptionST("OID_KeyAlignmentMenu", "$ostim_key_alignment_menu", Main.AlignmentKey)
 
 	SetCursorPosition(18)
@@ -831,6 +833,17 @@ State OID_KeyFreeCamToggle
 
 	Event OnKeyMapChangeST(int KeyCode, string ConflictControl, string ConflictName)
 		Main.FreecamKey = KeyCode
+		SetKeyMapOptionValueST(KeyCode)
+	EndEvent
+EndState
+
+State OID_KeySearchMenu
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_key_search_menu")
+	EndEvent
+
+	Event OnKeyMapChangeST(int KeyCode, string ConflictControl, string ConflictName)
+		Main.SearchKey = KeyCode
 		SetKeyMapOptionValueST(KeyCode)
 	EndEvent
 EndState

@@ -85,6 +85,7 @@ set(sources
     src/Util/CompatibilityTable.cpp
     src/Util/ControlUtil.cpp
     src/Util/FormUtil.cpp
+    src/Util/LegacyUtil.cpp
     src/Util/LookupTable.cpp
     src/Util/ObjectRefUtil.cpp
     src/Util/SerializationUtil.cpp

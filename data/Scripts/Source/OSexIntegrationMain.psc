@@ -314,6 +314,16 @@ int property FreecamKey
 	EndFunction
 EndProperty
 
+GlobalVariable Property OStimKeySearch Auto
+int Property SearchKey
+	int Function Get()
+		Return OStimKeySearch.value As int
+	EndFunction
+	Function Set(int Value)
+		OStimKeySearch.value = Value
+	EndFunction
+EndProperty
+
 GlobalVariable Property OStimKeyAlignment Auto
 int Property AlignmentKey
 	int Function Get()
@@ -1494,12 +1504,6 @@ Actor ThirdActor
 
 Actor[] Actors
 
-String diasa
-
-Float DomExcitement
-Float SubExcitement
-Float ThirdExcitement
-
 Bool SceneRunning
 String[] CurrScene
 
@@ -1516,15 +1520,9 @@ Bool StallOrgasm
 int FurnitureType
 ObjectReference CurrentFurniture
 
-Bool property EndedProper auto
-
 Float StartTime
 
 Float MostRecentOSexInteractionTime
-
-;--
-string LastHubSceneID
-;--
 
 Bool AggressiveThemedSexScene
 Actor AggressiveActor
@@ -1882,13 +1880,9 @@ Event OnUpdate() ;OStim main logic loop
 
  
 	StallOrgasm = false
-	DomExcitement = 0.0
-	SubExcitement = 0.0
-	ThirdExcitement = 0.0
 	DomStimMult = 1.0
 	SubStimMult = 1.0
 	ThirdStimMult = 1.0
-	EndedProper = False
 	StallOrgasm = False
 	MostRecentOrgasmedActor = None
 	MostRecentOSexInteractionTime = Utility.GetCurrentRealTime()
@@ -1898,8 +1892,6 @@ Event OnUpdate() ;OStim main logic loop
 	If FurnitureType != FURNITURE_TYPE_NONE
 		CurrentFurniture.BlockActivation(true)
 	EndIf
-
-	LastHubSceneID = ""
 
 	If (LowLightLevelLightsOnly && DomActor.GetLightLevel() < 20) || (!LowLightLevelLightsOnly)
 		If (DomLightPos > 0)
@@ -1952,7 +1944,7 @@ Event OnUpdate() ;OStim main logic loop
 		OFurniture.ResetClutter(CurrentFurniture, ResetClutterRadius * 100)
 	EndIf
 
-	If (UseFades && EndedProper)
+	If UseFades
 		FadeFromBlack(2)
 	EndIf
 
@@ -2080,7 +2072,6 @@ Function EndAnimation(Bool SmoothEnding = True)
 	If (AnimationRunning() && UseFades && SmoothEnding)
 		FadeToBlack(1.5)
 	EndIf
-	EndedProper = SmoothEnding
 	Console("Trying to end scene")
 
 	OSANative.EndScene(0)
@@ -2961,6 +2952,14 @@ bool Property GetInBedAfterBedScene
 	EndFunction
 EndProperty
 
+Bool property EndedProper
+	bool Function Get()
+		Return true
+	EndFunction
+	Function Set(bool Value)
+	EndFunction
+EndProperty
+
 Bool Property MuteOSA
 	bool Function Get()
 		Return false
@@ -3190,14 +3189,6 @@ Function LoadOSexControlKeys()
 EndFunction
 
 ; I will remove these again in the future, don't call them!
-Function PullOut()
-	If !OMetadata.IsTransition(OThread.GetScene(0)) && OMetadata.GetMaxSpeed(OThread.GetScene(0)) != 0
-		If (LastHubSceneID != "")
-			TravelToAnimationIfPossible(LastHubSceneID)
-		EndIf
-	EndIf
-EndFunction
-
 Function ShowBars()
 	MostRecentOSexInteractionTime = Utility.GetCurrentRealTime()
 	If (AutoHideBars)

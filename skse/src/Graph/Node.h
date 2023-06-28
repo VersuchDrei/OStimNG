@@ -23,9 +23,9 @@ namespace Graph {
     struct Navigation {
         Node* destination;
         std::string icon;
-        std::string border;
-        bool isTransition;
-        Node* transitionNode;
+        std::string border = "ffffff";
+        bool isTransition = false;
+        Node* transitionNode = nullptr;
     };
 
     struct Node {
@@ -67,6 +67,7 @@ namespace Graph {
 
         std::string getAutoTransitionForActor(int position, std::string type);
 
+        bool hasNodeTag(std::string tag);
         bool hasActorTag(int position, std::string tag);
         bool hasAnyActorTag(int position, std::vector<std::string> tags);
         bool hasAllActorTags(int position, std::vector<std::string> tags);

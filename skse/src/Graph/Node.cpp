@@ -1,10 +1,12 @@
 #include "Graph/Node.h"
 
 #include "Graph/GraphTable.h"
+#include "MCM/MCMTable.h"
 #include "Trait/Condition.h"
 #include "Trait/TraitTable.h"
 #include "Util/ActorUtil.h"
-#include "MCM/MCMTable.h"
+#include "Util/Constants.h"
+#include "Util/LegacyUtil.h"
 #include "Util/StringUtil.h"
 #include "Util/VectorUtil.h"
 
@@ -49,48 +51,55 @@ namespace Graph {
             return;
         }
 
-        for (auto& navigation : navigations) {
-            if (navigation.destination == navigationDestination) {
+        for (auto& existingNavigation : navigations) {
+            if (existingNavigation.destination == navigationDestination || existingNavigation.transitionNode == navigationDestination) {
                 return;
             }
         }
 
-        auto border = rawNav.border;
-        std::regex hexColor("^[a-f0-9]{6}$");
-        if (!std::regex_search(rawNav.border, hexColor))
-            border = "ffffff";
-        auto icon = rawNav.icon;
-        if (icon == "")
-            icon = "Ostim/logo.dds";
+        Navigation navigation;
 
         if (navigationDestination->isTransition) {
-            
-            Node* transitionNode = navigationDestination;
-            Node* destinationNode;
             for (auto nav : navigationMap) {
-                if (nav.first->scene_id == transitionNode->scene_id) {
+                if (nav.first->scene_id == navigationDestination->scene_id) {
                     if (nav.second.size() != 1) {
                         logger::warn("Couldn't add transition from {} to destination because the navigations on {} were invalid", scene_id, rawNav.destination);
                         return;
                     }
-                    destinationNode = GraphTable::getNodeById(nav.second[0].destination);
+
+                    navigation.destination = GraphTable::getNodeById(nav.second[0].destination);
+
+                    if (!navigation.destination) {
+                        logger::warn("Couldn't add navigation from {} to {} because {} transition destination doesn't exist.", scene_id, rawNav.destination, rawNav.destination);
+                        return;
+                    }
+
+                    // TODO: what do when people chain transitions?
+                    if (navigation.destination->isTransition) {
+                        logger::warn("Couldn't add navigation from {} to {} because {} transition destination is another transition.", scene_id, rawNav.destination, rawNav.destination);
+                        return;
+                    }
                     break;
                 }
             }
-            
-            navigations.push_back({
-                .destination = destinationNode,
-                .icon = icon,
-                .border = border,
-                .isTransition = true,                
-                .transitionNode = transitionNode });
+
+            navigation.isTransition = true;
+            navigation.transitionNode = navigationDestination;
+        } else {
+            navigation.destination = navigationDestination;
         }
-        else {
-            navigations.push_back({ 
-                .destination = navigationDestination,
-                .icon = icon,
-                .border = border, });
+
+
+        if (std::regex_search(rawNav.border, Constants::hexColor)) {
+            navigation.border = rawNav.border;
         }
+        if (rawNav.icon == "") {
+            navigation.icon = "OStim/icons/" + LegacyUtil::getIcon(navigation.destination == this ? navigation.transitionNode : navigation.destination) + ".dds";
+        } else {
+            navigation.icon = "OStim/icons/" + rawNav.icon + ".dds";
+        }
+
+        navigations.push_back(navigation);
     }
 
     bool Node::fulfilledBy(std::vector<Trait::ActorConditions> conditions) {
@@ -179,6 +188,10 @@ namespace Graph {
         return "";
     }
 
+
+    bool Node::hasNodeTag(std::string tag) {
+        return VectorUtil::contains(tags, tag);
+    }
 
     bool Node::hasActorTag(int position, std::string tag) {
         if (position < 0 || position >= actors.size()) {

@@ -184,12 +184,7 @@ namespace Events {
             } else if (keyCode == MCM::MCMTable::keySpeedDown()) {
                 OStim::ThreadManager::GetSingleton()->getPlayerThread()->decreaseSpeed();
             } else if (keyCode == MCM::MCMTable::keyPullOut()){
-                // TODO do this internally once we don't need OSA anymore
-                if (vm) {
-                    RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-                    auto args = RE::MakeFunctionArguments();
-                    vm->DispatchStaticCall("OSKSE", "PullOut", args, callback);
-                }
+                // TODO call pullout function
             } else if (keyCode == MCM::MCMTable::keyAutoMode()){
                 OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->getPlayerThread();
                 if (thread) {
@@ -204,7 +199,7 @@ namespace Events {
                 uiState->SwitchActiveMenu(uiState->GetActiveMenu() == UI::MenuType::kAlignMenu ? UI::MenuType::kSceneMenu : UI::MenuType::kAlignMenu);
             } else if (keyCode == MCM::MCMTable::keyFreeCam()) {
                 GameAPI::GameCamera::toggleFreeCam();
-            } else if (keyCode == 37) {
+            } else if (keyCode == MCM::MCMTable::keySearch()) {
                 auto uiState = UI::UIState::GetSingleton();
                 uiState->ToggleActiveMenu(UI::kSearchMenu);
             }
