@@ -35,8 +35,7 @@ namespace OStim {
         return false;
     }
 
-    void addFurniture(std::vector<std::function<bool(Graph::Node*)>>& conditions,
-                      Furniture::FurnitureType furnitureType) {
+    void addFurniture(std::vector<std::function<bool(Graph::Node*)>>& conditions, Furniture::FurnitureType furnitureType) {
         if (furnitureType == Furniture::FurnitureType::NONE) {
             conditions.push_back([&](Graph::Node* node) {
                 return forAnyActor(node, [&](Graph::GraphActor& actor) {
@@ -92,16 +91,6 @@ namespace OStim {
         } else if (gay) {
             conditions.push_back([&](Graph::Node* node) { return VectorUtil::contains(node->tags, std::string("gay")); });
         }
-
-        return Graph::GraphTable::getRandomNode(furnitureType, actorConditions, [&conditions](Graph::Node* node) { return checkConditions(conditions, node); });
-    }
-
-    Graph::Node* getPulledOutVersion(Graph::Node* node, std::vector<Trait::ActorConditions> actorConditions, Furniture::FurnitureType furnitureType) {
-        // TODO actually link this to the given node
-        std::vector<std::function<bool(Graph::Node*)>> conditions;
-        conditions.push_back([&](Graph::Node* node) { return node->findAnyAction({"analsex", "tribbing", "vaginalsex"}) == -1; });
-        addFurniture(conditions, furnitureType);
-        conditions.push_back([&](Graph::Node* node) { return node->findAction("malemasturbation") != -1; });
 
         return Graph::GraphTable::getRandomNode(furnitureType, actorConditions, [&conditions](Graph::Node* node) { return checkConditions(conditions, node); });
     }
@@ -196,13 +185,17 @@ namespace OStim {
         }
 
         if (next) {
-            navigateTo(next, MCM::MCMTable::useAutoModeFades());
+            navigateTo(next);
         }
         
         startAutoModeCooldown();
     }
 
     void Thread::loopAutoControl() {
+        if (!nodeQueue.empty()) {
+            return;
+        }
+
         if (!playerThread || MCM::MCMTable::autoSpeedControl()) {
             if ((autoSpeedControlCooldown -= Constants::LOOP_TIME_MILLISECONDS) <= 0) {
                 int excitement = getMaxExcitement();
@@ -250,10 +243,7 @@ namespace OStim {
 
             if (maxExcitement > pulloutThreshold) {
                 autoModeStage = AutoModeStage::PULLOUT;
-                Graph::Node* pullout = getPulledOutVersion(m_currentNode, getActorConditions(), furnitureType);
-                if (pullout) {
-                    navigateTo(pullout, MCM::MCMTable::useAutoModeFades());
-                }
+                pullOut();
             }
         }
 

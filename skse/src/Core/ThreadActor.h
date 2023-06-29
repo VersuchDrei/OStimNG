@@ -34,6 +34,7 @@ namespace OStim {
         inline float getBaseExcitementMultiplier() { return baseExcitementMultiplier; }
         inline void setLoopExcitementInc(float inc) { loopExcitementInc = inc; }
 
+        void orgasm();
         void climax();
         inline int getTimexClimaxed() { return timesClimaxed; }
 
@@ -148,6 +149,8 @@ namespace OStim {
         float maxExcitement = 0;
         float loopExcitementDecay = 0;  // excitement decay per loop
         int excitementDecayCooldown = 0;
+
+        bool awaitingClimax = false;
 
         Thread* thread;
 		GameAPI::GameActor actor;

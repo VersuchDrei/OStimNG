@@ -1872,7 +1872,7 @@ Event OnUpdate() ;OStim main logic loop
 		EndIf
 	EndIf
 
-	ToggleActorAI(false)
+	;ToggleActorAI(false)
 
 	If (EnableImprovedCamSupport)
 		Game.DisablePlayerControls(abCamswitch = True, abMenu = False, abFighting = False, abActivate = False, abMovement = False, aiDisablePOVType = 0)
@@ -1904,11 +1904,10 @@ Event OnUpdate() ;OStim main logic loop
 
 	OSANative.StartScene(0, CurrentFurniture, Actors)
 	OSANative.ChangeAnimation(0, StartingAnimation)
-	OSANative.UpdateSpeed(0, OMetadata.GetDefaultSpeed(StartingAnimation))
 
 	StartTime = Utility.GetCurrentRealTime()
 
-	ToggleActorAI(True)
+	;ToggleActorAI(True)
 
 	Float LoopStartTime
 	
@@ -1922,19 +1921,7 @@ Event OnUpdate() ;OStim main logic loop
 
 	While OThread.IsRunning(0)
 		Utility.Wait(1.0)
-
-		i = 0
-		While i < Actors.Length
-			If GetActorExcitement(Actors[i]) >= 100.0
-				Orgasm(Actors[i])
-			EndIf
-			i += 1
-		EndWhile
 	EndWhile
-
-	Console("Ending scene")
-
-	SendModEvent("ostim_end", numArg = -1.0)
 
 	If (EnableImprovedCamSupport)
 		Game.EnablePlayerControls(abCamSwitch = True)
@@ -1948,15 +1935,12 @@ Event OnUpdate() ;OStim main logic loop
 		FadeFromBlack(2)
 	EndIf
 
-	;SendModEvent("0SA_GameLoaded") ;for safety
 	Console(GetTimeSinceStart() + " seconds passed")
 
 	oldscenemetadata = scenemetadata
 	scenemetadata = PapyrusUtil.StringArray(0)
 
 	SceneRunning = False
-
-	SendModEvent("ostim_totalend")
 
 	If (FurnitureType != FURNITURE_TYPE_NONE)
 		CurrentFurniture.BlockActivation(false)
@@ -2074,7 +2058,7 @@ Function EndAnimation(Bool SmoothEnding = True)
 	EndIf
 	Console("Trying to end scene")
 
-	OSANative.EndScene(0)
+	OThread.Stop(0)
 EndFunction
 
 Bool Function IsSceneAggressiveThemed() ; if the entire situation should be themed aggressively
@@ -2396,29 +2380,6 @@ float Function GetHighestExcitement()
 	EndWhile
 
 	return Highest
-EndFunction
-
-Function Climax(Actor Act)
-	MostRecentOrgasmedActor = Act
-
-	OActor.Climax(Act, false)
-
-	int actorIndex = Actors.find(Act)
-	If actorIndex >= 0
-		int actionIndex = OMetadata.FindActionForTarget(OThread.GetScene(0), actorIndex, "vaginalsex")
-		If actionIndex != -1
-			Actor partner = GetActor(OMetadata.GetActionActor(OThread.GetScene(0), actionIndex))
-			AddActorExcitement(partner, 5)
-		EndIf
-	EndIf
-EndFunction
-
-Function Orgasm(Actor Act)
-	If AutoClimaxAnimations && AutoTransitionForActor(Act, "climax")
-		Utility.Wait(5)
-	Else
-		Climax(Act)
-	EndIf
 EndFunction
 
 Event OstimOrgasm(String EventName, String sceneId, Float index, Form Sender)
@@ -3358,7 +3319,7 @@ Bool Function IsActorInvolved(actor act)
 EndFunction
 
 Function ForceStop()
-	OSANative.EndScene(0)
+	OThread.Stop(0)
 EndFunction
 
 OUndressScript function GetUndressScript()
@@ -3385,9 +3346,17 @@ Function AdjustAnimationSpeed(float amount)
 EndFunction
 
 Function SetCurrentAnimationSpeed(Int InSpeed)
-	OSANative.UpdateSpeed(0, InSpeed)
+	OThread.SetSpeed(0, InSpeed)
 EndFunction
 
 Function SetDefaultSettings()
 	OData.ResetSettings()
+EndFunction
+
+Function Climax(Actor Act)
+	OActor.Climax(Act, false)
+EndFunction
+
+Function Orgasm(Actor Act)
+	OActor.Climax(Act, false)
 EndFunction
