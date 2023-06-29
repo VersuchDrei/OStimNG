@@ -3,7 +3,9 @@
 #include "Core/Core.h"
 #include "Furniture/Furniture.h"
 #include "Util/ActorUtil.h"
+#include "Util/FormUtil.h"
 #include "Util/ObjectRefUtil.h"
+#include "Util/LookupTable.h"
 
 namespace Serialization {
     enum DeserializationError {
@@ -202,8 +204,16 @@ namespace Serialization {
                 Furniture::freeFurniture(furniture, furnitureOwner);   
             }
 
+            bool playerThread = false;
+
             for (OldThreadActor actor : actors) {
                 actor.free();
+                playerThread |= actor.actor->IsPlayerRef();
+            }
+
+            if (playerThread) {
+                FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_end", "", -0);
+                FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_totalend", "", 0);
             }
         }
     };

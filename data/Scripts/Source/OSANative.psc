@@ -132,15 +132,11 @@ form[] Function RemoveFormsBelowValue(form[] forms, int goldvalue) Global Native
 
 Function StartScene(int StageId, ObjectReference Furniture, Actor[] Actors) Global Native
 
-Function EndScene(int stageId) Global Native
-
 Function ChangeAnimation(int stageId, string animation) Global Native
 
 Function AddActor(int stageId, Actor Act) Global Native
 
 Function RemoveActor(int stageId) Global Native
-
-Function UpdateSpeed(int stageId, int speed) Global Native
 
 ; ██╗   ██╗████████╗██╗██╗
 ; ██║   ██║╚══██╔══╝██║██║

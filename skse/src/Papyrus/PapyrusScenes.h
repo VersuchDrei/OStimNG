@@ -10,11 +10,6 @@ namespace PapyrusScenes {
         tm->TrackThread(id, furniture, actors);
     }
 
-    void EndScene(RE::StaticFunctionTag*, int64_t a_id) {
-        auto tm = OStim::ThreadManager::GetSingleton();
-        tm->UnTrackThread(a_id);
-    }
-
     void ChangeAnimation(RE::StaticFunctionTag*, int64_t a_id, std::string a_nodeName) {
         auto tm = OStim::ThreadManager::GetSingleton();
         auto log = RE::ConsoleLog::GetSingleton();
@@ -44,12 +39,6 @@ namespace PapyrusScenes {
         tm->GetThread(a_threadId)->RemoveActor();
     }
 
-    void UpdateSpeed(RE::StaticFunctionTag*, int64_t a_threadId, int a_speed){
-        auto tm = OStim::ThreadManager::GetSingleton();
-        auto thread = tm->GetThread(a_threadId);
-        if(thread) thread->SetSpeed(a_speed);
-    }
-
     OStim::ThreadActor* GetActor(int64_t a_threadId, RE::Actor* a_actor) {
         auto thread = OStim::ThreadManager::GetSingleton()->GetThread(a_threadId);
         if (thread) {
@@ -66,11 +55,9 @@ namespace PapyrusScenes {
         const auto obj = "OSANative"sv;
 
         BIND(StartScene);
-        BIND(EndScene);
         BIND(ChangeAnimation);
         BIND(AddActor);
         BIND(RemoveActor);
-        BIND(UpdateSpeed);
 
         return true;
     }

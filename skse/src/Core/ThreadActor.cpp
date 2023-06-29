@@ -77,9 +77,19 @@ namespace OStim {
         actor.setFactionRank(Trait::TraitTable::getExcitementFaction(), (int)excitement);
     }
 
+    void ThreadActor::orgasm() {
+        excitement = 100;
+        if (thread->autoTransition(index, "climax")) {
+            awaitingClimax = true;
+        } else {
+            climax();
+        }
+    }
+
     void ThreadActor::climax() {
         excitement = -3;
 
+        awaitingClimax = false;
         timesClimaxed++;
 
         if (!muted && voiceSet && voiceSet->climax) {
@@ -386,6 +396,10 @@ namespace OStim {
                 }
             }
         }
+
+        if (awaitingClimax) {
+            climax();
+        }
     }
 
     void ThreadActor::changeSpeed(int speed) {
@@ -413,23 +427,30 @@ namespace OStim {
     }
 
     void ThreadActor::loop() {
-        if (excitement > maxExcitement) {
-            if (excitementDecayCooldown > 0) {
-                excitementDecayCooldown -= Constants::LOOP_TIME_MILLISECONDS;
-            } else {
-                excitement -= loopExcitementDecay;
-                if (excitement < maxExcitement) {
+        // excitement
+        if (!awaitingClimax) {
+            if (excitement > maxExcitement) {
+                if (excitementDecayCooldown > 0) {
+                    excitementDecayCooldown -= Constants::LOOP_TIME_MILLISECONDS;
+                } else {
+                    excitement -= loopExcitementDecay;
+                    if (excitement < maxExcitement) {
+                        excitement = maxExcitement;
+                    }
+                    actor.setFactionRank(Trait::TraitTable::getExcitementFaction(), (int)excitement);
+                }
+            } else {  // increase excitement
+                excitement += loopExcitementInc;
+                if (excitement > maxExcitement) {
                     excitement = maxExcitement;
                 }
-                actor.setFactionRank(Trait::TraitTable::getExcitementFaction(), (int) excitement);
+                actor.setFactionRank(Trait::TraitTable::getExcitementFaction(), (int)excitement);
+                excitementDecayCooldown = MCM::MCMTable::getExcitementDecayGracePeriod();
             }
-        } else {  // increase excitement
-            excitement += loopExcitementInc;
-            if (excitement > maxExcitement) {
-                excitement = maxExcitement;
+
+            if (excitement >= 100) {
+                orgasm();
             }
-            actor.setFactionRank(Trait::TraitTable::getExcitementFaction(), (int) excitement);
-            excitementDecayCooldown = MCM::MCMTable::getExcitementDecayGracePeriod();
         }
 
         // expressions

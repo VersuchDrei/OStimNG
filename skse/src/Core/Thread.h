@@ -37,7 +37,6 @@ namespace OStim {
 
         void ChangeNode(Graph::Node* a_node);
 
-        void navigateTo(Graph::Node* node, bool useFades);
         int getActorCount() { return m_actors.size(); }
 
         void AddActor(RE::Actor* a_actor);
@@ -86,6 +85,8 @@ namespace OStim {
         std::shared_mutex nodeLock;
 
         int m_currentNodeSpeed = 0;
+        float relativeSpeed = -1;
+
         std::string alignmentKey;
 
         float freeCamSpeedBefore = 0;
@@ -97,7 +98,6 @@ namespace OStim {
         std::vector<Sound::SoundPlayer*> soundPlayers;
 
         int animationTimer = 0;
-        Graph::Node* nextNode = nullptr;
 
         void addActorInner(int index, RE::Actor* actor);
         void addActorSink(RE::Actor* a_actor);
@@ -105,6 +105,19 @@ namespace OStim {
 
         void rebuildAlignmentKey();
         void alignActor(ThreadActor* threadActor, Alignment::ActorAlignment alignment);
+
+#pragma region navigation
+    public:
+        bool autoTransition(int index, std::string type);
+        void warpTo(Graph::Node* node, bool useFades);
+        void navigateTo(Graph::Node* node);
+        bool pullOut();
+
+    private:
+        void clearNodeQueue();
+
+        std::queue<Graph::Node*> nodeQueue;
+#pragma endregion
 
 #pragma region autocontrol
     public:

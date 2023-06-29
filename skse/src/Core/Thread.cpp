@@ -25,8 +25,12 @@
 
 namespace OStim {
     Thread::Thread(ThreadId id, RE::TESObjectREFR* furniture, std::vector<RE::Actor*> actors) : m_threadId{id}, furniture{furniture} {
+        for (RE::Actor* actor : actors) {
+            playerThread |= actor->IsPlayerRef();
+        }
+
         // --- setting up the vehicle --- //
-        RE::TESObjectREFR* center = furniture ? furniture : actors[0];
+        RE::TESObjectREFR* center = furniture ? furniture : (playerThread ? RE::PlayerCharacter::GetSingleton() : actors[0]);
         vehicle = center->PlaceObjectAtMe(Util::LookupTable::OStimVehicle, false).get();
 
         if (furniture) {
@@ -50,7 +54,6 @@ namespace OStim {
         for (int i = 0; i < actors.size(); i++) {
             RE::Actor* actor = actors[i];
             addActorInner(i, actor);
-            playerThread |= actor->IsPlayerRef();
         }
 
         if (playerThread) {
@@ -141,7 +144,6 @@ namespace OStim {
             }
             if (nav.isTransition && sceneId == nav.transitionNode->scene_id) {
                 ChangeNode(nav.transitionNode);
-                nextNode = nav.destination;
                 return;
             }
         }      
@@ -155,7 +157,9 @@ namespace OStim {
         logger::info("thread {} changed to node {}", m_threadId, a_node->scene_id);
 
         std::unique_lock<std::shared_mutex> writeLock(nodeLock);
-        nextNode = nullptr;
+        if (a_node->isTransition && nodeQueue.empty() && !a_node->navigations.empty()) {
+            nodeQueue.push(a_node->navigations[0].destination);
+        }
         m_currentNode = a_node;
         animationTimer = 0;
 
@@ -254,7 +258,13 @@ namespace OStim {
             }
         }
 
-        SetSpeed(m_currentNode->defaultSpeed);
+        if (m_currentNode->speeds.size() == 1) {
+            SetSpeed(0);
+        } else if (relativeSpeed < 0) {
+            SetSpeed(m_currentNode->defaultSpeed);
+        } else {
+            SetSpeed(static_cast<int>(relativeSpeed * (m_currentNode->speeds.size() - 1) + 0.5));
+        }
 
         UI::UIState::GetSingleton()->NodeChanged(this, m_currentNode);
 
@@ -267,24 +277,6 @@ namespace OStim {
 
         FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_scenechanged", m_currentNode->scene_id, 0);
         FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_scenechanged_" + m_currentNode->scene_id, "", 0);
-    }
-
-    void Thread::navigateTo(Graph::Node* node, bool useFades) {
-        if (playerThread && useFades) {
-            std::thread fadeThread = std::thread([node] {
-                GameAPI::GameCamera::fadeToBlack(1);
-                std::this_thread::sleep_for(std::chrono::milliseconds(700));
-                Thread* thread = ThreadManager::GetSingleton()->getPlayerThread();
-                if (thread) {
-                    thread->ChangeNode(node);
-                }
-                std::this_thread::sleep_for(std::chrono::milliseconds(550));
-                GameAPI::GameCamera::fadeFromBlack(1);
-            });
-            fadeThread.detach();
-        } else {
-            ChangeNode(node);
-        }
     }
 
     void Thread::AddActor(RE::Actor* actor) {
@@ -401,11 +393,11 @@ namespace OStim {
         animationTimer += Constants::LOOP_TIME_MILLISECONDS;
         if (animationTimer >= m_currentNode->animationLengthMs) {
             animationTimer = 0;
-            if (nextNode != nullptr) {
-                logger::info("going to next node {}", nextNode->scene_id);
-                SKSE::GetTaskInterface()->AddTask([this]() {
-                    ChangeNode(nextNode);
-                });                
+            if (!nodeQueue.empty()) {
+                Graph::Node* next = nodeQueue.front();
+                nodeQueue.pop();
+                logger::info("going to next node {}", next->scene_id);
+                ChangeNode(next);
             }
         }
     }
@@ -436,6 +428,13 @@ namespace OStim {
             speed = 0;
         } else if (speed >= m_currentNode->speeds.size()) {
             speed = m_currentNode->speeds.size() - 1;
+        }
+        if (!m_currentNode->isTransition) {
+            if (m_currentNode->speeds.size() == 0) {
+                relativeSpeed = -1;
+            } else {
+                relativeSpeed = static_cast<float>(speed) / m_currentNode->speeds.size();
+            }
         }
         m_currentNodeSpeed = speed;
 
@@ -581,6 +580,11 @@ namespace OStim {
             }
         }
         logger::info("closed thread {}", m_threadId);
+
+        if (playerThread) {
+            FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_end", "", -0);
+            FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_totalend", "", 0);
+        }
     }
 
     void Thread::addActorSink(RE::Actor* a_actor) {

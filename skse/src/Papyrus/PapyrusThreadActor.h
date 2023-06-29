@@ -43,7 +43,7 @@ namespace PapyrusThreadActor {
         // TODO: climax animations
         OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
         if (threadActor) {
-            threadActor->climax();
+            threadActor->orgasm();
         }
     }
 

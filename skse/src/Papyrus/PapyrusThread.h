@@ -10,6 +10,13 @@ namespace PapyrusThread {
         return OStim::ThreadManager::GetSingleton()->GetThread(threadID);
     }
 
+    void Stop(RE::StaticFunctionTag*, int threadID) {
+        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        if (thread) {
+            thread->stop();
+        }
+    }
+
     std::string GetScene(RE::StaticFunctionTag*, int threadID) {
         OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
         if (thread) {
@@ -25,15 +32,15 @@ namespace PapyrusThread {
         OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
         Graph::Node* node = Graph::GraphTable::getNodeById(sceneID);
         if (thread && node) {
-            thread->navigateTo(node, true);
+            thread->navigateTo(node);
         }
     }
 
-    void WarpTo(RE::StaticFunctionTag*, int threadID, std::string sceneID) {
+    void WarpTo(RE::StaticFunctionTag*, int threadID, std::string sceneID, bool useFades) {
         OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
         Graph::Node* node = Graph::GraphTable::getNodeById(sceneID);
         if (thread && node) {
-            thread->ChangeNode(node);
+            thread->warpTo(node, useFades);
         }
     }
 
@@ -127,6 +134,8 @@ namespace PapyrusThread {
         const auto obj = "OThread"sv;
 
         BIND(IsRunning);
+        BIND(Stop);
+
         BIND(GetScene);
         BIND(NavigateTo);
         BIND(WarpTo);
