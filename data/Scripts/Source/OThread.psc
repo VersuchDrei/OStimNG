@@ -9,6 +9,14 @@ ScriptName OThread
 */;
 bool Function IsRunning(int ThreadID) Global Native
 
+;/* Stop
+* * ends the thread
+* *
+* * @param: ThreadID, the id of the thread
+*/;
+Function Stop(int ThreadID) Global Native
+
+
 ;/* GetScene
 * * returns the scene id of the scene that is currently running in the thread
 * *
@@ -31,8 +39,9 @@ Function NavigateTo(int ThreadID, string SceneID) Global Native
 * *
 * * @param: ThreadID, the id of the thread
 * * @param: SceneID, the id of the scene to warp to
+* * @param: UseFades, if set to true the game will fade out before the scene change and back in afterwards
 */;
-Function WarpTo(int ThreadID, string SceneID) Global Native
+Function WarpTo(int ThreadID, string SceneID, bool UseFades = False) Global Native
 
 ;/* GetSpeed
 * * returns the speed index at which the thread is currently running

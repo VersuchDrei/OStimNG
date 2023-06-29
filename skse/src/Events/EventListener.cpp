@@ -183,7 +183,7 @@ namespace Events {
             } else if (keyCode == MCM::MCMTable::keySpeedDown()) {
                 OStim::ThreadManager::GetSingleton()->getPlayerThread()->decreaseSpeed();
             } else if (keyCode == MCM::MCMTable::keyPullOut()){
-                // TODO call pullout function
+                OStim::ThreadManager::GetSingleton()->getPlayerThread()->pullOut();
             } else if (keyCode == MCM::MCMTable::keyAutoMode()){
                 OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->getPlayerThread();
                 if (thread) {
@@ -193,14 +193,12 @@ namespace Events {
                         thread->startAutoMode();
                     }
                 }
-            } else if (keyCode == MCM::MCMTable::keyAlignment()) {
-                auto uiState = UI::UIState::GetSingleton();
-                uiState->SwitchActiveMenu(uiState->GetActiveMenu() == UI::MenuType::kAlignMenu ? UI::MenuType::kSceneMenu : UI::MenuType::kAlignMenu);
             } else if (keyCode == MCM::MCMTable::keyFreeCam()) {
                 GameAPI::GameCamera::toggleFreeCam();
+            } else if (keyCode == MCM::MCMTable::keyAlignment()) {
+                UI::UIState::GetSingleton()->ToggleActiveMenu(UI::kAlignMenu);
             } else if (keyCode == MCM::MCMTable::keySearch()) {
-                auto uiState = UI::UIState::GetSingleton();
-                uiState->ToggleActiveMenu(UI::kSearchMenu);
+                UI::UIState::GetSingleton()->ToggleActiveMenu(UI::kSearchMenu);
             }
         }
 

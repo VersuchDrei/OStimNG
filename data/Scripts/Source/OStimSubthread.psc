@@ -50,17 +50,7 @@ bool Aggressive
 
 string[] CurrentScene
 string CurrentAnimation
-float CurrentSpeed
 bool SceneRunning
-
-Float DomExcitement
-Float SubExcitement
-Float ThirdExcitement
-
-int DomTimesOrgasm
-int SubTimesOrgasm
-int ThirdTimesOrgasm
-
 
 ; Call this function to start a new OStim scene in a subthread (for NPC on NPC scenes)
 ;/* StartSubthreadScene
@@ -156,8 +146,6 @@ bool Function StartSubthreadScene(actor dom, actor sub = none, actor zThirdActor
 		CurrentAnimation = "AUTO"
 	EndIf
 
-	CurrentSpeed = 1
-
 	RegisterForSingleUpdate(0.01)
 	SceneRunning = True
 
@@ -178,7 +166,6 @@ EndFunction
 Event OnUpdate()
 	OSANative.StartScene(id + 1, CurrentFurniture, Actors)
 	OSANative.ChangeAnimation(id + 1, CurrentAnimation)
-	OSANative.UpdateSpeed(id + 1, OMetadata.GetDefaultSpeed(CurrentAnimation))
 
 	If CurrentFurniture
 		if OStim.ResetClutter
@@ -191,30 +178,11 @@ Event OnUpdate()
 	SendModEvent("ostim_subthread_start", numArg = id)
 
 	While OThread.IsRunning(id + 1)
-		If (GetActorExcitement(SubActor) >= 100.0)
-			SubTimesOrgasm += 1
-			Orgasm(SubActor)
-		EndIf
-
-		If (GetActorExcitement(ThirdActor) >= 100.0)
-			ThirdTimesOrgasm += 1
-			Orgasm(ThirdActor)
-		EndIf
-
-		If (GetActorExcitement(DomActor) >= 100.0)
-			DomTimesOrgasm += 1
-			Orgasm(DomActor)
-		EndIf
-
 		Utility.Wait(1.5)
 	EndWhile
 
 	EndAnimation()
 EndEvent
-
-Function Orgasm(Actor Act)
-	OActor.Climax(Act)
-EndFunction
 
 Function EndAnimation()
 	SceneRunning = False
@@ -222,7 +190,7 @@ Function EndAnimation()
 	UnregisterForUpdate()
 	UnregisterForAllModEvents()
 
-	OSANative.EndScene(id + 1)
+	OThread.Stop(id + 1)
 
 	If CurrentFurniture
 		if OStim.ResetClutter
@@ -241,12 +209,7 @@ Function EndAnimation()
 EndFunction
 
 Function WarpToAnimation(String Animation) 
-	; this is a bit hacky but other ways to change animation either break or introduce other bugs
-	CurrentAnimation = Animation
-	CurrentSpeed = OMetadata.GetDefaultSpeed(Animation)
-
-	OSANative.ChangeAnimation(id + 1, CurrentAnimation)
-	OSANative.UpdateSpeed(id + 1, CurrentSpeed as int)
+	OThread.WarpTo(id + 1, Animation, false)
 EndFunction
 
 
@@ -326,26 +289,19 @@ EndFunction
 ;				Some code related to the speed system
 
 Function AdjustAnimationSpeed(float amount)
-	CurrentSpeed += amount
-	OSANative.UpdateSpeed(id + 1, CurrentSpeed as int)
+	OThread.SetSpeed(id + 1, OThread.GetSpeed(id + 1) + (amount As int))
 EndFunction
 
 Function IncreaseAnimationSpeed()
-	If (CurrentSpeed >= OMetadata.GetMaxSpeed(CurrentAnimation))
-		Return
-	EndIf
-	AdjustAnimationSpeed(1)
+	OThread.SetSpeed(id + 1, OThread.GetSpeed(id + 1) + 1)
 EndFunction
 
 Function DecreaseAnimationSpeed()
-	If (CurrentSpeed < 1)
-		Return
-	EndIf
-	AdjustAnimationSpeed(-1)
+	OThread.SetSpeed(id + 1, OThread.GetSpeed(id + 1) - 1)
 EndFunction
 
 Function SetCurrentAnimationSpeed(Int InSpeed)
-	AdjustAnimationSpeed(inspeed - CurrentSpeed)
+	OThread.SetSpeed(id + 1, InSpeed)
 EndFunction
 
 
@@ -405,4 +361,8 @@ Function AutoIncreaseSpeed()
 			IncreaseAnimationSpeed()
 		EndIf
 	EndIf
+EndFunction
+
+Function Orgasm(Actor Act)
+	OActor.Climax(Act)
 EndFunction
