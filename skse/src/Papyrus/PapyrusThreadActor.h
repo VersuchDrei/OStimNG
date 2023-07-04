@@ -39,11 +39,52 @@ namespace PapyrusThreadActor {
         }
     }
 
-    void Climax(RE::StaticFunctionTag*, RE::Actor* actor, bool climaxAnimation) {
-        // TODO: climax animations
+    float GetExcitementMultiplier(RE::StaticFunctionTag*, RE::Actor* actor) {
         OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
         if (threadActor) {
-            threadActor->orgasm();
+            return threadActor->getExcitementMultiplier();
+        }
+        return -1;
+    }
+
+    void SetExcitementMultiplier(RE::StaticFunctionTag*, RE::Actor* actor, float multiplier) {
+        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        if (threadActor) {
+            return threadActor->setExcitementMultiplier(multiplier);
+        }
+    }
+
+
+    void StallClimax(RE::StaticFunctionTag*, RE::Actor* actor) {
+        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        if (threadActor) {
+            threadActor->setStallClimax(true);
+        }
+    }
+
+    void PermitClimax(RE::StaticFunctionTag*, RE::Actor* actor) {
+        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        if (threadActor) {
+            threadActor->setStallClimax(false);
+        }
+    }
+
+    bool IsClimaxStalled(RE::StaticFunctionTag*, RE::Actor* actor, bool checkThread) {
+        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        if (threadActor) {
+            if (threadActor->getStallClimax()) {
+                return true;
+            } else if (checkThread) {
+                return threadActor->getThread()->getStallClimax();
+            }
+        }
+        return false;
+    }
+
+    void Climax(RE::StaticFunctionTag*, RE::Actor* actor, bool ignoreStall) {
+        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        if (threadActor) {
+            threadActor->orgasm(ignoreStall);
         }
     }
 
@@ -218,22 +259,52 @@ namespace PapyrusThreadActor {
             return Compatibility::CompatibilityTable::hasSchlong(actorA) && !Compatibility::CompatibilityTable::hasSchlong(actorB);
         });
 
+        RE::Actor* player = RE::PlayerCharacter::GetSingleton();
+        int currentPlayerIndex = VectorUtil::getIndex(actors, player);
+        if (currentPlayerIndex < 0) {
+            return actors;
+        }
+
         if (playerIndex >= 0 && playerIndex < actors.size()) {
-            RE::Actor* player = RE::PlayerCharacter::GetSingleton();
-            int currentPlayerIndex = VectorUtil::getIndex(actors, player);
-            if (currentPlayerIndex >= 0) {
-                if (currentPlayerIndex < playerIndex) {
-                    while (currentPlayerIndex < playerIndex) {
-                        actors[currentPlayerIndex] = actors[currentPlayerIndex + 1];
-                        currentPlayerIndex++;
+            if (currentPlayerIndex < playerIndex) {
+                while (currentPlayerIndex < playerIndex) {
+                    actors[currentPlayerIndex] = actors[currentPlayerIndex + 1];
+                    currentPlayerIndex++;
+                }
+                actors[playerIndex] = player;
+            } else if (currentPlayerIndex > playerIndex) {
+                while (currentPlayerIndex > playerIndex) {
+                    actors[currentPlayerIndex] = actors[currentPlayerIndex - 1];
+                    currentPlayerIndex--;
+                }
+                actors[playerIndex] = player;
+            }
+        } else {
+            if (actors.size() == 2) {
+                if (Compatibility::CompatibilityTable::hasSchlong(actors[0]) == Compatibility::CompatibilityTable::hasSchlong(actors[1])) {
+                    if (MCM::MCMTable::playerAlwaysDomGay()) {
+                        if (actors[1] == player) {
+                            actors[1] = actors[0];
+                            actors[0] = player;
+                        }
+                    } else if (MCM::MCMTable::playerAlwaysSubGay()) {
+                        if (actors[0] == player) {
+                            actors[0] = actors[1];
+                            actors[1] = player;
+                        }
                     }
-                    actors[playerIndex] = player;
-                } else if (currentPlayerIndex > playerIndex) {
-                    while (currentPlayerIndex > playerIndex) {
-                        actors[currentPlayerIndex] = actors[currentPlayerIndex - 1];
-                        currentPlayerIndex--;
+                } else {
+                    if (MCM::MCMTable::playerAlwaysDomStraight()) {
+                        if (actors[1] == player) {
+                            actors[1] = actors[0];
+                            actors[0] = player;
+                        }
+                    } else if (MCM::MCMTable::playerAlwaysSubStraight()) {
+                        if (actors[0] == player) {
+                            actors[0] = actors[1];
+                            actors[1] = player;
+                        }
                     }
-                    actors[playerIndex] = player;
                 }
             }
         }
@@ -247,6 +318,12 @@ namespace PapyrusThreadActor {
         BIND(GetExcitement);
         BIND(SetExcitement);
         BIND(ModifyExcitement);
+        BIND(GetExcitementMultiplier);
+        BIND(SetExcitementMultiplier);
+
+        BIND(StallClimax);
+        BIND(PermitClimax);
+        BIND(IsClimaxStalled);
         BIND(Climax);
         BIND(GetTimesClimaxed);
 

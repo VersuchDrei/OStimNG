@@ -18,7 +18,7 @@ namespace OStim {
         actor.removeFromFaction(Trait::TraitTable::getExcitementFaction());
         // TODO properly use GameActor
         ActorUtil::setVehicle(actor.form, nullptr);
-        ActorUtil::unlockActor(actor.form);
+        actor.unlock();
         
         actor.updateAI();
     }

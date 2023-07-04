@@ -15,6 +15,51 @@ namespace GameAPI {
         }
     }
 
+    void GameActor::lock() const {
+        if (form->IsPlayerRef()) {
+            if (form->AsActorState()->IsWeaponDrawn()) {
+                sheatheWeapon();
+            }
+
+            RE::PlayerCharacter::GetSingleton()->SetAIDriven(true);
+            RE::PlayerControls::GetSingleton()->activateHandler->disabled = true;
+        } else {
+            bool stop = false;
+            stop |= setRestrained(form, true);
+            stop |= setDontMove(form, true);
+            if (stop) {
+                stopMovement(form);
+            }
+        }
+
+        RE::Actor* actor = form;
+        SKSE::GetTaskInterface()->AddTask([actor]() {
+            actor->SetGraphVariableBool("bHumanoidFootIKDisable", true);
+        });
+    }
+
+    void GameActor::unlock() const{
+        if (form->IsPlayerRef()) {
+            RE::PlayerCharacter::GetSingleton()->SetAIDriven(false);
+            RE::PlayerControls::GetSingleton()->activateHandler->disabled = false;
+        } else {
+            bool stop = false;
+            stop |= setRestrained(form, false);
+            stop |= setDontMove(form, false);
+            if (stop) {
+                stopMovement(form);
+            }
+        }
+
+        StopTranslation(nullptr, 0, form);
+
+        RE::Actor* actor = form;
+        SKSE::GetTaskInterface()->AddTask([actor]() {
+            actor->SetGraphVariableBool("bHumanoidFootIKDisable", false);
+            actor->NotifyAnimationGraph("IdleForceDefaultState");
+        });
+    }
+
     void GameActor::playAnimation(std::string animation) const {
         RE::Actor* actor = form;
         SKSE::GetTaskInterface()->AddTask([actor, animation] {
@@ -66,6 +111,16 @@ namespace GameAPI {
 
     int GameActor::getRelationshipRank(GameActor other) const {
         return 4 - RE::BGSRelationship::GetRelationship(form->GetActorBase(), other.form->GetActorBase())->level.underlying();
+    }
+
+    void GameActor::sheatheWeapon() const {
+        const auto factory = RE::IFormFactory::GetConcreteFormFactoryByType<RE::Script>();
+        const auto script = factory ? factory->Create() : nullptr;
+        if (script) {
+            script->SetCommand("rae WeaponSheathe"sv);
+            script->CompileAndRun(form);
+            delete script;
+        }
     }
 
     std::vector<GameActor> GameActor::getNearbyActors(float radius, std::function<bool(GameActor)> condition) {

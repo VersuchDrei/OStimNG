@@ -77,9 +77,29 @@ Actor[] Function GetActors(int ThreadID) Global Native
 * * @param: ThreadID, the id of the thread
 * * @index: the index of the actor
 * *
-* * @returns: the actor
+* * @return: the actor
 */;
 Actor Function GetActor(int ThreadID, int Index) Global Native
+
+
+;/* GetFurniture
+* * returns the furniture object used by the thread
+* *
+* * @param: ThreadID, the id of the thread
+* *
+* * @return: the furniture object, or None if the thread isn't using one
+*/;
+ObjectReference Function GetFurniture(int ThreadID) Global Native
+
+;/* GetFurnitureType
+* * returns the furniture type used in the thread
+* *
+* * @param: ThreadID, the id of the thread
+* *
+* * @return: the furniture type, returns -1 if the thread is still in startup or ended
+*/;
+int Function GetFurnitureType(int ThreadID) Global Native
+
 
 ;/* GetActorPosition
 * * returns the index of the actor in the thread
@@ -118,6 +138,34 @@ Function StartAutoMode(int ThreadID) Global Native
 Function StopAutoMode(int ThreadID) Global Native
 
 
+;/* AddMetadata
+* * adds metadata to the thread
+* *
+* * @param: ThreadID, the id of the thread
+* * @param: Metadata, the metadata to add
+*/;
+Function AddMetadata(int ThreadID, string Metadata) Global Native
+
+;/* HasMetadata
+* * checks if the thread has a specific metadata
+* *
+* * @param: ThreadID, the id of the thread
+* * @param: Metadata, the metadata to check for
+* *
+* * @return: true if the thread has the metadata, otherwise false
+*/;
+bool Function HasMetadata(int ThreadID, string Metadata) Global Native
+
+;/* GetMetadata
+* * returns a list of all metadata of the thread
+* *
+* * @param: ThreadID, the id of the thread
+* *
+* * @return: the list of metadata
+*/;
+string[] Function GetMetadata(int ThreadID) Global Native
+
+
 ;/* CallEvent
 * * calls the event for the thread, events and their properties can be defined in data/SKSE/plugins/OStim/events
 * * the corresponding mod events will be thrown even if no event was defined for the event name
@@ -129,3 +177,36 @@ Function StopAutoMode(int ThreadID) Global Native
 * * @param: Performer, the index of the event performer, if none is given the actor index is used
 */;
 Function CallEvent(int ThreadID, string EventName, int Actor, int Target = -1, int Performer = -1) Global Native
+
+
+;  ██████╗██╗     ██╗███╗   ███╗ █████╗ ██╗  ██╗
+; ██╔════╝██║     ██║████╗ ████║██╔══██╗╚██╗██╔╝
+; ██║     ██║     ██║██╔████╔██║███████║ ╚███╔╝ 
+; ██║     ██║     ██║██║╚██╔╝██║██╔══██║ ██╔██╗ 
+; ╚██████╗███████╗██║██║ ╚═╝ ██║██║  ██║██╔╝ ██╗
+;  ╚═════╝╚══════╝╚═╝╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝
+
+;/* StallClimax
+* * prevents all actors in the thread from climaxing, including the prevention of auto climax animations
+* * does not prevent the climaxes of auto climax animations that already started
+* *
+* * @param: Thread, the id of the thread
+*/;
+Function StallClimax(int ThreadID) Global Native
+
+;/* PermitClimax
+* * permits the actors in the thread to climax again (as in it undoes StallClimax)
+* *
+* * @param: Thread, the id of the thread
+* * @param: PermitActors, if true this also undoes the StallClimax calls for the individual actors
+*/;
+Function PermitClimax(int ThreadID, bool PermitActors = false) Global Native
+
+;/* IsClimaxStalled
+* * checks if this actor is currently prevented from climaxing
+* *
+* * @param: Thread, the id of the thread
+* *
+* * @return: true if the actor is currently prevented from climaxing
+*/;
+bool Function IsClimaxStalled(int ThreadID) Global Native

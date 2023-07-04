@@ -41,13 +41,62 @@ Function SetExcitement(Actor Act, float Excitement) Global Native
 */;
 Function ModifyExcitement(Actor Act, float Excitement, bool RespectMultiplier = false) Global Native
 
+;/* GetExcitementMultiplier
+* * returns the excitement multiplier for the actor, by default this is the setting in the MCM
+* *
+* * @param: Act, the actor to get the multiplier for
+* *
+* * @return: the excitement multiplier
+*/;
+float Function GetExcitementMultiplier(Actor Act) Global Native
+
+;/* SetExcitementMultiplier
+* * sets the excitement multiplier for the actor
+* *
+* * @param: Act, the actor to set the multiplier for
+* * @param: Multiplier, the multiplier to set
+*/;
+Function SetExcitementMultiplier(Actor Act, float Multiplier) Global Native
+
+;  ██████╗██╗     ██╗███╗   ███╗ █████╗ ██╗  ██╗
+; ██╔════╝██║     ██║████╗ ████║██╔══██╗╚██╗██╔╝
+; ██║     ██║     ██║██╔████╔██║███████║ ╚███╔╝ 
+; ██║     ██║     ██║██║╚██╔╝██║██╔══██║ ██╔██╗ 
+; ╚██████╗███████╗██║██║ ╚═╝ ██║██║  ██║██╔╝ ██╗
+;  ╚═════╝╚══════╝╚═╝╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝
+
+;/* StallClimax
+* * prevents this actor from climaxing, including the prevention of auto climax animations
+* * does not prevent the climaxes of auto climax animations that already started
+* *
+* * @param: Act, the actor to stall the climax for
+*/;
+Function StallClimax(Actor Act) Global Native
+
+;/* PermitClimax
+* * permits this actor to climax again (as in it undoes StallClimax)
+* *
+* * @param: Act, the actor to permit the climax for
+*/;
+Function PermitClimax(Actor Act) Global Native
+
+;/* IsClimaxStalled
+* * checks if this actor is currently prevented from climaxing
+* *
+* * @param: Act, the actor to check for
+* * @param: CheckThread, if true will also check if the thread is preventing all actors from climaxing
+* *
+* * @return: true if the actor is currently prevented from climaxing
+*/;
+bool Function IsClimaxStalled(Actor Act, bool CheckThread = true) Global Native
+
 ;/* Climax
 * * causes the actor to have a climax
 * *
 * * @param: Act, the actor that should have the climax
-* * @param: ClimaxAnimation, if true the actor will play a climax animation if the animation they are in has one
+* * @param: IgnoreStall, if true the climax will happen even if climaxes are stalled
 */;
-Function Climax(Actor Act, bool ClimaxAnimation = true) Global Native
+Function Climax(Actor Act, bool IgnoreStall = false) Global Native
 
 ;/* GetTimesClimaxed
 * * returns the amount of climaxes the actor had in the current scene

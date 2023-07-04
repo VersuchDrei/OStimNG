@@ -18,7 +18,8 @@ namespace Sound {
         int minInterval;
         int maxInterval;
 
-        int initialCooldown = 500;
+        int initialCooldown = 1000;
+        int skips = 3;
 
         float minDistance = 0;
         float maxDistance = 0;

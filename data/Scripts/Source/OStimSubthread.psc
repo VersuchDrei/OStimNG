@@ -31,26 +31,15 @@ import OUtils
 
 
 int property id auto
-bool InUse
  
 OSexIntegrationMain OStim
 
 actor PlayerRef
-
-actor DomActor
-actor SubActor
-actor ThirdActor
-actor[] Actors
 actor AggressiveActor
-
-ObjectReference CurrentFurniture
-int FurnitureType
 
 bool Aggressive
 
 string[] CurrentScene
-string CurrentAnimation
-bool SceneRunning
 
 ; Call this function to start a new OStim scene in a subthread (for NPC on NPC scenes)
 ;/* StartSubthreadScene
@@ -66,88 +55,57 @@ bool SceneRunning
 * * @param: AggressingActor, the aggressor in an Aggressive scene
 */;
 bool Function StartSubthreadScene(actor dom, actor sub = none, actor zThirdActor = none, string startingAnimation = "", ObjectReference furnitureObj = none, bool withAI = true, bool isAggressive = false, actor aggressingActor = none)
-	if InUse
+	if OThread.IsRunning(id + 1)
 		Console("Subthread is already in use")
 		return false
 	endif
 
-	InUse = true
-
 	Console("Starting subthread with ID: " + id)
 
-	DomActor = dom 
-	SubActor = sub 
-	ThirdActor = zThirdActor
-
-	If !DomActor.Is3DLoaded() || (SubActor && !SubActor.Is3DLoaded()) || (ThirdActor && !ThirdActor.Is3DLoaded())
+	If !dom.Is3DLoaded() || (sub && !sub.Is3DLoaded()) || (zThirdActor && !zThirdActor.Is3DLoaded())
 		Console("One of the actors was not loaded. Closing subthread.")
-
-		UnregisterForAllModEvents()
-		InUse = False
-
 		return False
 	EndIf
 
-	If (SubActor && AppearsFemale(dom) && !AppearsFemale(sub))
-		DomActor = sub
-		SubActor = dom
-	EndIf
+	Actor[] Actors
 
-	If ThirdActor
-		If AppearsFemale(ThirdActor) && !AppearsFemale(SubActor)
-			SubActor = zThirdActor
-			ThirdActor = sub
-		EndIf
-	EndIf
-
-	If ThirdActor
+	If zThirdActor
 		Actors = new Actor[3]
-		Actors[0] = DomActor
-		Actors[1] = SubActor
-		Actors[2] = ThirdActor
-	ElseIf SubActor
+		Actors[0] = dom
+		Actors[1] = sub
+		Actors[2] = zThirdActor
+	ElseIf sub
 		Actors = new Actor[2]
-		Actors[0] = DomActor
-		Actors[1] = SubActor
+		Actors[0] = dom
+		Actors[1] = sub
 	Else
 		Actors = new Actor[1]
-		Actors[0] = DomActor
+		Actors[0] = dom
 	EndIf
+
+	Actors = OActor.SortActors(Actors)
 
 	Aggressive = isAggressive
 	AggressiveActor = aggressingActor
 
-	int i = Actors.Length
+	int FurnitureType = OFurniture.GetFurnitureType(furnitureObj)
 
-	While i
-		i -= 1
-
-		bool isFemale = OStim.AppearsFemale(Actors[i])
-
-		Actors[i].AddToFaction(OStim.OStimExcitementFaction)
-	EndWhile
-
-	CurrentFurniture = furnitureObj
-	FurnitureType = OFurniture.GetFurnitureType(CurrentFurniture)
-
-	CurrentAnimation = startingAnimation
-
-	If (CurrentAnimation == "")
+	If (startingAnimation == "")
 		If FurnitureType == OStim.FURNITURE_TYPE_NONE
-			CurrentAnimation = OLibrary.GetRandomSceneWithAnySceneTagAndAnyMultiActorTagForAllCSV(Actors, "idle", OCSV.CreateCSVMatrix(Actors.Length, "standing"))
+			startingAnimation = OLibrary.GetRandomSceneWithAnySceneTagAndAnyMultiActorTagForAllCSV(Actors, "idle", OCSV.CreateCSVMatrix(Actors.Length, "standing"))
 		ElseIf FurnitureType == OStim.FURNITURE_TYPE_BED
-			CurrentAnimation = OLibrary.GetRandomSceneWithAnySceneTagAndAnyMultiActorTagForAllCSV(Actors, "idle", OCSV.CreateCSVMatrix(Actors.Length, "allfours,kneeling,lyingback,lyingside,sitting"))
+			startingAnimation = OLibrary.GetRandomSceneWithAnySceneTagAndAnyMultiActorTagForAllCSV(Actors, "idle", OCSV.CreateCSVMatrix(Actors.Length, "allfours,kneeling,lyingback,lyingside,sitting"))
 		Else
-			CurrentAnimation = OLibrary.GetRandomFurnitureSceneWithSceneTag(Actors, OStim.FURNITURE_TYPE_STRINGS[FurnitureType], "idle")
+			startingAnimation = OLibrary.GetRandomFurnitureSceneWithSceneTag(Actors, OStim.FURNITURE_TYPE_STRINGS[FurnitureType], "idle")
 		EndIf
 	EndIf
 
-	If (CurrentAnimation == "")
-		CurrentAnimation = "AUTO"
+	If (startingAnimation == "")
+		Return false
 	EndIf
 
-	RegisterForSingleUpdate(0.01)
-	SceneRunning = True
+	OSANative.StartScene(id + 1, furnitureObj, Actors)
+	OSANative.ChangeAnimation(id + 1, startingAnimation)
 
 	return true
 EndFunction
@@ -156,60 +114,10 @@ Event OnInit()
 	id = GetID()
 	ostim = GetOStim()
 	PlayerRef = Game.GetPlayer()
-	InUse = false
 EndEvent
 
 Function StartAI()
 	OThread.StartAutoMode(id + 1)
-EndFunction
-
-Event OnUpdate()
-	OSANative.StartScene(id + 1, CurrentFurniture, Actors)
-	OSANative.ChangeAnimation(id + 1, CurrentAnimation)
-
-	If CurrentFurniture
-		if OStim.ResetClutter
-			OFurniture.ResetClutter(CurrentFurniture, OStim.ResetClutterRadius * 100)
-		endif
-
-		CurrentFurniture.BlockActivation(true)
-	EndIf
-
-	SendModEvent("ostim_subthread_start", numArg = id)
-
-	While OThread.IsRunning(id + 1)
-		Utility.Wait(1.5)
-	EndWhile
-
-	EndAnimation()
-EndEvent
-
-Function EndAnimation()
-	SceneRunning = False
-
-	UnregisterForUpdate()
-	UnregisterForAllModEvents()
-
-	OThread.Stop(id + 1)
-
-	If CurrentFurniture
-		if OStim.ResetClutter
-			OFurniture.ResetClutter(CurrentFurniture, OStim.ResetClutterRadius * 100)
-		endif
-
-		CurrentFurniture.BlockActivation(false)
-	EndIf
-
-	CurrentFurniture = none
-	FurnitureType = 0
-
-	SendModEvent("ostim_subthread_end", numArg = id)
-
-	InUse = false
-EndFunction
-
-Function WarpToAnimation(String Animation) 
-	OThread.WarpTo(id + 1, Animation, false)
 EndFunction
 
 
@@ -224,7 +132,7 @@ EndFunction
 ; 				Utility functions for Subthread
 
 bool Function IsInUse()
-	return InUse
+	return OThread.IsRunning(id + 1)
 endfunction
 
 int Function GetScenePassword()
@@ -232,7 +140,7 @@ int Function GetScenePassword()
 endfunction
 
 ObjectReference Function GetFurniture()
-	Return CurrentFurniture
+	Return OThread.GetFurniture(id + 1)
 EndFunction
 
 Bool Function AnimationRunning()
@@ -240,15 +148,11 @@ Bool Function AnimationRunning()
 EndFunction
 
 Actor Function GetActor(int Index)
-	If Index >= 0 && Index < Actors.Length
-		Return Actors[Index]
-	EndIf
-
-	Return None
+	Return OThread.GetActor(id + 1, Index)
 EndFunction
 
 Actor[] Function GetActors()
-	Return Actors
+	Return OThread.GetActors(id + 1)
 EndFunction
 
 
@@ -264,6 +168,7 @@ EndFunction
 
 float Function GetHighestExcitement()
 	float Highest = 0
+	Actor[] Actors = OThread.GetActors(id + 1)
 
 	int i = Actors.Length
 	While i
@@ -331,38 +236,44 @@ Function AddActorExcitement(Actor Act, Float Value)
 EndFunction
 
 Bool Function DidAnyActorDie()
-	return DomActor.IsDead() || (SubActor && SubActor.IsDead()) || (ThirdActor && ThirdActor.IsDead())
+	Actor[] Actors = OThread.GetActors(id + 1)
+	int i = Actors.Length
+	While i
+		i -= 1
+		If Actors[i].IsDead()
+			Return true
+		EndIf
+	EndWhile
+	return false
 EndFunction
 
 Bool Function IsAnyActorInCombat()
-	return DomActor.GetCombatState() != 0 || (SubActor && SubActor.GetCombatState() != 0) || (ThirdActor && ThirdActor.GetCombatState() != 0)
+	Actor[] Actors = OThread.GetActors(id + 1)
+	int i = Actors.Length
+	While i
+		i -= 1
+		If Actors[i].GetCombatState() != 0
+			Return true
+		EndIf
+	EndWhile
+	return false
 EndFunction
 
 Function runOsexCommand(string cmd)
 EndFunction
 
 Function AutoIncreaseSpeed()
-	Float MainExcitement = GetActorExcitement(DomActor)
-
-	If (MainExcitement >= 85.0)
-		If OStim.ChanceRoll(80)
-			IncreaseAnimationSpeed()
-		EndIf
-	ElseIf (MainExcitement >= 69.0)
-		If OStim.ChanceRoll(50)
-			IncreaseAnimationSpeed()
-		EndIf
-	ElseIf (MainExcitement >= 25.0)
-		If OStim.ChanceRoll(20)
-			IncreaseAnimationSpeed()
-		EndIf
-	ElseIf (MainExcitement >= 5.0)
-		If OStim.ChanceRoll(20)
-			IncreaseAnimationSpeed()
-		EndIf
-	EndIf
+	; this is done in C++ now
 EndFunction
 
 Function Orgasm(Actor Act)
 	OActor.Climax(Act)
+EndFunction
+
+Function EndAnimation()
+	OThread.Stop(id + 1)
+EndFunction
+
+Function WarpToAnimation(String Animation) 
+	OThread.WarpTo(id + 1, Animation, false)
 EndFunction

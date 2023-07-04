@@ -14,6 +14,10 @@ namespace GameAPI {
 
 
     void GameCamera::startSceneMode(bool freeCam) {
+        if (GameTable::improvedCamSupport()) {
+            RE::PlayerControls::GetSingleton()->data.povScriptMode = true;
+        }
+
         RE::PlayerCamera* camera = RE::PlayerCamera::GetSingleton();
         if (freeCam) {
             if (!camera->IsInFreeCameraMode()) {
@@ -47,6 +51,10 @@ namespace GameAPI {
                 RE::PlayerCamera::GetSingleton()->ForceFirstPerson();
             });
             camThread.detach();
+        }
+
+        if (GameTable::improvedCamSupport()) {
+            RE::PlayerControls::GetSingleton()->data.povScriptMode = false;
         }
     }
 

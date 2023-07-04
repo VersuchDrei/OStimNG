@@ -22,6 +22,8 @@ namespace GameAPI {
 
         void update3D() const;
         inline void updateAI() const { form->EvaluatePackage(); }
+        void lock() const;
+        void unlock() const;
         void playAnimation(std::string animation) const;
 
         bool isSex(GameSex sex) const;
@@ -59,6 +61,7 @@ namespace GameAPI {
 
         int getRelationshipRank(GameActor other) const;
         inline bool isInCombat() const { return form->IsInCombat(); }
+        void sheatheWeapon() const;
         inline bool isDead() const { return form->IsDead(); }
         inline bool isInSameCell(GameActor other) const {return form->parentCell == other.form->parentCell;}
 
@@ -67,6 +70,24 @@ namespace GameAPI {
         std::vector<GameActor> getNearbyActors(float radius, std::function<bool(GameActor)> condition);
 
     private:
+        inline static bool setRestrained(RE::Actor* actor, bool restrained) {
+            using func_t = decltype(setRestrained);
+            REL::Relocation<func_t> func{RELOCATION_ID(36489, 37488)};
+            return func(actor, restrained);
+        }
+
+        inline static bool setDontMove(RE::Actor* actor, bool dontMove) {
+            using func_t = decltype(setDontMove);
+            REL::Relocation<func_t> func{RELOCATION_ID(36490, 37489)};
+            return func(actor, dontMove);
+        }
+
+        inline static void stopMovement(RE::Actor* actor) {
+            using func_t = decltype(stopMovement);
+            REL::Relocation<func_t> func{RELOCATION_ID(36802, 37818)};
+            func(actor);
+        }
+
         inline static void SetScale(RE::Actor* actor, float scale) {
             using func_t = decltype(SetScale);
             REL::Relocation<func_t> func{RELOCATION_ID(19239, 19665)};
@@ -77,6 +98,12 @@ namespace GameAPI {
             using func_t = decltype(RemoveFromFaction);
             REL::Relocation<func_t> func{RELOCATION_ID(36680, 37688)};
             func(actor, faction);
+        }
+
+        inline static void StopTranslation(RE::BSScript::IVirtualMachine* vm, RE::VMStackID stackID, RE::TESObjectREFR* object) {
+            using func_t = decltype(StopTranslation);
+            REL::Relocation<func_t> func{RELOCATION_ID(55712, 56243)};
+            func(vm, stackID, object);
         }
 
         inline static void SetPosition(RE::TESObjectREFR* object, float x, float y, float z) { object->SetPosition(x, y, z); }

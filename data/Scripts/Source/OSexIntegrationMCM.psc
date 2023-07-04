@@ -489,19 +489,17 @@ Function DrawGeneralPage()
 	SetCursorPosition(1)
 	AddColoredHeader("$ostim_header_system")
 	SetCursorPosition(3)
-	AddTextOptionST("OID_ResetState", "$ostim_reset_state", "")
-	SetCursorPosition(5)
 	AddTextOptionST("OID_Update", "$ostim_update", "")
-	SetCursorPosition(7)
+	SetCursorPosition(5)
 	AddTextOptionST("OID_BootstrapMCM", "$ostim_bootstrap_mcm", "")
 
-	SetCursorPosition(11)
+	SetCursorPosition(9)
 	AddColoredHeader("$ostim_header_save_load")
-	SetCursorPosition(13)
+	SetCursorPosition(11)
 	AddTextOptionST("OID_ExportSettings", "$ostim_export", "$ostim_done")
-	SetCursorPosition(15)
+	SetCursorPosition(13)
 	AddTextOptionST("OID_ImportSettings", "$ostim_import", "$ostim_done")
-	SetCursorPosition(17)
+	SetCursorPosition(15)
 	AddTextOptionST("OID_ResetSettings", "$ostim_import_default", "$ostim_done")
 EndFunction
 
@@ -649,17 +647,6 @@ State OID_OnlyLightInDark
 	EndEvent
 EndState
 
-
-State OID_ResetState
-	Event OnHighlightST()
-		SetInfoText("$ostim_tooltip_reset")
-	EndEvent
-
-	Event OnSelectST()
-		Main.ResetState()
-		ShowMessage("$ostim_message_reset_state", false)
-	EndEvent
-EndState
 
 State OID_Update
 	Event OnHighlightST()

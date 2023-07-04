@@ -2,6 +2,7 @@
 
 #include "Core/Core.h"
 #include "Furniture/Furniture.h"
+#include "GameAPI/GameActor.h"
 #include "Util/ActorUtil.h"
 #include "Util/FormUtil.h"
 #include "Util/ObjectRefUtil.h"
@@ -28,7 +29,7 @@ namespace Serialization {
                 if (form) {
                     if (form->Is(RE::Actor::FORMTYPE)) {
                         threadActor.actor = form->As<RE::Actor>();
-                        logger::info("found actor {}", threadActor.actor->GetDisplayFullName());
+                        logger::info("found actor {}", threadActor.actor.getName());
                         errors |= DeserializationError::ACTOR;
                     } else {
                         logger::warn("not an actor id: {}", newID);
@@ -71,11 +72,11 @@ namespace Serialization {
             }
         }
 
-        RE::Actor* actor = nullptr;
+        GameAPI::GameActor actor = nullptr;
         std::vector<RE::TESObjectARMO*> equipObjects;
 
         inline void serialize(SKSE::SerializationInterface* serial) {
-            RE::FormID actorID = actor->GetFormID();
+            RE::FormID actorID = actor.getFormID();
             serial->WriteRecordData(&actorID, sizeof(actorID));
 
             size_t size = equipObjects.size();
@@ -89,11 +90,11 @@ namespace Serialization {
         inline void free() {
             OStim::freeActor(actor, true);
             for (RE::TESObjectARMO* equipObject : equipObjects) {
-                ActorUtil::unequipItem(actor, equipObject);
-                ObjectRefUtil::removeItem(actor, equipObject);
+                ActorUtil::unequipItem(actor.form, equipObject);
+                ObjectRefUtil::removeItem(actor.form, equipObject);
             }
             if (!equipObjects.empty()) {
-                ActorUtil::queueNiNodeUpdate(actor);
+                actor.update3D();
             }
         }
     };
@@ -101,6 +102,10 @@ namespace Serialization {
     struct OldThread {
         inline static void deserialize(SKSE::SerializationInterface* serial, std::vector<OldThread> &threads, uint32_t &errors) {
             OldThread thread;
+
+            int threadID;
+            serial->ReadRecordData(&threadID, sizeof(threadID));
+            thread.threadID = threadID;
 
             RE::FormID oldID;
             RE::FormID newID;
@@ -172,12 +177,15 @@ namespace Serialization {
             threads.push_back(thread);
         }
 
+        int threadID = 0;
         RE::TESObjectREFR* vehicle = nullptr;
         RE::TESObjectREFR* furniture = nullptr;
         RE::TESForm* furnitureOwner = nullptr;
         std::vector<OldThreadActor> actors;
 
         inline void serialize(SKSE::SerializationInterface* serial) {
+            serial->WriteRecordData(&threadID, sizeof(threadID));
+
             RE::FormID vehicleID = vehicle->GetFormID();
             serial->WriteRecordData(&vehicleID, sizeof(vehicleID));
 
@@ -208,12 +216,14 @@ namespace Serialization {
 
             for (OldThreadActor actor : actors) {
                 actor.free();
-                playerThread |= actor.actor->IsPlayerRef();
+                playerThread |= actor.actor.isPlayer();
             }
 
             if (playerThread) {
-                FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_end", "", -0);
+                FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_end", "", -1);
                 FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_totalend", "", 0);
+            } else {
+                FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_subthread_end", "", threadID - 1);
             }
         }
     };

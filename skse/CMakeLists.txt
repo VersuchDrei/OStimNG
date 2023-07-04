@@ -32,7 +32,10 @@ set(sources
     src/Core/ExpressionUpdater.cpp
     src/Core/Singleton.h
     src/Core/Thread/ThreadAutoControl.cpp
+    src/Core/Thread/ThreadClimax.cpp
     src/Core/Thread/ThreadNavigation.cpp
+    src/Core/ThreadActor/ThreadActorClimax.cpp
+    src/Core/ThreadActor/ThreadActorExcitement.cpp
     src/Core/Thread.cpp
     src/Core/ThreadActor.cpp
     src/Core/ThreadInterface.cpp

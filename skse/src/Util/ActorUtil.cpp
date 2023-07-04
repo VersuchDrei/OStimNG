@@ -3,57 +3,6 @@
 #include "ObjectRefUtil.h"
 
 namespace ActorUtil {
-    void lockActor(RE::Actor* actor) {
-        if (actor == RE::PlayerCharacter::GetSingleton()) {
-            if (actor->AsActorState()->IsWeaponDrawn()) {
-                sheatheWeapon(actor);
-            }
-
-            RE::PlayerCharacter::GetSingleton()->SetAIDriven(true);
-            RE::PlayerControls::GetSingleton()->activateHandler->disabled = true;
-        } else {
-            bool stop = false;
-            stop |= setRestrained(actor, true);
-            stop |= setDontMove(actor, true);
-            if (stop) {
-                stopMovement(actor);
-            }
-        }
-
-        actor->SetGraphVariableBool("bHumanoidFootIKDisable", true);
-    }
-
-    void unlockActor(RE::Actor* actor) {
-        if (actor == RE::PlayerCharacter::GetSingleton()) {
-            RE::PlayerCharacter::GetSingleton()->SetAIDriven(false);
-            RE::PlayerControls::GetSingleton()->activateHandler->disabled = false;
-        } else {
-            bool stop = false;
-            stop |= setRestrained(actor, false);
-            stop |= setDontMove(actor, false);
-            if (stop) {
-                stopMovement(actor);
-            }
-        }
-
-        ObjectRefUtil::stopTranslation(actor);
-        
-        SKSE::GetTaskInterface()->AddTask([actor](){
-            actor->SetGraphVariableBool("bHumanoidFootIKDisable", false);
-            actor->NotifyAnimationGraph("IdleForceDefaultState");
-        });
-    }
-
-    void sheatheWeapon(RE::Actor* actor) {
-        const auto factory = RE::IFormFactory::GetConcreteFormFactoryByType<RE::Script>();
-        const auto script = factory ? factory->Create() : nullptr;
-        if (script) {
-            script->SetCommand("rae WeaponSheathe"sv);
-            script->CompileAndRun(actor);
-            delete script;
-        }
-    }
-
     void setVehicle(RE::Actor* actor, RE::TESObjectREFR* vehicle) {
         SetVehicle(nullptr, 0, actor, vehicle);
     }
@@ -92,17 +41,6 @@ namespace ActorUtil {
 
     void equipItemEx(RE::Actor* actor, RE::TESForm* item) {
         equipItemEx(actor, item, 0, false, true);
-    }
-
-    void queueNiNodeUpdate(RE::Actor* actor) {
-        const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-        auto vm = skyrimVM ? skyrimVM->impl : nullptr;
-        if (vm) {
-            RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-            auto args = RE::MakeFunctionArguments();
-            auto handle = skyrimVM->handlePolicy.GetHandleForObject(static_cast<RE::VMTypeID>(actor->FORMTYPE), actor);
-            vm->DispatchMethodCall2(handle, "Actor", "QueueNiNodeUpdate", args, callback);
-        }
     }
 
     float getHeelOffset(RE::Actor* actor) {

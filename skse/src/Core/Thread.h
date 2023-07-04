@@ -10,6 +10,7 @@
 #include "GameAPI/GameActor.h"
 #include "Graph/Node.h"
 #include "Serial/OldThread.h"
+#include "Util/VectorUtil.h"
 
 namespace OStim {
 
@@ -51,6 +52,9 @@ namespace OStim {
         ThreadActor* GetActor(GameAPI::GameActor a_actor);
         ThreadActor* GetActor(int a_position);
         int getActorPosition(GameAPI::GameActor actor);
+
+        inline RE::TESObjectREFR* getFurniture() { return furniture; }
+        inline Furniture::FurnitureType getFurnitureType() { return furnitureType; }
 
         void SetSpeed(int speed);
         void increaseSpeed();
@@ -106,19 +110,6 @@ namespace OStim {
         void rebuildAlignmentKey();
         void alignActor(ThreadActor* threadActor, Alignment::ActorAlignment alignment);
 
-#pragma region navigation
-    public:
-        bool autoTransition(int index, std::string type);
-        void warpTo(Graph::Node* node, bool useFades);
-        void navigateTo(Graph::Node* node);
-        bool pullOut();
-
-    private:
-        void clearNodeQueue();
-
-        std::queue<Graph::Node*> nodeQueue;
-#pragma endregion
-
 #pragma region autocontrol
     public:
         inline bool isInAutoMode() { return autoMode; }
@@ -140,6 +131,41 @@ namespace OStim {
         void startAutoModeCooldown();
         void progressAutoMode();
         void loopAutoControl();
+#pragma endregion
+
+#pragma region climax
+    public:
+        inline bool getStallClimax() { return stallClimax; }
+        inline void setStallClimax(bool stallClimax) { this->stallClimax = stallClimax; }
+        bool isAnyActorAwaitingClimax();
+
+    private:
+        bool stallClimax = false;
+#pragma endregion
+
+#pragma region metadata
+    public:
+        inline void addMetadata(std::string metadata) {
+            if (!hasMetadata(metadata)) this->metadata.push_back(metadata);
+        }
+        inline bool hasMetadata(std::string metadata) { return VectorUtil::contains(this->metadata, metadata); }
+        inline std::vector<std::string> getMetadata() { return metadata; }
+
+    private:
+        std::vector<std::string> metadata;
+#pragma endregion
+
+#pragma region navigation
+    public:
+        bool autoTransition(int index, std::string type);
+        void warpTo(Graph::Node* node, bool useFades);
+        void navigateTo(Graph::Node* node);
+        bool pullOut();
+
+    private:
+        void clearNodeQueue();
+
+        std::queue<Graph::Node*> nodeQueue;
 #pragma endregion
     };
 

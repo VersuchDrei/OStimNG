@@ -61,8 +61,6 @@ EndProperty
 
 ; -------------------------------------------------------------------------------------------------
 ; SETTINGS  ---------------------------------------------------------------------------------------
-string[] scenemetadata
-string[] oldscenemetadata
 
 int Property InstalledVersion Auto
 
@@ -1504,7 +1502,6 @@ Actor ThirdActor
 
 Actor[] Actors
 
-Bool SceneRunning
 String[] CurrScene
 
 Actor Property PlayerRef Auto
@@ -1514,25 +1511,14 @@ Bool Property UndressSub Auto
 String StartingAnimation
 
 
-
-Bool StallOrgasm
-
 int FurnitureType
 ObjectReference CurrentFurniture
-
-Float StartTime
-
-Float MostRecentOSexInteractionTime
 
 Bool AggressiveThemedSexScene
 Actor AggressiveActor
 
 OBarsScript Property OBars Auto
 OStimUpdaterScript OUpdater
-
-Float DomStimMult
-Float SubStimMult
-Float ThirdStimMult
 
 ;--------- ID shortcuts
 
@@ -1582,7 +1568,7 @@ Bool Function StartScene(Actor Dom, Actor Sub, Bool zUndressDom = False, Bool zU
 		return true
 	EndIf
 
-	If SceneRunning
+	If OThread.IsRunning(0)
 		Debug.Notification("OStim scene already running")
 		Return false
 	EndIf
@@ -1621,123 +1607,22 @@ Bool Function StartScene(Actor Dom, Actor Sub, Bool zUndressDom = False, Bool zU
 	; there has to be a better way to do this than lining up a ton of else ifs
 	; maybe just remove all the player is this and that options since there is now a selection message box?
 	; TODO: use OActor.SortActors once we went from MFM to MMF
-	OStimRoleSelectionCount.value = Actors.Length
+	bool SelectRole = false
 	If Actors.Length == 3
-		If PlayerSelectRoleThreesome
-			int PlayerIndex = OStimRoleSelectionMessage.Show()
-			If PlayerIndex == 0
-				If Actors[1] == PlayerRef
-					Actors[1] = Actors[0]
-					Actors[0] = PlayerRef
-				ElseIf Actors[2] == PlayerRef
-					Actors[2] = Actors[0]
-					Actors[0] = PlayerRef
-				EndIf
-				If AppearsFemale(Actors[2]) && !AppearsFemale(Actors[1])
-					Actor Temp = Actors[1]
-					Actors[1] = Actors[2]
-					Actors[2] = Temp
-				EndIf
-			ElseIf PlayerIndex == 1
-				If Actors[0] == PlayerRef
-					Actors[0] = Actors[1]
-					Actors[1] = PlayerRef
-				ElseIf Actors[2] == PlayerRef
-					Actors[2] = Actors[1]
-					Actors[1] = PlayerRef
-				EndIf
-				If AppearsFemale(Actors[0]) && !AppearsFemale(Actors[2])
-					Actor Temp = Actors[0]
-					Actors[0] = Actors[2]
-					Actors[2] = Temp
-				EndIf
-			Else
-				If Actors[0] == PlayerRef
-					Actors[0] = Actors[2]
-					Actors[2] = PlayerRef
-				ElseIf Actors[1] == PlayerRef
-					Actors[1] = Actors[2]
-					Actors[2] = PlayerRef
-				EndIf
-				If AppearsFemale(Actors[0]) && !AppearsFemale(Actors[1])
-					Actor Temp = Actors[0]
-					Actors[0] = Actors[1]
-					Actors[1] = Temp
-				EndIf
-			EndIf
-		Else
-			If AppearsFemale(Actors[0]) && !AppearsFemale(Actors[1])
-				Actor Temp = Actors[0]
-				Actors[0] = Actors[1]
-				Actors[1] = Temp
-			EndIf
-			If AppearsFemale(Actors[0]) && !AppearsFemale(Actors[2])
-				Actor Temp = Actors[0]
-				Actors[0] = Actors[2]
-				Actors[2] = Temp
-			EndIf
-			If AppearsFemale(Actors[2]) && !AppearsFemale(Actors[1])
-				Actor Temp = Actors[1]
-				Actors[1] = Actors[2]
-				Actors[2] = Temp
-			EndIf
-		EndIf
+		SelectRole = PlayerSelectRoleThreesome
 	ElseIf Actors.Length == 2
-		If AppearsFemale(Actors[0]) == AppearsFemale(Actors[1]) ; gay
-			If PlayerSelectRoleGay
-				If OStimRoleSelectionMessage.Show() == 0
-					If Actors[1] == PlayerRef
-						Actors[1] = Actors[0]
-						Actors[0] = PlayerRef
-					EndIf
-				Else
-					If Actors[0] == PlayerRef
-						Actors[0] = Actors[1]
-						Actors[1] = PlayerRef
-					EndIf
-				EndIf
-			ElseIf PlayerAlwaysDomGay
-				If Actors[1] == PlayerRef
-					Actors[1] = Actors[0]
-					Actors[0] = PlayerRef
-				EndIf
-			ElseIf PlayerAlwaysSubGay
-				If Actors[0] == PlayerRef
-					Actors[0] = Actors[1]
-					Actors[1] = PlayerRef
-				EndIf
-			EndIf
+		If AppearsFemale(Actors[0]) == AppearsFemale(Actors[1])
+			SelectRole = PlayerSelectRoleGay
 		Else
-			If PlayerSelectRoleStraight
-				If OStimRoleSelectionMessage.Show() == 0
-					If Actors[1] == PlayerRef
-						Actors[1] = Actors[0]
-						Actors[0] = PlayerRef
-					EndIf
-				Else
-					If Actors[0] == PlayerRef
-						Actors[0] = Actors[1]
-						Actors[1] = PlayerRef
-					EndIf
-				EndIf
-			ElseIf PlayerAlwaysDomStraight
-				If Actors[1] == PlayerRef
-					Actors[1] = Actors[0]
-					Actors[0] = PlayerRef
-				EndIf
-			ElseIf PlayerAlwaysSubStraight
-				If Actors[0] == PlayerRef
-					Actors[0] = Actors[1]
-					Actors[1] = PlayerRef
-				EndIf
-			Else
-				If AppearsFemale(Actors[0]) && !AppearsFemale(Actors[1])
-					Actor Temp = Actors[0]
-					Actors[0] = Actors[1]
-					Actors[1] = Temp
-				EndIf
-			EndIf
+			SelectRole = PlayerSelectRoleStraight
 		EndIf
+	EndIf
+	If SelectRole
+		OStimRoleSelectionCount.value = Actors.Length
+		int PlayerIndex = OStimRoleSelectionMessage.Show()
+		Actors = OActor.SortActors(Actors, PlayerIndex)
+	Else
+		Actors = OActor.SortActors(Actors)
 	EndIf
 
 	DomActor = Actors[0]
@@ -1785,7 +1670,6 @@ Bool Function StartScene(Actor Dom, Actor Sub, Bool zUndressDom = False, Bool zU
 
 	Console("Requesting scene start")
 	RegisterForSingleUpdate(0.01) ; start main loop
-	SceneRunning = True
 
 	Return True
 EndFunction
@@ -1824,7 +1708,6 @@ Event OnUpdate() ;OStim main logic loop
 				If (UseFades)
 					FadeFromBlack()
 				EndIf
-				SceneRunning = False
 				Return
 			EndIf
 		Else
@@ -1857,41 +1740,14 @@ Event OnUpdate() ;OStim main logic loop
 			FadeFromBlack()
 		EndIf
 		Debug.Notification("No valid starting animation found.")
-		SceneRunning = False
 		Return
 	EndIf
 
-
-	If SubActor
-		If SubActor.GetParentCell() != DomActor.GetParentCell()
-			If (SubActor == playerref)
-				Domactor.moveto(SubActor)
-			Else
-				SubActor.MoveTo(DomActor)
-			EndIf
-		EndIf
-	EndIf
-
 	;ToggleActorAI(false)
-
-	If (EnableImprovedCamSupport)
-		Game.DisablePlayerControls(abCamswitch = True, abMenu = False, abFighting = False, abActivate = False, abMovement = False, aiDisablePOVType = 0)
-	EndIf
-
  
-	StallOrgasm = false
-	DomStimMult = 1.0
-	SubStimMult = 1.0
-	ThirdStimMult = 1.0
-	StallOrgasm = False
 	MostRecentOrgasmedActor = None
-	MostRecentOSexInteractionTime = Utility.GetCurrentRealTime()
 
 	RegisterForModEvent("ostim_orgasm", "OstimOrgasm")
-
-	If FurnitureType != FURNITURE_TYPE_NONE
-		CurrentFurniture.BlockActivation(true)
-	EndIf
 
 	If (LowLightLevelLightsOnly && DomActor.GetLightLevel() < 20) || (!LowLightLevelLightsOnly)
 		If (DomLightPos > 0)
@@ -1905,51 +1761,19 @@ Event OnUpdate() ;OStim main logic loop
 	OSANative.StartScene(0, CurrentFurniture, Actors)
 	OSANative.ChangeAnimation(0, StartingAnimation)
 
-	StartTime = Utility.GetCurrentRealTime()
-
 	;ToggleActorAI(True)
-
-	Float LoopStartTime
 	
 	If (UseFades)
 		FadeFromBlack()
-	EndIf
-
-	If CurrentFurniture && ResetClutter
-		OFurniture.ResetClutter(CurrentFurniture, ResetClutterRadius * 100)
 	EndIf
 
 	While OThread.IsRunning(0)
 		Utility.Wait(1.0)
 	EndWhile
 
-	If (EnableImprovedCamSupport)
-		Game.EnablePlayerControls(abCamSwitch = True)
-	EndIf
-
-	If CurrentFurniture && ResetClutter
-		OFurniture.ResetClutter(CurrentFurniture, ResetClutterRadius * 100)
-	EndIf
-
 	If UseFades
 		FadeFromBlack(2)
 	EndIf
-
-	Console(GetTimeSinceStart() + " seconds passed")
-
-	oldscenemetadata = scenemetadata
-	scenemetadata = PapyrusUtil.StringArray(0)
-
-	SceneRunning = False
-
-	If (FurnitureType != FURNITURE_TYPE_NONE)
-		CurrentFurniture.BlockActivation(false)
-		FurnitureType = FURNITURE_TYPE_NONE
-		CurrentFurniture = None
-	EndIf
-
-	FurnitureType = 0
-	CurrentFurniture = none
 
 	OSANative.EndPlayerDialogue()
 EndEvent
@@ -2080,46 +1904,6 @@ Actor Function GetSexPartner(Actor Char)
 	Return SubActor
 EndFunction
 
-Actor Function GetActor(int Index)
-	If Index >= 0 && Index < Actors.Length
-		Return Actors[Index]
-	EndIf
-
-	Return None
-EndFunction
-
-; do not modify this array or OStim will break!
-Actor[] Function GetActors()
-	Return Actors
-EndFunction
-
-;/
-Function SwapActorOrder() ; Swaps dom position in animation for sub. Only effects the animation scene. 2p scenes only
-    if Actors.Length == 2
-        UI.Invoke("HUD Menu", diasa + ".arrangeActra")
-    endif
-EndFunction
-/;
-
-Function AddSceneMetadata(string MetaTag)
-	scenemetadata = PapyrusUtil.PushString(scenemetadata, MetaTag)
-EndFunction
-
-bool Function HasSceneMetadata(string MetaTag)
-	string[] metadata
-	if SceneRunning
-		metadata = scenemetadata
-	else 
-		metadata = oldscenemetadata
-	endif 
-
-	return metadata.Find(metatag) >= 0
-EndFunction
-
-string[] Function GetAllSceneMetadata()
-	return scenemetadata
-EndFunction
-
 ; Warps to all of the scene IDs in the array.
 ; Does not do any waiting on it's own. To do that, you can add in numbers into the list, 
 ; and the function will wait that amount of time
@@ -2136,26 +1920,6 @@ function FadeToBlack(float time = 1.25)
 		Game.FadeOutGame(True, True, 0.0, Time)
 		Utility.Wait(Time * 0.70)
 		Game.FadeOutGame(False, True, 25.0, 25.0) ; total blackout
-EndFunction
-
-Float Function GetTimeSinceLastPlayerInteraction()
-	Return Utility.GetCurrentRealTime() - MostRecentOSexInteractionTime
-EndFunction
-
-Bool Function UsingBed()
-	Return FurnitureType == FURNITURE_TYPE_BED
-EndFunction
-
-Bool Function UsingFurniture()
-	Return FurnitureType != FURNITURE_TYPE_NONE
-EndFunction
-
-string Function GetFurnitureType()
-	Return FURNITURE_TYPE_STRINGS[FurnitureType]
-EndFunction
-
-ObjectReference Function GetFurniture()
-	Return CurrentFurniture
 EndFunction
 
 Bool Function IsFemale(Actor Act)
@@ -2185,26 +1949,6 @@ Function ShowAllSkyUIWidgets()
 	outils.SetSkyUIWidgetsVisible(true)
 EndFunction
 
-
-float Function GetStimMult(Actor Act)
-	If (Act == DomActor)
-		Return DomStimMult
-	Elseif (Act == SubActor)
-		Return SubStimMult
-	Elseif (Act == ThirdActor)
-		Return ThirdStimMult
-	EndIf
-EndFunction
-
-Function SetStimMult(Actor Act, Float Value)
-	If (Act == DomActor)
-		DomStimMult = Value
-	Elseif (Act == SubActor)
-		SubStimMult = Value
-	Elseif (Act == ThirdActor)
-		ThirdStimMult = Value
-	EndIf
-EndFunction
 
 Function ModifyStimMult(actor act, float by)
 	{thread-safe stimulation modification. Highly recomended you use this over Set.}
@@ -2247,10 +1991,6 @@ OStimSubthread Function GetSubthread(int id)
 		Console("Subthread not found")
 	endif 
 	return ret
-EndFunction
-
-float Function GetTimeSinceStart()
-	return Utility.GetCurrentRealTime() - StartTime
 EndFunction
 
 ;
@@ -2402,14 +2142,6 @@ Event OstimOrgasm(String EventName, String sceneId, Float index, Form Sender)
 	EndIf
 EndEvent
 
-Function SetOrgasmStall(Bool Set)
-	StallOrgasm = Set
-EndFunction
-
-Bool Function GetOrgasmStall()
-	Return StallOrgasm
-EndFunction
-
 ; Faces
 
 Function MuteFaceData(Actor Act)
@@ -2506,18 +2238,6 @@ Bool Function GetGameIsVR()
 	Return (PapyrusUtil.GetScriptVersion() == 36) ;obviously this no guarantee but it's the best we've got for now
 EndFunction
 
-Function ResetState()
-	Console("Resetting thread state")
-	SceneRunning = False
-
-	int i = 0 
-	Actor[] a = GetActors()
-	while i < a.Length
-		a[i].dispelallspells()
-		i += 1
-	endwhile
-EndFunction
-
 Float ProfileTime 
 Function Profile(String Name = "")
 	{Call Profile() to start. Call Profile("any string") to pring out the time since profiler started in console. Most accurate at 60fps}
@@ -2546,11 +2266,6 @@ int rnd_s3
 
 int Function RandomInt(int min = 0, int max = 100) ;DEPRECIATED - moving to osanative in future ver
 	return OSANative.RandomInt(min, max)
-EndFunction 
-
-; Set initial seed values for the RNG. 
-Function ResetRandom()
-	return
 EndFunction
 
 Function Startup()
@@ -2558,11 +2273,7 @@ Function Startup()
 
 	InstalledVersion = GetAPIVersion()
 
-	SceneRunning = False
-
 	OUpdater = Game.GetFormFromFile(0x000D67, "Ostim.esp") as OStimUpdaterScript
-
-	scenemetadata = PapyrusUtil.StringArray(0)
 
 	OnLoadGame()
 
@@ -2965,7 +2676,7 @@ Actor Function GetThirdActor()
 EndFunction
 
 ObjectReference Function GetBed()
-	Return GetFurniture()
+	Return OThread.GetFurniture(0)
 EndFunction
 
 bool Function SoloAnimsInstalled()
@@ -3151,7 +2862,6 @@ EndFunction
 
 ; I will remove these again in the future, don't call them!
 Function ShowBars()
-	MostRecentOSexInteractionTime = Utility.GetCurrentRealTime()
 	If (AutoHideBars)
 		If (!OBars.IsBarVisible(OBars.DomBar))
 			OBars.SetBarVisible(OBars.DomBar, True)
@@ -3182,50 +2892,11 @@ bool function IsInFreeCam()
 endfunction
 
 Function ShakeCamera(Float Power, Float Duration = 0.1)
+	; this is done in C++ now
 EndFunction
 
 Function AutoIncreaseSpeed()
-	If (GetTimeSinceLastPlayerInteraction() < 5.0)
-		Return
-	EndIf
-
-	String CClass = GetCurrentAnimationClass()
-	Float MainExcitement = GetActorExcitement(DomActor)
-	If (CClass == "VJ") || (CClass == "Cr") || (CClass == "Pf1") || (CClass == "Pf2")
-		MainExcitement = GetActorExcitement(SubActor)
-	EndIf
-
-	Int MaxSpeed = GetCurrentAnimationMaxSpeed()
-	Int NumSpeeds = MaxSpeed
-
-	Int AggressionBonusChance = 0
-	If (IsSceneAggressiveThemed())
-		AggressionBonusChance = 80
-		MainExcitement += 20
-	EndIf
-
-	Int Speed = GetCurrentAnimationSpeed()
-	If (Speed == 0)
-		Return
-	EndIf
-
-	If ((MainExcitement >= 85.0) && (Speed < NumSpeeds))
-		If (ChanceRoll(80))
-			IncreaseAnimationSpeed()
-		EndIf
-	ElseIf (MainExcitement >= 69.0) && (Speed <= (NumSpeeds - 1))
-		If (ChanceRoll(50))
-			IncreaseAnimationSpeed()
-		EndIf
-	ElseIf (MainExcitement >= 25.0) && (Speed <= (NumSpeeds - 2))
-		If (ChanceRoll(20 + AggressionBonusChance))
-			IncreaseAnimationSpeed()
-		EndIf
-	ElseIf (MainExcitement >= 05.0) && (Speed <= (NumSpeeds - 3))
-		If (ChanceRoll(20 + AggressionBonusChance))
-			IncreaseAnimationSpeed()
-		EndIf
-	EndIf
+	; this is done in C++ now
 EndFunction
 
 Function PlayDing()
@@ -3359,4 +3030,74 @@ EndFunction
 
 Function Orgasm(Actor Act)
 	OActor.Climax(Act, false)
+EndFunction
+
+Actor[] Function GetActors()
+	Return OThread.GetActors(0)
+EndFunction
+
+Actor Function GetActor(int Index)
+	Return OThread.GetActor(0, Index)
+EndFunction
+
+Function ResetRandom()
+EndFunction
+
+Bool Function UsingBed()
+	Return OThread.GetFurnitureType(0) == FURNITURE_TYPE_BED
+EndFunction
+
+Bool Function UsingFurniture()
+	Return OThread.GetFurniture(0)
+EndFunction
+
+string Function GetFurnitureType()
+	Return FURNITURE_TYPE_STRINGS[OThread.GetFurnitureType(0)]
+EndFunction
+
+ObjectReference Function GetFurniture()
+	Return OThread.GetFurniture(0)
+EndFunction
+
+float Function GetStimMult(Actor Act)
+	Return OActor.GetExcitementMultiplier(Act)
+EndFunction
+
+Function SetStimMult(Actor Act, Float Value)
+	OActor.SetExcitementMultiplier(Act, Value)
+EndFunction
+
+Function AddSceneMetadata(string MetaTag)
+	OThread.AddMetadata(0, MetaTag)
+EndFunction
+
+bool Function HasSceneMetadata(string MetaTag)
+	Return OThread.HasMetadata(0, MetaTag)
+EndFunction
+
+string[] Function GetAllSceneMetadata()
+	return OThread.GetMetadata(0)
+EndFunction
+
+Function ResetState()
+EndFunction
+
+Float Function GetTimeSinceLastPlayerInteraction()
+	Return 0
+EndFunction
+
+float Function GetTimeSinceStart()
+	return 0
+EndFunction
+
+Function SetOrgasmStall(Bool Set)
+	If Set
+		OThread.StallClimax(0)
+	Else
+		OThread.PermitClimax(0)
+	EndIf
+EndFunction
+
+Bool Function GetOrgasmStall()
+	Return OThread.IsClimaxStalled(0)
 EndFunction

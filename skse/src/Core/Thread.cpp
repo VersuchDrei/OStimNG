@@ -56,6 +56,10 @@ namespace OStim {
             addActorInner(i, actor);
         }
 
+        if (furniture && MCM::MCMTable::resetClutter()) {
+            Furniture::resetClutter(furniture, MCM::MCMTable::resetClutterRadius() * 100);
+        }
+
         if (playerThread) {
             GameAPI::GameCamera::startSceneMode(MCM::MCMTable::useFreeCam());
 
@@ -111,6 +115,8 @@ namespace OStim {
         if (playerThread) {
             FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_prestart", "", 0);
             FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_start", "", 0);
+        } else {
+            FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_subthread_start", "", m_threadId - 1);
         }
     }
 
@@ -295,7 +301,8 @@ namespace OStim {
     }
 
     void Thread::addActorInner(int index, RE::Actor* actor) {
-        ActorUtil::lockActor(actor);
+        GameAPI::GameActor gameActor = actor;
+        gameActor.lock();
         ActorUtil::setVehicle(actor, vehicle);
         addActorSink(actor);
         m_actors.insert(std::make_pair(index, ThreadActor(this, index, actor)));
@@ -465,9 +472,6 @@ namespace OStim {
                         vm->DispatchStaticCall("NiOverride", "ApplyNodeOverrides", args, callback);
                     }
                 }
-
-                float speedMod = 1.0 + static_cast<float>(speed) / static_cast<float>(m_currentNode->speeds.size());
-                actorIt.second.setLoopExcitementInc(actorIt.second.getBaseExcitementInc() * actorIt.second.getBaseExcitementMultiplier() * speedMod * Constants::LOOP_TIME_SECONDS);
             }
 
             actorIt.second.changeSpeed(speed);
@@ -561,6 +565,9 @@ namespace OStim {
 
         if (furniture) {
             Furniture::freeFurniture(furniture, furnitureOwner);
+            if (MCM::MCMTable::resetClutter()) {
+                Furniture::resetClutter(furniture, MCM::MCMTable::resetClutterRadius() * 100);
+            }
         }
 
         if (playerThread) {
@@ -582,8 +589,10 @@ namespace OStim {
         logger::info("closed thread {}", m_threadId);
 
         if (playerThread) {
-            FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_end", "", -0);
+            FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_end", "", -1);
             FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_totalend", "", 0);
+        } else {
+            FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_subthread_end", "", m_threadId - 1);
         }
     }
 
@@ -698,6 +707,7 @@ namespace OStim {
     Serialization::OldThread Thread::serialize() {
         Serialization::OldThread oldThread;
 
+        oldThread.threadID = m_threadId;
         oldThread.vehicle = vehicle;
         if (furniture) {
             oldThread.furniture = furniture;

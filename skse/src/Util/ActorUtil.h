@@ -1,24 +1,6 @@
 #pragma once
 
 namespace ActorUtil {
-    inline bool setRestrained(RE::Actor* actor, bool restrained) {
-        using func_t = decltype(setRestrained);
-        REL::Relocation<func_t> func{RELOCATION_ID(36489, 37488)};
-        return func(actor, restrained);
-    }
-
-    inline bool setDontMove(RE::Actor* actor, bool dontMove) {
-        using func_t = decltype(setDontMove);
-        REL::Relocation<func_t> func{RELOCATION_ID(36490, 37489)};
-        return func(actor, dontMove);
-    }
-
-    inline void stopMovement(RE::Actor* actor) {
-        using func_t = decltype(stopMovement);
-        REL::Relocation<func_t> func{RELOCATION_ID(36802, 37818)};
-        func(actor);
-    }
-
     inline void setScale(RE::Actor* actor, float scale) {
         using func_t = decltype(setScale);
         REL::Relocation<func_t> func{RELOCATION_ID(19239, 19665)};
@@ -49,10 +31,6 @@ namespace ActorUtil {
         func(actor, faction);
     }
 
-    void lockActor(RE::Actor* actor);
-    void unlockActor(RE::Actor* actor);
-
-    void sheatheWeapon(RE::Actor* actor);
     void setVehicle(RE::Actor* actor, RE::TESObjectREFR* vehicle);
 
     void equipItem(RE::Actor* actor, RE::TESForm* item, bool preventRemoval, bool silent);
@@ -64,8 +42,6 @@ namespace ActorUtil {
     void equipItemEx(RE::Actor* actor, RE::TESForm* item, int slotId, bool preventUnequip, bool equipSound);
     void equipItemEx(RE::Actor* actor, RE::TESForm* item, int slotId);
     void equipItemEx(RE::Actor* actor, RE::TESForm* item);
-
-    void queueNiNodeUpdate(RE::Actor* actor);
 
     float getHeelOffset(RE::Actor* actor);
     float getHeelOffset(RE::NiAVObject* object);

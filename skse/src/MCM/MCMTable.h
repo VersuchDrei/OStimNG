@@ -55,19 +55,22 @@ namespace MCM {
         inline static int autoModePulloutThresholdMin() { return settings[0xE38].asInt(); }
         inline static int autoModePulloutThresholdMax() { return settings[0xE39].asInt(); }
 
-        static bool useFreeCam();
-        static float freeCamSpeed();
-        static float freeCamFOV();
-        static bool useScreenShake();
+        inline static bool resetClutter() { return settings[0xDA4].asBool(); }
+        inline static float resetClutterRadius() { return settings[0xDA5].asFloat(); }
+
+        inline static bool useFreeCam() { return settings[0xDDE].asBool(); }
+        inline static float freeCamSpeed() { return settings[0xDDF].asFloat(); }
+        inline static float freeCamFOV() { return settings[0xDE0].asFloat(); }
+        inline static bool useScreenShake() { return settings[0xE10].asBool(); }
         inline static bool firstPersonAfterScene() { return settings[0xE12].asBool(); }
 
-        static float getMaleSexExcitementMult();
-        static float getFemaleSexExcitementMult();
-        static float getExcitementDecayRate();
-        static int getExcitementDecayGracePeriod();
+        inline static float getMaleSexExcitementMult() { return settings[0xDA2].asFloat(); }
+        inline static float getFemaleSexExcitementMult() { return settings[0xDA3].asFloat(); }
+        inline static float getExcitementDecayRate() { return settings[0xDB5].asFloat(); }
+        inline static int getExcitementDecayGracePeriod() { return settings[0xDB4].asInt(); }
 
-        static bool getSlowMotionOnOrgasm();
-        static bool getBlurOnOrgasm();
+        inline static bool getSlowMotionOnOrgasm() { return settings[0xDFC].asBool(); }
+        inline static bool getBlurOnOrgasm() { return settings[0xDFD].asBool(); }
 
         inline static bool useAutoClimaxAnimations() { return settings[0xDA9].asBool(); }
         inline static bool endOnPlayerOrgasm() { return settings[0xE30].asBool(); }
@@ -75,48 +78,55 @@ namespace MCM {
         inline static bool endOnFemaleOrgasm() { return settings[0xDFA].asBool(); }
         inline static bool endOnAllOrgasm() { return settings[0xDFB].asBool(); }
 
-        static bool isScalingDisabled();
-        static bool isSchlongBendingDisabled();
+        inline static bool isScalingDisabled() { return settings[0xD94].asBool(); }
+        inline static bool isSchlongBendingDisabled() { return settings[0xD97].asBool(); }
 
-        static bool undressAtStart();
-        static bool removeWeaponsAtStart();
-        static bool undressMidScene();
-        static bool partialUndressing();
+        inline static bool undressAtStart() { return settings[0xDAA].asBool(); }
+        inline static bool removeWeaponsAtStart() { return settings[0xDAB].asBool(); }
+        inline static bool undressMidScene() { return settings[0xDAC].asBool(); }
+        inline static bool partialUndressing() { return settings[0xDAD].asBool(); }
         static uint32_t removeWeaponsWithSlot();
-        static bool animateRedress();
-        static bool undressWigs();
-        static uint32_t getUndressingMask();
-        static void setUndressingMask(uint32_t mask);
+        inline static bool animateRedress() { return settings[0xDAF].asBool(); }
+        inline static bool undressWigs() { return settings[0xDF8].asBool(); }
+        inline static uint32_t getUndressingMask() { return undressingMask; }
+        inline static void setUndressingMask(uint32_t mask) { undressingMask = mask; }
 
         // not really an MCM option but idk where else to put it
         static void setPapyusUndressing(bool doPapyrus);
-        static bool usePapyrusUndressing();
+        inline static bool usePapyrusUndressing() { return doPapyrusUndressing; }
 
-        static int getExpressionDurationMin();
-        static int getExpressionDurationMax();
+        inline static int getExpressionDurationMin() { return settings[0xDB2].asInt(); }
+        inline static int getExpressionDurationMax() { return settings[0xDB3].asInt(); }
 
-        static int getMoanIntervalMin();
-        static int getMoanIntervalMax();
-        static float getMoanVolume();
-        static float getSoundVolume();
+        inline static int getMoanIntervalMin() { return settings[0xE0A].asInt(); }
+        inline static int getMoanIntervalMax() { return settings[0xE0B].asInt(); }
+        inline static float getMoanVolume() { return settings[0xE0C].asFloat(); }
+        inline static float getSoundVolume() { return settings[0xE0D].asFloat(); }
 
         inline static bool intendedSexOnly() { return settings[0xDEE].asBool(); }
+        inline static bool playerAlwaysDomStraight() { return settings[0xDEF].asBool(); }
+        inline static bool playerAlwaysSubStraight() { return settings[0xDF0].asBool(); }
+        inline static bool playerAlwaysDomGay() { return settings[0xDF1].asBool(); }
+        inline static bool playerAlwaysSubGay() { return settings[0xDF2].asBool(); }
+        inline static bool playerSelectRoleStraight() { return settings[0xDF3].asBool(); }
+        inline static bool playerSelectRoleGay() { return settings[0xDF4].asBool(); }
+        inline static bool playerSelectRoleThreesome() { return settings[0xDF5].asBool(); }
 
-        static bool equipStrapOnIfNeeded();
-        static bool unequipStrapOnIfNotNeeded();
-        static bool unequipStrapOnIfInWay();
+        inline static bool equipStrapOnIfNeeded() { return settings[0xDDB].asBool(); }
+        inline static bool unequipStrapOnIfNotNeeded() { return settings[0xDDC].asBool(); }
+        inline static bool unequipStrapOnIfInWay() { return settings[0xDDD].asBool(); }
 
         static bool useSoSSex();
         static bool futaUseMaleExcitement();
         static bool futaUseMaleClimax();
         static bool futaUseMaleLight();
 
-        static bool groupAlignmentBySex();
-        static bool groupAlignmentByHeight();
-        static bool groupAlignmentByHeels();
+        inline static bool groupAlignmentBySex() { return settings[0xDE3].asBool(); }
+        inline static bool groupAlignmentByHeight() { return settings[0xDE4].asBool(); }
+        inline static bool groupAlignmentByHeels() { return settings[0xDE5].asBool(); }
         
-        static float bedRealignment();
-        static float bedOffset();
+        inline static float bedRealignment() { return settings[0xDFE].asFloat(); }
+        inline static float bedOffset() { return settings[0xDFF].asFloat(); }
 
         static void exportSettings();
         static void importSettings();
