@@ -193,7 +193,9 @@ namespace UI::Scene {
     }
     
     void SceneMenu::ChangeAnimation(std::string nodeId) {
-        UI::UIState::GetSingleton()->currentThread->Navigate(nodeId);
+        SKSE::GetTaskInterface()->AddTask([nodeId]() {
+            UI::UIState::GetSingleton()->currentThread->Navigate(nodeId);
+        });
     }
 
     
