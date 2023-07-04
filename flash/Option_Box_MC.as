@@ -32,6 +32,11 @@ class Option_Box_MC extends MovieClip
 	var maxWidth;
 
 	var TextureLoader;
+	
+	var speedUp : MovieClip;
+	var speedDown : MovieClip;
+	var speedDesc : TextField;
+	
 
 	public function Option_Box_MC()
 	{
@@ -48,7 +53,7 @@ class Option_Box_MC extends MovieClip
 		menuGutter = 28;
 		menuGutterX = menuGutter * 2;
 		
-		menuGutterYText = 67;
+		menuGutterYText = 86;
 		menuGutterYBase = menuGutterYText + optionGutter;	
 		menuGutterYTop = menuGutter;
 		menuGutterY = menuGutterYBase + menuGutterYTop;
@@ -62,7 +67,7 @@ class Option_Box_MC extends MovieClip
 		bg._width = maxWidth;
 		bg._x = bg._width /2 ;
 		
-		//AssignData(generateTestData())// For testing in flash
+		AssignData(generateTestData())// For testing in flash
 	}
 
 	public function HandleKeyboardInput(e:Number)
@@ -233,8 +238,33 @@ class Option_Box_MC extends MovieClip
 			var obj = {};
 			obj.Border = "FFFFFF";
 			obj.ImagePath = "test" + i + ".dds"
+			obj.Description = "Standing, holding or some other description thats long"
 			arr[i] = obj;
 		}
 		return arr;
+	}
+	
+	function ShowSpeed(speedVal:String, showUp: Boolean, showDown: Boolean){
+		speedUp._visible = true;
+		if(!showUp){
+			speedUp.gotoAndStop(31);
+		} else{
+			speedUp.gotoAndStop(1);
+		}
+		
+		speedDown._visible = true;		
+		if(!showUp){
+			speedDown.gotoAndStop(31);
+		} else{
+			speedDown.gotoAndStop(1);
+		}
+		
+		speedDesc.text = speedval;
+	}
+	
+	function HideSpeed(){
+		speedUp._visible = false;
+		speedDown._visible = false;
+		speedDesc._visible = false;
 	}
 }
