@@ -253,13 +253,13 @@ class Option_Box_MC extends MovieClip
 		}
 		
 		speedDown._visible = true;		
-		if(!showUp){
+		if(!showDown){
 			speedDown.gotoAndStop(31);
 		} else{
 			speedDown.gotoAndStop(1);
 		}
 		
-		speedDesc.text = speedval;
+		speedDesc.text = speedVal;
 	}
 	
 	function HideSpeed(){

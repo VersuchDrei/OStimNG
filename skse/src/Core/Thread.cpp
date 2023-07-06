@@ -473,6 +473,8 @@ namespace OStim {
             actorIt.second.changeSpeed(speed);
         }
 
+        UI::UIState::GetSingleton()->SpeedChanged(this, speed);
+
         FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_animationchanged", m_currentNode->scene_id, speed);
     }
 

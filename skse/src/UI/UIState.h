@@ -41,6 +41,7 @@ namespace UI {
         void loop();
         void SetThread(OStim::Thread* thread);
         void NodeChanged(OStim::Thread* thread, Graph::Node* node);
+        void SpeedChanged(OStim::Thread* thread, int speed);
         void HandleThreadRemoved(OStim::Thread* thread);
 
 

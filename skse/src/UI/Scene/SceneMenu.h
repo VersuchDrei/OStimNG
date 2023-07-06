@@ -31,6 +31,8 @@ namespace UI::Scene {
 
 		static void ChangeAnimation(std::string nodeId);
 		static void UpdateMenuData();
+		static void HideSpeed();
+		static void UpdateSpeed();
 	private:
 		class Logger : public RE::GFxLog {
 		public:

@@ -72,7 +72,18 @@ namespace UI {
         currentNode = node;
         UI::Align::AlignMenu::NodeChanged();
         UI::Scene::SceneMenu::UpdateMenuData();
+
+
+        UI::Scene::SceneMenu::UpdateSpeed();
     }
+
+    void UIState::SpeedChanged(OStim::Thread* thread, int speed) {
+        if (!thread) return;
+        if (!currentThread->isSameThread(thread)) return;
+
+        UI::Scene::SceneMenu::UpdateSpeed();
+    }
+
     void UIState::HandleThreadRemoved(OStim::Thread* thread) {
         if (currentThread == thread) {
             currentThread = nullptr;

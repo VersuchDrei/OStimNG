@@ -191,6 +191,29 @@ namespace UI::Scene {
             }
         }
     }
+    void SceneMenu::HideSpeed() {
+
+    }
+    void SceneMenu::UpdateSpeed() {
+        auto thread = UI::UIState::GetSingleton()->currentThread;
+        if (!thread) {
+            return;
+        }
+        auto node = UI::UIState::GetSingleton()->currentNode;
+        if (!node) {
+            return;
+        }
+        auto boxes = GetOptionBoxes();
+        if (node->speeds.size() > 1) {
+            auto speed = thread->getCurrentSpeed();
+            auto& speedObj = node->speeds[speed];
+            RE::GFxValue args[3]{ std::to_string(speedObj.playbackSpeed).c_str(), speed != (node->speeds.size() - 1), speed != 0};
+            boxes.Invoke("ShowSpeed", nullptr, args, 3);
+        }
+        else {
+            boxes.Invoke("HideSpeed");
+        }
+    }
     
     void SceneMenu::ChangeAnimation(std::string nodeId) {
         SKSE::GetTaskInterface()->AddTask([nodeId]() {
