@@ -30,7 +30,7 @@ namespace MapUtil {
     }
 
     template <class T, class V>
-    bool containsAllKeys(std::unordered_map<T, V>& haystack, std::vector<T>& needles) {
+    bool containsAllKeys(std::unordered_map<T, V>& haystack, std::vector<T> needles) {
         for (T needle : needles) {
             if (!haystack.contains(needle)) {
                 return false;

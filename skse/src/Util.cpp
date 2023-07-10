@@ -50,7 +50,7 @@ namespace stl {
         size_t start = 0, end = 0;
 
         while ((end = text.find(sep, start)) != std::string::npos) {
-            if (text.substr(start, end - start) != "") tokens.push_back(text.substr(start, end - start));
+            tokens.push_back(text.substr(start, end - start));
 
             start = end + 1;
         }

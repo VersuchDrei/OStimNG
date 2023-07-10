@@ -796,20 +796,20 @@ namespace PapyrusMetadata {
 
             std::vector<std::string> actorKeys = anyCustomIntRecordMatrix[0];
             if (actorKeys.size() > 0) {
-                conditions.push_back([&actorKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->actor.ints, actorKeys);});
+                conditions.push_back([actorKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->actor.ints, actorKeys);});
             }
 
             if (anyCustomIntRecordMatrix.size() > 1) {
                 std::vector<std::string> targetKeys = anyCustomIntRecordMatrix[1];
                 if (targetKeys.size() > 0) {
-                    conditions.push_back([&targetKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->target.ints, targetKeys);});
+                    conditions.push_back([targetKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->target.ints, targetKeys);});
                 }
             }
 
             if (anyCustomIntRecordMatrix.size() > 2) {
                 std::vector<std::string> performerKeys = anyCustomIntRecordMatrix[2];
                 if (performerKeys.size() > 0) {
-                    conditions.push_back([&performerKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->performer.ints, performerKeys);});
+                    conditions.push_back([performerKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->performer.ints, performerKeys);});
                 }
             }
         }
@@ -819,20 +819,20 @@ namespace PapyrusMetadata {
 
             std::vector<std::string> actorKeys = allCustomIntRecordsMatrix[0];
             if (actorKeys.size() > 0) {
-                conditions.push_back([&actorKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->actor.ints, actorKeys);});
+                conditions.push_back([actorKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->actor.ints, actorKeys);});
             }
 
             if (allCustomIntRecordsMatrix.size() > 1) {
                 std::vector<std::string> targetKeys = allCustomIntRecordsMatrix[1];
                 if (targetKeys.size() > 0) {
-                    conditions.push_back([&targetKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->target.ints, targetKeys);});
+                    conditions.push_back([targetKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->target.ints, targetKeys);});
                 }
             }
 
             if (allCustomIntRecordsMatrix.size() > 2) {
                 std::vector<std::string> performerKeys = allCustomIntRecordsMatrix[2];
                 if (performerKeys.size() > 0) {
-                    conditions.push_back([&performerKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->performer.ints, performerKeys);});
+                    conditions.push_back([performerKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->performer.ints, performerKeys);});
                 }
             }
         }
@@ -842,20 +842,20 @@ namespace PapyrusMetadata {
 
             std::vector<std::string> actorKeys = anyCustomFloatRecordMatrix[0];
             if (actorKeys.size() > 0) {
-                conditions.push_back([&actorKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->actor.floats, actorKeys);});
+                conditions.push_back([actorKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->actor.floats, actorKeys);});
             }
 
             if (anyCustomFloatRecordMatrix.size() > 1) {
                 std::vector<std::string> targetKeys = anyCustomFloatRecordMatrix[1];
                 if (targetKeys.size() > 0) {
-                    conditions.push_back([&targetKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->target.floats, targetKeys);});
+                    conditions.push_back([targetKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->target.floats, targetKeys);});
                 }
             }
 
             if (anyCustomFloatRecordMatrix.size() > 2) {
                 std::vector<std::string> performerKeys = anyCustomFloatRecordMatrix[2];
                 if (performerKeys.size() > 0) {
-                    conditions.push_back([&performerKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->performer.floats, performerKeys);});
+                    conditions.push_back([performerKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->performer.floats, performerKeys);});
                 }
             }
         }
@@ -865,20 +865,20 @@ namespace PapyrusMetadata {
 
             std::vector<std::string> actorKeys = allCustomFloatRecordsMatrix[0];
             if (actorKeys.size() > 0) {
-                conditions.push_back([&actorKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->actor.floats, actorKeys);});
+                conditions.push_back([actorKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->actor.floats, actorKeys);});
             }
 
             if (allCustomFloatRecordsMatrix.size() > 1) {
                 std::vector<std::string> targetKeys = allCustomFloatRecordsMatrix[1];
                 if (targetKeys.size() > 0) {
-                    conditions.push_back([&targetKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->target.floats, targetKeys);});
+                    conditions.push_back([targetKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->target.floats, targetKeys);});
                 }
             }
 
             if (allCustomFloatRecordsMatrix.size() > 2) {
                 std::vector<std::string> performerKeys = allCustomFloatRecordsMatrix[2];
                 if (performerKeys.size() > 0) {
-                    conditions.push_back([&performerKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->performer.floats, performerKeys);});
+                    conditions.push_back([performerKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->performer.floats, performerKeys);});
                 }
             }
         }
@@ -888,20 +888,20 @@ namespace PapyrusMetadata {
 
             std::vector<std::string> actorKeys = anyCustomStringRecordMatrix[0];
             if (actorKeys.size() > 0) {
-                conditions.push_back([&actorKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->actor.strings, actorKeys);});
+                conditions.push_back([actorKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->actor.strings, actorKeys);});
             }
 
             if (anyCustomStringRecordMatrix.size() > 1) {
                 std::vector<std::string> targetKeys = anyCustomStringRecordMatrix[1];
                 if (targetKeys.size() > 0) {
-                    conditions.push_back([&targetKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->target.strings, targetKeys);});
+                    conditions.push_back([targetKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->target.strings, targetKeys);});
                 }
             }
 
             if (anyCustomStringRecordMatrix.size() > 2) {
                 std::vector<std::string> performerKeys = anyCustomStringRecordMatrix[2];
                 if (performerKeys.size() > 0) {
-                    conditions.push_back([&performerKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->performer.strings, performerKeys);});
+                    conditions.push_back([performerKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->performer.strings, performerKeys);});
                 }
             }
         }
@@ -911,20 +911,20 @@ namespace PapyrusMetadata {
 
             std::vector<std::string> actorKeys = allCustomStringRecordsMatrix[0];
             if (actorKeys.size() > 0) {
-                conditions.push_back([&actorKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->actor.strings, actorKeys);});
+                conditions.push_back([actorKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->actor.strings, actorKeys);});
             }
 
             if (allCustomStringRecordsMatrix.size() > 1) {
                 std::vector<std::string> targetKeys = allCustomStringRecordsMatrix[1];
                 if (targetKeys.size() > 0) {
-                    conditions.push_back([&targetKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->target.strings, targetKeys);});
+                    conditions.push_back([targetKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->target.strings, targetKeys);});
                 }
             }
 
             if (allCustomStringRecordsMatrix.size() > 2) {
                 std::vector<std::string> performerKeys = allCustomStringRecordsMatrix[2];
                 if (performerKeys.size() > 0) {
-                    conditions.push_back([&performerKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->performer.strings, performerKeys);});
+                    conditions.push_back([performerKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->performer.strings, performerKeys);});
                 }
             }
         }
@@ -934,20 +934,20 @@ namespace PapyrusMetadata {
 
             std::vector<std::string> actorKeys = anyCustomIntListRecordMatrix[0];
             if (actorKeys.size() > 0) {
-                conditions.push_back([&actorKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->actor.intLists, actorKeys);});
+                conditions.push_back([actorKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->actor.intLists, actorKeys);});
             }
 
             if (anyCustomIntListRecordMatrix.size() > 1) {
                 std::vector<std::string> targetKeys = anyCustomIntListRecordMatrix[1];
                 if (targetKeys.size() > 0) {
-                    conditions.push_back([&targetKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->target.intLists, targetKeys);});
+                    conditions.push_back([targetKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->target.intLists, targetKeys);});
                 }
             }
 
             if (anyCustomIntListRecordMatrix.size() > 2) {
                 std::vector<std::string> performerKeys = anyCustomIntListRecordMatrix[2];
                 if (performerKeys.size() > 0) {
-                    conditions.push_back([&performerKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->performer.intLists, performerKeys);});
+                    conditions.push_back([performerKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->performer.intLists, performerKeys);});
                 }
             }
         }
@@ -957,20 +957,20 @@ namespace PapyrusMetadata {
 
             std::vector<std::string> actorKeys = allCustomIntListRecordsMatrix[0];
             if (actorKeys.size() > 0) {
-                conditions.push_back([&actorKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->actor.intLists, actorKeys);});
+                conditions.push_back([actorKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->actor.intLists, actorKeys);});
             }
 
             if (allCustomIntListRecordsMatrix.size() > 1) {
                 std::vector<std::string> targetKeys = allCustomIntListRecordsMatrix[1];
                 if (targetKeys.size() > 0) {
-                    conditions.push_back([&targetKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->target.intLists, targetKeys);});
+                    conditions.push_back([targetKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->target.intLists, targetKeys);});
                 }
             }
 
             if (allCustomIntListRecordsMatrix.size() > 2) {
                 std::vector<std::string> performerKeys = allCustomIntListRecordsMatrix[2];
                 if (performerKeys.size() > 0) {
-                    conditions.push_back([&performerKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->performer.intLists, performerKeys);});
+                    conditions.push_back([performerKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->performer.intLists, performerKeys);});
                 }
             }
         }
@@ -980,20 +980,20 @@ namespace PapyrusMetadata {
 
             std::vector<std::string> actorKeys = anyCustomFloatListRecordMatrix[0];
             if (actorKeys.size() > 0) {
-                conditions.push_back([&actorKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->actor.floatLists, actorKeys);});
+                conditions.push_back([actorKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->actor.floatLists, actorKeys);});
             }
 
             if (anyCustomFloatListRecordMatrix.size() > 1) {
                 std::vector<std::string> targetKeys = anyCustomFloatListRecordMatrix[1];
                 if (targetKeys.size() > 0) {
-                    conditions.push_back([&targetKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->target.floatLists, targetKeys);});
+                    conditions.push_back([targetKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->target.floatLists, targetKeys);});
                 }
             }
 
             if (anyCustomFloatListRecordMatrix.size() > 2) {
                 std::vector<std::string> performerKeys = anyCustomFloatListRecordMatrix[2];
                 if (performerKeys.size() > 0) {
-                    conditions.push_back([&performerKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->performer.floatLists, performerKeys);});
+                    conditions.push_back([performerKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->performer.floatLists, performerKeys);});
                 }
             }
         }
@@ -1003,20 +1003,20 @@ namespace PapyrusMetadata {
 
             std::vector<std::string> actorKeys = allCustomFloatListRecordsMatrix[0];
             if (actorKeys.size() > 0) {
-                conditions.push_back([&actorKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->actor.floatLists, actorKeys);});
+                conditions.push_back([actorKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->actor.floatLists, actorKeys);});
             }
 
             if (allCustomFloatListRecordsMatrix.size() > 1) {
                 std::vector<std::string> targetKeys = allCustomFloatListRecordsMatrix[1];
                 if (targetKeys.size() > 0) {
-                    conditions.push_back([&targetKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->target.floatLists, targetKeys);});
+                    conditions.push_back([targetKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->target.floatLists, targetKeys);});
                 }
             }
 
             if (allCustomFloatListRecordsMatrix.size() > 2) {
                 std::vector<std::string> performerKeys = allCustomFloatListRecordsMatrix[2];
                 if (performerKeys.size() > 0) {
-                    conditions.push_back([&performerKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->performer.floatLists, performerKeys);});
+                    conditions.push_back([performerKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->performer.floatLists, performerKeys);});
                 }
             }
         }
@@ -1026,20 +1026,20 @@ namespace PapyrusMetadata {
 
             std::vector<std::string> actorKeys = anyCustomStringListRecordMatrix[0];
             if (actorKeys.size() > 0) {
-                conditions.push_back([&actorKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->actor.stringLists, actorKeys);});
+                conditions.push_back([actorKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->actor.stringLists, actorKeys);});
             }
 
             if (anyCustomStringListRecordMatrix.size() > 1) {
                 std::vector<std::string> targetKeys = anyCustomStringListRecordMatrix[1];
                 if (targetKeys.size() > 0) {
-                    conditions.push_back([&targetKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->target.stringLists, targetKeys);});
+                    conditions.push_back([targetKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->target.stringLists, targetKeys);});
                 }
             }
 
             if (anyCustomStringListRecordMatrix.size() > 2) {
                 std::vector<std::string> performerKeys = anyCustomStringListRecordMatrix[2];
                 if (performerKeys.size() > 0) {
-                    conditions.push_back([&performerKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->performer.stringLists, performerKeys);});
+                    conditions.push_back([performerKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->performer.stringLists, performerKeys);});
                 }
             }
         }
@@ -1049,20 +1049,20 @@ namespace PapyrusMetadata {
 
             std::vector<std::string> actorKeys = allCustomStringListRecordsMatrix[0];
             if (actorKeys.size() > 0) {
-                conditions.push_back([&actorKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->actor.stringLists, actorKeys);});
+                conditions.push_back([actorKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->actor.stringLists, actorKeys);});
             }
 
             if (allCustomStringListRecordsMatrix.size() > 1) {
                 std::vector<std::string> targetKeys = allCustomStringListRecordsMatrix[1];
                 if (targetKeys.size() > 0) {
-                    conditions.push_back([&targetKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->target.stringLists, targetKeys);});
+                    conditions.push_back([targetKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->target.stringLists, targetKeys);});
                 }
             }
 
             if (allCustomStringListRecordsMatrix.size() > 2) {
                 std::vector<std::string> performerKeys = allCustomStringListRecordsMatrix[2];
                 if (performerKeys.size() > 0) {
-                    conditions.push_back([&performerKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->performer.stringLists, performerKeys);});
+                    conditions.push_back([performerKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->performer.stringLists, performerKeys);});
                 }
             }
         }
