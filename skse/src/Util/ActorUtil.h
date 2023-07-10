@@ -1,12 +1,8 @@
 #pragma once
 
-namespace ActorUtil {
-    inline void setScale(RE::Actor* actor, float scale) {
-        using func_t = decltype(setScale);
-        REL::Relocation<func_t> func{RELOCATION_ID(19239, 19665)};
-        func(actor, scale);
-    }
+#include "GameAPI/GameActor.h"
 
+namespace ActorUtil {
     inline void SetVehicle(RE::BSScript::IVirtualMachine* vm, RE::VMStackID stackID, RE::Actor* actor, RE::TESObjectREFR* akVehicle) {
         using func_t = decltype(SetVehicle);
         REL::Relocation<func_t> func{RELOCATION_ID(53940, 54764)};
@@ -25,11 +21,7 @@ namespace ActorUtil {
         func(vm, stackID, actor, akItem, abPreventEquip, abSilent);
     }
 
-    inline void removeFromFaction(RE::Actor* actor, RE::TESFaction* faction) {
-        using func_t = decltype(removeFromFaction);
-        REL::Relocation<func_t> func{RELOCATION_ID(36680, 37688)};
-        func(actor, faction);
-    }
+    void sort(std::vector<GameAPI::GameActor>& actors, std::vector<GameAPI::GameActor>& dominantActors, int playerIndex);
 
     void setVehicle(RE::Actor* actor, RE::TESObjectREFR* vehicle);
 

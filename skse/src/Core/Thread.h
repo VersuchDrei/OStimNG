@@ -65,6 +65,7 @@ namespace OStim {
         void callEvent(std::string eventName, int actorIndex, int targetIndex, int performerIndex);
 
         void stop();
+        void stopFaded();
         void close();
 
         inline RE::TESObjectREFR* GetStageObject() { return vehicle; }
@@ -98,6 +99,7 @@ namespace OStim {
         float timeScaleBefore = 0;
 
         int stopTimer = 0;
+        bool isStopping = false;
 
         std::vector<Sound::SoundPlayer*> soundPlayers;
 

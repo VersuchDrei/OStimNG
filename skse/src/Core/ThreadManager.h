@@ -1,6 +1,8 @@
 #pragma once
-#include "Core/Singleton.h"
-#include "Core/Thread.h"
+
+#include "Singleton.h"
+#include "Thread.h"
+
 #include "GameAPI/GameActor.h"
 #include "Serial/OldThread.h"
 #include <shared_mutex>
@@ -19,6 +21,7 @@ namespace OStim {
         void UntrackAllThreads();
         bool AnySceneRunning();
         bool playerThreadRunning();
+
 
         Thread* findThread(GameAPI::GameActor actor);
 

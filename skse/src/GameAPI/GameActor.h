@@ -21,6 +21,7 @@ namespace GameAPI {
         inline uint32_t getBaseFormID() const { return form->GetActorBase()->formID; }
 
         void update3D() const;
+        bool isLoaded() const { return form->Is3DLoaded(); }
         inline void updateAI() const { form->EvaluatePackage(); }
         void lock() const;
         void unlock() const;

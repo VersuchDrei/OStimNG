@@ -3,9 +3,7 @@
 #include "Core/Core.h"
 #include "Core/ThreadManager.h"
 #include "Trait/TraitTable.h"
-#include "Util/CompatibilityTable.h"
 #include "Util/StringUtil.h"
-#include "Util/VectorUtil.h"
 
 namespace PapyrusThreadActor {
     using VM = RE::BSScript::IVirtualMachine;
@@ -241,10 +239,6 @@ namespace PapyrusThreadActor {
         return OStim::ThreadManager::GetSingleton()->findActor(actor);
     }
 
-    bool HasSchlong(RE::StaticFunctionTag*, RE::Actor* actor) {
-        return Compatibility::CompatibilityTable::hasSchlong(actor);
-    }
-
     bool VerifyActors(RE::StaticFunctionTag*, std::vector<RE::Actor*> actors) {
         for (RE::Actor*& actor : actors) {
             if (!OStim::isEligible(actor)) {
@@ -252,64 +246,6 @@ namespace PapyrusThreadActor {
             }
         }
         return true;
-    }
-
-    std::vector<RE::Actor*> SortActors(RE::StaticFunctionTag*, std::vector<RE::Actor*> actors, int playerIndex) {
-        std::stable_sort(actors.begin(), actors.end(), [&](RE::Actor* actorA, RE::Actor* actorB) {
-            return Compatibility::CompatibilityTable::hasSchlong(actorA) && !Compatibility::CompatibilityTable::hasSchlong(actorB);
-        });
-
-        RE::Actor* player = RE::PlayerCharacter::GetSingleton();
-        int currentPlayerIndex = VectorUtil::getIndex(actors, player);
-        if (currentPlayerIndex < 0) {
-            return actors;
-        }
-
-        if (playerIndex >= 0 && playerIndex < actors.size()) {
-            if (currentPlayerIndex < playerIndex) {
-                while (currentPlayerIndex < playerIndex) {
-                    actors[currentPlayerIndex] = actors[currentPlayerIndex + 1];
-                    currentPlayerIndex++;
-                }
-                actors[playerIndex] = player;
-            } else if (currentPlayerIndex > playerIndex) {
-                while (currentPlayerIndex > playerIndex) {
-                    actors[currentPlayerIndex] = actors[currentPlayerIndex - 1];
-                    currentPlayerIndex--;
-                }
-                actors[playerIndex] = player;
-            }
-        } else {
-            if (actors.size() == 2) {
-                if (Compatibility::CompatibilityTable::hasSchlong(actors[0]) == Compatibility::CompatibilityTable::hasSchlong(actors[1])) {
-                    if (MCM::MCMTable::playerAlwaysDomGay()) {
-                        if (actors[1] == player) {
-                            actors[1] = actors[0];
-                            actors[0] = player;
-                        }
-                    } else if (MCM::MCMTable::playerAlwaysSubGay()) {
-                        if (actors[0] == player) {
-                            actors[0] = actors[1];
-                            actors[1] = player;
-                        }
-                    }
-                } else {
-                    if (MCM::MCMTable::playerAlwaysDomStraight()) {
-                        if (actors[1] == player) {
-                            actors[1] = actors[0];
-                            actors[0] = player;
-                        }
-                    } else if (MCM::MCMTable::playerAlwaysSubStraight()) {
-                        if (actors[0] == player) {
-                            actors[0] = actors[1];
-                            actors[1] = player;
-                        }
-                    }
-                }
-            }
-        }
-
-        return actors;
     }
 
     bool Bind(VM* a_vm) {
@@ -349,9 +285,7 @@ namespace PapyrusThreadActor {
         BIND(UnsetObjectVariant);
 
         BIND(IsInOStim);
-        BIND(HasSchlong);
         BIND(VerifyActors);
-        BIND(SortActors);
 
         return true;
     }

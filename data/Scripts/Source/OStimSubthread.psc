@@ -50,7 +50,7 @@ string[] CurrentScene
 * * @param: zThirdActor, the third actor, index 2
 * * @param: startingAnimation, the animation to start with. If empty string, a random animation will be chosen
 * * @param: furniture, the furniture to start the animation on, can be None
-* * @param: withAI, no longer in use, NPC threads always run in auto mode
+* * @param: withAI, if false auto mode will be disabled
 * * @param: isAggressive, if the scene is Aggressive
 * * @param: AggressingActor, the aggressor in an Aggressive scene
 */;
@@ -106,6 +106,10 @@ bool Function StartSubthreadScene(actor dom, actor sub = none, actor zThirdActor
 
 	OSANative.StartScene(id + 1, furnitureObj, Actors)
 	OSANative.ChangeAnimation(id + 1, startingAnimation)
+
+	If !withAI
+		OThread.StopAutoMode(id + 1)
+	EndIf
 
 	return true
 EndFunction

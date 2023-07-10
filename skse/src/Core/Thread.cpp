@@ -363,13 +363,6 @@ namespace OStim {
     void Thread::loop() {
         //std::shared_lock<std::shared_mutex> readLock(nodeLock);
 
-        if (stopTimer > 0) {
-            if ((stopTimer -= Constants::LOOP_TIME_MILLISECONDS) <= 0) {
-                stop();
-                return;
-            }
-        }
-
         if (!playerThread && !GetActor(0)->getActor().isInSameCell(GameAPI::GameActor::getPlayer())) {
             stop();
             return;
@@ -378,6 +371,13 @@ namespace OStim {
         for (auto& actor : m_actors) {
             if (actor.second.getActor().isInCombat() || actor.second.getActor().isDead()) {
                 stop();
+                return;
+            }
+        }
+
+        if (stopTimer > 0) {
+            if ((stopTimer -= Constants::LOOP_TIME_MILLISECONDS) <= 0) {
+                stopFaded();
                 return;
             }
         }
@@ -552,6 +552,29 @@ namespace OStim {
 
     void Thread::stop() {
         ThreadManager::GetSingleton()->queueThreadStop(m_threadId);
+    }
+
+    void Thread::stopFaded() {
+        if (playerThread && MCM::MCMTable::useFades()) {
+            if (isStopping) {
+                return;
+            }
+            isStopping = true;
+
+            std::thread fadeThread = std::thread([&] {
+                GameAPI::GameCamera::fadeToBlack(1);
+                std::this_thread::sleep_for(std::chrono::milliseconds(700));
+                Thread* thread = ThreadManager::GetSingleton()->getPlayerThread();
+                if (thread) {
+                    thread->stop();
+                }
+                std::this_thread::sleep_for(std::chrono::milliseconds(550));
+                GameAPI::GameCamera::fadeFromBlack(1);
+            });
+            fadeThread.detach();
+        } else {
+            stop();
+        }
     }
 
     void Thread::close() {

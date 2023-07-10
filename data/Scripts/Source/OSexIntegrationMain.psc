@@ -1495,11 +1495,6 @@ EndProperty
 ; -------------------------------------------------------------------------------------------------
 ; SCRIPTWIDE VARIABLES ----------------------------------------------------------------------------
 
-
-Actor DomActor
-Actor SubActor
-Actor ThirdActor
-
 Actor[] Actors
 
 String[] CurrScene
@@ -1513,9 +1508,6 @@ String StartingAnimation
 
 int FurnitureType
 ObjectReference CurrentFurniture
-
-Bool AggressiveThemedSexScene
-Actor AggressiveActor
 
 OBarsScript Property OBars Auto
 OStimUpdaterScript OUpdater
@@ -1573,10 +1565,15 @@ Bool Function StartScene(Actor Dom, Actor Sub, Bool zUndressDom = False, Bool zU
 		Return false
 	EndIf
 
-	If OActor.IsInOStim(Dom) || Sub && OActor.IsInOStim(Sub) || ThirdActor && OActor.IsInOStim(ThirdActor)
-		Debug.Notification("At least one of the actors is already in an OStim scene.")
-		Return false
-	EndIf
+	int i = Actors.Length
+	While i
+		i -= 1
+		If OActor.IsInOStim(Actors[i])
+			Debug.Notification("At least one of the actors is already in an OStim scene.")
+			Return false
+		EndIf
+	EndWhile
+	
 	If !dom.Is3DLoaded()
 		console("Dom actor is not loaded.")
 		return false
@@ -1587,77 +1584,11 @@ Bool Function StartScene(Actor Dom, Actor Sub, Bool zUndressDom = False, Bool zU
 	UndressSub = zUndressSub
 	StartingAnimation = zStartingAnimation
 
-	; set actor properties
-	If zThirdActor
-		Actors = new Actor[3]
-		Actors[0] = Dom
-		Actors[1] = Sub
-		Actors[2] = zThirdActor
-	ElseIf Sub
-		Actors = new Actor[2]
-		Actors[0] = Dom
-		Actors[1] = Sub
-	Else
-		Actors = new Actor[1]
-		Actors[0] = Dom
-	EndIf
-
-	; this actor order is a shitshow, MFM for threesomes wtf?
-	; once we get our own UI and the xml scenes will become legacy we'll change this to MMF!
-	; there has to be a better way to do this than lining up a ton of else ifs
-	; maybe just remove all the player is this and that options since there is now a selection message box?
-	; TODO: use OActor.SortActors once we went from MFM to MMF
-	bool SelectRole = false
-	If Actors.Length == 3
-		SelectRole = PlayerSelectRoleThreesome
-	ElseIf Actors.Length == 2
-		If AppearsFemale(Actors[0]) == AppearsFemale(Actors[1])
-			SelectRole = PlayerSelectRoleGay
-		Else
-			SelectRole = PlayerSelectRoleStraight
-		EndIf
-	EndIf
-	If SelectRole
-		OStimRoleSelectionCount.value = Actors.Length
-		int PlayerIndex = OStimRoleSelectionMessage.Show()
-		Actors = OActor.SortActors(Actors, PlayerIndex)
-	Else
-		Actors = OActor.SortActors(Actors)
-	EndIf
-
-	DomActor = Actors[0]
-	If Actors.Length >= 2
-		SubActor = Actors[1]
-	Else
-		SubActor = None
-	EndIf
-	If Actors.Length == 3
-		ThirdActor = Actors[2]
-	Else
-		ThirdActor = None
-	EndIf
+	Actors = OActorUtil.SelectIndexAndSort(OActorUtil.ToArray(Dom, Sub, zThirdActor), OActorUtil.ToArray(AggressingActor))
 
 	If !OActor.VerifyActors(Actors)
 		Debug.Notification("At least one of the actors is invalid.")
 		Return false
-	EndIf
-
-	If (Aggressive)
-		If (AggressingActor)
-			If ((AggressingActor != SubActor) && (AggressingActor != DomActor))
-				debug.MessageBox("Programmer:  The aggressing Actor you entered is not part of the scene!")
-				Return False
-			Else
-				AggressiveActor = AggressingActor
-				AggressiveThemedSexScene = True
-			EndIf
-		Else
-			Debug.MessageBox("Programmer: Please enter the aggressor in this aggressive animation")
-			Return False
-		EndIf
-	Else
-		AggressiveThemedSexScene = False
-		AggressingActor = None
 	EndIf
 
 	If (Bed)
@@ -1744,19 +1675,6 @@ Event OnUpdate() ;OStim main logic loop
 	EndIf
 
 	;ToggleActorAI(false)
- 
-	MostRecentOrgasmedActor = None
-
-	RegisterForModEvent("ostim_orgasm", "OstimOrgasm")
-
-	If (LowLightLevelLightsOnly && DomActor.GetLightLevel() < 20) || (!LowLightLevelLightsOnly)
-		If (DomLightPos > 0)
-			LightActor(DomActor, DomLightPos, DomLightBrightness)
-		EndIf
-		If (SubActor && SubLightPos > 0)
-			LightActor(SubActor, SubLightPos, SubLightBrightness)
-		EndIf
-	EndIf
 
 	OSANative.StartScene(0, CurrentFurniture, Actors)
 	OSANative.ChangeAnimation(0, StartingAnimation)
@@ -1766,16 +1684,6 @@ Event OnUpdate() ;OStim main logic loop
 	If (UseFades)
 		FadeFromBlack()
 	EndIf
-
-	While OThread.IsRunning(0)
-		Utility.Wait(1.0)
-	EndWhile
-
-	If UseFades
-		FadeFromBlack(2)
-	EndIf
-
-	OSANative.EndPlayerDialogue()
 EndEvent
 
 Function Masturbate(Actor Masturbator, Bool zUndress = False, Bool zAnimUndress = False, ObjectReference MBed = None)
@@ -1808,13 +1716,14 @@ EndFunction
 ;/* GetAPIVersion
 * * returns the current API version
 * * 26 = old OStim
-* * 27 = OStim NG 6.7 or earlier
+* * 27 = OStim NG 6.0 to 6.7
 * * 28 = OStim NG 6.8
+* * 29 = OStim Standalone 7.0
 * *
 * * @return: the version of the current API
 */;
 Int Function GetAPIVersion()
-	Return 28
+	Return 29
 EndFunction
 
 Bool Function ActorHasFacelight(Actor Act)
@@ -1886,22 +1795,49 @@ Function EndAnimation(Bool SmoothEnding = True)
 EndFunction
 
 Bool Function IsSceneAggressiveThemed() ; if the entire situation should be themed aggressively
-	Return AggressiveThemedSexScene
+	String SceneID = OThread.GetScene(0)
+
+	int i = 0
+	While i < Actors.Length
+		If OMetadata.HasActorTag(SceneID, i, "dominant")
+			Return true
+		EndIf
+		i += 1
+	EndWhile
+
+	Return false
 EndFunction
 
 Actor Function GetAggressiveActor()
-	Return AggressiveActor
+	String SceneID = OThread.GetScene(0)
+
+	int i = 0
+	While i < Actors.Length
+		If OMetadata.HasActorTag(SceneID, i, "dominant")
+			Return Actors[i]
+		EndIf
+		i += 1
+	EndWhile
+
+	Return None
 EndFunction
 
 bool Function IsVictim(actor act)
-	return AggressiveThemedSexScene && (act != AggressiveActor)
+	If !IsSceneAggressiveThemed()
+		Return False
+	EndIf
+
+	Return !OMetadata.HasActorTag(OThread.GetScene(0), OThread.GetActorPosition(0, Act), "dominant")
 endfunction 
 
 Actor Function GetSexPartner(Actor Char)
-	If (Char == SubActor)
-		Return DomActor
+	If Actors.Length == 1
+		Return Actors[0]
 	EndIf
-	Return SubActor
+	If (Char == Actors[0])
+		Return Actors[1]
+	EndIf
+	Return Actors[0]
 EndFunction
 
 ; Warps to all of the scene IDs in the array.
@@ -2121,6 +2057,16 @@ float Function GetHighestExcitement()
 
 	return Highest
 EndFunction
+
+
+Event OStimStart(String EventName, String sceneId, Float index, Form Sender)
+	MostRecentOrgasmedActor = None
+	StartTime = Utility.GetCurrentRealTime()
+EndEvent
+
+Event OStimEnd(String EventName, String sceneId, Float index, Form Sender)
+	OSANative.EndPlayerDialogue()
+EndEvent
 
 Event OstimOrgasm(String EventName, String sceneId, Float index, Form Sender)
 	Actor Act = Sender As Actor
@@ -2368,6 +2314,10 @@ Function OnLoadGame()
 	if GetAPIVersion() != InstalledVersion
 		OUtils.ForceOUpdate()
 	endif
+
+	RegisterForModEvent("ostim_start", "OstimStart")
+	RegisterForModEvent("ostim_end", "OstimEnd")
+	RegisterForModEvent("ostim_orgasm", "OstimOrgasm")
 EndFunction
 
 
@@ -2379,6 +2329,8 @@ EndFunction
 ; ╚═════╝ ╚══════╝╚═╝     ╚═╝  ╚═╝╚══════╝ ╚═════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═════╝ 
 
 ; all of these are only here to not break old addons, don't use them in new addons, use whatever they're calling instead
+
+float StartTime = 0
 
 Faction Property NVCustomOrgasmFaction Auto
 int[] property SoundFormNumberWhitelist auto
@@ -3087,7 +3039,7 @@ Float Function GetTimeSinceLastPlayerInteraction()
 EndFunction
 
 float Function GetTimeSinceStart()
-	return 0
+	return Utility.GetCurrentRealTime() - StartTime
 EndFunction
 
 Function SetOrgasmStall(Bool Set)

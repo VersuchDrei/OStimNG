@@ -1,10 +1,24 @@
 #pragma once
 
+#include "Core/ThreadStarter/ThreadStarter.h"
 #include "Core/ThreadManager.h"
 #include "Graph/GraphTable.h"
+#include "Util/StringUtil.h"
 
 namespace PapyrusThread {
     using VM = RE::BSScript::IVirtualMachine;
+
+    int QuickStart(RE::StaticFunctionTag*, std::vector<RE::Actor*> actors, std::string startingAnimation, RE::TESObjectREFR* furniture, std::string metadataCSV) {
+        OStim::ThreadStartParams params;
+        for (RE::Actor*& actor : actors) {
+            params.actors.push_back(actor);
+        }
+        params.startingNode = Graph::GraphTable::getNodeById(startingAnimation);
+        params.furniture = furniture;
+        params.metadata = StringUtil::toTagVector(metadataCSV);
+
+        return OStim::startThread(params);
+    }
 
     bool IsRunning(RE::StaticFunctionTag*, int threadID) {
         return OStim::ThreadManager::GetSingleton()->GetThread(threadID);
@@ -13,7 +27,7 @@ namespace PapyrusThread {
     void Stop(RE::StaticFunctionTag*, int threadID) {
         OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
         if (thread) {
-            thread->stop();
+            thread->stopFaded();
         }
     }
 
@@ -86,6 +100,34 @@ namespace PapyrusThread {
             return thread->getActorPosition(actor);
         }
         return -1;
+    }
+
+
+    void StallClimax(RE::StaticFunctionTag*, int threadID) {
+        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        if (thread) {
+            thread->setStallClimax(true);
+        }
+    }
+
+    void PermitClimax(RE::StaticFunctionTag*, int threadID, bool permitActors) {
+        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        if (thread) {
+            thread->setStallClimax(false);
+            if (permitActors) {
+                for (auto& [index, actor] : thread->getActors()) {
+                    actor.setStallClimax(false);
+                }
+            }
+        }
+    }
+
+    bool IsClimaxStalled(RE::StaticFunctionTag*, int threadID) {
+        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        if (thread) {
+            return thread->getStallClimax();
+        }
+        return false;
     }
 
 
@@ -172,35 +214,10 @@ namespace PapyrusThread {
     }
 
 
-    void StallClimax(RE::StaticFunctionTag*, int threadID) {
-        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
-        if (thread) {
-            thread->setStallClimax(true);
-        }
-    }
-
-    void PermitClimax(RE::StaticFunctionTag*, int threadID, bool permitActors) {
-        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
-        if (thread) {
-            thread->setStallClimax(false);
-            if (permitActors) {
-                for (auto& [index, actor] : thread->getActors()) {
-                    actor.setStallClimax(false);
-                }
-            }
-        }
-    }
-
-    bool IsClimaxStalled(RE::StaticFunctionTag*, int threadID) {
-        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
-        if (thread) {
-            return thread->getStallClimax();
-        }
-        return false;
-    }
-
     bool Bind(VM* a_vm) {
         const auto obj = "OThread"sv;
+
+        BIND(QuickStart);
 
         BIND(IsRunning);
         BIND(Stop);
@@ -215,6 +232,10 @@ namespace PapyrusThread {
         BIND(GetActor);
         BIND(GetActorPosition);
 
+        BIND(StallClimax);
+        BIND(PermitClimax);
+        BIND(IsClimaxStalled);
+
         BIND(GetFurniture);
         BIND(GetFurnitureType);
 
@@ -227,10 +248,6 @@ namespace PapyrusThread {
         BIND(GetMetadata);
 
         BIND(CallEvent);
-
-        BIND(StallClimax);
-        BIND(PermitClimax);
-        BIND(IsClimaxStalled);
 
         return true;
     }

@@ -305,20 +305,6 @@ Function UnsetObjectVariant(Actor Act, string Type) Global Native
 */;
 bool Function IsInOStim(Actor Act) Global Native
 
-;/* HasSchlong
-* * checks if the actor has a schlong
-* * if SoS full is not installed or use SoS gender was disabled in the MCM this will simply check for the actors sex
-* * if SoS full is installed this will check for the SOS_SchlongifiedFaction
-* * additionally it will check for SOS - No Futanari Schlong and SOS Female Pubic Hair
-* * (to not consider those schlongified even though they are in the faction)
-* *	this function even works on actors that are not in a scene
-* * 
-* * @param: Act, the actor to check
-* *
-* * @return: true if the actor has a schlong, otherwise false
-*/;
-bool Function HasSchlong(Actor Act) Global Native
-
 ;/* VerifyActors
 * * verifies if all of the given actors are eligible for OStim scenes
 * *
@@ -327,18 +313,6 @@ bool Function HasSchlong(Actor Act) Global Native
 * * @return: true if all actors are eligible, false if at least one isn't
 */;
 bool Function VerifyActors(Actor[] Actors) Global Native
-
-;/* SortActors
-* * sorts all actors with schlongs to the front of the array and all actors without schlongs to the end
-* * other than this the order is not altered (i.e. the sorting algorithm is stable)
-* * this function even works on actors that are not in a scene
-* *
-* * @param: Actors, the array of actors to sort
-* * @param: PlayerIndex, if given the player will be sorted to this index, independent of them having a schlong or not
-* *
-* * @return: the sorted array 
-*/;
-Actor[] Function SortActors(Actor[] Actors, int PlayerIndex = -1) Global Native
 
 
 ; ██████╗ ███████╗██████╗ ██████╗ ███████╗ ██████╗ █████╗ ████████╗███████╗██████╗ 
@@ -352,4 +326,12 @@ Actor[] Function SortActors(Actor[] Actors, int PlayerIndex = -1) Global Native
 
 Function UpdateExpression(Actor Act) Global
 	ClearExpression(Act)
+EndFunction
+
+bool Function HasSchlong(Actor Act) Global
+	Return OActorUtil.HasSchlong(Act)
+EndFunction
+
+Actor[] Function SortActors(Actor[] Actors, int PlayerIndex = -1) Global
+	Return OActorUtil.Sort(Actors, OActorUtil.EmptyArray(), PlayerIndex)
 EndFunction
