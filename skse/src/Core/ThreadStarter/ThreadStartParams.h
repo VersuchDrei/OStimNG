@@ -6,9 +6,14 @@
 namespace OStim {
     struct ThreadStartParams {
         std::vector<GameAPI::GameActor> actors;
-        Graph::Node* startingNode;
-        RE::TESObjectREFR* furniture;
-        std::vector<std::string> metadata;
         std::vector<GameAPI::GameActor> dominantActors;
+        Graph::Node* startingNode = nullptr;
+        RE::TESObjectREFR* furniture = nullptr;
+        bool stripActors = false;
+        bool noAutoMode = false;
+        std::vector<std::string> metadata;
+
+        // legacy support
+        int threadID = -1;
     };
 }

@@ -1,0 +1,145 @@
+#pragma once
+
+#include "Core/ThreadStarter/ThreadBuilder.h"
+#include "Core/ThreadStarter/ThreadStarter.h"
+#include "Core/Core.h"
+#include "GameAPI/GameActor.h"
+#include "Graph/GraphTable.h"
+#include "Util/StringUtil.h"
+
+namespace PapyrusThreadBuilder {
+    using VM = RE::BSScript::IVirtualMachine;
+
+    int Create(RE::StaticFunctionTag*, std::vector<RE::Actor*> actors) {
+        std::vector<GameAPI::GameActor> gameActors;
+        for (RE::Actor*& actor : actors) {
+            if (!OStim::isEligible(actor)) {
+                return -1;
+            }
+            gameActors.push_back(actor);
+        }
+
+        OStim::ThreadStartParams params;
+        params.actors = gameActors;
+
+        return OStim::ThreadBuilder::add(params);
+    }
+
+    void SetDominantActors(RE::StaticFunctionTag*, int builderID, std::vector<RE::Actor*> actors) {
+        OStim::ThreadStartParams* params = OStim::ThreadBuilder::get(builderID);
+        if (!params) {
+            return;
+        }
+
+        std::vector<GameAPI::GameActor> gameActors;
+        for (RE::Actor*& actor : actors) {
+            gameActors.push_back(actor);
+        }
+        params->dominantActors = gameActors;
+    }
+
+    void SetStartingAnimation(RE::StaticFunctionTag*, int builderID, std::string animation) {
+        OStim::ThreadStartParams* params = OStim::ThreadBuilder::get(builderID);
+        if (!params) {
+            return;
+        }
+
+        Graph::Node* node = Graph::GraphTable::getNodeById(animation);
+        if (!node) {
+            return;
+        }
+
+        params->startingNode = node;
+    }
+
+    void SetFurniture(RE::StaticFunctionTag*, int builderID, RE::TESObjectREFR* furniture) {
+        OStim::ThreadStartParams* params = OStim::ThreadBuilder::get(builderID);
+        if (!params) {
+            return;
+        }
+
+        params->furniture = furniture;
+    }
+
+    void StripActors(RE::StaticFunctionTag*, int builderID) {
+        OStim::ThreadStartParams* params = OStim::ThreadBuilder::get(builderID);
+        if (!params) {
+            return;
+        }
+
+        params->stripActors = true;
+    }
+
+    void NoAutoMode(RE::StaticFunctionTag*, int builderID) {
+        OStim::ThreadStartParams* params = OStim::ThreadBuilder::get(builderID);
+        if (!params) {
+            return;
+        }
+
+        params->noAutoMode = true;
+    }
+
+    void SetMetadata(RE::StaticFunctionTag*, int builderID, std::vector<std::string> metadata) {
+        OStim::ThreadStartParams* params = OStim::ThreadBuilder::get(builderID);
+        if (!params) {
+            return;
+        }
+
+        StringUtil::toLower(&metadata);
+        params->metadata = metadata;
+    }
+
+    void SetMetadataCSV(RE::StaticFunctionTag*, int builderID, std::string metadata) {
+        OStim::ThreadStartParams* params = OStim::ThreadBuilder::get(builderID);
+        if (!params) {
+            return;
+        }
+
+        StringUtil::toLower(&metadata);
+        std::vector<std::string> metadataVector = StringUtil::toTagVector(metadata);
+        params->metadata = metadataVector;
+    }
+
+    int Start(RE::StaticFunctionTag*, int builderID) {
+        OStim::ThreadStartParams* paramsPtr = OStim::ThreadBuilder::get(builderID);
+        if (!paramsPtr) {
+            return -1;
+        }
+
+        OStim::ThreadStartParams params = *paramsPtr;
+        OStim::ThreadBuilder::remove(builderID);
+        return OStim::startThread(params);
+    }
+
+    void Cancel(RE::StaticFunctionTag*, int builderID) {
+        OStim::ThreadBuilder::remove(builderID);
+    }
+
+    void SetThreadID(RE::StaticFunctionTag*, int builderID, int threadID) {
+        OStim::ThreadStartParams* params = OStim::ThreadBuilder::get(builderID);
+        if (!params) {
+            return;
+        }
+
+        params->threadID = threadID;
+    }
+
+
+    bool Bind(VM* a_vm) {
+        const auto obj = "OThread"sv;
+
+        BIND(Create);
+        BIND(SetDominantActors);
+        BIND(SetStartingAnimation);
+        BIND(SetFurniture);
+        BIND(StripActors);
+        BIND(NoAutoMode);
+        BIND(SetMetadata);
+        BIND(SetMetadataCSV);
+        BIND(Start);
+        BIND(Cancel);
+        BIND(SetThreadID);
+
+        return true;
+    }
+}

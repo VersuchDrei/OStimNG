@@ -20,12 +20,11 @@ ScriptName OThread
 * *
 * * @param: Actors, the actors to be involved in the thread
 * * @param: StartingAnimation, the animation to start the scene in
-* * @param: FurnitureObject, the furniture to play the scene on
-* * @param: MetadataCSV, a csv-string of Metadata
+* * @param: FurnitureRef, the furniture to play the scene on
 * *
 * * @return: the ThreadID of the thread, or -1 if the thread could not be started
 */;
-int Function QuickStart(Actor[] Actors, string StartingAnimation = "", ObjectReference FurnitureObject = None, string MetadataCSV = "") Global Native
+int Function QuickStart(Actor[] Actors, string StartingAnimation = "", ObjectReference FurnitureRef = None) Global Native
 
 
 ;  ██████╗ ███████╗███╗   ██╗███████╗██████╗  █████╗ ██╗     

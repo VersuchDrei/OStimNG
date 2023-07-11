@@ -8,14 +8,13 @@
 namespace PapyrusThread {
     using VM = RE::BSScript::IVirtualMachine;
 
-    int QuickStart(RE::StaticFunctionTag*, std::vector<RE::Actor*> actors, std::string startingAnimation, RE::TESObjectREFR* furniture, std::string metadataCSV) {
+    int QuickStart(RE::StaticFunctionTag*, std::vector<RE::Actor*> actors, std::string startingAnimation, RE::TESObjectREFR* furniture) {
         OStim::ThreadStartParams params;
         for (RE::Actor*& actor : actors) {
             params.actors.push_back(actor);
         }
         params.startingNode = Graph::GraphTable::getNodeById(startingAnimation);
         params.furniture = furniture;
-        params.metadata = StringUtil::toTagVector(metadataCSV);
 
         return OStim::startThread(params);
     }
