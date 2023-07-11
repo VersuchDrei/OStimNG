@@ -2330,7 +2330,7 @@ EndFunction
 
 ; all of these are only here to not break old addons, don't use them in new addons, use whatever they're calling instead
 
-float StartTime = 0
+float StartTime = 0.0
 
 Faction Property NVCustomOrgasmFaction Auto
 int[] property SoundFormNumberWhitelist auto
