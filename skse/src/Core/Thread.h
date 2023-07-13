@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ThreadStarter/ThreadStartParams.h"
+
 #include <shared_mutex>
 
 #include "AutoModeStage.h"
@@ -19,7 +21,7 @@ namespace OStim {
     public:
         ThreadId m_threadId;
 
-        Thread(ThreadId id, RE::TESObjectREFR* furniture, std::vector<RE::Actor*> actors);
+        Thread(ThreadStartParams params);
 
         ~Thread();
 

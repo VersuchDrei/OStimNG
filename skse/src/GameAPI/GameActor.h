@@ -14,6 +14,7 @@ namespace GameAPI {
     struct GameActor : public GameRecord<RE::Actor> {
     public:
         inline static GameActor getPlayer() { return RE::PlayerCharacter::GetSingleton(); }
+        static std::vector<GameActor> convertVector(std::vector<RE::Actor*> actors);
 
         inline GameActor() {}
         inline GameActor(RE::Actor* actor) { form = actor; }
@@ -28,6 +29,7 @@ namespace GameAPI {
         void playAnimation(std::string animation) const;
 
         bool isSex(GameSex sex) const;
+        inline GameSex getSex() const { return GameAPI::GameSexAPI::fromGame(form->GetActorBase()->GetSex()); }
         inline bool isPlayer() const { return form->IsPlayerRef(); }
         inline std::string getName() const { return form->GetDisplayFullName(); }
 
@@ -61,6 +63,7 @@ namespace GameAPI {
         int getFactionRank(GameFaction faction) const;
 
         int getRelationshipRank(GameActor other) const;
+        inline bool isInDialogue() const { return form->GetActorRuntimeData().dialogueItemTarget && form->GetActorRuntimeData().dialogueItemTarget.get().get() == RE::PlayerCharacter::GetSingleton(); }
         inline bool isInCombat() const { return form->IsInCombat(); }
         void sheatheWeapon() const;
         inline bool isDead() const { return form->IsDead(); }

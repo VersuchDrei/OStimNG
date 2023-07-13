@@ -35,9 +35,6 @@ int property id auto
 OSexIntegrationMain OStim
 
 actor PlayerRef
-actor AggressiveActor
-
-bool Aggressive
 
 string[] CurrentScene
 
@@ -51,7 +48,7 @@ string[] CurrentScene
 * * @param: startingAnimation, the animation to start with. If empty string, a random animation will be chosen
 * * @param: furniture, the furniture to start the animation on, can be None
 * * @param: withAI, if false auto mode will be disabled
-* * @param: isAggressive, if the scene is Aggressive
+* * @param: isAggressive, no longer in use, scene is aggressive if an aggressing actor is passed in
 * * @param: AggressingActor, the aggressor in an Aggressive scene
 */;
 bool Function StartSubthreadScene(actor dom, actor sub = none, actor zThirdActor = none, string startingAnimation = "", ObjectReference furnitureObj = none, bool withAI = true, bool isAggressive = false, actor aggressingActor = none)
@@ -61,11 +58,6 @@ bool Function StartSubthreadScene(actor dom, actor sub = none, actor zThirdActor
 	endif
 
 	Console("Starting subthread with ID: " + id)
-
-	If !dom.Is3DLoaded() || (sub && !sub.Is3DLoaded()) || (zThirdActor && !zThirdActor.Is3DLoaded())
-		Console("One of the actors was not loaded. Closing subthread.")
-		return False
-	EndIf
 
 	Actor[] Actors
 
@@ -83,35 +75,24 @@ bool Function StartSubthreadScene(actor dom, actor sub = none, actor zThirdActor
 		Actors[0] = dom
 	EndIf
 
-	Actors = OActor.SortActors(Actors)
-
-	Aggressive = isAggressive
-	AggressiveActor = aggressingActor
-
-	int FurnitureType = OFurniture.GetFurnitureType(furnitureObj)
-
-	If (startingAnimation == "")
-		If FurnitureType == OStim.FURNITURE_TYPE_NONE
-			startingAnimation = OLibrary.GetRandomSceneWithAnySceneTagAndAnyMultiActorTagForAllCSV(Actors, "idle", OCSV.CreateCSVMatrix(Actors.Length, "standing"))
-		ElseIf FurnitureType == OStim.FURNITURE_TYPE_BED
-			startingAnimation = OLibrary.GetRandomSceneWithAnySceneTagAndAnyMultiActorTagForAllCSV(Actors, "idle", OCSV.CreateCSVMatrix(Actors.Length, "allfours,kneeling,lyingback,lyingside,sitting"))
-		Else
-			startingAnimation = OLibrary.GetRandomFurnitureSceneWithSceneTag(Actors, OStim.FURNITURE_TYPE_STRINGS[FurnitureType], "idle")
-		EndIf
-	EndIf
-
-	If (startingAnimation == "")
+	int BuilderID = OThreadBuilder.Create(Actors)
+	If BuilderID < 0
 		Return false
 	EndIf
-
-	OSANative.StartScene(id + 1, furnitureObj, Actors)
-	OSANative.ChangeAnimation(id + 1, startingAnimation)
+	OThreadBuilder.SetFurniture(BuilderID, furnitureObj)
+	OThreadBuilder.SetStartingAnimation(BuilderID, startingAnimation)
+	OThreadBuilder.SetThreadID(BuilderID, id + 1)
 
 	If !withAI
-		OThread.StopAutoMode(id + 1)
+		OThreadBuilder.NoAutoMode(BuilderID)
+	EndIf
+	If aggressingActor
+		Actor[] DominantActors = new Actor[1]
+		DominantActors[0] = aggressingActor
+		OThreadBuilder.SetDominantActors(BuilderID, DominantActors)
 	EndIf
 
-	return true
+	Return OThreadBuilder.Start(BuilderID) == id + 1
 EndFunction
 
 Event OnInit()

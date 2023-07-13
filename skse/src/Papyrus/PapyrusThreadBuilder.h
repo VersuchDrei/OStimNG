@@ -12,7 +12,7 @@ namespace PapyrusThreadBuilder {
 
     int Create(RE::StaticFunctionTag*, std::vector<RE::Actor*> actors) {
         std::vector<GameAPI::GameActor> gameActors;
-        for (RE::Actor*& actor : actors) {
+        for (RE::Actor* actor : actors) {
             if (!OStim::isEligible(actor)) {
                 return -1;
             }
@@ -31,11 +31,7 @@ namespace PapyrusThreadBuilder {
             return;
         }
 
-        std::vector<GameAPI::GameActor> gameActors;
-        for (RE::Actor*& actor : actors) {
-            gameActors.push_back(actor);
-        }
-        params->dominantActors = gameActors;
+        params->dominantActors = GameAPI::GameActor::convertVector(actors);
     }
 
     void SetStartingAnimation(RE::StaticFunctionTag*, int builderID, std::string animation) {
@@ -77,6 +73,15 @@ namespace PapyrusThreadBuilder {
         }
 
         params->noAutoMode = true;
+    }
+
+    void NoFurniture(RE::StaticFunctionTag*, int builderID) {
+        OStim::ThreadStartParams* params = OStim::ThreadBuilder::get(builderID);
+        if (!params) {
+            return;
+        }
+
+        params->noFurniture = true;
     }
 
     void SetMetadata(RE::StaticFunctionTag*, int builderID, std::vector<std::string> metadata) {

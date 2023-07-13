@@ -24,13 +24,14 @@
 #include "Util.h"
 
 namespace OStim {
-    Thread::Thread(ThreadId id, RE::TESObjectREFR* furniture, std::vector<RE::Actor*> actors) : m_threadId{id}, furniture{furniture} {
-        for (RE::Actor* actor : actors) {
-            playerThread |= actor->IsPlayerRef();
+    Thread::Thread(ThreadStartParams params) : m_threadId{params.threadID}, furniture{params.furniture} {
+        for (GameAPI::GameActor actor : params.actors) {
+            playerThread |= actor.isPlayer();
         }
 
         // --- setting up the vehicle --- //
-        RE::TESObjectREFR* center = furniture ? furniture : (playerThread ? RE::PlayerCharacter::GetSingleton() : actors[0]);
+        // TODO GameActor
+        RE::TESObjectREFR* center = furniture ? furniture : (playerThread ? RE::PlayerCharacter::GetSingleton() : params.actors[0].form);
         vehicle = center->PlaceObjectAtMe(Util::LookupTable::OStimVehicle, false).get();
 
         if (furniture) {
@@ -51,9 +52,9 @@ namespace OStim {
             vehicle->MoveTo(center);
         }
 
-        for (int i = 0; i < actors.size(); i++) {
-            RE::Actor* actor = actors[i];
-            addActorInner(i, actor);
+        for (int i = 0; i < params.actors.size(); i++) {
+            // TODO GameActor
+            addActorInner(i, params.actors[i].form);
         }
 
         if (furniture && MCM::MCMTable::resetClutter()) {
@@ -79,7 +80,10 @@ namespace OStim {
             }
         }
 
-        evaluateAutoMode();
+        if (!params.noAutoMode) {
+            evaluateAutoMode();
+        }
+        
         if (!playerThread) {
             stopTimer = MCM::MCMTable::npcSceneDuration();
         }
@@ -107,8 +111,9 @@ namespace OStim {
 
         if (playerThread) {
             auto uiState = UI::UIState::GetSingleton();
-            if(uiState)
+            if (uiState) {
                 uiState->SetThread(this);
+            }
             UI::Scene::SceneMenu::Show();
         }
 
@@ -244,13 +249,13 @@ namespace OStim {
         alignActors();
 
         // sounds
-        for (Sound::SoundPlayer*& soundPlayer : soundPlayers) {
+        for (Sound::SoundPlayer* soundPlayer : soundPlayers) {
             delete soundPlayer;
         }
         soundPlayers.clear();
 
         for (Graph::Action& action : m_currentNode->actions) {
-            for (Sound::SoundType*& soundType : action.attributes->sounds) {
+            for (Sound::SoundType* soundType : action.attributes->sounds) {
                 ThreadActor* actor = GetActor(action.actor);
                 ThreadActor* target = GetActor(action.target);
                 if (actor && target) {
@@ -322,7 +327,7 @@ namespace OStim {
         std::vector<Trait::ActorConditions> conditions;
         for (int i = 0; i < m_actors.size(); i++) {
             // TODO do this with GameActor
-            conditions.push_back(Trait::ActorConditions::create(GetActor(i)->getActor().form));
+            conditions.push_back(Trait::ActorConditions::create(GetActor(i)->getActor()));
         }
 
         return conditions;
@@ -393,7 +398,7 @@ namespace OStim {
             actorIt.second.loop();
         }
 
-        for (Sound::SoundPlayer*& player : soundPlayers) {
+        for (Sound::SoundPlayer* player : soundPlayers) {
             player->loop();
         }
 

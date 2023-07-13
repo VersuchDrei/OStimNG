@@ -72,6 +72,7 @@ namespace Graph {
         bool hasAnyActorTag(int position, std::vector<std::string> tags);
         bool hasAllActorTags(int position, std::vector<std::string> tags);
         bool hasOnlyListedActorTags(int position, std::vector<std::string> tags);
+        bool hasActorTagOnAny(std::string tag);
 
         int findAction(std::function<bool(Action)> condition);
         std::vector<int> findActions(std::function<bool(Action)> condition);

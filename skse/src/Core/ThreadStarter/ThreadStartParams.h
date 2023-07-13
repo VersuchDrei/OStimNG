@@ -11,6 +11,7 @@ namespace OStim {
         RE::TESObjectREFR* furniture = nullptr;
         bool stripActors = false;
         bool noAutoMode = false;
+        bool noFurniture = false;
         std::vector<std::string> metadata;
 
         // legacy support

@@ -33,20 +33,14 @@ namespace PapyrusActorUtil {
     }
 
     std::vector<RE::Actor*> Sort(RE::StaticFunctionTag*, std::vector<RE::Actor*> actors, std::vector<RE::Actor*> dominantActors, int playerIndex) {
-        std::vector<GameAPI::GameActor> gameActors;
-        for (RE::Actor*& actor : actors) {
-            gameActors.push_back(actor);
-        }
+        std::vector<GameAPI::GameActor> gameActors = GameAPI::GameActor::convertVector(actors);
         
-        std::vector<GameAPI::GameActor> gameDoms;
-        for (RE::Actor*& actor : dominantActors) {
-            gameDoms.push_back(actor);
-        }
+        std::vector<GameAPI::GameActor> gameDoms = GameAPI::GameActor::convertVector(dominantActors);
 
         ActorUtil::sort(gameActors, gameDoms, playerIndex);
 
         std::vector<RE::Actor*> ret;
-        for (GameAPI::GameActor& actor : gameActors) {
+        for (GameAPI::GameActor actor : gameActors) {
             ret.push_back(actor.form);
         }
 

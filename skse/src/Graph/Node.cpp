@@ -221,6 +221,15 @@ namespace Graph {
         return VectorUtil::containsAll(tags, actors[position].tags);
     }
 
+    bool Node::hasActorTagOnAny(std::string tag) {
+        for (GraphActor& actor : actors) {
+            if (VectorUtil::contains(actor.tags, tag)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     int Node::findAction(std::function<bool(Action)> condition) {
         size_t size = actions.size();
         for (int i = 0; i < size; i++) {

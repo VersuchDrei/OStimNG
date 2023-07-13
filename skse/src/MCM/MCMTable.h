@@ -12,6 +12,7 @@ namespace MCM {
         inline static bool resetPosition() { return settings[0xE16].asBool(); }
         inline static float customTimeScale() { return settings[0xE18].asFloat(); }
         inline static bool useFades() { return settings[0xE19].asBool(); }
+        inline static bool useIntroScenes() { return settings[0xDA1].asBool(); }
 
         inline static int keyUp() { return settings[0xE28].asInt(); }
         inline static int keyDown() { return settings[0xE29].asInt(); }
@@ -58,7 +59,7 @@ namespace MCM {
 
         inline static float useFurniture() { return settings[0xDA6].asFloat(); }
         inline static float selectFurniture() { return settings[0xDA7].asFloat(); }
-        inline static float furnitureSearchDistance() { return settings[0xDA8].asFloat(); }
+        inline static float furnitureSearchDistance() { return (settings[0xDA8].asFloat() + 1.0f) * 100.0f; }
         inline static bool resetClutter() { return settings[0xDA4].asBool(); }
         inline static float resetClutterRadius() { return settings[0xDA5].asFloat(); }
 

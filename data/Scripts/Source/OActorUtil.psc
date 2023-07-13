@@ -55,7 +55,7 @@ Actor[] Function SelectIndexAndSort(Actor[] Actors, Actor[] DominantActors) Glob
 	OSexIntegrationMain OStim = OUtils.GetOStim()
 
 	bool SelectRole = false
-	If Actors.Length == 3
+	If Actors.Length >= 3
 		SelectRole = OStim.PlayerSelectRoleThreesome
 	ElseIf Actors.Length == 2
 		If OStim.AppearsFemale(Actors[0]) == OStim.AppearsFemale(Actors[1])

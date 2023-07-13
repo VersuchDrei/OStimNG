@@ -3,18 +3,18 @@
 #include "MCM/MCMTable.h"
 
 namespace Trait {
-    ActorConditions ActorConditions::create(RE::Actor* actor) {
+    ActorConditions ActorConditions::create(GameAPI::GameActor actor) {
         // TODO: when actually implementing this make a nullptr meet all conditions, it's important for Migals stuff!
         ActorConditions conditions;
 
         if (actor) {
-            conditions.sex = GameAPI::GameSexAPI::fromGame(actor->GetActorBase()->GetSex());
+            conditions.sex = actor.getSex();
         }
 
         return conditions;
     }
 
-    std::vector<ActorConditions> ActorConditions::create(std::vector<RE::Actor*> actors) {
+    std::vector<ActorConditions> ActorConditions::create(std::vector<GameAPI::GameActor> actors) {
         std::vector<ActorConditions> ret;
         for (auto& actor : actors) {
             ret.push_back(create(actor));

@@ -1600,91 +1600,11 @@ Bool Function StartScene(Actor Dom, Actor Sub, Bool zUndressDom = False, Bool zU
 	EndIf
 
 	Console("Requesting scene start")
-	RegisterForSingleUpdate(0.01) ; start main loop
+
+	OThread.QuickStart(Actors, zStartingAnimation, Bed)
 
 	Return True
 EndFunction
-
-Event OnUpdate() ;OStim main logic loop
-	Console("Starting scene asynchronously")
-
-	OSANative.EndPlayerDialogue()
-
-	bool InDialogue = false
-	int i = Actors.Length
-	While i
-		i -= 1
-		InDialogue = InDialogue || Actors[i].IsInDialogueWithPlayer()
-	EndWhile
-
-	While InDialogue
-		InDialogue = false
-		Utility.Wait(0.3)
-		i = Actors.Length
-		While i
-			i -= 1
-			InDialogue = InDialogue || Actors[i].IsInDialogueWithPlayer()
-		EndWhile
-	EndWhile
-
-	If (UseFades)
-		FadeToBlack()
-	EndIf
-
-	If FurnitureType == FURNITURE_TYPE_NONE && UseFurniture
-		If StartingAnimation == ""
-			SelectFurniture()
-
-			If FurnitureType == FURNITURE_TYPE_CANCEL
-				If (UseFades)
-					FadeFromBlack()
-				EndIf
-				Return
-			EndIf
-		Else
-			CurrentFurniture = FindBed(Actors[0])
-			If CurrentFurniture && (!SelectFurniture || OStimBedConfirmationMessage.Show() == 0)
-				FurnitureType == FURNITURE_TYPE_BED
-			Else
-				CurrentFurniture = None
-			EndIf
-		EndIf
-	EndIf
-
-	string SceneTag = "idle"
-	If UseIntroScenes
-		SceneTag = "intro"
-	EndIf
-
-	If (StartingAnimation == "")
-		If FurnitureType == FURNITURE_TYPE_NONE
-			StartingAnimation = OLibrary.GetRandomSceneWithAnySceneTagAndAnyMultiActorTagForAllCSV(Actors, SceneTag, OCSV.CreateCSVMatrix(Actors.Length, "standing"))
-		ElseIf FurnitureType == FURNITURE_TYPE_BED
-			StartingAnimation = OLibrary.GetRandomSceneWithAnySceneTagAndAnyMultiActorTagForAllCSV(Actors, SceneTag, OCSV.CreateCSVMatrix(Actors.Length, "allfours,kneeling,lyingback,lyingside,sitting"))
-		Else
-			StartingAnimation = OLibrary.GetRandomFurnitureSceneWithSceneTag(Actors, FURNITURE_TYPE_STRINGS[FurnitureType], SceneTag)
-		EndIf
-	EndIf
-
-	If StartingAnimation == ""
-		If (UseFades)
-			FadeFromBlack()
-		EndIf
-		Debug.Notification("No valid starting animation found.")
-		Return
-	EndIf
-
-	;ToggleActorAI(false)
-
-	OSANative.StartScene(0, CurrentFurniture, Actors)
-	OSANative.ChangeAnimation(0, StartingAnimation)
-
-	;ToggleActorAI(True)
-	
-	If (UseFades)
-		FadeFromBlack()
-	EndIf
-EndEvent
 
 Function Masturbate(Actor Masturbator, Bool zUndress = False, Bool zAnimUndress = False, ObjectReference MBed = None)
 	If !SoloAnimsInstalled()
@@ -1703,10 +1623,6 @@ EndFunction
 ;			██║   ██║   ██║   ██║██║     ██║   ██║   ██║██╔══╝  ╚════██║
 ;			╚██████╔╝   ██║   ██║███████╗██║   ██║   ██║███████╗███████║
 ;			 ╚═════╝    ╚═╝   ╚═╝╚══════╝╚═╝   ╚═╝   ╚═╝╚══════╝╚══════╝
-;
-; 				The main API functions
-
-; Most of what you want to do in OStim is available here, i advise reading through this entire Utilities section
 
 
 OBarsScript Function GetBarScript()
@@ -1718,7 +1634,7 @@ EndFunction
 * * 26 = old OStim
 * * 27 = OStim NG 6.0 to 6.7
 * * 28 = OStim NG 6.8
-* * 29 = OStim Standalone 7.0
+* * 29 = OStim Standalone Public Beta
 * *
 * * @return: the version of the current API
 */;

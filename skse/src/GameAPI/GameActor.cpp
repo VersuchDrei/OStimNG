@@ -4,6 +4,14 @@
 #include "GameUtil.h"
 
 namespace GameAPI {
+    std::vector<GameActor> GameActor::convertVector(std::vector<RE::Actor*> actors) {
+        std::vector<GameActor> ret;
+        for (RE::Actor* actor : actors) {
+            ret.push_back(actor);
+        }
+        return ret;
+    }
+
     void GameActor::update3D() const {
         const auto skyrimVM = RE::SkyrimVM::GetSingleton();
         auto vm = skyrimVM ? skyrimVM->impl : nullptr;

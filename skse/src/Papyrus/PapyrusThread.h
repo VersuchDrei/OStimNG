@@ -10,7 +10,7 @@ namespace PapyrusThread {
 
     int QuickStart(RE::StaticFunctionTag*, std::vector<RE::Actor*> actors, std::string startingAnimation, RE::TESObjectREFR* furniture) {
         OStim::ThreadStartParams params;
-        for (RE::Actor*& actor : actors) {
+        for (RE::Actor* actor : actors) {
             params.actors.push_back(actor);
         }
         params.startingNode = Graph::GraphTable::getNodeById(startingAnimation);

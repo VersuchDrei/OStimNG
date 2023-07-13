@@ -1,5 +1,6 @@
 #include "EventListener.h"
 
+#include "Core/ThreadStarter/ThreadBuilder.h"
 #include "Core/Core.h"
 #include "Core/ThreadManager.h"
 #include "GameAPI/Game.h"
@@ -17,6 +18,8 @@ namespace Events {
         logger::info("game loaded");
 
         Serialization::closeOldThreads();
+
+        OStim::ThreadBuilder::reset();
 
         const auto skyrimVM = RE::SkyrimVM::GetSingleton();
         auto vm = skyrimVM ? skyrimVM->impl : nullptr;

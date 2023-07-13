@@ -240,7 +240,7 @@ namespace PapyrusThreadActor {
     }
 
     bool VerifyActors(RE::StaticFunctionTag*, std::vector<RE::Actor*> actors) {
-        for (RE::Actor*& actor : actors) {
+        for (RE::Actor* actor : actors) {
             if (!OStim::isEligible(actor)) {
                 return false;
             }

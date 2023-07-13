@@ -5,30 +5,6 @@
 namespace PapyrusScenes {
     using VM = RE::BSScript::IVirtualMachine;
 
-    void StartScene(RE::StaticFunctionTag*, int64_t id, RE::TESObjectREFR* furniture, std::vector<RE::Actor*> actors) {
-        auto tm = OStim::ThreadManager::GetSingleton();
-        tm->TrackThread(id, furniture, actors);
-    }
-
-    void ChangeAnimation(RE::StaticFunctionTag*, int64_t a_id, std::string a_nodeName) {
-        auto tm = OStim::ThreadManager::GetSingleton();
-        auto log = RE::ConsoleLog::GetSingleton();
-        auto thread = tm->GetThread(a_id);
-        if (thread) {
-            auto node = Graph::GraphTable::getNodeById(a_nodeName);
-            if (node) {
-                thread->ChangeNode(node);
-                log->Print(("Changing Animation on thread: " + std::to_string(a_id) + " to " + a_nodeName).c_str());
-
-            } else {
-                log->Print(("Node " + a_nodeName + " not found").c_str());
-            }
-
-        } else {
-            log->Print(("Thread "+ std::to_string(a_id) + "not found").c_str());
-        }
-    }
-
     void AddActor(RE::StaticFunctionTag*, int64_t a_threadId, RE::Actor* a_actor) {
         auto tm = OStim::ThreadManager::GetSingleton();
         tm->GetThread(a_threadId)->AddActor(a_actor);
@@ -54,8 +30,6 @@ namespace PapyrusScenes {
     bool Bind(VM* a_vm) {
         const auto obj = "OSANative"sv;
 
-        BIND(StartScene);
-        BIND(ChangeAnimation);
         BIND(AddActor);
         BIND(RemoveActor);
 

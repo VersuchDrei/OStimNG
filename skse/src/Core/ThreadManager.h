@@ -1,10 +1,12 @@
 #pragma once
 
+#include "ThreadStarter/ThreadStartParams.h"
 #include "Singleton.h"
 #include "Thread.h"
 
 #include "GameAPI/GameActor.h"
 #include "Serial/OldThread.h"
+#include "Util/IDGenerator.h"
 #include <shared_mutex>
 
 namespace OStim {    
@@ -13,10 +15,9 @@ namespace OStim {
         
     public:
         ThreadManager();
-        void TrackThread(ThreadId id, RE::TESObjectREFR* furniture, std::vector<RE::Actor*> actors);
+        int startThread(ThreadStartParams params);
         Thread* GetThread(ThreadId a_id);
         Thread* getPlayerThread();
-        void UnTrackThread(ThreadId a_id);
         void queueThreadStop(ThreadId threadID);
         void UntrackAllThreads();
         bool AnySceneRunning();
@@ -31,6 +32,7 @@ namespace OStim {
 
     private:
         using ThreadMap = std::unordered_map<ThreadId, Thread*>;
+        Util::IDGenerator idGenerator = Util::IDGenerator(11);
         std::shared_mutex m_threadMapMtx;
         ThreadMap m_threadMap;
         std::thread m_excitementThread;

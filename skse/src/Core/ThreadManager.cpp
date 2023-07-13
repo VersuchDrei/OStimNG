@@ -28,15 +28,22 @@ namespace OStim {
         m_excitementThread.detach();
     }
 
-    void ThreadManager::TrackThread(ThreadId id, RE::TESObjectREFR* furniture, std::vector<RE::Actor*> actors) {
-        Thread* t = new Thread(id, furniture, actors);
+
+    int ThreadManager::startThread(ThreadStartParams params) {
         std::unique_lock<std::shared_mutex> lock(m_threadMapMtx);
-        m_threadMap.insert(std::make_pair(id, t));
-        m_threadMap[id]->initContinue();
-        auto log = RE::ConsoleLog::GetSingleton();
-        if (log) {
-            log->Print(("Tracking " + std::to_string(id)).c_str());
+        if (params.threadID >= 0) {
+            if (m_threadMap.contains(params.threadID)) {
+                return -1;
+            }
+        } else {
+            params.threadID = idGenerator.get();
         }
+
+        Thread* thread = new Thread(params);
+        m_threadMap.insert(std::make_pair(params.threadID, thread));
+        thread->initContinue();
+        thread->ChangeNode(params.startingNode);
+        return params.threadID;
     }
 
     Thread* ThreadManager::GetThread(ThreadId a_id) {
@@ -58,11 +65,6 @@ namespace OStim {
         return nullptr;
     }
 
-    void ThreadManager::UnTrackThread(ThreadId a_id) {
-        std::unique_lock<std::shared_mutex> lock(m_threadMapMtx);
-        stopThreadNoLock(a_id);
-    }
-
     void ThreadManager::queueThreadStop(ThreadId threadID) {
         if (!VectorUtil::contains(threadStopQueue, threadID)) {
             threadStopQueue.push_back(threadID);
@@ -77,6 +79,7 @@ namespace OStim {
             delete entry.second;
         }
         m_threadMap.clear();
+        idGenerator.reset();
     }
 
     bool ThreadManager::AnySceneRunning() {

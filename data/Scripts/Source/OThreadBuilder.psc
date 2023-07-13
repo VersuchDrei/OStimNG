@@ -44,18 +44,34 @@ Function SetFurniture(int BuilderID, ObjectReference FurnitureRef) Global Native
 * * sets the thread to strip all actors on start
 * * if this is called actors will always be fully stripped, no matter what's set in the MCM
 * *
+* * without this stripping will be done according to the MCM settings
+* *
 * * @param: BuilderID, the id of the thread builder
 */;
 Function StripActors(int BuilderID) Global Native
 
 ;/* NoAutoMode
-* * disabled auto mode for the scene
+* * disables auto mode for the scene
 * * if this is called the scene will not run in auto mode, no matter what's set in the MCM
 * * also prevents NPCxNPC threads from running auto mode, meaning you have to fully manually navigate them
+* *
+* * without this the player thread runs in auto mode depending on the MCM settings
+* * and NPCxNPC threads always run in auto mode
 * *
 * * @param: BuilderID, the id of the thread builder
 */;
 Function NoAutoMode(int BuilderID) Global Native
+
+;/* NoFurniture
+* * disables furniture for the scene
+* * if this is called the scene will not offer to use or automatically select furniture
+* * if furniture was set manually with SetFurniture this function is pointless
+* *
+* * without this the scene will offer or choose furniture based on the MCM settings
+* *
+* * @param: BuilderID, the id of the thread builder
+*/;
+Function NoFurniture(int BuilderID) Global Native
 
 ;/* SetMetadata
 * * sets the metadata of the thread
