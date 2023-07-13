@@ -319,7 +319,9 @@ namespace OStim {
         if (MCM::MCMTable::removeWeaponsAtStart()) {
             threadActor->removeWeapons();
         }
-        actor->MoveTo(vehicle);
+        logger::info("moving actor");
+        //actor->MoveTo(vehicle);
+        logger::info("aligning actor");
         alignActor(threadActor, {});
     }
 
@@ -351,7 +353,14 @@ namespace OStim {
 
         ObjectRefUtil::stopTranslation(actor);
 
-        actor->SetRotationZ(newAngle);
+        // set rotation Z doesn't work on NPCs
+        // and SetAngle causes weird stuttering on the PC
+        if (actor == RE::PlayerCharacter::GetSingleton()) {
+            actor->SetRotationZ(newAngle);
+        } else {
+            ActorUtil::SetAngle(nullptr, 0, actor, 0, 0, MathUtil::toDegrees(newAngle));
+        }
+        
 
         ObjectRefUtil::translateTo(actor, vehicle->data.location.x + cos * alignment.offsetX + sin * alignment.offsetY, vehicle->data.location.y - sin * alignment.offsetX + cos * alignment.offsetY, vehicle->data.location.z + alignment.offsetZ,
             MathUtil::toDegrees(vehicle->data.angle.x), MathUtil::toDegrees(vehicle->data.angle.y), MathUtil::toDegrees(newAngle) + 1, 1000000, 0.0001);

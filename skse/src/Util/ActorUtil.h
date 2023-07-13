@@ -21,6 +21,12 @@ namespace ActorUtil {
         func(vm, stackID, actor, akItem, abPreventEquip, abSilent);
     }
 
+    inline void SetAngle(RE::BSScript::IVirtualMachine* vm, RE::VMStackID stackID, RE::TESObjectREFR* object, float afAngleX, float afAngleY, float afAngleZ) {
+        using func_t = decltype(SetAngle);
+        REL::Relocation<func_t> func{RELOCATION_ID(55693, 56224)};
+        func(vm, stackID, object, afAngleX, afAngleY, afAngleZ);
+    }
+
     void sort(std::vector<GameAPI::GameActor>& actors, std::vector<GameAPI::GameActor>& dominantActors, int playerIndex);
 
     void setVehicle(RE::Actor* actor, RE::TESObjectREFR* vehicle);

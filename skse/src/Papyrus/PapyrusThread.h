@@ -88,9 +88,12 @@ namespace PapyrusThread {
     RE::Actor* GetActor(RE::StaticFunctionTag*, int threadID, int index) {
         OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
         if (thread) {
-            return thread->GetActor(index)->getActor().form;
+            OStim::ThreadActor* actor = thread->GetActor(index);
+            if (actor) {
+                return actor->getActor().form;
+            }
         }
-        return {};
+        return nullptr;
     }
 
     int GetActorPosition(RE::StaticFunctionTag*, int threadID, RE::Actor* actor) {

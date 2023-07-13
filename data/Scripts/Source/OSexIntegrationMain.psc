@@ -1564,32 +1564,15 @@ Bool Function StartScene(Actor Dom, Actor Sub, Bool zUndressDom = False, Bool zU
 		Debug.Notification("OStim scene already running")
 		Return false
 	EndIf
-
-	int i = Actors.Length
-	While i
-		i -= 1
-		If OActor.IsInOStim(Actors[i])
-			Debug.Notification("At least one of the actors is already in an OStim scene.")
-			Return false
-		EndIf
-	EndWhile
 	
 	If !dom.Is3DLoaded()
 		console("Dom actor is not loaded.")
 		return false
 	EndIf
 
-
 	UndressDom = zUndressDom
 	UndressSub = zUndressSub
 	StartingAnimation = zStartingAnimation
-
-	Actors = OActorUtil.SelectIndexAndSort(OActorUtil.ToArray(Dom, Sub, zThirdActor), OActorUtil.ToArray(AggressingActor))
-
-	If !OActor.VerifyActors(Actors)
-		Debug.Notification("At least one of the actors is invalid.")
-		Return false
-	EndIf
 
 	If (Bed)
 		FurnitureType = OFurniture.GetFurnitureType(Bed)
@@ -1597,6 +1580,21 @@ Bool Function StartScene(Actor Dom, Actor Sub, Bool zUndressDom = False, Bool zU
 	Else
 		FurnitureType = FURNITURE_TYPE_NONE
 		CurrentFurniture = None
+	EndIf
+
+	; set actor properties
+	If zThirdActor
+		Actors = new Actor[3]
+		Actors[0] = Dom
+		Actors[1] = Sub
+		Actors[2] = zThirdActor
+	ElseIf Sub
+		Actors = new Actor[2]
+		Actors[0] = Dom
+		Actors[1] = Sub
+	Else
+		Actors = new Actor[1]
+		Actors[0] = Dom
 	EndIf
 
 	Console("Requesting scene start")

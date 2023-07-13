@@ -6,6 +6,8 @@
 #include "Core/Core.h"
 
 #include "Furniture/Furniture.h"
+#include "GameAPI/Game.h"
+#include "Util/VectorUtil.h"
 
 namespace OStim {
     int startThread(ThreadStartParams& params) {
@@ -14,24 +16,25 @@ namespace OStim {
         }
 
         bool hasPlayer = false;
-        std::set<GameAPI::GameActor> actorSet;
+        // can't use an actual set because hash functions are weird with structs
+        std::vector<GameAPI::GameActor> actorSet;
 
         for (GameAPI::GameActor actor : params.actors) {
             if (!isEligible(actor)) {
-                logger::info("actor {} is not eligible for OStim", actor.getName());
+                GameAPI::Game::notification("actor " + actor.getName() + " is not eligible for OStim");
                 return -1;
             }
 
             if (!actor.isLoaded()) {
-                logger::info("actor {} is not loaded", actor.getName());
-            }
-
-            auto iter = actorSet.find(actor);
-            if (iter != actorSet.end()) {
-                logger::info("duplicate actor in list: {}", actor.getName());
+                GameAPI::Game::notification("actor " + actor.getName() + " is not loaded");
                 return -1;
             }
-            actorSet.insert(actor);
+
+            if (VectorUtil::contains(actorSet, actor)) {
+                GameAPI::Game::notification("duplicate actor in list: " + actor.getName());
+                return -1;
+            }
+            actorSet.push_back(actor);
 
             hasPlayer |= actor.isPlayer();
         }

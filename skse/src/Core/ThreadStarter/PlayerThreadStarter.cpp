@@ -66,6 +66,7 @@ namespace OStim {
                     }
                     if (!objects.empty()) {
                         GameAPI::Game::showMessageBox("Which furniture do you want to use?", options, [params, objects](unsigned int result) {
+                            logger::info("message box result");
                             if (result == 0) {
                                 handleActorSorting(params);
                             } else if (result > objects.size()){
@@ -145,9 +146,8 @@ namespace OStim {
                 break;
             }
         }
-
+        
         if (!params.startingNode) {
-            logger::info("no starting node found");
             return;
         }
 
@@ -155,11 +155,14 @@ namespace OStim {
     }
 
     void startInner(ThreadStartParams params) {
+        logger::info("starting scene");
         if (MCM::MCMTable::useFades()) {
             std::thread fadeThread = std::thread([params] {
                 GameAPI::GameCamera::fadeToBlack(1);
                 std::this_thread::sleep_for(std::chrono::milliseconds(700));
-                ThreadManager::GetSingleton()->startThread(params);
+                SKSE::GetTaskInterface()->AddTask([params]() {
+                    ThreadManager::GetSingleton()->startThread(params);
+                });
                 std::this_thread::sleep_for(std::chrono::milliseconds(550));
                 GameAPI::GameCamera::fadeFromBlack(1);
             });
