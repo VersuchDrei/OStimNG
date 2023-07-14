@@ -55,11 +55,9 @@ namespace OStim {
             if (MCM::MCMTable::useRumble()) {
                 GameAPI::Game::shakeController(0.5, 0.5, 0.7);
             }
-        } else {
-            // TODO properly use GameActor here
-            FormUtil::sendModEvent(actor.form, "ostim_subthread_orgasm", thread->getCurrentNode()->scene_id,
-                                   thread->m_threadId - 1);
         }
+        // TODO properly use GameActor here
+        FormUtil::sendModEvent(actor.form, "ostim_actor_orgasm", thread->getCurrentNode()->scene_id, thread->m_threadId);
 
         actor.damageActorValue(GameAPI::GameActorValues::STAMINA, 250);
 

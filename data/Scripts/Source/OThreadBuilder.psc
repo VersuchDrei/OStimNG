@@ -40,7 +40,7 @@ Function SetStartingAnimation(int BuilderID, string Animation) Global Native
 */;
 Function SetFurniture(int BuilderID, ObjectReference FurnitureRef) Global Native
 
-;/* StripActors
+;/* UndressActors
 * * sets the thread to strip all actors on start
 * * if this is called actors will always be fully stripped, no matter what's set in the MCM
 * *
@@ -48,7 +48,7 @@ Function SetFurniture(int BuilderID, ObjectReference FurnitureRef) Global Native
 * *
 * * @param: BuilderID, the id of the thread builder
 */;
-Function StripActors(int BuilderID) Global Native
+Function UndressActors(int BuilderID) Global Native
 
 ;/* NoAutoMode
 * * disables auto mode for the scene
@@ -104,17 +104,3 @@ int Function Start(int BuilderID) Global Native
 * * @param: BuilderID, the id of the thread builder
 */;
 Function Cancel(int BuilderID) Global Native
-
-; ██████╗ ███████╗██████╗ ██████╗ ███████╗ ██████╗ █████╗ ████████╗███████╗██████╗
-; ██╔══██╗██╔════╝██╔══██╗██╔══██╗██╔════╝██╔════╝██╔══██╗╚══██╔══╝██╔════╝██╔══██╗
-; ██║  ██║█████╗  ██████╔╝██████╔╝█████╗  ██║     ███████║   ██║   █████╗  ██║  ██║
-; ██║  ██║██╔══╝  ██╔═══╝ ██╔══██╗██╔══╝  ██║     ██╔══██║   ██║   ██╔══╝  ██║  ██║
-; ██████╔╝███████╗██║     ██║  ██║███████╗╚██████╗██║  ██║   ██║   ███████╗██████╔╝
-; ╚═════╝ ╚══════╝╚═╝     ╚═╝  ╚═╝╚══════╝ ╚═════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═════╝
-
-;/* SetThreadID
-* * don't use this, it is only here for legacy support to keep mods using the old OStimSubthread script working
-* * basically what it does is force the thread to have a specific thread id
-* * this can cause the thread start to fail if a thread with this id is already running
-*/;
-bool Function SetThreadID(int BuilderID, int ThreadID) Global Native

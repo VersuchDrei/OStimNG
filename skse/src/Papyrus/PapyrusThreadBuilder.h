@@ -57,7 +57,7 @@ namespace PapyrusThreadBuilder {
         params->furniture = furniture;
     }
 
-    void StripActors(RE::StaticFunctionTag*, int builderID) {
+    void UndressActors(RE::StaticFunctionTag*, int builderID) {
         OStim::ThreadStartParams* params = OStim::ThreadBuilder::get(builderID);
         if (!params) {
             return;
@@ -105,6 +105,7 @@ namespace PapyrusThreadBuilder {
         params->metadata = metadataVector;
     }
 
+
     int Start(RE::StaticFunctionTag*, int builderID) {
         OStim::ThreadStartParams* paramsPtr = OStim::ThreadBuilder::get(builderID);
         if (!paramsPtr) {
@@ -120,30 +121,21 @@ namespace PapyrusThreadBuilder {
         OStim::ThreadBuilder::remove(builderID);
     }
 
-    void SetThreadID(RE::StaticFunctionTag*, int builderID, int threadID) {
-        OStim::ThreadStartParams* params = OStim::ThreadBuilder::get(builderID);
-        if (!params) {
-            return;
-        }
-
-        params->threadID = threadID;
-    }
-
 
     bool Bind(VM* a_vm) {
-        const auto obj = "OThread"sv;
+        const auto obj = "OThreadBuilder"sv;
 
         BIND(Create);
         BIND(SetDominantActors);
         BIND(SetStartingAnimation);
         BIND(SetFurniture);
-        BIND(StripActors);
+        BIND(UndressActors);
         BIND(NoAutoMode);
         BIND(SetMetadata);
         BIND(SetMetadataCSV);
+
         BIND(Start);
         BIND(Cancel);
-        BIND(SetThreadID);
 
         return true;
     }

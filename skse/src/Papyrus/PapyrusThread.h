@@ -10,9 +10,7 @@ namespace PapyrusThread {
 
     int QuickStart(RE::StaticFunctionTag*, std::vector<RE::Actor*> actors, std::string startingAnimation, RE::TESObjectREFR* furniture) {
         OStim::ThreadStartParams params;
-        for (RE::Actor* actor : actors) {
-            params.actors.push_back(actor);
-        }
+        params.actors = GameAPI::GameActor::convertVector(actors);
         params.startingNode = Graph::GraphTable::getNodeById(startingAnimation);
         params.furniture = furniture;
 
@@ -55,6 +53,22 @@ namespace PapyrusThread {
         if (thread && node) {
             thread->warpTo(node, useFades);
         }
+    }
+
+    bool AutoTransition(RE::StaticFunctionTag*, int threadID, std::string type) {
+        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        if (thread) {
+            return thread->autoTransition(type);
+        }
+        return false;
+    }
+
+    bool AutoTransitionForActor(RE::StaticFunctionTag*, int threadID, int index, std::string type) {
+        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        if (thread) {
+            return thread->autoTransition(index, type);
+        }
+        return false;
     }
 
     int GetSpeed(RE::StaticFunctionTag*, int threadID) {
@@ -227,6 +241,8 @@ namespace PapyrusThread {
         BIND(GetScene);
         BIND(NavigateTo);
         BIND(WarpTo);
+        BIND(AutoTransition);
+        BIND(AutoTransitionForActor);
         BIND(GetSpeed);
         BIND(SetSpeed);
 

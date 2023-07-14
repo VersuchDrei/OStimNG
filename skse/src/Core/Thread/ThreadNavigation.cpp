@@ -54,6 +54,11 @@ namespace OStim {
     }
 #pragma endregion
 
+    bool Thread::autoTransition(std::string type) {
+        //TODO
+        return false;
+    }
+
     bool Thread::autoTransition(int index, std::string type) {
         if (!nodeQueue.empty()) {
             return false;

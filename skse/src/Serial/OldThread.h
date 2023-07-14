@@ -222,8 +222,6 @@ namespace Serialization {
             if (playerThread) {
                 FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_end", "", -1);
                 FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_totalend", "", 0);
-            } else {
-                FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_subthread_end", "", threadID - 1);
             }
         }
     };

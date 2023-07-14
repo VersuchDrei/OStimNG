@@ -289,6 +289,24 @@ bool Function SetObjectVariant(Actor Act, string Type, string Variant, float Dur
 Function UnsetObjectVariant(Actor Act, string Type) Global Native
 
 
+; ███╗   ██╗ █████╗ ██╗   ██╗██╗ ██████╗  █████╗ ████████╗██╗ ██████╗ ███╗   ██╗
+; ████╗  ██║██╔══██╗██║   ██║██║██╔════╝ ██╔══██╗╚══██╔══╝██║██╔═══██╗████╗  ██║
+; ██╔██╗ ██║███████║██║   ██║██║██║  ███╗███████║   ██║   ██║██║   ██║██╔██╗ ██║
+; ██║╚██╗██║██╔══██║╚██╗ ██╔╝██║██║   ██║██╔══██║   ██║   ██║██║   ██║██║╚██╗██║
+; ██║ ╚████║██║  ██║ ╚████╔╝ ██║╚██████╔╝██║  ██║   ██║   ██║╚██████╔╝██║ ╚████║
+; ╚═╝  ╚═══╝╚═╝  ╚═╝  ╚═══╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝
+
+;/* AutoTransition
+* * plays the auto transition for the actor
+* *
+* * @param: Act, the actor to play the transition for
+* * @param: Type, the type of auto transition
+* *
+* * @return: true if the transition exists and was successfully played, otherwise false
+*/;
+bool Function AutoTransition(Actor Act, string Type) Global Native
+
+
 ; ██╗   ██╗████████╗██╗██╗     ██╗████████╗██╗   ██╗
 ; ██║   ██║╚══██╔══╝██║██║     ██║╚══██╔══╝╚██╗ ██╔╝
 ; ██║   ██║   ██║   ██║██║     ██║   ██║    ╚████╔╝

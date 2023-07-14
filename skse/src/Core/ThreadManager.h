@@ -32,7 +32,7 @@ namespace OStim {
 
     private:
         using ThreadMap = std::unordered_map<ThreadId, Thread*>;
-        Util::IDGenerator idGenerator = Util::IDGenerator(11);
+        Util::IDGenerator idGenerator = Util::IDGenerator(1);
         std::shared_mutex m_threadMapMtx;
         ThreadMap m_threadMap;
         std::thread m_excitementThread;

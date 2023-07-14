@@ -108,13 +108,9 @@ namespace PapyrusDatabase {
                     for (auto& page : tab.children("page")) {
                         for (auto& option : page.children("option")) {
                             auto go = option.attribute("go");
-                            auto icon = option.attribute("icon2");
-                            auto border = option.attribute("border");
                             navigations[node].push_back(
                                 { 
-                                    .destination = go.value(),
-                                    .icon = icon.value(),
-                                    .border = border.value()
+                                    .destination = go.value()
                                 });
                         }
                     }

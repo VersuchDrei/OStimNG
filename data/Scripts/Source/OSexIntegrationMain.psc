@@ -1495,19 +1495,12 @@ EndProperty
 ; -------------------------------------------------------------------------------------------------
 ; SCRIPTWIDE VARIABLES ----------------------------------------------------------------------------
 
-Actor[] Actors
-
 String[] CurrScene
 
 Actor Property PlayerRef Auto
 
 Bool Property UndressDom Auto
 Bool Property UndressSub Auto
-String StartingAnimation
-
-
-int FurnitureType
-ObjectReference CurrentFurniture
 
 OBarsScript Property OBars Auto
 OStimUpdaterScript OUpdater
@@ -1533,85 +1526,6 @@ Event OnInit()
 	Console("OStim initializing")
 	Startup() ; OStim install script
 EndEvent
-
-
-; Call this function to start a new OStim scene
-;/* StartScene
-* * starts an OStim scene, duh
-* *
-* * @param: Dom, the first actor, index 0, usually male
-* * @param: Sub, the second actor, index 1, usually female
-* * @param: zUndressDom, if True the first actor will get undressed no matter the MCM settings
-* * @param: zUndressSub, if True the second actor will get undressed no matter the MCM settings
-* * @param: zAnimateUndress, no longer in use
-* * @param: zStartingAnimation, the animation to start with
-* * @param: zThirdActor, the third actor, index 2
-* * @param: Bed, the furniture to start the animation on, can be None
-* * @param: Aggressive, if the scene is aggressive
-* * @param: AggressingActor, the aggressor in an aggressive scene
-*/;
-Bool Function StartScene(Actor Dom, Actor Sub, Bool zUndressDom = False, Bool zUndressSub = False, Bool zAnimateUndress = False, String zStartingAnimation = "", Actor zThirdActor = None, ObjectReference Bed = None, Bool Aggressive = False, Actor AggressingActor = None)
-	; If Player isn't involved, it's an NPC scene, so start it on a subthread instead
-	If PlayerRef != Dom && PlayerRef != Sub && PlayerRef != zThirdActor
-		if !GetUnusedSubthread().StartSubthreadScene(Dom, Sub, zThirdActor = zThirdActor, startingAnimation = zStartingAnimation, furnitureObj = Bed, withAI = true, isAggressive = Aggressive, aggressingActor = AggressingActor)
-			Debug.Notification("OStim: Thread overload, please report this on Discord.")
-			return false
-		endif 
-		return true
-	EndIf
-
-	If OThread.IsRunning(0)
-		Debug.Notification("OStim scene already running")
-		Return false
-	EndIf
-	
-	If !dom.Is3DLoaded()
-		console("Dom actor is not loaded.")
-		return false
-	EndIf
-
-	UndressDom = zUndressDom
-	UndressSub = zUndressSub
-	StartingAnimation = zStartingAnimation
-
-	If (Bed)
-		FurnitureType = OFurniture.GetFurnitureType(Bed)
-		CurrentFurniture = Bed
-	Else
-		FurnitureType = FURNITURE_TYPE_NONE
-		CurrentFurniture = None
-	EndIf
-
-	; set actor properties
-	If zThirdActor
-		Actors = new Actor[3]
-		Actors[0] = Dom
-		Actors[1] = Sub
-		Actors[2] = zThirdActor
-	ElseIf Sub
-		Actors = new Actor[2]
-		Actors[0] = Dom
-		Actors[1] = Sub
-	Else
-		Actors = new Actor[1]
-		Actors[0] = Dom
-	EndIf
-
-	Console("Requesting scene start")
-
-	OThread.QuickStart(Actors, zStartingAnimation, Bed)
-
-	Return True
-EndFunction
-
-Function Masturbate(Actor Masturbator, Bool zUndress = False, Bool zAnimUndress = False, ObjectReference MBed = None)
-	If !SoloAnimsInstalled()
-		Debug.Notification("No solo animations installed")
-		Return
-	EndIf
-
-	StartScene(Masturbator, None, zUndressDom = zUndress, zAnimateUndress = zAnimUndress, Bed = MBed)
-EndFunction
 
 
 ;
@@ -1687,36 +1601,15 @@ Function LightActor(Actor Act, Int Pos, Int Brightness) ; pos 1 - ass, pos 2 - f
 	EndIf
 EndFunction
 
-bool Function AutoTransitionForActor(Actor Act, string Type)
-	Return AutoTransitionForPosition(Actors.Find(Act), Type)
-EndFunction
-
-Function ToggleActorAI(bool enable)
-	int i = Actors.Length
-	While i
-		i -= 1
-		Actors[i].EnableAI(enable)
-	EndWhile
-EndFunction
-
-Function EndAnimation(Bool SmoothEnding = True)
-	If (AnimationRunning() && UseFades && SmoothEnding)
-		FadeToBlack(1.5)
-	EndIf
-	Console("Trying to end scene")
-
-	OThread.Stop(0)
-EndFunction
-
 Bool Function IsSceneAggressiveThemed() ; if the entire situation should be themed aggressively
 	String SceneID = OThread.GetScene(0)
 
-	int i = 0
-	While i < Actors.Length
+	int i = OMetadata.GetActorCount(SceneID)
+	While i
+		i -= 1
 		If OMetadata.HasActorTag(SceneID, i, "dominant")
 			Return true
 		EndIf
-		i += 1
 	EndWhile
 
 	Return false
@@ -1724,11 +1617,11 @@ EndFunction
 
 Actor Function GetAggressiveActor()
 	String SceneID = OThread.GetScene(0)
-
+	int Count = OMetadata.GetActorCount(SceneID)
 	int i = 0
-	While i < Actors.Length
+	While i < Count
 		If OMetadata.HasActorTag(SceneID, i, "dominant")
-			Return Actors[i]
+			Return OThread.GetActor(0, i)
 		EndIf
 		i += 1
 	EndWhile
@@ -1745,6 +1638,7 @@ bool Function IsVictim(actor act)
 endfunction 
 
 Actor Function GetSexPartner(Actor Char)
+	Actor[] Actors = OThread.GetActors(0)
 	If Actors.Length == 1
 		Return Actors[0]
 	EndIf
@@ -1807,40 +1701,8 @@ Function ModifyStimMult(actor act, float by)
 	osanative.unlock("mtx_stimmult")
 endfunction
 
-bool Function AutoTransitionForPosition(int Position, string Type)
-	string SceneId = OMetadata.GetAutoTransitionForActor(OThread.GetScene(0), Position, Type)
-	If SceneId == ""
-		Return false
-	EndIf
-
-	WarpToAnimation(SceneId)
-	Return true
-EndFunction
-
 bool Function IsBeingStimulated(Actor act)
 	return (GetCurrentStimulation(act) * GetStimMult(act)) > 0.01
-EndFunction
-
-OStimSubthread Function GetUnusedSubthread()
-	int i = 0
-	int max = subthreadquest.GetNumAliases()
-	while i < max 
-		OStimSubthread thread = subthreadquest.GetNthAlias(i) as OStimSubthread
-
-		if !thread.IsInUse()
-			return thread 
-		endif 
-
-		i += 1
-	endwhile
-EndFunction
-
-OStimSubthread Function GetSubthread(int id)
-	OStimSubthread ret = subthreadquest.GetNthAlias(id) as OStimSubthread
-	if !ret 
-		Console("Subthread not found")
-	endif 
-	return ret
 EndFunction
 
 ;
@@ -1852,44 +1714,6 @@ EndFunction
 ;			╚═════╝ ╚══════╝╚═════╝ ╚══════╝
 ;
 ;				Code related to beds
-
-Function SelectFurniture()
-	ObjectReference[] Furnitures = OFurniture.FindFurniture(Actors.Length, Actors[0], (FurnitureSearchDistance + 1) * 100.0, 96)
-	If !SelectFurniture
-		int i = 0
-		While i < Furnitures.Length
-			If Furnitures[i]
-				CurrentFurniture = Furnitures[i]
-				FurnitureType = i + 1
-				Return
-			EndIf
-			i += 1
-		EndWhile
-	Else
-		int i = 0
-		bool hasValid = False
-		While i < Furnitures.Length
-			If Furnitures[i]
-				OStimFurnitureSelectionButtons[i].Value = 1
-				hasValid = True
-			Else
-				OStimFurnitureSelectionButtons[i].Value = 0
-			EndIf
-			i += 1
-		EndWhile
-
-		If !hasValid
-			Return
-		EndIf
-
-		FurnitureType = OStimFurnitureSelectionMessage.Show()
-		If FurnitureType == 0
-			CurrentFurniture = None
-		Else
-			CurrentFurniture = Furnitures[FurnitureType - 1]
-		EndIf
-	EndIf
-EndFunction
 
 ObjectReference Function FindBed(ObjectReference CenterRef, Float Radius = 0.0)
 	If !(Radius > 0.0)
@@ -1960,6 +1784,7 @@ EndFunction
 float Function GetHighestExcitement()
 	float Highest = 0
 
+	Actor[] Actors = OThread.GetActors(0)
 	int i = Actors.Length
 	While i
 		i -= 1
@@ -2010,11 +1835,6 @@ EndFunction
 
 Function UnMuteFaceData(Actor Act)
 	Act.RemoveFromFaction(OstimNoFacialExpressionsFaction)
-
-	int i = Actors.Find(Act)
-	If i >= 0
-		OActor.ClearExpression(Act)
-	EndIf
 EndFunction
 
 Bool Function FaceDataIsMuted(Actor Act)
@@ -2036,7 +1856,7 @@ EndFunction
 * * contains a Utility::Wait call, so best only call this from event listeners
 */;
 Function SendExpressionEvent(Actor Act, string EventName)
-	int Position = Actors.find(Act)
+	int Position = OThread.GetActorPosition(0, Act)
 	If Position < 0
 		Return
 	EndIf
@@ -2510,6 +2330,7 @@ Bool Property MuteOSA
 		; NV used this together with a whitelist to only mute the female moans
 		; so we will do exactly that here
 		If Value
+			Actor[] Actors = OThread.GetActors(0)
 			int i = Actors.Length
 			While i
 				i -= 1
@@ -2577,10 +2398,11 @@ Actor Function GetCurrentLeadingActor()
 EndFunction
 
 Bool Function GetCurrentAnimIsAggressive()
-	int i = Actors.Length
+	string SceneID = OThread.GetScene(0)
+	int i = OMetadata.GetActorCount(SceneID)
 	While i
 		i -= 1
-		If OMetadata.HasActorTag(OThread.GetScene(0), i, "aggressor")
+		If OMetadata.HasActorTag(SceneID, i, "aggressor")
 			Return true
 		EndIf
 	EndWhile
@@ -2786,14 +2608,6 @@ Bool Function IsActorActive(Actor Act)
 	Return OActor.IsInOStim(Act)
 EndFunction
 
-Function RestoreScales()
-	int i = Actors.Length
-	While i
-		i -= 1
-		Actors[i].SetScale(1.0)
-	EndWhile
-EndFunction
-
 Bool Function AnimationRunning()
 	Return OThread.IsRunning(0)
 EndFunction
@@ -2966,4 +2780,73 @@ EndFunction
 
 Bool Function GetOrgasmStall()
 	Return OThread.IsClimaxStalled(0)
+EndFunction
+
+bool Function AutoTransitionForActor(Actor Act, string Type)
+	Return OActor.AutoTransition(Act, Type)
+EndFunction
+
+bool Function AutoTransitionForPosition(int Position, string Type)
+	Return OThread.AutoTransitionForActor(0, Position, Type)
+EndFunction
+
+Function EndAnimation(Bool SmoothEnding = True)
+	OThread.Stop(0)
+EndFunction
+
+; don't use the subthread script, use OThread instead
+OStimSubthread Function GetUnusedSubthread()
+	int i = 0
+	int max = subthreadquest.GetNumAliases()
+	while i < max 
+		OStimSubthread thread = subthreadquest.GetNthAlias(i) as OStimSubthread
+
+		if !thread.IsInUse()
+			return thread 
+		endif 
+
+		i += 1
+	endwhile
+EndFunction
+
+; don't use the subthread script, use OThread instead
+OStimSubthread Function GetSubthread(int id)
+	OStimSubthread ret = subthreadquest.GetNthAlias(id) as OStimSubthread
+	if !ret 
+		Console("Subthread not found")
+	endif 
+	return ret
+EndFunction
+
+; You probably want to call OThread.QuickStart, a Builder is only needed for more complex parameters
+Bool Function StartScene(Actor Dom, Actor Sub, Bool zUndressDom = False, Bool zUndressSub = False, Bool zAnimateUndress = False, String zStartingAnimation = "", Actor zThirdActor = None, ObjectReference Bed = None, Bool Aggressive = False, Actor AggressingActor = None)
+	Console("Requesting scene start")
+
+	int BuilderID = OThreadBuilder.Create(OActorUtil.ToArray(dom, sub, zThirdActor))
+	OThreadBuilder.SetFurniture(BuilderID, Bed)
+	OThreadBuilder.SetStartingAnimation(BuilderID, zStartingAnimation)
+
+	If zUndressDom || zUndressSub
+		OThreadBuilder.UndressActors(BuilderID)
+	EndIf
+
+	If aggressingActor
+		Actor[] DominantActors = new Actor[1]
+		DominantActors[0] = aggressingActor
+		OThreadBuilder.SetDominantActors(BuilderID, DominantActors)
+	EndIf
+
+	Return OThreadBuilder.Start(BuilderID) >= 0
+EndFunction
+
+; You probably want to call OThread.QuickStart, a Builder is only needed for more complex parameters
+Function Masturbate(Actor Masturbator, Bool zUndress = False, Bool zAnimUndress = False, ObjectReference MBed = None)
+	int BuilderID = OThreadBuilder.Create(OActorUtil.ToArray(Masturbator))
+	OThreadBuilder.SetFurniture(BuilderID, MBed)
+
+	If zUndress
+		OThreadBuilder.UndressActors(BuilderID)
+	EndIf
+
+	OThreadBuilder.Start(BuilderID) >= 0
 EndFunction

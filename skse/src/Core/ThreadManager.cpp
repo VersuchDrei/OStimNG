@@ -31,19 +31,26 @@ namespace OStim {
 
     int ThreadManager::startThread(ThreadStartParams params) {
         std::unique_lock<std::shared_mutex> lock(m_threadMapMtx);
-        if (params.threadID >= 0) {
-            if (m_threadMap.contains(params.threadID)) {
+        int threadID = -1;
+        for (GameAPI::GameActor actor : params.actors) {
+            if (actor.isPlayer()) {
+                threadID = 0;
+                break;
+            }
+        }
+        if (threadID == 0) {
+            if (m_threadMap.contains(0)) {
                 return -1;
             }
         } else {
-            params.threadID = idGenerator.get();
+            threadID = idGenerator.get();
         }
 
-        Thread* thread = new Thread(params);
-        m_threadMap.insert(std::make_pair(params.threadID, thread));
+        Thread* thread = new Thread(threadID, params);
+        m_threadMap.insert(std::make_pair(threadID, thread));
         thread->initContinue();
         thread->ChangeNode(params.startingNode);
-        return params.threadID;
+        return threadID;
     }
 
     Thread* ThreadManager::GetThread(ThreadId a_id) {

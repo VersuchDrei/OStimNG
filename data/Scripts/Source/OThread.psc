@@ -84,6 +84,27 @@ Function NavigateTo(int ThreadID, string SceneID) Global Native
 */;
 Function WarpTo(int ThreadID, string SceneID, bool UseFades = False) Global Native
 
+;/* AutoTransition
+* * plays the auto transition for the thread
+* *
+* * @param: ThreadID, the id of the thread
+* * @param: Type, the type of the auto transition
+* *
+* * @param: true if the transition exists and was successfully played, otherwise false
+*/;
+bool Function AutoTransition(int ThreadID, string Type) Global Native
+
+;/* AutoTransitionForActor
+* * plays the auto transition for the actor
+* *
+* * @param: ThreadID, the id of the thread
+* * @param: Index, the index of the actor to play the transition for
+* * @param: Type, the type of auto transition
+* *
+* * @return: true if the transition exists and was successfully played, otherwise false
+*/;
+bool Function AutoTransitionForActor(int ThreadID, int Index, string Type) Global Native
+
 ;/* GetSpeed
 * * returns the speed index at which the thread is currently running
 * *

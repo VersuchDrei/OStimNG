@@ -13,8 +13,5 @@ namespace OStim {
         bool noAutoMode = false;
         bool noFurniture = false;
         std::vector<std::string> metadata;
-
-        // legacy support
-        int threadID = -1;
     };
 }

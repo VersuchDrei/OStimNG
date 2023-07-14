@@ -39,12 +39,7 @@ namespace OStim {
             hasPlayer |= actor.isPlayer();
         }
 
-        if (params.threadID > 10 || params.threadID == 0 && !hasPlayer) {
-            return -1;
-        }
-
         if (hasPlayer) {
-            params.threadID = 0;
             startPlayerThread(params);
             return 0;
         } else {

@@ -21,7 +21,7 @@ namespace OStim {
     public:
         ThreadId m_threadId;
 
-        Thread(ThreadStartParams params);
+        Thread(int threadID, ThreadStartParams params);
 
         ~Thread();
 
@@ -161,6 +161,7 @@ namespace OStim {
 
 #pragma region navigation
     public:
+        bool autoTransition(std::string type);
         bool autoTransition(int index, std::string type);
         void warpTo(Graph::Node* node, bool useFades);
         void navigateTo(Graph::Node* node);

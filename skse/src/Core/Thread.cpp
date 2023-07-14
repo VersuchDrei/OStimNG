@@ -24,7 +24,7 @@
 #include "Util.h"
 
 namespace OStim {
-    Thread::Thread(ThreadStartParams params) : m_threadId{params.threadID}, furniture{params.furniture} {
+    Thread::Thread(int threadID, ThreadStartParams params) : m_threadId{threadID}, furniture{params.furniture} {
         for (GameAPI::GameActor actor : params.actors) {
             playerThread |= actor.isPlayer();
         }
@@ -120,9 +120,8 @@ namespace OStim {
         if (playerThread) {
             FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_prestart", "", 0);
             FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_start", "", 0);
-        } else {
-            FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_subthread_start", "", m_threadId - 1);
         }
+        FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_thread_start", "", m_threadId);
     }
 
     void Thread::rebuildAlignmentKey() {
@@ -277,7 +276,9 @@ namespace OStim {
             SetSpeed(static_cast<int>(relativeSpeed * (m_currentNode->speeds.size() - 1) + 0.5));
         }
 
-        UI::UIState::GetSingleton()->NodeChanged(this, m_currentNode);
+        if (playerThread) {
+            UI::UIState::GetSingleton()->NodeChanged(this, m_currentNode);
+        }
 
         auto messaging = SKSE::GetMessagingInterface();
 
@@ -628,9 +629,8 @@ namespace OStim {
         if (playerThread) {
             FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_end", "", -1);
             FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_totalend", "", 0);
-        } else {
-            FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_subthread_end", "", m_threadId - 1);
         }
+        FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_thread_end", "", m_threadId);
     }
 
     void Thread::addActorSink(RE::Actor* a_actor) {

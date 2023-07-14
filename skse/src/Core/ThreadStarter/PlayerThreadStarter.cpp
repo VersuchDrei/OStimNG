@@ -160,9 +160,7 @@ namespace OStim {
             std::thread fadeThread = std::thread([params] {
                 GameAPI::GameCamera::fadeToBlack(1);
                 std::this_thread::sleep_for(std::chrono::milliseconds(700));
-                SKSE::GetTaskInterface()->AddTask([params]() {
-                    ThreadManager::GetSingleton()->startThread(params);
-                });
+                ThreadManager::GetSingleton()->startThread(params);
                 std::this_thread::sleep_for(std::chrono::milliseconds(550));
                 GameAPI::GameCamera::fadeFromBlack(1);
             });

@@ -38,62 +38,7 @@ actor PlayerRef
 
 string[] CurrentScene
 
-; Call this function to start a new OStim scene in a subthread (for NPC on NPC scenes)
-;/* StartSubthreadScene
-* * Starts an OStim scene in a subthread (for NPC on NPC scenes), don't ever use for scenes where the player is involved.
-* *
-* * @param: Dom, the first actor, index 0, usually male
-* * @param: Sub, the second actor, index 1, usually female
-* * @param: zThirdActor, the third actor, index 2
-* * @param: startingAnimation, the animation to start with. If empty string, a random animation will be chosen
-* * @param: furniture, the furniture to start the animation on, can be None
-* * @param: withAI, if false auto mode will be disabled
-* * @param: isAggressive, no longer in use, scene is aggressive if an aggressing actor is passed in
-* * @param: AggressingActor, the aggressor in an Aggressive scene
-*/;
-bool Function StartSubthreadScene(actor dom, actor sub = none, actor zThirdActor = none, string startingAnimation = "", ObjectReference furnitureObj = none, bool withAI = true, bool isAggressive = false, actor aggressingActor = none)
-	if OThread.IsRunning(id + 1)
-		Console("Subthread is already in use")
-		return false
-	endif
-
-	Console("Starting subthread with ID: " + id)
-
-	Actor[] Actors
-
-	If zThirdActor
-		Actors = new Actor[3]
-		Actors[0] = dom
-		Actors[1] = sub
-		Actors[2] = zThirdActor
-	ElseIf sub
-		Actors = new Actor[2]
-		Actors[0] = dom
-		Actors[1] = sub
-	Else
-		Actors = new Actor[1]
-		Actors[0] = dom
-	EndIf
-
-	int BuilderID = OThreadBuilder.Create(Actors)
-	If BuilderID < 0
-		Return false
-	EndIf
-	OThreadBuilder.SetFurniture(BuilderID, furnitureObj)
-	OThreadBuilder.SetStartingAnimation(BuilderID, startingAnimation)
-	OThreadBuilder.SetThreadID(BuilderID, id + 1)
-
-	If !withAI
-		OThreadBuilder.NoAutoMode(BuilderID)
-	EndIf
-	If aggressingActor
-		Actor[] DominantActors = new Actor[1]
-		DominantActors[0] = aggressingActor
-		OThreadBuilder.SetDominantActors(BuilderID, DominantActors)
-	EndIf
-
-	Return OThreadBuilder.Start(BuilderID) == id + 1
-EndFunction
+int threadID = -1
 
 Event OnInit()
 	id = GetID()
@@ -101,9 +46,26 @@ Event OnInit()
 	PlayerRef = Game.GetPlayer()
 EndEvent
 
-Function StartAI()
-	OThread.StartAutoMode(id + 1)
-EndFunction
+Event OnEnd(String EventName, String StrArgs, Float EndingThreadID, Form Sender)
+	If ThreadID != EndingThreadID
+		Return
+	EndIf
+
+	ThreadID = -1
+	; legacy event
+	SendModEvent("ostim_subthread_end", "", id)
+
+	UnregisterForModEvent("ostim_thread_end")
+	UnregisterForModEvent("ostim_actor_orgasm")
+EndEvent
+
+Event OnOrgasm(String EventName, String SceneID, Float OrgasmThreadID, Form OrgasmedActor)
+	If ThreadID != OrgasmThreadID
+		Return
+	EndIf
+
+	OrgasmedActor.SendModEvent("ostim_subthread_orgasm", SceneID, id)
+EndEvent
 
 
 ;
@@ -116,28 +78,32 @@ EndFunction
 ;
 ; 				Utility functions for Subthread
 
+Function StartAI()
+	OThread.StartAutoMode(threadID)
+EndFunction
+
 bool Function IsInUse()
-	return OThread.IsRunning(id + 1)
+	return threadID > 0
 endfunction
 
 int Function GetScenePassword()
-	return id + 1
+	return threadID
 endfunction
 
 ObjectReference Function GetFurniture()
-	Return OThread.GetFurniture(id + 1)
+	Return OThread.GetFurniture(threadID)
 EndFunction
 
 Bool Function AnimationRunning()
-	OThread.IsRunning(id + 1)
+	OThread.IsRunning(threadID)
 EndFunction
 
 Actor Function GetActor(int Index)
-	Return OThread.GetActor(id + 1, Index)
+	Return OThread.GetActor(threadID, Index)
 EndFunction
 
 Actor[] Function GetActors()
-	Return OThread.GetActors(id + 1)
+	Return OThread.GetActors(threadID)
 EndFunction
 
 
@@ -153,7 +119,7 @@ EndFunction
 
 float Function GetHighestExcitement()
 	float Highest = 0
-	Actor[] Actors = OThread.GetActors(id + 1)
+	Actor[] Actors = OThread.GetActors(threadID)
 
 	int i = Actors.Length
 	While i
@@ -179,19 +145,19 @@ EndFunction
 ;				Some code related to the speed system
 
 Function AdjustAnimationSpeed(float amount)
-	OThread.SetSpeed(id + 1, OThread.GetSpeed(id + 1) + (amount As int))
+	OThread.SetSpeed(threadID, OThread.GetSpeed(threadID) + (amount As int))
 EndFunction
 
 Function IncreaseAnimationSpeed()
-	OThread.SetSpeed(id + 1, OThread.GetSpeed(id + 1) + 1)
+	OThread.SetSpeed(threadID, OThread.GetSpeed(threadID) + 1)
 EndFunction
 
 Function DecreaseAnimationSpeed()
-	OThread.SetSpeed(id + 1, OThread.GetSpeed(id + 1) - 1)
+	OThread.SetSpeed(threadID, OThread.GetSpeed(threadID) - 1)
 EndFunction
 
 Function SetCurrentAnimationSpeed(Int InSpeed)
-	OThread.SetSpeed(id + 1, InSpeed)
+	OThread.SetSpeed(threadID, InSpeed)
 EndFunction
 
 
@@ -221,7 +187,7 @@ Function AddActorExcitement(Actor Act, Float Value)
 EndFunction
 
 Bool Function DidAnyActorDie()
-	Actor[] Actors = OThread.GetActors(id + 1)
+	Actor[] Actors = OThread.GetActors(threadID)
 	int i = Actors.Length
 	While i
 		i -= 1
@@ -233,7 +199,7 @@ Bool Function DidAnyActorDie()
 EndFunction
 
 Bool Function IsAnyActorInCombat()
-	Actor[] Actors = OThread.GetActors(id + 1)
+	Actor[] Actors = OThread.GetActors(threadID)
 	int i = Actors.Length
 	While i
 		i -= 1
@@ -256,9 +222,42 @@ Function Orgasm(Actor Act)
 EndFunction
 
 Function EndAnimation()
-	OThread.Stop(id + 1)
+	OThread.Stop(threadID)
 EndFunction
 
 Function WarpToAnimation(String Animation) 
-	OThread.WarpTo(id + 1, Animation, false)
+	OThread.WarpTo(threadID, Animation, false)
+EndFunction
+
+; You probably want to call OThread.QuickStart, a Builder is only needed for more complex parameters
+bool Function StartSubthreadScene(actor dom, actor sub = none, actor zThirdActor = none, string startingAnimation = "", ObjectReference furnitureObj = none, bool withAI = true, bool isAggressive = false, actor aggressingActor = none)
+	if ThreadID > 0
+		Console("Subthread is already in use")
+		return false
+	endif
+
+	Console("Starting subthread with ID: " + id)
+
+	int BuilderID = OThreadBuilder.Create(OActorUtil.ToArray(dom, sub, zThirdActor))
+	OThreadBuilder.SetFurniture(BuilderID, furnitureObj)
+	OThreadBuilder.SetStartingAnimation(BuilderID, startingAnimation)
+
+	If !withAI
+		OThreadBuilder.NoAutoMode(BuilderID)
+	EndIf
+	If aggressingActor
+		Actor[] DominantActors = new Actor[1]
+		DominantActors[0] = aggressingActor
+		OThreadBuilder.SetDominantActors(BuilderID, DominantActors)
+	EndIf
+
+	threadID = OThreadBuilder.Start(BuilderID)
+
+	SendModEvent("ostim_subthread_start", "", id)
+
+	; legacy event
+	RegisterForModEvent("ostim_thread_end", "OnEnd")
+	RegisterForModEvent("ostim_actor_orgasm", "OnOrgasm")
+
+	Return true
 EndFunction

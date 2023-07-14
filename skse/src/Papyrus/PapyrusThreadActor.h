@@ -234,6 +234,15 @@ namespace PapyrusThreadActor {
         }
     }
 
+    
+    bool AutoTransition(RE::StaticFunctionTag*, RE::Actor* actor, std::string type) {
+        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        if (threadActor) {
+            return threadActor->getThread()->autoTransition(threadActor->getThread()->getActorPosition(actor), type);
+        }
+        return false;
+    }
+
 
     bool IsInOStim(RE::StaticFunctionTag*, RE::Actor* actor) {
         return OStim::ThreadManager::GetSingleton()->findActor(actor);
@@ -283,6 +292,8 @@ namespace PapyrusThreadActor {
         BIND(IsObjectEquipped);
         BIND(SetObjectVariant);
         BIND(UnsetObjectVariant);
+
+        BIND(AutoTransition);
 
         BIND(IsInOStim);
         BIND(VerifyActors);
