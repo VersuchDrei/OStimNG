@@ -157,6 +157,9 @@ namespace UI::Search {
 
     void SearchMenu::SelectOption(std::string val) {
         auto node = Graph::GraphTable::getNodeById(val);
-        UI::UIState::GetSingleton()->currentThread->ChangeNode(node);
+
+        SKSE::GetTaskInterface()->AddTask([node]() {
+            UI::UIState::GetSingleton()->currentThread->ChangeNode(node);
+        });
     }
 }
