@@ -344,27 +344,14 @@ namespace OStim {
     }
 
     void Thread::alignActor(ThreadActor* threadActor, Alignment::ActorAlignment alignment) {
-        float angle = vehicle->GetAngleZ();
-        float sin = std::sin(angle);
-        float cos = std::cos(angle);
-
-        float newAngle = vehicle->data.angle.z + MathUtil::toRadians(alignment.rotation);
-
-        RE::Actor* actor = threadActor->getActor().form;
-
-        ObjectRefUtil::stopTranslation(actor);
-
-        // set rotation Z doesn't work on NPCs
-        // and SetAngle causes weird stuttering on the PC
-        if (actor == RE::PlayerCharacter::GetSingleton()) {
-            actor->SetRotationZ(newAngle);
-        } else {
-            ActorUtil::SetAngle(nullptr, 0, actor, 0, 0, MathUtil::toDegrees(newAngle));
-        }
+        float sin = std::sin(vehicle->data.angle.z);
+        float cos = std::cos(vehicle->data.angle.z);
         
-
-        ObjectRefUtil::translateTo(actor, vehicle->data.location.x + cos * alignment.offsetX + sin * alignment.offsetY, vehicle->data.location.y - sin * alignment.offsetX + cos * alignment.offsetY, vehicle->data.location.z + alignment.offsetZ,
-            MathUtil::toDegrees(vehicle->data.angle.x), MathUtil::toDegrees(vehicle->data.angle.y), MathUtil::toDegrees(newAngle) + 1, 1000000, 0.0001);
+        threadActor->getActor().lockAtPosition(
+            vehicle->data.location.x + cos * alignment.offsetX + sin * alignment.offsetY,
+            vehicle->data.location.y - sin * alignment.offsetX + cos * alignment.offsetY,
+            vehicle->data.location.z + alignment.offsetZ,
+            vehicle->data.angle.z + MathUtil::toRadians(alignment.rotation));
 
         threadActor->setScaleMult(alignment.scale);
         threadActor->setSoSBend(alignment.sosBend);
@@ -467,23 +454,14 @@ namespace OStim {
         for (auto& actorIt : m_actors) {
             if (m_currentNode) {
                 if (m_currentNode->speeds.size() > speed) {
-                    Graph::Node* node = m_currentNode;
-                    GameAPI::GameActor gameActor = actorIt.second.getActor();
-                    int index = actorIt.first;
-                    RE::Actor* actor = actorIt.second.getActor().form;
-
-                    SKSE::GetTaskInterface()->AddTask([speed, node, index, gameActor]() {
-                        // TODO how to do this with GameActor?
-                        gameActor.form->SetGraphVariableFloat("OStimSpeed", node->speeds[speed].playbackSpeed);
-                    });
-                    auto anim = m_currentNode->speeds[speed].animation + "_" + std::to_string(index);
-                    actorIt.second.getActor().playAnimation(anim);
+                    auto anim = m_currentNode->speeds[speed].animation + "_" + std::to_string(actorIt.first);
+                    actorIt.second.getActor().playAnimation(anim, m_currentNode->speeds[speed].playbackSpeed);
 
                     // this fixes some face bugs
                     // TODO how to do this with GraphActor?
                     if (vm) {
                         RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-                        auto args = RE::MakeFunctionArguments<RE::TESObjectREFR*>(std::move(actor));
+                        auto args = RE::MakeFunctionArguments<RE::TESObjectREFR*>(std::move(actorIt.second.getActor().form));
                         vm->DispatchStaticCall("NiOverride", "ApplyNodeOverrides", args, callback);
                     }
                 }
