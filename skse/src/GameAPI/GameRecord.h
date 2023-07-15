@@ -39,13 +39,13 @@ namespace GameAPI {
 
             serial.object->ReadRecordData(&oldFormID, sizeof(oldFormID));
             if (!serial.object->ResolveFormID(oldFormID, newFormID)) {
-                logger::warn("cannot resolve form id {:x}, missing mod?", oldID);
+                logger::warn("cannot resolve form id {:x}, missing mod?", oldFormID);
                 return;
             }
 
             form = RE::TESForm::LookupByID<T>(newFormID);
             if (!form) {
-                logger::warn("cannot find form with form id {:x}", oldID);
+                logger::warn("cannot find form with form id {:x}", newFormID);
             }
         }
 

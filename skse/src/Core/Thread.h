@@ -70,8 +70,6 @@ namespace OStim {
         void stopFaded();
         void close();
 
-        inline RE::TESObjectREFR* GetStageObject() { return vehicle; }
-
         inline bool isPlayerThread() { return playerThread; }
 
         bool isSameThread(Thread* thread);
@@ -88,8 +86,10 @@ namespace OStim {
         RE::TESObjectREFR* furniture;
         Furniture::FurnitureType furnitureType = Furniture::FurnitureType::NONE;
         RE::TESForm* furnitureOwner = nullptr;
-        RE::TESObjectREFR* vehicle;
         std::shared_mutex nodeLock;
+
+        GameAPI::GamePosition center;
+        float rotation = 0;
 
         int m_currentNodeSpeed = 0;
         float relativeSpeed = -1;

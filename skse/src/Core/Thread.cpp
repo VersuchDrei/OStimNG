@@ -32,7 +32,8 @@ namespace OStim {
         // --- setting up the vehicle --- //
         // TODO GameActor
         RE::TESObjectREFR* center = furniture ? furniture : (playerThread ? RE::PlayerCharacter::GetSingleton() : params.actors[0].form);
-        vehicle = center->PlaceObjectAtMe(Util::LookupTable::OStimVehicle, false).get();
+        this->center = center->GetPosition();
+        rotation = center->GetAngleZ();
 
         if (furniture) {
             furnitureType = Furniture::getFurnitureType(furniture, false);
@@ -43,13 +44,10 @@ namespace OStim {
             float angle = furniture->GetAngleZ();
             float sin = std::sin(angle);
             float cos = std::cos(angle);
-            vehicle->data.angle.z = angle + offset[3]; // setting the angle does not directly rotate the object, but the call to SetPosition updates it
-            vehicle->SetPosition(furniture->GetPositionX() + cos * offset[0] + sin * offset[1],
-                                 furniture->GetPositionY() - sin * offset[0] + cos * offset[1],
-                                 furniture->GetPositionZ() + offset[2]);
-            
-        } else {
-            vehicle->MoveTo(center);
+            rotation += offset[3];
+            this->center.x +=  cos * offset[0] + sin * offset[1];
+            this->center.y += -sin * offset[0] + cos * offset[1];
+            this->center.z += offset[2];
         }
 
         for (int i = 0; i < params.actors.size(); i++) {
@@ -309,7 +307,6 @@ namespace OStim {
     void Thread::addActorInner(int index, RE::Actor* actor) {
         GameAPI::GameActor gameActor = actor;
         gameActor.lock();
-        ActorUtil::setVehicle(actor, vehicle);
         addActorSink(actor);
         m_actors.insert(std::make_pair(index, ThreadActor(this, index, actor)));
         ThreadActor* threadActor = GetActor(index);
@@ -344,14 +341,14 @@ namespace OStim {
     }
 
     void Thread::alignActor(ThreadActor* threadActor, Alignment::ActorAlignment alignment) {
-        float sin = std::sin(vehicle->data.angle.z);
-        float cos = std::cos(vehicle->data.angle.z);
+        float sin = std::sin(rotation);
+        float cos = std::cos(rotation);
         
         threadActor->getActor().lockAtPosition(
-            vehicle->data.location.x + cos * alignment.offsetX + sin * alignment.offsetY,
-            vehicle->data.location.y - sin * alignment.offsetX + cos * alignment.offsetY,
-            vehicle->data.location.z + alignment.offsetZ,
-            vehicle->data.angle.z + MathUtil::toRadians(alignment.rotation));
+            center.x + cos * alignment.offsetX + sin * alignment.offsetY,
+            center.y - sin * alignment.offsetX + cos * alignment.offsetY,
+            center.z + alignment.offsetZ,
+            rotation + MathUtil::toRadians(alignment.rotation));
 
         threadActor->setScaleMult(alignment.scale);
         threadActor->setSoSBend(alignment.sosBend);
@@ -572,8 +569,6 @@ namespace OStim {
 
     void Thread::close() {
         logger::info("closing thread {}", m_threadId);
-        vehicle->Disable();
-        vehicle->SetDelete(true);
 
         for (auto& actorIt : m_actors) {
             actorIt.second.free();
@@ -723,7 +718,6 @@ namespace OStim {
         Serialization::OldThread oldThread;
 
         oldThread.threadID = m_threadId;
-        oldThread.vehicle = vehicle;
         if (furniture) {
             oldThread.furniture = furniture;
             oldThread.furnitureOwner = furnitureOwner;

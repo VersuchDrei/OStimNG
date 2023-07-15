@@ -73,10 +73,6 @@ namespace ActorUtil {
         }
     }
 
-    void setVehicle(RE::Actor* actor, RE::TESObjectREFR* vehicle) {
-        SetVehicle(nullptr, 0, actor, vehicle);
-    }
-
     void equipItem(RE::Actor* actor, RE::TESForm* item, bool preventRemoval, bool silent) {
         EquipItem(nullptr, 0, actor, item, preventRemoval, silent);
     }

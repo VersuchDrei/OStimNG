@@ -46,8 +46,8 @@ namespace GameAPI {
         void setScale(float scale) const;
         inline float getHeight() const { return form->GetActorBase()->GetHeight(); }
         inline float getRotation() const { return form->data.angle.z; }
-        inline void setRotation(float rotation) const;
-        inline void lockAtPosition(float x, float y, float z, float r) const;
+        void setRotation(float rotation) const;
+        void lockAtPosition(float x, float y, float z, float r) const;
         inline GamePosition getPosition() const { return form->GetPosition(); }
         inline void setPosition(GamePosition position) const { SetPosition(form, position.x, position.y, position.z); }
 

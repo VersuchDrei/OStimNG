@@ -3,9 +3,9 @@
 #include "GamePointer.h"
 
 namespace GameAPI {
-    struct GameSerializationInterface : public GamePointer<RE::SerializationInterface> {
+    struct GameSerializationInterface : public GamePointer<SKSE::SerializationInterface> {
     public:
-        inline GameSerializationInterface(RE::SerializationInterface* serial) {
+        inline GameSerializationInterface(SKSE::SerializationInterface* serial) {
             object = serial;
         }
     };

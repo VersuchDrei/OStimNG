@@ -109,26 +109,6 @@ namespace Serialization {
             RE::FormID newID;
 
             serial->ReadRecordData(&oldID, sizeof(oldID));
-            if (serial->ResolveFormID(oldID, newID)) {
-                RE::TESForm* form = RE::TESForm::LookupByID(newID);
-                if (form) {
-                    RE::TESObjectREFR* vehicle = form->As<RE::TESObjectREFR>();
-                    if (vehicle) {
-                        thread.vehicle = vehicle;
-                    } else {
-                        logger::error("not a vehicle id: {}", newID);
-                        errors |= DeserializationError::VEHICLE;
-                    }
-                } else {
-                    logger::error("cannot find vehicle with id: {}", newID);
-                    errors |= DeserializationError::VEHICLE;
-                }
-            } else {
-                logger::error("cannot resolve vehicle id {:x}", oldID);
-                errors |= DeserializationError::VEHICLE;
-            }
-
-            serial->ReadRecordData(&oldID, sizeof(oldID));
             if (oldID != 0) {
                 if (serial->ResolveFormID(oldID, newID)) {
                     RE::TESForm* form = RE::TESForm::LookupByID(newID);
@@ -176,16 +156,12 @@ namespace Serialization {
         }
 
         int threadID = 0;
-        RE::TESObjectREFR* vehicle = nullptr;
         RE::TESObjectREFR* furniture = nullptr;
         RE::TESForm* furnitureOwner = nullptr;
         std::vector<OldThreadActor> actors;
 
         inline void serialize(SKSE::SerializationInterface* serial) {
             serial->WriteRecordData(&threadID, sizeof(threadID));
-
-            RE::FormID vehicleID = vehicle->GetFormID();
-            serial->WriteRecordData(&vehicleID, sizeof(vehicleID));
 
             RE::FormID furnitureID = furniture ? furniture->GetFormID() : 0;
             serial->WriteRecordData(&furnitureID, sizeof(furnitureID));
@@ -201,11 +177,6 @@ namespace Serialization {
         }
 
         inline void close() {
-            if (vehicle) {
-                vehicle->Disable();
-                vehicle->SetDelete(true);
-            }
-
             if (furniture) {
                 Furniture::freeFurniture(furniture, furnitureOwner);   
             }
