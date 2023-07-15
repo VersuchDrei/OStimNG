@@ -14,13 +14,10 @@ namespace OstimNG_API::Scene
         // Scene successfully started
         OK,
 
-        // A scene is already active
-        AlreadyStarted,
-
         // The arguments were invalid
         Invalid,
 
-        // Failed
+        // Failed 
         Failed
     };
     class ISceneInterface
@@ -32,8 +29,13 @@ namespace OstimNG_API::Scene
         using _RequestPluginAPI_Scene = ISceneInterface* (*)(InterfaceVersion a_interfaceVersion, const char* a_pluginName, REL::Version a_pluginVersion); 
 
 
-        [[nodiscard]] virtual APIResult StartScene(std::string_view pluginName, RE::TESObjectREFR* furniture, std::vector<RE::Actor*> actors) noexcept = 0 ;
+        [[nodiscard]] virtual APIResult StartScene(std::string_view pluginName,RE::TESObjectREFR* furniture,std::string startingAnimation,std::vector<RE::Actor*> actors, int& outThreadID) noexcept = 0 ;
+        [[nodiscard]] virtual APIResult StopScene(std::string_view pluginName, int threadID) noexcept = 0; 
 
+        [[nodiscard]] virtual APIResult SetAutoMode(std::string_view pluginName, int threadID, bool autoMode) noexcept = 0;
+
+        [[nodiscard]] virtual APIResult TryGetMetadata(std::string_view pluginName, int threadID, std::vector<std::string> &tags) noexcept = 0; 
+        [[nodiscard]] virtual APIResult TryGetAutoMode(std::string_view pluginName, int threadID, bool& autoMode) noexcept = 0; 
         
     };
 }
