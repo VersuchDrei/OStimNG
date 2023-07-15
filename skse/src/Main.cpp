@@ -4,7 +4,6 @@
 #include "Core/ThreadInterface.h"
 #include "Events/EventListener.h"
 #include "Furniture/FurnitureTable.h"
-#include "Game/Patch.h"
 #include "GameAPI/GameTable.h"
 #include "Graph/GraphTable.h"
 #include "InterfaceSpec/IPluginInterface.h"
@@ -123,7 +122,6 @@ SKSEPluginLoad(const LoadInterface* skse) {
         return false;
     }
 
-    Patch::Install();
     Papyrus::Bind();
     UI::Settings::LoadSettings();
 

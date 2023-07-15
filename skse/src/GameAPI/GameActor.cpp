@@ -3,6 +3,8 @@
 #include "GameTable.h"
 #include "GameUtil.h"
 
+#include "Util/MathUtil.h"
+
 namespace GameAPI {
     std::vector<GameActor> GameActor::convertVector(std::vector<RE::Actor*> actors) {
         std::vector<GameActor> ret;
@@ -75,6 +77,14 @@ namespace GameAPI {
         });
     }
 
+    void GameActor::playAnimation(std::string animation, float playbackSpeed) const {
+        RE::Actor* actor = form;
+        SKSE::GetTaskInterface()->AddTask([actor, animation, playbackSpeed] {
+            actor->SetGraphVariableFloat("OStimSpeed", playbackSpeed);
+            actor->NotifyAnimationGraph(animation);
+        });
+    }
+
     bool GameActor::isSex(GameSex sex) const {
         RE::SEX actorSex = form->GetActorBase()->GetSex();
         switch (sex) {
@@ -97,6 +107,22 @@ namespace GameAPI {
         SKSE::GetTaskInterface()->AddTask([actor, scale] {
             SetScale(actor, scale);
         });
+    }
+
+    void GameActor::setRotation(float rotation) const {
+        // set rotation Z doesn't work on NPCs
+        // and SetAngle causes weird stuttering on the PC
+        if (form->IsPlayerRef()) {
+            form->SetRotationZ(rotation);
+        } else {
+            SetAngle(nullptr, 0, form, 0, 0, MathUtil::toDegrees(rotation));
+        }
+    }
+
+    void GameActor::lockAtPosition(float x, float y, float z, float r) const {
+        StopTranslation(nullptr, 0, form);
+        setRotation(r);
+        TranslateTo(nullptr, 0, form, x, y, z, 0, 0, MathUtil::toDegrees(r) + 1, 1000000, 0.0001);
     }
 
     void GameActor::setFactionRank(GameFaction faction, int rank) const {

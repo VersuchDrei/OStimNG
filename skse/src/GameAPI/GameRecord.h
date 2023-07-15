@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GamePointer.h"
+#include "GameSerializationInterface.h"
 
 namespace GameAPI {
     template<class T>
@@ -12,7 +12,7 @@ namespace GameAPI {
         inline bool operator==(const GameRecord<T> other) { return form == other.form; }
         inline bool operator!=(const GameRecord<T> other) { return form != other.form; }
 
-        inline void loadJson(std::string path, json json) {
+        void loadJson(std::string path, json json) {
             if (!json.contains("mod")) {
                 logger::info("file {} does not have field 'mod' defined", path);
                 return;
@@ -32,6 +32,22 @@ namespace GameAPI {
         }
 
         inline void loadFile(std::string mod, uint32_t formID) {form = RE::TESDataHandler::GetSingleton()->LookupForm<T>(formID, mod); }
+
+        void loadSerial(GameSerializationInterface serial) {
+            RE::FormID oldFormID;
+            RE::FormID newFormID;
+
+            serial.object->ReadRecordData(&oldFormID, sizeof(oldFormID));
+            if (!serial.object->ResolveFormID(oldFormID, newFormID)) {
+                logger::warn("cannot resolve form id {:x}, missing mod?", oldFormID);
+                return;
+            }
+
+            form = RE::TESForm::LookupByID<T>(newFormID);
+            if (!form) {
+                logger::warn("cannot find form with form id {:x}", newFormID);
+            }
+        }
 
         inline uint32_t getFormID() const {return form->formID; }
     };

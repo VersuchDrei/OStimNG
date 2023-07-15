@@ -32,7 +32,8 @@ namespace OStim {
         // --- setting up the vehicle --- //
         // TODO GameActor
         RE::TESObjectREFR* center = furniture ? furniture : (playerThread ? RE::PlayerCharacter::GetSingleton() : params.actors[0].form);
-        vehicle = center->PlaceObjectAtMe(Util::LookupTable::OStimVehicle, false).get();
+        this->center = center->GetPosition();
+        rotation = center->GetAngleZ();
 
         if (furniture) {
             furnitureType = Furniture::getFurnitureType(furniture, false);
@@ -43,13 +44,10 @@ namespace OStim {
             float angle = furniture->GetAngleZ();
             float sin = std::sin(angle);
             float cos = std::cos(angle);
-            vehicle->data.angle.z = angle + offset[3]; // setting the angle does not directly rotate the object, but the call to SetPosition updates it
-            vehicle->SetPosition(furniture->GetPositionX() + cos * offset[0] + sin * offset[1],
-                                 furniture->GetPositionY() - sin * offset[0] + cos * offset[1],
-                                 furniture->GetPositionZ() + offset[2]);
-            
-        } else {
-            vehicle->MoveTo(center);
+            rotation += offset[3];
+            this->center.x +=  cos * offset[0] + sin * offset[1];
+            this->center.y += -sin * offset[0] + cos * offset[1];
+            this->center.z += offset[2];
         }
 
         for (int i = 0; i < params.actors.size(); i++) {
@@ -309,7 +307,6 @@ namespace OStim {
     void Thread::addActorInner(int index, RE::Actor* actor) {
         GameAPI::GameActor gameActor = actor;
         gameActor.lock();
-        ActorUtil::setVehicle(actor, vehicle);
         addActorSink(actor);
         m_actors.insert(std::make_pair(index, ThreadActor(this, index, actor)));
         ThreadActor* threadActor = GetActor(index);
@@ -344,27 +341,14 @@ namespace OStim {
     }
 
     void Thread::alignActor(ThreadActor* threadActor, Alignment::ActorAlignment alignment) {
-        float angle = vehicle->GetAngleZ();
-        float sin = std::sin(angle);
-        float cos = std::cos(angle);
-
-        float newAngle = vehicle->data.angle.z + MathUtil::toRadians(alignment.rotation);
-
-        RE::Actor* actor = threadActor->getActor().form;
-
-        ObjectRefUtil::stopTranslation(actor);
-
-        // set rotation Z doesn't work on NPCs
-        // and SetAngle causes weird stuttering on the PC
-        if (actor == RE::PlayerCharacter::GetSingleton()) {
-            actor->SetRotationZ(newAngle);
-        } else {
-            ActorUtil::SetAngle(nullptr, 0, actor, 0, 0, MathUtil::toDegrees(newAngle));
-        }
+        float sin = std::sin(rotation);
+        float cos = std::cos(rotation);
         
-
-        ObjectRefUtil::translateTo(actor, vehicle->data.location.x + cos * alignment.offsetX + sin * alignment.offsetY, vehicle->data.location.y - sin * alignment.offsetX + cos * alignment.offsetY, vehicle->data.location.z + alignment.offsetZ,
-            MathUtil::toDegrees(vehicle->data.angle.x), MathUtil::toDegrees(vehicle->data.angle.y), MathUtil::toDegrees(newAngle) + 1, 1000000, 0.0001);
+        threadActor->getActor().lockAtPosition(
+            center.x + cos * alignment.offsetX + sin * alignment.offsetY,
+            center.y - sin * alignment.offsetX + cos * alignment.offsetY,
+            center.z + alignment.offsetZ,
+            rotation + MathUtil::toRadians(alignment.rotation));
 
         threadActor->setScaleMult(alignment.scale);
         threadActor->setSoSBend(alignment.sosBend);
@@ -467,23 +451,14 @@ namespace OStim {
         for (auto& actorIt : m_actors) {
             if (m_currentNode) {
                 if (m_currentNode->speeds.size() > speed) {
-                    Graph::Node* node = m_currentNode;
-                    GameAPI::GameActor gameActor = actorIt.second.getActor();
-                    int index = actorIt.first;
-                    RE::Actor* actor = actorIt.second.getActor().form;
-
-                    SKSE::GetTaskInterface()->AddTask([speed, node, index, gameActor]() {
-                        // TODO how to do this with GameActor?
-                        gameActor.form->SetGraphVariableFloat("OStimSpeed", node->speeds[speed].playbackSpeed);
-                    });
-                    auto anim = m_currentNode->speeds[speed].animation + "_" + std::to_string(index);
-                    actorIt.second.getActor().playAnimation(anim);
+                    auto anim = m_currentNode->speeds[speed].animation + "_" + std::to_string(actorIt.first);
+                    actorIt.second.getActor().playAnimation(anim, m_currentNode->speeds[speed].playbackSpeed);
 
                     // this fixes some face bugs
                     // TODO how to do this with GraphActor?
                     if (vm) {
                         RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-                        auto args = RE::MakeFunctionArguments<RE::TESObjectREFR*>(std::move(actor));
+                        auto args = RE::MakeFunctionArguments<RE::TESObjectREFR*>(std::move(actorIt.second.getActor().form));
                         vm->DispatchStaticCall("NiOverride", "ApplyNodeOverrides", args, callback);
                     }
                 }
@@ -594,8 +569,6 @@ namespace OStim {
 
     void Thread::close() {
         logger::info("closing thread {}", m_threadId);
-        vehicle->Disable();
-        vehicle->SetDelete(true);
 
         for (auto& actorIt : m_actors) {
             actorIt.second.free();
@@ -745,7 +718,6 @@ namespace OStim {
         Serialization::OldThread oldThread;
 
         oldThread.threadID = m_threadId;
-        oldThread.vehicle = vehicle;
         if (furniture) {
             oldThread.furniture = furniture;
             oldThread.furnitureOwner = furnitureOwner;

@@ -3,12 +3,6 @@
 #include "GameAPI/GameActor.h"
 
 namespace ActorUtil {
-    inline void SetVehicle(RE::BSScript::IVirtualMachine* vm, RE::VMStackID stackID, RE::Actor* actor, RE::TESObjectREFR* akVehicle) {
-        using func_t = decltype(SetVehicle);
-        REL::Relocation<func_t> func{RELOCATION_ID(53940, 54764)};
-        func(vm, stackID, actor, akVehicle);
-    }
-
     inline void EquipItem(RE::BSScript::IVirtualMachine* vm, RE::VMStackID stackID, RE::Actor* actor, RE::TESForm* akItem, bool abPreventRemoval, bool abSilent) {
         using func_t = decltype(EquipItem);
         REL::Relocation<func_t> func{RELOCATION_ID(53861, 54661)};
@@ -28,8 +22,6 @@ namespace ActorUtil {
     }
 
     void sort(std::vector<GameAPI::GameActor>& actors, std::vector<GameAPI::GameActor>& dominantActors, int playerIndex);
-
-    void setVehicle(RE::Actor* actor, RE::TESObjectREFR* vehicle);
 
     void equipItem(RE::Actor* actor, RE::TESForm* item, bool preventRemoval, bool silent);
     void equipItem(RE::Actor* actor, RE::TESForm* item);
