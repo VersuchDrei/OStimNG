@@ -3,6 +3,7 @@ using namespace RE;
 
 namespace OstimNG_API::Scene
 {
+    
     enum class InterfaceVersion : uint8_t
     {
         V1
@@ -24,9 +25,9 @@ namespace OstimNG_API::Scene
     {
         public: 
 
-        ISceneInterface* GetAPI(); 
+         
 
-        using _RequestPluginAPI_Scene = ISceneInterface* (*)(InterfaceVersion a_interfaceVersion, const char* a_pluginName, REL::Version a_pluginVersion); 
+        
 
 
         [[nodiscard]] virtual APIResult StartScene(std::string_view pluginName,RE::TESObjectREFR* furniture,std::string startingAnimation,std::vector<RE::Actor*> actors, int& outThreadID) noexcept = 0 ;
@@ -38,6 +39,12 @@ namespace OstimNG_API::Scene
         [[nodiscard]] virtual APIResult TryGetAutoMode(std::string_view pluginName, int threadID, bool& autoMode) noexcept = 0; 
         
     };
+
+    
+    using _RequestPluginAPI_Scene = ISceneInterface* (*)(InterfaceVersion a_interfaceVersion, const char* a_pluginName, REL::Version a_pluginVersion); 
+
+    ISceneInterface* GetAPI();
+
 }
 
 extern OstimNG_API::Scene::ISceneInterface* g_ostimSceneInterface;

@@ -5,7 +5,7 @@ namespace OstimNG_API::Scene
      ///
     /// Gets pointer to API singleton from external plugin.
     ///
-    ISceneInterface* OstimNG_API::Scene::ISceneInterface::GetAPI() 
+    ISceneInterface* GetAPI() 
     {
         if (g_ostimSceneInterface) return g_ostimSceneInterface;    
 
