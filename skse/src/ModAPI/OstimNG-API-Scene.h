@@ -23,20 +23,36 @@ namespace OstimNG_API::Scene
     };
     class ISceneInterface
     {
-        public: 
+        public:
+            /// @brief
+            /// Start a scene with optionally specified furniture reference.
+            /// @return
+            [[nodiscard]] virtual APIResult StartScene(std::string_view pluginName, RE::TESObjectREFR* furniture,
+                                                       std::string startingAnimation, std::vector<RE::Actor*> actors,
+                                                       int& outThreadID) noexcept = 0;
 
-         
 
+            /// @brief 
+            /// Start a scene with nearest found furniture, if any. 
+            /// @return 
+            [[nodiscard]] virtual APIResult StartScene(std::string_view pluginName, std::string startingAnimation,
+                                                       std::vector<RE::Actor*> actors, int& outThreadID) noexcept = 0;
+
+            /// @brief 
+            /// Stop the specified scene.
+            /// @param threadID integer ID of Ostim thread to stop. 
+            /// @return 
+            [[nodiscard]] virtual APIResult StopScene(std::string_view pluginName, int threadID) noexcept = 0;
+
+
+            [[nodiscard]] virtual APIResult SetAutoMode(std::string_view pluginName, int threadID,
+                                                        bool autoMode) noexcept = 0;
+
+            [[nodiscard]] virtual APIResult TryGetMetadata(std::string_view pluginName, int threadID,
+                                                           std::vector<std::string>& tags) noexcept = 0;
+            [[nodiscard]] virtual APIResult TryGetAutoMode(std::string_view pluginName, int threadID,
+                                                           bool& autoMode) noexcept = 0; 
         
-
-
-        [[nodiscard]] virtual APIResult StartScene(std::string_view pluginName,RE::TESObjectREFR* furniture,std::string startingAnimation,std::vector<RE::Actor*> actors, int& outThreadID) noexcept = 0 ;
-        [[nodiscard]] virtual APIResult StopScene(std::string_view pluginName, int threadID) noexcept = 0; 
-
-        [[nodiscard]] virtual APIResult SetAutoMode(std::string_view pluginName, int threadID, bool autoMode) noexcept = 0;
-
-        [[nodiscard]] virtual APIResult TryGetMetadata(std::string_view pluginName, int threadID, std::vector<std::string> &tags) noexcept = 0; 
-        [[nodiscard]] virtual APIResult TryGetAutoMode(std::string_view pluginName, int threadID, bool& autoMode) noexcept = 0; 
         
     };
 

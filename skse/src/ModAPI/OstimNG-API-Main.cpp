@@ -10,7 +10,7 @@ namespace OstimNG_API
                                                                  std::vector<RE::Actor*> actors, int& outThreadID) noexcept {
             
             outThreadID = -1; 
-            if (actors.size() < 2) return Result::Invalid; 
+            if (actors.size() < 1) return Result::Invalid; 
             
             
              OStim::ThreadStartParams params;
@@ -25,13 +25,25 @@ namespace OstimNG_API
 
              return Result::OK; 
         }
-        APIResult SceneInterface::StopScene(std::string_view pluginName, int threadID) noexcept 
-        {
+
+        
+        APIResult SceneInterface::StartScene(std::string_view pluginName, std::string startingAnimation,
+                                             std::vector<RE::Actor*> actors, int& outThreadID) noexcept {
+             if (actors.size() < 1) return Result::Invalid; 
+             
+             auto furnitureList = Furniture::findFurniture(actors.size(), actors[0], MCM::MCMTable::furnitureSearchDistance(), 96);
+             
+             auto* furniture = (furnitureList.size() > 1) ? furnitureList[0] : nullptr; 
+
+             return StartScene(pluginName, furniture, startingAnimation, actors, outThreadID); 
+        }
+
+        APIResult SceneInterface::StopScene(std::string_view pluginName, int threadID) noexcept {
              OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
              if (!thread) return APIResult::Invalid;
 
              thread->stopFaded();
-             return Result::OK; 
+             return Result::OK;
         }
 
         APIResult SceneInterface::SetAutoMode(std::string_view pluginName, int threadID, bool autoMode) noexcept {
@@ -62,3 +74,18 @@ namespace OstimNG_API
 }
 
 
+
+
+extern "C" DLLEXPORT OstimNG_API::Scene::SceneInterface* SKSEAPI RequestPluginAPI_Scene(const OstimNG_API::Scene::InterfaceVersion version, const char* pluginName, REL::Version pluginVersion)
+{
+    const auto api = OstimNG_API::Scene::SceneInterface::GetSingleton(); 
+
+    if (pluginName == nullptr) 
+    {
+        SKSE::log::info("Ostim::RequestPluginAPI_Scene called with a nullptr plugin name");
+        return nullptr;
+    }
+
+    SKSE::log::info("Ostim::RequestPluginAPI_Scene called, InterfaceVersion {} (Plugin name: {}, version: {}", static_cast<uint8_t>(version) + 1, pluginName, pluginVersion);
+    return api; 
+}
