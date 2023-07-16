@@ -180,14 +180,18 @@ namespace UI::Scene {
         if (currentNode->isTransition) {
             menuData.options.clear();
         } else {
+            logger::info("before building conditions");
+            std::vector<Trait::ActorCondition> conditions = state->currentThread->getActorConditions();
+            logger::info("after building conditions");
             for (auto& nav : currentNode->navigations) {
-                menuData.options.push_back({
-                    .nodeId = nav.isTransition? nav.transitionNode->scene_id: nav.destination->scene_id,
-                    .title = nav.destination->scene_name,
-                    .imagePath = nav.icon,
-                    .border = nav.border,
-                    .description = nav.destination->scene_name
-                    });
+                if (nav.destination->fulfilledBy(conditions) && (!nav.transitionNode || nav.transitionNode->fulfilledBy(conditions))) {
+                    menuData.options.push_back(
+                        {.nodeId = nav.isTransition ? nav.transitionNode->scene_id : nav.destination->scene_id,
+                         .title = nav.destination->scene_name,
+                         .imagePath = nav.icon,
+                         .border = nav.border,
+                         .description = nav.destination->scene_name});
+                }
             }
         }
     }

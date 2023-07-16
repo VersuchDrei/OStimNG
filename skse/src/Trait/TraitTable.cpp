@@ -11,6 +11,7 @@
 #include "Util/StringUtil.h"
 
 namespace Trait {
+    const char* ACTOR_TYPE_FILE_PATH{"Data/SKSE/Plugins/OStim/actor types"};
     const char* EXPRESSION_FILE_PATH{"Data/SKSE/Plugins/OStim/facial expressions"};
     const char* EQUIP_OBJECT_FILE_PATH{"Data/SKSE/Plugins/OStim/equip objects"};
 
@@ -73,6 +74,21 @@ namespace Trait {
         noFacialExpressionsFaction = handler->LookupForm<RE::TESFaction>(0xD92, "OStim.esp");
 
         // this needs to go in setupForms because it requires the kDataLoaded event
+        // actor types
+        Util::JsonFileLoader::LoadFilesInFolder(ACTOR_TYPE_FILE_PATH, [&](std::string path, std::string filename, json json) {
+            std::string id = filename;
+            StringUtil::toLower(&id);
+
+            GameAPI::GameCondition condition;
+            if (json.contains("condition")) {
+                condition.loadJson(path, json["condition"]);
+            }
+
+            if (condition) {
+                actorTypes[id] = condition;                                        
+            }
+        });
+
         // equip objects
         Util::JsonFileLoader::LoadFilesInFolder(EQUIP_OBJECT_FILE_PATH, [&](std::string path, std::string filename, json json) {
             std::string id = filename;
@@ -207,6 +223,22 @@ namespace Trait {
             table->insert({key, expressions});
         }
     }
+
+
+    std::string TraitTable::getActorType(GameAPI::GameActor actor) {
+        std::string type = "";
+        int priority = -1;
+        for (auto& [id, condition] : actorTypes) {
+            if (condition.getPriority() > priority) {
+                if (condition.fulfills(actor)) {
+                    type = id;
+                    priority = condition.getPriority();
+                }
+            }
+        }
+        return type;
+    }
+
 
     std::vector<FacialExpression*>* TraitTable::getExpressionsForActionActor(std::string action) {
         return getExpressionsFromTable(expressionsByActionActors, action);

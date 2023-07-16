@@ -1503,7 +1503,6 @@ Bool Property UndressDom Auto
 Bool Property UndressSub Auto
 
 OBarsScript Property OBars Auto
-OStimUpdaterScript OUpdater
 
 ;--------- ID shortcuts
 
@@ -1949,50 +1948,11 @@ int Function RandomInt(int min = 0, int max = 100) ;DEPRECIATED - moving to osan
 EndFunction
 
 Function Startup()
-	LoadRegistrations = PapyrusUtil.FormArray(0, none)
-
 	InstalledVersion = GetAPIVersion()
-
-	OUpdater = Game.GetFormFromFile(0x000D67, "Ostim.esp") as OStimUpdaterScript
 
 	OnLoadGame()
 
 	OUtils.DisplayTextBanner("OStim installed.")
-EndFunction
-
-Form[] LoadRegistrations 
-
-Function RegisterForGameLoadEvent(form f)
-	{Make a "Event OnGameLoad()" in the scripts attatched to the form you send and the event is called on game load}
-	; Note the database is reset when ostim is updated so you should only use this if you also use OUpdater in your mod so you reregister
-
-	OUtils.lock("mtx_os_registerload")
-
-	LoadRegistrations = PapyrusUtil.PushForm(LoadRegistrations, f)
-	Console("Registered for load event: " + f.getname())
-
-	OSANative.unlock("mtx_os_registerload")
-EndFunction 
-
-Function SendLoadGameEvent()
-	int l = LoadRegistrations.Length
-
-	if l > 0
-		int i = 0 
-
-		while i < l 
-			LoadRegistrations[i].RegisterForModEvent("ostim_gameload", "OnGameLoad")
-			ModEvent.Send(ModEvent.Create("ostim_gameload"))
-			LoadRegistrations[i].UnregisterForModEvent("ostim_gameload")
-
-
-
-			Utility.Wait(0.5)
-			i += 1
-		endWhile
-
-	endif
-
 EndFunction
 
 Function OnLoadGame()
@@ -2010,8 +1970,6 @@ Function OnLoadGame()
 	EndIf
 		
 	OBars.OnGameLoad()
-
-	SendLoadGameEvent()
 
 	BBLS_FaceLightFaction = Game.GetFormFromFile(0x00755331, "BBLS_SKSE64_Patch.esp") as Faction
 	Vayne = Game.GetFormFromFile(0x0000083D, "CS_Vayne.esp") as ActorBase
@@ -2045,10 +2003,6 @@ Function OnLoadGame()
 	POSITION_TAGS[14] = "standing"
 	POSITION_TAGS[15] = "suspended"
 
-	if GetAPIVersion() != InstalledVersion
-		OUtils.ForceOUpdate()
-	endif
-
 	RegisterForModEvent("ostim_start", "OstimStart")
 	RegisterForModEvent("ostim_end", "OstimEnd")
 	RegisterForModEvent("ostim_orgasm", "OstimOrgasm")
@@ -2067,7 +2021,6 @@ EndFunction
 float StartTime = 0.0
 
 Faction Property NVCustomOrgasmFaction Auto
-int[] property SoundFormNumberWhitelist auto
 
 bool Property UseAINPConNPC
 	bool Function Get()
@@ -2367,17 +2320,17 @@ ObjectReference Function GetBed()
 EndFunction
 
 bool Function SoloAnimsInstalled()
-	Actor[] _Actors = new Actor[1]
-	_Actors[0] = None
-	return OLibrary.GetRandomScene(_Actors) != ""
+	Actor[] Actors = new Actor[1]
+	Actors[0] = None
+	return OLibrary.GetRandomScene(Actors) != ""
 EndFunction
 
 bool Function ThreesomeAnimsInstalled()
-	Actor[] _Actors = new Actor[3]
-	_Actors[0] = None
-	_Actors[1] = None
-	_Actors[2] = None
-	return OLibrary.GetRandomScene(_Actors) != ""
+	Actor[] Actors = new Actor[3]
+	Actors[0] = None
+	Actors[1] = None
+	Actors[2] = None
+	return OLibrary.GetRandomScene(Actors) != ""
 EndFunction
 
 Bool Function IsVaginal()
@@ -2408,11 +2361,6 @@ Bool Function GetCurrentAnimIsAggressive()
 	EndWhile
 
 	Return false
-EndFunction
-
-String Function GetCurrentAnimationClass()
-	; don't use anim classes, use actions from OMetadata
-	Return ""
 EndFunction
 
 Actor MostRecentOrgasmedActor
@@ -2447,21 +2395,8 @@ Bool Function IsNPCScene()
 	return False
 EndFunction
 
-Function Rescale()
-	; C++ handles scaling
-EndFunction
-
 Int Function GetMaxSpanksAllowed()  
 	Return 0
-EndFunction
-
-Function SetSpankMax(Int Max) 
-EndFunction
-
-Function Realign()
-EndFunction
-
-Function AlternateRealign()
 EndFunction
 
 Function ToggleFreeCam(Bool On = True)
@@ -2515,9 +2450,6 @@ Int Function GetSpankCount() ;
 	Return 0
 EndFunction
 
-Function SetSpankCount(Int Count)
-EndFunction
-
 Function SetGameSpeed(String In)
 	; the body was left in in case some addons call this
 	; but we will not list ConsoleUtil as a requirement
@@ -2534,18 +2466,6 @@ EndFunction
 
 Function SetTimeScale(Int Time)
 	(Game.GetFormFromFile(0x00003A, "Skyrim.esm") as GlobalVariable).SetValue(Time as Float)
-EndFunction
-
-Function HideNavMenu()
-EndFunction
-
-Function ShowNavMenu()
-EndFunction
-
-Function RegisterOSexControlKey(Int zKey)
-EndFunction
-
-Function LoadOSexControlKeys()
 EndFunction
 
 ; I will remove these again in the future, don't call them!
@@ -2579,30 +2499,9 @@ bool function IsInFreeCam()
 	Return false
 endfunction
 
-Function ShakeCamera(Float Power, Float Duration = 0.1)
-	; this is done in C++ now
-EndFunction
-
-Function AutoIncreaseSpeed()
-	; this is done in C++ now
-EndFunction
-
-Function PlayDing()
-EndFunction
-
-Function PlayTickSmall()
-EndFunction
-
-Function PlayTickBig()
-EndFunction
-
 int Function GetScenePassword()
 	return 0
 endfunction
-
-string Function GetNPCDiasa(actor act)
-	return ""
-EndFunction
 
 Bool Function IsActorActive(Actor Act)
 	Return OActor.IsInOStim(Act)
@@ -2673,10 +2572,6 @@ Function ForceStop()
 	OThread.Stop(0)
 EndFunction
 
-OUndressScript function GetUndressScript()
-	return None
-EndFunction
-
 Bool Function IsBed(ObjectReference Bed)
 	If (OSANative.GetDisplayName(bed) == "Bed") || (Bed.Haskeyword(Keyword.GetKeyword("FurnitureBedRoll"))) || (OSANative.GetDisplayName(bed) == "Bed (Owned)")
 		Return True
@@ -2686,10 +2581,6 @@ EndFunction
 
 Bool Function IsBedRoll(objectReference Bed)
 	Return (Bed.Haskeyword(Keyword.GetKeyword("FurnitureBedRoll")))
-EndFunction
-
-ObjectReference Function GetOSAStage()
-	Return None
 EndFunction
 
 Function AdjustAnimationSpeed(float amount)
@@ -2718,9 +2609,6 @@ EndFunction
 
 Actor Function GetActor(int Index)
 	Return OThread.GetActor(0, Index)
-EndFunction
-
-Function ResetRandom()
 EndFunction
 
 Bool Function UsingBed()
@@ -2757,9 +2645,6 @@ EndFunction
 
 string[] Function GetAllSceneMetadata()
 	return OThread.GetMetadata(0)
-EndFunction
-
-Function ResetState()
 EndFunction
 
 Float Function GetTimeSinceLastPlayerInteraction()

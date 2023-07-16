@@ -16,7 +16,7 @@ namespace Graph{
         static Node* getNodeByAnimation(std::string anim);
 
         static bool hasNodes(Furniture::FurnitureType furnitureType, int actorCount);
-        static Node* getRandomNode(Furniture::FurnitureType furnitureType, std::vector<Trait::ActorConditions> actorConditions, std::function<bool(Node*)> nodeCondition);
+        static Node* getRandomNode(Furniture::FurnitureType furnitureType, std::vector<Trait::ActorCondition> actorConditions, std::function<bool(Node*)> nodeCondition);
 
         static void SetupActions();
         static ActionAttributes* GetActionAttributesByType(std::string type);
@@ -42,7 +42,8 @@ namespace Graph{
             {"nipple", Requirement::NIPPLE},
             {"penis", Requirement::PENIS},
             {"testicles", Requirement::TESTICLES},
-            {"vagina", Requirement::VAGINA}
+            {"vagina", Requirement::VAGINA},
+            {"vampire", Requirement::VAMPIRE}
         };
     };
 }

@@ -8,6 +8,7 @@
 #include "GameRace.h"
 #include "GameRecord.h"
 #include "GameSex.h"
+#include "GameTable.h"
 #include "GameVoice.h"
 
 namespace GameAPI {
@@ -37,6 +38,8 @@ namespace GameAPI {
         inline GameAPI::GameRace getRace() const { return form->GetActorBase()->GetRace(); }
         inline bool isRace(GameRace race) const { return form->GetActorBase()->GetRace() == race.form; }
         bool isHuman() const;
+        inline bool isVampire() const { return form->HasKeyword(GameTable::getVampireKeyword()); }
+        inline bool isChild() const { return form->IsChild(); }
         inline GameAPI::GameVoice getVoice() const { return form->GetActorBase()->voiceType; }
         inline bool hasVoice(GameAPI::GameVoice voice) const { return form->GetActorBase()->voiceType == voice.form; }
 

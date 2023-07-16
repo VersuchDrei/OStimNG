@@ -323,11 +323,10 @@ namespace OStim {
         alignActor(threadActor, {});
     }
 
-    std::vector<Trait::ActorConditions> Thread::getActorConditions() {
-        std::vector<Trait::ActorConditions> conditions;
+    std::vector<Trait::ActorCondition> Thread::getActorConditions() {
+        std::vector<Trait::ActorCondition> conditions;
         for (int i = 0; i < m_actors.size(); i++) {
-            // TODO do this with GameActor
-            conditions.push_back(Trait::ActorConditions::create(GetActor(i)->getActor()));
+            conditions.push_back(Trait::ActorCondition::create(GetActor(i)));
         }
 
         return conditions;

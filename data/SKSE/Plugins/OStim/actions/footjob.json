@@ -8,7 +8,12 @@
 		],
 		"strippingSlots":[
 			37
-		]
+		],
+		"stringLists":{
+			"cum":[
+				"feet"
+			]
+		}
 	},
 	"target":{
 		"stimulation":0.9,

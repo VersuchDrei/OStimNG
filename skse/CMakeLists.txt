@@ -51,7 +51,6 @@ set(sources
     src/Game/LocaleManager.cpp
 	src/Game/LocaleManager.h
 	src/Game/Locker.h
-	src/Game/Patch.h
     src/GameAPI/Game.cpp
     src/GameAPI/GameActor.cpp
     src/GameAPI/GameCamera.cpp

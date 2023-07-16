@@ -14,19 +14,19 @@ namespace Graph {
     void Node::mergeActionsIntoActors() {
         for (Action action : actions) {
             if (action.actor < actors.size()) {
-                actors[action.actor].requirements |= action.attributes->actor.requirements;
+                actors[action.actor].condition.requirements |= action.attributes->actor.requirements;
                 actors[action.actor].moan |= action.attributes->actor.moan;
                 actors[action.actor].talk |= action.attributes->actor.talk;
                 actors[action.actor].muffled |= action.attributes->actor.muffled;
             }
             if (action.target < actors.size()) {
-                actors[action.target].requirements |= action.attributes->target.requirements;
+                actors[action.target].condition.requirements |= action.attributes->target.requirements;
                 actors[action.target].moan |= action.attributes->target.moan;
                 actors[action.target].talk |= action.attributes->target.talk;
                 actors[action.target].muffled |= action.attributes->target.muffled;
             }
             if (action.performer < actors.size()) {
-                actors[action.performer].requirements |= action.attributes->performer.requirements;
+                actors[action.performer].condition.requirements |= action.attributes->performer.requirements;
                 actors[action.performer].moan |= action.attributes->performer.moan;
                 actors[action.performer].talk |= action.attributes->performer.talk;
                 actors[action.performer].muffled |= action.attributes->performer.muffled;
@@ -102,14 +102,14 @@ namespace Graph {
         navigations.push_back(navigation);
     }
 
-    bool Node::fulfilledBy(std::vector<Trait::ActorConditions> conditions) {
+    bool Node::fulfilledBy(std::vector<Trait::ActorCondition> conditions) {
         int size = actors.size();
         if (size < conditions.size()) {
             return false;
         }
 
         for (int i = 0; i < size; i++) {
-            if (!conditions[i].fulfills(actors[i].conditions)) {
+            if (!conditions[i].fulfills(actors[i].condition)) {
                 return false;
             }
         }
@@ -117,7 +117,7 @@ namespace Graph {
         return true;
     }
 
-    Node* Node::getRandomNodeInRange(int distance, std::vector<Trait::ActorConditions> actorConditions, std::function<bool(Node*)> nodeCondition) {
+    Node* Node::getRandomNodeInRange(int distance, std::vector<Trait::ActorCondition> actorConditions, std::function<bool(Node*)> nodeCondition) {
         std::vector<Node*> nodes;
         std::vector<Node*> lastLevel = { this };
         std::vector<Node*> nextLevel;
