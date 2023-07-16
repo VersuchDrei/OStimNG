@@ -3,7 +3,7 @@
 * * so that other mods can overwrite them if they want to modify undressing behavior
 * * by default all undressing is done in C++ and this script is useless
 */;
-ScriptName OUndress Extends Quest
+ScriptName OUndress
 
 ;/* UsePapyrusUndressing
 * * if you change the return value of this function to true OStim will invoke the papyrus undressing functions of this script

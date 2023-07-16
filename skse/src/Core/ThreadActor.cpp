@@ -276,14 +276,14 @@ namespace OStim {
 
         // strap-ons
         if (!schlong) {
-            if ((graphActor->requirements & Graph::Requirement::PENIS) == Graph::Requirement::PENIS) {
+            if ((graphActor->condition.requirements & Graph::Requirement::PENIS) == Graph::Requirement::PENIS) {
                 if (MCM::MCMTable::equipStrapOnIfNeeded()) {
                     equipObject("strapon");
                 }
             } else {
                 if (MCM::MCMTable::unequipStrapOnIfNotNeeded()) {
                     unequipObject("strapon");
-                } else if ((graphActor->requirements & Graph::Requirement::VAGINA) == Graph::Requirement::VAGINA && MCM::MCMTable::unequipStrapOnIfInWay()) {
+                } else if ((graphActor->condition.requirements & Graph::Requirement::VAGINA) == Graph::Requirement::VAGINA && MCM::MCMTable::unequipStrapOnIfInWay()) {
                     unequipObject("strapon");
                 }
             }

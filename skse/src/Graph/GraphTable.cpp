@@ -86,7 +86,7 @@ namespace Graph {
         return iter2 != iter->second->end();
     }
 
-    Node* GraphTable::getRandomNode(Furniture::FurnitureType furnitureType, std::vector<Trait::ActorConditions> actorConditions, std::function<bool(Node*)> nodeCondition) {
+    Node* GraphTable::getRandomNode(Furniture::FurnitureType furnitureType, std::vector<Trait::ActorCondition> actorConditions, std::function<bool(Node*)> nodeCondition) {
         if (furnitureType == Furniture::FurnitureType::BED) {
             furnitureType = Furniture::FurnitureType::NONE;
         }

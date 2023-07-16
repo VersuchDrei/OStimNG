@@ -32,11 +32,6 @@ float Function GetCurrentHourOfDay() global
 EndFunction
 
 Function RegisterForOUpdate(form f) Global
-	(game.GetFormFromFile(0x000D67, "Ostim.esp") as OStimUpdaterScript).AddFormToDatabase(f)
-EndFunction
-
-Function ForceOUpdate() Global
-	(game.GetFormFromFile(0x000D67, "OStim.esp") as OStimUpdaterScript).DoUpdate()
 EndFunction
 
 

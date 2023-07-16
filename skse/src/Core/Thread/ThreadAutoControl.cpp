@@ -60,7 +60,7 @@ namespace OStim {
         return true;
     }
 
-    Graph::Node* getRandomForeplayNode(std::vector<Trait::ActorConditions> actorConditions, Furniture::FurnitureType furnitureType, bool lesbian, bool gay) {
+    Graph::Node* getRandomForeplayNode(std::vector<Trait::ActorCondition> actorConditions, Furniture::FurnitureType furnitureType, bool lesbian, bool gay) {
         std::vector<std::function<bool(Graph::Node*)>> conditions;
         conditions.push_back([&](Graph::Node* node) { return node->findAnyAction({"analsex", "tribbing", "vaginalsex"}) == -1; });
         addFurniture(conditions, furnitureType);
@@ -79,7 +79,7 @@ namespace OStim {
         return Graph::GraphTable::getRandomNode(furnitureType, actorConditions, [&conditions](Graph::Node* node) { return checkConditions(conditions, node); });
     }
 
-    Graph::Node* getRandomSexNode(std::vector<Trait::ActorConditions> actorConditions, Furniture::FurnitureType furnitureType, bool lesbian, bool gay) {
+    Graph::Node* getRandomSexNode(std::vector<Trait::ActorCondition> actorConditions, Furniture::FurnitureType furnitureType, bool lesbian, bool gay) {
         std::vector<std::function<bool(Graph::Node*)>> conditions;
         // TODO let conditions handle tribbing
         conditions.push_back([&lesbian](Graph::Node* node) { return node->findAnyAction(lesbian ? std::vector<std::string>{"analsex", "tribbing", "vaginalsex"} : std::vector<std::string>{"analsex", "vaginalsex"}) != -1;

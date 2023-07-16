@@ -194,8 +194,9 @@ namespace UI::Align {
 
 
         auto infoPositions = &UI::Settings::positionSettings.AlignMenuPosition.InfoPosition;
-        const RE::GFxValue infoX = RE::GFxValue{ infoPositions->xPos };
-        const RE::GFxValue infoY = RE::GFxValue{ infoPositions->yPos };
+        // TODO: build these offsets into flash?
+        const RE::GFxValue infoX = RE::GFxValue{ infoPositions->xPos - 25 };
+        const RE::GFxValue infoY = RE::GFxValue{ infoPositions->yPos - 450 };
         const RE::GFxValue infoXScale = RE::GFxValue{ infoPositions->xScale };
         const RE::GFxValue infoYScale = RE::GFxValue{ infoPositions->yScale };
         RE::GFxValue infoPosArray[4]{ infoX, infoY, infoXScale, infoYScale };

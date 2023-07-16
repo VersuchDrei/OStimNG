@@ -4,6 +4,7 @@
 #include "FacialExpression.h"
 
 #include "GameAPI/GameActor.h"
+#include "GameAPI/GameCondition.h"
 
 namespace Trait {
     class TraitTable {
@@ -15,6 +16,8 @@ namespace Trait {
 
         static void setup();
         static void setupForms();
+
+        static std::string getActorType(GameAPI::GameActor actor);
 
         static std::vector<FacialExpression*>* getExpressionsForActionActor(std::string);
         static std::vector<FacialExpression*>* getExpressionsForActionTarget(std::string);
@@ -36,6 +39,8 @@ namespace Trait {
         static FaceModifier parseModifier(nlohmann::json json);
         static void addToTable(std::unordered_map<std::string, std::vector<FacialExpression*>*>* table, std::string key, FacialExpression* expression);
         static std::vector<FacialExpression*>* getExpressionsFromTable(std::unordered_map<std::string, std::vector<FacialExpression*>*> table, std::string key);
+
+        inline static std::unordered_map<std::string, GameAPI::GameCondition> actorTypes;
 
         inline static std::unordered_map<std::string, std::vector<FacialExpression*>*> expressionsByActionActors;
         inline static std::unordered_map<std::string, std::vector<FacialExpression*>*> expressionsByActionTargets;

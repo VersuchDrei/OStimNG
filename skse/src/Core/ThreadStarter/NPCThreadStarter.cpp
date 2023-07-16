@@ -31,13 +31,13 @@ namespace OStim {
             Furniture::FurnitureType furnitureType = Furniture::getFurnitureType(params.furniture, false);
             switch (furnitureType) {
             case Furniture::FurnitureType::NONE:
-                params.startingNode = Graph::GraphTable::getRandomNode(furnitureType, Trait::ActorConditions::create(params.actors), [&](Graph::Node* node) { return node->hasActorTagOnAny("standing"); });
+                params.startingNode = Graph::GraphTable::getRandomNode(furnitureType, Trait::ActorCondition::create(params.actors), [&](Graph::Node* node) { return node->hasActorTagOnAny("standing"); });
                 break;
             case Furniture::FurnitureType::BED:
-                params.startingNode = Graph::GraphTable::getRandomNode(furnitureType, Trait::ActorConditions::create(params.actors), [&](Graph::Node* node) { return !node->hasActorTagOnAny("standing"); });
+                params.startingNode = Graph::GraphTable::getRandomNode(furnitureType, Trait::ActorCondition::create(params.actors), [&](Graph::Node* node) { return !node->hasActorTagOnAny("standing"); });
                 break;
             default:
-                params.startingNode = Graph::GraphTable::getRandomNode(furnitureType, Trait::ActorConditions::create(params.actors), [&](Graph::Node*) { return true; });
+                params.startingNode = Graph::GraphTable::getRandomNode(furnitureType, Trait::ActorCondition::create(params.actors), [&](Graph::Node*) { return true; });
                 break;
             }
         }
