@@ -55,9 +55,9 @@ namespace Graph {
         void mergeActionsIntoActors();
         void tryAddNavigation(RawNavigation destination, std::unordered_map<Graph::Node*, std::vector<RawNavigation>>& navigationMap);
 
-        bool fulfilledBy(std::vector<Trait::ActorConditions> conditions);
+        bool fulfilledBy(std::vector<Trait::ActorCondition> conditions);
 
-        Node* getRandomNodeInRange(int distance, std::vector<Trait::ActorConditions> actorConditions, std::function<bool(Node*)> nodeCondition);
+        Node* getRandomNodeInRange(int distance, std::vector<Trait::ActorCondition> actorConditions, std::function<bool(Node*)> nodeCondition);
 
         std::vector<Trait::FacialExpression*>* getFacialExpressions(int position);
         std::vector<Trait::FacialExpression*>* getOverrideExpressions(int position);

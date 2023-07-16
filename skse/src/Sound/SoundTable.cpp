@@ -80,7 +80,7 @@ namespace Sound {
             return &iter->second;
         }
 
-        if (actor.hasKeyword(Util::LookupTable::ActorTypeNPC)) {
+        if (actor.isHuman()) {
             iter = voiceSets.find(actor.isSex(GameAPI::GameSex::FEMALE) ? 1 : 0);
             if (iter != voiceSets.end()) {
                 return &iter->second;

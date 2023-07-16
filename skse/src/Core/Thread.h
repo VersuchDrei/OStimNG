@@ -45,7 +45,7 @@ namespace OStim {
         void AddActor(RE::Actor* a_actor);
         void RemoveActor();
 
-        std::vector<Trait::ActorConditions> getActorConditions();
+        std::vector<Trait::ActorCondition> getActorConditions();
 
         void loop();
 
