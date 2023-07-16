@@ -300,17 +300,15 @@ Function DrawGeneralPage()
 	SetCursorPosition(1)
 	AddColoredHeader("$ostim_header_system")
 	SetCursorPosition(3)
-	AddTextOptionST("OID_Update", "$ostim_update", "")
-	SetCursorPosition(5)
 	AddTextOptionST("OID_BootstrapMCM", "$ostim_bootstrap_mcm", "")
 
-	SetCursorPosition(9)
+	SetCursorPosition(7)
 	AddColoredHeader("$ostim_header_save_load")
-	SetCursorPosition(11)
+	SetCursorPosition(9)
 	AddTextOptionST("OID_ExportSettings", "$ostim_export", "$ostim_done")
-	SetCursorPosition(13)
+	SetCursorPosition(11)
 	AddTextOptionST("OID_ImportSettings", "$ostim_import", "$ostim_done")
-	SetCursorPosition(15)
+	SetCursorPosition(13)
 	AddTextOptionST("OID_ResetSettings", "$ostim_import_default", "$ostim_done")
 EndFunction
 
@@ -459,17 +457,6 @@ State OID_OnlyLightInDark
 EndState
 
 
-State OID_Update
-	Event OnHighlightST()
-		SetInfoText("$ostim_tooltip_update")
-	EndEvent
-
-	Event OnSelectST()
-		ShowMessage("$ostim_message_update_close_menus", false)
-		OUtils.ForceOUpdate()
-	EndEvent
-EndState
-
 State OID_BootstrapMCM
 	Event OnHighlightST()
 		SetInfoText("$ostim_tooltip_bootstrap_mcm")
@@ -537,7 +524,7 @@ Function DrawControlsPage()
 	SetCursorPosition(12)
 	AddKeyMapOptionST("OID_KeyFreeCamToggle", "$ostim_tfc_key", Main.FreecamKey)
 	SetCursorPosition(14)
-	AddKeyMapOptionST("OID_KeySearchMenu", "$ostim_key_search_menu", Main.AlignmentKey)
+	AddKeyMapOptionST("OID_KeySearchMenu", "$ostim_key_search_menu", Main.SearchKey)
 	SetCursorPosition(16)
 	AddKeyMapOptionST("OID_KeyAlignmentMenu", "$ostim_key_alignment_menu", Main.AlignmentKey)
 
