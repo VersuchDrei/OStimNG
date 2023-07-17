@@ -217,9 +217,9 @@ namespace UI::Scene {
         if (node->speeds.size() > 1) {
             auto speed = thread->getCurrentSpeed();
             auto& speedObj = node->speeds[speed];
-            auto speedString = RE::GFxValue{ std::to_string(speedObj.playbackSpeed) };
-            
-            RE::GFxValue args[3]{ speedString, speed != (node->speeds.size() - 1), speed != 0};
+            const std::string speedStr = std::to_string(speedObj.playbackSpeed);
+            logger::info("{}"sv, speedStr);
+            RE::GFxValue args[3]{ RE::GFxValue{ speedStr }, speed != (node->speeds.size() - 1), speed != 0};
             boxes.Invoke("ShowSpeed", nullptr, args, 3);
         }
         else {
