@@ -34,74 +34,6 @@ namespace Graph {
         }
     }
 
-    void Node::tryAddNavigation(RawNavigation rawNav, std::unordered_map<Graph::Node*, std::vector<RawNavigation>>& navigationMap) {
-        Node* navigationDestination = GraphTable::getNodeById(rawNav.destination);
-        if (!navigationDestination) {
-            logger::warn("Couldn't add navigation from {} to {} because {} doesn't exist.", scene_id, rawNav.destination, rawNav.destination);
-            return;
-        }
-
-        if (furnitureType != navigationDestination->furnitureType) {
-            logger::warn("Couldn't add navigation from {} to {} because their furniture types don't match.", scene_id, rawNav.destination);
-            return;
-        }
-
-        if (actors.size() != navigationDestination->actors.size()) {
-            logger::warn("Couldn't add navigation from {} to {} because their actor counts don't match.", scene_id, rawNav.destination);
-            return;
-        }
-
-        for (auto& existingNavigation : navigations) {
-            if (existingNavigation.destination == navigationDestination || existingNavigation.transitionNode == navigationDestination) {
-                return;
-            }
-        }
-
-        Navigation navigation;
-
-        if (navigationDestination->isTransition) {
-            for (auto nav : navigationMap) {
-                if (nav.first->scene_id == navigationDestination->scene_id) {
-                    if (nav.second.size() != 1) {
-                        logger::warn("Couldn't add transition from {} to destination because the navigations on {} were invalid", scene_id, rawNav.destination);
-                        return;
-                    }
-
-                    navigation.destination = GraphTable::getNodeById(nav.second[0].destination);
-
-                    if (!navigation.destination) {
-                        logger::warn("Couldn't add navigation from {} to {} because {} transition destination doesn't exist.", scene_id, rawNav.destination, rawNav.destination);
-                        return;
-                    }
-
-                    // TODO: what do when people chain transitions?
-                    if (navigation.destination->isTransition) {
-                        logger::warn("Couldn't add navigation from {} to {} because {} transition destination is another transition.", scene_id, rawNav.destination, rawNav.destination);
-                        return;
-                    }
-                    break;
-                }
-            }
-
-            navigation.isTransition = true;
-            navigation.transitionNode = navigationDestination;
-        } else {
-            navigation.destination = navigationDestination;
-        }
-
-
-        if (std::regex_search(rawNav.border, Constants::hexColor)) {
-            navigation.border = rawNav.border;
-        }
-        if (rawNav.icon == "") {
-            navigation.icon = "OStim/icons/" + LegacyUtil::getIcon(navigation.destination == this ? navigation.transitionNode : navigation.destination) + ".dds";
-        } else {
-            navigation.icon = "OStim/icons/" + rawNav.icon + ".dds";
-        }
-
-        navigations.push_back(navigation);
-    }
-
     bool Node::fulfilledBy(std::vector<Trait::ActorCondition> conditions) {
         int size = actors.size();
         if (size < conditions.size()) {
@@ -181,8 +113,8 @@ namespace Graph {
         }
 
         StringUtil::toLower(&type);
-        auto iter = actors[position].autotransitions.find(type);
-        if (iter != actors[position].autotransitions.end()) {
+        auto iter = actors[position].autoTransitions.find(type);
+        if (iter != actors[position].autoTransitions.end()) {
             return iter->second;
         }
         return "";

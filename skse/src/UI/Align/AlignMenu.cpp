@@ -107,7 +107,7 @@ namespace UI::Align {
         RE::GFxValue sceneInfo;
         root.GetMember("sceneInfo", &sceneInfo);
 
-        const RE::GFxValue sceneInfoPack = RE::GFxValue{currentNode->sourceModule.c_str()};
+        const RE::GFxValue sceneInfoPack = RE::GFxValue{currentNode->modpack.c_str()};
         const RE::GFxValue sceneInfoAnimName = RE::GFxValue{currentNode->scene_id.c_str()};
         //const RE::GFxValue threadKeyValue = RE::GFxValue{currentThread->getAlignmentKey().toString().c_str()};
         std::string key = currentThread->getAlignmentKey();

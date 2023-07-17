@@ -10,7 +10,6 @@
 #include "Papyrus/PapyrusActorUtil.h"
 #include "Papyrus/PapyrusControl.h"
 #include "Papyrus/PapyrusData.h"
-#include "Papyrus/PapyrusDatabase.h"
 #include "Papyrus/PapyrusFace.h"
 #include "Papyrus/PapyrusFurniture.h"
 #include "Papyrus/PapyrusLibrary.h"
@@ -47,9 +46,5 @@ namespace Papyrus {
             papyrus->Register(PapyrusThreadBuilder::Bind);
             papyrus->Register(PapyrusUndress::Bind);
         }
-    }
-
-    void Build() {
-        PapyrusDatabase::BuildDB();
     }
 }  // namespace Papyrus

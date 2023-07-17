@@ -19,6 +19,6 @@ namespace Graph {
         std::unordered_map<int, Trait::FaceModifier> eyeballModifierOverride;
         std::vector<std::string> tags;
         Trait::ActorCondition condition;
-        std::unordered_map<std::string, std::string> autotransitions;
+        std::unordered_map<std::string, std::string> autoTransitions;
     };
 }

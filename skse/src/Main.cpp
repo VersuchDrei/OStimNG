@@ -8,18 +8,18 @@
 #include "Graph/GraphTable.h"
 #include "InterfaceSpec/IPluginInterface.h"
 #include "InterfaceSpec/PluginInterface.h"
+#include "MCM/MCMTable.h"
 #include "Messaging/IMessages.h"
 #include "Papyrus/Papyrus.h"
 #include "Serial/Manager.h"
 #include "Sound/SoundTable.h"
 #include "Trait/TraitTable.h"
 #include "UI/Align/AlignMenu.h"
-#include "Util/CompatibilityTable.h"
-#include "Util/LookupTable.h"
-#include "MCM/MCMTable.h"
 #include "UI/Scene/SceneMenu.h"
 #include "UI/UIState.h"
-
+#include "Util/CompatibilityTable.h"
+#include "Util/LegacyUtil.h"
+#include "Util/LookupTable.h"
 
 using namespace RE::BSScript;
 using namespace SKSE;
@@ -82,7 +82,8 @@ namespace {
                 Graph::GraphTable::SetupActions();
                 Trait::TraitTable::setup();
                 Alignment::Alignments::LoadAlignments();
-                Papyrus::Build();
+                LegacyUtil::loadLegacyScenes();
+                Graph::GraphTable::setupNodes();
 
                 Compatibility::CompatibilityTable::setupForms();
                 Util::LookupTable::setupForms();

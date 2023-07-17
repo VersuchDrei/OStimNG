@@ -126,10 +126,6 @@ namespace PapyrusUtil {
     }
 
     std::string GetAnimClass(RE::StaticFunctionTag*, std::string id) {
-        if (auto node = Graph::GraphTable::getNodeById(id)) {
-            return node->animClass;
-        }
-
         return "Ap";
     }
 
