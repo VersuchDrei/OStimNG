@@ -53,8 +53,8 @@ namespace OStim {
         int getActorPosition(GameAPI::GameActor actor);
 
         void SetSpeed(int speed);
-        void increaseSpeed();
-        void decreaseSpeed();
+        bool increaseSpeed();
+        bool decreaseSpeed();
 
         float getMaxExcitement();
 

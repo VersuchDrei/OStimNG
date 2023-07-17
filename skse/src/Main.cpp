@@ -96,12 +96,6 @@ namespace {
                 // we are installing this hook so late because we need it to overwrite the PapyrusUtil hook
                 Events::PackageStart::Install();
             } break;
-            case SKSE::MessagingInterface::kNewGame: {               
-                UI::PostGameLoad();
-            } break;
-            case SKSE::MessagingInterface::kPostLoadGame: {
-                UI::PostGameLoad();
-            } break;
         }
     }
 }  // namespace

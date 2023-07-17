@@ -33,9 +33,9 @@ namespace UI::Align {
             uiMovie->SetMouseCursorCount(0);  // disable input
         }
 
-        scaleformManager->LoadMovieEx(this, MENU_PATH, [](RE::GFxMovieDef* a_def) -> void {
+        scaleformManager->LoadMovieEx(menu, MENU_PATH, [](RE::GFxMovieDef* a_def) -> void {
             a_def->SetState(RE::GFxState::StateType::kLog, RE::make_gptr<Logger>().get());
-        });
+        });        
     }
 
     void AlignMenu::Register() {
