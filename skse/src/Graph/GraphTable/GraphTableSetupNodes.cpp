@@ -248,6 +248,14 @@ namespace Graph {
                                 }
                             }
 
+                            if (jsonActor.contains("intendedSex")) {
+                                if (jsonActor["intendedSex"].is_string()) {
+                                    actor.condition.sex = GameAPI::GameSexAPI::fromString(jsonActor["intendedSex"]);
+                                } else {
+                                    logger::warn("itendedSex property of actor {} of scene {} isn't a string", index, node->scene_id);
+                                }
+                            }
+
                             if (jsonActor.contains("sosBend")) {
                                 if (jsonActor["sosBend"].is_number_integer()) {
                                     actor.sosBend = jsonActor["sosBend"];
@@ -443,6 +451,10 @@ namespace Graph {
                     logger::warn("actions property of scene {} isn't a list", node->scene_id);
                 }
             }
+
+            node->mergeActionsIntoActors();
+
+            addNode(node);
         });
 
         std::stable_sort(navigations.begin(), navigations.end(), [&](RawNavigation navigationA, RawNavigation navigationB){
