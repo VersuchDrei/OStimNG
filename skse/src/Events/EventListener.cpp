@@ -179,8 +179,7 @@ namespace Events {
             } else if (keyCode == MCM::MCMTable::keyEnd()) {
                 OStim::ThreadManager::GetSingleton()->getPlayerThread()->stop();
             } else if (keyCode == MCM::MCMTable::keySpeedUp()) {
-                if (
-                    OStim::ThreadManager::GetSingleton()->getPlayerThread()->increaseSpeed()) {
+                if (OStim::ThreadManager::GetSingleton()->getPlayerThread()->increaseSpeed()) {
                     UI::Scene::SceneMenu::SpeedUp();
                 }
             } else if (keyCode == MCM::MCMTable::keySpeedDown()) {
