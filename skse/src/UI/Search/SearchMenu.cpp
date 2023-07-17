@@ -4,22 +4,31 @@
 
 namespace UI::Search {
 
-    inline RE::GFxValue GetRoot() {
-        RE::GFxValue root;
-        RE::GPtr<RE::IMenu> searchMenu = RE::UI::GetSingleton()->GetMenu(SearchMenu::MENU_NAME);
-        assert(searchMenu && searchMenu->uiMovie);
+    inline RE::GFxValue GetRoot(RE::GPtr<RE::GFxMovieView> uiMovie) {
+        assert(uiMovie);
+        RE::GFxValue root;        
 
-        searchMenu->uiMovie->GetVariable(&root, "_root");
+        uiMovie->GetVariable(&root, "_root");
         return root;
     }
+    inline RE::GFxValue GetRoot() {
+        RE::GPtr<RE::IMenu> searchMenu = RE::UI::GetSingleton()->GetMenu(SearchMenu::MENU_NAME);
+        GetRoot(searchMenu->uiMovie);
+    }
 
-    inline RE::GFxValue GetSearchBox() {
-        auto root = GetRoot();
+    inline RE::GFxValue GetSearchBox(RE::GPtr<RE::GFxMovieView> uiMovie) {
+        auto root = GetRoot(uiMovie);
+        
         RE::GFxValue searchBoxContainer;
         root.GetMember("searchMCContainer", &searchBoxContainer);
         RE::GFxValue searchBox;
         searchBoxContainer.GetMember("searchMC", &searchBox);
         return searchBox;
+    }
+
+    inline RE::GFxValue GetSearchBox() {
+        RE::GPtr<RE::IMenu> searchMenu = RE::UI::GetSingleton()->GetMenu(SearchMenu::MENU_NAME);
+        return GetSearchBox(searchMenu->uiMovie);
     }
 
 	SearchMenu::SearchMenu() : Super() {
@@ -46,25 +55,9 @@ namespace UI::Search {
         });
 
         view = menu->uiMovie;
-	}
 
-    void SearchMenu::Register() {
-        auto ui = RE::UI::GetSingleton();
-        if (ui) {
-            ui->Register(MENU_NAME, Creator);
-            logger::info("Registered {}", MENU_NAME);
 
-            RE::GPtr<RE::IMenu> alignMenu = RE::UI::GetSingleton()->GetMenu(MENU_NAME);
-
-            auto msgQ = RE::UIMessageQueue::GetSingleton();
-            if (msgQ) {
-                msgQ->AddMessage(SearchMenu::MENU_NAME, RE::UI_MESSAGE_TYPE::kShow, nullptr);
-            }
-        }
-    }
-
-    void SearchMenu::PostRegister() {
-        auto optionBoxes = GetSearchBox();
+        auto optionBoxes = GetSearchBox(uiMovie);
 
         RE::GFxFunctionHandler* fn = new UI::doHideMenuRequest;
         RE::GFxValue doHideFn;
@@ -80,6 +73,21 @@ namespace UI::Search {
         RE::GFxValue doSelectFn;
         view->CreateFunction(&doSelectFn, fn3);
         optionBoxes.SetMember("doSelectOption", doSelectFn);
+	}
+
+    void SearchMenu::Register() {
+        auto ui = RE::UI::GetSingleton();
+        if (ui) {
+            ui->Register(MENU_NAME, Creator);
+            logger::info("Registered {}", MENU_NAME);
+
+            RE::GPtr<RE::IMenu> alignMenu = RE::UI::GetSingleton()->GetMenu(MENU_NAME);
+
+            auto msgQ = RE::UIMessageQueue::GetSingleton();
+            if (msgQ) {
+                msgQ->AddMessage(SearchMenu::MENU_NAME, RE::UI_MESSAGE_TYPE::kShow, nullptr);
+            }
+        }
     }
 
     void SearchMenu::Show() {
@@ -108,7 +116,8 @@ namespace UI::Search {
     }
 
     void SearchMenu::ApplyPositions() {
-        auto root = GetRoot();
+        RE::GPtr<RE::IMenu> searchMenu = RE::UI::GetSingleton()->GetMenu(SearchMenu::MENU_NAME);
+        auto root = GetRoot(searchMenu->uiMovie);
         if (!root.IsObject())
             return;
 

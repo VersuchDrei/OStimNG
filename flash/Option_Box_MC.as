@@ -16,15 +16,15 @@ class Option_Box_MC extends MovieClip
 	var optionGutter;
 	var optionGutterX;
 	var optionGutterY;
-	
+
 	var menuGutter;
 	var menuGutterX;
-	
+
 	var menuGutterYText;
 	var menuGutterYBase;
 	var menuGutterYTop;
 	var menuGutterY;
-	
+
 	var optionWidth;
 	var optionHeight;
 
@@ -32,11 +32,11 @@ class Option_Box_MC extends MovieClip
 	var maxWidth;
 
 	var TextureLoader;
-	
-	var speedUp : MovieClip;
-	var speedDown : MovieClip;
-	var speedDesc : TextField;
-	
+
+	var speedUp:MovieClip;
+	var speedDown:MovieClip;
+	var speedDesc:TextField;
+
 
 	public function Option_Box_MC()
 	{
@@ -45,29 +45,31 @@ class Option_Box_MC extends MovieClip
 
 		TextureLoader = new MovieClipLoader();
 		TextureLoader.addListener(this);
-		
+
 		optionGutter = 14;
 		optionGutterX = optionGutter;
 		optionGutterY = optionGutter;
-		
+
 		menuGutter = 28;
 		menuGutterX = menuGutter * 2;
-		
+
 		menuGutterYText = 86;
-		menuGutterYBase = menuGutterYText + optionGutter;	
+		menuGutterYBase = menuGutterYText + optionGutter;
 		menuGutterYTop = menuGutter;
 		menuGutterY = menuGutterYBase + menuGutterYTop;
-		
+
 		optionWidth = 86;
 		optionHeight = 86;
-	
+
 		minWidth = menuGutterX + 150;
 		maxWidth = menuGutterX + (3 * optionWidth) + (2 * optionGutterX);
 
 		bg._width = maxWidth;
-		bg._x = bg._width /2 ;
-		
-		AssignData(generateTestData())// For testing in flash
+		bg._x = bg._width / 2;
+      this.speedUp.stop();
+      this.speedDown.stop();
+
+		//AssignData(generateTestData())// For testing in flash
 	}
 
 	public function HandleKeyboardInput(e:Number)
@@ -86,7 +88,7 @@ class Option_Box_MC extends MovieClip
 
 		var rowMin = 3 * row;
 		var rowMax = Math.min(maxOptionIdx, (3 * row) + 2);
-		
+
 		switch (e)
 		{
 			case 0 :
@@ -164,10 +166,8 @@ class Option_Box_MC extends MovieClip
 		var maxOptionRow = Math.floor(maxOptionIdx / 3);
 		var noOfCols = maxOptionIdx >= 3 ? 3 : maxOptionIdx + 1;
 		var newHeight = menuGutterY + ((maxOptionRow + 1) * optionHeight) + (maxOptionRow * optionGutterY);
-		TweenLite.to(bg,0.5,{
-					 //_width:Math.floor(Math.ceil(menuGutterX + (noOfCols * optionWidth) + ((noOfCols - 1) * optionGutterX), minWidth), maxWidth), 
-					 _height: newHeight,
-					 _y: 0 - (newHeight /2)});
+		//_width:Math.floor(Math.ceil(menuGutterX + (noOfCols * optionWidth) + ((noOfCols - 1) * optionGutterX), minWidth), maxWidth), 
+		TweenLite.to(bg,0.5,{_height:newHeight, _y:0 - (newHeight / 2)});
 
 		if (Edges.length == 0)
 		{
@@ -203,12 +203,7 @@ class Option_Box_MC extends MovieClip
 
 	public function GenerateOption(idx, colIdx, rowIdx):MovieClip
 	{
-		var mc = this.attachMovie("Option_MC", "o" + idx, idx + 1, {
-								  _x:(menuGutterX /2) + (colIdx * (optionWidth + optionGutterX)) + (optionWidth / 2), 
-								  _y:0 - ((menuGutterYBase) + (rowIdx * (optionHeight + optionGutterY)) + (optionHeight / 2)), 
-								  _width:optionWidth, 
-								  _height:optionHeight
-								  });
+		var mc = this.attachMovie("Option_MC", "o" + idx, idx + 1, {_x:(menuGutterX / 2) + (colIdx * (optionWidth + optionGutterX)) + (optionWidth / 2), _y:0 - ((menuGutterYBase) + (rowIdx * (optionHeight + optionGutterY)) + (optionHeight / 2)), _width:optionWidth, _height:optionHeight});
 
 		mc.myIdx = idx;
 		mc.TextureLoader = this.TextureLoader;
@@ -231,38 +226,46 @@ class Option_Box_MC extends MovieClip
 			}
 		}
 	}
-	
-	function generateTestData(){
+
+	function generateTestData()
+	{
 		var arr = new Array(15);
-		for(var i = 0; i < arr.length; i++){
+		for (var i = 0; i < arr.length; i++)
+		{
 			var obj = {};
 			obj.Border = "FFFFFF";
-			obj.ImagePath = "test" + i + ".dds"
-			obj.Description = "Standing, holding or some other description thats long"
+			obj.ImagePath = "test" + i + ".dds";
+			obj.Description = "Standing, holding or some other description thats long";
 			arr[i] = obj;
 		}
 		return arr;
 	}
-	
-	function ShowSpeed(speedVal:String, showUp: Boolean, showDown: Boolean){
+
+	function ShowSpeed(speedVal:String, showUp:Boolean, showDown:Boolean)
+	{
+		trace("speed " + speedVal);
+
 		speedUp._visible = true;
-		if(!showUp){
-			speedUp.gotoAndStop(31);
-		} else{
-			speedUp.gotoAndStop(1);
-		}
-		
-		speedDown._visible = true;		
-		if(!showDown){
-			speedDown.gotoAndStop(31);
-		} else{
-			speedDown.gotoAndStop(1);
-		}
-		
+		speedUp.Show(showUp);
+
+		speedDown._visible = true;
+		speedDown.Show(showDown);
+
+		speedDesc._visible = true;
 		speedDesc.text = speedVal;
 	}
-	
-	function HideSpeed(){
+
+	function SpeedUp()
+	{
+		speedUp.play();
+	}
+	function SpeedDown()
+	{
+		speedDown.play();
+	}
+
+	function HideSpeed()
+	{
 		speedUp._visible = false;
 		speedDown._visible = false;
 		speedDesc._visible = false;

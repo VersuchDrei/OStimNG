@@ -11,14 +11,6 @@ namespace UI {
         }
         switch (activeMenu) {
         case MenuType::kSceneMenu: {
-                /*auto menu = GetHud();
-                if (menu) {
-                    auto ui = GetOSAControlUIRoot(menu, glyph);
-                    auto direction = GetControlString(control);
-                    if (direction != "") {
-                        ui.Invoke(direction.c_str());
-                    }
-                }*/
             UI::Scene::SceneMenu::Handle(control);
             } break;
         case MenuType::kAlignMenu: {

@@ -5,22 +5,34 @@
 namespace UI::Scene {
 
     inline RE::GFxValue GetRoot() {
-        RE::GFxValue root;
         RE::GPtr<RE::IMenu> sceneMenu = RE::UI::GetSingleton()->GetMenu(SceneMenu::MENU_NAME);
         assert(sceneMenu && sceneMenu->uiMovie);
 
+        RE::GFxValue root;
         sceneMenu->uiMovie->GetVariable(&root, "_root");
         return root;
     }
 
-    inline RE::GFxValue GetOptionBoxes() {
+    inline RE::GFxValue GetRoot(RE::GPtr<RE::GFxMovieView> uiMovie) {
+        RE::GFxValue root;
+        uiMovie->GetVariable(&root, "_root");
+        return root;
+    }
 
-        auto root = GetRoot();
+    
+    inline RE::GFxValue GetOptionBoxes(RE::GPtr<RE::GFxMovieView> uiMovie){
+        auto root = GetRoot(uiMovie);
         RE::GFxValue optionBoxesContainer;
         root.GetMember("optionBoxesContainer", &optionBoxesContainer);
         RE::GFxValue optionBoxes;
         optionBoxesContainer.GetMember("optionBoxes", &optionBoxes);
         return optionBoxes;
+    }
+    inline RE::GFxValue GetOptionBoxes() {
+
+        RE::GPtr<RE::IMenu> sceneMenu = RE::UI::GetSingleton()->GetMenu(SceneMenu::MENU_NAME);
+        return GetOptionBoxes(sceneMenu->uiMovie);  
+
     }
 
 	SceneMenu::SceneMenu() : Super() {
@@ -40,11 +52,17 @@ namespace UI::Scene {
             uiMovie->SetMouseCursorCount(0);  // disable input            
         }
 
-        scaleformManager->LoadMovieEx(this, MENU_PATH, [](RE::GFxMovieDef* a_def) -> void {
+        scaleformManager->LoadMovieEx(this, MENU_PATH, [this](RE::GFxMovieDef* a_def) -> void {
             a_def->SetState(RE::GFxState::StateType::kLog, RE::make_gptr<Logger>().get());
         });
 
-        view = menu->uiMovie;        
+        view = menu->uiMovie;
+
+        auto optionBoxes = GetOptionBoxes(uiMovie);
+        RE::GFxFunctionHandler* fn = new doSendTransitionRequest;
+        RE::GFxValue dst;
+        view->CreateFunction(&dst, fn);
+        optionBoxes.SetMember("doSendTransitionRequest", dst);
 	}
 
 	void SceneMenu::Register() {
@@ -61,14 +79,6 @@ namespace UI::Scene {
             }
         }
 	}
-
-    void SceneMenu::PostRegister() {
-        auto optionBoxes = GetOptionBoxes();
-        RE::GFxFunctionHandler* fn = new doSendTransitionRequest;
-        RE::GFxValue dst;
-        view->CreateFunction(&dst, fn);
-        optionBoxes.SetMember("doSendTransitionRequest", dst);
-    }    
 
 	void SceneMenu::Show() {
         auto msgQ = RE::UIMessageQueue::GetSingleton();
@@ -207,12 +217,24 @@ namespace UI::Scene {
         if (node->speeds.size() > 1) {
             auto speed = thread->getCurrentSpeed();
             auto& speedObj = node->speeds[speed];
-            RE::GFxValue args[3]{ std::to_string(speedObj.playbackSpeed).c_str(), speed != (node->speeds.size() - 1), speed != 0};
+            auto speedString = RE::GFxValue{ std::to_string(speedObj.playbackSpeed) };
+            
+            RE::GFxValue args[3]{ speedString, speed != (node->speeds.size() - 1), speed != 0};
             boxes.Invoke("ShowSpeed", nullptr, args, 3);
         }
         else {
             boxes.Invoke("HideSpeed");
         }
+    }
+
+    void SceneMenu::SpeedUp() {
+        auto boxes = GetOptionBoxes();
+        boxes.Invoke("SpeedUp");
+    }
+
+    void SceneMenu::SpeedDown() {
+        auto boxes = GetOptionBoxes();
+        boxes.Invoke("SpeedDown");
     }
     
     void SceneMenu::ChangeAnimation(std::string nodeId) {

@@ -7,10 +7,6 @@
 #include "Search/SearchMenu.h"
 
 namespace UI {
-    inline static void ShowMenus() {
-        UI::Align::AlignMenu::Show();
-        UI::Scene::SceneMenu::Show();        
-    }
 
     inline static void RegisterMenus() {
         UI::Align::AlignMenu::Register();
@@ -22,11 +18,6 @@ namespace UI {
         UI::Align::AlignMenu::Hide();
         UI::Scene::SceneMenu::Hide();
         UI::Search::SearchMenu::Hide();
-    }
-
-    inline static void PostGameLoad() {
-        UI::Scene::SceneMenu::PostRegister();      
-        UI::Search::SearchMenu::PostRegister();
     }
 
     enum MenuType { kSceneMenu, kAlignMenu, kSearchMenu };

@@ -478,16 +478,20 @@ namespace OStim {
         FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_animationchanged", m_currentNode->scene_id, speed);
     }
 
-    void Thread::increaseSpeed() {
+    bool Thread::increaseSpeed() {
         if (m_currentNodeSpeed < (m_currentNode->speeds.size() - 1)) {
             SetSpeed(m_currentNodeSpeed + 1);
+            return true;
         }
+        return false;
     }
 
-    void Thread::decreaseSpeed() {
+    bool Thread::decreaseSpeed() {
         if (m_currentNodeSpeed > 0) {
             SetSpeed(m_currentNodeSpeed - 1);
+            return true;
         }
+        return false;
     }
 
 

@@ -16,7 +16,6 @@ namespace UI::Scene {
 		SceneMenu();
 
 		static void Register();
-		static void PostRegister();
 		static void Show();
 		static void Hide();
 		static void Update();
@@ -33,6 +32,9 @@ namespace UI::Scene {
 		static void UpdateMenuData();
 		static void HideSpeed();
 		static void UpdateSpeed();
+
+		static void SpeedUp();
+		static void SpeedDown();
 	private:
 		class Logger : public RE::GFxLog {
 		public:
