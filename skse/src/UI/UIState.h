@@ -7,10 +7,6 @@
 #include "Search/SearchMenu.h"
 
 namespace UI {
-    inline static void ShowMenus() {
-        UI::Align::AlignMenu::Show();
-        UI::Scene::SceneMenu::Show();        
-    }
 
     inline static void RegisterMenus() {
         UI::Align::AlignMenu::Register();
@@ -22,11 +18,6 @@ namespace UI {
         UI::Align::AlignMenu::Hide();
         UI::Scene::SceneMenu::Hide();
         UI::Search::SearchMenu::Hide();
-    }
-
-    inline static void PostGameLoad() {
-        UI::Scene::SceneMenu::PostRegister();      
-        UI::Search::SearchMenu::PostRegister();
     }
 
     enum MenuType { kSceneMenu, kAlignMenu, kSearchMenu };
@@ -41,6 +32,7 @@ namespace UI {
         void loop();
         void SetThread(OStim::Thread* thread);
         void NodeChanged(OStim::Thread* thread, Graph::Node* node);
+        void SpeedChanged(OStim::Thread* thread, int speed);
         void HandleThreadRemoved(OStim::Thread* thread);
 
 
