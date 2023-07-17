@@ -147,6 +147,7 @@ namespace Graph {
                             } else {
                                 logger::warn("speed {} of scene {} doesn't have an animation property", index, node->scene_id);
                             }
+
                             if (jsonSpeed.contains("playbackSpeed")) {
                                 if (jsonSpeed["playbackSpeed"].is_number_float()) {
                                     speed.playbackSpeed = jsonSpeed["playbackSpeed"];
@@ -154,6 +155,7 @@ namespace Graph {
                                     logger::warn("playbackSpeed property of speed {} of scene {} isn't a float", index, node->scene_id);
                                 }
                             }
+
                             if (jsonSpeed.contains("displaySpeed")) {
                                 if (jsonSpeed["displaySpeed"].is_number_float()) {
                                     speed.displaySpeed = jsonSpeed["displaySpeed"];
@@ -274,7 +276,7 @@ namespace Graph {
 
                             if (jsonActor.contains("scaleHeight")) {
                                 if (jsonActor["scaleHeight"].is_number_float()) {
-                                    actor.scale = jsonActor["scaleHeight"];
+                                    actor.scaleHeight = jsonActor["scaleHeight"];
                                 } else {
                                     logger::warn("scaleHeight property of actor {} of scene {} isn't a float", index, node->scene_id);
                                 }
