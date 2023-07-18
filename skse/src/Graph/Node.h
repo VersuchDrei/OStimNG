@@ -18,7 +18,8 @@ namespace Graph {
 
     struct Navigation {
         Node* destination;
-        std::string icon;
+        std::string description = "";
+        std::string icon = "";
         std::string border = "ffffff";
         bool isTransition = false;
         Node* transitionNode = nullptr;

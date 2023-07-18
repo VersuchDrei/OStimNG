@@ -138,8 +138,9 @@ namespace UI::Scene {
             return;
 
         auto controlPositions = &UI::Settings::positionSettings.ScenePositions.ControlPosition;
-        const RE::GFxValue controlX = RE::GFxValue{ controlPositions->xPos };
-        const RE::GFxValue controlY = RE::GFxValue{ controlPositions->yPos };
+        // TODO: build these offsets into flash?
+        const RE::GFxValue controlX = RE::GFxValue{ controlPositions->xPos - 25 };
+        const RE::GFxValue controlY = RE::GFxValue{ controlPositions->yPos - 50 };
         const RE::GFxValue controlXScale = RE::GFxValue{ controlPositions->xScale };
         const RE::GFxValue controlYScale = RE::GFxValue{ controlPositions->yScale };
         RE::GFxValue controlPosArray[4]{ controlX, controlY, controlXScale, controlYScale };
@@ -197,7 +198,7 @@ namespace UI::Scene {
                 if (nav.destination->fulfilledBy(conditions) && (!nav.transitionNode || nav.transitionNode->fulfilledBy(conditions))) {
                     menuData.options.push_back(
                         {.nodeId = nav.isTransition ? nav.transitionNode->scene_id : nav.destination->scene_id,
-                         .title = nav.destination->scene_name,
+                         .title = nav.description,
                          .imagePath = nav.icon,
                          .border = nav.border,
                          .description = nav.destination->scene_name});

@@ -36,13 +36,17 @@ namespace Graph {
         for (RawNavigation& raw : navigations) {
             Node* start = getNodeById(raw.origin);
             if (!start) {
-                logger::warn("Couldn't add navigation from {} to {} because {} doesn't exist.", raw.origin, raw.destination, raw.origin);
+                if (!raw.noWarnings) {
+                    logger::warn("Couldn't add navigation from {} to {} because {} doesn't exist.", raw.origin, raw.destination, raw.origin);
+                }
                 continue;
             }
 
             Node* destination = getNodeById(raw.destination);
             if (!destination) {
-                logger::warn("Couldn't add navigation from {} to {} because {} doesn't exist.", raw.origin, raw.destination, raw.destination);
+                if (!raw.noWarnings) {
+                    logger::warn("Couldn't add navigation from {} to {} because {} doesn't exist.", raw.origin, raw.destination, raw.destination);
+                }
                 continue;
             }
 
@@ -87,6 +91,12 @@ namespace Graph {
                 navigation.transitionNode = destination;
             } else {
                 navigation.destination = destination;
+            }
+
+            if (navigation.description.empty()) {
+                navigation.description = navigation.isTransition && navigation.destination == start ? navigation.transitionNode->scene_id : navigation.destination->scene_id;
+            } else {
+                navigation.description = raw.description;
             }
 
             if (std::regex_search(raw.border, Constants::hexColor)) {

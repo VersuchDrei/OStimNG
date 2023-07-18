@@ -75,10 +75,9 @@ namespace LegacyUtil {
                         if (auto anim = sp.child("anim")) {
                             if (auto id = anim.attribute("id")) {
                                 if (auto playbackSpeed = anim.attribute("playbackSpeed")) {
-                                    node->speeds.push_back(
-                                        {.animation = id.value(), .playbackSpeed = playbackSpeed.as_float()});
+                                    node->speeds.push_back({.animation = id.value(), .playbackSpeed = playbackSpeed.as_float(), .displaySpeed = sp.attribute("qnt").as_float()});
                                 } else {
-                                    node->speeds.push_back({.animation = id.value()});
+                                    node->speeds.push_back({.animation = id.value(), .displaySpeed = sp.attribute("qnt").as_float()});
                                 }
                             }
                         }
@@ -139,7 +138,9 @@ namespace LegacyUtil {
             if (auto metadata = scene.child("metadata")) {
                 if (auto tags = metadata.attribute("tags")) {
                     for (std::string tag : StringUtil::toTagVector(tags.as_string())) {
-                        node->tags.push_back(tag);
+                        if (tag != "intro") {
+                            node->tags.push_back(tag);
+                        }
                     }
                 }
 
@@ -486,6 +487,6 @@ namespace LegacyUtil {
         if (node->findAction("holdinghead") != -1) return "OStim/detail/holdinghead_mf";
         if (node->findAction("holdinghip") != -1) return "OStim/detail/holdinghip_mf";
 
-        return "placeholder";
+        return "OStim/symbols/placeholder";
     }
 }
