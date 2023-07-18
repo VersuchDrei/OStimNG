@@ -105,7 +105,7 @@ namespace OStim {
             auto uiState = UI::UIState::GetSingleton();
             if(uiState)
                 uiState->SetThread(this);
-            UI::Scene::SceneMenu::Show();
+            UI::Scene::SceneMenu::GetMenu()->Show();
         }
 
         if (playerThread) {

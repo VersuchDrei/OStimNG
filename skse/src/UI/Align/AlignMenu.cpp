@@ -17,47 +17,10 @@ namespace UI::Align {
         return root;
     }
 
-    AlignMenu::AlignMenu() : Super() {
-        auto scaleformManager = RE::BSScaleformManager::GetSingleton();
-
-        inputContext = Context::kNone;
-
-        auto menu = static_cast<Super*>(this);
-        menu->depthPriority = 0;
-        menuFlags.set(
-            RE::UI_MENU_FLAGS::kAlwaysOpen,
-            RE::UI_MENU_FLAGS::kRequiresUpdate,
-            RE::UI_MENU_FLAGS::kAllowSaving);
-
-        if (uiMovie) {
-            uiMovie->SetMouseCursorCount(0);  // disable input
-        }
-
-        scaleformManager->LoadMovieEx(menu, MENU_PATH, [](RE::GFxMovieDef* a_def) -> void {
-            a_def->SetState(RE::GFxState::StateType::kLog, RE::make_gptr<Logger>().get());
-        });        
-    }
-
-    void AlignMenu::Register() {
-        auto ui = RE::UI::GetSingleton();
-        if (ui) {
-            ui->Register(MENU_NAME, Creator);
-            logger::info("Registered {}", MENU_NAME);
-
-            RE::GPtr<RE::IMenu> alignMenu = RE::UI::GetSingleton()->GetMenu(MENU_NAME);
-
-            auto msgQ = RE::UIMessageQueue::GetSingleton();
-            if (msgQ) {
-                msgQ->AddMessage(MENU_NAME, RE::UI_MESSAGE_TYPE::kShow, nullptr);
-            }
-        }
-    }
+    AlignMenu::AlignMenu() : Super(MENU_NAME) {}
 
     void AlignMenu::Show() {
-        auto msgQ = RE::UIMessageQueue::GetSingleton();
-        if (msgQ) {
-            msgQ->AddMessage(AlignMenu::MENU_NAME, RE::UI_MESSAGE_TYPE::kShow, nullptr);
-        }
+        OStimMenu::Show();
         auto uiState = UI::UIState::GetSingleton();
         if(uiState)
         if (uiState->currentThread != nullptr) {
@@ -66,6 +29,7 @@ namespace UI::Align {
         }
         UI::Settings::LoadSettings();
         ApplyPositions();
+        _isOpen = true;
     }
 
     void AlignMenu::ThreadChanged(){
@@ -89,11 +53,7 @@ namespace UI::Align {
     }
 
     void AlignMenu::Hide() {
-        auto msgQ = RE::UIMessageQueue::GetSingleton();
-        if (msgQ) {
-            msgQ->AddMessage(AlignMenu::MENU_NAME, RE::UI_MESSAGE_TYPE::kHide, nullptr);
-        }
-
+        OStimMenu::Hide();
         Alignment::Alignments::SerializeAlignments();
     }
 
@@ -150,8 +110,6 @@ namespace UI::Align {
 
         alignmentInfo.Invoke("updateInfo", nullptr, infoArray, 10);
     }
-
-    void AlignMenu::Update() {}
 
     void AlignMenu::Handle(UI::Controls control) {
         switch (control) {
@@ -283,10 +241,5 @@ namespace UI::Align {
         std::string incString = IncrementValueImpl::format(incrementValue);
         RE::GFxValue values[1]{RE::GFxValue{incString}};
         alignmentInfo.Invoke("updateIncrement", nullptr, values, 1);
-    }
-
-    void AlignMenu::AdvanceMovie(float a_interval, std::uint32_t a_currentTime) {
-        AlignMenu::Update();
-        RE::IMenu::AdvanceMovie(a_interval, a_currentTime);
     }
 }  // namespace UI::Align

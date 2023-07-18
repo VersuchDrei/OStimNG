@@ -35,77 +35,22 @@ namespace UI::Scene {
 
     }
 
-	SceneMenu::SceneMenu() : Super() {
-        auto scaleformManager = RE::BSScaleformManager::GetSingleton();
-        
-        inputContext = Context::kNone;
-
-        auto menu = static_cast<Super*>(this);
-        menu->depthPriority = 0;
-
-        menuFlags.set(
-            RE::UI_MENU_FLAGS::kAlwaysOpen,
-            RE::UI_MENU_FLAGS::kRequiresUpdate,
-            RE::UI_MENU_FLAGS::kAllowSaving);
-
-        if (uiMovie) {
-            uiMovie->SetMouseCursorCount(0);  // disable input            
-        }
-
-        scaleformManager->LoadMovieEx(menu, MENU_PATH, [](RE::GFxMovieDef* a_def) -> void {
-            a_def->SetState(RE::GFxState::StateType::kLog, RE::make_gptr<Logger>().get());
-        });
-
-        view = menu->uiMovie;
-
+	SceneMenu::SceneMenu() : Super(MENU_NAME) {
+        Locker locker(_lock);
         auto optionBoxes = GetOptionBoxes(uiMovie);
         RE::GFxFunctionHandler* fn = new doSendTransitionRequest;
         RE::GFxValue dst;
-        view->CreateFunction(&dst, fn);
+        _view->CreateFunction(&dst, fn);
         optionBoxes.SetMember("doSendTransitionRequest", dst);
 	}
 
-	void SceneMenu::Register() {
-        auto ui = RE::UI::GetSingleton();
-        if (ui) {
-            ui->Register(MENU_NAME, Creator);
-            logger::info("Registered {}", MENU_NAME);           
-
-            RE::GPtr<RE::IMenu> alignMenu = RE::UI::GetSingleton()->GetMenu(MENU_NAME);     
-
-            auto msgQ = RE::UIMessageQueue::GetSingleton();
-            if (msgQ) {
-                msgQ->AddMessage(SceneMenu::MENU_NAME, RE::UI_MESSAGE_TYPE::kShow, nullptr);
-            }
-        }
-	}
-
 	void SceneMenu::Show() {
-        auto msgQ = RE::UIMessageQueue::GetSingleton();
-        if (msgQ) {
-            msgQ->AddMessage(SceneMenu::MENU_NAME, RE::UI_MESSAGE_TYPE::kShow, nullptr);
-        }
-        UI::Settings::LoadSettings();
+        OStimMenu::Show();
         ApplyPositions();
 	}
 
-	void SceneMenu::Hide() {
-        auto msgQ = RE::UIMessageQueue::GetSingleton();
-        if (msgQ) {
-            msgQ->AddMessage(SceneMenu::MENU_NAME, RE::UI_MESSAGE_TYPE::kHide, nullptr);
-        }
-	}
-
-	void SceneMenu::Update() {
-	}
-
-    void SceneMenu::AdvanceMovie(float a_interval, std::uint32_t a_currentTime) {
-        SceneMenu::Update();
-        RE::IMenu::AdvanceMovie(a_interval, a_currentTime);
-    }
-
     void SceneMenu::SendControl(int32_t control) {
-
+        Locker locker(_lock);
         auto optionBoxes = GetOptionBoxes();
         const RE::GFxValue val{ control };
         optionBoxes.Invoke("HandleKeyboardInput", nullptr, &val, 1);
@@ -150,11 +95,12 @@ namespace UI::Scene {
     }
 
     void SceneMenu::UpdateMenuData() {
+        Locker locker(_lock);
         RE::GFxValue menuValues;
-        view->CreateArray(&menuValues);
+        _view->CreateArray(&menuValues);
         MenuData menuData;
         BuildMenuData(menuData);
-        menuData.loadValues(menuValues);
+        menuData.loadValues(_view, menuValues);
         auto optionBoxes = GetOptionBoxes();
         optionBoxes.Invoke("AssignData", nullptr, &menuValues, 1);
 
@@ -205,6 +151,7 @@ namespace UI::Scene {
 
     }
     void SceneMenu::UpdateSpeed() {
+        Locker locker(_lock);
         auto thread = UI::UIState::GetSingleton()->currentThread;
         if (!thread) {
             return;
@@ -228,11 +175,13 @@ namespace UI::Scene {
     }
 
     void SceneMenu::SpeedUp() {
+        Locker locker(_lock);
         auto boxes = GetOptionBoxes();
         boxes.Invoke("SpeedUp");
     }
 
     void SceneMenu::SpeedDown() {
+        Locker locker(_lock);
         auto boxes = GetOptionBoxes();
         boxes.Invoke("SpeedDown");
     }
