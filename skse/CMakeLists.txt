@@ -88,6 +88,7 @@ set(sources
     src/UI/Align/IncrementValue.cpp
     src/UI/Scene/SceneMenu.cpp
     src/UI/Search/SearchMenu.cpp
+    src/UI/OStimMenu.cpp
     src/UI/Settings.cpp
     src/UI/UIState.cpp
     src/Util/ActorUtil.cpp

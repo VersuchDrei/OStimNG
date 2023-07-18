@@ -112,7 +112,7 @@ namespace OStim {
             if (uiState) {
                 uiState->SetThread(this);
             }
-            UI::Scene::SceneMenu::Show();
+            UI::Scene::SceneMenu::GetMenu()->Show();
         }
 
         if (playerThread) {

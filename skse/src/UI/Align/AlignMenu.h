@@ -7,72 +7,52 @@
 #include <Core/Thread.h>
 #include <Graph/Node.h>
 #include <UI/UIInterop.h>
+#include <UI/OStimMenu.h>
 
 namespace UI::Align {
-    class AlignMenu : public RE::IMenu {
+    class AlignMenu : public UI::OStimMenu {
     public:
-        using Super = RE::IMenu;
+        using Super = UI::OStimMenu;
 
     public:
-        static constexpr const char* MENU_PATH = "AlignMenu";
-        static constexpr const char* MENU_NAME = "AlignMenu";
+        static constexpr const char* MENU_NAME = "OStimAlignMenu";
         static constexpr std::int8_t SORT_PRIORITY{ 3 };
 
         AlignMenu();
-
-        static void Register();
-        static void Show();
-        static void Hide();
-        static void Update();
-
+        inline static AlignMenu* GetMenu() {
+            return static_cast<AlignMenu*>(RE::UI::GetSingleton()->GetMenu(MENU_NAME).get());
+        }
+        static void Register() { OStimMenu::Register(MENU_NAME, Creator); }
         static RE::stl::owner<RE::IMenu*> Creator() { return new AlignMenu(); }
 
-        void AdvanceMovie(float a_interval, std::uint32_t a_currentTime) override;
+        void Show();
+        void Hide();
 
-        static void ThreadChanged();
+        void ThreadChanged();
 
-        static void NodeChanged();     
-        static void SetActor(int actor);
+        void NodeChanged();     
+        void SetActor(int actor);
 
-        static void Handle(UI::Controls control);
+        void Handle(UI::Controls control);
 
-
-        static void ApplyPositions();
+        void ApplyPositions();
     private:
-        static void UpdateSceneInfo();
-        static void UpdateActorInfo();
+        void UpdateSceneInfo();
+        void UpdateActorInfo();
 
-        static void SelectField(int field);
-        static void ScrollSelectedField(int field);
-        static void ToggleActor();
-        static void Increment(bool up);
-        static void LoadCurrentAlignment();
-        static void CycleIncrement();
-
-        class Logger : public RE::GFxLog {
-        public:
-            void LogMessageVarg(LogMessageType, const char* a_fmt, std::va_list a_argList) override {
-                std::string fmt(a_fmt ? a_fmt : "");
-                while (!fmt.empty() && fmt.back() == '\n') {
-                    fmt.pop_back();
-                }
-
-                std::va_list args;
-                va_copy(args, a_argList);
-                std::vector<char> buf(static_cast<std::size_t>(std::vsnprintf(0, 0, fmt.c_str(), a_argList) + 1));
-                std::vsnprintf(buf.data(), buf.size(), fmt.c_str(), args);
-                va_end(args);
-
-                logger::info("{}"sv, buf.data());
-            }
-        };
+        void SelectField(int field);
+        void ScrollSelectedField(int field);
+        void ToggleActor();
+        void Increment(bool up);
+        void LoadCurrentAlignment();
+        void CycleIncrement();
 
     private:
-        inline static Alignment::ActorAlignment currentActorInfo;
+        Alignment::ActorAlignment currentActorInfo;
 
-        inline static int selectedField = 0;
-        inline static int selectedSlot = 0;
-        inline static IncrementValue incrementValue = IncrementValue::ONE;
+        int selectedField = 0;
+        int selectedSlot = 0;
+        IncrementValue incrementValue = IncrementValue::ONE;
         
     };
 }  // namespace UI::Align

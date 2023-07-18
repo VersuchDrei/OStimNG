@@ -15,9 +15,9 @@ namespace UI {
     }
 
     inline static void HideMenus() {
-        UI::Align::AlignMenu::Hide();
-        UI::Scene::SceneMenu::Hide();
-        UI::Search::SearchMenu::Hide();
+        UI::Align::AlignMenu::GetMenu()->Hide();
+        UI::Scene::SceneMenu::GetMenu()->Hide();
+        UI::Search::SearchMenu::GetMenu()->Hide();
     }
 
     enum MenuType { kSceneMenu, kAlignMenu, kSearchMenu };
