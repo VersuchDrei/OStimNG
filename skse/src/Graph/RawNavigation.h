@@ -8,5 +8,6 @@ namespace Graph {
         std::string description = "";
         std::string icon = "";
         std::string border = "ffffff";
+        bool noWarnings = false;
     };
 }

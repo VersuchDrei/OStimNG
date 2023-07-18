@@ -116,6 +116,14 @@ namespace Graph {
                                     }
                                 }
 
+                                if (jsonNavigation.contains("noWarnings")) {
+                                    if (jsonNavigation["noWarnings"].is_boolean()) {
+                                        navigation.noWarnings = jsonNavigation["noWarnings"];
+                                    } else {
+                                        logger::warn("noWarnings property of navigation {} of scene {} isn't a boolean", index, node->scene_id);
+                                    }
+                                }
+
                                 if (navigation.origin == navigation.destination) {
                                     logger::warn("navigation {} of scene {} has neither an origin nor a destination property defined", index, node->scene_id);
                                 } else {

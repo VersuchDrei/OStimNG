@@ -97,6 +97,11 @@ namespace PapyrusThreadActor {
 
     float PlayExpression(RE::StaticFunctionTag*, RE::Actor* actor, std::string expression) {
         StringUtil::toLower(&expression);
+
+        if (!actor) {
+            return -1;
+        }
+
         std::vector<Trait::FacialExpression*>* expressions = Trait::TraitTable::getExpressionsForEvent(expression);
         if (!expressions) {
             return -1;

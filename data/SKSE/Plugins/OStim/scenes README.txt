@@ -35,11 +35,15 @@ navigation fields:
 	the navigations are sorted ascending, so lower priorities will show first
 "description" (string): the display text of the navigation in game
 "icon" (string): the path to the .dds file to be used as the icon
-	this path will be appended to "../Data/Interface/OStim/icons"
+	this path will be appended to "../Data/Interface/OStim/icons", the file ending ".dds" will be added automatically
 "border" (string): the hexadecimal RBG code of the icon border (default: ffffff)
+"noWarnings" (bool): disables warnings about origin or destination not existing (default: false)
+	this can be used to prevent spamming the log when connecting to other animation packs that a user might not have installed
+	doesn't prevent warnings about mismatching furniture types or actor counts
 
 speed fields:
 "animation" (string): the animation event name of the animation to play for this speed
+	this animation will be send as animation event to the actors with _X appended, X being the actors index
 "playbackSpeed" (float): the speed at which to play the animation (default: 1.0)
 	in order for this to work the animation has to be registered with a Nemesis patch that links it to the OStimSpeed graph variable
 "displaySpeed" (float): the speed value to display in game

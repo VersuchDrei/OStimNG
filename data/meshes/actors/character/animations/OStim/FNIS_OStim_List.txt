@@ -1,0 +1,21 @@
+b -Tn OStim1PStandingF_0 OStim1P\OStim1PStandingF_0.hkx
+b -Tn OStim1PSittingF_0 OStim1P\OStim1PSittingF_0.hkx
+
+b -Tn OStim1PStandingM_0 OStim1P\OStim1PStandingM_0.hkx
+b -Tn OStim1PSittingM_0 OStim1P\OStim1PSittingM_0.hkx
+
+
+b -Tn OStim2PStandingApartMF_0 OStim2P\OStim2PStandingApartMF_0.hkx
+b -Tn OStim2PStandingApartMF_1 OStim2P\OStim2PStandingApartMF_1.hkx
+b -Tn OStim2PSittingMF_0 OStim2P\OStim2PSittingMF_0.hkx
+b -Tn OStim2PSittingMF_1 OStim2P\OStim2PSittingMF_1.hkx
+
+b -Tn OStim2PStandingCloseFF_0 OStim2P\OStim2PStandingCloseFF_0.hkx
+b -Tn OStim2PStandingCloseFF_1 OStim2P\OStim2PStandingCloseFF_1.hkx
+b -Tn OStim2PSittingFF_0 OStim2P\OStim2PSittingFF_0.hkx
+b -Tn OStim2PSittingFF_1 OStim2P\OStim2PSittingFF_1.hkx
+
+b -Tn OStim2PStandingApartMM_0 OStim2P\OStim2PStandingApartMM_0.hkx
+b -Tn OStim2PStandingApartMM_1 OStim2P\OStim2PStandingApartMM_1.hkx
+b -Tn OStim2PSittingMM_0 OStim2P\OStim2PSittingMM_0.hkx
+b -Tn OStim2PSittingMM_1 OStim2P\OStim2PSittingMM_1.hkx
