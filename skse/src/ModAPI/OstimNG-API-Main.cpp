@@ -5,12 +5,18 @@ namespace OstimNG_API
 {
     namespace Scene
     {
-        APIResult SceneInterface::StartScene(std::string_view pluginName,
-                                                                 RE::TESObjectREFR* furniture,std::string startingAnimation,
+        CallResult SceneInterface::StartScene(std::string_view pluginName,
+                                                                 RE::TESObjectREFR* furniture,const std::string& startingAnimation,
                                                                  std::vector<RE::Actor*> actors) noexcept {
             
-            APIResult apiResult; 
-            if (actors.size() < 1) apiResult.Status = CallResult::Invalid; 
+
+
+            SKSE::log::info("Start Scene called by {}", pluginName); 
+
+#ifdef DEBUG
+
+#endif
+            if (actors.size() < 1) return CallResult::Invalid; 
             
             
              OStim::ThreadStartParams params;
@@ -18,18 +24,18 @@ namespace OstimNG_API
              params.actors = GameAPI::GameActor::convertVector(actors);
              params.startingNode = Graph::GraphTable::getNodeById(startingAnimation);
              params.furniture = furniture;
+             OStim::startThread(params); 
+            //  *threadID = OStim::startThread(params); 
 
-             apiResult.ThreadID = OStim::startThread(params); 
+            //  if (*threadID == -1) return CallResult::Failed; 
 
-             if (apiResult.ThreadID == -1) apiResult.Status = CallResult::Failed; 
-
-             return apiResult;  
+             return CallResult::OK;   
         }
 
         
-        APIResult SceneInterface::StartScene(std::string_view pluginName, std::string startingAnimation,
+        CallResult SceneInterface::StartScene(std::string_view pluginName, const std::string& startingAnimation,
                                              std::vector<RE::Actor*> actors) noexcept {
-             
+             SKSE::log::info("Default Start Scene called by {}", pluginName); 
              auto furnitureList = Furniture::findFurniture(actors.size(), actors[0], MCM::MCMTable::furnitureSearchDistance(), 96);
              
              auto* furniture = (furnitureList.size() > 1) ? furnitureList[0] : nullptr; 

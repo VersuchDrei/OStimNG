@@ -20,8 +20,8 @@ namespace OstimNG_API
                 return std::addressof(singleton); 
             }
 
-            APIResult StartScene(std::string_view pluginName,RE::TESObjectREFR* furniture,std::string startingAnimation,std::vector<RE::Actor*> actors) noexcept override;
-            APIResult StartScene(std::string_view pluginName, std::string startingAnimation, std::vector<RE::Actor*> actors) noexcept override; 
+            CallResult StartScene(std::string_view pluginName,RE::TESObjectREFR* furniture,const std::string& startingAnimation,std::vector<RE::Actor*> actors) noexcept override;
+            CallResult StartScene(std::string_view pluginName, const std::string& startingAnimation, std::vector<RE::Actor*> actors) noexcept override; 
             
             CallResult StopScene(std::string_view pluginName, int threadID) noexcept override; 
             CallResult SetAutoMode(std::string_view pluginName, int threadID, bool autoMode) noexcept override; 

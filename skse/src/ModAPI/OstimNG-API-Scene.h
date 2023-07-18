@@ -22,28 +22,21 @@ namespace OstimNG_API::Scene
         // Failed 
         Failed
     };
-    struct APIResult 
-    {
-        public:
-
-        CallResult Status = CallResult::Failed; 
-
-        int ThreadID = -1; 
-    }; 
     class ISceneInterface
     {
         public:
+        
             /// @brief
             /// Start a scene with optionally specified furniture reference.
             /// @return
-            [[nodiscard]] virtual APIResult StartScene(std::string_view pluginName, RE::TESObjectREFR* furniture,
-                                                       std::string startingAnimation, std::vector<RE::Actor*> actors) noexcept = 0;
+            [[nodiscard]] virtual CallResult StartScene(std::string_view pluginName, RE::TESObjectREFR* furniture,
+                                                       const std::string& startingAnimation, std::vector<RE::Actor*> actors) noexcept = 0;
 
 
             /// @brief 
             /// Start a scene with nearest found furniture, if any. 
             /// @return 
-            [[nodiscard]] virtual APIResult StartScene(std::string_view pluginName, std::string startingAnimation,
+            [[nodiscard]] virtual CallResult StartScene(std::string_view pluginName, const std::string& startingAnimation,
                                                        std::vector<RE::Actor*> actors) noexcept = 0;
 
             /// @brief 
