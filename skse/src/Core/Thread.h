@@ -59,8 +59,8 @@ namespace OStim {
         inline Furniture::FurnitureType getFurnitureType() { return furnitureType; }
 
         void SetSpeed(int speed);
-        void increaseSpeed();
-        void decreaseSpeed();
+        bool increaseSpeed();
+        bool decreaseSpeed();
 
         float getMaxExcitement();
 

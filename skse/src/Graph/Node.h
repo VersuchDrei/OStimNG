@@ -2,6 +2,7 @@
 
 #include "Action.h"
 #include "GraphActor.h"
+#include "RawNavigation.h"
 
 #include "Furniture/Furniture.h"
 
@@ -10,14 +11,9 @@ namespace Graph {
 
     struct Speed {
     public:
-        std::string animation;
+        std::string animation = "";
         float playbackSpeed = 1.0;
-    };
-
-    struct RawNavigation {
-        std::string destination;
-        std::string icon;
-        std::string border;
+        float displaySpeed = -1;
     };
 
     struct Navigation {
@@ -39,21 +35,17 @@ namespace Graph {
         bool isTransition = false;
         int animationLengthMs = 0;
         bool isHub = false;
-        bool isAggresive = false;
         bool hasIdleSpeed = false;
         bool noRandomSelection = false;
         Furniture::FurnitureType furnitureType = Furniture::FurnitureType::NONE;
+        std::unordered_map<std::string, std::string> autoTransitions;
         std::vector<std::string> tags;
         std::vector<GraphActor> actors;
         std::vector<Action> actions;
         std::vector<Navigation> navigations;
-
-        // maybe remove this in a later iteration?
-        std::string sourceModule;
-        std::string animClass;
+        std::string modpack = "";
 
         void mergeActionsIntoActors();
-        void tryAddNavigation(RawNavigation destination, std::unordered_map<Graph::Node*, std::vector<RawNavigation>>& navigationMap);
 
         bool fulfilledBy(std::vector<Trait::ActorCondition> conditions);
 

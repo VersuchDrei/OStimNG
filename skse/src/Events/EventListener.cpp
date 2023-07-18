@@ -182,9 +182,13 @@ namespace Events {
             } else if (keyCode == MCM::MCMTable::keyEnd()) {
                 OStim::ThreadManager::GetSingleton()->getPlayerThread()->stopFaded();
             } else if (keyCode == MCM::MCMTable::keySpeedUp()) {
-                OStim::ThreadManager::GetSingleton()->getPlayerThread()->increaseSpeed();
+                if (OStim::ThreadManager::GetSingleton()->getPlayerThread()->increaseSpeed()) {
+                    UI::Scene::SceneMenu::SpeedUp();
+                }
             } else if (keyCode == MCM::MCMTable::keySpeedDown()) {
-                OStim::ThreadManager::GetSingleton()->getPlayerThread()->decreaseSpeed();
+                if (OStim::ThreadManager::GetSingleton()->getPlayerThread()->decreaseSpeed()) {
+                    UI::Scene::SceneMenu::SpeedDown();
+                }
             } else if (keyCode == MCM::MCMTable::keyPullOut()){
                 if (UI::UIState::GetSingleton()->GetActiveMenu() == UI::MenuType::kSceneMenu) {
                     OStim::ThreadManager::GetSingleton()->getPlayerThread()->pullOut();
