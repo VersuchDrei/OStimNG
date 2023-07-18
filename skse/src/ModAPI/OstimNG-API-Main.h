@@ -20,14 +20,14 @@ namespace OstimNG_API
                 return std::addressof(singleton); 
             }
 
-            CallResult StartScene(std::string_view pluginName,RE::TESObjectREFR* furniture,const std::string& startingAnimation,std::vector<RE::Actor*> actors) noexcept override;
-            CallResult StartScene(std::string_view pluginName, const std::string& startingAnimation, std::vector<RE::Actor*> actors) noexcept override; 
+            APIResult StartScene(std::string_view pluginName,RE::TESObjectREFR* furniture,const std::string& startingAnimation,std::vector<RE::Actor*> actors,int *threadID) noexcept override;
+            APIResult StartScene(std::string_view pluginName, const std::string& startingAnimation, std::vector<RE::Actor*> actors, int *threadID) noexcept override; 
             
-            CallResult StopScene(std::string_view pluginName, int threadID) noexcept override; 
-            CallResult SetAutoMode(std::string_view pluginName, int threadID, bool autoMode) noexcept override; 
+            APIResult StopScene(std::string_view pluginName, int threadID) noexcept override; 
+            APIResult SetAutoMode(std::string_view pluginName, int threadID, bool autoMode) noexcept override; 
 
-            CallResult TryGetMetadata(std::string_view pluginName, int threadID, std::vector<std::string> &tags) noexcept override; 
-            CallResult TryGetAutoMode(std::string_view pluginName, int threadID, bool& autoMode) noexcept override; 
+
+            APIResult TryGetAutoMode(std::string_view pluginName, int threadID, bool* autoMode) noexcept override; 
         }; 
     }
 }
