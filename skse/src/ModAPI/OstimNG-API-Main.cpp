@@ -1,5 +1,5 @@
 #include "OstimNG-API-Main.h"
-using Result = OstimNG_API::Scene::APIResult;
+using Result = OstimNG_API::Scene::CallResult;
 
 namespace OstimNG_API
 {
@@ -7,10 +7,10 @@ namespace OstimNG_API
     {
         APIResult SceneInterface::StartScene(std::string_view pluginName,
                                                                  RE::TESObjectREFR* furniture,std::string startingAnimation,
-                                                                 std::vector<RE::Actor*> actors, int& outThreadID) noexcept {
+                                                                 std::vector<RE::Actor*> actors) noexcept {
             
-            outThreadID = -1; 
-            if (actors.size() < 1) return Result::Invalid; 
+            APIResult apiResult; 
+            if (actors.size() < 1) apiResult.Status = CallResult::Invalid; 
             
             
              OStim::ThreadStartParams params;
@@ -19,34 +19,33 @@ namespace OstimNG_API
              params.startingNode = Graph::GraphTable::getNodeById(startingAnimation);
              params.furniture = furniture;
 
-             outThreadID = OStim::startThread(params); 
+             apiResult.ThreadID = OStim::startThread(params); 
 
-             if (outThreadID == -1) return Result::Failed; 
+             if (apiResult.ThreadID == -1) apiResult.Status = CallResult::Failed; 
 
-             return Result::OK; 
+             return apiResult;  
         }
 
         
         APIResult SceneInterface::StartScene(std::string_view pluginName, std::string startingAnimation,
-                                             std::vector<RE::Actor*> actors, int& outThreadID) noexcept {
-             if (actors.size() < 1) return Result::Invalid; 
+                                             std::vector<RE::Actor*> actors) noexcept {
              
              auto furnitureList = Furniture::findFurniture(actors.size(), actors[0], MCM::MCMTable::furnitureSearchDistance(), 96);
              
              auto* furniture = (furnitureList.size() > 1) ? furnitureList[0] : nullptr; 
 
-             return StartScene(pluginName, furniture, startingAnimation, actors, outThreadID); 
+             return StartScene(pluginName, furniture, startingAnimation, actors); 
         }
 
-        APIResult SceneInterface::StopScene(std::string_view pluginName, int threadID) noexcept {
+        CallResult SceneInterface::StopScene(std::string_view pluginName, int threadID) noexcept {
              OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
-             if (!thread) return APIResult::Invalid;
+             if (!thread) return CallResult::Invalid;
 
              thread->stopFaded();
              return Result::OK;
         }
 
-        APIResult SceneInterface::SetAutoMode(std::string_view pluginName, int threadID, bool autoMode) noexcept {
+        CallResult SceneInterface::SetAutoMode(std::string_view pluginName, int threadID, bool autoMode) noexcept {
              OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
              if (!thread) return Result::Invalid;
 
@@ -54,7 +53,7 @@ namespace OstimNG_API
              return Result::OK; 
         }
 
-        APIResult SceneInterface::TryGetMetadata(std::string_view pluginName, int threadID,
+        CallResult SceneInterface::TryGetMetadata(std::string_view pluginName, int threadID,
                                                  std::vector<std::string>& tags) noexcept {
              OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
              if (!thread) return Result::Invalid;
@@ -62,7 +61,7 @@ namespace OstimNG_API
              tags = thread->getMetadata();
              return Result::OK; 
         }
-        APIResult SceneInterface::TryGetAutoMode(std::string_view pluginName, int threadID, bool& autoMode) noexcept {
+        CallResult SceneInterface::TryGetAutoMode(std::string_view pluginName, int threadID, bool& autoMode) noexcept {
             OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
             if (!thread) return Result::Invalid;
 
