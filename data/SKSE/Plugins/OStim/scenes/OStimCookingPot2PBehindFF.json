@@ -19,7 +19,7 @@
 			"icon": "OStim/symbols/gender_mm"
 		}
 	],
-	"furniture": "shelf",
+	"furniture": "cookingpot",
 	"tags":[
 		"idle",
 		"intro"
