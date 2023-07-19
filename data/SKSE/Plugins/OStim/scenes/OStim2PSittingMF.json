@@ -1,5 +1,5 @@
 {
-	"name": "Sitting MF",
+	"name": "Sitting Straight",
 	"modpack": "OStim",
 	"length": 2.0,
 	"speeds":[
@@ -21,7 +21,7 @@
 		{
 			"destination": "OStim2PStandingApartMF",
 			"description": "stand up",
-			"icon": "OStim/transitional/standup_m"
+			"icon": "OStim/positional/standup_m"
 		}
 	],
 	"tags":[

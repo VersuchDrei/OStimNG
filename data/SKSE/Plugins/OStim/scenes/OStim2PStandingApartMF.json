@@ -1,5 +1,5 @@
 {
-	"name": "Standing Apart MF",
+	"name": "Standing Apart Straight",
 	"modpack": "OStim",
 	"length": 2.0,
 	"speeds":[
@@ -21,7 +21,7 @@
 		{
 			"destination": "OStim2PSittingMF",
 			"description": "sit down",
-			"icon": "OStim/transitional/squatting_f"
+			"icon": "OStim/positional/squatting_f"
 		}
 	],
 	"tags":[

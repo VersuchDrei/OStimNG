@@ -1,5 +1,5 @@
 {
-	"name": "Standing F",
+	"name": "Standing Female",
 	"modpack": "OStim",
 	"length": 2.0,
 	"speeds":[
@@ -16,7 +16,7 @@
 		{
 			"destination": "OStim1PSittingF",
 			"description": "sit down",
-			"icon": "OStim/transitional/squatting_f"
+			"icon": "OStim/positional/squatting_f"
 		}
 	],
 	"tags":[

@@ -1,0 +1,50 @@
+{
+	"name": "Standing Sitting Gay",
+	"modpack": "OStim",
+	"length": 2.0,
+	"speeds":[
+		{
+			"animation": "OStimBench2PStandingSittingMM"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStimChair2PStandingSittingMF",
+			"description": "go to straight idle",
+			"icon": "OStim/symbols/gender_mf"
+		},
+		{
+			"destination": "OStimChair2PStandingSittingFF",
+			"description": "go to lesbian idle",
+			"icon": "OStim/symbols/gender_ff"
+		},
+		{
+			"destination": "OStimChair2PSittingStandingMM",
+			"description": "switch positions",
+			"icon": "OStim/positional/standup_m"
+		}
+	],
+	"furniture": "chair",
+	"tags":[
+		"idle",
+		"intro"
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"scale": 1.03,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		},
+		{
+			"intendedSex": "male",
+			"scale": 1.03,
+			"tags": [
+				"sitting"
+			],
+			"feetOnGround": false
+		}
+	]
+}
