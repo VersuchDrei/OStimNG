@@ -10,18 +10,17 @@
             "name": "base",
             "hidden": true,
             "cacheVariables": {
-                "CMAKE_CXX_COMPILER": "cl.exe",
-                "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
-                "VCPKG_TARGET_TRIPLET": "x64-windows-skse",
-                "VCPKG_HOST_TRIPLET": "x64-windows-skse",
-                "VCPKG_OVERLAY_TRIPLETS": "${sourceDir}/cmake",
-                "CMAKE_CXX_FLAGS": "$env{COMMONLIBSSE_COMPILER} $env{COMMONLIBSSE_PLATFORM} $env{COMMONLIBSSE_TEXT} -DUNICODE -D_UNICODE"
+                "CMAKE_CXX_FLAGS": "$env{COMMONLIBSSE_COMPILER} $env{COMMONLIBSSE_PLATFORM} $env{COMMONLIBSSE_TEXT}"
             }
         },
         {
             "name": "vcpkg",
             "hidden": true,
             "cacheVariables": {
+                "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+                "VCPKG_TARGET_TRIPLET": "x64-windows-skse",
+                "VCPKG_HOST_TRIPLET": "x64-windows-skse",
+                "VCPKG_OVERLAY_TRIPLETS": "${sourceDir}/cmake",
 
                 "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL"
             }
