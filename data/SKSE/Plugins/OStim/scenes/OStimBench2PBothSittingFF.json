@@ -1,0 +1,54 @@
+{
+	"name": "Both Sitting Lesbian",
+	"modpack": "OStim",
+	"length": 2.0,
+	"speeds":[
+		{
+			"animation": "OStimBench2PBothSittingFF"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStimBench2PBothSittingMF",
+			"description": "go to straight idle",
+			"icon": "OStim/symbols/gender_mf"
+		},
+		{
+			"destination": "OStimBench2PBothSittingMM",
+			"description": "go to gay idle",
+			"icon": "OStim/symbols/gender_mm"
+		},
+		{
+			"destination": "OStimBench2PSittingStandingFF",
+			"description": "stand up (right)",
+			"icon": "OStim/positional/standup_f"
+		},
+		{
+			"destination": "OStimBench2PStandingSittingFF",
+			"description": "stand up (left)",
+			"icon": "OStim/positional/standup_f"
+		}
+	],
+	"furniture": "bench",
+	"tags":[
+		"idle",
+		"intro"
+	],
+	"actors":[
+		{
+			"intendedSex": "female",
+			"scale": 1.03,
+			"tags": [
+				"sitting"
+			],
+			"feetOnGround": false
+		},
+		{
+			"intendedSex": "female",
+			"tags": [
+				"sitting"
+			],
+			"feetOnGround": false
+		}
+	]
+}

@@ -1,5 +1,5 @@
 {
-	"name": "Sitting FF",
+	"name": "Sitting Lesbian",
 	"modpack": "OStim",
 	"length": 2.0,
 	"speeds":[
@@ -21,7 +21,7 @@
 		{
 			"destination": "OStim2PStandingCloseFF",
 			"description": "stand up",
-			"icon": "OStim/transitional/standup_f"
+			"icon": "OStim/positional/standup_f"
 		}
 	],
 	"tags":[
