@@ -1,0 +1,31 @@
+{
+	"name": "Standing Male",
+	"modpack": "OStim",
+	"length": 2.0,
+	"speeds":[
+		{
+			"animation": "OStimShelf1PStandingM"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStimShelf1PStandingF",
+			"description": "go to female idle",
+			"icon": "OStim/symbols/gender_f"
+		}
+	],
+	"furniture": "shelf",
+	"tags":[
+		"idle",
+		"intro"
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		}
+	]
+}

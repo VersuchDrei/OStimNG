@@ -1,5 +1,5 @@
 {
-	"name": "Sitting MM",
+	"name": "Sitting Gay",
 	"modpack": "OStim",
 	"length": 2.0,
 	"speeds":[
@@ -9,7 +9,7 @@
 	],
 	"navigations":[
 		{
-			"destination": "OStim2SittingMF",
+			"destination": "OStim2PSittingMF",
 			"description": "go to straight idle",
 			"icon": "OStim/symbols/gender_mf"
 		},
@@ -21,7 +21,7 @@
 		{
 			"destination": "OStim2PStandingApartMM",
 			"description": "stand up",
-			"icon": "OStim/transitional/standup_m"
+			"icon": "OStim/positional/standup_m"
 		}
 	],
 	"tags":[

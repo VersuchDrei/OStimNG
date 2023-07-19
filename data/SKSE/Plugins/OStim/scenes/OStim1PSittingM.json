@@ -1,5 +1,5 @@
 {
-	"name": "Sitting M",
+	"name": "Sitting Male",
 	"modpack": "OStim",
 	"length": 2.0,
 	"speeds":[
@@ -20,7 +20,8 @@
 		}
 	],
 	"tags":[
-		"idle"
+		"idle",
+		"intro"
 	],
 	"actors":[
 		{

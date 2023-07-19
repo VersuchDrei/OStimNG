@@ -1,5 +1,5 @@
 {
-	"name": "Standing Apart MM",
+	"name": "Standing Apart Gay",
 	"modpack": "OStim",
 	"length": 2.0,
 	"speeds":[
@@ -19,9 +19,9 @@
 			"icon": "OStim/symbols/gender_ff"
 		},
 		{
-			"destination": "OStim2PSittingFF",
+			"destination": "OStim2PSittingMM",
 			"description": "sit down",
-			"icon": "OStim/transitional/squatting_f"
+			"icon": "OStim/positional/squatting_f"
 		}
 	],
 	"tags":[
