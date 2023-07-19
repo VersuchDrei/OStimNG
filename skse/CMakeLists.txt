@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.21)
 message("Using toolchain file ${CMAKE_TOOLCHAIN_FILE}.")
 
+
 ########################################################################################################################
 ## Define project
 ########################################################################################################################
@@ -105,6 +106,10 @@ set(sources
     src/Util/VectorUtil.cpp
 	src/Util.cpp
 	src/main.cpp
+        src/ModAPI/OstimNG-API-Main.cpp 
+        src/ModAPI/OstimNG-API-Main.h
+        src/ModAPI/OstimNG-API-Scene.h 
+        src/ModAPI/OstimNG-API-Scene.cpp
 
         ${CMAKE_CURRENT_BINARY_DIR}/version.rc)
 
@@ -152,3 +157,36 @@ install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/Sample"
 
 install(TARGETS ${PROJECT_NAME}
         DESTINATION "${CMAKE_INSTALL_LIBDIR}")
+
+
+if(DEFINED ENV{SKYRIM_MODS_FOLDER} AND IS_DIRECTORY "$ENV{SKYRIM_MODS_FOLDER}")
+        set(OUTPUT_FOLDER "$ENV{SKYRIM_MODS_FOLDER}/OStim Standalone Public Beta Fork")
+endif()
+
+if(DEFINED OUTPUT_FOLDER)
+    # If you specify an <OUTPUT_FOLDER> (including via environment variables)
+    # then we'll copy your mod files into Skyrim or a mod manager for you!
+
+    # Copy the SKSE plugin .dll files into the SKSE/Plugins/ folder
+    set(DLL_FOLDER "${OUTPUT_FOLDER}/SKSE/Plugins")
+
+    message(STATUS "SKSE plugin output folder: ${DLL_FOLDER}")
+
+    add_custom_command(
+        TARGET "${PROJECT_NAME}"
+        POST_BUILD
+        COMMAND "${CMAKE_COMMAND}" -E make_directory "${DLL_FOLDER}"
+        COMMAND "${CMAKE_COMMAND}" -E copy_if_different "$<TARGET_FILE:${PROJECT_NAME}>" "${DLL_FOLDER}/$<TARGET_FILE_NAME:${PROJECT_NAME}>"
+        VERBATIM
+    )
+
+    # If you perform a "Debug" build, also copy .pdb file (for debug symbols)
+    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+        add_custom_command(
+            TARGET "${PROJECT_NAME}"
+            POST_BUILD
+            COMMAND "${CMAKE_COMMAND}" -E copy_if_different "$<TARGET_PDB_FILE:${PROJECT_NAME}>" "${DLL_FOLDER}/$<TARGET_PDB_FILE_NAME:${PROJECT_NAME}>"
+            VERBATIM
+        )
+    endif()
+endif()
