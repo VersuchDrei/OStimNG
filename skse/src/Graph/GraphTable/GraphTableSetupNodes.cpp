@@ -433,7 +433,7 @@ namespace Graph {
 
                             if (jsonAction.contains("target")) {
                                 if (jsonAction["target"].is_number_integer()) {
-                                    action.actor = jsonAction["target"];
+                                    action.target = jsonAction["target"];
                                 } else {
                                     logger::warn("property target of action {} of scene {} isn't an integer", index, node->scene_id);
                                 }
@@ -443,7 +443,7 @@ namespace Graph {
 
                             if (jsonAction.contains("performer")) {
                                 if (jsonAction["performer"].is_number_integer()) {
-                                    action.actor = jsonAction["performer"];
+                                    action.performer = jsonAction["performer"];
                                 } else {
                                     logger::warn("property performer of action {} of scene {} isn't an integer", index, node->scene_id);
                                 }

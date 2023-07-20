@@ -30,19 +30,19 @@ b -Tn OStim3PLyingMMM_0 OStim3P\Ostim3PLyingMMM_0.hkx
 b -Tn OStim3PLyingMMM_1 OStim3P\Ostim3PLyingMMM_1.hkx
 b -Tn OStim3PLyingMMM_2 OStim3P\Ostim3PLyingMMM_2.hkx
 
+b -Tn OStim3PStandingMMF_0 OStim3P\Ostim3PStandingMMF_0.hkx
+b -Tn OStim3PStandingMMF_1 OStim3P\Ostim3PStandingMMF_1.hkx
+b -Tn OStim3PStandingMMF_2 OStim3P\Ostim3PStandingMMF_2.hkx
+b -Tn OStim3PLyingMMF_0 OStim3P\Ostim3PLyingMMF_0.hkx
+b -Tn OStim3PLyingMMF_1 OStim3P\Ostim3PLyingMMF_1.hkx
+b -Tn OStim3PLyingMMF_2 OStim3P\Ostim3PLyingMMF_2.hkx
+
 b -Tn OStim3PStandingMFF_0 OStim3P\Ostim3PStandingMFF_0.hkx
 b -Tn OStim3PStandingMFF_1 OStim3P\Ostim3PStandingMFF_1.hkx
 b -Tn OStim3PStandingMFF_2 OStim3P\Ostim3PStandingMFF_2.hkx
 b -Tn OStim3PLyingMFF_0 OStim3P\Ostim3PLyingMFF_0.hkx
 b -Tn OStim3PLyingMFF_1 OStim3P\Ostim3PLyingMFF_1.hkx
 b -Tn OStim3PLyingMFF_2 OStim3P\Ostim3PLyingMFF_2.hkx
-
-b -Tn OStim3PStandingFFF_0 OStim3P\Ostim3PStandingFFF_0.hkx
-b -Tn OStim3PStandingFFF_1 OStim3P\Ostim3PStandingFFF_1.hkx
-b -Tn OStim3PStandingFFF_2 OStim3P\Ostim3PStandingFFF_2.hkx
-b -Tn OStim3PLyingFFF_0 OStim3P\Ostim3PLyingFFF_0.hkx
-b -Tn OStim3PLyingFFF_1 OStim3P\Ostim3PLyingFFF_1.hkx
-b -Tn OStim3PLyingFFF_2 OStim3P\Ostim3PLyingFFF_2.hkx
 
 b -Tn OStim3PStandingFFF_0 OStim3P\Ostim3PStandingFFF_0.hkx
 b -Tn OStim3PStandingFFF_1 OStim3P\Ostim3PStandingFFF_1.hkx

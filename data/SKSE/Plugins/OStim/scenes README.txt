@@ -11,6 +11,8 @@ scene fields:
 "modpack" (string): the display name of the modpack in game
 "length" (float): the duration of the animation in seconds
 "destination" (string): (only for transition) the sceneID of the transition destination
+	adding this property turns this node into a transition, that means it will be played once and then automatically moves to the destination scene
+	if this property is filled the "navigations" property will be ignored
 "origin" (string): (only for transition) the sceneID of the transition origin
 	if the transition is already in the navigations of the origin scene this field doesn't have to (and shouldn't) be filled
 "navigations" (list<object>): a list of navigation options from or to this scene (see navigation fields)
