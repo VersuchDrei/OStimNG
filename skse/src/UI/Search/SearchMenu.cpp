@@ -33,6 +33,8 @@ namespace UI::Search {
 
 	SearchMenu::SearchMenu() : Super(MENU_NAME) {
 
+        inputContext = Context::kMenuMode;
+
         menuFlags.set(
             RE::UI_MENU_FLAGS::kAlwaysOpen,
             RE::UI_MENU_FLAGS::kRequiresUpdate,
