@@ -144,10 +144,10 @@ namespace UI::Scene {
                 if (nav.destination->fulfilledBy(conditions) && (!nav.transitionNode || nav.transitionNode->fulfilledBy(conditions))) {
                     menuData.options.push_back(
                         {.nodeId = nav.isTransition ? nav.transitionNode->scene_id : nav.destination->scene_id,
-                         .title = nav.description,
+                         .title = nav.destination->scene_name,
                          .imagePath = nav.icon,
                          .border = nav.border,
-                         .description = nav.destination->scene_name});
+                         .description = nav.description});
                 }
             }
         }
