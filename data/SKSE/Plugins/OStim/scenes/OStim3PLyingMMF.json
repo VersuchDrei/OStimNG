@@ -24,7 +24,7 @@
 			"icon": "OStim/symbols/gender_fff"
 		},
 		{
-			"destination": "OStim2PStandingMMF",
+			"destination": "OStim3PStandingMMF",
 			"description": "stand up",
 			"icon": "OStim/positional/standup_m"
 		}
