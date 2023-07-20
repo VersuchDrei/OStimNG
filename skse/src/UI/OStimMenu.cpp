@@ -10,7 +10,7 @@ namespace UI {
             a_def->SetState(RE::GFxState::StateType::kLog, RE::make_gptr<Logger>().get());
         });
 
-        inputContext = Context::kMenuMode;
+        inputContext = Context::kNone;
 
         auto menu = static_cast<RE::IMenu*>(this);
         menu->depthPriority = 0;
