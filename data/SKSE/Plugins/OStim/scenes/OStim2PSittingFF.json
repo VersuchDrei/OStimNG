@@ -14,7 +14,7 @@
 			"icon": "OStim/symbols/gender_mf"
 		},
 		{
-			"destination": "OStim2PSittingMM",
+			"destination": "OStim2PKneelingLyingMM",
 			"description": "go to gay idle",
 			"icon": "OStim/symbols/gender_mm"
 		},
@@ -42,6 +42,18 @@
 				"sitting"
 			],
 			"feetOnGround": false
+		}
+	],
+	"actions":[
+		{
+			"type": "holdingbody",
+			"actor": 0,
+			"target": 1
+		},
+		{
+			"type": "holdingbody",
+			"actor": 1,
+			"target": 0
 		}
 	]
 }

@@ -14,7 +14,7 @@
 			"icon": "OStim/symbols/gender_ff"
 		},
 		{
-			"destination": "OStim2PSittingMM",
+			"destination": "OStim2PKneelingLyingMM",
 			"description": "go to gay idle",
 			"icon": "OStim/symbols/gender_mm"
 		},

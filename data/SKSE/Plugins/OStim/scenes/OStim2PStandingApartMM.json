@@ -19,8 +19,8 @@
 			"icon": "OStim/symbols/gender_ff"
 		},
 		{
-			"destination": "OStim2PSittingMM",
-			"description": "sit down",
+			"destination": "OStim2PKneelingLyingMM",
+			"description": "kneel down",
 			"icon": "OStim/positional/squatting_f"
 		}
 	],

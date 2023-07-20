@@ -93,7 +93,7 @@ namespace Graph {
                 navigation.destination = destination;
             }
 
-            if (navigation.description.empty()) {
+            if (raw.description.empty()) {
                 navigation.description = navigation.isTransition && navigation.destination == start ? navigation.transitionNode->scene_id : navigation.destination->scene_id;
             } else {
                 navigation.description = raw.description;
