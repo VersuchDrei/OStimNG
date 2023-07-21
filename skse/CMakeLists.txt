@@ -62,6 +62,7 @@ set(sources
     src/Graph/GraphTable/GraphTableEvents.cpp
     src/Graph/GraphTable/GraphTableNodes.cpp
     src/Graph/GraphTable/GraphTableSetupNodes.cpp
+    src/Graph/Node/NodeNavigation.cpp
     src/Graph/Action.cpp
     src/Graph/GraphTable.cpp
     src/Graph/Node.cpp

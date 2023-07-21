@@ -795,6 +795,11 @@ Function DrawAutoControlPage()
 	SetCursorPosition(18)
 	AddToggleOptionST("OID_EndNPCSceneOnOrgasm", "$ostim_end_npc_scene_on_orgasm", Main.EndNPCSceneOnOrgasm)
 
+	SetCursorPosition(22)
+	AddColoredHeader("$ostim_header_auto_navigation")
+	SetCursorPosition(24)
+	AddSliderOptionST("OID_NavigationDistanceMax", "$ostim_navigation_distance_max", Main.NavigationDistanceMax, "{0}")
+
 	SetCursorPosition(1)
 	AddColoredHeader("$ostim_header_auto_mode_toggle")
 	SetCursorPosition(3)
@@ -815,22 +820,28 @@ Function DrawAutoControlPage()
 	SetCursorPosition(15)
 	AddColoredHeader("$ostim_header_auto_mode_settings")
 	SetCursorPosition(17)
-	AddToggleOptionST("OID_UseAutoModeFades", "$ostim_use_auto_mode_fades", Main.UseAutoFades)
+	AddToggleOptionST("OID_AutoModeLimitToNavigationDistance", "$ostim_auto_mode_limit_to_navigation_distance", Main.AutoModeLimitToNavigationDistance)
 	SetCursorPosition(19)
-	AddSliderOptionST("OID_AutoModeAnimDurationMin", "$ostim_auto_mode_anim_duration_min", Main.AutoModeAnimDurationMin / 1000.0, "{1} s")
+	int AutoModeUseFadesFlags = OPTION_FLAG_NONE
+	If Main.AutoModeLimitToNavigationDistance
+		AutoModeUseFadesFlags = OPTION_FLAG_DISABLED
+	EndIf
+	AddToggleOptionST("OID_UseAutoModeFades", "$ostim_use_auto_mode_fades", Main.UseAutoFades, AutoModeUseFadesFlags)
 	SetCursorPosition(21)
-	AddSliderOptionST("OID_AutoModeAnimDurationMax", "$ostim_auto_mode_anim_duration_max", Main.AutoModeAnimDurationMax / 1000.0, "{1} s")
+	AddSliderOptionST("OID_AutoModeAnimDurationMin", "$ostim_auto_mode_anim_duration_min", Main.AutoModeAnimDurationMin / 1000.0, "{1} s")
 	SetCursorPosition(23)
-	AddSliderOptionST("OID_AutoModeForeplayChance", "$ostim_auto_mode_foreplay_chance", Main.AutoModeForeplayChance, "{0} %")
+	AddSliderOptionST("OID_AutoModeAnimDurationMax", "$ostim_auto_mode_anim_duration_max", Main.AutoModeAnimDurationMax / 1000.0, "{1} s")
 	SetCursorPosition(25)
-	AddSliderOptionST("OID_AutoModeForeplayThresholdMin", "$ostim_auto_mode_foreplay_threshold_min", Main.AutoModeForeplayThresholdMin, "{0}")
+	AddSliderOptionST("OID_AutoModeForeplayChance", "$ostim_auto_mode_foreplay_chance", Main.AutoModeForeplayChance, "{0} %")
 	SetCursorPosition(27)
-	AddSliderOptionST("OID_AutoModeForeplayThresholdMax", "$ostim_auto_mode_foreplay_threshold_max", Main.AutoModeForeplayThresholdMax, "{0}")
+	AddSliderOptionST("OID_AutoModeForeplayThresholdMin", "$ostim_auto_mode_foreplay_threshold_min", Main.AutoModeForeplayThresholdMin, "{0}")
 	SetCursorPosition(29)
-	AddSliderOptionST("OID_AutoModePulloutChance", "$ostim_auto_mode_pullout_chance", Main.AutoModePulloutChance, "{0} %")
+	AddSliderOptionST("OID_AutoModeForeplayThresholdMax", "$ostim_auto_mode_foreplay_threshold_max", Main.AutoModeForeplayThresholdMax, "{0}")
 	SetCursorPosition(31)
-	AddSliderOptionST("OID_AutoModePulloutThresholdMin", "$ostim_auto_mode_pullout_threshold_min", Main.AutoModePulloutThresholdMin, "{0}")
+	AddSliderOptionST("OID_AutoModePulloutChance", "$ostim_auto_mode_pullout_chance", Main.AutoModePulloutChance, "{0} %")
 	SetCursorPosition(33)
+	AddSliderOptionST("OID_AutoModePulloutThresholdMin", "$ostim_auto_mode_pullout_threshold_min", Main.AutoModePulloutThresholdMin, "{0}")
+	SetCursorPosition(35)
 	AddSliderOptionST("OID_AutoModePulloutThresholdMax", "$ostim_auto_mode_pullout_threshold_max", Main.AutoModePulloutThresholdMax, "{0}")
 EndFunction
 
@@ -953,6 +964,25 @@ State OID_EndNPCSceneOnOrgasm
 EndState
 
 
+State OID_NavigationDistanceMax
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_navigation_distance_max")
+	EndEvent
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(Main.NavigationDistanceMax)
+		SetSliderDialogDefaultValue(5)
+		SetSliderDialogRange(0, 20)
+		SetSliderDialogInterval(1)
+	EndEvent
+
+	Event OnSliderAcceptST(float Value)
+		Main.NavigationDistanceMax = Value As int
+		SetSliderOptionValueST(Value, "{0}")
+	EndEvent
+EndState
+
+
 State OID_UseAutoModeAlways
 	Event OnHighlightST()
 		SetInfoText("$ostim_tooltip_use_auto_mode_always")
@@ -1017,6 +1047,23 @@ State OID_UseAutoModeVanilla
 	EndEvent
 EndState
 
+
+State OID_AutoModeLimitToNavigationDistance
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_auto_mode_limit_to_navigation_distance")
+	EndEvent
+
+	Event OnSelectST()
+		Main.AutoModeLimitToNavigationDistance = !Main.AutoModeLimitToNavigationDistance
+		SetToggleOptionValueST(Main.AutoModeLimitToNavigationDistance)
+
+		int AutoModeUseFadesFlags = OPTION_FLAG_NONE
+		If Main.AutoModeLimitToNavigationDistance
+			AutoModeUseFadesFlags = OPTION_FLAG_DISABLED
+		EndIf
+		SetOptionFlagsST(AutoModeUseFadesFlags, false, "OID_UseAutoModeFades")
+	EndEvent
+EndState
 
 State OID_UseAutoModeFades
 	Event OnHighlightST()

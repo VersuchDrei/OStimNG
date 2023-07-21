@@ -22,6 +22,8 @@ namespace Graph {
         std::string icon = "";
         std::string border = "ffffff";
         bool isTransition = false;
+
+        bool fulfilledBy(std::vector<Trait::ActorCondition> conditions);
     };
 
     struct Node {
@@ -48,8 +50,6 @@ namespace Graph {
         void mergeActionsIntoActors();
 
         bool fulfilledBy(std::vector<Trait::ActorCondition> conditions);
-
-        Node* getRandomNodeInRange(int distance, std::vector<Trait::ActorCondition> actorConditions, std::function<bool(Node*)> nodeCondition);
 
         std::vector<Trait::FacialExpression*>* getFacialExpressions(int position);
         std::vector<Trait::FacialExpression*>* getOverrideExpressions(int position);
@@ -79,5 +79,11 @@ namespace Graph {
         int findAnyActionForTarget(int position, std::vector<std::string> types);
         int findActionForActorAndTarget(int actorPosition, int targetPosition, std::string type);
         int findAnyActionForActorAndTarget(int actorPosition, int targetPosition, std::vector<std::string> types);
+
+#pragma region navigation
+    public:
+        Node* getRandomNodeInRange(int distance, std::vector<Trait::ActorCondition> actorConditions, std::function<bool(Node*)> nodeCondition);
+        std::vector<Node*> getRoute(int distance, std::vector<Trait::ActorCondition> actorConditions, Node* destination);
+#pragma endregion
     };
 }

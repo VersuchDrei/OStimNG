@@ -41,12 +41,15 @@ namespace MCM {
         inline static int npcSceneDuration() { return settings[0xE2F].asInt(); }
         inline static int endNPCSceneOnOrgasm() { return settings[0xE31].asInt(); }
 
+        inline static int navigationDistanceMax() { return settings[0xE43].asInt(); }
+
         inline static bool useAutoModeAlways() { return settings[0xE1C].asBool(); }
         inline static bool useAutoModeSolo() { return settings[0xE1D].asBool(); }
         inline static bool useAutoModeDominant() { return settings[0xE1E].asBool(); }
         inline static bool useAutoModeSubmissive() { return settings[0xE1F].asBool(); }
         inline static bool useAutoModeVanilla() { return settings[0xE20].asBool(); }
 
+        inline static bool autoModeLimitToNavigationDistance() { return settings[0xE44].asBool(); }
         inline static bool useAutoModeFades() { return settings[0xE21].asBool(); }
         inline static int autoModeAnimDurationMin() { return settings[0xE32].asInt(); }
         inline static int autoModeAnimDurationMax() { return settings[0xE33].asInt(); }
@@ -176,12 +179,15 @@ namespace MCM {
             {0xE2F, {300000, "NPCSceneDuration"}},
             {0xE31, {1, "endNPCSceneOnOrgasm"}},
 
+            {0xE43, {5, "navigationDistanceMax"}},
+
             {0xE1C, {0, "SetAIControl"}},
             {0xE1D, {0, "SetForceAIForMasturbation"}},
             {0xE1E, {0, "SetForceAIIfAttacking"}},
             {0xE1F, {0, "SetForceAIIfAttacked"}},
             {0xE20, {0, "SetForceAIInConsensualScenes"}},
 
+            {0xE44, {1, "autoModeLimitToNavigationDistance"}},
             {0xE21, {0, "SetUseAutoFades"}},
             {0xE32, {7500, "autoModeAnimDurationMin"}},
             {0xE33, {15000, "autoModeAnimDurationMax"}},

@@ -451,6 +451,17 @@ Bool Property EndNPCSceneOnOrgasm
 EndProperty
 
 
+GlobalVariable Property OStimNavigationDistanceMax Auto
+int Property NavigationDistanceMax
+	int Function Get()
+		Return OStimNavigationDistanceMax.value As int
+	EndFunction
+	Function Set(int Value)
+		OStimNavigationDistanceMax.value = Value
+	EndFunction
+EndProperty
+
+
 GlobalVariable Property OStimUseAutoModeAlways Auto
 Bool Property UseAIControl
 	bool Function Get()
@@ -521,6 +532,20 @@ Bool Property UseAINonAggressive
 	EndFunction
 EndProperty
 
+
+GlobalVariable Property OStimAutoModeLimitToNavigationDistance Auto
+Bool Property AutoModeLimitToNavigationDistance
+	bool Function Get()
+		Return OStimAutoModeLimitToNavigationDistance.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimAutoModeLimitToNavigationDistance.value = 1
+		Else
+			OStimAutoModeLimitToNavigationDistance.value = 0
+		EndIf
+	EndFunction
+EndProperty
 
 GlobalVariable Property OStimUseAutoModeFades Auto
 Bool Property UseAutoFades

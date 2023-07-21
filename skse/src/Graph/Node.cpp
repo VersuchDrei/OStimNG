@@ -11,6 +11,15 @@
 #include "Util/VectorUtil.h"
 
 namespace Graph {
+    bool Navigation::fulfilledBy(std::vector<Trait::ActorCondition> conditions) {
+        for (Node* node : nodes) {
+            if (!node->fulfilledBy(conditions)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
     void Node::mergeActionsIntoActors() {
         for (Action action : actions) {
             if (action.actor < actors.size()) {
@@ -47,39 +56,6 @@ namespace Graph {
         }
 
         return true;
-    }
-
-    Node* Node::getRandomNodeInRange(int distance, std::vector<Trait::ActorCondition> actorConditions, std::function<bool(Node*)> nodeCondition) {
-        std::vector<Node*> nodes;
-        std::vector<Node*> lastLevel = { this };
-        std::vector<Node*> nextLevel;
-
-        for (int i = 0; i < distance; i++) {
-            for (Node* node : lastLevel) {
-                for (Navigation nav : node->navigations) {
-                    Node* dest = nav.nodes.back();
-                    if (!VectorUtil::contains(nodes, dest) && dest->fulfilledBy(actorConditions)) {
-                        nodes.push_back(dest);
-                        nextLevel.push_back(dest);
-                    }
-                }
-            }
-
-            if (nextLevel.empty()) {
-                break;
-            }
-
-            lastLevel = nextLevel;
-            nextLevel.clear();
-        }
-
-        for (auto& node : nodes) {
-            if (!node->noRandomSelection && nodeCondition(node)) {
-                return node;
-            }
-        }
-
-        return nullptr;
     }
 
     uint32_t Node::getStrippingMask(int position) {

@@ -75,7 +75,7 @@ namespace Graph {
                 nodes.push_back(currentNode);
                 Graph::Node* next = nullptr;
                 for (RawNavigation& nav : navigations) {
-                    if (nav.origin == destination->scene_id) {
+                    if (nav.origin == currentNode->scene_id) {
                         next = GraphTable::getNodeById(nav.destination);
                         break;
                     }

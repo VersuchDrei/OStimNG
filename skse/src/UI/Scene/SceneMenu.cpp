@@ -141,11 +141,7 @@ namespace UI::Scene {
             std::vector<Trait::ActorCondition> conditions = state->currentThread->getActorConditions();
             logger::info("after building conditions");
             for (auto& nav : currentNode->navigations) {
-                bool fullfilled = true;
-                for (Graph::Node* node : nav.nodes) {
-                    fullfilled &= node->fulfilledBy(conditions);
-                }
-                if (fullfilled) {
+                if (nav.fulfilledBy(conditions)) {
                     menuData.options.push_back(
                         {.nodeId = nav.nodes.front()->scene_id,
                          .title = nav.nodes.back()->scene_name,
