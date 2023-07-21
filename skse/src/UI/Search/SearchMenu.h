@@ -4,6 +4,12 @@
 
 namespace UI::Search {
     class SearchMenu : public UI::OStimMenu {
+
+        struct SearchItem {
+            std::string id;
+            std::string label;
+        };
+
     public:
         using Super = UI::OStimMenu;
 
@@ -20,7 +26,7 @@ namespace UI::Search {
 
         void Show();
         void Hide();
-        void AssignData(std::vector<std::string>& data);
+        void AssignData(std::vector<SearchItem>& data);
         void Search(std::string value);
         void SelectOption(std::string val);
 
