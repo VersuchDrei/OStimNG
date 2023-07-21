@@ -11,7 +11,7 @@ namespace Graph {
     void GraphTable::setupNodes() {
         std::vector<Graph::RawNavigation> navigations;
 
-        Util::JsonFileLoader::LoadFilesInFolder(NODE_FILE_PATH, [&navigations](std::string path, std::string filename, json json) {
+        Util::JsonFileLoader::LoadFilesInSubfolders(NODE_FILE_PATH, [&navigations](std::string path, std::string filename, json json) {
             Node* node = new Node();
             node->scene_id = node->lowercase_id = filename;
             StringUtil::toLower(&node->lowercase_id);
@@ -35,10 +35,10 @@ namespace Graph {
             }
 
             if (json.contains("length")) {
-                if (json["length"].is_number_float()) {
+                if (json["length"].is_number()) {
                     node->animationLengthMs = static_cast<int>(json["length"] * 1000.0f);
                 } else {
-                    logger::warn("length property of scene {} isn't a float", node->scene_id);
+                    logger::warn("length property of scene {} isn't a number", node->scene_id);
                 }
             } else {
                 logger::warn("scene {} doesn't have a length property defined", node->scene_id);
@@ -157,18 +157,18 @@ namespace Graph {
                             }
 
                             if (jsonSpeed.contains("playbackSpeed")) {
-                                if (jsonSpeed["playbackSpeed"].is_number_float()) {
+                                if (jsonSpeed["playbackSpeed"].is_number()) {
                                     speed.playbackSpeed = jsonSpeed["playbackSpeed"];
                                 } else {
-                                    logger::warn("playbackSpeed property of speed {} of scene {} isn't a float", index, node->scene_id);
+                                    logger::warn("playbackSpeed property of speed {} of scene {} isn't a number", index, node->scene_id);
                                 }
                             }
 
                             if (jsonSpeed.contains("displaySpeed")) {
-                                if (jsonSpeed["displaySpeed"].is_number_float()) {
+                                if (jsonSpeed["displaySpeed"].is_number()) {
                                     speed.displaySpeed = jsonSpeed["displaySpeed"];
                                 } else {
-                                    logger::warn("displaySpeed property of speed {} of scene {} isn't a float", index, node->scene_id);
+                                    logger::warn("displaySpeed property of speed {} of scene {} isn't a number", index, node->scene_id);
                                 }
                             }
                             node->speeds.push_back(speed);
@@ -275,18 +275,18 @@ namespace Graph {
                             }
 
                             if (jsonActor.contains("scale")) {
-                                if (jsonActor["scale"].is_number_float()) {
+                                if (jsonActor["scale"].is_number()) {
                                     actor.scale = jsonActor["scale"];
                                 } else {
-                                    logger::warn("scale property of actor {} of scene {} isn't a float", index, node->scene_id);
+                                    logger::warn("scale property of actor {} of scene {} isn't a number", index, node->scene_id);
                                 }
                             }
 
                             if (jsonActor.contains("scaleHeight")) {
-                                if (jsonActor["scaleHeight"].is_number_float()) {
+                                if (jsonActor["scaleHeight"].is_number()) {
                                     actor.scaleHeight = jsonActor["scaleHeight"];
                                 } else {
-                                    logger::warn("scaleHeight property of actor {} of scene {} isn't a float", index, node->scene_id);
+                                    logger::warn("scaleHeight property of actor {} of scene {} isn't a number", index, node->scene_id);
                                 }
                             }
 

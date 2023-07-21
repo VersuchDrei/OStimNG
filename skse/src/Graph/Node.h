@@ -17,12 +17,11 @@ namespace Graph {
     };
 
     struct Navigation {
-        Node* destination;
+        std::vector<Node*> nodes;
         std::string description = "";
         std::string icon = "";
         std::string border = "ffffff";
         bool isTransition = false;
-        Node* transitionNode = nullptr;
     };
 
     struct Node {

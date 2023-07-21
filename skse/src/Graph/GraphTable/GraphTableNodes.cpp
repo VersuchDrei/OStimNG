@@ -5,7 +5,7 @@
 
 namespace Graph {
     void GraphTable::addNode(Node* node) {
-        nodes.insert({node->lowercase_id, node});
+        nodes[node->lowercase_id] = node;
         for (Graph::Speed speed : node->speeds) {
             animationNodeTable.insert({speed.animation, node});
         }
@@ -61,40 +61,41 @@ namespace Graph {
             }
 
             for (auto& existingNavigation : start->navigations) {
-                if (existingNavigation.destination == destination || existingNavigation.transitionNode == destination) {
+                if (existingNavigation.nodes.back() == destination || existingNavigation.nodes.front() == destination) {
                     continue;
                 }
             }
 
             Navigation navigation;
 
-            if (destination->isTransition) {
+            Graph::Node* currentNode = destination;
+            std::vector<Graph::Node*> nodes;
+
+            while (currentNode && currentNode->isTransition) {
+                nodes.push_back(currentNode);
+                Graph::Node* next = nullptr;
                 for (RawNavigation& nav : navigations) {
                     if (nav.origin == destination->scene_id) {
-                        navigation.destination = GraphTable::getNodeById(nav.destination);
+                        next = GraphTable::getNodeById(nav.destination);
                         break;
                     }
                 }
 
-                if (!navigation.destination) {
-                    logger::warn("Couldn't add navigation from {} to {} because {} transition destination doesn't exist.", raw.origin, raw.destination, raw.destination);
-                    continue;
+                if (!next) {
+                    logger::warn("Couldn't add navigation from {} to {} because {} transition destination doesn't exist.", raw.origin, raw.destination, currentNode->scene_id);
                 }
 
-                // TODO: what do when people chain transitions?
-                if (navigation.destination->isTransition) {
-                    logger::warn( "Couldn't add navigation from {} to {} because {} transition destination is another transition.", raw.origin, raw.destination, raw.destination);
-                    continue;
-                }
-
-                navigation.isTransition = true;
-                navigation.transitionNode = destination;
-            } else {
-                navigation.destination = destination;
+                currentNode = next;
             }
 
+            if (!currentNode) {
+                continue;
+            }
+
+            navigation.nodes.push_back(currentNode);
+
             if (raw.description.empty()) {
-                navigation.description = navigation.isTransition && navigation.destination == start ? navigation.transitionNode->scene_id : navigation.destination->scene_id;
+                navigation.description = navigation.isTransition && navigation.nodes.back() == start ? navigation.nodes.front()->scene_id : navigation.nodes.back()->scene_id;
             } else {
                 navigation.description = raw.description;
             }
@@ -103,7 +104,7 @@ namespace Graph {
                 navigation.border = raw.border;
             }
             if (raw.icon == "") {
-                navigation.icon = "OStim/icons/" + LegacyUtil::getIcon(navigation.destination == start ? navigation.transitionNode : navigation.destination) + ".dds";
+                navigation.icon = "OStim/icons/" + LegacyUtil::getIcon(navigation.nodes.back() == start ? navigation.nodes.front() : navigation.nodes.back()) + ".dds";
             } else {
                 navigation.icon = "OStim/icons/" + raw.icon + ".dds";
             }

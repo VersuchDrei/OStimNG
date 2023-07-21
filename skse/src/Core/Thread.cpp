@@ -146,13 +146,8 @@ namespace OStim {
 
     void Thread::Navigate(std::string sceneId) {
         for (auto& nav : m_currentNode->navigations) {
-            if (sceneId == nav.destination->scene_id) {
-                ChangeNode(nav.destination);
-                return;
-            }
-            if (nav.isTransition && sceneId == nav.transitionNode->scene_id) {
-                ChangeNode(nav.transitionNode);
-                return;
+            if (sceneId == nav.nodes.front()->scene_id) {
+                ChangeNode(nav.nodes.front());
             }
         }      
     }
@@ -166,7 +161,7 @@ namespace OStim {
 
         std::unique_lock<std::shared_mutex> writeLock(nodeLock);
         if (a_node->isTransition && nodeQueue.empty() && !a_node->navigations.empty()) {
-            nodeQueue.push(a_node->navigations[0].destination);
+            nodeQueue.push(a_node->navigations[0].nodes.front());
         }
         m_currentNode = a_node;
         animationTimer = 0;

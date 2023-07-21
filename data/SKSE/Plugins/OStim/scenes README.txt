@@ -1,6 +1,9 @@
 A scene defines what animations are played and what navigation options the player has from there.
 They're also full of metadata and other information.
 The sceneID which is referred to in other parts of the documentation is the scenes filename without the .json extension.
+The scene parser also parses subfolders, but folder names are not part of the sceneID, only the filename.
+If two files have the same filename one of them will overwrite the other, the order of which is overwriting which is not predictable.
+So it is recommended to start all your scene names with your personal signature to avoid incompatibilities.
 
 A lot of the fields in scenes have default values and don't necessarily have to be listed in the .json file.
 

@@ -57,15 +57,7 @@ namespace Graph {
         for (int i = 0; i < distance; i++) {
             for (Node* node : lastLevel) {
                 for (Navigation nav : node->navigations) {
-                    Node* dest = nav.destination;
-                    if (dest->isTransition) {
-                        if (dest->navigations.empty()) {
-                            continue;
-                        }
-                        else {
-                            dest = dest->navigations[0].destination;
-                        }
-                    }
+                    Node* dest = nav.nodes.back();
                     if (!VectorUtil::contains(nodes, dest) && dest->fulfilledBy(actorConditions)) {
                         nodes.push_back(dest);
                         nextLevel.push_back(dest);
