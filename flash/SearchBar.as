@@ -10,7 +10,6 @@ class SearchBar extends MovieClip
 	var bg:MovieClip;
 	var divider:MovieClip;
 
-	var Options = new Array(0);
 	var CurrentlySelectedIdx = -1;
 	var textInput:MovieClip;
 
@@ -31,20 +30,25 @@ class SearchBar extends MovieClip
 	var inputtingText:Boolean = false;
 	var fakeButton;
 
+	var widthTweenTime = 0.25;
+	var heightTweenTime = 0.25;
+
 	public function SearchBar()
 	{
 		super();
 		// constructor code
-		bg._width = 355;
-		bg._x = bg._width / 2;
-		bg._height = minHeight;
-		bg._y = 0 - (bg._height / 2);
-
-		divider._width = bg._width - (menuGutter * 2);
-		divider._x = menuGutter;
+		UpdateSize(minHeight,355);
 
 
-		//AssignData(generateTestData(5));//; For Testing
+		AssignData(generateTestData(5));//; For Testing
+	}
+	//Update size based on the size of the contents. Width outer gutters
+	public function UpdateSize(newHeight:Number, newWidth:Number)
+	{
+
+		TweenLite.to(bg,widthTweenTime,{_width:newWidth + (menuGutter * 2), _x:(newWidth + (menuGutter * 2)) / 2});
+		TweenLite.to(divider,0.5,{_width:newWidth, _x:menuGutter});
+		TweenLite.to(bg,heightTweenTime,{delay:widthTweenTime, _height:newHeight, _y:0 - (newHeight / 2)});
 	}
 
 	public function handleInput(details:InputDetails, pathToFocus:Array):Boolean
@@ -55,7 +59,7 @@ class SearchBar extends MovieClip
 			{
 				if (inputtingText)
 				{
-					Search();					
+					Search();
 					ClearInput();
 					return true;
 				}
@@ -139,7 +143,8 @@ class SearchBar extends MovieClip
 	{
 		textInput.text = "";
 	}
-	function DisableTextInput(){		
+	function DisableTextInput()
+	{
 		inputtingText = false;
 		Selection.setFocus(fakeButton);
 	}
@@ -154,13 +159,14 @@ class SearchBar extends MovieClip
 		for (var k = 0; k < fields.length; k++)
 		{
 			fields[k]._visible = false;
+			fields[k].optionVal.text = ""
 		}
 
 		if (data.length == 0)
 		{
 			HideDivider();
 			var newHeight = minHeight;
-			TweenLite.to(bg,0.5,{_height:newHeight, _y:0 - (newHeight / 2)});
+			TweenLite.to(bg,0.5,{_height:newHeight, _y:0 - (newHeight / 2), _width:355, _x:355 / 2});
 
 			CurrentlySelectedIdx = -1;
 			EnableTextInput();
@@ -169,43 +175,43 @@ class SearchBar extends MovieClip
 		{
 			ShowDivider();
 			var optCount = data.length > maxOptions ? maxOptions : data.length;
-			var newHeight = minHeight + topGutter + ((optionGutter + lineHeight) * optCount);
-			TweenLite.to(bg,0.5,{_height:newHeight, _y:0 - (newHeight / 2)});
 
 			for (var i = 0; i < optCount; i++)
 			{
 				if (fields.length < i + 1)
 				{
 					fields.push(this.attachMovie("SearchOption", "o" + i, i + 1, {_x:menuGutter, _y:0 - (minHeight + lineHeight + ((optionGutter + lineHeight) * i)), _height:lineHeight}));
-
+					fields[i]._visible = false;
 				}
-				fields[i]._visible = true;
+				fields[i].init(i,data[i]);
 
-				fields[i].optionVal.text = data[i].label;
-				fields[i].idx = i;
-				fields[i].onRollOver = function()
-				{
-					_parent.SetIdx(this);
-					_parent.UpdateHighlight();
-				};
-				fields[i].onRollOut = function()
-				{
-					this.OnUnHighlight();
-				};
-				fields[i].onMouseDown = function()
-				{
-					if (Mouse.getTopMostEntity()._parent == this)
-					{
-						_parent.SelectOption();
-					}
-				};
 			}
+			var maxWidth = 340;
+			for (var j = 0; j < optCount; j++)
+			{
+				if (fields[j].optionVal.textWidth > maxWidth)
+				{
+					maxWidth = fields[j].optionVal.textWidth;
+				}
+			}
+
+			var newHeight = minHeight + topGutter + ((optionGutter + lineHeight) * optCount);
+			UpdateSize(newHeight,maxWidth);
+
+			for (var i2 = 0; i2 < optCount; i2++)
+			{
+				TweenLite.delayedCall((widthTweenTime + (heightTweenTime * ((i2 / optCount)))),makeVisible,[fields[i2]]);
+			}
+
 			CurrentlySelectedIdx = 0;
 			DisableTextInput();
 		}
 		UpdateHighlight();
 	}
-
+	function makeVisible(field)
+	{
+		field._visible = true;
+	}
 	public function SetIdx(field)
 	{
 		CurrentlySelectedIdx = field.idx;
@@ -213,7 +219,6 @@ class SearchBar extends MovieClip
 
 	public function SetIsOpen(isOpen:Boolean)
 	{
-		trace(Selection.getFocus());
 		this._isOpen = isOpen;
 		if (_isOpen)
 		{
@@ -225,7 +230,7 @@ class SearchBar extends MovieClip
 
 	public function SelectOption()
 	{
-		var val = fields[CurrentlySelectedIdx].optionVal.text;
+		var val = fields[CurrentlySelectedIdx].sceneid;
 		if (val != undefined)
 		{
 			doSelectOption(val);
@@ -255,7 +260,7 @@ class SearchBar extends MovieClip
 		var arr = new Array(count);
 		for (var i = 0; i < count; i++)
 		{
-			arr[i] = {label:i, value:"v" + i};
+			arr[i] = {label:"AAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBB" + i, value:"v" + i};
 		}
 		return arr;
 	}

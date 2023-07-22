@@ -107,8 +107,7 @@ namespace UI::Search {
         root.GetMember("searchMCContainer", &alignmentInfo);
         alignmentInfo.Invoke("setPosition", nullptr, controlPosArray, 4);
     }
-
-    void SearchMenu::AssignData(std::vector<std::string>& data) {
+    void SearchMenu::AssignData(std::vector<SearchItem>& data) {
         Locker locker(_lock);
         auto box = GetSearchBox();
         RE::GFxValue arg;
@@ -116,7 +115,8 @@ namespace UI::Search {
         for (auto& item : data) {
             RE::GFxValue entry;
             _view->CreateObject(&entry);
-            entry.SetMember("label", RE::GFxValue{ item.c_str() });
+            entry.SetMember("sceneid", RE::GFxValue{ item.id.c_str() });
+            entry.SetMember("label", RE::GFxValue{ item.label.c_str() });
             arg.PushBack(entry);
         }
         box.Invoke("AssignData", nullptr, &arg, 1);
@@ -124,20 +124,21 @@ namespace UI::Search {
 
     void SearchMenu::Search(std::string value) {
         std::vector<Graph::Node*> results;
-        Graph::GraphTable::findNodesById(value , results);
-        std::vector<std::string> data;
+        Graph::GraphTable::searchNodesByName(value , results);
+        std::vector<SearchItem> data;
         auto state = UI::UIState::GetSingleton();
         for (int i = 0; i < results.size(); i++) {
             if(results[i]->actors.size() == state->currentThread->getActorCount() 
                 && results[i]->furnitureType == state->currentNode->furnitureType 
                 && !results[i]->isTransition)
-            data.push_back(results[i]->scene_id);
+                data.push_back(SearchItem{ results[i]->scene_id,results[i]->scene_name });
         }
         AssignData(data);
     }
 
     void SearchMenu::SelectOption(std::string val) {
         auto node = Graph::GraphTable::getNodeById(val);
+    
 
         SKSE::GetTaskInterface()->AddTask([node]() {
             UI::UIState::GetSingleton()->currentThread->ChangeNode(node);
