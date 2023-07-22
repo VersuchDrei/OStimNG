@@ -55,8 +55,22 @@ namespace OStim {
 #pragma endregion
 
     bool Thread::autoTransition(std::string type) {
-        //TODO
-        return false;
+        if (!nodeQueue.empty()) {
+            return false;
+        }
+
+        std::string sceneID = m_currentNode->getAutoTransitionForNode(type);
+        if (sceneID.empty()) {
+            return false;
+        }
+
+        Graph::Node* node = Graph::GraphTable::getNodeById(sceneID);
+        if (!node) {
+            return false;
+        }
+
+        ChangeNode(node);
+        return true;
     }
 
     bool Thread::autoTransition(int index, std::string type) {
@@ -101,18 +115,27 @@ namespace OStim {
     void Thread::navigateTo(Graph::Node* node) {
         clearNodeQueue();
 
-        // TODO: try to do actual navigation
-        warpTo(node, MCM::MCMTable::useAutoModeFades());
+        std::vector<Graph::Node*> nodes = m_currentNode->getRoute(MCM::MCMTable::navigationDistanceMax(), getActorConditions(), node);
+        if (nodes.empty()) {
+            warpTo(node, MCM::MCMTable::useAutoModeFades());
+        } else {
+            for (int i = 1; i < nodes.size(); i++) {
+                nodeQueue.push(nodes[i]);
+            }
+            ChangeNode(nodes.front());
+        }
     }
 
     bool Thread::pullOut() {
-        // TODO actually link this to the given node
+        if (autoTransition("pullout")) {
+            return true;
+        }
+
         std::vector<std::function<bool(Graph::Node*)>> conditions;
         conditions.push_back([&](Graph::Node* node) { return node->findAnyAction({"analsex", "tribbing", "vaginalsex"}) == -1; });
-        addFurniture2(conditions, furnitureType);
         conditions.push_back([&](Graph::Node* node) { return node->findAction("malemasturbation") != -1; });
 
-        Graph::Node* node = Graph::GraphTable::getRandomNode(furnitureType, getActorConditions(), [&conditions](Graph::Node* node) { return checkConditions2(conditions, node); });
+        Graph::Node* node = m_currentNode->getRandomNodeInRange(3, getActorConditions(), [&conditions](Graph::Node* node) { return checkConditions2(conditions, node); });
 
         if (node) {
             navigateTo(node);

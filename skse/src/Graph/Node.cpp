@@ -75,6 +75,15 @@ namespace Graph {
         return false;
     }
 
+    std::string Node::getAutoTransitionForNode(std::string type) {
+        StringUtil::toLower(&type);
+        auto iter = autoTransitions.find(type);
+        if (iter != autoTransitions.end()) {
+            return iter->second;
+        }
+        return "";
+    }
+
     std::string Node::getAutoTransitionForActor(int position, std::string type) {
         if (position < 0 || position >= actors.size()) {
             return "";

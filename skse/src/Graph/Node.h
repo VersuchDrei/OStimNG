@@ -58,6 +58,7 @@ namespace Graph {
         uint32_t getStrippingMask(int position);
         bool doFullStrip(int position);
 
+        std::string getAutoTransitionForNode(std::string type);
         std::string getAutoTransitionForActor(int position, std::string type);
 
         bool hasNodeTag(std::string tag);
