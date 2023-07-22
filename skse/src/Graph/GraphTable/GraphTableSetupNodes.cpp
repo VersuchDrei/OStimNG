@@ -19,6 +19,8 @@ namespace Graph {
             if (json.contains("name")) {
                 if (json["name"].is_string()) {
                     node->scene_name = json["name"];
+                    node->lowercase_name = json["name"];
+                    StringUtil::toLower(&node->lowercase_name);
                 } else {
                     logger::warn("name property of scene {} isn't a string", node->scene_id);
                 }

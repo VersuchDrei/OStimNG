@@ -34,6 +34,8 @@ namespace LegacyUtil {
             if (auto info = scene.child("info")) {
                 if (auto name = info.attribute("name")) {
                     node->scene_name = name.value();
+                    node->lowercase_name = name.value();
+                    StringUtil::toLower(&node->lowercase_name);
                 }
             }
 

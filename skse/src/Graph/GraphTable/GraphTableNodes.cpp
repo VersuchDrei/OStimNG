@@ -122,16 +122,15 @@ namespace Graph {
         return nullptr;
     }
 
-    bool ContainsId(Node* n, std::string& id) {
-        if (n->lowercase_id.contains(id))
-            return true;
+    bool ContainsName(Node* n, std::string& name) {
+        if (n->lowercase_name.contains(name)) return true;
         return false;
     }
 
-    void GraphTable::findNodesById(std::string& id, std::vector<Node*>& results) {
-        StringUtil::toLower(&id);
+    void GraphTable::searchNodesByName(std::string& name, std::vector<Node*>& results) {
+        StringUtil::toLower(&name);
         for (auto& iter : nodes) {
-            if (ContainsId(iter.second,id)) {
+            if (ContainsName(iter.second, name)) {
                 results.push_back(iter.second);
             }
         }
