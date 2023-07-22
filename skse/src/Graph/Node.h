@@ -34,6 +34,7 @@ namespace Graph {
         std::string lowercase_id;
         uint32_t numActors;
         std::string scene_name;
+        std::string lowercase_name;
         std::vector<Speed> speeds;
         uint32_t defaultSpeed = 0;
         bool isTransition = false;

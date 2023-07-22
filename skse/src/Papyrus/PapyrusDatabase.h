@@ -40,6 +40,8 @@ namespace PapyrusDatabase {
                 if (auto name = info.attribute("name")) {
                     j_obj["name"] = name.value();
                     node->scene_name = name.value();
+                    node->lowercase_name = name.value();
+                    StringUtil::toLower(&node->lowercase_name);
                 }
             }
                 
