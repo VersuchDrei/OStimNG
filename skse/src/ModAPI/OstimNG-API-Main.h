@@ -20,14 +20,29 @@ namespace OstimNG_API
                 return std::addressof(singleton); 
             }
 
-            APIResult StartScene(std::string_view pluginName,RE::TESObjectREFR* furniture,const std::string& startingAnimation,std::vector<RE::Actor*> actors,int *threadID) noexcept override;
-            APIResult StartScene(std::string_view pluginName, const std::string& startingAnimation, std::vector<RE::Actor*> actors, int *threadID) noexcept override; 
+            APIResult StartScene(const char* pluginName, RE::TESObjectREFR* furniture,
+                                                       const char* startingAnimation, Actor* actors[256], uint32_t* threadID) noexcept override;
+
+            APIResult StartCoupleScene(const char* pluginName, TESObjectREFR* furniture,  const char* startingAnimation,Actor* dom, Actor* sub, uint32_t* threadID) noexcept override; 
+
+            APIResult StartThreesomeScene(const char* pluginName,TESObjectREFR* furniture,  const char* startingAnimation, Actor* firstActor, Actor* secondActor, Actor* thirdActor, uint32_t* threadID) noexcept override; 
+
+            APIResult StartFoursomeScene(const char* pluginName,TESObjectREFR* furniture,  const char* startingAnimation, Actor* firstActor, Actor* secondActor, Actor* thirdActor, Actor* fourthActor, uint32_t* threadID) noexcept override; 
             
-            APIResult StopScene(std::string_view pluginName, int threadID) noexcept override; 
-            APIResult SetAutoMode(std::string_view pluginName, int threadID, bool autoMode) noexcept override; 
+            
+            /// @brief 
+            /// Stop the specified scene.
+            /// @param threadID integer ID of Ostim thread to stop. 
+            /// @return 
+            APIResult StopScene(const char* pluginName, uint32_t threadID) noexcept override;
 
 
-            APIResult TryGetAutoMode(std::string_view pluginName, int threadID, bool* autoMode) noexcept override; 
+            APIResult SetAutoMode(const char* pluginName, uint32_t threadID,
+                                                        bool autoMode) noexcept override;
+
+
+            APIResult TryGetAutoMode(const char* pluginName, uint32_t threadID,
+                                                           bool* autoMode) noexcept override; 
         }; 
     }
 }
