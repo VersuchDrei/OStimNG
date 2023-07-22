@@ -22,38 +22,28 @@ namespace OstimNG_API::Scene
         // Failed 
         Failed
     };
+
+    //C style params where possible to prevent ABI issues; C# my love, I miss you
     class ISceneInterface
     {
         public:
-        
-            /// @brief
-            /// Start a scene with optionally specified furniture reference.
-            /// @return
-            [[nodiscard]] virtual APIResult StartScene(std::string_view pluginName, RE::TESObjectREFR* furniture,
-                                                       const std::string& startingAnimation, std::vector<RE::Actor*> actors, int* threadID) noexcept = 0;
+            [[nodiscard]] virtual APIResult StartScene(const char* pluginName, RE::TESObjectREFR* furniture,
+                                                       const char* startingAnimation, Actor* actors[256], uint32_t* threadID) noexcept = 0;
 
 
-            /// @brief 
-            /// Start a scene with nearest found furniture, if any. 
-            /// @return 
-            [[nodiscard]] virtual APIResult StartScene(std::string_view pluginName, const std::string& startingAnimation,
-                                                       std::vector<RE::Actor*> actors, int* threadID) noexcept = 0;
+            [[nodiscard]] virtual APIResult StartCoupleScene(const char* pluginName, TESObjectREFR* furniture, const char* startingAnimation, Actor* dom, Actor* sub, uint32_t* threadID) noexcept = 0; 
 
-            /// @brief 
-            /// Stop the specified scene.
-            /// @param threadID integer ID of Ostim thread to stop. 
-            /// @return 
-            [[nodiscard]] virtual APIResult StopScene(std::string_view pluginName, int threadID) noexcept = 0;
+            [[nodiscard]] virtual APIResult StartThreesomeScene(const char* pluginName, TESObjectREFR* furniture, const char* startingAnimation, Actor* firstActor, Actor* secondActor, Actor* thirdActor, uint32_t* threadID) noexcept = 0; 
+
+            [[nodiscard]] virtual APIResult StartFoursomeScene(const char* pluginName, TESObjectREFR* furniture, const char* startingAnimation, Actor* firstActor, Actor* secondActor, Actor* thirdActor, Actor* fourthActor, uint32_t* threadID) noexcept = 0; 
+
+            [[nodiscard]] virtual APIResult StopScene(const char* pluginName, uint32_t threadID) noexcept = 0;
 
 
-            [[nodiscard]] virtual APIResult SetAutoMode(std::string_view pluginName, int threadID,
+            [[nodiscard]] virtual APIResult SetAutoMode(const char* pluginName, uint32_t threadID,
                                                         bool autoMode) noexcept = 0;
-
-
-            [[nodiscard]] virtual APIResult TryGetAutoMode(std::string_view pluginName, int threadID,
+            [[nodiscard]] virtual APIResult TryGetAutoMode(const char* pluginName, uint32_t threadID,
                                                            bool* autoMode) noexcept = 0; 
-        
-        
     };
 
     
