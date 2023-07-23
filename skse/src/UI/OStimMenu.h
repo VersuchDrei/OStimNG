@@ -1,4 +1,5 @@
 #pragma once
+#include "UIInterop.h"
 
 namespace UI {
 	class OStimMenu : public RE::IMenu {
@@ -10,6 +11,7 @@ namespace UI {
 		void Hide();
 		virtual void Update() {};
 		virtual void AdvanceMovie(float a_interval, std::uint32_t a_currentTime) override;
+		virtual void Handle(UI::Controls control)=0;
 
 	public:
 		std::string menuName;
