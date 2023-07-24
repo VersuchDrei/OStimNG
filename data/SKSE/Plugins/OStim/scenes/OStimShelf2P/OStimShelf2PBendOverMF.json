@@ -2,6 +2,7 @@
 	"name": "Bend Over Lesbian",
 	"modpack": "OStim",
 	"length": 2.0,
+	"furniture": "shelf",
 	"speeds":[
 		{
 			"animation": "OStimShelf2PBendOverMF"
@@ -19,7 +20,6 @@
 			"icon": "OStim/positional/standup_f"
 		}
 	],
-	"furniture": "shelf",
 	"tags":[
 		"idle",
 		"intro"

@@ -2,6 +2,7 @@
 	"name": "Behind Straight",
 	"modpack": "OStim",
 	"length": 2.0,
+	"furniture": "shelf",
 	"speeds":[
 		{
 			"animation": "OStimShelf2PBehindMF"
@@ -24,7 +25,6 @@
 			"icon": "OStim/positional/bendover_f"
 		}
 	],
-	"furniture": "shelf",
 	"tags":[
 		"idle",
 		"intro"

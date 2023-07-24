@@ -2,6 +2,7 @@
 	"name": "Behind Lesbian",
 	"modpack": "OStim",
 	"length": 2.0,
+	"furniture": "table",
 	"speeds":[
 		{
 			"animation": "OStimTable2PBehindFF"
@@ -19,7 +20,6 @@
 			"icon": "OStim/symbols/return"
 		}
 	],
-	"furniture": "table",
 	"tags":[
 		"idle",
 		"intro"

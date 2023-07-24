@@ -161,7 +161,9 @@ namespace OStim {
 
         std::unique_lock<std::shared_mutex> writeLock(nodeLock);
         if (a_node->isTransition && nodeQueue.empty() && !a_node->navigations.empty()) {
-            nodeQueue.push(a_node->navigations[0].nodes.front());
+            for (Graph::Node* navNode : a_node->navigations[0].nodes) {
+                nodeQueue.push(navNode);
+            }
         }
         m_currentNode = a_node;
         animationTimer = 0;
@@ -391,9 +393,8 @@ namespace OStim {
         }
 
         animationTimer += Constants::LOOP_TIME_MILLISECONDS;
-        if (animationTimer >= m_currentNode->animationLengthMs) {
-            animationTimer = 0;
-            if (!nodeQueue.empty()) {
+        if (!nodeQueue.empty()) {
+            if (animationTimer >= (m_currentNode->isTransition ? m_currentNode->animationLengthMs : 500)) {
                 Graph::Node* next = nodeQueue.front();
                 nodeQueue.pop();
                 logger::info("going to next node {}", next->scene_id);
@@ -461,7 +462,9 @@ namespace OStim {
             actorIt.second.changeSpeed(speed);
         }
 
-        UI::UIState::GetSingleton()->SpeedChanged(this, speed);
+        if (playerThread) {
+            UI::UIState::GetSingleton()->SpeedChanged(this, speed);
+        }
 
         FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_animationchanged", m_currentNode->scene_id, speed);
     }

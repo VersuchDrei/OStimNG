@@ -2,6 +2,7 @@
 	"name": "Sitting Standing Straight",
 	"modpack": "OStim",
 	"length": 2.0,
+	"furniture": "chair",
 	"speeds":[
 		{
 			"animation": "OStimBench2PSittingStandingMF"
@@ -19,12 +20,16 @@
 			"icon": "OStim/symbols/gender_mm"
 		},
 		{
+			"destination": "OStimChair2PSittingKneelingMF",
+			"description": "kneel down",
+			"icon": "OStim/positional/kneeling_f"
+		},
+		{
 			"destination": "OStimChair2PStandingSittingMF",
 			"description": "switch positions",
-			"icon": "OStim/positional/standup_m"
+			"icon": "OStim/symbols/switch"
 		}
 	],
-	"furniture": "chair",
 	"tags":[
 		"idle",
 		"intro"

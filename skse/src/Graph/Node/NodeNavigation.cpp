@@ -28,6 +28,8 @@ namespace Graph {
             nextLevel.clear();
         }
 
+        std::shuffle(std::begin(nodes), std::end(nodes), Constants::RNG);
+
         for (auto& node : nodes) {
             if (!node->noRandomSelection && nodeCondition(node)) {
                 return node;

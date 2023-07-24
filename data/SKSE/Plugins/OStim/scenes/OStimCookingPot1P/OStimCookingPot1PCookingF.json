@@ -2,6 +2,7 @@
 	"name": "Cooking Female",
 	"modpack": "OStim",
 	"length": 2.0,
+	"furniture": "cookingpot",
 	"speeds":[
 		{
 			"animation": "OStim1PStandingF"
@@ -14,7 +15,6 @@
 			"icon": "OStim/symbols/gender_m"
 		}
 	],
-	"furniture": "cookingpot",
 	"tags":[
 		"idle",
 		"intro"

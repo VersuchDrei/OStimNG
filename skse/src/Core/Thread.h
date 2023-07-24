@@ -166,6 +166,7 @@ namespace OStim {
         void warpTo(Graph::Node* node, bool useFades);
         void navigateTo(Graph::Node* node);
         bool pullOut();
+        inline bool areNodesQueued() { return !nodeQueue.empty(); }
 
     private:
         void clearNodeQueue();

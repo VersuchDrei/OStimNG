@@ -76,7 +76,7 @@ namespace OStim {
             conditions.push_back([&](Graph::Node* node) { return VectorUtil::contains(node->tags, std::string("gay")); });
         }
 
-        if (!currentNode->isHub && MCM::MCMTable::autoModeLimitToNavigationDistance()) {
+        if (currentNode->hasActionTag("sexual") && MCM::MCMTable::autoModeLimitToNavigationDistance()) {
             return currentNode->getRandomNodeInRange(MCM::MCMTable::navigationDistanceMax(), actorConditions, [&conditions](Graph::Node* node) { return checkConditions(conditions, node); });
         } else {
             return Graph::GraphTable::getRandomNode(furnitureType, actorConditions, [&conditions](Graph::Node* node) { return checkConditions(conditions, node); });
@@ -85,7 +85,6 @@ namespace OStim {
 
     Graph::Node* getRandomSexNode(Graph::Node* currentNode, std::vector<Trait::ActorCondition> actorConditions, Furniture::FurnitureType furnitureType, bool lesbian, bool gay) {
         std::vector<std::function<bool(Graph::Node*)>> conditions;
-        // TODO let conditions handle tribbing
         conditions.push_back([&lesbian](Graph::Node* node) { return node->findAnyAction(std::vector<std::string>{"analsex", "tribbing", "vaginalsex"}) != -1;
         });
         addFurniture(conditions, furnitureType);
@@ -96,7 +95,7 @@ namespace OStim {
             conditions.push_back([&](Graph::Node* node) { return VectorUtil::contains(node->tags, std::string("gay")); });
         }
 
-        if (!currentNode->isHub && MCM::MCMTable::autoModeLimitToNavigationDistance()) {
+        if (currentNode->hasActionTag("sexual") && MCM::MCMTable::autoModeLimitToNavigationDistance()) {
             return currentNode->getRandomNodeInRange(MCM::MCMTable::navigationDistanceMax(), actorConditions, [&conditions](Graph::Node* node) { return checkConditions(conditions, node); });
         } else {
             return Graph::GraphTable::getRandomNode(furnitureType, actorConditions, [&conditions](Graph::Node* node) { return checkConditions(conditions, node); });
@@ -150,10 +149,10 @@ namespace OStim {
         }
 
         if (m_currentNode) {
-            if (m_currentNode->isHub) {
-                progressAutoMode();
-            } else {
+            if (m_currentNode->hasActionTag("sexual")) {
                 startAutoModeCooldown();
+            } else {
+                progressAutoMode();
             }
         }
 

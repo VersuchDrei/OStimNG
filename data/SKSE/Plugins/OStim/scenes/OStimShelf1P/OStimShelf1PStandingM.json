@@ -2,6 +2,7 @@
 	"name": "Standing Male",
 	"modpack": "OStim",
 	"length": 2.0,
+	"furniture": "shelf",
 	"speeds":[
 		{
 			"animation": "OStimShelf1PStandingM"
@@ -14,7 +15,6 @@
 			"icon": "OStim/symbols/gender_f"
 		}
 	],
-	"furniture": "shelf",
 	"tags":[
 		"idle",
 		"intro"

@@ -2,6 +2,7 @@
 	"name": "Both Sitting Lesbian",
 	"modpack": "OStim",
 	"length": 2.0,
+	"furniture": "bench",
 	"speeds":[
 		{
 			"animation": "OStimBench2PBothSittingFF"
@@ -29,7 +30,6 @@
 			"icon": "OStim/positional/standup_f"
 		}
 	],
-	"furniture": "bench",
 	"tags":[
 		"idle",
 		"intro"

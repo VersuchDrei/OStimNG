@@ -37,7 +37,6 @@ namespace Graph {
         uint32_t defaultSpeed = 0;
         bool isTransition = false;
         int animationLengthMs = 0;
-        bool isHub = false;
         bool hasIdleSpeed = false;
         bool noRandomSelection = false;
         Furniture::FurnitureType furnitureType = Furniture::FurnitureType::NONE;

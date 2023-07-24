@@ -2,6 +2,7 @@
 	"name": "Behind Straight",
 	"modpack": "OStim",
 	"length": 2.0,
+	"furniture": "cookingpot",
 	"speeds":[
 		{
 			"animation": "OStimCookingPot2PBehindMF"
@@ -23,7 +24,6 @@
 			"description": "approach"
 		}
 	],
-	"furniture": "cookingpot",
 	"tags":[
 		"idle",
 		"intro"

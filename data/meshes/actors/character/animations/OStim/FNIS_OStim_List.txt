@@ -71,6 +71,8 @@ b -Tn OStimBench2PSittingStandingMF_0 OStimBench2P\OStimBench2PSittingStandingMF
 b -Tn OStimBench2PSittingStandingMF_1 OStimBench2P\OStimBench2PSittingStandingMF_1.hkx
 b -Tn OStimBench2PStandingSittingMF_0 OStimBench2P\OStimBench2PStandingSittingMF_0.hkx
 b -Tn OStimBench2PStandingSittingMF_1 OStimBench2P\OStimBench2PStandingSittingMF_1.hkx
+b -Tn OStimBench2PSittingKneelingMF_0 OStimBench2P\OStimBench2PSittingKneelingMF_0.hkx
+b -Tn OStimBench2PSittingKneelingMF_1 OStimBench2P\OStimBench2PSittingKneelingMF_1.hkx
 
 b -Tn OStimBench2PBothSittingFF_0 OStimBench2P\OStimBench2PBothSittingFF_0.hkx
 b -Tn OStimBench2PBothSittingFF_1 OStimBench2P\OStimBench2PBothSittingFF_1.hkx
@@ -78,6 +80,8 @@ b -Tn OStimBench2PSittingStandingFF_0 OStimBench2P\OStimBench2PSittingStandingFF
 b -Tn OStimBench2PSittingStandingFF_1 OStimBench2P\OStimBench2PSittingStandingFF_1.hkx
 b -Tn OStimBench2PStandingSittingFF_0 OStimBench2P\OStimBench2PStandingSittingFF_0.hkx
 b -Tn OStimBench2PStandingSittingFF_1 OStimBench2P\OStimBench2PStandingSittingFF_1.hkx
+b -Tn OStimBench2PSittingKneelingFF_0 OStimBench2P\OStimBench2PSittingKneelingFF_0.hkx
+b -Tn OStimBench2PSittingKneelingFF_1 OStimBench2P\OStimBench2PSittingKneelingFF_1.hkx
 
 
 

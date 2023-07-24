@@ -69,10 +69,9 @@ namespace Graph {
             Navigation navigation;
 
             Graph::Node* currentNode = destination;
-            std::vector<Graph::Node*> nodes;
 
             while (currentNode && currentNode->isTransition) {
-                nodes.push_back(currentNode);
+                navigation.nodes.push_back(currentNode);
                 Graph::Node* next = nullptr;
                 for (RawNavigation& nav : navigations) {
                     if (nav.origin == currentNode->scene_id) {

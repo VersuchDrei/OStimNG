@@ -134,7 +134,7 @@ namespace UI::Scene {
         auto currentNode = state->currentNode;
         if (!state->currentNode)
             return;
-        if (currentNode->isTransition) {
+        if (currentNode->isTransition || state->currentThread->areNodesQueued()) {
             menuData.options.clear();
         } else {
             logger::info("before building conditions");
@@ -169,7 +169,7 @@ namespace UI::Scene {
         if (node->speeds.size() > 1) {
             auto speed = thread->getCurrentSpeed();
             auto& speedObj = node->speeds[speed];
-            const std::string speedStr = std::to_string(speedObj.playbackSpeed);
+            const std::string speedStr = std::to_string(speedObj.displaySpeed);
             logger::info("{}"sv, speedStr);
             RE::GFxValue args[3]{ RE::GFxValue{ speedStr }, speed != (node->speeds.size() - 1), speed != 0};
             boxes.Invoke("ShowSpeed", nullptr, args, 3);

@@ -2,6 +2,7 @@
 	"name": "Sitting Standing Lesbian",
 	"modpack": "OStim",
 	"length": 2.0,
+	"furniture": "chair",
 	"speeds":[
 		{
 			"animation": "OStimBench2PSittingStandingFF"
@@ -19,12 +20,16 @@
 			"icon": "OStim/symbols/gender_mm"
 		},
 		{
+			"destination": "OStimChair2PSittingKneelingFF",
+			"description": "kneel down",
+			"icon": "OStim/positional/kneeling_f"
+		},
+		{
 			"destination": "OStimChair2PStandingSittingFF",
 			"description": "switch positions",
-			"icon": "OStim/positional/standup_f"
+			"icon": "OStim/symbols/switch"
 		}
 	],
-	"furniture": "chair",
 	"tags":[
 		"idle",
 		"intro"

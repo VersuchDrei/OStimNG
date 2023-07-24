@@ -99,8 +99,6 @@ namespace LegacyUtil {
                 }
             }
 
-            node->isHub = is_hub;
-
             if (node->speeds.empty()) {
                 auto anim_children = scene.children("anim");
                 auto anim_count = std::distance(anim_children.begin(), anim_children.end());

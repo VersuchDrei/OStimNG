@@ -2,6 +2,7 @@
 	"name": "Leaning Female",
 	"modpack": "OStim",
 	"length": 2.0,
+	"furniture": "wall",
 	"speeds":[
 		{
 			"animation": "OStimWall1PLeaningF"
@@ -14,7 +15,6 @@
 			"icon": "OStim/symbols/gender_m"
 		}
 	],
-	"furniture": "wall",
 	"tags":[
 		"idle",
 		"intro"

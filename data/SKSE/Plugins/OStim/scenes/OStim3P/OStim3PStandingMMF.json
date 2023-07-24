@@ -1,7 +1,7 @@
 {
 	"name": "Standing MMF",
 	"modpack": "OStim",
-	"length": 2.0,
+	"length": 10.0,
 	"speeds":[
 		{
 			"animation": "OStim3PStandingMMF"
@@ -39,21 +39,29 @@
 			"tags": [
 				"standing"
 			],
-			"feetOnGround": true
+			"feetOnGround": true,
+			"sosBend": -10,
+			"lookUp": -50,
+			"lookLeft": 40
 		},
 		{
 			"intendedSex": "male",
 			"tags": [
 				"standing"
 			],
-			"feetOnGround": true
+			"feetOnGround": true,
+			"sosBend": -10,
+			"lookUp": -30,
+			"lookLeft": 10
 		},
 		{
 			"intendedSex": "female",
 			"tags": [
 				"standing"
 			],
-			"feetOnGround": true
+			"feetOnGround": true,
+			"lookUp": 20,
+			"lookLeft": -80
 		}
 	]
 }

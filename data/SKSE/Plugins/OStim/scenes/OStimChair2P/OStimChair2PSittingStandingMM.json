@@ -2,6 +2,7 @@
 	"name": "Sitting Standing Gay",
 	"modpack": "OStim",
 	"length": 2.0,
+	"furniture": "chair",
 	"speeds":[
 		{
 			"animation": "OStimBench2PSittingStandingMM"
@@ -21,10 +22,9 @@
 		{
 			"destination": "OStimChair2PStandingSittingMM",
 			"description": "switch positions",
-			"icon": "OStim/positional/standup_m"
+			"icon": "OStim/symbols/switch"
 		}
 	],
-	"furniture": "chair",
 	"tags":[
 		"idle",
 		"intro"

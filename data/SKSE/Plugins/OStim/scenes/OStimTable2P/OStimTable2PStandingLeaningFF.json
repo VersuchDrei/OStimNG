@@ -2,6 +2,7 @@
 	"name": "Standing Leaning Lesbian",
 	"modpack": "OStim",
 	"length": 2.0,
+	"furniture": "table",
 	"speeds":[
 		{
 			"animation": "OStimTable2PStandingLeaningFF"
@@ -29,7 +30,6 @@
 			"icon": "OStim/positional/table/sitting_f"
 		}
 	],
-	"furniture": "table",
 	"tags":[
 		"idle",
 		"intro"

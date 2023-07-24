@@ -1,7 +1,7 @@
 {
 	"name": "Lying MMF",
 	"modpack": "OStim",
-	"length": 2.0,
+	"length": 10.0,
 	"speeds":[
 		{
 			"animation": "OStim3PLyingMMF"
@@ -39,21 +39,29 @@
 			"tags": [
 				"lyingback"
 			],
-			"feetOnGround": false
+			"feetOnGround": false,
+			"sosBend": -10,
+			"lookUp": -80,
+			"lookLeft": 40
 		},
 		{
 			"intendedSex": "male",
 			"tags": [
-				"kneeling"
+				"lyingback"
 			],
-			"feetOnGround": false
+			"feetOnGround": false,
+			"sosBend": -10,
+			"lookUp": -60,
+			"lookLeft": -10
 		},
 		{
 			"intendedSex": "female",
 			"tags": [
-				"kneeling"
+				"lyingback"
 			],
-			"feetOnGround": false
+			"feetOnGround": false,
+			"lookUp": -70,
+			"lookLeft": -30
 		}
 	]
 }

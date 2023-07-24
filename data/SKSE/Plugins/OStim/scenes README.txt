@@ -38,6 +38,19 @@ navigation fields:
 	you should never use "origin" and "destination" at the same time
 "priority" (int): a priority for the order of the navigation options in the menu (default: 0)
 	the navigations are sorted ascending, so lower priorities will show first
+	conventional priorities in idles are:
+		   0 other idles
+		1000 romantic scenes
+		2000 undressing scenes
+		3000 sexual scenes
+	conventional priorities in other scenes are:
+   	   -1000 return to idle
+    	   0 detail changes (e.g. put hands on hips)
+    	1000 positional changes (e.g. kneel down during HJ)
+    	2000 action changes (e.g. go from HJ to BJ)
+    	3000 climax
+    it is recommended to stick to the convention so that navigation options always have a logical order
+    numbers can be slightly adjusted for fine tuning (e.g. 1999 instead of 2000 if you want it to be the first in its class)
 "description" (string): the display text of the navigation in game
 "icon" (string): the path to the .dds file to be used as the icon
 	this path will be appended to "../Data/Interface/OStim/icons", the file ending ".dds" will be added automatically

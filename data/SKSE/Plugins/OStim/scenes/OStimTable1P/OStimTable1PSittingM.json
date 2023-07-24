@@ -2,6 +2,7 @@
 	"name": "Sitting Male",
 	"modpack": "OStim",
 	"length": 2.0,
+	"furniture": "table",
 	"speeds":[
 		{
 			"animation": "OStimTable1PSittingM"
@@ -14,7 +15,6 @@
 			"icon": "OStim/symbols/gender_f"
 		}
 	],
-	"furniture": "table",
 	"tags":[
 		"idle",
 		"intro"

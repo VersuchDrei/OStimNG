@@ -2,6 +2,7 @@
 	"name": "Both Sitting Gay",
 	"modpack": "OStim",
 	"length": 2.0,
+	"furniture": "bench",
 	"speeds":[
 		{
 			"animation": "OStimBench2PBothSittingMM"
@@ -29,7 +30,6 @@
 			"icon": "OStim/positional/standup_m"
 		}
 	],
-	"furniture": "bench",
 	"tags":[
 		"idle",
 		"intro"

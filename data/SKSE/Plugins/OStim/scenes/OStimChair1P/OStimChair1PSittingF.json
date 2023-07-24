@@ -2,6 +2,7 @@
 	"name": "Sitting Female",
 	"modpack": "OStim",
 	"length": 2.0,
+	"furniture": "chair",
 	"speeds":[
 		{
 			"animation": "OStimBench1PSittingF"
@@ -14,7 +15,6 @@
 			"icon": "OStim/symbols/gender_m"
 		}
 	],
-	"furniture": "chair",
 	"tags":[
 		"idle",
 		"intro"

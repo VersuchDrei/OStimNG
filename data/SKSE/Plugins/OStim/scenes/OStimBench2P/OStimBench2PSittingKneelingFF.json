@@ -1,46 +1,42 @@
 {
-	"name": "Bend Over Lesbian",
+	"name": "Sitting Kneeling Lesbian",
 	"modpack": "OStim",
 	"length": 2.0,
-	"furniture": "shelf",
+	"furniture": "bench",
 	"speeds":[
 		{
-			"animation": "OStimShelf2PBendOverFF"
+			"animation": "OStimBench2PSittingKneelingFF"
 		}
 	],
 	"navigations":[
 		{
-			"destination": "OStimShelf2PBehindMF",
+			"destination": "OStimBench2PSittingKneelingMF",
 			"description": "go to straight idle",
 			"icon": "OStim/symbols/gender_mf"
 		},
 		{
-			"destination": "OStimShelf2PBehindFF",
+			"destination": "OStimBench2PSittingStandingFF",
 			"description": "stand up",
 			"icon": "OStim/positional/standup_f"
 		}
 	],
 	"tags":[
-		"idle",
-		"intro"
+		"idle"
 	],
 	"actors":[
 		{
 			"intendedSex": "female",
-			"scale": 1.03,
+			"feetOnGround": false,
 			"tags": [
-				"standing"
-			],
-			"feetOnGround": true
+				"sitting"
+			]
 		},
 		{
 			"intendedSex": "female",
+			"feetOnGround": false,
 			"tags": [
-				"bendover",
-				"facingaway",
-				"standing"
-			],
-			"feetOnGround": true
+				"kneeling"
+			]
 		}
 	]
 }

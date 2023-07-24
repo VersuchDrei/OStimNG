@@ -115,6 +115,10 @@ namespace OStim {
     void Thread::navigateTo(Graph::Node* node) {
         clearNodeQueue();
 
+        if (m_currentNode == node) {
+            return;
+        }
+
         std::vector<Graph::Node*> nodes = m_currentNode->getRoute(MCM::MCMTable::navigationDistanceMax(), getActorConditions(), node);
         if (nodes.empty()) {
             warpTo(node, MCM::MCMTable::useAutoModeFades());
