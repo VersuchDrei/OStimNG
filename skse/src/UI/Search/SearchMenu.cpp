@@ -4,32 +4,6 @@
 
 namespace UI::Search {
 
-    inline RE::GFxValue GetRoot(RE::GPtr<RE::GFxMovieView> uiMovie) {
-        assert(uiMovie);
-        RE::GFxValue root;        
-
-        uiMovie->GetVariable(&root, "_root");
-        return root;
-    }
-    inline RE::GFxValue GetRoot() {
-        RE::GPtr<RE::IMenu> searchMenu = RE::UI::GetSingleton()->GetMenu(SearchMenu::MENU_NAME);
-        GetRoot(searchMenu->uiMovie);
-    }
-
-    inline RE::GFxValue GetSearchBox(RE::GPtr<RE::GFxMovieView> uiMovie) {
-        auto root = GetRoot(uiMovie);
-        
-        RE::GFxValue searchBoxContainer;
-        root.GetMember("searchMCContainer", &searchBoxContainer);
-        RE::GFxValue searchBox;
-        searchBoxContainer.GetMember("searchMC", &searchBox);
-        return searchBox;
-    }
-
-    inline RE::GFxValue GetSearchBox() {
-        RE::GPtr<RE::IMenu> searchMenu = RE::UI::GetSingleton()->GetMenu(SearchMenu::MENU_NAME);
-        return GetSearchBox(searchMenu->uiMovie);
-    }
 
 	SearchMenu::SearchMenu() : Super(MENU_NAME) {
 
@@ -40,7 +14,7 @@ namespace UI::Search {
             RE::UI_MENU_FLAGS::kRequiresUpdate,
             RE::UI_MENU_FLAGS::kModal,
             RE::UI_MENU_FLAGS::kUsesCursor,
-            RE::UI_MENU_FLAGS::kPausesGame,
+            //RE::UI_MENU_FLAGS::kPausesGame,
             RE::UI_MENU_FLAGS::kAdvancesUnderPauseMenu,
             RE::UI_MENU_FLAGS::kRendersUnderPauseMenu,
             RE::UI_MENU_FLAGS::kUsesBlurredBackground
@@ -50,7 +24,8 @@ namespace UI::Search {
             uiMovie->SetMouseCursorCount(1);  // enable input            
         }
         Locker locker(_lock);
-        auto optionBoxes = GetSearchBox(uiMovie);
+        RE::GFxValue optionBoxes;
+        GetControlHandler(optionBoxes);
 
         RE::GFxFunctionHandler* fn = new UI::doHideMenuRequest;
         RE::GFxValue doHideFn;
@@ -68,31 +43,60 @@ namespace UI::Search {
         optionBoxes.SetMember("doSelectOption", doSelectFn);
 	}
 
+    void SearchMenu::SendControl(int32_t control) {
+        Locker locker(_lock);
+        RE::GFxValue optionBoxes;
+        GetControlHandler(optionBoxes);
+        const RE::GFxValue val{ control };
+        optionBoxes.Invoke("HandleKeyboardInput", nullptr, &val, 1);
+    }
+
+    void SearchMenu::Handle(UI::Controls control) {
+        switch (control) {
+        case Up: {
+            SendControl(0);
+        } break;
+        case Down: {
+            SendControl(1);
+        } break;
+        case Yes: {
+            SendControl(4);
+        } break;
+        case No: {
+            SendControl(5);
+        } break;
+        }
+    }
+
     void SearchMenu::Show() {
         OStimMenu::Show(); 
         Locker locker(_lock);
-        auto box = GetSearchBox();
+        RE::GFxValue optionBoxes;
+        GetControlHandler(optionBoxes);
         auto controlMap = RE::ControlMap::GetSingleton();
         controlMap->AllowTextInput(true);
         const RE::GFxValue arg{ true };
-        box.Invoke("SetIsOpen", nullptr, &arg, 1);
+        optionBoxes.Invoke("SetIsOpen", nullptr, &arg, 1);
         ApplyPositions();
     }
 
     void SearchMenu::Hide() {
         OStimMenu::Hide();
         Locker locker(_lock);
-        auto box = GetSearchBox();
+        RE::GFxValue optionBoxes;
+        GetControlHandler(optionBoxes);
         auto controlMap = RE::ControlMap::GetSingleton();
         controlMap->AllowTextInput(false);
         const RE::GFxValue arg{ false };
-        box.Invoke("SetIsOpen", nullptr, &arg, 1);
+        optionBoxes.Invoke("SetIsOpen", nullptr, &arg, 1);
         _isOpen = false;        
     }
 
     void SearchMenu::ApplyPositions() {
         RE::GPtr<RE::IMenu> searchMenu = RE::UI::GetSingleton()->GetMenu(SearchMenu::MENU_NAME);
-        auto root = GetRoot(searchMenu->uiMovie);
+        
+        RE::GFxValue root;
+        GetRoot(root);
         if (!root.IsObject())
             return;
 
@@ -107,9 +111,11 @@ namespace UI::Search {
         root.GetMember("searchMCContainer", &alignmentInfo);
         alignmentInfo.Invoke("setPosition", nullptr, controlPosArray, 4);
     }
+
     void SearchMenu::AssignData(std::vector<SearchItem>& data) {
         Locker locker(_lock);
-        auto box = GetSearchBox();
+        RE::GFxValue optionBoxes;
+        GetControlHandler(optionBoxes);
         RE::GFxValue arg;
         _view->CreateArray(&arg);
         for (auto& item : data) {
@@ -119,7 +125,7 @@ namespace UI::Search {
             entry.SetMember("label", RE::GFxValue{ item.label.c_str() });
             arg.PushBack(entry);
         }
-        box.Invoke("AssignData", nullptr, &arg, 1);
+        optionBoxes.Invoke("AssignData", nullptr, &arg, 1);
     }
 
     void SearchMenu::Search(std::string value) {
@@ -143,5 +149,18 @@ namespace UI::Search {
         SKSE::GetTaskInterface()->AddTask([node]() {
             UI::UIState::GetSingleton()->currentThread->ChangeNode(node);
         });
+    }
+
+
+    void SearchMenu::GetRoot(RE::GFxValue& root){
+        assert(uiMovie);
+        uiMovie->GetVariable(&root, "_root");
+    }
+    void SearchMenu::GetControlHandler(RE::GFxValue& controlHandler) {
+        RE::GFxValue root;
+        GetRoot(root);
+        RE::GFxValue searchBoxContainer;
+        root.GetMember("searchMCContainer", &searchBoxContainer);
+        searchBoxContainer.GetMember("searchMC", &controlHandler);
     }
 }
