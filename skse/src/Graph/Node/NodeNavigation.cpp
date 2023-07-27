@@ -39,7 +39,7 @@ namespace Graph {
         return nullptr;
     }
 
-    std::vector<Node*> Node::getRoute(int distance, std::vector<Trait::ActorCondition> actorConditions, Node* destination) {
+    std::vector<SequenceEntry> Node::getRoute(int distance, std::vector<Trait::ActorCondition> actorConditions, Node* destination) {
         std::vector<Node*> visited = {this};
         std::vector<std::pair<Node*, std::vector<Node*>>> routes = {{this, {}}};
 
@@ -59,7 +59,11 @@ namespace Graph {
                     }
 
                     if (navigation.nodes.back() == destination) {
-                        return newRoute;
+                        std::vector<SequenceEntry> sequence;
+                        for (Node* node : navigation.nodes) {
+                            sequence.push_back({node->isTransition ? node->animationLengthMs : 500, node});
+                        }
+                        return sequence;
                     }
 
                     nextRoutes.push_back({navigation.nodes.back(), newRoute});

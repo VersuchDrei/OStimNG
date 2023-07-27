@@ -105,8 +105,6 @@ namespace OStim {
 
         std::vector<Sound::SoundPlayer*> soundPlayers;
 
-        int animationTimer = 0;
-
         void addActorInner(int index, RE::Actor* actor);
         void addActorSink(RE::Actor* a_actor);
         void removeActorSink(RE::Actor* a_actor);
@@ -135,6 +133,7 @@ namespace OStim {
         void startAutoModeCooldown();
         void progressAutoMode();
         void loopAutoControl();
+        void nodeChangedAutoControl();
 #pragma endregion
 
 #pragma region climax
@@ -161,6 +160,7 @@ namespace OStim {
 
 #pragma region navigation
     public:
+        void loopNavigation();
         bool autoTransition(std::string type);
         bool autoTransition(int index, std::string type);
         void warpTo(Graph::Node* node, bool useFades);
@@ -169,9 +169,10 @@ namespace OStim {
         inline bool areNodesQueued() { return !nodeQueue.empty(); }
 
     private:
-        void clearNodeQueue();
+        int nodeQueueCooldown = 0;
+        std::queue<Graph::SequenceEntry> nodeQueue;
 
-        std::queue<Graph::Node*> nodeQueue;
+        void clearNodeQueue();
 #pragma endregion
     };
 

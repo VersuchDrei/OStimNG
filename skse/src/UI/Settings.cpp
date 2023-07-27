@@ -4,8 +4,6 @@
 #include <Util.h>
 
 namespace UI {
-	const char* SETTINGS_FILE_PATH{ "Data/SKSE/Plugins/OStim/uisettings.json" };
-
 	void LoadPosition(json& json, Position& setting) {
 		if (json.contains("x"))
 			setting.xPos = json["x"];

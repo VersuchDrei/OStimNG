@@ -119,14 +119,15 @@ namespace OStim {
             return;
         }
 
-        std::vector<Graph::Node*> nodes = m_currentNode->getRoute(MCM::MCMTable::navigationDistanceMax(), getActorConditions(), node);
+        std::vector<Graph::SequenceEntry> nodes = m_currentNode->getRoute(MCM::MCMTable::navigationDistanceMax(), getActorConditions(), node);
         if (nodes.empty()) {
             warpTo(node, MCM::MCMTable::useAutoModeFades());
         } else {
             for (int i = 1; i < nodes.size(); i++) {
                 nodeQueue.push(nodes[i]);
             }
-            ChangeNode(nodes.front());
+            nodeQueueCooldown = nodes.front().duration;
+            ChangeNode(nodes.front().node);
         }
     }
 
@@ -150,8 +151,20 @@ namespace OStim {
     }
 
     void Thread::clearNodeQueue() {
+        nodeQueueCooldown = 0;
         while (!nodeQueue.empty()) {
             nodeQueue.pop();
+        }
+    }
+
+    void Thread::loopNavigation() {
+        if (!nodeQueue.empty()) {
+            if ((nodeQueueCooldown -= Constants::LOOP_TIME_MILLISECONDS) <= 0) {
+                Graph::SequenceEntry next = nodeQueue.front();
+                nodeQueue.pop();
+                nodeQueueCooldown = next.duration;
+                ChangeNode(next.node);
+            }
         }
     }
 }

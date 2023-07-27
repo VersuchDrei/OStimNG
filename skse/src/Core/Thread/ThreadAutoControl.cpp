@@ -148,7 +148,7 @@ namespace OStim {
             }
         }
 
-        if (m_currentNode) {
+        if (m_currentNode && nodeQueue.empty()) {
             if (m_currentNode->hasActionTag("sexual")) {
                 startAutoModeCooldown();
             } else {
@@ -196,6 +196,12 @@ namespace OStim {
         }
         
         startAutoModeCooldown();
+    }
+
+    void Thread::nodeChangedAutoControl() {
+        if (autoMode) {
+            startAutoModeCooldown();
+        }
     }
 
     void Thread::loopAutoControl() {

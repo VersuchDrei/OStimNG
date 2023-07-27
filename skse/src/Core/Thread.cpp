@@ -161,12 +161,12 @@ namespace OStim {
 
         std::unique_lock<std::shared_mutex> writeLock(nodeLock);
         if (a_node->isTransition && nodeQueue.empty() && !a_node->navigations.empty()) {
+            nodeQueueCooldown = a_node->animationLengthMs;
             for (Graph::Node* navNode : a_node->navigations[0].nodes) {
-                nodeQueue.push(navNode);
+                nodeQueue.push({navNode->animationLengthMs, navNode});
             }
         }
         m_currentNode = a_node;
-        animationTimer = 0;
 
         for (auto& actorIt : m_actors) {
             // --- excitement calculation --- //
@@ -275,6 +275,8 @@ namespace OStim {
             UI::UIState::GetSingleton()->NodeChanged(this, m_currentNode);
         }
 
+        nodeChangedAutoControl();
+
         auto messaging = SKSE::GetMessagingInterface();
 
         Messaging::AnimationChangedMessage msg;
@@ -382,6 +384,7 @@ namespace OStim {
             return;
         }
 
+        loopNavigation();
         loopAutoControl();
 
         for (auto& actorIt : m_actors) {
@@ -390,16 +393,6 @@ namespace OStim {
 
         for (Sound::SoundPlayer* player : soundPlayers) {
             player->loop();
-        }
-
-        animationTimer += Constants::LOOP_TIME_MILLISECONDS;
-        if (!nodeQueue.empty()) {
-            if (animationTimer >= (m_currentNode->isTransition ? m_currentNode->animationLengthMs : 500)) {
-                Graph::Node* next = nodeQueue.front();
-                nodeQueue.pop();
-                logger::info("going to next node {}", next->scene_id);
-                ChangeNode(next);
-            }
         }
     }
 

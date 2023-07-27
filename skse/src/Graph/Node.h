@@ -3,6 +3,7 @@
 #include "Action.h"
 #include "GraphActor.h"
 #include "RawNavigation.h"
+#include "SequenceEntry.h"
 
 #include "Furniture/Furniture.h"
 
@@ -84,7 +85,7 @@ namespace Graph {
 #pragma region navigation
     public:
         Node* getRandomNodeInRange(int distance, std::vector<Trait::ActorCondition> actorConditions, std::function<bool(Node*)> nodeCondition);
-        std::vector<Node*> getRoute(int distance, std::vector<Trait::ActorCondition> actorConditions, Node* destination);
+        std::vector<SequenceEntry> getRoute(int distance, std::vector<Trait::ActorCondition> actorConditions, Node* destination);
 #pragma endregion
     };
 }
