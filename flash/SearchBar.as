@@ -40,7 +40,7 @@ class SearchBar extends MovieClip
 		UpdateSize(minHeight,355);
 
 
-		AssignData(generateTestData(5));//; For Testing
+		//AssignData(generateTestData(5));//; For Testing
 	}
 	//Update size based on the size of the contents. Width outer gutters
 	public function UpdateSize(newHeight:Number, newWidth:Number)
@@ -51,6 +51,71 @@ class SearchBar extends MovieClip
 		TweenLite.to(bg,heightTweenTime,{delay:widthTweenTime, _height:newHeight, _y:0 - (newHeight / 2)});
 	}
 
+	public function HandleKeyboardInput(input:Number)
+	{
+		// 0 = up, 1 = down, 2 = left, 3 = right, 4 = select, 5 = escape;
+		switch (input)
+		{
+			case 0 :
+				{
+					if (!inputtingText)
+					{
+						if (CurrentlySelectedIdx + 1 > fields.length - 1)
+						{
+							CurrentlySelectedIdx = fields.length - 1;
+							UpdateHighlight();
+						}
+						else
+						{
+							CurrentlySelectedIdx++;
+							UpdateHighlight();
+						}
+					}
+					return true;
+				};
+				break;
+			case 1 :
+				{
+					if (!inputtingText)
+					{
+						if (CurrentlySelectedIdx - 1 < 0)
+						{
+							CurrentlySelectedIdx = 0;
+							UpdateHighlight();
+						}
+						else
+						{
+							CurrentlySelectedIdx--;
+							UpdateHighlight();
+						}
+					}
+					return true;
+				};
+				break;
+			case 4 :
+				{
+					if (inputtingText)
+					{
+						
+						return true;
+					}
+					else
+					{
+						SelectOption();
+						return true;
+					}
+				};
+				break;
+			case 5 :
+				{
+					ClearAndHide();
+					return true;
+				};
+				break;
+			default :
+				return;
+		}
+	}
 	public function handleInput(details:InputDetails, pathToFocus:Array):Boolean
 	{
 		if (GlobalFunc.IsKeyPressed(details))
@@ -63,54 +128,13 @@ class SearchBar extends MovieClip
 					ClearInput();
 					return true;
 				}
-				else
-				{
-					SelectOption();
-					return true;
-				}
 			}
 			else if (details.navEquivalent == NavigationCode.TAB || details.navEquivalent == NavigationCode.ESCAPE)
 			{
 				ClearAndHide();
 				return true;
 			}
-			else if (details.navEquivalent == NavigationCode.UP && !inputtingText)
-			{
-				if (CurrentlySelectedIdx + 1 > fields.length - 1)
-				{
-					CurrentlySelectedIdx = fields.length - 1;
-					UpdateHighlight();
-				}
-				else
-				{
-					CurrentlySelectedIdx++;
-					UpdateHighlight();
-				}
-				return true;
-			}
-			else if (details.navEquivalent == NavigationCode.DOWN && !inputtingText)
-			{
-				if (CurrentlySelectedIdx - 1 < 0)
-				{
-					CurrentlySelectedIdx = 0;
-					UpdateHighlight();
-				}
-				else
-				{
-					CurrentlySelectedIdx--;
-					UpdateHighlight();
-				}
-				return true;
-			}
-
-			var nextClip = pathToFocus.shift();
-			if (nextClip.handleInput(details, pathToFocus))
-			{
-				return true;
-			}
 		}
-
-		return false;
 	}
 
 	function onMouseDown()
@@ -159,7 +183,7 @@ class SearchBar extends MovieClip
 		for (var k = 0; k < fields.length; k++)
 		{
 			fields[k]._visible = false;
-			fields[k].optionVal.text = ""
+			fields[k].optionVal.text = "";
 		}
 
 		if (data.length == 0)
@@ -225,6 +249,7 @@ class SearchBar extends MovieClip
 			Selection.setFocus(textInput.textField);
 			Selection.setSelection(0,0);
 			inputtingText = true;
+			textInput.text = "";
 		}
 	}
 

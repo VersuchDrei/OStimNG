@@ -23,15 +23,19 @@ namespace UI::Search {
         }
         static void Register() { OStimMenu::Register(MENU_NAME, Creator); }
         static RE::stl::owner<RE::IMenu*> Creator() { return new SearchMenu(); }
-
+        void Handle(UI::Controls control) override;
         void Show();
         void Hide();
-        void AssignData(std::vector<SearchItem>& data);
         void Search(std::string value);
         void SelectOption(std::string val);
 
-        static void ApplyPositions();
+        void ApplyPositions();
 
+    private:
+        void GetRoot(RE::GFxValue& root);
+        void GetControlHandler(RE::GFxValue& controlHandler);
+        void AssignData(std::vector<SearchItem>& data);
+        void SendControl(int32_t control);
     };
 
     class doSearchFunction : public RE::GFxFunctionHandler {

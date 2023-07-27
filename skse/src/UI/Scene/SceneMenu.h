@@ -23,7 +23,7 @@ namespace UI::Scene {
 
 		void Show();		
 		
-		void Handle(UI::Controls control);
+		void Handle(UI::Controls control) override;
 		void ApplyPositions();
 
 		void ChangeAnimation(std::string nodeId);
@@ -61,11 +61,9 @@ namespace UI::Scene {
 			}
 		};
 
-		 void BuildMenuData(MenuData& menudata);
-		 void UpdateInfoBox();
-		 void SendControl(int32_t control);
 	private:
-
+		void BuildMenuData(MenuData& menudata);
+		void SendControl(int32_t control);
 	};
 
 	class doSendTransitionRequest : public RE::GFxFunctionHandler {

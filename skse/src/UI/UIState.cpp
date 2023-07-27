@@ -12,10 +12,13 @@ namespace UI {
         switch (activeMenu) {
         case MenuType::kSceneMenu: {
             UI::Scene::SceneMenu::GetMenu()->Handle(control);
-            } break;
+        } break;
         case MenuType::kAlignMenu: {
-                UI::Align::AlignMenu::GetMenu()->Handle(control);
-            } break;
+            UI::Align::AlignMenu::GetMenu()->Handle(control);
+        } break;
+        case MenuType::kSearchMenu: {
+            UI::Search::SearchMenu::GetMenu()->Handle(control);
+        }break;
         }
     }
 

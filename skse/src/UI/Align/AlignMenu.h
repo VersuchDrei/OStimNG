@@ -33,7 +33,7 @@ namespace UI::Align {
         void NodeChanged();     
         void SetActor(int actor);
 
-        void Handle(UI::Controls control);
+        void Handle(UI::Controls control) override;
 
         void ApplyPositions();
     private:
