@@ -131,6 +131,59 @@ namespace OStim {
         }
     }
 
+    void Thread::playSequence(Graph::Sequence* sequence, bool navigateTo, bool useFades) {
+        clearNodeQueue();
+
+        bool doWarp = false;
+        inSequence = true;
+
+        if (navigateTo && m_currentNode) {
+            std::vector<Graph::SequenceEntry> nodes = m_currentNode->getRoute(MCM::MCMTable::navigationDistanceMax(), getActorConditions(), sequence->nodes.front().node);
+            if (nodes.empty()) {
+                doWarp = true;
+            } else {
+                for (int i = 1; i < nodes.size(); i++) {
+                    nodeQueue.push(nodes[i]);
+                }
+                nodeQueueCooldown = nodes.front().duration;
+                ChangeNode(nodes.front().node);
+            }
+        } else {
+            doWarp = true;
+        }
+        
+
+        if (doWarp) {
+            if (useFades && playerThread) {
+                std::thread fadeThread = std::thread([sequence] {
+                    GameAPI::GameCamera::fadeToBlack(1);
+                    std::this_thread::sleep_for(std::chrono::milliseconds(700));
+                    Thread* thread = ThreadManager::GetSingleton()->getPlayerThread();
+                    if (thread) {
+                        for (int i = 1; i < sequence->nodes.size(); i++) {
+                            thread->nodeQueue.push(sequence->nodes[i]);
+                        }
+                        thread->nodeQueueCooldown = sequence->nodes.front().duration;
+                        thread->ChangeNode(sequence->nodes.front().node);
+                    }
+                    std::this_thread::sleep_for(std::chrono::milliseconds(550));
+                    GameAPI::GameCamera::fadeFromBlack(1);
+                });
+                fadeThread.detach();
+            } else {
+                for (int i = 1; i < sequence->nodes.size(); i++) {
+                    nodeQueue.push(sequence->nodes[i]);
+                }
+                nodeQueueCooldown = sequence->nodes.front().duration;
+                ChangeNode(sequence->nodes.front().node);
+            }
+        } else {
+            for (int i = 1; i < sequence->nodes.size(); i++) {
+                nodeQueue.push(sequence->nodes[i]);
+            }
+        }
+    }
+
     bool Thread::pullOut() {
         if (autoTransition("pullout")) {
             return true;
@@ -158,12 +211,21 @@ namespace OStim {
     }
 
     void Thread::loopNavigation() {
-        if (!nodeQueue.empty()) {
+        if (nodeQueueCooldown > 0) {
             if ((nodeQueueCooldown -= Constants::LOOP_TIME_MILLISECONDS) <= 0) {
-                Graph::SequenceEntry next = nodeQueue.front();
-                nodeQueue.pop();
-                nodeQueueCooldown = next.duration;
-                ChangeNode(next.node);
+                if (nodeQueue.empty()) {
+                    if (inSequence) {
+                        if (endAfterSequence) {
+                            stop();
+                        }
+                        inSequence = false;
+                    }
+                } else {
+                    Graph::SequenceEntry next = nodeQueue.front();
+                    nodeQueue.pop();
+                    nodeQueueCooldown = next.duration;
+                    ChangeNode(next.node);
+                }
             }
         }
     }

@@ -71,8 +71,6 @@ namespace OStim {
         void close();
 
         inline bool isPlayerThread() { return playerThread; }
-
-        bool isSameThread(Thread* thread);
     public:
         virtual RE::BSEventNotifyControl ProcessEvent(const RE::BSAnimationGraphEvent* a_event, RE::BSTEventSource<RE::BSAnimationGraphEvent>* a_eventSource) override;
 
@@ -165,10 +163,14 @@ namespace OStim {
         bool autoTransition(int index, std::string type);
         void warpTo(Graph::Node* node, bool useFades);
         void navigateTo(Graph::Node* node);
+        void playSequence(Graph::Sequence* sequence, bool navigateTo, bool useFades);
         bool pullOut();
         inline bool areNodesQueued() { return !nodeQueue.empty(); }
+        inline bool isInSequence() { return inSequence; }
 
     private:
+        bool inSequence = false;
+        bool endAfterSequence = false;
         int nodeQueueCooldown = 0;
         std::queue<Graph::SequenceEntry> nodeQueue;
 

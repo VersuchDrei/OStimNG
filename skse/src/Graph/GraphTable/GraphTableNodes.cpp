@@ -60,6 +60,10 @@ namespace Graph {
                 continue;
             }
 
+            if (!start->hasSameActorTpyes(destination)) {
+                logger::warn("Couldn't add navigation from {} to {} because their actor types don't match.", raw.origin, raw.destination);
+            }
+
             for (auto& existingNavigation : start->navigations) {
                 if (existingNavigation.nodes.back() == destination || existingNavigation.nodes.front() == destination) {
                     continue;
@@ -177,7 +181,7 @@ namespace Graph {
 
         std::shuffle(std::begin(copy), std::end(copy), Constants::RNG);
 
-        for (auto& node : copy) {
+        for (Node* node : copy) {
             if (!node->isTransition && !node->noRandomSelection && node->fulfilledBy(actorConditions) && nodeCondition(node)) {
                 return node;
             }

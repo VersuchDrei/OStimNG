@@ -39,6 +39,15 @@ namespace OStim {
             hasPlayer |= actor.isPlayer();
         }
 
+        std::vector<Trait::ActorCondition> conditions = Trait::ActorCondition::create(params.actors);
+        if (params.startingSequence && !params.startingSequence->fulfilledBy(conditions)) {
+            params.startingSequence = nullptr;
+        }
+
+        if (params.startingNode && !params.startingNode->fulfilledBy(Trait::ActorCondition::create(params.actors))) {
+            params.startingNode = nullptr;
+        }
+
         if (hasPlayer) {
             startPlayerThread(params);
             return 0;

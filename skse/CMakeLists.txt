@@ -67,6 +67,7 @@ set(sources
     src/Graph/Action.cpp
     src/Graph/GraphTable.cpp
     src/Graph/Node.cpp
+    src/Graph/Sequence.cpp
     src/InterfaceSpec/PluginInterface.cpp
     src/MCM/MCMSetting.cpp
     src/MCM/MCMTable.cpp

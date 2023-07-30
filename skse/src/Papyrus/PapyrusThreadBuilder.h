@@ -34,6 +34,15 @@ namespace PapyrusThreadBuilder {
         params->dominantActors = GameAPI::GameActor::convertVector(actors);
     }
 
+    void SetFurniture(RE::StaticFunctionTag*, int builderID, RE::TESObjectREFR* furniture) {
+        OStim::ThreadStartParams* params = OStim::ThreadBuilder::get(builderID);
+        if (!params) {
+            return;
+        }
+
+        params->furniture = furniture;
+    }
+
     void SetStartingAnimation(RE::StaticFunctionTag*, int builderID, std::string animation) {
         OStim::ThreadStartParams* params = OStim::ThreadBuilder::get(builderID);
         if (!params) {
@@ -48,13 +57,27 @@ namespace PapyrusThreadBuilder {
         params->startingNode = node;
     }
 
-    void SetFurniture(RE::StaticFunctionTag*, int builderID, RE::TESObjectREFR* furniture) {
+    void SetStartingSequence(RE::StaticFunctionTag*, int builderID, std::string sequence) {
         OStim::ThreadStartParams* params = OStim::ThreadBuilder::get(builderID);
         if (!params) {
             return;
         }
 
-        params->furniture = furniture;
+        Graph::Sequence* sequencePtr = Graph::GraphTable::getSequenceByID(sequence);
+        if (!sequencePtr) {
+            return;
+        }
+
+        params->startingSequence = sequencePtr;
+    }
+
+    void EndAfterSequence(RE::StaticFunctionTag*, int builderID) {
+        OStim::ThreadStartParams* params = OStim::ThreadBuilder::get(builderID);
+        if (!params) {
+            return;
+        }
+
+        params->endAfterSequence = true;
     }
 
     void UndressActors(RE::StaticFunctionTag*, int builderID) {
@@ -127,8 +150,10 @@ namespace PapyrusThreadBuilder {
 
         BIND(Create);
         BIND(SetDominantActors);
-        BIND(SetStartingAnimation);
         BIND(SetFurniture);
+        BIND(SetStartingAnimation);
+        BIND(SetStartingSequence);
+        BIND(EndAfterSequence);
         BIND(UndressActors);
         BIND(NoAutoMode);
         BIND(SetMetadata);

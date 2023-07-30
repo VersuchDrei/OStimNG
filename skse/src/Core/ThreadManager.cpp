@@ -49,7 +49,11 @@ namespace OStim {
         Thread* thread = new Thread(threadID, params);
         m_threadMap.insert(std::make_pair(threadID, thread));
         thread->initContinue();
-        thread->ChangeNode(params.startingNode);
+        if (params.startingSequence) {
+            thread->playSequence(params.startingSequence, false, false);
+        } else {
+            thread->ChangeNode(params.startingNode);
+        }
         return threadID;
     }
 

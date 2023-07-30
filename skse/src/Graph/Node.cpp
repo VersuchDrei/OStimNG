@@ -45,12 +45,26 @@ namespace Graph {
 
     bool Node::fulfilledBy(std::vector<Trait::ActorCondition> conditions) {
         int size = actors.size();
-        if (size < conditions.size()) {
+        if (size != conditions.size()) {
             return false;
         }
 
         for (int i = 0; i < size; i++) {
             if (!conditions[i].fulfills(actors[i].condition)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    bool Node::hasSameActorTpyes(Node* other) {
+        if (actors.size() != other->actors.size()) {
+            return false;
+        }
+
+        for (int i = 0; i <= actors.size(); i++) {
+            if (actors[i].condition.type != other->actors[i].condition.type) {
                 return false;
             }
         }

@@ -52,6 +52,28 @@ b -Tn OStim3PLyingFFF_1 OStim3P\Ostim3PLyingFFF_1.hkx
 b -Tn OStim3PLyingFFF_2 OStim3P\Ostim3PLyingFFF_2.hkx
 
 
+b -Tn OStim4PStandingMMMF_0 OStim4P\Ostim4PStandingMMMF_0.hkx
+b -Tn OStim4PStandingMMMF_1 OStim4P\Ostim4PStandingMMMF_1.hkx
+b -Tn OStim4PStandingMMMF_2 OStim4P\Ostim4PStandingMMMF_2.hkx
+b -Tn OStim4PStandingMMMF_3 OStim4P\Ostim4PStandingMMMF_3.hkx
+b -Tn OStim4PLyingMMMF_0 OStim4P\Ostim4PLyingMMMF_0.hkx
+b -Tn OStim4PLyingMMMF_1 OStim4P\Ostim4PLyingMMMF_1.hkx
+b -Tn OStim4PLyingMMMF_2 OStim4P\Ostim4PLyingMMMF_2.hkx
+b -Tn OStim4PLyingMMMF_3 OStim4P\Ostim4PLyingMMMF_3.hkx
+
+
+b -Tn OStim5PStandingMMMMF_0 OStim5P\Ostim5PStandingMMMMF_0.hkx
+b -Tn OStim5PStandingMMMMF_1 OStim5P\Ostim5PStandingMMMMF_1.hkx
+b -Tn OStim5PStandingMMMMF_2 OStim5P\Ostim5PStandingMMMMF_2.hkx
+b -Tn OStim5PStandingMMMMF_3 OStim5P\Ostim5PStandingMMMMF_3.hkx
+b -Tn OStim5PStandingMMMMF_4 OStim5P\Ostim5PStandingMMMMF_4.hkx
+b -Tn OStim5PLyingMMMMF_0 OStim5P\Ostim5PLyingMMMMF_0.hkx
+b -Tn OStim5PLyingMMMMF_1 OStim5P\Ostim5PLyingMMMMF_1.hkx
+b -Tn OStim5PLyingMMMMF_2 OStim5P\Ostim5PLyingMMMMF_2.hkx
+b -Tn OStim5PLyingMMMMF_3 OStim5P\Ostim5PLyingMMMMF_3.hkx
+b -Tn OStim5PLyingMMMMF_4 OStim5P\Ostim5PLyingMMMMF_4.hkx
+
+
 
 b -Tn OStimBench1PSittingM_0 OStimBench1P\OStimBench1PSittingM_0.hkx
 

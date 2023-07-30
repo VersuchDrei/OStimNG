@@ -3,6 +3,7 @@
 #include "Event.h"
 #include "Node.h"
 #include "Requirement.h"
+#include "Sequence.h"
 
 #include "Furniture/Furniture.h"
 #include "Trait/Condition.h"
@@ -59,6 +60,16 @@ namespace Graph{
         inline static std::unordered_map<std::string, Node*> nodes;
         inline static std::unordered_map<std::string, Node*> animationNodeTable;
         inline static std::unordered_map<Furniture::FurnitureType, std::unordered_map<int, std::vector<Node*>*>*> nodeList;
+#pragma endregion
+
+#pragma region sequences
+    public:
+        static void setupSequences();
+        static Sequence* getSequenceByID(std::string id);
+        static Sequence* getRandomSequence(Furniture::FurnitureType furnitureType, std::vector<Trait::ActorCondition> actorConditions, std::function<bool(Sequence*)> sequenceCondition);
+
+    private:
+        inline static std::unordered_map<std::string, Sequence> sequences;
 #pragma endregion
     };
 }

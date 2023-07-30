@@ -84,6 +84,7 @@ namespace {
                 Alignment::Alignments::LoadAlignments();
                 LegacyUtil::loadLegacyScenes();
                 Graph::GraphTable::setupNodes();
+                Graph::GraphTable::setupSequences();
 
                 Compatibility::CompatibilityTable::setupForms();
                 Util::LookupTable::setupForms();

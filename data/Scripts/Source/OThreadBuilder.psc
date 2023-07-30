@@ -24,14 +24,6 @@ int Function Create(Actor[] Actors) Global Native
 */;
 Function SetDominantActors(int BuilderID, Actor[] Actors) Global Native
 
-;/* SetStartingAnimation
-* * sets the starting animation of the scene
-* *
-* * @param: BuilderID, the id of the thread builder
-* * @param: Animation, the id of the animation
-*/;
-Function SetStartingAnimation(int BuilderID, string Animation) Global Native
-
 ;/* SetFurniture
 * * sets the furniture to use in the thread
 * *
@@ -39,6 +31,33 @@ Function SetStartingAnimation(int BuilderID, string Animation) Global Native
 * * @param: FurnitureRef, the furniture to use
 */;
 Function SetFurniture(int BuilderID, ObjectReference FurnitureRef) Global Native
+
+;/* SetStartingAnimation
+* * sets the starting animation of the scene
+* * if a starting sequence is set the starting animation is ignored
+* *
+* * @param: BuilderID, the id of the thread builder
+* * @param: Animation, the id of the animation
+*/;
+Function SetStartingAnimation(int BuilderID, string Animation) Global Native
+
+;/* SetStartingSequence
+* * sets the starting sequence of the scene
+* *
+* * @param: BuilderID, the id of the thread builder
+* * @param: Sequence, the id of the sequence
+*/;
+Function SetStartingSequence(int BuilderID, string Sequence) Global Native
+
+;/* EndAfterSequence
+* * sets the thread to end when the starting sequence has played through
+* * if no startin sequence is set this doesn't do anything
+* *
+* * without this the thread will get to the usual navigation after the sequence is done
+* *
+* * @param: BuilderID, the id of the thread builder
+*/;
+Function EndAfterSequence(int BuidlerID) Global Native
 
 ;/* UndressActors
 * * sets the thread to strip all actors on start
