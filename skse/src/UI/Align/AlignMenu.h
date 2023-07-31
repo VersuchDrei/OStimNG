@@ -47,6 +47,8 @@ namespace UI::Align {
         void LoadCurrentAlignment();
         void CycleIncrement();
 
+        void GetSceneInfo(RE::GFxValue& sceneInfo);
+        void GetAlignmentInfo(RE::GFxValue& alignmentInfo);
     private:
         Alignment::ActorAlignment currentActorInfo;
 

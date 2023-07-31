@@ -32,7 +32,6 @@ namespace UI::Search {
         void ApplyPositions();
 
     private:
-        void GetRoot(RE::GFxValue& root);
         void GetControlHandler(RE::GFxValue& controlHandler);
         void AssignData(std::vector<SearchItem>& data);
         void SendControl(int32_t control);
