@@ -98,7 +98,7 @@ namespace Furniture {
                 }
 
                 int index = type - 1;
-                if (!ret[index] || centerPos.GetDistance(refPos) < centerPos.GetDistance(ret[index]->GetPosition())) {
+                if (!ret[index] || centerPos.GetSquaredDistance(refPos) < centerPos.GetSquaredDistance(ret[index]->GetPosition())) {
                     ret[index] = &ref;
                 }
             }
@@ -107,6 +107,35 @@ namespace Furniture {
         });
 
         return ret;
+    }
+
+    RE::TESObjectREFR* findBed(RE::TESObjectREFR* centerRef, float radius, float sameFloor) {
+        if (!centerRef) {
+            return nullptr;
+        }
+
+        RE::TESObjectREFR* bed = nullptr;
+
+        auto centerPos = centerRef->GetPosition();
+
+        util::iterate_attached_cells(centerPos, radius, [&](RE::TESObjectREFR& ref) {
+            auto refPos = ref.GetPosition();
+
+            if (sameFloor == 0.0 || std::fabs(centerPos.z - refPos.z) <= sameFloor) {
+                FurnitureType type = getFurnitureType(&ref, true);
+                if (type != FurnitureType::BED) {
+                    return RE::BSContainer::ForEachResult::kContinue;
+                }
+
+                if (bed || centerPos.GetSquaredDistance(refPos) < centerPos.GetSquaredDistance(bed->GetPosition())) {
+                    bed = &ref;
+                }
+            }
+
+            return RE::BSContainer::ForEachResult::kContinue;
+        });
+
+        return bed;
     }
 
     std::vector<float> getOffset(RE::TESObjectREFR* object) {

@@ -2,6 +2,8 @@
 
 #include "Action.h"
 #include "GraphActor.h"
+#include "RawNavigation.h"
+#include "SequenceEntry.h"
 
 #include "Furniture/Furniture.h"
 
@@ -10,22 +12,19 @@ namespace Graph {
 
     struct Speed {
     public:
-        std::string animation;
+        std::string animation = "";
         float playbackSpeed = 1.0;
-    };
-
-    struct RawNavigation {
-        std::string destination;
-        std::string icon;
-        std::string border;
+        float displaySpeed = -1;
     };
 
     struct Navigation {
-        Node* destination;
-        std::string icon;
+        std::vector<Node*> nodes;
+        std::string description = "";
+        std::string icon = "";
         std::string border = "ffffff";
         bool isTransition = false;
-        Node* transitionNode = nullptr;
+
+        bool fulfilledBy(std::vector<Trait::ActorCondition> conditions);
     };
 
     struct Node {
@@ -39,26 +38,20 @@ namespace Graph {
         uint32_t defaultSpeed = 0;
         bool isTransition = false;
         int animationLengthMs = 0;
-        bool isHub = false;
-        bool isAggresive = false;
         bool hasIdleSpeed = false;
         bool noRandomSelection = false;
         Furniture::FurnitureType furnitureType = Furniture::FurnitureType::NONE;
+        std::unordered_map<std::string, std::string> autoTransitions;
         std::vector<std::string> tags;
         std::vector<GraphActor> actors;
         std::vector<Action> actions;
         std::vector<Navigation> navigations;
-
-        // maybe remove this in a later iteration?
-        std::string sourceModule;
-        std::string animClass;
+        std::string modpack = "";
 
         void mergeActionsIntoActors();
-        void tryAddNavigation(RawNavigation destination, std::unordered_map<Graph::Node*, std::vector<RawNavigation>>& navigationMap);
 
-        bool fulfilledBy(std::vector<Trait::ActorConditions> conditions);
-
-        Node* getRandomNodeInRange(int distance, std::vector<Trait::ActorConditions> actorConditions, std::function<bool(Node*)> nodeCondition);
+        bool fulfilledBy(std::vector<Trait::ActorCondition> conditions);
+        bool hasSameActorTpyes(Node* other);
 
         std::vector<Trait::FacialExpression*>* getFacialExpressions(int position);
         std::vector<Trait::FacialExpression*>* getOverrideExpressions(int position);
@@ -66,6 +59,7 @@ namespace Graph {
         uint32_t getStrippingMask(int position);
         bool doFullStrip(int position);
 
+        std::string getAutoTransitionForNode(std::string type);
         std::string getAutoTransitionForActor(int position, std::string type);
 
         bool hasNodeTag(std::string tag);
@@ -73,6 +67,7 @@ namespace Graph {
         bool hasAnyActorTag(int position, std::vector<std::string> tags);
         bool hasAllActorTags(int position, std::vector<std::string> tags);
         bool hasOnlyListedActorTags(int position, std::vector<std::string> tags);
+        bool hasActorTagOnAny(std::string tag);
 
         int findAction(std::function<bool(Action)> condition);
         std::vector<int> findActions(std::function<bool(Action)> condition);
@@ -87,5 +82,11 @@ namespace Graph {
         int findAnyActionForTarget(int position, std::vector<std::string> types);
         int findActionForActorAndTarget(int actorPosition, int targetPosition, std::string type);
         int findAnyActionForActorAndTarget(int actorPosition, int targetPosition, std::vector<std::string> types);
+
+#pragma region navigation
+    public:
+        Node* getRandomNodeInRange(int distance, std::vector<Trait::ActorCondition> actorConditions, std::function<bool(Node*)> nodeCondition);
+        std::vector<SequenceEntry> getRoute(int distance, std::vector<Trait::ActorCondition> actorConditions, Node* destination);
+#pragma endregion
     };
 }

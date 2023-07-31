@@ -1,0 +1,67 @@
+{
+	"name": "Standing MMF",
+	"modpack": "OStim",
+	"length": 10.0,
+	"speeds":[
+		{
+			"animation": "OStim3PStandingMMF"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStim3PStandingMMM",
+			"description": "go to MMM idle",
+			"icon": "OStim/symbols/gender_mmm"
+		},
+		{
+			"destination": "OStim3PStandingMFF",
+			"description": "go to MFF idle",
+			"icon": "OStim/symbols/gender_mff"
+		},
+		{
+			"destination": "OStim3PStandingFFF",
+			"description": "go to FFF idle",
+			"icon": "OStim/symbols/gender_fff"
+		},
+		{
+			"destination": "OStim3PLyingMMF",
+			"description": "lie down",
+			"icon": "OStim/positional/lyingback_m"
+		}
+	],
+	"tags":[
+		"idle",
+		"intro"
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true,
+			"sosBend": -10,
+			"lookUp": -50,
+			"lookLeft": 40
+		},
+		{
+			"intendedSex": "male",
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true,
+			"sosBend": -10,
+			"lookUp": -30,
+			"lookLeft": 10
+		},
+		{
+			"intendedSex": "female",
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true,
+			"lookUp": 20,
+			"lookLeft": -80
+		}
+	]
+}

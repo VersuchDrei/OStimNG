@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ThreadStarter/ThreadStartParams.h"
+
 #include <shared_mutex>
 
 #include "AutoModeStage.h"
@@ -10,6 +12,7 @@
 #include "GameAPI/GameActor.h"
 #include "Graph/Node.h"
 #include "Serial/OldThread.h"
+#include "Util/VectorUtil.h"
 
 namespace OStim {
 
@@ -18,7 +21,7 @@ namespace OStim {
     public:
         ThreadId m_threadId;
 
-        Thread(ThreadId id, RE::TESObjectREFR* furniture, std::vector<RE::Actor*> actors);
+        Thread(int threadID, ThreadStartParams params);
 
         ~Thread();
 
@@ -42,7 +45,7 @@ namespace OStim {
         void AddActor(RE::Actor* a_actor);
         void RemoveActor();
 
-        std::vector<Trait::ActorConditions> getActorConditions();
+        std::vector<Trait::ActorCondition> getActorConditions();
 
         void loop();
 
@@ -51,6 +54,9 @@ namespace OStim {
         ThreadActor* GetActor(GameAPI::GameActor a_actor);
         ThreadActor* GetActor(int a_position);
         int getActorPosition(GameAPI::GameActor actor);
+
+        inline RE::TESObjectREFR* getFurniture() { return furniture; }
+        inline Furniture::FurnitureType getFurnitureType() { return furnitureType; }
 
         void SetSpeed(int speed);
         bool increaseSpeed();
@@ -61,13 +67,10 @@ namespace OStim {
         void callEvent(std::string eventName, int actorIndex, int targetIndex, int performerIndex);
 
         void stop();
+        void stopFaded();
         void close();
 
-        inline RE::TESObjectREFR* GetStageObject() { return vehicle; }
-
         inline bool isPlayerThread() { return playerThread; }
-
-        bool isSameThread(Thread* thread);
     public:
         virtual RE::BSEventNotifyControl ProcessEvent(const RE::BSAnimationGraphEvent* a_event, RE::BSTEventSource<RE::BSAnimationGraphEvent>* a_eventSource) override;
 
@@ -81,8 +84,10 @@ namespace OStim {
         RE::TESObjectREFR* furniture;
         Furniture::FurnitureType furnitureType = Furniture::FurnitureType::NONE;
         RE::TESForm* furnitureOwner = nullptr;
-        RE::TESObjectREFR* vehicle;
         std::shared_mutex nodeLock;
+
+        GameAPI::GamePosition center;
+        float rotation = 0;
 
         int m_currentNodeSpeed = 0;
         float relativeSpeed = -1;
@@ -94,10 +99,9 @@ namespace OStim {
         float timeScaleBefore = 0;
 
         int stopTimer = 0;
+        bool isStopping = false;
 
         std::vector<Sound::SoundPlayer*> soundPlayers;
-
-        int animationTimer = 0;
 
         void addActorInner(int index, RE::Actor* actor);
         void addActorSink(RE::Actor* a_actor);
@@ -105,19 +109,6 @@ namespace OStim {
 
         void rebuildAlignmentKey();
         void alignActor(ThreadActor* threadActor, Alignment::ActorAlignment alignment);
-
-#pragma region navigation
-    public:
-        bool autoTransition(int index, std::string type);
-        void warpTo(Graph::Node* node, bool useFades);
-        void navigateTo(Graph::Node* node);
-        bool pullOut();
-
-    private:
-        void clearNodeQueue();
-
-        std::queue<Graph::Node*> nodeQueue;
-#pragma endregion
 
 #pragma region autocontrol
     public:
@@ -140,6 +131,50 @@ namespace OStim {
         void startAutoModeCooldown();
         void progressAutoMode();
         void loopAutoControl();
+        void nodeChangedAutoControl();
+#pragma endregion
+
+#pragma region climax
+    public:
+        inline bool getStallClimax() { return stallClimax; }
+        inline void setStallClimax(bool stallClimax) { this->stallClimax = stallClimax; }
+        bool isAnyActorAwaitingClimax();
+
+    private:
+        bool stallClimax = false;
+#pragma endregion
+
+#pragma region metadata
+    public:
+        inline void addMetadata(std::string metadata) {
+            if (!hasMetadata(metadata)) this->metadata.push_back(metadata);
+        }
+        inline bool hasMetadata(std::string metadata) { return VectorUtil::contains(this->metadata, metadata); }
+        inline std::vector<std::string> getMetadata() { return metadata; }
+
+    private:
+        std::vector<std::string> metadata;
+#pragma endregion
+
+#pragma region navigation
+    public:
+        void loopNavigation();
+        bool autoTransition(std::string type);
+        bool autoTransition(int index, std::string type);
+        void warpTo(Graph::Node* node, bool useFades);
+        void navigateTo(Graph::Node* node);
+        void playSequence(Graph::Sequence* sequence, bool navigateTo, bool useFades);
+        bool pullOut();
+        inline bool areNodesQueued() { return !nodeQueue.empty(); }
+        inline bool isInSequence() { return inSequence; }
+
+    private:
+        bool inSequence = false;
+        bool endAfterSequence = false;
+        int nodeQueueCooldown = 0;
+        std::queue<Graph::SequenceEntry> nodeQueue;
+
+        void clearNodeQueue();
 #pragma endregion
     };
 

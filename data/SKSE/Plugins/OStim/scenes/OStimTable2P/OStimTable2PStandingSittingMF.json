@@ -1,0 +1,44 @@
+{
+	"name": "Standing Sitting Straight",
+	"modpack": "OStim",
+	"length": 2.0,
+	"furniture": "table",
+	"speeds":[
+		{
+			"animation": "OStimTable2PStandingSittingMF"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStimTable2PStandingSittingFF",
+			"description": "go to lesbian idle",
+			"icon": "OStim/symbols/gender_ff"
+		},
+		{
+			"destination": "OStimTable2PStandingLeaningMF",
+			"description": "stand up",
+			"icon": "OStim/positional/standup_f"
+		}
+	],
+	"tags":[
+		"idle",
+		"intro"
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"scale": 1.03,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		},
+		{
+			"intendedSex": "female",
+			"tags": [
+				"sitting"
+			],
+			"feetOnGround": false
+		}
+	]
+}

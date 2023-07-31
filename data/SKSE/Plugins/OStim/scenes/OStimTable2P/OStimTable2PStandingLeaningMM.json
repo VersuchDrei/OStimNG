@@ -1,0 +1,44 @@
+{
+	"name": "Standing Leaning Gay",
+	"modpack": "OStim",
+	"length": 2.0,
+	"furniture": "table",
+	"speeds":[
+		{
+			"animation": "OStimTable2PStandingLeaningMM"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStimTable2PStandingLeaningMF",
+			"description": "go to straight idle",
+			"icon": "OStim/symbols/gender_mf"
+		},
+		{
+			"destination": "OStimTable2PStandingLeaningFF",
+			"description": "go to lesbian idle",
+			"icon": "OStim/symbols/gender_ff"
+		}
+	],
+	"tags":[
+		"idle",
+		"intro"
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"scale": 1.03,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		},
+		{
+			"intendedSex": "male",
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		}
+	]
+}

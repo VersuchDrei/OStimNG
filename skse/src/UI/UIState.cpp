@@ -64,7 +64,7 @@ namespace UI {
 
     void UIState::NodeChanged(OStim::Thread* thread, Graph::Node* node) {
         if (!thread || !node) return;
-        if (!currentThread->isSameThread(thread)) return;
+        if (currentThread != thread) return;
         
         currentNode = node;
         SKSE::GetTaskInterface()->AddTask([node]() {
@@ -76,7 +76,7 @@ namespace UI {
 
     void UIState::SpeedChanged(OStim::Thread* thread, int speed) {
         if (!thread) return;
-        if (!currentThread->isSameThread(thread)) return;
+        if (currentThread != thread) return;
 
         UI::Scene::SceneMenu::GetMenu()->UpdateSpeed();
     }

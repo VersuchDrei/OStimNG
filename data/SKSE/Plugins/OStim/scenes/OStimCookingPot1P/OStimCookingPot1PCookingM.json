@@ -1,0 +1,31 @@
+{
+	"name": "Cooking Male",
+	"modpack": "OStim",
+	"length": 2.0,
+	"furniture": "cookingpot",
+	"speeds":[
+		{
+			"animation": "OStim1PStandingM"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStimCookingPot1PCookingF",
+			"description": "go to female idle",
+			"icon": "OStim/symbols/gender_f"
+		}
+	],
+	"tags":[
+		"idle",
+		"intro"
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		}
+	]
+}

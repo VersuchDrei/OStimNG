@@ -66,7 +66,7 @@ namespace Compatibility {
             return false;
         }
 
-        for (GameAPI::GameFaction& faction : noSchlongFactions) {
+        for (GameAPI::GameFaction faction : noSchlongFactions) {
             if (actor.isInFaction(faction)) {
                 return false;
             }

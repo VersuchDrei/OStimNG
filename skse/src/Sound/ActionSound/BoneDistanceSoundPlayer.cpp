@@ -11,6 +11,11 @@ namespace Sound {
             return;
         }
 
+        if (--skips > 0) {
+            return;
+        }
+        skips = 3;
+
         float nextDistance = calculateDistance();
 
         if (nextDistance < lastDistance) {
@@ -45,10 +50,7 @@ namespace Sound {
     }
 
     void BoneDistanceSoundPlayer::calculateThreshold() {
-        float min = std::sqrtf(minDistance);
-        float max = std::sqrtf(maxDistance);
-
-        distanceThreshold = std::powf(min + (max - min) * (inverse ? 0.9 : 0.1), 2);
+        distanceThreshold = minDistance + (maxDistance - minDistance) * (inverse ? 0.9 : 0.1);
     }
 
     void BoneDistanceSoundPlayer::trigger() {

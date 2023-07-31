@@ -54,6 +54,25 @@ namespace OStim {
     }
 #pragma endregion
 
+    bool Thread::autoTransition(std::string type) {
+        if (!nodeQueue.empty()) {
+            return false;
+        }
+
+        std::string sceneID = m_currentNode->getAutoTransitionForNode(type);
+        if (sceneID.empty()) {
+            return false;
+        }
+
+        Graph::Node* node = Graph::GraphTable::getNodeById(sceneID);
+        if (!node) {
+            return false;
+        }
+
+        ChangeNode(node);
+        return true;
+    }
+
     bool Thread::autoTransition(int index, std::string type) {
         if (!nodeQueue.empty()) {
             return false;
@@ -96,18 +115,85 @@ namespace OStim {
     void Thread::navigateTo(Graph::Node* node) {
         clearNodeQueue();
 
-        // TODO: try to do actual navigation
-        warpTo(node, MCM::MCMTable::useAutoModeFades());
+        if (m_currentNode == node) {
+            return;
+        }
+
+        std::vector<Graph::SequenceEntry> nodes = m_currentNode->getRoute(MCM::MCMTable::navigationDistanceMax(), getActorConditions(), node);
+        if (nodes.empty()) {
+            warpTo(node, MCM::MCMTable::useAutoModeFades());
+        } else {
+            for (int i = 1; i < nodes.size(); i++) {
+                nodeQueue.push(nodes[i]);
+            }
+            nodeQueueCooldown = nodes.front().duration;
+            ChangeNode(nodes.front().node);
+        }
+    }
+
+    void Thread::playSequence(Graph::Sequence* sequence, bool navigateTo, bool useFades) {
+        clearNodeQueue();
+
+        bool doWarp = false;
+        inSequence = true;
+
+        if (navigateTo && m_currentNode) {
+            std::vector<Graph::SequenceEntry> nodes = m_currentNode->getRoute(MCM::MCMTable::navigationDistanceMax(), getActorConditions(), sequence->nodes.front().node);
+            if (nodes.empty()) {
+                doWarp = true;
+            } else {
+                for (int i = 1; i < nodes.size(); i++) {
+                    nodeQueue.push(nodes[i]);
+                }
+                nodeQueueCooldown = nodes.front().duration;
+                ChangeNode(nodes.front().node);
+            }
+        } else {
+            doWarp = true;
+        }
+        
+
+        if (doWarp) {
+            if (useFades && playerThread) {
+                std::thread fadeThread = std::thread([sequence] {
+                    GameAPI::GameCamera::fadeToBlack(1);
+                    std::this_thread::sleep_for(std::chrono::milliseconds(700));
+                    Thread* thread = ThreadManager::GetSingleton()->getPlayerThread();
+                    if (thread) {
+                        for (int i = 1; i < sequence->nodes.size(); i++) {
+                            thread->nodeQueue.push(sequence->nodes[i]);
+                        }
+                        thread->nodeQueueCooldown = sequence->nodes.front().duration;
+                        thread->ChangeNode(sequence->nodes.front().node);
+                    }
+                    std::this_thread::sleep_for(std::chrono::milliseconds(550));
+                    GameAPI::GameCamera::fadeFromBlack(1);
+                });
+                fadeThread.detach();
+            } else {
+                for (int i = 1; i < sequence->nodes.size(); i++) {
+                    nodeQueue.push(sequence->nodes[i]);
+                }
+                nodeQueueCooldown = sequence->nodes.front().duration;
+                ChangeNode(sequence->nodes.front().node);
+            }
+        } else {
+            for (int i = 1; i < sequence->nodes.size(); i++) {
+                nodeQueue.push(sequence->nodes[i]);
+            }
+        }
     }
 
     bool Thread::pullOut() {
-        // TODO actually link this to the given node
+        if (autoTransition("pullout")) {
+            return true;
+        }
+
         std::vector<std::function<bool(Graph::Node*)>> conditions;
         conditions.push_back([&](Graph::Node* node) { return node->findAnyAction({"analsex", "tribbing", "vaginalsex"}) == -1; });
-        addFurniture2(conditions, furnitureType);
         conditions.push_back([&](Graph::Node* node) { return node->findAction("malemasturbation") != -1; });
 
-        Graph::Node* node = Graph::GraphTable::getRandomNode(furnitureType, getActorConditions(), [&conditions](Graph::Node* node) { return checkConditions2(conditions, node); });
+        Graph::Node* node = m_currentNode->getRandomNodeInRange(3, getActorConditions(), [&conditions](Graph::Node* node) { return checkConditions2(conditions, node); });
 
         if (node) {
             navigateTo(node);
@@ -118,8 +204,29 @@ namespace OStim {
     }
 
     void Thread::clearNodeQueue() {
+        nodeQueueCooldown = 0;
         while (!nodeQueue.empty()) {
             nodeQueue.pop();
+        }
+    }
+
+    void Thread::loopNavigation() {
+        if (nodeQueueCooldown > 0) {
+            if ((nodeQueueCooldown -= Constants::LOOP_TIME_MILLISECONDS) <= 0) {
+                if (nodeQueue.empty()) {
+                    if (inSequence) {
+                        if (endAfterSequence) {
+                            stop();
+                        }
+                        inSequence = false;
+                    }
+                } else {
+                    Graph::SequenceEntry next = nodeQueue.front();
+                    nodeQueue.pop();
+                    nodeQueueCooldown = next.duration;
+                    ChangeNode(next.node);
+                }
+            }
         }
     }
 }

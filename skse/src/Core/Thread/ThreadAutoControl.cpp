@@ -60,7 +60,7 @@ namespace OStim {
         return true;
     }
 
-    Graph::Node* getRandomForeplayNode(std::vector<Trait::ActorConditions> actorConditions, Furniture::FurnitureType furnitureType, bool lesbian, bool gay) {
+    Graph::Node* getRandomForeplayNode(Graph::Node* currentNode, std::vector<Trait::ActorCondition> actorConditions, Furniture::FurnitureType furnitureType, bool lesbian, bool gay) {
         std::vector<std::function<bool(Graph::Node*)>> conditions;
         conditions.push_back([&](Graph::Node* node) { return node->findAnyAction({"analsex", "tribbing", "vaginalsex"}) == -1; });
         addFurniture(conditions, furnitureType);
@@ -76,13 +76,16 @@ namespace OStim {
             conditions.push_back([&](Graph::Node* node) { return VectorUtil::contains(node->tags, std::string("gay")); });
         }
 
-        return Graph::GraphTable::getRandomNode(furnitureType, actorConditions, [&conditions](Graph::Node* node) { return checkConditions(conditions, node); });
+        if (currentNode->hasActionTag("sexual") && MCM::MCMTable::autoModeLimitToNavigationDistance()) {
+            return currentNode->getRandomNodeInRange(MCM::MCMTable::navigationDistanceMax(), actorConditions, [&conditions](Graph::Node* node) { return checkConditions(conditions, node); });
+        } else {
+            return Graph::GraphTable::getRandomNode(furnitureType, actorConditions, [&conditions](Graph::Node* node) { return checkConditions(conditions, node); });
+        }
     }
 
-    Graph::Node* getRandomSexNode(std::vector<Trait::ActorConditions> actorConditions, Furniture::FurnitureType furnitureType, bool lesbian, bool gay) {
+    Graph::Node* getRandomSexNode(Graph::Node* currentNode, std::vector<Trait::ActorCondition> actorConditions, Furniture::FurnitureType furnitureType, bool lesbian, bool gay) {
         std::vector<std::function<bool(Graph::Node*)>> conditions;
-        // TODO let conditions handle tribbing
-        conditions.push_back([&lesbian](Graph::Node* node) { return node->findAnyAction(lesbian ? std::vector<std::string>{"analsex", "tribbing", "vaginalsex"} : std::vector<std::string>{"analsex", "vaginalsex"}) != -1;
+        conditions.push_back([&lesbian](Graph::Node* node) { return node->findAnyAction(std::vector<std::string>{"analsex", "tribbing", "vaginalsex"}) != -1;
         });
         addFurniture(conditions, furnitureType);
         // TODO do this with intended sex setting instead
@@ -92,7 +95,11 @@ namespace OStim {
             conditions.push_back([&](Graph::Node* node) { return VectorUtil::contains(node->tags, std::string("gay")); });
         }
 
-        return Graph::GraphTable::getRandomNode(furnitureType, actorConditions, [&conditions](Graph::Node* node) { return checkConditions(conditions, node); });
+        if (currentNode->hasActionTag("sexual") && MCM::MCMTable::autoModeLimitToNavigationDistance()) {
+            return currentNode->getRandomNodeInRange(MCM::MCMTable::navigationDistanceMax(), actorConditions, [&conditions](Graph::Node* node) { return checkConditions(conditions, node); });
+        } else {
+            return Graph::GraphTable::getRandomNode(furnitureType, actorConditions, [&conditions](Graph::Node* node) { return checkConditions(conditions, node); });
+        }
     }
 #pragma endregion
 
@@ -141,11 +148,11 @@ namespace OStim {
             }
         }
 
-        if (m_currentNode) {
-            if (m_currentNode->isHub) {
-                progressAutoMode();
-            } else {
+        if (m_currentNode && nodeQueue.empty()) {
+            if (m_currentNode->hasActionTag("sexual")) {
                 startAutoModeCooldown();
+            } else {
+                progressAutoMode();
             }
         }
 
@@ -178,9 +185,9 @@ namespace OStim {
                 gay = false;
             }
             if (autoModeStage == AutoModeStage::FOREPLAY) {
-                next = getRandomForeplayNode(getActorConditions(), furnitureType, lesbian, gay);
+                next = getRandomForeplayNode(m_currentNode, getActorConditions(), furnitureType, lesbian, gay);
             } else if (autoModeStage == AutoModeStage::MAIN) {
-                next = getRandomSexNode(getActorConditions(), furnitureType, lesbian, gay);
+                next = getRandomSexNode(m_currentNode, getActorConditions(), furnitureType, lesbian, gay);
             }
         }
 
@@ -189,6 +196,12 @@ namespace OStim {
         }
         
         startAutoModeCooldown();
+    }
+
+    void Thread::nodeChangedAutoControl() {
+        if (autoMode) {
+            startAutoModeCooldown();
+        }
     }
 
     void Thread::loopAutoControl() {

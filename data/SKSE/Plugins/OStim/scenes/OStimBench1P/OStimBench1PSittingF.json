@@ -1,0 +1,31 @@
+{
+	"name": "Sitting Female",
+	"modpack": "OStim",
+	"length": 2.0,
+	"furniture": "bench",
+	"speeds":[
+		{
+			"animation": "OStimBench1PSittingF"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStimBench1PSittingM",
+			"description": "go to male idle",
+			"icon": "OStim/symbols/gender_m"
+		}
+	],
+	"tags":[
+		"idle",
+		"intro"
+	],
+	"actors":[
+		{
+			"intendedSex": "female",
+			"tags": [
+				"sitting"
+			],
+			"feetOnGround": false
+		}
+	]
+}

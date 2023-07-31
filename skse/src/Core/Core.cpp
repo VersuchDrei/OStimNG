@@ -16,14 +16,12 @@ namespace OStim {
         }
 
         actor.removeFromFaction(Trait::TraitTable::getExcitementFaction());
-        // TODO properly use GameActor
-        ActorUtil::setVehicle(actor.form, nullptr);
-        ActorUtil::unlockActor(actor.form);
+        actor.unlock();
         
         actor.updateAI();
     }
 
     bool isEligible(GameAPI::GameActor actor) {
-        return actor.isHuman() && !ThreadManager::GetSingleton()->findActor(actor);
+        return !actor.isChild() && Trait::TraitTable::getActorType(actor) != "" && !ThreadManager::GetSingleton()->findActor(actor);
     }
 }

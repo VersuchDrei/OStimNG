@@ -11,6 +11,7 @@ namespace GameAPI {
         inline static RE::TESGlobal* getTimescale() { return Timescale; }
 
         inline static RE::BGSKeyword* getNPCKeyword() { return ActorTypeNPC; }
+        inline static RE::BGSKeyword* getVampireKeyword() { return Vampire; }
         inline static RE::TESRace* getManakinRace() { return ManakinRace; }
 
         inline static RE::TESImageSpaceModifier* getFadeToBlackHoldImod() { return FadeToBlackHoldImod; }
@@ -24,6 +25,7 @@ namespace GameAPI {
         inline static RE::TESGlobal* Timescale = nullptr;
 
         inline static RE::BGSKeyword* ActorTypeNPC = nullptr;
+        inline static RE::BGSKeyword* Vampire = nullptr;
         inline static RE::TESRace* ManakinRace = nullptr;
 
         inline static RE::TESImageSpaceModifier* FadeToBlackImod = nullptr;

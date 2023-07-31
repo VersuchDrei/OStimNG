@@ -35,11 +35,11 @@ namespace Graph {
 
     struct Action {
     public:
-        std::string type;
-        ActionAttributes* attributes;
-        int actor;
-        int target;
-        int performer;
+        std::string type = "";
+        ActionAttributes* attributes = nullptr;
+        int actor = -1;
+        int target = -1;
+        int performer = -1;
 
         bool doFullStrip(int position);
         uint32_t getStrippingMask(int position);

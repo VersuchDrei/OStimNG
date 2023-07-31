@@ -2,6 +2,7 @@
 
 #include "Core/Core.h"
 #include "Furniture/Furniture.h"
+#include "GameAPI/GameActor.h"
 #include "Util/ActorUtil.h"
 #include "Util/FormUtil.h"
 #include "Util/ObjectRefUtil.h"
@@ -22,26 +23,7 @@ namespace Serialization {
             RE::FormID oldID;
             RE::FormID newID;
 
-            serial->ReadRecordData(&oldID, sizeof(oldID));
-            if (serial->ResolveFormID(oldID, newID)) {
-                RE::TESForm* form = RE::TESForm::LookupByID(newID);
-                if (form) {
-                    if (form->Is(RE::Actor::FORMTYPE)) {
-                        threadActor.actor = form->As<RE::Actor>();
-                        logger::info("found actor {}", threadActor.actor->GetDisplayFullName());
-                        errors |= DeserializationError::ACTOR;
-                    } else {
-                        logger::warn("not an actor id: {}", newID);
-                        errors |= DeserializationError::ACTOR;
-                    }
-                } else {
-                    logger::warn("cannot find actor with id: {}", newID);
-                    errors |= DeserializationError::ACTOR;
-                }
-            } else {
-                logger::warn("cannot resolve actor id {:x}, missing mod?", oldID);
-                errors |= DeserializationError::ACTOR;
-            }
+            threadActor.actor.loadSerial(serial);
 
             size_t size;
             serial->ReadRecordData(&size, sizeof(size));
@@ -66,17 +48,27 @@ namespace Serialization {
                 }
             }
 
+            serial->ReadRecordData(&size, sizeof(size));
+            for (int i = 0; i < size; i++) {
+                GameAPI::GameFaction faction;
+                faction.loadSerial(serial);
+                if (faction) {
+                    threadActor.factions.push_back(faction);
+                }
+            }
+
             if (threadActor.actor) {
                 actors.push_back(threadActor);
             }
         }
 
-        RE::Actor* actor = nullptr;
+        GameAPI::GameActor actor = nullptr;
         std::vector<RE::TESObjectARMO*> equipObjects;
+        std::vector<GameAPI::GameFaction> factions;
 
         inline void serialize(SKSE::SerializationInterface* serial) {
-            RE::FormID actorID = actor->GetFormID();
-            serial->WriteRecordData(&actorID, sizeof(actorID));
+            RE::FormID formID = actor.getFormID();
+            serial->WriteRecordData(&formID, sizeof(formID));
 
             size_t size = equipObjects.size();
             serial->WriteRecordData(&size, sizeof(size));
@@ -84,16 +76,23 @@ namespace Serialization {
                 RE::FormID objectID = equipObject->GetFormID();
                 serial->WriteRecordData(&objectID, sizeof(objectID));
             }
+
+            size = factions.size();
+            serial->WriteRecordData(&size, sizeof(size));
+            for (GameAPI::GameFaction faction : factions) {
+                formID = faction.getFormID();
+                serial->WriteRecordData(&formID, sizeof(formID));
+            }
         }
 
         inline void free() {
             OStim::freeActor(actor, true);
             for (RE::TESObjectARMO* equipObject : equipObjects) {
-                ActorUtil::unequipItem(actor, equipObject);
-                ObjectRefUtil::removeItem(actor, equipObject);
+                ActorUtil::unequipItem(actor.form, equipObject);
+                ObjectRefUtil::removeItem(actor.form, equipObject);
             }
             if (!equipObjects.empty()) {
-                ActorUtil::queueNiNodeUpdate(actor);
+                actor.update3D();
             }
         }
     };
@@ -102,28 +101,12 @@ namespace Serialization {
         inline static void deserialize(SKSE::SerializationInterface* serial, std::vector<OldThread> &threads, uint32_t &errors) {
             OldThread thread;
 
+            int threadID;
+            serial->ReadRecordData(&threadID, sizeof(threadID));
+            thread.threadID = threadID;
+
             RE::FormID oldID;
             RE::FormID newID;
-
-            serial->ReadRecordData(&oldID, sizeof(oldID));
-            if (serial->ResolveFormID(oldID, newID)) {
-                RE::TESForm* form = RE::TESForm::LookupByID(newID);
-                if (form) {
-                    RE::TESObjectREFR* vehicle = form->As<RE::TESObjectREFR>();
-                    if (vehicle) {
-                        thread.vehicle = vehicle;
-                    } else {
-                        logger::error("not a vehicle id: {}", newID);
-                        errors |= DeserializationError::VEHICLE;
-                    }
-                } else {
-                    logger::error("cannot find vehicle with id: {}", newID);
-                    errors |= DeserializationError::VEHICLE;
-                }
-            } else {
-                logger::error("cannot resolve vehicle id {:x}", oldID);
-                errors |= DeserializationError::VEHICLE;
-            }
 
             serial->ReadRecordData(&oldID, sizeof(oldID));
             if (oldID != 0) {
@@ -172,14 +155,13 @@ namespace Serialization {
             threads.push_back(thread);
         }
 
-        RE::TESObjectREFR* vehicle = nullptr;
+        int threadID = 0;
         RE::TESObjectREFR* furniture = nullptr;
         RE::TESForm* furnitureOwner = nullptr;
         std::vector<OldThreadActor> actors;
 
         inline void serialize(SKSE::SerializationInterface* serial) {
-            RE::FormID vehicleID = vehicle->GetFormID();
-            serial->WriteRecordData(&vehicleID, sizeof(vehicleID));
+            serial->WriteRecordData(&threadID, sizeof(threadID));
 
             RE::FormID furnitureID = furniture ? furniture->GetFormID() : 0;
             serial->WriteRecordData(&furnitureID, sizeof(furnitureID));
@@ -195,11 +177,6 @@ namespace Serialization {
         }
 
         inline void close() {
-            if (vehicle) {
-                vehicle->Disable();
-                vehicle->SetDelete(true);
-            }
-
             if (furniture) {
                 Furniture::freeFurniture(furniture, furnitureOwner);   
             }
@@ -208,11 +185,11 @@ namespace Serialization {
 
             for (OldThreadActor actor : actors) {
                 actor.free();
-                playerThread |= actor.actor->IsPlayerRef();
+                playerThread |= actor.actor.isPlayer();
             }
 
             if (playerThread) {
-                FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_end", "", -0);
+                FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_end", "", -1);
                 FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_totalend", "", 0);
             }
         }

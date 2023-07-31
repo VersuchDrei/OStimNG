@@ -1,61 +1,76 @@
 #include "ActorUtil.h"
 
+#include "CompatibilityTable.h"
 #include "ObjectRefUtil.h"
+#include "VectorUtil.h"
+
+#include "MCM/MCMTable.h"
 
 namespace ActorUtil {
-    void lockActor(RE::Actor* actor) {
-        if (actor == RE::PlayerCharacter::GetSingleton()) {
-            if (actor->AsActorState()->IsWeaponDrawn()) {
-                sheatheWeapon(actor);
+    void sort(std::vector<GameAPI::GameActor>& actors, std::vector<GameAPI::GameActor>& dominantActors, int playerIndex) {
+        std::stable_sort(actors.begin(), actors.end(), [&dominantActors](GameAPI::GameActor actorA, GameAPI::GameActor actorB) {
+            if (VectorUtil::contains(dominantActors, actorA)) {
+                if (!VectorUtil::contains(dominantActors, actorB)) {
+                    return true;
+                }
+            } else {
+                if (VectorUtil::contains(dominantActors, actorB)) {
+                    return false;
+                }
             }
-
-            RE::PlayerCharacter::GetSingleton()->SetAIDriven(true);
-            RE::PlayerControls::GetSingleton()->activateHandler->disabled = true;
-        } else {
-            bool stop = false;
-            stop |= setRestrained(actor, true);
-            stop |= setDontMove(actor, true);
-            if (stop) {
-                stopMovement(actor);
-            }
-        }
-
-        actor->SetGraphVariableBool("bHumanoidFootIKDisable", true);
-    }
-
-    void unlockActor(RE::Actor* actor) {
-        if (actor == RE::PlayerCharacter::GetSingleton()) {
-            RE::PlayerCharacter::GetSingleton()->SetAIDriven(false);
-            RE::PlayerControls::GetSingleton()->activateHandler->disabled = false;
-        } else {
-            bool stop = false;
-            stop |= setRestrained(actor, false);
-            stop |= setDontMove(actor, false);
-            if (stop) {
-                stopMovement(actor);
-            }
-        }
-
-        ObjectRefUtil::stopTranslation(actor);
-        
-        SKSE::GetTaskInterface()->AddTask([actor](){
-            actor->SetGraphVariableBool("bHumanoidFootIKDisable", false);
-            actor->NotifyAnimationGraph("IdleForceDefaultState");
+            return Compatibility::CompatibilityTable::hasSchlong(actorA) &&
+                   !Compatibility::CompatibilityTable::hasSchlong(actorB);
         });
-    }
 
-    void sheatheWeapon(RE::Actor* actor) {
-        const auto factory = RE::IFormFactory::GetConcreteFormFactoryByType<RE::Script>();
-        const auto script = factory ? factory->Create() : nullptr;
-        if (script) {
-            script->SetCommand("rae WeaponSheathe"sv);
-            script->CompileAndRun(actor);
-            delete script;
+        GameAPI::GameActor player = GameAPI::GameActor::getPlayer();
+        int currentPlayerIndex = VectorUtil::getIndex(actors, player);
+        if (currentPlayerIndex < 0) {
+            return;
         }
-    }
 
-    void setVehicle(RE::Actor* actor, RE::TESObjectREFR* vehicle) {
-        SetVehicle(nullptr, 0, actor, vehicle);
+        if (playerIndex >= 0 && playerIndex < actors.size()) {
+            if (currentPlayerIndex < playerIndex) {
+                while (currentPlayerIndex < playerIndex) {
+                    actors[currentPlayerIndex] = actors[currentPlayerIndex + 1];
+                    currentPlayerIndex++;
+                }
+                actors[playerIndex] = player;
+            } else if (currentPlayerIndex > playerIndex) {
+                while (currentPlayerIndex > playerIndex) {
+                    actors[currentPlayerIndex] = actors[currentPlayerIndex - 1];
+                    currentPlayerIndex--;
+                }
+                actors[playerIndex] = player;
+            }
+        } else {
+            if (actors.size() == 2) {
+                if (Compatibility::CompatibilityTable::hasSchlong(actors[0]) == Compatibility::CompatibilityTable::hasSchlong(actors[1])) {
+                    if (MCM::MCMTable::playerAlwaysDomGay()) {
+                        if (actors[1] == player) {
+                            actors[1] = actors[0];
+                            actors[0] = player;
+                        }
+                    } else if (MCM::MCMTable::playerAlwaysSubGay()) {
+                        if (actors[0] == player) {
+                            actors[0] = actors[1];
+                            actors[1] = player;
+                        }
+                    }
+                } else {
+                    if (MCM::MCMTable::playerAlwaysDomStraight()) {
+                        if (actors[1] == player) {
+                            actors[1] = actors[0];
+                            actors[0] = player;
+                        }
+                    } else if (MCM::MCMTable::playerAlwaysSubStraight()) {
+                        if (actors[0] == player) {
+                            actors[0] = actors[1];
+                            actors[1] = player;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     void equipItem(RE::Actor* actor, RE::TESForm* item, bool preventRemoval, bool silent) {
@@ -92,17 +107,6 @@ namespace ActorUtil {
 
     void equipItemEx(RE::Actor* actor, RE::TESForm* item) {
         equipItemEx(actor, item, 0, false, true);
-    }
-
-    void queueNiNodeUpdate(RE::Actor* actor) {
-        const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-        auto vm = skyrimVM ? skyrimVM->impl : nullptr;
-        if (vm) {
-            RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-            auto args = RE::MakeFunctionArguments();
-            auto handle = skyrimVM->handlePolicy.GetHandleForObject(static_cast<RE::VMTypeID>(actor->FORMTYPE), actor);
-            vm->DispatchMethodCall2(handle, "Actor", "QueueNiNodeUpdate", args, callback);
-        }
     }
 
     float getHeelOffset(RE::Actor* actor) {

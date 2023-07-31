@@ -41,13 +41,62 @@ Function SetExcitement(Actor Act, float Excitement) Global Native
 */;
 Function ModifyExcitement(Actor Act, float Excitement, bool RespectMultiplier = false) Global Native
 
+;/* GetExcitementMultiplier
+* * returns the excitement multiplier for the actor, by default this is the setting in the MCM
+* *
+* * @param: Act, the actor to get the multiplier for
+* *
+* * @return: the excitement multiplier
+*/;
+float Function GetExcitementMultiplier(Actor Act) Global Native
+
+;/* SetExcitementMultiplier
+* * sets the excitement multiplier for the actor
+* *
+* * @param: Act, the actor to set the multiplier for
+* * @param: Multiplier, the multiplier to set
+*/;
+Function SetExcitementMultiplier(Actor Act, float Multiplier) Global Native
+
+;  ██████╗██╗     ██╗███╗   ███╗ █████╗ ██╗  ██╗
+; ██╔════╝██║     ██║████╗ ████║██╔══██╗╚██╗██╔╝
+; ██║     ██║     ██║██╔████╔██║███████║ ╚███╔╝ 
+; ██║     ██║     ██║██║╚██╔╝██║██╔══██║ ██╔██╗ 
+; ╚██████╗███████╗██║██║ ╚═╝ ██║██║  ██║██╔╝ ██╗
+;  ╚═════╝╚══════╝╚═╝╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝
+
+;/* StallClimax
+* * prevents this actor from climaxing, including the prevention of auto climax animations
+* * does not prevent the climaxes of auto climax animations that already started
+* *
+* * @param: Act, the actor to stall the climax for
+*/;
+Function StallClimax(Actor Act) Global Native
+
+;/* PermitClimax
+* * permits this actor to climax again (as in it undoes StallClimax)
+* *
+* * @param: Act, the actor to permit the climax for
+*/;
+Function PermitClimax(Actor Act) Global Native
+
+;/* IsClimaxStalled
+* * checks if this actor is currently prevented from climaxing
+* *
+* * @param: Act, the actor to check for
+* * @param: CheckThread, if true will also check if the thread is preventing all actors from climaxing
+* *
+* * @return: true if the actor is currently prevented from climaxing
+*/;
+bool Function IsClimaxStalled(Actor Act, bool CheckThread = true) Global Native
+
 ;/* Climax
 * * causes the actor to have a climax
 * *
 * * @param: Act, the actor that should have the climax
-* * @param: ClimaxAnimation, if true the actor will play a climax animation if the animation they are in has one
+* * @param: IgnoreStall, if true the climax will happen even if climaxes are stalled
 */;
-Function Climax(Actor Act, bool ClimaxAnimation = true) Global Native
+Function Climax(Actor Act, bool IgnoreStall = false) Global Native
 
 ;/* GetTimesClimaxed
 * * returns the amount of climaxes the actor had in the current scene
@@ -240,6 +289,24 @@ bool Function SetObjectVariant(Actor Act, string Type, string Variant, float Dur
 Function UnsetObjectVariant(Actor Act, string Type) Global Native
 
 
+; ███╗   ██╗ █████╗ ██╗   ██╗██╗ ██████╗  █████╗ ████████╗██╗ ██████╗ ███╗   ██╗
+; ████╗  ██║██╔══██╗██║   ██║██║██╔════╝ ██╔══██╗╚══██╔══╝██║██╔═══██╗████╗  ██║
+; ██╔██╗ ██║███████║██║   ██║██║██║  ███╗███████║   ██║   ██║██║   ██║██╔██╗ ██║
+; ██║╚██╗██║██╔══██║╚██╗ ██╔╝██║██║   ██║██╔══██║   ██║   ██║██║   ██║██║╚██╗██║
+; ██║ ╚████║██║  ██║ ╚████╔╝ ██║╚██████╔╝██║  ██║   ██║   ██║╚██████╔╝██║ ╚████║
+; ╚═╝  ╚═══╝╚═╝  ╚═╝  ╚═══╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝
+
+;/* AutoTransition
+* * plays the auto transition for the actor
+* *
+* * @param: Act, the actor to play the transition for
+* * @param: Type, the type of auto transition
+* *
+* * @return: true if the transition exists and was successfully played, otherwise false
+*/;
+bool Function AutoTransition(Actor Act, string Type) Global Native
+
+
 ; ██╗   ██╗████████╗██╗██╗     ██╗████████╗██╗   ██╗
 ; ██║   ██║╚══██╔══╝██║██║     ██║╚══██╔══╝╚██╗ ██╔╝
 ; ██║   ██║   ██║   ██║██║     ██║   ██║    ╚████╔╝
@@ -256,20 +323,6 @@ Function UnsetObjectVariant(Actor Act, string Type) Global Native
 */;
 bool Function IsInOStim(Actor Act) Global Native
 
-;/* HasSchlong
-* * checks if the actor has a schlong
-* * if SoS full is not installed or use SoS gender was disabled in the MCM this will simply check for the actors sex
-* * if SoS full is installed this will check for the SOS_SchlongifiedFaction
-* * additionally it will check for SOS - No Futanari Schlong and SOS Female Pubic Hair
-* * (to not consider those schlongified even though they are in the faction)
-* *	this function even works on actors that are not in a scene
-* * 
-* * @param: Act, the actor to check
-* *
-* * @return: true if the actor has a schlong, otherwise false
-*/;
-bool Function HasSchlong(Actor Act) Global Native
-
 ;/* VerifyActors
 * * verifies if all of the given actors are eligible for OStim scenes
 * *
@@ -278,18 +331,6 @@ bool Function HasSchlong(Actor Act) Global Native
 * * @return: true if all actors are eligible, false if at least one isn't
 */;
 bool Function VerifyActors(Actor[] Actors) Global Native
-
-;/* SortActors
-* * sorts all actors with schlongs to the front of the array and all actors without schlongs to the end
-* * other than this the order is not altered (i.e. the sorting algorithm is stable)
-* * this function even works on actors that are not in a scene
-* *
-* * @param: Actors, the array of actors to sort
-* * @param: PlayerIndex, if given the player will be sorted to this index, independent of them having a schlong or not
-* *
-* * @return: the sorted array 
-*/;
-Actor[] Function SortActors(Actor[] Actors, int PlayerIndex = -1) Global Native
 
 
 ; ██████╗ ███████╗██████╗ ██████╗ ███████╗ ██████╗ █████╗ ████████╗███████╗██████╗ 
@@ -303,4 +344,12 @@ Actor[] Function SortActors(Actor[] Actors, int PlayerIndex = -1) Global Native
 
 Function UpdateExpression(Actor Act) Global
 	ClearExpression(Act)
+EndFunction
+
+bool Function HasSchlong(Actor Act) Global
+	Return OActorUtil.HasSchlong(Act)
+EndFunction
+
+Actor[] Function SortActors(Actor[] Actors, int PlayerIndex = -1) Global
+	Return OActorUtil.Sort(Actors, OActorUtil.EmptyArray(), PlayerIndex)
 EndFunction

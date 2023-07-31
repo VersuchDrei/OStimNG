@@ -1,0 +1,60 @@
+{
+	"name": "Lying MMMF",
+	"modpack": "OStim",
+	"length": 10.0,
+	"speeds":[
+		{
+			"animation": "OStim4PLyingMMMF"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStim4PStandingMMMF",
+			"description": "stand up",
+			"icon": "OStim/positional/standup_m"
+		}
+	],
+	"tags":[
+		"idle",
+		"intro"
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"tags": [
+				"lyingback"
+			],
+			"feetOnGround": false,
+			"sosBend": -10,
+			"lookUp": -80,
+			"lookLeft": 40
+		},
+		{
+			"intendedSex": "male",
+			"tags": [
+				"lyingback"
+			],
+			"feetOnGround": false,
+			"sosBend": -10,
+			"lookUp": -60,
+			"lookLeft": -10
+		},
+		{
+			"intendedSex": "male",
+			"tags": [
+				"sitting"
+			],
+			"feetOnGround": false,
+			"sosBend": -10
+		},
+		{
+			"intendedSex": "female",
+			"tags": [
+				"lyingback"
+			],
+			"feetOnGround": false,
+			"lookUp": -70,
+			"lookLeft": -30
+		}
+	]
+}

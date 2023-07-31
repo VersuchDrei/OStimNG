@@ -1,0 +1,45 @@
+{
+	"name": "Behind Straight",
+	"modpack": "OStim",
+	"length": 2.0,
+	"furniture": "table",
+	"speeds":[
+		{
+			"animation": "OStimTable2PBehindMF"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStimTable2PBehindFF",
+			"description": "go to lesbian idle",
+			"icon": "OStim/symbols/gender_ff"
+		},
+		{
+			"destination": "OStimTable2PStandingLeaningMF",
+			"description": "turn around",
+			"icon": "OStim/symbols/return"
+		}
+	],
+	"tags":[
+		"idle",
+		"intro"
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"scale": 1.03,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		},
+		{
+			"intendedSex": "female",
+			"tags": [
+				"facingaway",
+				"standing"
+			],
+			"feetOnGround": true
+		}
+	]
+}

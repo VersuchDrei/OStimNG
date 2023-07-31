@@ -1,0 +1,45 @@
+{
+	"name": "Behind Lesbian",
+	"modpack": "OStim",
+	"length": 2.0,
+	"furniture": "cookingpot",
+	"speeds":[
+		{
+			"animation": "OStimCookingPot2PBehindFF"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStimCookingPot2PBehindMF",
+			"description": "go to straight idle",
+			"icon": "OStim/symbols/gender_mf"
+		},
+		{
+			"destination": "OStimCookingPot2PBehindMM",
+			"description": "go to gay idle",
+			"icon": "OStim/symbols/gender_mm"
+		}
+	],
+	"tags":[
+		"idle",
+		"intro"
+	],
+	"actors":[
+		{
+			"intendedSex": "female",
+			"scale": 1.03,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		},
+		{
+			"intendedSex": "female",
+			"tags": [
+				"facingaway",
+				"standing"
+			],
+			"feetOnGround": true
+		}
+	]
+}

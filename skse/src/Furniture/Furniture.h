@@ -12,8 +12,17 @@ namespace Furniture {
         COOKING_POT = 7,
     };
 
+    class FurnitureTypeAPI {
+    public:
+        inline static std::string getDisplayName(FurnitureType type) { return names[type]; }
+
+    private:
+        inline static std::vector<std::string> names{"None", "Bed", "Bench", "Chair", "Table", "Shelf", "Wall", "Cooking Pot"};
+    };
+
     FurnitureType getFurnitureType(RE::TESObjectREFR* object, bool inUseCheck);
     std::vector<RE::TESObjectREFR*> findFurniture(int actorCount, RE::TESObjectREFR* centerRef, float radius, float sameFloor);
+    RE::TESObjectREFR* findBed(RE::TESObjectREFR* centerRef, float radius, float sameFloor);
     std::vector<float> getOffset(RE::TESObjectREFR* object);
     RE::BSTArray<RE::BSFurnitureMarker> getMarkers(RE::TESObjectREFR* object);
     bool isFurnitureInUse(RE::TESObjectREFR* object, bool ignoreReserved);

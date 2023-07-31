@@ -1,36 +1,8 @@
 #pragma once
 
+#include "GameAPI/GameActor.h"
+
 namespace ActorUtil {
-    inline bool setRestrained(RE::Actor* actor, bool restrained) {
-        using func_t = decltype(setRestrained);
-        REL::Relocation<func_t> func{RELOCATION_ID(36489, 37488)};
-        return func(actor, restrained);
-    }
-
-    inline bool setDontMove(RE::Actor* actor, bool dontMove) {
-        using func_t = decltype(setDontMove);
-        REL::Relocation<func_t> func{RELOCATION_ID(36490, 37489)};
-        return func(actor, dontMove);
-    }
-
-    inline void stopMovement(RE::Actor* actor) {
-        using func_t = decltype(stopMovement);
-        REL::Relocation<func_t> func{RELOCATION_ID(36802, 37818)};
-        func(actor);
-    }
-
-    inline void setScale(RE::Actor* actor, float scale) {
-        using func_t = decltype(setScale);
-        REL::Relocation<func_t> func{RELOCATION_ID(19239, 19665)};
-        func(actor, scale);
-    }
-
-    inline void SetVehicle(RE::BSScript::IVirtualMachine* vm, RE::VMStackID stackID, RE::Actor* actor, RE::TESObjectREFR* akVehicle) {
-        using func_t = decltype(SetVehicle);
-        REL::Relocation<func_t> func{RELOCATION_ID(53940, 54764)};
-        func(vm, stackID, actor, akVehicle);
-    }
-
     inline void EquipItem(RE::BSScript::IVirtualMachine* vm, RE::VMStackID stackID, RE::Actor* actor, RE::TESForm* akItem, bool abPreventRemoval, bool abSilent) {
         using func_t = decltype(EquipItem);
         REL::Relocation<func_t> func{RELOCATION_ID(53861, 54661)};
@@ -43,17 +15,13 @@ namespace ActorUtil {
         func(vm, stackID, actor, akItem, abPreventEquip, abSilent);
     }
 
-    inline void removeFromFaction(RE::Actor* actor, RE::TESFaction* faction) {
-        using func_t = decltype(removeFromFaction);
-        REL::Relocation<func_t> func{RELOCATION_ID(36680, 37688)};
-        func(actor, faction);
+    inline void SetAngle(RE::BSScript::IVirtualMachine* vm, RE::VMStackID stackID, RE::TESObjectREFR* object, float afAngleX, float afAngleY, float afAngleZ) {
+        using func_t = decltype(SetAngle);
+        REL::Relocation<func_t> func{RELOCATION_ID(55693, 56224)};
+        func(vm, stackID, object, afAngleX, afAngleY, afAngleZ);
     }
 
-    void lockActor(RE::Actor* actor);
-    void unlockActor(RE::Actor* actor);
-
-    void sheatheWeapon(RE::Actor* actor);
-    void setVehicle(RE::Actor* actor, RE::TESObjectREFR* vehicle);
+    void sort(std::vector<GameAPI::GameActor>& actors, std::vector<GameAPI::GameActor>& dominantActors, int playerIndex);
 
     void equipItem(RE::Actor* actor, RE::TESForm* item, bool preventRemoval, bool silent);
     void equipItem(RE::Actor* actor, RE::TESForm* item);
@@ -64,8 +32,6 @@ namespace ActorUtil {
     void equipItemEx(RE::Actor* actor, RE::TESForm* item, int slotId, bool preventUnequip, bool equipSound);
     void equipItemEx(RE::Actor* actor, RE::TESForm* item, int slotId);
     void equipItemEx(RE::Actor* actor, RE::TESForm* item);
-
-    void queueNiNodeUpdate(RE::Actor* actor);
 
     float getHeelOffset(RE::Actor* actor);
     float getHeelOffset(RE::NiAVObject* object);

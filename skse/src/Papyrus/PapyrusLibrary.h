@@ -10,7 +10,7 @@ namespace PapyrusLibrary {
     using VM = RE::BSScript::IVirtualMachine;
 
     std::string randomScene(std::vector<RE::Actor*> actors, std::string furnitureType, std::function<bool(Graph::Node*)> condition) {
-        if (Graph::Node* node = Graph::GraphTable::getRandomNode(Furniture::FurnitureTable::getFurnitureType(furnitureType), Trait::ActorConditions::create(actors), condition)) {
+        if (Graph::Node* node = Graph::GraphTable::getRandomNode(Furniture::FurnitureTable::getFurnitureType(furnitureType), Trait::ActorCondition::create(GameAPI::GameActor::convertVector(actors)), condition)) {
             return node->scene_id;
         }
         

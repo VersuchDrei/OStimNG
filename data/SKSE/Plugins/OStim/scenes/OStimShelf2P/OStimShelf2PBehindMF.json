@@ -1,0 +1,50 @@
+{
+	"name": "Behind Straight",
+	"modpack": "OStim",
+	"length": 2.0,
+	"furniture": "shelf",
+	"speeds":[
+		{
+			"animation": "OStimShelf2PBehindMF"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStimShelf2PBehindFF",
+			"description": "go to lesbian idle",
+			"icon": "OStim/symbols/gender_ff"
+		},
+		{
+			"destination": "OStimShelf2PBehindMM",
+			"description": "go to gay idle",
+			"icon": "OStim/symbols/gender_mm"
+		},
+		{
+			"destination": "OStimShelf2PBendOverMF",
+			"description": "bend over",
+			"icon": "OStim/positional/bendover_f"
+		}
+	],
+	"tags":[
+		"idle",
+		"intro"
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"scale": 1.03,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		},
+		{
+			"intendedSex": "female",
+			"tags": [
+				"facingaway",
+				"standing"
+			],
+			"feetOnGround": true
+		}
+	]
+}

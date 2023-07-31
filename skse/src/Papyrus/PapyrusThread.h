@@ -1,10 +1,21 @@
 #pragma once
 
+#include "Core/ThreadStarter/ThreadStarter.h"
 #include "Core/ThreadManager.h"
 #include "Graph/GraphTable.h"
+#include "Util/StringUtil.h"
 
 namespace PapyrusThread {
     using VM = RE::BSScript::IVirtualMachine;
+
+    int QuickStart(RE::StaticFunctionTag*, std::vector<RE::Actor*> actors, std::string startingAnimation, RE::TESObjectREFR* furniture) {
+        OStim::ThreadStartParams params;
+        params.actors = GameAPI::GameActor::convertVector(actors);
+        params.startingNode = Graph::GraphTable::getNodeById(startingAnimation);
+        params.furniture = furniture;
+
+        return OStim::startThread(params);
+    }
 
     bool IsRunning(RE::StaticFunctionTag*, int threadID) {
         return OStim::ThreadManager::GetSingleton()->GetThread(threadID);
@@ -13,7 +24,7 @@ namespace PapyrusThread {
     void Stop(RE::StaticFunctionTag*, int threadID) {
         OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
         if (thread) {
-            thread->stop();
+            thread->stopFaded();
         }
     }
 
@@ -42,6 +53,22 @@ namespace PapyrusThread {
         if (thread && node) {
             thread->warpTo(node, useFades);
         }
+    }
+
+    bool AutoTransition(RE::StaticFunctionTag*, int threadID, std::string type) {
+        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        if (thread) {
+            return thread->autoTransition(type);
+        }
+        return false;
+    }
+
+    bool AutoTransitionForActor(RE::StaticFunctionTag*, int threadID, int index, std::string type) {
+        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        if (thread) {
+            return thread->autoTransition(index, type);
+        }
+        return false;
     }
 
     int GetSpeed(RE::StaticFunctionTag*, int threadID) {
@@ -75,15 +102,63 @@ namespace PapyrusThread {
     RE::Actor* GetActor(RE::StaticFunctionTag*, int threadID, int index) {
         OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
         if (thread) {
-            return thread->GetActor(index)->getActor().form;
+            OStim::ThreadActor* actor = thread->GetActor(index);
+            if (actor) {
+                return actor->getActor().form;
+            }
         }
-        return {};
+        return nullptr;
     }
 
     int GetActorPosition(RE::StaticFunctionTag*, int threadID, RE::Actor* actor) {
         OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
         if (thread) {
             return thread->getActorPosition(actor);
+        }
+        return -1;
+    }
+
+
+    void StallClimax(RE::StaticFunctionTag*, int threadID) {
+        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        if (thread) {
+            thread->setStallClimax(true);
+        }
+    }
+
+    void PermitClimax(RE::StaticFunctionTag*, int threadID, bool permitActors) {
+        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        if (thread) {
+            thread->setStallClimax(false);
+            if (permitActors) {
+                for (auto& [index, actor] : thread->getActors()) {
+                    actor.setStallClimax(false);
+                }
+            }
+        }
+    }
+
+    bool IsClimaxStalled(RE::StaticFunctionTag*, int threadID) {
+        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        if (thread) {
+            return thread->getStallClimax();
+        }
+        return false;
+    }
+
+
+    RE::TESObjectREFR* GetFurniture(RE::StaticFunctionTag*, int threadID) {
+        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        if (thread) {
+            return thread->getFurniture();
+        }
+        return nullptr;
+    }
+
+    int GetFurnitureType(RE::StaticFunctionTag*, int threadID) {
+        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        if (thread) {
+            return thread->getFurnitureType();
         }
         return -1;
     }
@@ -112,6 +187,30 @@ namespace PapyrusThread {
     }
 
 
+    void AddMetadata(RE::StaticFunctionTag*, int threadID, std::string metadata) {
+        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        if (thread) {
+            thread->addMetadata(metadata);
+        }
+    }
+
+    bool HasMetadata(RE::StaticFunctionTag*, int threadID, std::string metadata) {
+        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        if (thread) {
+            return thread->hasMetadata(metadata);
+        }
+        return false;
+    }
+
+    std::vector<std::string> GetMetadata(RE::StaticFunctionTag*, int threadID) {
+        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        if (thread) {
+            return thread->getMetadata();
+        }
+        return {};
+    }
+
+
     void CallEvent(RE::StaticFunctionTag*, int threadID, std::string eventName, int actor, int target, int performer) {
         OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
         if (thread) {
@@ -130,8 +229,11 @@ namespace PapyrusThread {
         }
     }
 
+
     bool Bind(VM* a_vm) {
         const auto obj = "OThread"sv;
+
+        BIND(QuickStart);
 
         BIND(IsRunning);
         BIND(Stop);
@@ -139,6 +241,8 @@ namespace PapyrusThread {
         BIND(GetScene);
         BIND(NavigateTo);
         BIND(WarpTo);
+        BIND(AutoTransition);
+        BIND(AutoTransitionForActor);
         BIND(GetSpeed);
         BIND(SetSpeed);
 
@@ -146,9 +250,20 @@ namespace PapyrusThread {
         BIND(GetActor);
         BIND(GetActorPosition);
 
+        BIND(StallClimax);
+        BIND(PermitClimax);
+        BIND(IsClimaxStalled);
+
+        BIND(GetFurniture);
+        BIND(GetFurnitureType);
+
         BIND(IsInAutoMode);
         BIND(StartAutoMode);
         BIND(StopAutoMode);
+
+        BIND(AddMetadata);
+        BIND(HasMetadata);
+        BIND(GetMetadata);
 
         BIND(CallEvent);
 

@@ -1,0 +1,43 @@
+{
+	"name": "Sitting Kneeling Straight",
+	"modpack": "OStim",
+	"length": 2.0,
+	"furniture": "chair",
+	"speeds":[
+		{
+			"animation": "OStimBench2PSittingKneelingMF"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStimChair2PSittingKneelingFF",
+			"description": "go to lesbian idle",
+			"icon": "OStim/symbols/gender_ff"
+		},
+		{
+			"destination": "OStimChair2PSittingStandingMF",
+			"description": "stand up",
+			"icon": "OStim/positional/standup_f"
+		}
+	],
+	"tags":[
+		"idle"
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"scale": 1.03,
+			"feetOnGround": false,
+			"tags": [
+				"sitting"
+			]
+		},
+		{
+			"intendedSex": "female",
+			"feetOnGround": false,
+			"tags": [
+				"kneeling"
+			]
+		}
+	]
+}

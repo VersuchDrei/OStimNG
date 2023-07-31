@@ -1,0 +1,36 @@
+{
+	"name": "Standing Male",
+	"modpack": "OStim",
+	"length": 2.0,
+	"speeds":[
+		{
+			"animation": "OStim1PStandingM"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStim1PStandingF",
+			"description": "go to female idle",
+			"icon": "OStim/symbols/gender_f"
+		},
+		{
+			"destination": "OStim1PSittingM",
+			"description": "sit down",
+			"icon": "OStim/positional/squatting_f"
+		}
+	],
+	"tags":[
+		"idle",
+		"intro"
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"scale": 1.03,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		}
+	]
+}

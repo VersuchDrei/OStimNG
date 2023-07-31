@@ -1,0 +1,31 @@
+{
+	"name": "Bend Over Female",
+	"modpack": "OStim",
+	"length": 2.0,
+	"furniture": "shelf",
+	"speeds":[
+		{
+			"animation": "OStim1PBendOverF"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStimShelf1PStandingF",
+			"description": "stand up",
+			"icon": "OStim/positional/standup_f"
+		}
+	],
+	"tags":[
+		"idle"
+	],
+	"actors":[
+		{
+			"intendedSex": "female",
+			"tags": [
+				"bendover",
+				"standing"
+			],
+			"feetOnGround": true
+		}
+	]
+}

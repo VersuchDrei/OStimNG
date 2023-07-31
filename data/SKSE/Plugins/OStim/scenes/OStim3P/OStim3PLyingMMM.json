@@ -1,0 +1,59 @@
+{
+	"name": "Lying MMM",
+	"modpack": "OStim",
+	"length": 2.0,
+	"speeds":[
+		{
+			"animation": "OStim3PLyingMMM"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStim3PLyingMMF",
+			"description": "go to MMF idle",
+			"icon": "OStim/symbols/gender_mmf"
+		},
+		{
+			"destination": "OStim3PLyingMFF",
+			"description": "go to MFF idle",
+			"icon": "OStim/symbols/gender_mff"
+		},
+		{
+			"destination": "OStim3PLyingFFF",
+			"description": "go to FFF idle",
+			"icon": "OStim/symbols/gender_fff"
+		},
+		{
+			"destination": "OStim3PStandingMMM",
+			"description": "stand up",
+			"icon": "OStim/positional/standup_m"
+		}
+	],
+	"tags":[
+		"idle",
+		"intro"
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"tags": [
+				"lyingback"
+			],
+			"feetOnGround": false
+		},
+		{
+			"intendedSex": "male",
+			"tags": [
+				"kneeling"
+			],
+			"feetOnGround": false
+		},
+		{
+			"intendedSex": "male",
+			"tags": [
+				"kneeling"
+			],
+			"feetOnGround": false
+		}
+	]
+}

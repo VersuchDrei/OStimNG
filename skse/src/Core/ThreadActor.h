@@ -22,21 +22,9 @@ namespace OStim {
 
 		inline GameAPI::GameActor getActor() { return actor; }
 
+        inline Thread* getThread() { return thread; }
+
         Alignment::ActorKey getAlignmentKey();
-
-        inline float getExcitement() { return excitement; }
-        void setExcitement(float value);
-        void addExcitement(float value, bool respectMultiplier);
-        inline float getMaxExcitement() { return maxExcitement; }
-        inline void setMaxExcitement(float max) { maxExcitement = max; }
-        inline float getBaseExcitementInc() { return baseExcitementInc; }
-        inline void setBaseExcitementInc(float inc) { baseExcitementInc = inc; }
-        inline float getBaseExcitementMultiplier() { return baseExcitementMultiplier; }
-        inline void setLoopExcitementInc(float inc) { loopExcitementInc = inc; }
-
-        void orgasm();
-        void climax();
-        inline int getTimexClimaxed() { return timesClimaxed; }
 
         void undress();
         void undressPartial(uint32_t mask);
@@ -142,15 +130,6 @@ namespace OStim {
             bool isRedress;
         };
 
-        float excitement = 0;                  // current excitement
-        float baseExcitementInc = 0;           // base excitement per second without speed or MCM modifier
-        float baseExcitementMultiplier = 1.0;  // multiplier from MCM
-        float loopExcitementInc = 0;           // final excitement inc per loop
-        float maxExcitement = 0;
-        float loopExcitementDecay = 0;  // excitement decay per loop
-        int excitementDecayCooldown = 0;
-
-        bool awaitingClimax = false;
 
         Thread* thread;
 		GameAPI::GameActor actor;
@@ -162,8 +141,6 @@ namespace OStim {
         bool isPlayer;
         bool female;
         bool schlong;
-
-        int timesClimaxed = 0;
 
         Graph::GraphActor* graphActor = nullptr;
         int speed = 0;
@@ -221,5 +198,48 @@ namespace OStim {
 
         void papyrusUndressCallback(std::vector<RE::TESObjectARMO*> items);
         void papyrusRedressCallback(std::vector<RE::TESObjectARMO*> items);
+
+#pragma region climax
+    public:
+        inline bool getAwaitingClimax() { return awaitingClimax; }
+        inline bool getStallClimax() { return stallClimax; }
+        inline void setStallClimax(bool stallClimax) { this->stallClimax = stallClimax; }
+        void orgasm(bool ignoreStall);
+        void climax();
+        inline int getTimexClimaxed() { return timesClimaxed; }
+
+    private:
+        bool awaitingClimax = false;
+        bool stallClimax = false;
+        int timesClimaxed = 0;
+
+#pragma endregion
+
+#pragma region excitement
+    public:
+        inline float getExcitement() { return excitement; }
+        void setExcitement(float value);
+        void addExcitement(float value, bool respectMultiplier);
+        inline float getMaxExcitement() { return maxExcitement; }
+        inline void setMaxExcitement(float max) { maxExcitement = max; }
+        inline float getBaseExcitementInc() { return baseExcitementInc; }
+        inline void setBaseExcitementInc(float inc) { baseExcitementInc = inc; }
+        inline float getExcitementMultiplier() { return excitementMultiplier; }
+        void setExcitementMultiplier(float multiplier);
+        inline void setLoopExcitementInc(float inc) { loopExcitementInc = inc; }
+
+    private:
+        float excitement = 0;                  // current excitement
+        float baseExcitementInc = 0;           // base excitement per second without speed or MCM modifier
+        float excitementMultiplier = 1.0;  // multiplier from MCM
+        float loopExcitementInc = 0;           // final excitement inc per loop
+        float maxExcitement = 0;
+        float loopExcitementDecay = 0;  // excitement decay per loop
+        int excitementDecayCooldown = 0;
+
+        void loopExcitement();
+        void changeSpeedExcitement();
+        void recalculateLoopExcitement();
+#pragma endregion
 	};	
 }

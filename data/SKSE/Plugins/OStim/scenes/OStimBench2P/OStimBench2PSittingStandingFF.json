@@ -1,0 +1,57 @@
+{
+	"name": "Sitting Standing Lesbian",
+	"modpack": "OStim",
+	"length": 2.0,
+	"furniture": "bench",
+	"speeds":[
+		{
+			"animation": "OStimBench2PSittingStandingFF"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStimBench2PSittingStandingMF",
+			"description": "go to straight idle",
+			"icon": "OStim/symbols/gender_mf"
+		},
+		{
+			"destination": "OStimBench2PSittingStandingMM",
+			"description": "go to gay idle",
+			"icon": "OStim/symbols/gender_mm"
+		},
+		{
+			"destination": "OStimBench2PBothSittingFF",
+			"description": "sit down",
+			"icon": "OStim/positional/chair/sitting_f"
+		},
+		{
+			"destination": "OStimBench2PSittingKneelingFF",
+			"description": "kneel down",
+			"icon": "OStim/positional/kneeling_f"
+		},
+		{
+			"destination": "OStimBench2PStandingSittingFF",
+			"description": "switch positions",
+			"icon": "OStim/symbols/switch"
+		}
+	],
+	"tags":[
+		"idle"
+	],
+	"actors":[
+		{
+			"intendedSex": "female",
+			"tags": [
+				"sitting"
+			],
+			"feetOnGround": false
+		},
+		{
+			"intendedSex": "female",
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		}
+	]
+}

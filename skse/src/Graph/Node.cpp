@@ -11,22 +11,31 @@
 #include "Util/VectorUtil.h"
 
 namespace Graph {
+    bool Navigation::fulfilledBy(std::vector<Trait::ActorCondition> conditions) {
+        for (Node* node : nodes) {
+            if (!node->fulfilledBy(conditions)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
     void Node::mergeActionsIntoActors() {
         for (Action action : actions) {
             if (action.actor < actors.size()) {
-                actors[action.actor].requirements |= action.attributes->actor.requirements;
+                actors[action.actor].condition.requirements |= action.attributes->actor.requirements;
                 actors[action.actor].moan |= action.attributes->actor.moan;
                 actors[action.actor].talk |= action.attributes->actor.talk;
                 actors[action.actor].muffled |= action.attributes->actor.muffled;
             }
             if (action.target < actors.size()) {
-                actors[action.target].requirements |= action.attributes->target.requirements;
+                actors[action.target].condition.requirements |= action.attributes->target.requirements;
                 actors[action.target].moan |= action.attributes->target.moan;
                 actors[action.target].talk |= action.attributes->target.talk;
                 actors[action.target].muffled |= action.attributes->target.muffled;
             }
             if (action.performer < actors.size()) {
-                actors[action.performer].requirements |= action.attributes->performer.requirements;
+                actors[action.performer].condition.requirements |= action.attributes->performer.requirements;
                 actors[action.performer].moan |= action.attributes->performer.moan;
                 actors[action.performer].talk |= action.attributes->performer.talk;
                 actors[action.performer].muffled |= action.attributes->performer.muffled;
@@ -34,82 +43,14 @@ namespace Graph {
         }
     }
 
-    void Node::tryAddNavigation(RawNavigation rawNav, std::unordered_map<Graph::Node*, std::vector<RawNavigation>>& navigationMap) {
-        Node* navigationDestination = GraphTable::getNodeById(rawNav.destination);
-        if (!navigationDestination) {
-            logger::warn("Couldn't add navigation from {} to {} because {} doesn't exist.", scene_id, rawNav.destination, rawNav.destination);
-            return;
-        }
-
-        if (furnitureType != navigationDestination->furnitureType) {
-            logger::warn("Couldn't add navigation from {} to {} because their furniture types don't match.", scene_id, rawNav.destination);
-            return;
-        }
-
-        if (actors.size() != navigationDestination->actors.size()) {
-            logger::warn("Couldn't add navigation from {} to {} because their actor counts don't match.", scene_id, rawNav.destination);
-            return;
-        }
-
-        for (auto& existingNavigation : navigations) {
-            if (existingNavigation.destination == navigationDestination || existingNavigation.transitionNode == navigationDestination) {
-                return;
-            }
-        }
-
-        Navigation navigation;
-
-        if (navigationDestination->isTransition) {
-            for (auto nav : navigationMap) {
-                if (nav.first->scene_id == navigationDestination->scene_id) {
-                    if (nav.second.size() != 1) {
-                        logger::warn("Couldn't add transition from {} to destination because the navigations on {} were invalid", scene_id, rawNav.destination);
-                        return;
-                    }
-
-                    navigation.destination = GraphTable::getNodeById(nav.second[0].destination);
-
-                    if (!navigation.destination) {
-                        logger::warn("Couldn't add navigation from {} to {} because {} transition destination doesn't exist.", scene_id, rawNav.destination, rawNav.destination);
-                        return;
-                    }
-
-                    // TODO: what do when people chain transitions?
-                    if (navigation.destination->isTransition) {
-                        logger::warn("Couldn't add navigation from {} to {} because {} transition destination is another transition.", scene_id, rawNav.destination, rawNav.destination);
-                        return;
-                    }
-                    break;
-                }
-            }
-
-            navigation.isTransition = true;
-            navigation.transitionNode = navigationDestination;
-        } else {
-            navigation.destination = navigationDestination;
-        }
-
-
-        if (std::regex_search(rawNav.border, Constants::hexColor)) {
-            navigation.border = rawNav.border;
-        }
-        if (rawNav.icon == "") {
-            navigation.icon = "OStim/icons/" + LegacyUtil::getIcon(navigation.destination == this ? navigation.transitionNode : navigation.destination) + ".dds";
-        } else {
-            navigation.icon = "OStim/icons/" + rawNav.icon + ".dds";
-        }
-
-        navigations.push_back(navigation);
-    }
-
-    bool Node::fulfilledBy(std::vector<Trait::ActorConditions> conditions) {
+    bool Node::fulfilledBy(std::vector<Trait::ActorCondition> conditions) {
         int size = actors.size();
-        if (size < conditions.size()) {
+        if (size != conditions.size()) {
             return false;
         }
 
         for (int i = 0; i < size; i++) {
-            if (!conditions[i].fulfills(actors[i].conditions)) {
+            if (!conditions[i].fulfills(actors[i].condition)) {
                 return false;
             }
         }
@@ -117,45 +58,18 @@ namespace Graph {
         return true;
     }
 
-    Node* Node::getRandomNodeInRange(int distance, std::vector<Trait::ActorConditions> actorConditions, std::function<bool(Node*)> nodeCondition) {
-        std::vector<Node*> nodes;
-        std::vector<Node*> lastLevel = { this };
-        std::vector<Node*> nextLevel;
-
-        for (int i = 0; i < distance; i++) {
-            for (Node* node : lastLevel) {
-                for (Navigation nav : node->navigations) {
-                    Node* dest = nav.destination;
-                    if (dest->isTransition) {
-                        if (dest->navigations.empty()) {
-                            continue;
-                        }
-                        else {
-                            dest = dest->navigations[0].destination;
-                        }
-                    }
-                    if (!VectorUtil::contains(nodes, dest) && dest->fulfilledBy(actorConditions)) {
-                        nodes.push_back(dest);
-                        nextLevel.push_back(dest);
-                    }
-                }
-            }
-
-            if (nextLevel.empty()) {
-                break;
-            }
-
-            lastLevel = nextLevel;
-            nextLevel.clear();
+    bool Node::hasSameActorTpyes(Node* other) {
+        if (actors.size() != other->actors.size()) {
+            return false;
         }
 
-        for (auto& node : nodes) {
-            if (!node->noRandomSelection && nodeCondition(node)) {
-                return node;
+        for (int i = 0; i < actors.size(); i++) {
+            if (actors[i].condition.type != other->actors[i].condition.type) {
+                return false;
             }
         }
 
-        return nullptr;
+        return true;
     }
 
     uint32_t Node::getStrippingMask(int position) {
@@ -175,14 +89,23 @@ namespace Graph {
         return false;
     }
 
+    std::string Node::getAutoTransitionForNode(std::string type) {
+        StringUtil::toLower(&type);
+        auto iter = autoTransitions.find(type);
+        if (iter != autoTransitions.end()) {
+            return iter->second;
+        }
+        return "";
+    }
+
     std::string Node::getAutoTransitionForActor(int position, std::string type) {
         if (position < 0 || position >= actors.size()) {
             return "";
         }
 
         StringUtil::toLower(&type);
-        auto iter = actors[position].autotransitions.find(type);
-        if (iter != actors[position].autotransitions.end()) {
+        auto iter = actors[position].autoTransitions.find(type);
+        if (iter != actors[position].autoTransitions.end()) {
             return iter->second;
         }
         return "";
@@ -219,6 +142,15 @@ namespace Graph {
             return true;
         }
         return VectorUtil::containsAll(tags, actors[position].tags);
+    }
+
+    bool Node::hasActorTagOnAny(std::string tag) {
+        for (GraphActor& actor : actors) {
+            if (VectorUtil::contains(actor.tags, tag)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     int Node::findAction(std::function<bool(Action)> condition) {

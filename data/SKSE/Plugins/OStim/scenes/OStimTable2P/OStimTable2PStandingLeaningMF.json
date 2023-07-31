@@ -1,0 +1,54 @@
+{
+	"name": "Standing Leaning Straight",
+	"modpack": "OStim",
+	"length": 2.0,
+	"furniture": "table",
+	"speeds":[
+		{
+			"animation": "OStimTable2PStandingLeaningMF"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStimTable2PStandingLeaningMM",
+			"description": "go to gay idle",
+			"icon": "OStim/symbols/gender_mm"
+		},
+		{
+			"destination": "OStimTable2PStandingLeaningFF",
+			"description": "go to lesbian idle",
+			"icon": "OStim/symbols/gender_ff"
+		},
+		{
+			"destination": "OStimTable2PBehindMF",
+			"description": "turn around",
+			"icon": "OStim/symbols/return"
+		},
+		{
+			"destination": "OStimTable2PStandingSittingMF",
+			"description": "sit on the table",
+			"icon": "OStim/positional/table/sitting_f"
+		}
+	],
+	"tags":[
+		"idle",
+		"intro"
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"scale": 1.03,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		},
+		{
+			"intendedSex": "female",
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		}
+	]
+}

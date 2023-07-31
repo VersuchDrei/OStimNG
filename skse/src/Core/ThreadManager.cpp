@@ -28,15 +28,33 @@ namespace OStim {
         m_excitementThread.detach();
     }
 
-    void ThreadManager::TrackThread(ThreadId id, RE::TESObjectREFR* furniture, std::vector<RE::Actor*> actors) {
-        Thread* t = new Thread(id, furniture, actors);
+
+    int ThreadManager::startThread(ThreadStartParams params) {
         std::unique_lock<std::shared_mutex> lock(m_threadMapMtx);
-        m_threadMap.insert(std::make_pair(id, t));
-        m_threadMap[id]->initContinue();
-        auto log = RE::ConsoleLog::GetSingleton();
-        if (log) {
-            log->Print(("Tracking " + std::to_string(id)).c_str());
+        int threadID = -1;
+        for (GameAPI::GameActor actor : params.actors) {
+            if (actor.isPlayer()) {
+                threadID = 0;
+                break;
+            }
         }
+        if (threadID == 0) {
+            if (m_threadMap.contains(0)) {
+                return -1;
+            }
+        } else {
+            threadID = idGenerator.get();
+        }
+
+        Thread* thread = new Thread(threadID, params);
+        m_threadMap.insert(std::make_pair(threadID, thread));
+        thread->initContinue();
+        if (params.startingSequence) {
+            thread->playSequence(params.startingSequence, false, false);
+        } else {
+            thread->ChangeNode(params.startingNode);
+        }
+        return threadID;
     }
 
     Thread* ThreadManager::GetThread(ThreadId a_id) {
@@ -58,11 +76,6 @@ namespace OStim {
         return nullptr;
     }
 
-    void ThreadManager::UnTrackThread(ThreadId a_id) {
-        std::unique_lock<std::shared_mutex> lock(m_threadMapMtx);
-        stopThreadNoLock(a_id);
-    }
-
     void ThreadManager::queueThreadStop(ThreadId threadID) {
         if (!VectorUtil::contains(threadStopQueue, threadID)) {
             threadStopQueue.push_back(threadID);
@@ -77,6 +90,7 @@ namespace OStim {
             delete entry.second;
         }
         m_threadMap.clear();
+        idGenerator.reset();
     }
 
     bool ThreadManager::AnySceneRunning() {
@@ -137,6 +151,7 @@ namespace OStim {
             m_threadMap.erase(threadID);
             thread->close();
             delete thread;
+            idGenerator.free(threadID);
             auto log = RE::ConsoleLog::GetSingleton();
             if (log) {
                 log->Print(("Found scene: erasing " + std::to_string(threadID)).c_str());

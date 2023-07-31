@@ -30,7 +30,7 @@ namespace OStim {
         actor.addToFaction(Trait::TraitTable::getExcitementFaction());
         heelOffset = ActorUtil::getHeelOffset(actor.form);
 
-        baseExcitementMultiplier = female && (!schlong || !MCM::MCMTable::futaUseMaleExcitement()) ? MCM::MCMTable::getFemaleSexExcitementMult() : MCM::MCMTable::getMaleSexExcitementMult();
+        excitementMultiplier = female && (!schlong || !MCM::MCMTable::futaUseMaleExcitement()) ? MCM::MCMTable::getFemaleSexExcitementMult() : MCM::MCMTable::getMaleSexExcitementMult();
         loopExcitementDecay = MCM::MCMTable::getExcitementDecayRate() * Constants::LOOP_TIME_SECONDS;
 
         voiceSet = Sound::SoundTable::getVoiceSet(actor);
@@ -53,114 +53,6 @@ namespace OStim {
 
     Alignment::ActorKey ThreadActor::getAlignmentKey() {
         return Alignment::ActorKey(female, actor.getHeight() * rmHeight, heelOffsetRemoved ? 0 : heelOffset);
-    }
-
-
-    void ThreadActor::setExcitement(float value) {
-        excitement = value;
-        actor.setFactionRank(Trait::TraitTable::getExcitementFaction(), (int)excitement);
-    }
-
-    void ThreadActor::addExcitement(float value, bool respectMultiplier) {
-        if (respectMultiplier) {
-            excitement += value * baseExcitementMultiplier;
-        } else {
-            excitement += value;
-        }
-
-        if (excitement < 0) {
-            excitement = 0;
-        } else if (excitement > 100) {
-            excitement = 100;
-        }
-
-        actor.setFactionRank(Trait::TraitTable::getExcitementFaction(), (int)excitement);
-    }
-
-    void ThreadActor::orgasm() {
-        excitement = 100;
-        if (thread->autoTransition(index, "climax")) {
-            awaitingClimax = true;
-        } else {
-            climax();
-        }
-    }
-
-    void ThreadActor::climax() {
-        excitement = -3;
-
-        awaitingClimax = false;
-        timesClimaxed++;
-
-        if (!muted && voiceSet && voiceSet->climax) {
-            playEventExpression(voiceSet->climaxExpression);
-            voiceSet->climax.play(actor, MCM::MCMTable::getMoanVolume());
-        }
-
-        if (thread->isPlayerThread()) {
-            // TODO properly use GameActor here
-            FormUtil::sendModEvent(actor.form, "ostim_orgasm", thread->getCurrentNode()->scene_id, index);
-
-            if (isPlayer) {
-                if (MCM::MCMTable::getBlurOnOrgasm()) {
-                    FormUtil::apply(Util::LookupTable::OStimNutEffect, 1.0);
-                }
-            }
-
-            if (MCM::MCMTable::getSlowMotionOnOrgasm()) {
-                std::thread slowMoThread = std::thread([&]() {
-                    GameAPI::Game::setGameSpeed(0.3);
-                    std::this_thread::sleep_for(std::chrono::milliseconds(2500));
-                    GameAPI::Game::setGameSpeed(1);
-                    });
-                slowMoThread.detach();
-            }
-
-            CameraUtil::shakeCamera(1.0, 2.0, true);
-
-            if (MCM::MCMTable::useRumble()) {
-                GameAPI::Game::shakeController(0.5, 0.5, 0.7);
-            }
-        } else {
-            // TODO properly use GameActor here
-            FormUtil::sendModEvent(actor.form, "ostim_subthread_orgasm", thread->getCurrentNode()->scene_id, thread->m_threadId);
-        }
-
-        actor.damageActorValue(GameAPI::GameActorValues::STAMINA, 250);
-
-        // todo give other actor excitement when in vaginalsex
-
-        if (schlong) {
-            // TODO enable for player when we have our own UI
-            if (!thread->isPlayerThread()) {
-                thread->SetSpeed(0);
-            }
-        }
-
-        if (MCM::MCMTable::endOnAllOrgasm()) {
-            bool end = true;
-            for (auto& [index, threadActor] : thread->getActors()) {
-                if (threadActor.timesClimaxed == 0) {
-                    end = false;
-                    break;
-                }
-            }
-            if (end) {
-                thread->setStopTimer(4000);
-            }
-        } else {
-            if (isPlayer && MCM::MCMTable::endOnPlayerOrgasm()) {
-                thread->setStopTimer(4000);
-            }
-            if ((!female || schlong && MCM::MCMTable::futaUseMaleClimax()) ? MCM::MCMTable::endOnMaleOrgasm() : MCM::MCMTable::endOnFemaleOrgasm()){
-                thread->setStopTimer(4000);
-            }
-        }
-        if (!thread->isPlayerThread() && MCM::MCMTable::endNPCSceneOnOrgasm()) {
-            thread->setStopTimer(4000);
-        }
-
-        thread->setAutoModeToMainStage();
     }
 
 
@@ -384,14 +276,14 @@ namespace OStim {
 
         // strap-ons
         if (!schlong) {
-            if ((graphActor->requirements & Graph::Requirement::PENIS) == Graph::Requirement::PENIS) {
+            if ((graphActor->condition.requirements & Graph::Requirement::PENIS) == Graph::Requirement::PENIS) {
                 if (MCM::MCMTable::equipStrapOnIfNeeded()) {
                     equipObject("strapon");
                 }
             } else {
                 if (MCM::MCMTable::unequipStrapOnIfNotNeeded()) {
                     unequipObject("strapon");
-                } else if ((graphActor->requirements & Graph::Requirement::VAGINA) == Graph::Requirement::VAGINA && MCM::MCMTable::unequipStrapOnIfInWay()) {
+                } else if ((graphActor->condition.requirements & Graph::Requirement::VAGINA) == Graph::Requirement::VAGINA && MCM::MCMTable::unequipStrapOnIfInWay()) {
                     unequipObject("strapon");
                 }
             }
@@ -404,6 +296,7 @@ namespace OStim {
 
     void ThreadActor::changeSpeed(int speed) {
         this->speed = speed;
+        changeSpeedExcitement();
     }
 
     void ThreadActor::setScaleMult(float scaleMult) {
@@ -427,31 +320,7 @@ namespace OStim {
     }
 
     void ThreadActor::loop() {
-        // excitement
-        if (!awaitingClimax) {
-            if (excitement > maxExcitement) {
-                if (excitementDecayCooldown > 0) {
-                    excitementDecayCooldown -= Constants::LOOP_TIME_MILLISECONDS;
-                } else {
-                    excitement -= loopExcitementDecay;
-                    if (excitement < maxExcitement) {
-                        excitement = maxExcitement;
-                    }
-                    actor.setFactionRank(Trait::TraitTable::getExcitementFaction(), (int)excitement);
-                }
-            } else {  // increase excitement
-                excitement += loopExcitementInc;
-                if (excitement > maxExcitement) {
-                    excitement = maxExcitement;
-                }
-                actor.setFactionRank(Trait::TraitTable::getExcitementFaction(), (int)excitement);
-                excitementDecayCooldown = MCM::MCMTable::getExcitementDecayGracePeriod();
-            }
-
-            if (excitement >= 100) {
-                orgasm();
-            }
-        }
+        loopExcitement();
 
         // expressions
         if (overwriteExpressionCooldown > 0) {

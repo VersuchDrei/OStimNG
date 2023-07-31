@@ -8,12 +8,14 @@
 #include "GameRace.h"
 #include "GameRecord.h"
 #include "GameSex.h"
+#include "GameTable.h"
 #include "GameVoice.h"
 
 namespace GameAPI {
     struct GameActor : public GameRecord<RE::Actor> {
     public:
         inline static GameActor getPlayer() { return RE::PlayerCharacter::GetSingleton(); }
+        static std::vector<GameActor> convertVector(std::vector<RE::Actor*> actors);
 
         inline GameActor() {}
         inline GameActor(RE::Actor* actor) { form = actor; }
@@ -21,16 +23,23 @@ namespace GameAPI {
         inline uint32_t getBaseFormID() const { return form->GetActorBase()->formID; }
 
         void update3D() const;
+        bool isLoaded() const { return form->Is3DLoaded(); }
         inline void updateAI() const { form->EvaluatePackage(); }
+        void lock() const;
+        void unlock() const;
         void playAnimation(std::string animation) const;
+        void playAnimation(std::string animation, float playbackSpeed) const;
 
         bool isSex(GameSex sex) const;
+        inline GameSex getSex() const { return GameAPI::GameSexAPI::fromGame(form->GetActorBase()->GetSex()); }
         inline bool isPlayer() const { return form->IsPlayerRef(); }
         inline std::string getName() const { return form->GetDisplayFullName(); }
 
         inline GameAPI::GameRace getRace() const { return form->GetActorBase()->GetRace(); }
         inline bool isRace(GameRace race) const { return form->GetActorBase()->GetRace() == race.form; }
         bool isHuman() const;
+        inline bool isVampire() const { return form->HasKeyword(GameTable::getVampireKeyword()); }
+        inline bool isChild() const { return form->IsChild(); }
         inline GameAPI::GameVoice getVoice() const { return form->GetActorBase()->voiceType; }
         inline bool hasVoice(GameAPI::GameVoice voice) const { return form->GetActorBase()->voiceType == voice.form; }
 
@@ -40,7 +49,8 @@ namespace GameAPI {
         void setScale(float scale) const;
         inline float getHeight() const { return form->GetActorBase()->GetHeight(); }
         inline float getRotation() const { return form->data.angle.z; }
-        inline void setRotation(float rotation) const { form->SetRotationZ(rotation); }
+        void setRotation(float rotation) const;
+        void lockAtPosition(float x, float y, float z, float r) const;
         inline GamePosition getPosition() const { return form->GetPosition(); }
         inline void setPosition(GamePosition position) const { SetPosition(form, position.x, position.y, position.z); }
 
@@ -58,7 +68,9 @@ namespace GameAPI {
         int getFactionRank(GameFaction faction) const;
 
         int getRelationshipRank(GameActor other) const;
+        inline bool isInDialogue() const { return IsInDialogueWithPlayer(nullptr, 0, form); }
         inline bool isInCombat() const { return form->IsInCombat(); }
+        void sheatheWeapon() const;
         inline bool isDead() const { return form->IsDead(); }
         inline bool isInSameCell(GameActor other) const {return form->parentCell == other.form->parentCell;}
 
@@ -67,10 +79,10 @@ namespace GameAPI {
         std::vector<GameActor> getNearbyActors(float radius, std::function<bool(GameActor)> condition);
 
     private:
-        inline static void SetScale(RE::Actor* actor, float scale) {
-            using func_t = decltype(SetScale);
-            REL::Relocation<func_t> func{RELOCATION_ID(19239, 19665)};
-            func(actor, scale);
+        inline static bool IsInDialogueWithPlayer(RE::BSScript::IVirtualMachine* vm, RE::VMStackID stackID, RE::TESObjectREFR* object) {
+            using func_t = decltype(IsInDialogueWithPlayer);
+            REL::Relocation<func_t> func{RELOCATION_ID(55663, 56194)};
+            return func(vm, stackID, object);
         }
 
         inline static void RemoveFromFaction(RE::Actor* actor, RE::TESFaction* faction) {
@@ -78,6 +90,48 @@ namespace GameAPI {
             REL::Relocation<func_t> func{RELOCATION_ID(36680, 37688)};
             func(actor, faction);
         }
+
+        inline static void SetAngle(RE::BSScript::IVirtualMachine* vm, RE::VMStackID stackID, RE::TESObjectREFR* object, float afAngleX, float afAngleY, float afAngleZ) {
+            using func_t = decltype(SetAngle);
+            REL::Relocation<func_t> func{RELOCATION_ID(55693, 56224)};
+            func(vm, stackID, object, afAngleX, afAngleY, afAngleZ);
+        }
+
+        inline static bool setDontMove(RE::Actor* actor, bool dontMove) {
+            using func_t = decltype(setDontMove);
+            REL::Relocation<func_t> func{RELOCATION_ID(36490, 37489)};
+            return func(actor, dontMove);
+        }
+
+        inline static bool setRestrained(RE::Actor* actor, bool restrained) {
+            using func_t = decltype(setRestrained);
+            REL::Relocation<func_t> func{RELOCATION_ID(36489, 37488)};
+            return func(actor, restrained);
+        }
+
+        inline static void SetScale(RE::Actor* actor, float scale) {
+            using func_t = decltype(SetScale);
+            REL::Relocation<func_t> func{RELOCATION_ID(19239, 19665)};
+            func(actor, scale);
+        }
+
+        inline static void stopMovement(RE::Actor* actor) {
+            using func_t = decltype(stopMovement);
+            REL::Relocation<func_t> func{RELOCATION_ID(36802, 37818)};
+            func(actor);
+        }
+
+        inline static void StopTranslation(RE::BSScript::IVirtualMachine* vm, RE::VMStackID stackID, RE::TESObjectREFR* object) {
+            using func_t = decltype(StopTranslation);
+            REL::Relocation<func_t> func{RELOCATION_ID(55712, 56243)};
+            func(vm, stackID, object);
+        }
+
+        inline static void TranslateTo(RE::BSScript::IVirtualMachine* vm, RE::VMStackID stackID, RE::TESObjectREFR* object, float afX, float afY, float afZ, float afAngleX, float afAngleY, float afAngleZ, float afSpeed, float afMaxRotationSpeed) {
+        using func_t = decltype(TranslateTo);
+        REL::Relocation<func_t> func{RELOCATION_ID(55706, 56237)};
+        func(vm, stackID, object, afX, afY, afZ, afAngleX, afAngleY, afAngleZ, afSpeed, afMaxRotationSpeed);
+    }
 
         inline static void SetPosition(RE::TESObjectREFR* object, float x, float y, float z) { object->SetPosition(x, y, z); }
     };

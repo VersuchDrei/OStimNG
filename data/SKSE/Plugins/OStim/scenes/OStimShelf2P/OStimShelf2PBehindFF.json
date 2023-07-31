@@ -1,0 +1,50 @@
+{
+	"name": "Behind Lesbian",
+	"modpack": "OStim",
+	"length": 2.0,
+	"furniture": "shelf",
+	"speeds":[
+		{
+			"animation": "OStimShelf2PBehindFF"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStimShelf2PBehindMF",
+			"description": "go to straight idle",
+			"icon": "OStim/symbols/gender_mf"
+		},
+		{
+			"destination": "OStimShelf2PBehindMM",
+			"description": "go to gay idle",
+			"icon": "OStim/symbols/gender_mm"
+		},
+		{
+			"destination": "OStimShelf2PBendOverFF",
+			"description": "bend over",
+			"icon": "OStim/positional/bendover_f"
+		}
+	],
+	"tags":[
+		"idle",
+		"intro"
+	],
+	"actors":[
+		{
+			"intendedSex": "female",
+			"scale": 1.03,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		},
+		{
+			"intendedSex": "female",
+			"tags": [
+				"facingaway",
+				"standing"
+			],
+			"feetOnGround": true
+		}
+	]
+}

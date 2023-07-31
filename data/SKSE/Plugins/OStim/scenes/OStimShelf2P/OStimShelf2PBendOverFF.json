@@ -1,0 +1,46 @@
+{
+	"name": "Bend Over Lesbian",
+	"modpack": "OStim",
+	"length": 2.0,
+	"furniture": "shelf",
+	"speeds":[
+		{
+			"animation": "OStimShelf2PBendOverFF"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStimShelf2PBehindMF",
+			"description": "go to straight idle",
+			"icon": "OStim/symbols/gender_mf"
+		},
+		{
+			"destination": "OStimShelf2PBehindFF",
+			"description": "stand up",
+			"icon": "OStim/positional/standup_f"
+		}
+	],
+	"tags":[
+		"idle",
+		"intro"
+	],
+	"actors":[
+		{
+			"intendedSex": "female",
+			"scale": 1.03,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		},
+		{
+			"intendedSex": "female",
+			"tags": [
+				"bendover",
+				"facingaway",
+				"standing"
+			],
+			"feetOnGround": true
+		}
+	]
+}

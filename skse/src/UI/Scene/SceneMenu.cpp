@@ -53,7 +53,6 @@ namespace UI::Scene {
     }
 
     void SceneMenu::ApplyPositions() {
-
         QueueUITask([this]() {
             RE::GFxValue root;
             GetRoot(root);
@@ -61,8 +60,8 @@ namespace UI::Scene {
                 return;
 
             auto controlPositions = &UI::Settings::positionSettings.ScenePositions.ControlPosition;
-            const RE::GFxValue controlX = RE::GFxValue{ controlPositions->xPos };
-            const RE::GFxValue controlY = RE::GFxValue{ controlPositions->yPos };
+            const RE::GFxValue controlX = RE::GFxValue{ controlPositions->xPos - 25 };
+            const RE::GFxValue controlY = RE::GFxValue{ controlPositions->yPos - 50 };
             const RE::GFxValue controlXScale = RE::GFxValue{ controlPositions->xScale };
             const RE::GFxValue controlYScale = RE::GFxValue{ controlPositions->yScale };
             RE::GFxValue controlPosArray[4]{ controlX, controlY, controlXScale, controlYScale };
@@ -92,17 +91,21 @@ namespace UI::Scene {
         auto currentNode = state->currentNode;
         if (!state->currentNode)
             return;
-        if (currentNode->isTransition) {
+        if (currentNode->isTransition || state->currentThread->areNodesQueued()) {
             menuData.options.clear();
         } else {
+            logger::info("before building conditions");
+            std::vector<Trait::ActorCondition> conditions = state->currentThread->getActorConditions();
+            logger::info("after building conditions");
             for (auto& nav : currentNode->navigations) {
-                menuData.options.push_back({
-                    .nodeId = nav.isTransition? nav.transitionNode->scene_id: nav.destination->scene_id,
-                    .title = nav.destination->scene_name,
-                    .imagePath = nav.icon,
-                    .border = nav.border,
-                    .description = nav.destination->scene_name
-                    });
+                if (nav.fulfilledBy(conditions)) {
+                    menuData.options.push_back(
+                        {.nodeId = nav.nodes.front()->scene_id,
+                         .title = nav.nodes.back()->scene_name,
+                         .imagePath = nav.icon,
+                         .border = nav.border,
+                         .description = nav.description});
+                }
             }
         }
     }
@@ -110,7 +113,6 @@ namespace UI::Scene {
 
     }
     void SceneMenu::UpdateSpeed() {
-
         QueueUITask([this]() {
             Locker locker(_lock);
             auto thread = UI::UIState::GetSingleton()->currentThread;
@@ -126,7 +128,7 @@ namespace UI::Scene {
             if (node->speeds.size() > 1) {
                 auto speed = thread->getCurrentSpeed();
                 auto& speedObj = node->speeds[speed];
-                const std::string speedStr = std::to_string(speedObj.playbackSpeed);
+                const std::string speedStr = std::to_string(speedObj.displaySpeed);
                 logger::info("{}"sv, speedStr);
                 RE::GFxValue args[3]{ RE::GFxValue{ speedStr }, speed != (node->speeds.size() - 1), speed != 0 };
                 optionBoxes.Invoke("ShowSpeed", nullptr, args, 3);

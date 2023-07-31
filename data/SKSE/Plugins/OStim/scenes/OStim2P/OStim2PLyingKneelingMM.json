@@ -1,0 +1,59 @@
+{
+	"name": "Lying Kneeling Gay",
+	"modpack": "OStim",
+	"length": 2.0,
+	"speeds":[
+		{
+			"animation": "OStim2PLyingKneelingMM"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStim2PSittingMF",
+			"description": "go to straight idle",
+			"icon": "OStim/symbols/gender_mf"
+		},
+		{
+			"destination": "OStim2PSittingFF",
+			"description": "go to lesbian idle",
+			"icon": "OStim/symbols/gender_ff"
+		},
+		{
+			"destination": "OStim2PStandingApartMM",
+			"description": "stand up",
+			"icon": "OStim/positional/standup_m"
+		},
+		{
+			"destination": "OStim2PKneelingLyingMM",
+			"description": "switch positions",
+			"icon": "OStim/symbols/return"
+		}
+	],
+	"tags":[
+		"idle",
+		"intro"
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"tags": [
+				"lyingback"
+			],
+			"feetOnGround": false
+		},
+		{
+			"intendedSex": "male",
+			"tags": [
+				"kneeling"
+			],
+			"feetOnGround": false
+		}
+	],
+	"actions":[
+		{
+			"type": "holdingthigh",
+			"actor": 0,
+			"target": 1
+		}
+	]
+}

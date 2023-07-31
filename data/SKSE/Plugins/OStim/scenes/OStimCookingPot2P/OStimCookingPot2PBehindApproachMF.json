@@ -1,0 +1,39 @@
+{
+	"name": "Behind Approach Straight",
+	"modpack": "OStim",
+	"length": 2.0,
+	"furniture": "cookingpot",
+	"speeds":[
+		{
+			"animation": "OStimCookingPot2PBehindMF"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStimCookingPot2PBehindMF",
+			"description": "back off",
+			"icon": "OStim/symbols/x"
+		}
+	],
+	"tags":[
+		"idle"
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"scale": 1.03,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		},
+		{
+			"intendedSex": "female",
+			"tags": [
+				"facingaway",
+				"standing"
+			],
+			"feetOnGround": true
+		}
+	]
+}

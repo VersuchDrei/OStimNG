@@ -4,6 +4,6 @@
 
 namespace Sound {
     float SingleBoneDistanceSoundPlayer::calculateDistance() {
-        return actorBone.squareDistance(targetBone);
+        return actorBone.distance(targetBone);
     }
 }

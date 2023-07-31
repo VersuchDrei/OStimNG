@@ -1,0 +1,54 @@
+{
+	"name": "Standing Leaning Lesbian",
+	"modpack": "OStim",
+	"length": 2.0,
+	"furniture": "table",
+	"speeds":[
+		{
+			"animation": "OStimTable2PStandingLeaningFF"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStimTable2PStandingLeaningMF",
+			"description": "go to straight idle",
+			"icon": "OStim/symbols/gender_mf"
+		},
+		{
+			"destination": "OStimTable2PStandingLeaningMM",
+			"description": "go to gay idle",
+			"icon": "OStim/symbols/gender_mm"
+		},
+		{
+			"destination": "OStimTable2PBehindFF",
+			"description": "turn around",
+			"icon": "OStim/symbols/return"
+		},
+		{
+			"destination": "OStimTable2PStandingSittingFF",
+			"description": "sit on the table",
+			"icon": "OStim/positional/table/sitting_f"
+		}
+	],
+	"tags":[
+		"idle",
+		"intro"
+	],
+	"actors":[
+		{
+			"intendedSex": "female",
+			"scale": 1.03,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		},
+		{
+			"intendedSex": "female",
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		}
+	]
+}

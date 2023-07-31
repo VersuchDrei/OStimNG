@@ -58,11 +58,11 @@ namespace UI::Align {
             RE::GFxValue sceneInfo;
             GetSceneInfo(sceneInfo);
 
-            const RE::GFxValue sceneInfoPack = RE::GFxValue{ currentNode->sourceModule.c_str() };
-            const RE::GFxValue sceneInfoAnimName = RE::GFxValue{ currentNode->scene_id.c_str() };
+            const RE::GFxValue sceneInfoPack = RE::GFxValue{currentNode->modpack.c_str()};
+            const RE::GFxValue sceneInfoAnimName = RE::GFxValue{currentNode->scene_id.c_str()};
             //const RE::GFxValue threadKeyValue = RE::GFxValue{currentThread->getAlignmentKey().toString().c_str()};
             std::string key = currentThread->getAlignmentKey();
-            const RE::GFxValue threadKeyValue = RE::GFxValue{ key.c_str() };
+            const RE::GFxValue threadKeyValue = RE::GFxValue{key.c_str()};
 
             RE::GFxValue infoArray[3]{ sceneInfoPack, sceneInfoAnimName, threadKeyValue };
             sceneInfo.Invoke("updateInfo", nullptr, infoArray, 3);
@@ -140,10 +140,10 @@ namespace UI::Align {
             GetAlignmentInfo(alignmentInfo);
             alignmentInfo.Invoke("setPosition", nullptr, controlPosArray, 4);
 
-
             auto infoPositions = &UI::Settings::positionSettings.AlignMenuPosition.InfoPosition;
-            const RE::GFxValue infoX = RE::GFxValue{ infoPositions->xPos };
-            const RE::GFxValue infoY = RE::GFxValue{ infoPositions->yPos };
+            // TODO: build these offsets into flash?
+            const RE::GFxValue infoX = RE::GFxValue{ infoPositions->xPos - 25 };
+            const RE::GFxValue infoY = RE::GFxValue{ infoPositions->yPos - 450 };
             const RE::GFxValue infoXScale = RE::GFxValue{ infoPositions->xScale };
             const RE::GFxValue infoYScale = RE::GFxValue{ infoPositions->yScale };
             RE::GFxValue infoPosArray[4]{ infoX, infoY, infoXScale, infoYScale };

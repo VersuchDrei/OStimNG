@@ -3,9 +3,7 @@
 #include "Core/Core.h"
 #include "Core/ThreadManager.h"
 #include "Trait/TraitTable.h"
-#include "Util/CompatibilityTable.h"
 #include "Util/StringUtil.h"
-#include "Util/VectorUtil.h"
 
 namespace PapyrusThreadActor {
     using VM = RE::BSScript::IVirtualMachine;
@@ -39,11 +37,52 @@ namespace PapyrusThreadActor {
         }
     }
 
-    void Climax(RE::StaticFunctionTag*, RE::Actor* actor, bool climaxAnimation) {
-        // TODO: climax animations
+    float GetExcitementMultiplier(RE::StaticFunctionTag*, RE::Actor* actor) {
         OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
         if (threadActor) {
-            threadActor->orgasm();
+            return threadActor->getExcitementMultiplier();
+        }
+        return -1;
+    }
+
+    void SetExcitementMultiplier(RE::StaticFunctionTag*, RE::Actor* actor, float multiplier) {
+        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        if (threadActor) {
+            return threadActor->setExcitementMultiplier(multiplier);
+        }
+    }
+
+
+    void StallClimax(RE::StaticFunctionTag*, RE::Actor* actor) {
+        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        if (threadActor) {
+            threadActor->setStallClimax(true);
+        }
+    }
+
+    void PermitClimax(RE::StaticFunctionTag*, RE::Actor* actor) {
+        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        if (threadActor) {
+            threadActor->setStallClimax(false);
+        }
+    }
+
+    bool IsClimaxStalled(RE::StaticFunctionTag*, RE::Actor* actor, bool checkThread) {
+        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        if (threadActor) {
+            if (threadActor->getStallClimax()) {
+                return true;
+            } else if (checkThread) {
+                return threadActor->getThread()->getStallClimax();
+            }
+        }
+        return false;
+    }
+
+    void Climax(RE::StaticFunctionTag*, RE::Actor* actor, bool ignoreStall) {
+        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        if (threadActor) {
+            threadActor->orgasm(ignoreStall);
         }
     }
 
@@ -58,6 +97,11 @@ namespace PapyrusThreadActor {
 
     float PlayExpression(RE::StaticFunctionTag*, RE::Actor* actor, std::string expression) {
         StringUtil::toLower(&expression);
+
+        if (!actor) {
+            return -1;
+        }
+
         std::vector<Trait::FacialExpression*>* expressions = Trait::TraitTable::getExpressionsForEvent(expression);
         if (!expressions) {
             return -1;
@@ -195,50 +239,27 @@ namespace PapyrusThreadActor {
         }
     }
 
+    
+    bool AutoTransition(RE::StaticFunctionTag*, RE::Actor* actor, std::string type) {
+        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        if (threadActor) {
+            return threadActor->getThread()->autoTransition(threadActor->getThread()->getActorPosition(actor), type);
+        }
+        return false;
+    }
+
 
     bool IsInOStim(RE::StaticFunctionTag*, RE::Actor* actor) {
         return OStim::ThreadManager::GetSingleton()->findActor(actor);
     }
 
-    bool HasSchlong(RE::StaticFunctionTag*, RE::Actor* actor) {
-        return Compatibility::CompatibilityTable::hasSchlong(actor);
-    }
-
     bool VerifyActors(RE::StaticFunctionTag*, std::vector<RE::Actor*> actors) {
-        for (RE::Actor*& actor : actors) {
+        for (RE::Actor* actor : actors) {
             if (!OStim::isEligible(actor)) {
                 return false;
             }
         }
         return true;
-    }
-
-    std::vector<RE::Actor*> SortActors(RE::StaticFunctionTag*, std::vector<RE::Actor*> actors, int playerIndex) {
-        std::stable_sort(actors.begin(), actors.end(), [&](RE::Actor* actorA, RE::Actor* actorB) {
-            return Compatibility::CompatibilityTable::hasSchlong(actorA) && !Compatibility::CompatibilityTable::hasSchlong(actorB);
-        });
-
-        if (playerIndex >= 0 && playerIndex < actors.size()) {
-            RE::Actor* player = RE::PlayerCharacter::GetSingleton();
-            int currentPlayerIndex = VectorUtil::getIndex(actors, player);
-            if (currentPlayerIndex >= 0) {
-                if (currentPlayerIndex < playerIndex) {
-                    while (currentPlayerIndex < playerIndex) {
-                        actors[currentPlayerIndex] = actors[currentPlayerIndex + 1];
-                        currentPlayerIndex++;
-                    }
-                    actors[playerIndex] = player;
-                } else if (currentPlayerIndex > playerIndex) {
-                    while (currentPlayerIndex > playerIndex) {
-                        actors[currentPlayerIndex] = actors[currentPlayerIndex - 1];
-                        currentPlayerIndex--;
-                    }
-                    actors[playerIndex] = player;
-                }
-            }
-        }
-
-        return actors;
     }
 
     bool Bind(VM* a_vm) {
@@ -247,6 +268,12 @@ namespace PapyrusThreadActor {
         BIND(GetExcitement);
         BIND(SetExcitement);
         BIND(ModifyExcitement);
+        BIND(GetExcitementMultiplier);
+        BIND(SetExcitementMultiplier);
+
+        BIND(StallClimax);
+        BIND(PermitClimax);
+        BIND(IsClimaxStalled);
         BIND(Climax);
         BIND(GetTimesClimaxed);
 
@@ -271,10 +298,10 @@ namespace PapyrusThreadActor {
         BIND(SetObjectVariant);
         BIND(UnsetObjectVariant);
 
+        BIND(AutoTransition);
+
         BIND(IsInOStim);
-        BIND(HasSchlong);
         BIND(VerifyActors);
-        BIND(SortActors);
 
         return true;
     }
