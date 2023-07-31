@@ -53,4 +53,9 @@ namespace UI {
             uiState->CloseActiveMenu();
         }
     };
+
+    inline static void EndControlledScene() {
+        UI::HideMenus();
+        UI::UIState::GetSingleton()->CloseActiveMenu();
+    }
 }  // namespace UI

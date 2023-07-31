@@ -9,21 +9,12 @@
 
 namespace UI::Align {
 
-    inline RE::GFxValue GetRoot() {
-        RE::GFxValue root;
-        RE::GPtr<RE::IMenu> alignMenu = RE::UI::GetSingleton()->GetMenu(AlignMenu::MENU_NAME);
-        assert(alignMenu && alignMenu->uiMovie);
-        alignMenu->uiMovie->GetVariable(&root, "_root.rootObj");
-        return root;
-    }
-
     AlignMenu::AlignMenu() : Super(MENU_NAME) {}
 
     void AlignMenu::Show() {
         OStimMenu::Show();
         auto uiState = UI::UIState::GetSingleton();
-        if(uiState)
-        if (uiState->currentThread != nullptr) {
+        if (uiState && uiState->currentThread != nullptr) {
             SetActor(0);
             SelectField(0);
         }
@@ -58,23 +49,24 @@ namespace UI::Align {
     }
 
     void AlignMenu::UpdateSceneInfo() {
-        auto uiState = UI::UIState::GetSingleton();
-        auto currentThread = uiState->currentThread;
-        auto currentNode = uiState->currentNode;
-        if (currentThread == nullptr || currentNode == nullptr) return;
-        auto root = GetRoot();
+        QueueUITask([this]() {
+            auto uiState = UI::UIState::GetSingleton();
+            auto currentThread = uiState->currentThread;
+            auto currentNode = uiState->currentNode;
+            if (currentThread == nullptr || currentNode == nullptr) return;
 
-        RE::GFxValue sceneInfo;
-        root.GetMember("sceneInfo", &sceneInfo);
+            RE::GFxValue sceneInfo;
+            GetSceneInfo(sceneInfo);
 
-        const RE::GFxValue sceneInfoPack = RE::GFxValue{currentNode->modpack.c_str()};
-        const RE::GFxValue sceneInfoAnimName = RE::GFxValue{currentNode->scene_id.c_str()};
-        //const RE::GFxValue threadKeyValue = RE::GFxValue{currentThread->getAlignmentKey().toString().c_str()};
-        std::string key = currentThread->getAlignmentKey();
-        const RE::GFxValue threadKeyValue = RE::GFxValue{key.c_str()};
+            const RE::GFxValue sceneInfoPack = RE::GFxValue{currentNode->modpack.c_str()};
+            const RE::GFxValue sceneInfoAnimName = RE::GFxValue{currentNode->scene_id.c_str()};
+            //const RE::GFxValue threadKeyValue = RE::GFxValue{currentThread->getAlignmentKey().toString().c_str()};
+            std::string key = currentThread->getAlignmentKey();
+            const RE::GFxValue threadKeyValue = RE::GFxValue{key.c_str()};
 
-        RE::GFxValue infoArray[3]{sceneInfoPack, sceneInfoAnimName, threadKeyValue};
-        sceneInfo.Invoke("updateInfo", nullptr, infoArray, 3);
+            RE::GFxValue infoArray[3]{ sceneInfoPack, sceneInfoAnimName, threadKeyValue };
+            sceneInfo.Invoke("updateInfo", nullptr, infoArray, 3);
+        });
     }
 
     void AlignMenu::UpdateActorInfo() {
@@ -82,33 +74,33 @@ namespace UI::Align {
             return;
         }
 
-        auto root = GetRoot();
+        QueueUITask([this]() {
+            RE::GFxValue alignmentInfo;
+            GetAlignmentInfo(alignmentInfo);
 
-        RE::GFxValue alignmentInfo;
-        root.GetMember("alignmentInfo", &alignmentInfo);
+            const RE::GFxValue actorName = RE::GFxValue{ UI::UIState::GetSingleton()->currentThread->GetActor(selectedSlot)->getActor().getName() };
+            const RE::GFxValue actorSlot = selectedSlot;
 
-        const RE::GFxValue actorName = RE::GFxValue{ UI::UIState::GetSingleton()->currentThread->GetActor(selectedSlot)->getActor().getName()};
-        const RE::GFxValue actorSlot = selectedSlot;
+            auto gender = "*";
 
-        auto gender = "*";
+            std::string incString = IncrementValueImpl::format(incrementValue);
+            const RE::GFxValue incValue = RE::GFxValue{ incString };
 
-        std::string incString = IncrementValueImpl::format(incrementValue);
-        const RE::GFxValue incValue = RE::GFxValue{incString};
+            const RE::GFxValue actorGender = RE::GFxValue{ gender };
 
-        const RE::GFxValue actorGender = RE::GFxValue{gender};
+            RE::GFxValue infoArray[10]{ actorName,
+                                      actorSlot,
+                                      actorGender,
+                                      incValue,
+                                      currentActorInfo.offsetX,
+                                      currentActorInfo.offsetY,
+                                      currentActorInfo.offsetZ,
+                                      currentActorInfo.scale,
+                                      currentActorInfo.rotation,
+                                      currentActorInfo.sosBend };
 
-        RE::GFxValue infoArray[10]{actorName,
-                                  actorSlot,
-                                  actorGender,
-                                  incValue,
-                                  currentActorInfo.offsetX,
-                                  currentActorInfo.offsetY,
-                                  currentActorInfo.offsetZ,
-                                  currentActorInfo.scale,
-                                  currentActorInfo.rotation,
-                                  currentActorInfo.sosBend};
-
-        alignmentInfo.Invoke("updateInfo", nullptr, infoArray, 10);
+            alignmentInfo.Invoke("updateInfo", nullptr, infoArray, 10);
+        });
     }
 
     void AlignMenu::Handle(UI::Controls control) {
@@ -135,42 +127,41 @@ namespace UI::Align {
     }
 
     void AlignMenu::ApplyPositions() {
-        auto root = GetRoot();
-        if (!root.IsObject())
-            return;
 
-        auto controlPositions = &UI::Settings::positionSettings.AlignMenuPosition.ControlPosition;
-        const RE::GFxValue controlX = RE::GFxValue{ controlPositions->xPos };
-        const RE::GFxValue controlY = RE::GFxValue{ controlPositions->yPos };
-        const RE::GFxValue controlXScale = RE::GFxValue{ controlPositions->xScale };
-        const RE::GFxValue controlYScale = RE::GFxValue{ controlPositions->yScale };
-        RE::GFxValue controlPosArray[4]{ controlX, controlY, controlXScale, controlYScale };
+        QueueUITask([this]() {
+            auto controlPositions = &UI::Settings::positionSettings.AlignMenuPosition.ControlPosition;
+            const RE::GFxValue controlX = RE::GFxValue{ controlPositions->xPos };
+            const RE::GFxValue controlY = RE::GFxValue{ controlPositions->yPos };
+            const RE::GFxValue controlXScale = RE::GFxValue{ controlPositions->xScale };
+            const RE::GFxValue controlYScale = RE::GFxValue{ controlPositions->yScale };
+            RE::GFxValue controlPosArray[4]{ controlX, controlY, controlXScale, controlYScale };
 
-        RE::GFxValue alignmentInfo;
-        root.GetMember("alignmentInfo", &alignmentInfo);
-        alignmentInfo.Invoke("setPosition", nullptr, controlPosArray, 4);
+            RE::GFxValue alignmentInfo;
+            GetAlignmentInfo(alignmentInfo);
+            alignmentInfo.Invoke("setPosition", nullptr, controlPosArray, 4);
 
+            auto infoPositions = &UI::Settings::positionSettings.AlignMenuPosition.InfoPosition;
+            // TODO: build these offsets into flash?
+            const RE::GFxValue infoX = RE::GFxValue{ infoPositions->xPos - 25 };
+            const RE::GFxValue infoY = RE::GFxValue{ infoPositions->yPos - 450 };
+            const RE::GFxValue infoXScale = RE::GFxValue{ infoPositions->xScale };
+            const RE::GFxValue infoYScale = RE::GFxValue{ infoPositions->yScale };
+            RE::GFxValue infoPosArray[4]{ infoX, infoY, infoXScale, infoYScale };
 
-        auto infoPositions = &UI::Settings::positionSettings.AlignMenuPosition.InfoPosition;
-        // TODO: build these offsets into flash?
-        const RE::GFxValue infoX = RE::GFxValue{ infoPositions->xPos - 25 };
-        const RE::GFxValue infoY = RE::GFxValue{ infoPositions->yPos - 450 };
-        const RE::GFxValue infoXScale = RE::GFxValue{ infoPositions->xScale };
-        const RE::GFxValue infoYScale = RE::GFxValue{ infoPositions->yScale };
-        RE::GFxValue infoPosArray[4]{ infoX, infoY, infoXScale, infoYScale };
-
-        RE::GFxValue sceneInfo;
-        root.GetMember("sceneInfo", &sceneInfo);
-        sceneInfo.Invoke("setPosition", nullptr, infoPosArray, 4);
+            RE::GFxValue sceneInfo;
+            GetSceneInfo(sceneInfo);
+            sceneInfo.Invoke("setPosition", nullptr, infoPosArray, 4);
+        });
     }
 
     void AlignMenu::SelectField(int field) {
-        auto root = GetRoot();
 
-        RE::GFxValue alignmentInfo;
-        root.GetMember("alignmentInfo", &alignmentInfo);
-        RE::GFxValue fieldValue[1]{field};
-        alignmentInfo.Invoke("selectField", nullptr, fieldValue, 1);
+        QueueUITask([this, field]() {
+            RE::GFxValue alignmentInfo;
+            GetAlignmentInfo(alignmentInfo);
+            RE::GFxValue fieldValue[1]{ field };
+            alignmentInfo.Invoke("selectField", nullptr, fieldValue, 1);
+        });
     }
 
     void AlignMenu::ScrollSelectedField(int field) {
@@ -194,8 +185,7 @@ namespace UI::Align {
         UpdateActorInfo();
     }
 
-    void AlignMenu::Increment(bool up) {
-        auto root = GetRoot();
+    void AlignMenu::Increment(bool up) {        
 
         float* currentVal;
         switch (selectedField) {
@@ -225,22 +215,39 @@ namespace UI::Align {
             *currentVal += actualIncrement;
         else
             *currentVal -= actualIncrement;
-
-        RE::GFxValue alignmentInfo;
-        root.GetMember("alignmentInfo", &alignmentInfo);
-        RE::GFxValue values[2]{*currentVal, up};
-        alignmentInfo.Invoke("updateDoubleField", nullptr, values, 2);
-
         UI::UIState::GetSingleton()->currentThread->updateActorAlignment(selectedSlot, currentActorInfo);
+
+        QueueUITask([this, currentVal, up]() {
+            RE::GFxValue alignmentInfo;
+            GetAlignmentInfo(alignmentInfo);
+            RE::GFxValue values[2]{ *currentVal, up };
+            alignmentInfo.Invoke("updateDoubleField", nullptr, values, 2);
+        });        
     }
 
     void AlignMenu::CycleIncrement() {
-        incrementValue = IncrementValueImpl::loop(incrementValue);
-        auto root = GetRoot();
-        RE::GFxValue alignmentInfo;
-        root.GetMember("alignmentInfo", &alignmentInfo);
-        std::string incString = IncrementValueImpl::format(incrementValue);
-        RE::GFxValue values[1]{RE::GFxValue{incString}};
-        alignmentInfo.Invoke("updateIncrement", nullptr, values, 1);
+        QueueUITask([this]() {
+            incrementValue = IncrementValueImpl::loop(incrementValue);
+            RE::GFxValue alignmentInfo;
+            GetAlignmentInfo(alignmentInfo);
+            std::string incString = IncrementValueImpl::format(incrementValue);
+            RE::GFxValue values[1]{ RE::GFxValue{incString} };
+            alignmentInfo.Invoke("updateIncrement", nullptr, values, 1);
+        });
+    }
+
+    void AlignMenu::GetAlignmentInfo(RE::GFxValue& alignmentInfo){
+        RE::GFxValue root;
+        GetRoot(root);
+        RE::GFxValue rootObj;
+        root.GetMember("rootObj", &rootObj);
+        rootObj.GetMember("alignmentInfo", &alignmentInfo);
+    }
+    void AlignMenu::GetSceneInfo(RE::GFxValue& sceneInfo) {
+        RE::GFxValue root;
+        GetRoot(root);
+        RE::GFxValue rootObj;
+        root.GetMember("rootObj", &rootObj);
+        rootObj.GetMember("sceneInfo", &sceneInfo);
     }
 }  // namespace UI::Align

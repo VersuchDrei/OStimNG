@@ -41,8 +41,12 @@ namespace UI {
 
 		using Lock = std::recursive_mutex;
 		using Locker = std::lock_guard<Lock>;
-		mutable Lock _lock;
-
+		mutable Lock _lock;		
+	protected:
+		void QueueUITask(std::function<void()> fn) { SKSE::GetTaskInterface()->AddUITask(fn); }
+		void GetRoot(RE::GFxValue& root);
 	};
+
+
 
 }

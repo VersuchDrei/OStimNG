@@ -27,7 +27,16 @@ class SearchBar extends MovieClip
 
 	var fields = new Array();
 	var PrevFocus:MovieClip;
-	var inputtingText:Boolean = false;
+	var _inputtingText:Boolean = false;
+	function set inputtingText(val:Boolean)
+	{
+		_inputtingText = val;
+		doSetInputtingText(val);
+	}
+	function get inputtingText()
+	{
+		return _inputtingText;
+	}
 	var fakeButton;
 
 	var widthTweenTime = 0.25;
@@ -37,15 +46,16 @@ class SearchBar extends MovieClip
 	{
 		super();
 		// constructor code
+		bg._width = 0;
+		bg._height = 0;
 		UpdateSize(minHeight,355);
 
-
-		//AssignData(generateTestData(5));//; For Testing
+		// For Testing
+		//AssignData(generateTestData(5));
 	}
 	//Update size based on the size of the contents. Width outer gutters
 	public function UpdateSize(newHeight:Number, newWidth:Number)
 	{
-
 		TweenLite.to(bg,widthTweenTime,{_width:newWidth + (menuGutter * 2), _x:(newWidth + (menuGutter * 2)) / 2});
 		TweenLite.to(divider,0.5,{_width:newWidth, _x:menuGutter});
 		TweenLite.to(bg,heightTweenTime,{delay:widthTweenTime, _height:newHeight, _y:0 - (newHeight / 2)});
@@ -96,7 +106,7 @@ class SearchBar extends MovieClip
 				{
 					if (inputtingText)
 					{
-						
+
 						return true;
 					}
 					else
@@ -126,6 +136,7 @@ class SearchBar extends MovieClip
 				{
 					Search();
 					ClearInput();
+					DisableTextInput();
 					return true;
 				}
 			}
@@ -157,10 +168,12 @@ class SearchBar extends MovieClip
 		}
 
 	}
+
 	function ClearAndHide()
 	{
 		ClearInput();
 		AssignData([]);
+		DisableTextInput();
 		doHideMenuRequest();
 	}
 	function ClearInput()
@@ -170,10 +183,12 @@ class SearchBar extends MovieClip
 	function DisableTextInput()
 	{
 		inputtingText = false;
+		textInput.editable = false;
 		Selection.setFocus(fakeButton);
 	}
 	function EnableTextInput()
 	{
+		textInput.editable = true;
 		Selection.setFocus(textInput.textField);
 		inputtingText = true;
 	}
@@ -262,10 +277,7 @@ class SearchBar extends MovieClip
 			ClearAndHide();
 		}
 	}
-	public function doSelectOption(val:String)
-	{
 
-	}
 
 	function HideDivider()
 	{
@@ -290,17 +302,27 @@ class SearchBar extends MovieClip
 		return arr;
 	}
 
-	function doHideMenuRequest()
-	{
-
-	}
-
 	function Search()
 	{
 		doSearch(textInput.text);
 	}
 
+	public function doSelectOption(val:String)
+	{
+
+	}
+
+	function doHideMenuRequest()
+	{
+
+	}
+
 	function doSearch(val:String)
+	{
+
+	}
+
+	function doSetInputtingText(inputting:Boolean)
 	{
 
 	}
