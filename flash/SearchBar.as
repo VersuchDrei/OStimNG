@@ -27,7 +27,16 @@ class SearchBar extends MovieClip
 
 	var fields = new Array();
 	var PrevFocus:MovieClip;
-	var inputtingText:Boolean = false;
+	var _inputtingText:Boolean = false;
+	function set inputtingText(val:Boolean)
+	{
+		_inputtingText = val;
+		doSetInputtingText(val);
+	}
+	function get inputtingText()
+	{
+		return _inputtingText;
+	}
 	var fakeButton;
 
 	var widthTweenTime = 0.25;
@@ -160,14 +169,11 @@ class SearchBar extends MovieClip
 
 	}
 
-	function CanHideMenuByKey():Boolean
-	{
-		return !inputtingText;
-	}
 	function ClearAndHide()
 	{
 		ClearInput();
 		AssignData([]);
+		DisableTextInput();
 		doHideMenuRequest();
 	}
 	function ClearInput()
@@ -271,10 +277,7 @@ class SearchBar extends MovieClip
 			ClearAndHide();
 		}
 	}
-	public function doSelectOption(val:String)
-	{
 
-	}
 
 	function HideDivider()
 	{
@@ -299,17 +302,27 @@ class SearchBar extends MovieClip
 		return arr;
 	}
 
-	function doHideMenuRequest()
-	{
-
-	}
-
 	function Search()
 	{
 		doSearch(textInput.text);
 	}
 
+	public function doSelectOption(val:String)
+	{
+
+	}
+
+	function doHideMenuRequest()
+	{
+
+	}
+
 	function doSearch(val:String)
+	{
+
+	}
+
+	function doSetInputtingText(inputting:Boolean)
 	{
 
 	}

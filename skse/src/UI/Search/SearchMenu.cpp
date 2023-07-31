@@ -43,6 +43,12 @@ namespace UI::Search {
             RE::GFxValue doSelectFn;
             _view->CreateFunction(&doSelectFn, fn3);
             optionBoxes.SetMember("doSelectOption", doSelectFn);
+
+
+            RE::GFxFunctionHandler* fn4 = new doSetInputtingTextFunction;
+            RE::GFxValue doInputtingTextFn;
+            _view->CreateFunction(&doInputtingTextFn, fn4);
+            optionBoxes.SetMember("doSetInputtingText", doInputtingTextFn);
         });
 	}
 
