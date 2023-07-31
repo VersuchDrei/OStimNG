@@ -1,6 +1,7 @@
 #include "EventListener.h"
 
 #include "Core/ThreadStarter/ThreadBuilder.h"
+#include "Core/ThreadStarter/ThreadStarter.h"
 #include "Core/Core.h"
 #include "Core/ThreadManager.h"
 #include "GameAPI/Game.h"
@@ -63,6 +64,10 @@ namespace Events {
             return RE::BSEventNotifyControl::kContinue;
         }
 
+        if (RE::UI::GetSingleton()->IsMenuOpen("Dialogue Menu")) {
+            return RE::BSEventNotifyControl::kContinue;
+        }
+
         for (RE::InputEvent* iEvent = *a_events; iEvent; iEvent = iEvent->next) {
             if (iEvent->GetEventType() != RE::INPUT_EVENT_TYPE::kButton) {
                 continue;
@@ -92,60 +97,13 @@ namespace Events {
                     GameAPI::GameActor player = GameAPI::GameActor::getPlayer();
                     GameAPI::GameActor target = GameAPI::Game::getCrosshairActor();
                     if (target) {
-                        std::vector<GameAPI::GameActor> actors = GameAPI::GameActor::getPlayer().getNearbyActors(2000, [&player, &target](GameAPI::GameActor actor){
-                            return actor != player && actor != target && OStim::isEligible(actor);    
-                        });
-
-                        if (actors.empty()) {
-                            // TODO do this internally once we don't need OSA anymore
-                            const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-                            auto vm = skyrimVM ? skyrimVM->impl : nullptr;
-                            if (vm) {
-                                RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-                                auto args = RE::MakeFunctionArguments<RE::Actor*, RE::Actor*, RE::Actor*>(std::move(RE::PlayerCharacter::GetSingleton()), std::move(target.form), std::move(nullptr));
-                                vm->DispatchStaticCall("OSKSE", "StartScene", args, callback);
-                            }
-                        } else {
-                            std::vector<std::string> options;
-
-                            options.push_back("None");
-                            int max = std::min<int>(GameAPI::Game::getMessageBoxOptionLimit() - 1, actors.size());
-                            int i = 0;
-                            while (i < max) {
-                                options.push_back(actors[i].getName());
-                                i++;
-                            }
-
-                            GameAPI::Game::showMessageBox("Add third actor?", options, [target, actors](unsigned int result) {
-                                GameAPI::GameActor third;
-                                if (result > 0) {
-                                    third = actors[result - 1];
-                                }
-
-                                // TODO do this internally once we don't need OSA anymore
-                                const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-                                auto vm = skyrimVM ? skyrimVM->impl : nullptr;
-                                if (vm) {
-                                    GameAPI::GameActor targetTemp = target;
-                                    RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-                                    auto args = RE::MakeFunctionArguments<RE::Actor*, RE::Actor*, RE::Actor*>(std::move(RE::PlayerCharacter::GetSingleton()), std::move(targetTemp.form), std::move(third.form));
-                                    vm->DispatchStaticCall("OSKSE", "StartScene", args, callback);
-                                }
-                            });
-                        }
-
-                        
+                        OStim::ThreadStartParams params = {.actors = {player, target}};
+                        OStim::startThread(params);
                     }
                 } else if (bEvent->IsUp() && bEvent->HeldDuration() >= 2.0) {
                     if (!OStim::ThreadManager::GetSingleton()->playerThreadRunning()) {
-                        // TODO do this internally once we don't need OSA anymore
-                        const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-                        auto vm = skyrimVM ? skyrimVM->impl : nullptr;
-                        if (vm) {
-                            RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-                            auto args = RE::MakeFunctionArguments<RE::Actor*>(std::move(RE::PlayerCharacter::GetSingleton()));
-                            vm->DispatchStaticCall("OSKSE", "Masturbate", args, callback);
-                        }
+                        OStim::ThreadStartParams params = {.actors = {GameAPI::GameActor::getPlayer()}};
+                        OStim::startThread(params);
                     }
                 }
             }

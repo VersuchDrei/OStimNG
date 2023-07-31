@@ -23,11 +23,11 @@ namespace OStim {
             }
         }
 
-        if (!params.startingNode) {
+        if (!params.startingNode && !params.startingSequence) {
             ActorUtil::sort(params.actors, params.dominantActors, -1);
         }
 
-        if (!params.startingNode) {
+        if (!params.startingNode && !params.startingSequence) {
             Furniture::FurnitureType furnitureType = Furniture::getFurnitureType(params.furniture, false);
             switch (furnitureType) {
             case Furniture::FurnitureType::NONE:
@@ -42,7 +42,7 @@ namespace OStim {
             }
         }
 
-        if (!params.startingNode) {
+        if (!params.startingNode && !params.startingSequence) {
             return -1;
         }
 

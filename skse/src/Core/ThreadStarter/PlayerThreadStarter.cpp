@@ -36,7 +36,7 @@ namespace OStim {
 
     void handleFurniture(ThreadStartParams params) {
         if (!params.noFurniture && !params.furniture && MCM::MCMTable::useFurniture()) {
-            if (params.startingNode) {
+            if (params.startingNode || params.startingSequence) {
                 RE::TESObjectREFR* bed = Furniture::findBed(params.actors[0].form, MCM::MCMTable::furnitureSearchDistance(), 96.0f);
                 if (bed) {
                     if (MCM::MCMTable::selectFurniture()) {
@@ -68,7 +68,7 @@ namespace OStim {
                         GameAPI::Game::showMessageBox("Which furniture do you want to use?", options, [params, objects](unsigned int result) {
                             logger::info("message box result");
                             if (result == 0) {
-                                handleActorSorting(params);
+                                handleActorAdding(params);
                             } else if (result > objects.size()){
                                 return;
                             } else {
@@ -87,16 +87,69 @@ namespace OStim {
                 }
             }
         }
-        handleActorSorting(params);
+        handleActorAdding(params);
     }
 
     void addFurniture(ThreadStartParams params, RE::TESObjectREFR* furniture) {
         params.furniture = furniture;
-        handleActorSorting(params);
+        handleActorAdding(params);
+    }
+
+    void handleActorAdding(ThreadStartParams params) {
+        if (params.startingNode || params.startingSequence) {
+            startInner(params);
+            return;
+        }
+
+        if (!MCM::MCMTable::addActorsAtStart()) {
+            handleActorSorting(params);
+            return;
+        }
+
+        handleActorAddingInner(params);
+    }
+
+    void handleActorAddingInner(ThreadStartParams params) {
+        if (!Graph::GraphTable::hasNodes(Furniture::getFurnitureType(params.furniture, false), params.actors.size() + 1)) {
+            handleActorSorting(params);
+            return;
+        }
+
+        std::vector<GameAPI::GameActor> actors = GameAPI::GameActor::getPlayer().getNearbyActors(2000, [&params](GameAPI::GameActor actor){
+            return !VectorUtil::contains(params.actors, actor) && OStim::isEligible(actor);    
+        });
+
+        if (actors.empty()) {
+            handleActorSorting(params);
+            return;
+        }
+
+        std::vector<std::string> options;
+
+        options.push_back("None");
+        int max = std::min<int>(GameAPI::Game::getMessageBoxOptionLimit() - 1, actors.size());
+        int i = 0;
+        while (i < max) {
+            options.push_back(actors[i].getName());
+            i++;
+        }
+
+        GameAPI::Game::showMessageBox("Add actor?", options, [params, actors](unsigned int result) {
+            if (result > 0) {
+                addActor(params, actors[result - 1]);
+            } else {
+                handleActorSorting(params);
+            }
+        });
+    }
+
+    void addActor(ThreadStartParams params, GameAPI::GameActor actor) {
+        params.actors.push_back(actor);
+        handleActorAddingInner(params);
     }
 
     void handleActorSorting(ThreadStartParams params) {
-        if (params.startingNode) {
+        if (params.startingNode || params.startingSequence) {
             startInner(params);
             return;
         }
@@ -131,7 +184,7 @@ namespace OStim {
     }
 
     void handleStartingNode(ThreadStartParams params) {
-        if (!params.startingNode) {
+        if (!params.startingNode && !params.startingSequence) {
             std::string nodeTag = MCM::MCMTable::useIntroScenes() ? "intro" : "idle";
             Furniture::FurnitureType furnitureType = Furniture::getFurnitureType(params.furniture, false);
             switch (furnitureType) {
@@ -147,7 +200,7 @@ namespace OStim {
             }
         }
         
-        if (!params.startingNode) {
+        if (!params.startingNode && !params.startingSequence) {
             return;
         }
 

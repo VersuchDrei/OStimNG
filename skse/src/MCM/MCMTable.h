@@ -13,6 +13,7 @@ namespace MCM {
         inline static float customTimeScale() { return settings[0xE18].asFloat(); }
         inline static bool useFades() { return settings[0xE19].asBool(); }
         inline static bool useIntroScenes() { return settings[0xDA1].asBool(); }
+        inline static bool addActorsAtStart() { return settings[0xE45].asBool(); }
 
         inline static int keyUp() { return settings[0xE28].asInt(); }
         inline static int keyDown() { return settings[0xE29].asInt(); }
@@ -145,6 +146,7 @@ namespace MCM {
             {0xE18, {0, "SetCustomTimescale"}},
             {0xE19, {1, "SetUseFades"}},
             {0xDA1, {1, "SetUseIntroScenes"}},
+            {0xE45, {1, "addActorsAtStart"}},
 
             {0xE22, {0, "SetDomLightMode"}},
             {0xE23, {0, "SetSubLightMode"}},

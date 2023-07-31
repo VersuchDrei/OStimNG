@@ -276,25 +276,29 @@ EndFunction
 Function DrawGeneralPage()
 	SetCursorFillMode(LEFT_TO_RIGHT)
 	SetCursorPosition(0)
-	AddToggleOptionST("OID_ResetPosition", "$ostim_reset_position", Main.ResetPosAfterSceneEnd)
+	AddColoredHeader("$ostim_header_scenes")
 	SetCursorPosition(2)
-	AddSliderOptionST("OID_CustomTimeScale", "$ostim_timescale", Main.CustomTimescale, "{0}")
+	AddToggleOptionST("OID_ResetPosition", "$ostim_reset_position", Main.ResetPosAfterSceneEnd)
 	SetCursorPosition(4)
-	AddToggleOptionST("OID_UseFades", "$ostim_use_fades", Main.UseFades)
+	AddSliderOptionST("OID_CustomTimeScale", "$ostim_timescale", Main.CustomTimescale, "{0}")
 	SetCursorPosition(6)
+	AddToggleOptionST("OID_UseFades", "$ostim_use_fades", Main.UseFades)
+	SetCursorPosition(8)
 	AddToggleOptionST("OID_UseIntroScenes", "$ostim_use_intro_scenes", Main.UseIntroScenes)
-
 	SetCursorPosition(10)
-	AddColoredHeader("$ostim_header_lights")
-	SetCursorPosition(12)
-	AddMenuOptionST("OID_MaleLightMode", "$ostim_male_light_mode", DomLightModeList[Main.DomLightPos])
+	AddToggleOptionST("OID_AddActorsAtStart", "$ostim_add_actors_at_start", Main.AddActorsAtStart)
+
 	SetCursorPosition(14)
-	AddMenuOptionST("OID_MaleLightBrightness", "$ostim_male_light_brightness", DomLightBrightList[Main.DomLightBrightness])
+	AddColoredHeader("$ostim_header_lights")
 	SetCursorPosition(16)
-	AddMenuOptionST("OID_FemaleLightMode", "$ostim_female_light_mode", DomLightModeList[Main.SubLightPos])
+	AddMenuOptionST("OID_MaleLightMode", "$ostim_male_light_mode", DomLightModeList[Main.DomLightPos])
 	SetCursorPosition(18)
-	AddMenuOptionST("OID_FemaleLightBrightness", "$ostim_female_light_brightness", DomLightBrightList[Main.SubLightBrightness])
+	AddMenuOptionST("OID_MaleLightBrightness", "$ostim_male_light_brightness", DomLightBrightList[Main.DomLightBrightness])
 	SetCursorPosition(20)
+	AddMenuOptionST("OID_FemaleLightMode", "$ostim_female_light_mode", DomLightModeList[Main.SubLightPos])
+	SetCursorPosition(22)
+	AddMenuOptionST("OID_FemaleLightBrightness", "$ostim_female_light_brightness", DomLightBrightList[Main.SubLightBrightness])
+	SetCursorPosition(24)
 	AddToggleOptionST("OID_OnlyLightInDark", "$ostim_dark_light", Main.LowLightLevelLightsOnly)
 
 	SetCursorPosition(1)
@@ -361,6 +365,17 @@ State OID_UseIntroScenes
 	Event OnSelectST()
 		Main.UseIntroScenes = !Main.UseIntroScenes
 		SetToggleOptionValueST(Main.UseIntroScenes)
+	EndEvent
+EndState
+
+State OID_AddActorsAtStart
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_add_actors_at_start")
+	EndEvent
+
+	Event OnSelectST()
+		Main.AddActorsAtStart = !Main.AddActorsAtStart
+		SetToggleOptionValueST(Main.AddActorsAtStart)
 	EndEvent
 EndState
 

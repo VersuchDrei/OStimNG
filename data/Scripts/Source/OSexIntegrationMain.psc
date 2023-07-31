@@ -119,6 +119,20 @@ bool Property UseIntroScenes
 	EndFunction
 EndProperty
 
+GlobalVariable Property OStimAddActorsAtStart Auto
+bool Property AddActorsAtStart
+	bool Function Get()
+		Return OStimAddActorsAtStart.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimAddActorsAtStart.value = 1
+		Else
+			OStimAddActorsAtStart.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
 
 GlobalVariable Property OStimMaleLightMode Auto
 int Property DomLightPos

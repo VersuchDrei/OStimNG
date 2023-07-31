@@ -63,7 +63,7 @@ namespace Graph {
             return false;
         }
 
-        for (int i = 0; i <= actors.size(); i++) {
+        for (int i = 0; i < actors.size(); i++) {
             if (actors[i].condition.type != other->actors[i].condition.type) {
                 return false;
             }
