@@ -570,7 +570,7 @@ namespace OStim {
         }
 
         if (playerThread) {
-            UI::HideMenus();
+            UI::EndControlledScene();
             GameAPI::GameCamera::endSceneMode(MCM::MCMTable::firstPersonAfterScene());
 
             RE::INISettingCollection* ini = RE::INISettingCollection::GetSingleton();

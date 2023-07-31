@@ -64,6 +64,7 @@ namespace UI::Scene {
 	private:
 		void BuildMenuData(MenuData& menudata);
 		void SendControl(int32_t control);
+		void GetOptionBoxes(RE::GFxValue& optionBoxes);
 	};
 
 	class doSendTransitionRequest : public RE::GFxFunctionHandler {

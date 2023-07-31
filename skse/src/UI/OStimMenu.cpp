@@ -57,9 +57,15 @@ namespace UI {
     }
 
     void OStimMenu::AdvanceMovie(float a_interval, std::uint32_t a_currentTime) {
-        OStimMenu::Update();
+        Update();
         if (_isOpen) {
+            logger::info("{} open"sv, menuName);
             RE::IMenu::AdvanceMovie(a_interval, a_currentTime);
         }
+    }
+
+    void OStimMenu::GetRoot(RE::GFxValue& root) {
+        assert(uiMovie);
+        uiMovie->GetVariable(&root, "_root");
     }
 }

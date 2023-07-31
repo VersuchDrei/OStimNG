@@ -48,7 +48,9 @@ namespace UI {
             return;
         }
         if (activeMenu == menu) {
-            SwitchActiveMenu(kSceneMenu);
+            if (activeMenu != kSearchMenu || !UI::Search::SearchMenu::GetMenu()->IsInputtingText()) {
+                SwitchActiveMenu(kSceneMenu);
+            }            
             return;
         }
     }
