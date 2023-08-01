@@ -69,12 +69,12 @@ namespace {
                 if (message) {
                     message->RegisterListener(nullptr, UnspecificedSenderMessageHandler);
                 }
-                UI::RegisterMenus();
             } break;
             case SKSE::MessagingInterface::kInputLoaded: {
                 RE::BSInputDeviceManager::GetSingleton()->AddEventSink(Events::EventListener::GetSingleton());
             } break;
             case SKSE::MessagingInterface::kDataLoaded: {
+                UI::RegisterMenus();
                 // needs to be in here because a lot of these need to access forms
                 GameAPI::GameTable::setup();
 
