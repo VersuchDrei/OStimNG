@@ -52,7 +52,49 @@ namespace Graph {
                     navigations.push_back({.origin = node->scene_id, .destination = json["destination"]});
                     if (json.contains("origin")) {
                         if (json["origin"].is_string()) {
-                            navigations.push_back({.origin = json["origin"], .destination = node->scene_id});
+                            RawNavigation navigation = {.origin = json["origin"], .destination = node->scene_id};
+
+                            if (json.contains("priority")) {
+                                if (json["priority"].is_number_integer()) {
+                                    navigation.priority = json["priority"];    
+                                } else {
+                                    logger::warn("priority property of scene {} isn't an integer", node->scene_id);
+                                }
+                            }
+
+                            if (json.contains("description")) {
+                                if (json["description"].is_string()) {
+                                    navigation.description = json["description"];
+                                } else {
+                                    logger::warn("description property of scene {} isn't a string", node->scene_id);
+                                }
+                            }
+
+                            if (json.contains("icon")) {
+                                if (json["icon"].is_string()) {
+                                    navigation.icon = json["icon"];
+                                } else {
+                                    logger::warn("icon property of scene {} isn't a string", node->scene_id);
+                                }
+                            }
+
+                            if (json.contains("border")) {
+                                if (json["border"].is_string()) {
+                                    navigation.border = json["border"];
+                                } else {
+                                    logger::warn("border property of scene {} isn't a string", node->scene_id);
+                                }
+                            }
+
+                            if (json.contains("noWarnings")) {
+                                if (json["noWarnings"].is_boolean()) {
+                                    navigation.noWarnings = json["noWarnings"];
+                                } else {
+                                    logger::warn("noWarnings property of scene {} isn't a string", node->scene_id);
+                                }
+                            }
+
+                            navigations.push_back(navigation);
                         } else {
                             logger::warn("origin property of scene {} isn't a string", node->scene_id);
                         }
@@ -66,9 +108,7 @@ namespace Graph {
                         int index = 0;
                         for (auto& jsonNavigation : json["navigations"]) {
                             if (jsonNavigation.is_object()) {
-                                RawNavigation navigation;
-                                navigation.origin = node->scene_id;
-                                navigation.destination = node->scene_id;
+                                RawNavigation navigation = {.origin = node->scene_id, .destination = node->scene_id};
 
                                 if (jsonNavigation.contains("destination")) {
                                     if (jsonNavigation["destination"].is_string()) {
@@ -472,6 +512,7 @@ namespace Graph {
         std::stable_sort(navigations.begin(), navigations.end(), [&](RawNavigation navigationA, RawNavigation navigationB){
             return navigationA.priority < navigationB.priority;
         });
+
         GraphTable::addNavigations(navigations);
     }
 }
