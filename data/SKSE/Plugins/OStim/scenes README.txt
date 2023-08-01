@@ -18,6 +18,7 @@ scene fields:
 	if this property is filled the "navigations" property will be ignored
 "origin" (string): (only for transition) the sceneID of the transition origin
 	if the transition is already in the navigations of the origin scene this field doesn't have to (and shouldn't) be filled
+	if this field is filled you can also add the "priority", "description", "icon", "border" and "noWarnings" fields directly to the scene and use them like you would for a regular navigation
 "navigations" (list<object>): a list of navigation options from or to this scene (see navigation fields)
 "speeds" (list<object>): a list of available speeds for the scene (see speed fields)
 "defaultSpeed" (int): the index of the default speed of the scene (default 0)
@@ -30,10 +31,10 @@ scene fields:
 
 navigation fields:
 "destination" (string): the destination of the navigation
-	if you use this the scene it is defined in will be used as origin
+	if you use this a navigation option is added to this scene that leads to the destination scene
 	this is the preferred way, you should always use this over "origin" when navigating within an animation pack
 "origin" (string): the origin of the navigation option
-	if you use this the scene it is defined in will be used as destination
+	if you use this a navigation option is added to the origin scene that leads to this scene
 	this can be used to create navigations from scenes of other animation packs to your scene without overwriting them
 	you should never use "origin" and "destination" at the same time
 "priority" (int): a priority for the order of the navigation options in the menu (default: 0)

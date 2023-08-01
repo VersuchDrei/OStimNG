@@ -7,8 +7,12 @@
 
 #include "Furniture/Furniture.h"
 
+namespace OStim {
+    struct Thread;
+}
+
 namespace Graph {
-    struct Node; // this line is necessary for the Navigation struct to work
+    struct Node;
 
     struct Speed {
     public:
@@ -25,6 +29,7 @@ namespace Graph {
         bool isTransition = false;
 
         bool fulfilledBy(std::vector<Trait::ActorCondition> conditions);
+        std::string getDescription(OStim::Thread* thread);
     };
 
     struct Node {

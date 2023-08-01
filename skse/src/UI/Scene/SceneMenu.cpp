@@ -104,7 +104,7 @@ namespace UI::Scene {
                          .title = nav.nodes.back()->scene_name,
                          .imagePath = nav.icon,
                          .border = nav.border,
-                         .description = nav.description});
+                         .description = nav.getDescription(state->currentThread)});
                 }
             }
         }

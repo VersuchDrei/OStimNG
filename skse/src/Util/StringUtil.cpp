@@ -33,4 +33,26 @@ namespace StringUtil {
         }
         return std::accumulate(std::next(vector.begin()), vector.end(), vector[0], [](std::string a, std::string b) { return a + "," + b; });
     }
+
+    void replaceAll(std::string& string, std::string const& find, std::string const& replace) {
+        std::string buffer;
+        size_t pos = 0;
+        size_t prevPos;
+        
+        buffer.reserve(string.size());
+
+        while (true) {
+            prevPos = pos;
+            pos = string.find(find, pos);
+            if (pos == std::string::npos) {
+                break;
+            }
+            buffer.append(string, prevPos, pos - prevPos);
+            buffer += replace;
+            pos += find.size();
+        }
+
+        buffer.append(string, prevPos, string.size() + prevPos);
+        string.swap(buffer);
+    }
 }

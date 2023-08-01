@@ -6,4 +6,5 @@ namespace StringUtil {
     std::vector<std::string> toTagVector(std::string string);
     std::vector<std::vector<std::string>> toTagMatrix(std::string string);
     std::string toTagCSV(std::vector<std::string> vector);
+    void replaceAll(std::string& string, std::string const& find, std::string const& replace);
 }

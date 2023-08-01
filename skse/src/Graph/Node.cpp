@@ -1,6 +1,8 @@
 #include "Graph/Node.h"
 
 #include "Graph/GraphTable.h"
+
+#include "Core/Thread.h"
 #include "MCM/MCMTable.h"
 #include "Trait/Condition.h"
 #include "Trait/TraitTable.h"
@@ -19,6 +21,20 @@ namespace Graph {
         }
         return true;
     }
+
+    std::string Navigation::getDescription(OStim::Thread* thread) {
+        if (description.find('{') == std::string::npos) {
+            return description;
+        }
+
+        std::string ret = description;
+        for (auto& [index, actor] : thread->getActors()) {
+            StringUtil::replaceAll(description, "{" + std::to_string(index) + "}", actor.getActor().getName());
+        }
+
+        return ret;
+    }
+
     
     void Node::mergeActionsIntoActors() {
         for (Action action : actions) {
