@@ -24,6 +24,10 @@ namespace UI::Search {
             uiMovie->SetMouseCursorCount(1);  // enable input            
         }
 
+        
+	}
+
+    void SearchMenu::PostCreate() {
         QueueUITask([this]() {
             Locker locker(_lock);
             RE::GFxValue optionBoxes;
@@ -50,7 +54,7 @@ namespace UI::Search {
             _view->CreateFunction(&doInputtingTextFn, fn4);
             optionBoxes.SetMember("doSetInputtingText", doInputtingTextFn);
         });
-	}
+    }
 
     void SearchMenu::SendControl(int32_t control) {
 

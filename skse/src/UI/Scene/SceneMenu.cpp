@@ -4,7 +4,9 @@
 
 namespace UI::Scene {    
 
-    SceneMenu::SceneMenu() : Super(MENU_NAME) {
+    SceneMenu::SceneMenu() : Super(MENU_NAME) {}
+
+    void SceneMenu::PostCreate() {
         QueueUITask([this]() {
             Locker locker(_lock);
             RE::GFxValue optionBoxes;
@@ -13,8 +15,8 @@ namespace UI::Scene {
             RE::GFxValue dst;
             _view->CreateFunction(&dst, fn);
             optionBoxes.SetMember("doSendTransitionRequest", dst);
-        });        
-	}
+        });
+    }
 
 	void SceneMenu::Show() {
         OStimMenu::Show();
