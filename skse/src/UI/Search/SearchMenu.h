@@ -27,7 +27,7 @@ namespace UI::Search {
         void Hide();
         void Search(std::string value);
         void SelectOption(std::string val);
-        void PostCreate() override;
+        void PostRegister() override;
 
         void ApplyPositions();
         bool IsInputtingText() { return _inputtingText; }

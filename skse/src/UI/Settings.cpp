@@ -1,6 +1,4 @@
 #include "UI/Settings.h"
-#include "UI/Align/AlignMenu.h"
-#include "UI/Scene/SceneMenu.h"
 #include <Util.h>
 
 namespace UI {

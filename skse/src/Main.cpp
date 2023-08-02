@@ -14,8 +14,6 @@
 #include "Serial/Manager.h"
 #include "Sound/SoundTable.h"
 #include "Trait/TraitTable.h"
-#include "UI/Align/AlignMenu.h"
-#include "UI/Scene/SceneMenu.h"
 #include "UI/UIState.h"
 #include "Util/CompatibilityTable.h"
 #include "Util/LegacyUtil.h"
@@ -97,6 +95,13 @@ namespace {
                 // we are installing this hook so late because we need it to overwrite the PapyrusUtil hook
                 Events::PackageStart::Install();
             } break;
+            case SKSE::MessagingInterface::kPreLoadGame: {
+                UI::PostRegisterMenus();
+            } break;
+            case SKSE::MessagingInterface::kNewGame: {
+                UI::PostRegisterMenus();
+            } break;
+
         }
     }
 }  // namespace

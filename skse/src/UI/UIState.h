@@ -14,6 +14,12 @@ namespace UI {
         UI::Search::SearchMenu::Register();
     }
 
+    inline static void PostRegisterMenus() {
+        UI::Align::AlignMenu::GetMenu()->PostRegister();
+        UI::Scene::SceneMenu::GetMenu()->PostRegister();
+        UI::Search::SearchMenu::GetMenu()->PostRegister();
+    }
+
     inline static void HideMenus() {
         UI::Align::AlignMenu::GetMenu()->Hide();
         UI::Scene::SceneMenu::GetMenu()->Hide();
