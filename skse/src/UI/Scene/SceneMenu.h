@@ -20,6 +20,7 @@ namespace UI::Scene {
 		}
 		static void Register() { OStimMenu::Register(MENU_NAME, Creator); }
 		static RE::stl::owner<RE::IMenu*> Creator() { return new SceneMenu(); }
+		void PostCreate() override;
 
 		void Show();		
 		

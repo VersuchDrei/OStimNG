@@ -27,6 +27,8 @@ namespace UI {
         }
     }
 
+    void OStimMenu::PostCreate() {}
+
     void OStimMenu::Register(std::string menuName, RE::UI::Create_t* createFn) {
         auto ui = RE::UI::GetSingleton();
         if (ui) {
