@@ -72,7 +72,6 @@ namespace {
                 RE::BSInputDeviceManager::GetSingleton()->AddEventSink(Events::EventListener::GetSingleton());
             } break;
             case SKSE::MessagingInterface::kDataLoaded: {
-                UI::RegisterMenus();
                 // needs to be in here because a lot of these need to access forms
                 GameAPI::GameTable::setup();
 
@@ -132,6 +131,7 @@ SKSEPluginLoad(const LoadInterface* skse) {
     serial->SetLoadCallback(Serialization::Load);
     serial->SetRevertCallback(Serialization::Revert);
 
+    UI::RegisterMenus();
     log::info("{} has finished loading.", plugin->GetName());
     return true;
 }
