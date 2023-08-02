@@ -14,8 +14,6 @@
 #include "Serial/Manager.h"
 #include "Sound/SoundTable.h"
 #include "Trait/TraitTable.h"
-#include "UI/Align/AlignMenu.h"
-#include "UI/Scene/SceneMenu.h"
 #include "UI/UIState.h"
 #include "Util/CompatibilityTable.h"
 #include "Util/LegacyUtil.h"

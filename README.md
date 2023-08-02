@@ -1,5 +1,5 @@
 # OStimNG
-mono repo for OStim NG development
+mono repo for OStim Standalone development
 
 ## Credits
 
@@ -24,3 +24,7 @@ Egilvar for the tongue meshes
 Gus Crow for expression files
 
 Calyps for the strap-on meshes
+
+Keed for the icons
+
+Ace and Moon for the animations

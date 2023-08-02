@@ -1,7 +1,7 @@
 Voice sets define what sounds are made by an actor during a scene.
 
 OStim will always first check if there is a voice set for the actor base. If there isn't it will check for the voice type.
-If that fails to it will use the default voice set for either males for females depending on the actors sex.
+If that fails too it will use the default voice set for either males for females depending on the actors sex.
 
 Since OStim plays the sounds from an SKSE plugin it can play them from sound descriptors directly, there is no need to create sound markers.
 
