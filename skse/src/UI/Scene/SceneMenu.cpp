@@ -6,7 +6,7 @@ namespace UI::Scene {
 
     SceneMenu::SceneMenu() : Super(MENU_NAME) {}
 
-    void SceneMenu::PostCreate() {
+    void SceneMenu::PostRegister() {
         QueueUITask([this]() {
             Locker locker(_lock);
             RE::GFxValue optionBoxes;

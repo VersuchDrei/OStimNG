@@ -27,7 +27,7 @@ namespace UI::Search {
         
 	}
 
-    void SearchMenu::PostCreate() {
+    void SearchMenu::PostRegister() {
         QueueUITask([this]() {
             Locker locker(_lock);
             RE::GFxValue optionBoxes;
