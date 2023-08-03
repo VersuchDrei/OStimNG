@@ -540,3 +540,4 @@ contrib/Distribution/**/*.pex
 build.ps1
 data/scripts/*.pex
 gfxfontlib.swf
+/data/*.zip
