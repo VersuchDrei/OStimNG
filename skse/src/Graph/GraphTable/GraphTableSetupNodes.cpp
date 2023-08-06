@@ -340,6 +340,17 @@ namespace Graph {
                                 }
                             }
 
+                            if (jsonActor.contains("animationIndex")) {
+                                if (jsonActor["animationIndex"].is_number_integer()) {
+                                    actor.animationIndex = json["animationIndex"];
+                                } else {
+                                    actor.animationIndex = index;
+                                    logger::warn("animationIndex property of actor {} of scene {} isn't an integer", index, node->scene_id);
+                                }
+                            } else {
+                                actor.animationIndex = index;
+                            }
+
                             // TODO: this is too skyrim specific
                             if (jsonActor.contains("lookUp")) {
                                 if (jsonActor["lookUp"].is_number_integer()) {

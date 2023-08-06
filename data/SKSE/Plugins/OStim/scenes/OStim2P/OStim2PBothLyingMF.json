@@ -1,0 +1,58 @@
+{
+	"name": "Both Lying Straight",
+	"modpack": "OStim",
+	"length": 2.0,
+	"speeds":[
+		{
+			"animation": "OStim2PBothLyingMF"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStim2PLyingOnTopMF",
+			"description": "lie on {1}",
+			"icon": "OStim/symbols/switch"
+		},
+		{
+			"destination": "OStim2PLyingKneelingMF",
+			"description": "kneel up ({1})",
+			"icon": "OStim/positional/kneeling_f"
+		},
+		{
+			"destination": "OStim2PSittingMF",
+			"description": "sit up",
+			"icon": "OStim/positional/leanback_f"
+		}
+	],
+	"tags":[
+		"idle",
+		"intro"
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"sosBend": 9,
+			"scale": 1.03,
+			"lookLeft": 50,
+			"tags": [
+				"lyingback"
+			],
+			"feetOnGround": false
+		},
+		{
+			"intendedSex": "female",
+			"lookLeft": -50,
+			"tags": [
+				"lyingback"
+			],
+			"feetOnGround": false
+		}
+	],
+	"actions":[
+		{
+			"type": "holdinghand",
+			"actor": 0,
+			"target": 1
+		}
+	]
+}

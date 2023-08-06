@@ -21,12 +21,12 @@
 		},
 		{
 			"destination": "OStimBench2PSittingStandingMM",
-			"description": "stand up (right)",
+			"description": "stand up ({1})",
 			"icon": "OStim/positional/standup_m"
 		},
 		{
 			"destination": "OStimBench2PStandingSittingMM",
-			"description": "stand up (left)",
+			"description": "stand up ({0})",
 			"icon": "OStim/positional/standup_m"
 		}
 	],

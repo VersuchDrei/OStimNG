@@ -35,6 +35,7 @@ set(sources
     src/Core/Thread/ThreadAutoControl.cpp
     src/Core/Thread/ThreadClimax.cpp
     src/Core/Thread/ThreadNavigation.cpp
+    src/Core/ThreadActor/ThreadActorAnimation.cpp
     src/Core/ThreadActor/ThreadActorClimax.cpp
     src/Core/ThreadActor/ThreadActorExcitement.cpp
     src/Core/ThreadStarter/NPCThreadStarter.cpp

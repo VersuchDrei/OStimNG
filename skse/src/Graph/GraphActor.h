@@ -12,6 +12,7 @@ namespace Graph {
         float scaleHeight = 120.748;
         bool feetOnGround = false;
         int expressionAction = -1;
+        int animationIndex = -1;
         std::string expressionOverride = "";
         bool moan = false;
         bool talk = false;

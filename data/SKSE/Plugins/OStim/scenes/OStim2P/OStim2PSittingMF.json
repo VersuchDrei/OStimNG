@@ -22,11 +22,20 @@
 			"destination": "OStim2PStandingApartMF",
 			"description": "stand up",
 			"icon": "OStim/positional/standup_m"
+		},
+		{
+			"destination": "OStim2PLyingOnTopMF",
+			"description": "lie on {1}",
+			"icon": "OStim/positional/lyingback_f"
+		},
+		{
+			"destination": "OStim2PBothLyingMF",
+			"description": "lie down",
+			"icon": "OStim/positional/lyingback_m"
 		}
 	],
 	"tags":[
-		"idle",
-		"intro"
+		"idle"
 	],
 	"actors":[
 		{

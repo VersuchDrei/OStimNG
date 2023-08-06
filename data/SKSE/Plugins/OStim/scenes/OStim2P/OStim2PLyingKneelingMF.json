@@ -1,0 +1,48 @@
+{
+	"name": "Lying Kneeling Straight",
+	"modpack": "OStim",
+	"length": 2.0,
+	"speeds":[
+		{
+			"animation": "OStim2PLyingKneelingMF"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStim2PBothLyingMF",
+			"description": "lie down ({1})",
+			"icon": "OStim/positional/lyingback_f"
+		}
+	],
+	"tags":[
+		"idle"
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"sosBend": 3,
+			"scale": 1.03,
+			"lookUp": 30,
+			"tags": [
+				"lyingback"
+			],
+			"feetOnGround": false
+		},
+		{
+			"intendedSex": "female",
+			"lookLeft": 10,
+			"lookUp": -20,
+			"tags": [
+				"kneeling"
+			],
+			"feetOnGround": false
+		}
+	],
+	"actions":[
+		{
+			"type": "holdingthigh",
+			"actor": 1,
+			"target": 0
+		}
+	]
+}

@@ -1,6 +1,7 @@
 #include "Core/ThreadManager.h"
 #include "UI/UIState.h"
 
+#include "GameAPI/Game.h"
 #include "Util/Constants.h"
 #include "Util/VectorUtil.h"
 
@@ -40,6 +41,7 @@ namespace OStim {
         }
         if (threadID == 0) {
             if (m_threadMap.contains(0)) {
+                GameAPI::Game::notification("main thread already running");
                 return -1;
             }
         } else {
@@ -151,7 +153,9 @@ namespace OStim {
             m_threadMap.erase(threadID);
             thread->close();
             delete thread;
-            idGenerator.free(threadID);
+            if (threadID != 0) {
+                idGenerator.free(threadID);
+            }
             auto log = RE::ConsoleLog::GetSingleton();
             if (log) {
                 log->Print(("Found scene: erasing " + std::to_string(threadID)).c_str());

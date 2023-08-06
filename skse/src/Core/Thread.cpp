@@ -441,8 +441,7 @@ namespace OStim {
         for (auto& actorIt : m_actors) {
             if (m_currentNode) {
                 if (m_currentNode->speeds.size() > speed) {
-                    auto anim = m_currentNode->speeds[speed].animation + "_" + std::to_string(actorIt.first);
-                    actorIt.second.getActor().playAnimation(anim, m_currentNode->speeds[speed].playbackSpeed);
+                    actorIt.second.playAnimation(m_currentNode->speeds[speed]);
 
                     // this fixes some face bugs
                     // TODO how to do this with GraphActor?

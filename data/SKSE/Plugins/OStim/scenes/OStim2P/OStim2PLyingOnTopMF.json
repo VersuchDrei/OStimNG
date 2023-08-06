@@ -1,0 +1,59 @@
+{
+	"name": "Lying On Top Straight",
+	"modpack": "OStim",
+	"length": 2.0,
+	"speeds":[
+		{
+			"animation": "OStim2PLyingOnTopMF"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStim2PBothLyingMF",
+			"description": "lie down ({0})",
+			"icon": "OStim/positional/lyingback_m"
+		},
+		{
+			"destination": "OStim2PSittingMF",
+			"description": "sit up",
+			"icon": "OStim/positional/leanback_f"
+		}
+	],
+	"tags":[
+		"idle"
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"sosBend": 3,
+			"scale": 1.03,
+			"lookLeft": -30,
+			"lookUp": 30,
+			"tags": [
+				"lyingfront"
+			],
+			"feetOnGround": false
+		},
+		{
+			"intendedSex": "female",
+			"lookLeft": -20,
+			"lookUp": -30,
+			"tags": [
+				"lyingback"
+			],
+			"feetOnGround": false
+		}
+	],
+	"actions":[
+		{
+			"type": "holdinghand",
+			"actor": 0,
+			"target": 1
+		},
+		{
+			"type": "strokinghead",
+			"actor": 1,
+			"target": 0
+		}
+	]
+}

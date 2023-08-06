@@ -179,8 +179,6 @@ namespace OStim {
         bool muted = false;
         int moanCooldown = -1;
 
-        void scale();
-        void bendSchlong();
         void checkHeelOffset();
         void applyHeelOffset(bool remove);
         void updateHeelOffset();
@@ -198,6 +196,15 @@ namespace OStim {
 
         void papyrusUndressCallback(std::vector<RE::TESObjectARMO*> items);
         void papyrusRedressCallback(std::vector<RE::TESObjectARMO*> items);
+
+#pragma region animation
+    public:
+        void playAnimation(Graph::Speed& speed);
+
+    private:
+        void scale();
+        void bendSchlong();
+#pragma endregion
 
 #pragma region climax
     public:

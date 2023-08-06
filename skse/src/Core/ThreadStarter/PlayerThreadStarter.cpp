@@ -66,7 +66,6 @@ namespace OStim {
                     }
                     if (!objects.empty()) {
                         GameAPI::Game::showMessageBox("Which furniture do you want to use?", options, [params, objects](unsigned int result) {
-                            logger::info("message box result");
                             if (result == 0) {
                                 handleActorAdding(params);
                             } else if (result > objects.size()){
@@ -201,6 +200,7 @@ namespace OStim {
         }
         
         if (!params.startingNode && !params.startingSequence) {
+            GameAPI::Game::notification("no starting animation found");
             return;
         }
 

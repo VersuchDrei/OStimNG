@@ -16,6 +16,12 @@ b -Tn OStim2PStandingApartMF_0 OStim2P\OStim2PStandingApartMF_0.hkx
 b -Tn OStim2PStandingApartMF_1 OStim2P\OStim2PStandingApartMF_1.hkx
 b -Tn OStim2PSittingMF_0 OStim2P\OStim2PSittingMF_0.hkx
 b -Tn OStim2PSittingMF_1 OStim2P\OStim2PSittingMF_1.hkx
+b -Tn OStim2PLyingOnTopMF_0 OStim2P\OStim2PLyingOnTopMF_0.hkx
+b -Tn OStim2PLyingOnTopMF_1 OStim2P\OStim2PLyingOnTopMF_1.hkx
+b -Tn OStim2PBothLyingMF_0 OStim2P\OStim2PBothLyingMF_0.hkx
+b -Tn OStim2PBothLyingMF_1 OStim2P\OStim2PBothLyingMF_1.hkx
+b -Tn OStim2PLyingKneelingMF_0 OStim2P\OStim2PLyingKneelingMF_0.hkx
+b -Tn OStim2PLyingKneelingMF_1 OStim2P\OStim2PLyingKneelingMF_1.hkx
 
 b -Tn OStim2PStandingCloseFF_0 OStim2P\OStim2PStandingCloseFF_0.hkx
 b -Tn OStim2PStandingCloseFF_1 OStim2P\OStim2PStandingCloseFF_1.hkx
