@@ -11,7 +11,6 @@ class Option_MC extends MovieClip
 	var Title:String;
 	var ImagePath:String;
 	var Description:String;
-	var NodeInfoBox:MovieClip;
 	var optionText:TextField;
 	var TextureLoader;
 	var textureContainer:MovieClip;
@@ -21,15 +20,13 @@ class Option_MC extends MovieClip
 		super();
 		_w = this._width;
 		_h = this._height;
-		this._alpha = 80;
-		NodeInfoBox = _parent._parent.NodeInfoBox;
+		this._alpha = 70;
 		HideOption();
 	}
 
 	// Public Functions
 	public function OnHighlight()
 	{
-		NodeInfoBox.AssignData({Title:Title, Description:Description});
 		this._width = _w;
 		this._height = _h;
 		TweenLite.killTweensOf(this, false, {_alpha:true});
@@ -46,8 +43,10 @@ class Option_MC extends MovieClip
 	public function OnSelect()
 	{
 		TweenLite.to(this,0.5,{_width:_w + 7, _height:_h + 7});
-		_parent.SendTransitionRequest(NodeID);
+		doSelect();
 	}
+	
+	public function doSelect(){}
 
 	public function SetData(Node:Object)
 	{

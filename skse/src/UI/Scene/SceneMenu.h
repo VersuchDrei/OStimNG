@@ -28,6 +28,7 @@ namespace UI::Scene {
 		void ApplyPositions();
 
 		void ChangeAnimation(std::string nodeId);
+		void ChangeSpeed(int speed);
 		void UpdateMenuData();
 		void HideSpeed();
 		void UpdateSpeed();
@@ -73,5 +74,12 @@ namespace UI::Scene {
 		void Call(Params& args) override {
 			UI::Scene::SceneMenu::GetMenu()->ChangeAnimation(args.args[0].GetString());
 		}
+	};
+
+	class doSpeedChange : public RE::GFxFunctionHandler {
+		public :
+			void Call(Params& args) override {
+				UI::Scene::SceneMenu::GetMenu()->ChangeSpeed(args.args[0].GetNumber());
+			}
 	};
 }

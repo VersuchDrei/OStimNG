@@ -15,6 +15,11 @@ namespace UI::Scene {
             RE::GFxValue dst;
             _view->CreateFunction(&dst, fn);
             optionBoxes.SetMember("doSendTransitionRequest", dst);
+
+            RE::GFxFunctionHandler* fn2 = new doSpeedChange;
+            RE::GFxValue dst2;
+            _view->CreateFunction(&dst2, fn2);
+            optionBoxes.SetMember("doSpeedChange", dst2);
         });
     }
 
@@ -163,7 +168,19 @@ namespace UI::Scene {
         SKSE::GetTaskInterface()->AddTask([nodeId]() {
             UI::UIState::GetSingleton()->currentThread->Navigate(nodeId);
         });
-    }    
+    }
+
+    void SceneMenu::ChangeSpeed(int speed) {
+        SKSE::GetTaskInterface()->AddTask([speed]() {
+            if (speed == 0) {
+                UI::UIState::GetSingleton()->currentThread->decreaseSpeed();
+            }
+            else {
+                UI::UIState::GetSingleton()->currentThread->increaseSpeed();
+            }
+
+        });
+    }
 
     void SceneMenu::GetOptionBoxes(RE::GFxValue& optionBoxes) {
         RE::GFxValue root;
