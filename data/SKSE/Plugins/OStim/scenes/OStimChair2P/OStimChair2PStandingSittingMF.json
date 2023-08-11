@@ -20,6 +20,11 @@
 			"icon": "OStim/symbols/gender_mm"
 		},
 		{
+			"destination": "OStimBench2PBothSittingMF",
+			"description": "sit down",
+			"icon": "OStim/positional/chair/sitting_f"
+		},
+		{
 			"destination": "OStimChair2PSittingStandingMF",
 			"description": "switch positions",
 			"icon": "OStim/symbols/switch"

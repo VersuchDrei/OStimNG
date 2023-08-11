@@ -1,0 +1,12 @@
+{
+	"name": "Shelf",
+	"conditions":[
+		{
+			"type": "formlist",
+			"formlist":{
+				"mod": "OStim.esp",
+				"formid": "0xDA0"
+			}
+		}
+	]
+}

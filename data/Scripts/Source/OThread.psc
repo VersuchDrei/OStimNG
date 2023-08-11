@@ -215,9 +215,9 @@ ObjectReference Function GetFurniture(int ThreadID) Global Native
 * *
 * * @param: ThreadID, the id of the thread
 * *
-* * @return: the furniture type, returns -1 if the thread is still in startup or ended
+* * @return: the furniture type, returns "" if the thread is still in startup or ended
 */;
-int Function GetFurnitureType(int ThreadID) Global Native
+string Function GetFurnitureType(int ThreadID) Global Native
 
 
 ;  █████╗ ██╗   ██╗████████╗ ██████╗     ███╗   ███╗ ██████╗ ██████╗ ███████╗

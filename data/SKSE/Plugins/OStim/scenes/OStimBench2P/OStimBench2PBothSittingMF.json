@@ -20,12 +20,12 @@
 			"icon": "OStim/symbols/gender_ff"
 		},
 		{
-			"destination": "OStimBench2PSittingStandingMF",
+			"destination": "OStimChair2PSittingStandingMF",
 			"description": "stand up ({1})",
 			"icon": "OStim/positional/standup_f"
 		},
 		{
-			"destination": "OStimBench2PStandingSittingMF",
+			"destination": "OStimChair2PStandingSittingMF",
 			"description": "stand up ({0})",
 			"icon": "OStim/positional/standup_m"
 		}

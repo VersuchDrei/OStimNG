@@ -2,7 +2,7 @@
 
 #include "ThreadManager.h"
 
-#include "Furniture/Furniture.h"
+#include "Furniture/FurnitureTable.h"
 #include "GameAPI/Game.h"
 #include "GameAPI/GameCamera.h"
 #include "Graph/GraphTable.h"
@@ -30,24 +30,24 @@ namespace OStim {
         }
 
         // --- setting up the vehicle --- //
-        // TODO GameActor
-        RE::TESObjectREFR* center = furniture ? furniture : (playerThread ? RE::PlayerCharacter::GetSingleton() : params.actors[0].form);
-        this->center = center->GetPosition();
-        rotation = center->GetAngleZ();
+        this->center = furniture ? furniture.getPosition() : params.actors.front().getPosition();
 
         if (furniture) {
-            furnitureType = Furniture::getFurnitureType(furniture, false);
-            furnitureOwner = ObjectRefUtil::getOwner(furniture);
-            Furniture::lockFurniture(furniture);
+            furnitureType = Furniture::FurnitureTable::getFurnitureType(furniture, false);
+            furnitureOwner = furniture.getOwner();
+            furniture.disableUse();
 
-            std::vector<float> offset = Furniture::getOffset(furniture);
-            float angle = furniture->GetAngleZ();
+            Furniture::FurnitureOffset offset = Furniture::getOffset(furniture);
+            float angle = furniture.getRotation();
             float sin = std::sin(angle);
             float cos = std::cos(angle);
-            rotation += offset[3];
-            this->center.x +=  cos * offset[0] + sin * offset[1];
-            this->center.y += -sin * offset[0] + cos * offset[1];
-            this->center.z += offset[2];
+            center.r += offset.rotation;
+            center.x +=  cos * offset.x + sin * offset.y;
+            center.y += -sin * offset.x + cos * offset.y;
+            center.z += offset.z;
+            furnitureScaleMult = offset.scale;
+        } else {
+            furnitureType = Furniture::FurnitureTable::getFurnitureType("none");
         }
 
         for (int i = 0; i < params.actors.size(); i++) {
@@ -56,7 +56,8 @@ namespace OStim {
         }
 
         if (furniture && MCM::MCMTable::resetClutter()) {
-            Furniture::resetClutter(furniture, MCM::MCMTable::resetClutterRadius() * 100);
+            // TODO GameObject
+            Furniture::resetClutter(furniture.form, MCM::MCMTable::resetClutterRadius() * 100);
         }
 
         if (playerThread) {
@@ -318,8 +319,6 @@ namespace OStim {
         if (MCM::MCMTable::removeWeaponsAtStart()) {
             threadActor->removeWeapons();
         }
-        logger::info("moving actor");
-        //actor->MoveTo(vehicle);
         logger::info("aligning actor");
         alignActor(threadActor, {});
     }
@@ -341,16 +340,16 @@ namespace OStim {
     }
 
     void Thread::alignActor(ThreadActor* threadActor, Alignment::ActorAlignment alignment) {
-        float sin = std::sin(rotation);
-        float cos = std::cos(rotation);
+        float sin = std::sin(center.r);
+        float cos = std::cos(center.r);
         
         threadActor->getActor().lockAtPosition(
             center.x + cos * alignment.offsetX + sin * alignment.offsetY,
             center.y - sin * alignment.offsetX + cos * alignment.offsetY,
             center.z + alignment.offsetZ,
-            rotation + MathUtil::toRadians(alignment.rotation));
+            center.r + MathUtil::toRadians(alignment.rotation));
 
-        threadActor->setScaleMult(alignment.scale);
+        threadActor->setScaleMult(alignment.scale * furnitureScaleMult);
         threadActor->setSoSBend(alignment.sosBend);
     }
 
@@ -572,9 +571,11 @@ namespace OStim {
         }
 
         if (furniture) {
-            Furniture::freeFurniture(furniture, furnitureOwner);
+            furniture.enableUse();
+            furniture.setOwner(furnitureOwner);
             if (MCM::MCMTable::resetClutter()) {
-                Furniture::resetClutter(furniture, MCM::MCMTable::resetClutterRadius() * 100);
+                // TODO properly use GameObject
+                Furniture::resetClutter(furniture.form, MCM::MCMTable::resetClutterRadius() * 100);
             }
         }
 

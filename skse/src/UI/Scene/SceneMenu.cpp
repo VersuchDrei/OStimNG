@@ -100,7 +100,7 @@ namespace UI::Scene {
             std::vector<Trait::ActorCondition> conditions = state->currentThread->getActorConditions();
             logger::info("after building conditions");
             for (auto& nav : currentNode->navigations) {
-                if (nav.fulfilledBy(conditions)) {
+                if (nav.fulfilledBy(conditions) && state->currentThread->getFurnitureType()->isChildOf(nav.nodes.back()->furnitureType)) {
                     menuData.options.push_back(
                         {.nodeId = nav.nodes.front()->scene_id,
                          .title = nav.nodes.back()->scene_name,

@@ -1,26 +1,23 @@
 #pragma once
 
+#include "GameRecord.h"
+
 namespace GameAPI {
-    struct GameGlobalVariable {
+    struct GameGlobalVariable : public GameRecord<RE::TESGlobal>{
     public:
         inline static GameGlobalVariable fromFile(std::string mod, uint32_t formID) {
             return RE::TESDataHandler::GetSingleton()->LookupForm<RE::TESGlobal>(formID, mod);
         }
 
-        RE::TESGlobal* global;
-
-        inline GameGlobalVariable(RE::TESGlobal* global) : global{global} {}
-
-        inline operator bool() const { return global; }
-        inline bool operator==(const GameGlobalVariable other) { return global == other.global; }
-        inline bool operator!=(const GameGlobalVariable other) { return global != other.global; }
+        inline GameGlobalVariable() {}
+        inline GameGlobalVariable(RE::TESGlobal* global) { form = global; }
 
         inline float getValue() {
-            return global->value;
+            return form->value;
         }
 
         inline void setValue(float value) {
-            global->value = value;
+            form->value = value;
         }
     };
 }

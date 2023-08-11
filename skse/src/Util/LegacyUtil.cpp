@@ -150,13 +150,17 @@ namespace LegacyUtil {
 
                 if (auto furnitureType = metadata.attribute("furniture")) {
                     node->furnitureType = Furniture::FurnitureTable::getFurnitureType(furnitureType.as_string());
+                } else {
+                    node->furnitureType = Furniture::FurnitureTable::getFurnitureType("none");
                 }
 
                 isOldFormat = false;
+            } else {
+                node->furnitureType = Furniture::FurnitureTable::getFurnitureType("none");
             }
 
             for (int i = 0; i < actorCount; i++) {
-                node->actors.push_back({});
+                node->actors.push_back({.animationIndex = i});
             }
             node->actors[0].scale = 1.03;
 
@@ -237,8 +241,7 @@ namespace LegacyUtil {
                             if (auto feetOnGround = actor.attribute("feetOnGround")) {
                                 node->actors[pos].feetOnGround = feetOnGround.as_bool();
                             } else {
-                                node->actors[pos].feetOnGround =
-                                    VectorUtil::containsAny(node->actors[pos].tags, {"standing", "squatting"});
+                                node->actors[pos].feetOnGround = VectorUtil::containsAny(node->actors[pos].tags, {"standing", "squatting"});
                             }
 
                             for (auto& autotransition : actor.children("autotransition")) {

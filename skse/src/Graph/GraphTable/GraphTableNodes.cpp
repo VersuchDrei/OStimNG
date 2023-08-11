@@ -13,12 +13,12 @@ namespace Graph {
         std::unordered_map<int, std::vector<Node*>*>* innerMap;
         std::vector<Node*>* innerList;
         int count = node->actors.size();
-        auto iter = nodeList.find(node->furnitureType);
+        auto iter = nodeList.find(node->furnitureType->getMasterType());
         if (iter != nodeList.end()) {
             innerMap = iter->second;
         } else {
             innerMap = new std::unordered_map<int, std::vector<Node*>*>();
-            nodeList.insert({node->furnitureType, innerMap});
+            nodeList.insert({node->furnitureType->getMasterType(), innerMap});
         }
 
         auto iter2 = innerMap->find(count);
@@ -50,8 +50,8 @@ namespace Graph {
                 continue;
             }
 
-            if (start->furnitureType != destination->furnitureType) {
-                logger::warn("Couldn't add navigation from {} to {} because their furniture types don't match.", raw.origin, raw.destination);
+            if (!start->furnitureType->isChildOf(destination->furnitureType) && !destination->furnitureType->isChildOf(start->furnitureType)) {
+                logger::warn("Couldn't add navigation from {} to {} because their furniture types aren't compatible.", raw.origin, raw.destination);
                 continue;
             }
 
@@ -147,10 +147,8 @@ namespace Graph {
         return nullptr;
     }
 
-    bool GraphTable::hasNodes(Furniture::FurnitureType furnitureType, int actorCount) {
-        if (furnitureType == Furniture::FurnitureType::BED) {
-            furnitureType = Furniture::FurnitureType::NONE;
-        }
+    bool GraphTable::hasNodes(Furniture::FurnitureType* furnitureType, int actorCount) {
+        furnitureType = furnitureType->getMasterType();
 
         auto iter = nodeList.find(furnitureType);
         if (iter == nodeList.end()) {
@@ -161,12 +159,10 @@ namespace Graph {
         return iter2 != iter->second->end();
     }
 
-    Node* GraphTable::getRandomNode(Furniture::FurnitureType furnitureType, std::vector<Trait::ActorCondition> actorConditions, std::function<bool(Node*)> nodeCondition) {
-        if (furnitureType == Furniture::FurnitureType::BED) {
-            furnitureType = Furniture::FurnitureType::NONE;
-        }
+    Node* GraphTable::getRandomNode(Furniture::FurnitureType* furnitureType, std::vector<Trait::ActorCondition> actorConditions, std::function<bool(Node*)> nodeCondition) {
+        Furniture::FurnitureType* masterType = furnitureType->getMasterType();
 
-        auto iter = nodeList.find(furnitureType);
+        auto iter = nodeList.find(masterType);
         if (iter == nodeList.end()) {
             return nullptr;
         }
@@ -182,7 +178,7 @@ namespace Graph {
         std::shuffle(std::begin(copy), std::end(copy), Constants::RNG);
 
         for (Node* node : copy) {
-            if (!node->isTransition && !node->noRandomSelection && node->fulfilledBy(actorConditions) && nodeCondition(node)) {
+            if (!node->isTransition && !node->noRandomSelection && furnitureType->isChildOf(node->furnitureType) && node->fulfilledBy(actorConditions) && nodeCondition(node)) {
                 return node;
             }
         }

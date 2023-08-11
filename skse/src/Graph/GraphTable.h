@@ -5,7 +5,7 @@
 #include "Requirement.h"
 #include "Sequence.h"
 
-#include "Furniture/Furniture.h"
+#include "Furniture/FurnitureType.h"
 #include "Trait/Condition.h"
 
 namespace Graph{
@@ -53,20 +53,20 @@ namespace Graph{
         static void searchNodesByName(std::string& name, std::vector<Node*>& results);
         static Node* getNodeByAnimation(std::string anim);
 
-        static bool hasNodes(Furniture::FurnitureType furnitureType, int actorCount);
-        static Node* getRandomNode(Furniture::FurnitureType furnitureType, std::vector<Trait::ActorCondition> actorConditions, std::function<bool(Node*)> nodeCondition);
+        static bool hasNodes(Furniture::FurnitureType* furnitureType, int actorCount);
+        static Node* getRandomNode(Furniture::FurnitureType* furnitureType, std::vector<Trait::ActorCondition> actorConditions, std::function<bool(Node*)> nodeCondition);
 
     private:
         inline static std::unordered_map<std::string, Node*> nodes;
         inline static std::unordered_map<std::string, Node*> animationNodeTable;
-        inline static std::unordered_map<Furniture::FurnitureType, std::unordered_map<int, std::vector<Node*>*>*> nodeList;
+        inline static std::unordered_map<Furniture::FurnitureType*, std::unordered_map<int, std::vector<Node*>*>*> nodeList;
 #pragma endregion
 
 #pragma region sequences
     public:
         static void setupSequences();
         static Sequence* getSequenceByID(std::string id);
-        static Sequence* getRandomSequence(Furniture::FurnitureType furnitureType, std::vector<Trait::ActorCondition> actorConditions, std::function<bool(Sequence*)> sequenceCondition);
+        static Sequence* getRandomSequence(Furniture::FurnitureType* furnitureType, std::vector<Trait::ActorCondition> actorConditions, std::function<bool(Sequence*)> sequenceCondition);
 
     private:
         inline static std::unordered_map<std::string, Sequence> sequences;

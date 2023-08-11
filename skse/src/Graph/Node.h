@@ -45,7 +45,7 @@ namespace Graph {
         int animationLengthMs = 0;
         bool hasIdleSpeed = false;
         bool noRandomSelection = false;
-        Furniture::FurnitureType furnitureType = Furniture::FurnitureType::NONE;
+        Furniture::FurnitureType* furnitureType = nullptr;
         std::unordered_map<std::string, std::string> autoTransitions;
         std::vector<std::string> tags;
         std::vector<GraphActor> actors;

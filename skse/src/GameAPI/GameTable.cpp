@@ -15,5 +15,7 @@ namespace GameAPI {
         FadeToBlackBackImod = handler->LookupForm<RE::TESImageSpaceModifier>(0x0F756F, "Skyrim.esm");
 
         OStimImprovedCamSupport = handler->LookupForm<RE::TESGlobal>(0xDE6, "OStim.esp");
+
+        OStimEmptyFaction = handler->LookupForm<RE::TESFaction>(0xDED, "OStim.esp");
     }
 }

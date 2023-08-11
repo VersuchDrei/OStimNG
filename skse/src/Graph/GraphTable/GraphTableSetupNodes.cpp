@@ -246,12 +246,15 @@ namespace Graph {
             if (json.contains("furniture")) {
                 if (json["furniture"].is_string()) {
                     node->furnitureType = Furniture::FurnitureTable::getFurnitureType(json["furniture"]);
-                    if (node->furnitureType == Furniture::FurnitureType::NONE) {
+                    if (node->furnitureType->id == "none") {
                         logger::warn("furniture type of scene {} doesn't exist", node->scene_id);
                     }
                 } else {
+                    node->furnitureType = Furniture::FurnitureTable::getFurnitureType("none");
                     logger::warn("furniture property of scene {} isn't a string", node->scene_id);
                 }
+            } else {
+                node->furnitureType = Furniture::FurnitureTable::getFurnitureType("none");
             }
 
             if (json.contains("tags")) {
@@ -329,6 +332,14 @@ namespace Graph {
                                     actor.scaleHeight = jsonActor["scaleHeight"];
                                 } else {
                                     logger::warn("scaleHeight property of actor {} of scene {} isn't a number", index, node->scene_id);
+                                }
+                            }
+
+                            if (jsonActor.contains("expressionOverride")) {
+                                if (jsonActor["expressionOverride"].is_string()) {
+                                    actor.expressionOverride = jsonActor["expressionOverride"];
+                                } else {
+                                    logger::warn("expressionOverride property of actor {} of scene {} isn't a string", index, node->scene_id);
                                 }
                             }
 

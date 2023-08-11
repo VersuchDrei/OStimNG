@@ -1,0 +1,15 @@
+{
+	"priority": 10,
+	"supertype": "table",
+	"conditions":[
+		{
+			"type": "anykeyword",
+			"keywords":[
+				{
+					"mod": "Skyrim.esm",
+					"formid": "0x04F6E6"
+				}
+			]
+		}
+	]
+}

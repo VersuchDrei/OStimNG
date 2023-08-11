@@ -1,0 +1,17 @@
+{
+	"priority": 10,
+	"ignoreMarkerOffsetX": true,
+	"rotation": 3.14159,
+	"supertype": "bed",
+	"conditions":[
+		{
+			"type": "anykeyword",
+			"keywords":[
+				{
+					"mod": "Skyrim.esm",
+					"formid": "0x0E4AD6"
+				}
+			]
+		}
+	]
+}

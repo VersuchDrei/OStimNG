@@ -2,6 +2,7 @@
 
 #include "Core/ThreadManager.h"
 
+#include "Furniture/FurnitureTable.h"
 #include "GameAPI/Game.h"
 #include "GameAPI/GameCamera.h"
 #include "Graph/GraphTable.h"
@@ -37,7 +38,7 @@ namespace OStim {
     void handleFurniture(ThreadStartParams params) {
         if (!params.noFurniture && !params.furniture && MCM::MCMTable::useFurniture()) {
             if (params.startingNode || params.startingSequence) {
-                RE::TESObjectREFR* bed = Furniture::findBed(params.actors[0].form, MCM::MCMTable::furnitureSearchDistance(), 96.0f);
+                GameAPI::GameObject bed = Furniture::findBed(params.actors[0].form, MCM::MCMTable::furnitureSearchDistance(), 96.0f);
                 if (bed) {
                     if (MCM::MCMTable::selectFurniture()) {
                         GameAPI::Game::showMessageBox("Do you want to use the nearby bed?", {"Yes", "No"}, [params, bed](unsigned int result) {
@@ -54,15 +55,14 @@ namespace OStim {
                     }
                 }
             } else {
-                std::vector<RE::TESObjectREFR*> furniture = Furniture::findFurniture(params.actors.size(), params.actors[0].form, MCM::MCMTable::furnitureSearchDistance(), 96.0f);
+                std::vector<std::pair<Furniture::FurnitureType*, GameAPI::GameObject>> furniture = Furniture::findFurniture(params.actors.size(), params.actors[0].form, MCM::MCMTable::furnitureSearchDistance(), 96.0f);
                 if (MCM::MCMTable::selectFurniture()) {
                     std::vector<std::string> options = {"None"};
-                    std::vector<RE::TESObjectREFR*> objects;
+                    std::vector<GameAPI::GameObject> objects;
+                    int max = std::min(static_cast<int>(furniture.size()), GameAPI::Game::getMessageBoxOptionLimit() - 1);
                     for (int i = 0; i < furniture.size(); i++) {
-                        if (furniture[i]) {
-                            options.push_back(Furniture::FurnitureTypeAPI::getDisplayName(static_cast<Furniture::FurnitureType>(i + 1)));
-                            objects.push_back(furniture[i]);
-                        }
+                        options.push_back(furniture[i].first->name);
+                        objects.push_back(furniture[i].second);
                     }
                     if (!objects.empty()) {
                         GameAPI::Game::showMessageBox("Which furniture do you want to use?", options, [params, objects](unsigned int result) {
@@ -77,11 +77,8 @@ namespace OStim {
                         return;
                     }
                 } else {
-                    for (RE::TESObjectREFR* object : furniture) {
-                        if (object) {
-                            addFurniture(params, object);
-                            return;
-                        }
+                    if (!furniture.empty()) {
+                        addFurniture(params, furniture.front().second);
                     }
                 }
             }
@@ -89,7 +86,7 @@ namespace OStim {
         handleActorAdding(params);
     }
 
-    void addFurniture(ThreadStartParams params, RE::TESObjectREFR* furniture) {
+    void addFurniture(ThreadStartParams params, GameAPI::GameObject furniture) {
         params.furniture = furniture;
         handleActorAdding(params);
     }
@@ -109,7 +106,7 @@ namespace OStim {
     }
 
     void handleActorAddingInner(ThreadStartParams params) {
-        if (!Graph::GraphTable::hasNodes(Furniture::getFurnitureType(params.furniture, false), params.actors.size() + 1)) {
+        if (!Graph::GraphTable::hasNodes(Furniture::FurnitureTable::getFurnitureType(params.furniture, false), params.actors.size() + 1)) {
             handleActorSorting(params);
             return;
         }
@@ -185,17 +182,15 @@ namespace OStim {
     void handleStartingNode(ThreadStartParams params) {
         if (!params.startingNode && !params.startingSequence) {
             std::string nodeTag = MCM::MCMTable::useIntroScenes() ? "intro" : "idle";
-            Furniture::FurnitureType furnitureType = Furniture::getFurnitureType(params.furniture, false);
-            switch (furnitureType) {
-            case Furniture::FurnitureType::NONE:
+            Furniture::FurnitureType* furnitureType = Furniture::FurnitureTable::getFurnitureType(params.furniture, false);
+            std::string furnitureTypeID = furnitureType->getListType()->id;
+
+            if (furnitureTypeID == "none") {
                 params.startingNode = Graph::GraphTable::getRandomNode(furnitureType, Trait::ActorCondition::create(params.actors), [&nodeTag](Graph::Node* node) { return node->hasNodeTag(nodeTag) && node->hasActorTagOnAny("standing"); });
-                break;
-            case Furniture::FurnitureType::BED:
+            } else if (furnitureTypeID == "bed") {
                 params.startingNode = Graph::GraphTable::getRandomNode(furnitureType, Trait::ActorCondition::create(params.actors), [&nodeTag](Graph::Node* node) { return node->hasNodeTag(nodeTag) && !node->hasActorTagOnAny("standing"); });
-                break;
-            default:
+            } else {
                 params.startingNode = Graph::GraphTable::getRandomNode(furnitureType, Trait::ActorCondition::create(params.actors), [&nodeTag](Graph::Node* node) { return node->hasNodeTag(nodeTag); });
-                break;
             }
         }
         

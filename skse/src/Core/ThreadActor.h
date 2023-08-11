@@ -136,7 +136,6 @@ namespace OStim {
 
         float scaleBefore = 1.0;
         GameAPI::GamePosition positionBefore;
-        float rotationBefore = 0;
 
         bool isPlayer;
         bool female;

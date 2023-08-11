@@ -10,8 +10,6 @@ namespace ObjectRefUtil {
     void stopTranslation(RE::TESObjectREFR* object);
     void translateTo(RE::TESObjectREFR* object, float x, float y, float z, float angleX, float angleY, float angleZ, float speed, float maxRotationSpeed);
     void translateToRadians(RE::TESObjectREFR* object, float x, float y, float z, float angleX, float angleY, float angleZ, float speed, float maxRotationSpeed);
-    RE::TESForm* getOwner(RE::TESObjectREFR* object);
-    void setOwner(RE::TESObjectREFR* object, RE::TESForm* owner);
 
     inline void AddItem(RE::BSScript::IVirtualMachine* vm, RE::VMStackID stackID, RE::TESObjectREFR* object, RE::TESForm* akItemToAdd, int aiCount, bool abSilent) {
         using func_t = decltype(AddItem);

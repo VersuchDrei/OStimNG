@@ -1,0 +1,22 @@
+{
+	"priority": 20,
+	"supertype": "tableleanmarker",
+	"offsetY": -7.5,
+	"offsetZ": -3,
+	"multiplyScale": 0.95,
+	"conditions":[
+		{
+			"type": "anykeyword",
+			"keywords":[
+				{
+					"mod": "Skyrim.esm",
+					"formid": "0x0C4EF2"
+				}
+			]
+		},
+		{
+			"type": "cellname",
+			"cellname": "luxurysuite"
+		}
+	]
+}

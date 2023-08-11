@@ -159,7 +159,7 @@ namespace UI::Search {
         auto state = UI::UIState::GetSingleton();
         for (int i = 0; i < results.size(); i++) {
             if(results[i]->actors.size() == state->currentThread->getActorCount() 
-                && results[i]->furnitureType == state->currentNode->furnitureType 
+                && state->currentThread->getFurnitureType()->isChildOf(results[i]->furnitureType)
                 && !results[i]->isTransition)
                 data.push_back(SearchItem{ results[i]->scene_id,results[i]->scene_name });
         }

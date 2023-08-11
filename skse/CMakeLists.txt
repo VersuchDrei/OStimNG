@@ -49,12 +49,14 @@ set(sources
     src/Events/EventListener.cpp
     src/Furniture/Furniture.cpp
     src/Furniture/FurnitureTable.cpp
+    src/Furniture/FurnitureType.cpp
     src/Game/LocaleManager.cpp
 	src/Game/LocaleManager.h
 	src/Game/Locker.h
     src/GameAPI/Game.cpp
     src/GameAPI/GameActor.cpp
     src/GameAPI/GameCamera.cpp
+    src/GameAPI/GameObject.cpp
     src/GameAPI/GameSex.cpp
     src/GameAPI/GameSound.cpp
     src/GameAPI/GameUtil.cpp
@@ -102,6 +104,7 @@ set(sources
     src/Util/ControlUtil.cpp
     src/Util/FormUtil.cpp
     src/Util/IDGenerator.cpp
+    src/Util/JsonUtil.cpp
     src/Util/LegacyUtil.cpp
     src/Util/LookupTable.cpp
     src/Util/ObjectRefUtil.cpp

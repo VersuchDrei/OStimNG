@@ -52,12 +52,14 @@ namespace Graph {
                 }
 
                 if (!sequence.nodes.empty()) {
-                    Node* front = sequence.nodes.front().node;
-                    if (node->furnitureType != front->furnitureType) {
+                    if (node->furnitureType->isChildOf(sequence.furnitureType)) {
+                        sequence.furnitureType = node->furnitureType;
+                    } else if (!sequence.furnitureType->isChildOf(node->furnitureType)) {
                         logger::warn("scene {} in sequence {} has the wrong furniture type", index, filename);
                         return;
                     }
 
+                    Node* front = sequence.nodes.front().node;
                     if (node->actors.size() != front->actors.size()) {
                         logger::warn("scene {} in sequence {} has the wrong actor count", index, filename);
                         return;
@@ -67,6 +69,8 @@ namespace Graph {
                         logger::warn("scene {} in sequence {} has the wrong actor types", index, filename);
                         return;
                     }
+                } else {
+                    sequence.furnitureType = node->furnitureType;
                 }
 
                 SequenceEntry entry = {.node = node};
@@ -82,14 +86,14 @@ namespace Graph {
                     entry.duration = entry.node->animationLengthMs;
                 }
 
-                if (sequence.nodes.empty()) {
-                    logger::warn("sequence {} is empty", filename);
-                    return;
-                }
-
                 sequence.nodes.push_back(entry);
 
                 index++;
+            }
+
+            if (sequence.nodes.empty()) {
+                logger::warn("sequence {} is empty", filename);
+                return;
             }
 
             if (json.contains("tags")) {
@@ -122,11 +126,7 @@ namespace Graph {
         return nullptr;
     }
 
-    Sequence* GraphTable::getRandomSequence(Furniture::FurnitureType furnitureType, std::vector<Trait::ActorCondition> actorConditions, std::function<bool(Sequence*)> sequenceCondition) {
-        if (furnitureType == Furniture::FurnitureType::BED) {
-            furnitureType = Furniture::FurnitureType::NONE;
-        }
-
+    Sequence* GraphTable::getRandomSequence(Furniture::FurnitureType* furnitureType, std::vector<Trait::ActorCondition> actorConditions, std::function<bool(Sequence*)> sequenceCondition) {
         std::vector<Sequence*> copy;
         for (auto& [id, sequence] : sequences) {
             Node* front = sequence.nodes.front().node;
@@ -134,7 +134,7 @@ namespace Graph {
                 continue;
             }
 
-            if (front->furnitureType != furnitureType) {
+            if (!furnitureType->isChildOf(sequence.furnitureType)) {
                 continue;
             }
 

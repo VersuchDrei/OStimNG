@@ -1,0 +1,31 @@
+{
+	"name": "Chair",
+	"ignoreMarkerOffsetZ": true,
+	"conditions":[
+		{
+			"type": "keywordblacklist",
+			"keywords":[
+				{
+					"mod": "Skyrim.esm",
+					"formid": "0x0C4EF2"
+				},
+				{
+					"mod": "Skyrim.esm",
+					"formid": "0x09B9A9"
+				},
+				{
+					"mod": "Skyrim.esm",
+					"formid": "0x0EAA4B"
+				}
+			]
+		},
+		{
+			"type": "markercount",
+			"markertype": "sit",
+			"minZ": 33,
+			"maxZ": 35,
+			"condition": "equals",
+			"value": 1
+		}
+	]
+}

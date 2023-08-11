@@ -1,7 +1,7 @@
 #pragma once
 
 namespace GameAPI {
-    enum GameSex { MALE, FEMALE, NONE };
+    enum GameSex { MALE, FEMALE, AGENDER };
 
     class GameSexAPI {
     public:

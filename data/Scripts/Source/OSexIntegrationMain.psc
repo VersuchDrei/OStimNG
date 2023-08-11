@@ -19,8 +19,6 @@ ScriptName OSexIntegrationMain Extends Quest
 ; With the exception of the sound event, OStim events do not include data with them. They only let you know when something has happened. You can access
 ; OStim and get all of the data you need through the normal API here
 
-; PROTIP: ctrl + F is your best friend when it comes to seeing how and where a function/variable/property/etc is used elsewhere
-
 ;			 ██████╗ ███████╗████████╗██╗███╗   ███╗
 ;			██╔═══██╗██╔════╝╚══██╔══╝██║████╗ ████║
 ;			██║   ██║███████╗   ██║   ██║██╔████╔██║
@@ -30,17 +28,6 @@ ScriptName OSexIntegrationMain Extends Quest
 
 ; -------------------------------------------------------------------------------------------------
 ; CONSTANTS  --------------------------------------------------------------------------------------
-int Property FURNITURE_TYPE_NONE = 0 AutoReadOnly
-int Property FURNITURE_TYPE_BED = 1 AutoReadOnly
-int Property FURNITURE_TYPE_BENCH = 2 AutoReadOnly
-int Property FURNITURE_TYPE_CHAIR = 3 AutoReadOnly
-int Property FURNITURE_TYPE_TABLE = 4 AutoReadOnly
-int Property FURNITURE_TYPE_SHELF = 5 AutoReadOnly
-int Property FURNITURE_TYPE_WALL = 6 AutoReadOnly
-int Property FURNITURE_TYPE_COOKING_POT = 7 AutoReadOnly
-int Property FURNITURE_TYPE_CANCEL = 8 AutoReadOnly
-
-string[] Property FURNITURE_TYPE_STRINGS Auto
 
 string[] Property POSITION_TAGS Auto
 
@@ -2014,16 +2001,6 @@ Function OnLoadGame()
 	Vayne = Game.GetFormFromFile(0x0000083D, "CS_Vayne.esp") as ActorBase
 	Coralyn = Game.GetFormFromFile(0x0000080A, "CS_Coralyn.esp") as ActorBase
 
-	FURNITURE_TYPE_STRINGS = new string[8]
-	FURNITURE_TYPE_STRINGS[0] = ""
-	FURNITURE_TYPE_STRINGS[1] = "bed"
-	FURNITURE_TYPE_STRINGS[2] = "bench"
-	FURNITURE_TYPE_STRINGS[3] = "chair"
-	FURNITURE_TYPE_STRINGS[4] = "table"
-	FURNITURE_TYPE_STRINGS[5] = "shelf"
-	FURNITURE_TYPE_STRINGS[6] = "wall"
-	FURNITURE_TYPE_STRINGS[7] = "cookingpot"
-
 	POSITION_TAGS = new string[16]
 	POSITION_TAGS[0]  = "allfours"
 	POSITION_TAGS[1]  = "bendover"
@@ -2651,7 +2628,8 @@ Actor Function GetActor(int Index)
 EndFunction
 
 Bool Function UsingBed()
-	Return OThread.GetFurnitureType(0) == FURNITURE_TYPE_BED
+	string FurnitureType = OThread.GetFurnitureType(0)
+	Return FurnitureType == "bedroll" || FurnitureType == "singlebed" || FurnitureType == "doublebed"
 EndFunction
 
 Bool Function UsingFurniture()
@@ -2659,7 +2637,7 @@ Bool Function UsingFurniture()
 EndFunction
 
 string Function GetFurnitureType()
-	Return FURNITURE_TYPE_STRINGS[OThread.GetFurnitureType(0)]
+	Return OThread.GetFurnitureType(0)
 EndFunction
 
 ObjectReference Function GetFurniture()
