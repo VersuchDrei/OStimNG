@@ -9,7 +9,11 @@
 
 namespace UI::Align {
 
-    AlignMenu::AlignMenu() : Super(MENU_NAME) {}
+    AlignMenu::AlignMenu() : Super(MENU_NAME) {
+    
+        inputContext = Context::kMenuMode;
+        
+    }
 
     void AlignMenu::Show() {
         OStimMenu::Show();
@@ -21,6 +25,16 @@ namespace UI::Align {
         UI::Settings::LoadSettings();
         ApplyPositions();
         _isOpen = true;
+    }
+
+    void AlignMenu::PostRegister() {
+        QueueUITask([this]() {
+            Locker locker(_lock);
+            RE::GFxValue alignmentInfo;
+            GetAlignmentInfo(alignmentInfo);
+            OverrideFunction(alignmentInfo, new UI::doHideMenuRequest, "doHideMenuRequest");
+
+        });
     }
 
     void AlignMenu::ThreadChanged(){

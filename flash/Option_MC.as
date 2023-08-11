@@ -50,13 +50,15 @@ class Option_MC extends MovieClip
 
 	public function SetData(Node:Object)
 	{
-		NodeID = Node["NodeID"];
+		NodeID = Node["NodeID"];		
 		Title = Node["Title"];
 		ImagePath = Node["ImagePath"];
 		Description = Node["Description"];
 		this.TextureLoader.loadClip(ImagePath,this.textureContainer);
 		NodeID != null ? this.ShowOption() : this.HideOption();
-		DrawBorder(Node["Border"]);
+		if(Node["Border"]){
+			DrawBorder(Node["Border"]);
+		}
 	}
 
 	function DrawBorder(colorStr:String)

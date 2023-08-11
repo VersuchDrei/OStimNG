@@ -109,7 +109,14 @@ class Option_Box_MC extends MovieClip
 							}
 							else
 							{
-								HighlightSpeed(1);
+								if (speedUp.usable)
+								{
+									HighlightSpeed(1);
+								}
+								else
+								{
+									SetSubMenu(0);
+								}
 							}
 							break;
 						case 2 :
@@ -138,7 +145,10 @@ class Option_Box_MC extends MovieClip
 						case 1 :
 							if (currentSpeedIdx == 1)
 							{
-								HighlightSpeed(0);
+								if (speedDown.usable)
+								{
+									HighlightSpeed(0);
+								}
 							}
 							break;
 						case 2 :
@@ -223,7 +233,14 @@ class Option_Box_MC extends MovieClip
 				HighlightOption(CurrentlyHighlightedIdx);
 				break;
 			case 1 :
-				HighlightSpeed(1);
+				if (speedUp.usable)
+				{
+					HighlightSpeed(1);
+				}
+				else
+				{
+					HighlightSpeed(0);
+				}
 				break;
 			case 2 :
 				settingsMC.EnterMenu();
@@ -258,23 +275,6 @@ class Option_Box_MC extends MovieClip
 		else
 		{
 			optionDesc.text = "Speed up";
-		}
-	}
-
-
-	function RollOver(val:Number, min:Number, max:Number):Number
-	{
-		if (val < min)
-		{
-			return max;
-		}
-		else if (val > max)
-		{
-			return min;
-		}
-		else
-		{
-			return val;
 		}
 	}
 
@@ -380,8 +380,6 @@ class Option_Box_MC extends MovieClip
 
 	function ShowSpeed(speedVal:String, showUp:Boolean, showDown:Boolean)
 	{
-		trace("speed " + speedVal);
-
 		speedUp._visible = true;
 		speedUp.Show(showUp);
 
@@ -390,14 +388,40 @@ class Option_Box_MC extends MovieClip
 
 		speedDesc._visible = true;
 		speedDesc.text = speedVal;
+
+		if (selectedSubMenu == 1)
+		{
+			if (currentSpeedIdx == 0)
+			{
+				if (showDown == false)
+				{
+					HighlightSpeed(1);
+				}
+				else
+				{
+					HighlightSpeed(0);
+				}
+			}
+			else if (currentSpeedIdx == 1)
+			{
+				if (showUp == false)
+				{
+					HighlightSpeed(0);
+				}
+				else
+				{
+					HighlightSpeed(1);
+				}
+			}
+		}
 	}
 
 	function SelectSpeed()
 	{
-		doChangeSpeed(currentSpeedIdx);
+		doChangeSpeed(currentSpeedIdx == 1);
 	}
 
-	function doChangeSpeed(val:Number)
+	function doChangeSpeed(val:Boolean)
 	{
 	}
 
@@ -415,5 +439,10 @@ class Option_Box_MC extends MovieClip
 		speedUp._visible = false;
 		speedDown._visible = false;
 		speedDesc._visible = false;
+
+		if (selectedSubMenu == 1)
+		{
+			SetSubMenu(0);
+		}
 	}
 }

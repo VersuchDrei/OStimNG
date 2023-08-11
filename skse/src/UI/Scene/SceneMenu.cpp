@@ -5,21 +5,22 @@
 namespace UI::Scene {    
 
     SceneMenu::SceneMenu() : Super(MENU_NAME) {}
+    
 
     void SceneMenu::PostRegister() {
         QueueUITask([this]() {
             Locker locker(_lock);
             RE::GFxValue optionBoxes;
             GetOptionBoxes(optionBoxes);
-            RE::GFxFunctionHandler* fn = new doSendTransitionRequest;
-            RE::GFxValue dst;
-            _view->CreateFunction(&dst, fn);
-            optionBoxes.SetMember("doSendTransitionRequest", dst);
 
-            RE::GFxFunctionHandler* fn2 = new doSpeedChange;
-            RE::GFxValue dst2;
-            _view->CreateFunction(&dst2, fn2);
-            optionBoxes.SetMember("doSpeedChange", dst2);
+            OverrideFunction(optionBoxes, new doSendTransitionRequest, "doSendTransitionRequest");
+            OverrideFunction(optionBoxes, new doChangeSpeed, "doChangeSpeed");
+
+            RE::GFxValue settings;
+            GetSettingsMenu(settings);
+
+            OverrideFunction(settings, new doShowAlignMenu, "doShowAlignment");
+            OverrideFunction(settings, new doShowSearchMenu, "doShowSearch");
         });
     }
 
@@ -170,13 +171,15 @@ namespace UI::Scene {
         });
     }
 
-    void SceneMenu::ChangeSpeed(int speed) {
-        SKSE::GetTaskInterface()->AddTask([speed]() {
-            if (speed == 0) {
-                UI::UIState::GetSingleton()->currentThread->decreaseSpeed();
+    void SceneMenu::ChangeSpeed(bool up) {
+        SKSE::GetTaskInterface()->AddTask([this,up]() {
+            if (up) {
+                UI::UIState::GetSingleton()->currentThread->increaseSpeed();    
+                SpeedUp();
             }
             else {
-                UI::UIState::GetSingleton()->currentThread->increaseSpeed();
+                UI::UIState::GetSingleton()->currentThread->decreaseSpeed();
+                SpeedDown();
             }
 
         });
@@ -188,5 +191,13 @@ namespace UI::Scene {
         RE::GFxValue optionBoxesContainer;
         root.GetMember("optionBoxesContainer", &optionBoxesContainer);
         optionBoxesContainer.GetMember("optionBoxes", &optionBoxes);
+    }
+
+    void SceneMenu::GetSettingsMenu(RE::GFxValue& settingsMenu) {
+        RE::GFxValue root;
+        GetRoot(root);
+        RE::GFxValue optionBoxesContainer;
+        root.GetMember("optionBoxesContainer", &optionBoxesContainer);
+        optionBoxesContainer.GetMember("settings_mc", &settingsMenu);
     }
 }

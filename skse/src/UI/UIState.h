@@ -60,6 +60,20 @@ namespace UI {
         }
     };
 
+    class doShowAlignMenu : public RE::GFxFunctionHandler {
+    public:
+        void Call(Params& args) override {
+            UI::UIState::GetSingleton()->ToggleActiveMenu(UI::kAlignMenu);
+        }
+    };
+
+    class doShowSearchMenu : public RE::GFxFunctionHandler {
+    public:
+        void Call(Params& args) override {
+            UI::UIState::GetSingleton()->ToggleActiveMenu(UI::kSearchMenu);
+        }
+    };
+
     inline static void EndControlledScene() {
         UI::HideMenus();
         UI::UIState::GetSingleton()->CloseActiveMenu();
