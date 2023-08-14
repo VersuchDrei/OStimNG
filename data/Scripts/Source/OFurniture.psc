@@ -5,9 +5,7 @@
 */;
 ScriptName OFurniture
 
-int Function GetFurnitureType(ObjectReference FurnitureRef) Global Native
-
-int Function ToFurnitureTypeInt(string FurnitureType) Global Native
+string Function GetFurnitureType(ObjectReference FurnitureRef) Global Native
 
 ObjectReference[] Function FindFurniture(int ActorCount, ObjectReference CenterRef, float Radius, float SameFloor = 0.0) Global Native
 

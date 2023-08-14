@@ -1,0 +1,61 @@
+{
+	"name": "Kneeling Lying Lesbian",
+	"modpack": "OStim",
+	"length": 2.0,
+	"speeds":[
+		{
+			"animation": "OStim2PKneelingLyingFF"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStim2PSittingMF",
+			"description": "go to straight idle",
+			"icon": "OStim/symbols/gender_mf"
+		},
+		{
+			"destination": "OStim2PKneelingLyingFrontMM",
+			"description": "go to gay idle",
+			"icon": "OStim/symbols/gender_mm"
+		},
+		{
+			"destination": "OStim2PSittingFF",
+			"description": "sit up",
+			"icon": "OStim/positional/squatting_f"
+		},
+		{
+			"destination": "OStim2PStandingCloseFF",
+			"description": "stand up",
+			"icon": "OStim/positional/standup_f"
+		}
+	],
+	"tags":[
+		"idle",
+		"intro"
+	],
+	"actors":[
+		{
+			"intendedSex": "female",
+			"lookUp": -40,
+			"tags": [
+				"kneeling"
+			],
+			"feetOnGround": false
+		},
+		{
+			"intendedSex": "female",
+			"lookUp": -85,
+			"tags": [
+				"lyingback"
+			],
+			"feetOnGround": false
+		}
+	],
+	"actions":[
+		{
+			"type": "holdinghand",
+			"actor": 0,
+			"target": 1
+		}
+	]
+}

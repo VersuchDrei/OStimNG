@@ -9,112 +9,62 @@
 #include "Util.h"
 
 namespace Furniture {
-    FurnitureType getFurnitureType(RE::TESObjectREFR* object, bool inUseCheck) {
-        if (!object || object->IsDisabled() || object->IsMarkedForDeletion() || object->IsDeleted()) {
-            return FurnitureType::NONE;
+   std::vector<std::pair<FurnitureType*, GameAPI::GameObject>> findFurniture(int actorCount, GameAPI::GameObject center, float radius, float sameFloor) {
+        if (!center) {
+            return {};
         }
 
-        RE::TESBoundObject* base = object->GetBaseObject();
-        if (!base) {
-            return FurnitureType::NONE;
-        }
+        std::unordered_map<FurnitureType*, GameAPI::GameObject> furniture;
 
-        if (base->Is(RE::FormType::Furniture)) {
-            if (inUseCheck && isFurnitureInUse(object, false)) {
-                return FurnitureType::NONE;
-            }
-
-            if (object->HasKeyword(FurnitureTable::WICraftingSmithing)) {
-                return FurnitureType::NONE;
-            }
-
-            if (object->HasKeyword(FurnitureTable::WICraftingAlchemy) || object->HasKeyword(FurnitureTable::WICraftingEnchanting) || object->HasKeyword(FurnitureTable::isLeanTable)) {
-                return FurnitureType::TABLE;
-            }
-
-            if (object->HasKeyword(FurnitureTable::CraftingCookPot)) {
-                return FurnitureType::COOKING_POT;
-            }
-
-            if (object->HasKeyword(FurnitureTable::IsTable) || object->HasKeyword(FurnitureTable::isWritingChair) || object->HasKeyword(FurnitureTable::FurnitureCounterLeanMarker)) {
-                // chairs that are part of a table, or not a chair at all?!
-                return FurnitureType::NONE;
-            }
-
-            if (base == FurnitureTable::WallLeanMarker) {
-                return FurnitureType::WALL;
-            }
-
-            auto markers = getMarkers(object);
-
-            if (markers.empty()) {
-                return FurnitureType::NONE;
-            }
-
-            int chairMarkers = 0;
-
-            for (auto& marker : markers) {
-                if (marker.animationType.all(RE::BSFurnitureMarker::AnimationType::kSleep)) {
-                    if (base == FurnitureTable::BYOHVampireCoffinVert01 || object->HasKeyword(FurnitureTable::isVampireCoffin) || object->HasKeyword(FurnitureTable::DLC1isVampireCoffinHorizontal) || object->HasKeyword(FurnitureTable::DLC1isVampireCoffinVertical)) {
-                        // check for coffins
-                        return FurnitureType::NONE;
-                    }
-                    return FurnitureType::BED;
-                } else if (marker.animationType.all(RE::BSFurnitureMarker::AnimationType::kSit) && std::abs(marker.offset.z - 34) < 1) {
-                    chairMarkers++;
-                }
-            }
-
-            if (chairMarkers == 1) {
-                return FurnitureType::CHAIR;
-            } else if (chairMarkers > 1) {
-                return FurnitureType::BENCH;
-            }
-        } else {
-            if (FurnitureTable::OStimShelfList->HasForm(object->GetBaseObject()->formID)) {
-                return FurnitureType::SHELF;
-            }
-            // TODO: check formlists
-        }
-
-        return FurnitureType::NONE;
-    }
-
-    std::vector<RE::TESObjectREFR*> findFurniture(int actorCount, RE::TESObjectREFR* centerRef, float radius, float sameFloor) {
-        std::vector<RE::TESObjectREFR*> ret(7);
-        if (!centerRef) {
-            return ret;
-        }
-
-        auto centerPos = centerRef->GetPosition();
-
+        auto centerPos = center.form->GetPosition();
         util::iterate_attached_cells(centerPos, radius, [&](RE::TESObjectREFR& ref) {
+            GameAPI::GameObject object = &ref;
             auto refPos = ref.GetPosition();
 
-            if (sameFloor == 0.0 || std::fabs(centerPos.z - refPos.z) <= sameFloor) {
-                FurnitureType type = getFurnitureType(&ref, true);
-                if (type == FurnitureType::NONE || type != FurnitureType::BED && !Graph::GraphTable::hasNodes(type, actorCount)) {
+            if (sameFloor == 0.0 || std::fabs(centerPos.z - ref.GetPosition().z) <= sameFloor) {
+                FurnitureType* type = FurnitureTable::getFurnitureType(&ref, true)->getListType();
+                if (type->id == "none" || !Graph::GraphTable::hasNodes(type->getMasterType(), actorCount)) {
                     return RE::BSContainer::ForEachResult::kContinue;
                 }
 
-                int index = type - 1;
-                if (!ret[index] || centerPos.GetSquaredDistance(refPos) < centerPos.GetSquaredDistance(ret[index]->GetPosition())) {
-                    ret[index] = &ref;
+                if (furniture.contains(type) && furniture[type].getSquaredDistance(center) < object.getSquaredDistance(center)) {
+                    return RE::BSContainer::ForEachResult::kContinue;
                 }
+
+                furniture[type] = object;
             }
 
             return RE::BSContainer::ForEachResult::kContinue;
         });
 
+        if (furniture.empty()) {
+            return {};
+        }
+
+        std::vector<std::pair<FurnitureType*, GameAPI::GameObject>> ret;
+
+        for (auto& [type, object] : furniture) {
+            ret.push_back({type, object});
+        }
+
+        std::sort(ret.begin(), ret.end(), [&center](std::pair<Furniture::FurnitureType*, GameAPI::GameObject> a, std::pair<Furniture::FurnitureType*, GameAPI::GameObject> b) {
+            return a.second.getSquaredDistance(center) < b.second.getSquaredDistance(center);
+        });
+
         return ret;
     }
 
-    RE::TESObjectREFR* findBed(RE::TESObjectREFR* centerRef, float radius, float sameFloor) {
+    GameAPI::GameObject findBed(RE::TESObjectREFR* centerRef, float radius, float sameFloor) {
         if (!centerRef) {
-            return nullptr;
+            return {};
         }
 
-        RE::TESObjectREFR* bed = nullptr;
+        FurnitureType* bedType = FurnitureTable::getFurnitureType("bed");
+        if (!bedType) {
+            return {};
+        }
+
+        GameAPI::GameObject bed = nullptr;
 
         auto centerPos = centerRef->GetPosition();
 
@@ -122,12 +72,13 @@ namespace Furniture {
             auto refPos = ref.GetPosition();
 
             if (sameFloor == 0.0 || std::fabs(centerPos.z - refPos.z) <= sameFloor) {
-                FurnitureType type = getFurnitureType(&ref, true);
-                if (type != FurnitureType::BED) {
+                FurnitureType* type = FurnitureTable::getFurnitureType(&ref, true);
+                if (!type->isChildOf(bedType)) {
                     return RE::BSContainer::ForEachResult::kContinue;
                 }
 
-                if (bed || centerPos.GetSquaredDistance(refPos) < centerPos.GetSquaredDistance(bed->GetPosition())) {
+                // TODO GameObject
+                if (bed || centerPos.GetSquaredDistance(refPos) < centerPos.GetSquaredDistance(bed.form->GetPosition())) {
                     bed = &ref;
                 }
             }
@@ -138,98 +89,52 @@ namespace Furniture {
         return bed;
     }
 
-    std::vector<float> getOffset(RE::TESObjectREFR* object) {
-        std::vector<float> ret = {0,0,0,0};
-
+    FurnitureOffset getOffset(GameAPI::GameObject object) {
         if (!object) {
-            return ret;
-        }
-
-        if (object->GetBaseObject()->Is(RE::FormType::Furniture)) {
-            auto markers = getMarkers(object);
-
-            if (markers.empty()) {
-                return ret;
-            }
-
-            ret[0] = markers[0].offset.x;
-            ret[1] = markers[0].offset.y;
-            ret[2] = markers[0].offset.z;
-            ret[3] = markers[0].heading;
-
-            switch (getFurnitureType(object, false)) {
-                case BED:
-                    if (!object->HasKeyword(FurnitureTable::FurnitureBedRoll)) {
-                        ret[1] += 35 + MCM::MCMTable::bedRealignment();
-                        ret[2] += 3 + MCM::MCMTable::bedOffset();
-                    }
-                    ret[0] = 0;
-                    ret[3] += 2 * std::acos(0); // basically += math.pi
-                    break;
-                case BENCH:
-                    ret[0] = 0;
-                case CHAIR:
-                    // all sit markers on benches and chairs have a z offset of ~34, but animations are centered on the ground
-                    ret[2] = 0;
-                    break;
-                case TABLE:
-                    if (object->HasKeyword(FurnitureTable::isLeanTable)) {
-                        // temporary solution until I implement scaling on a per furniture basis
-                        ret[2] -= 3.5;
-
-                        // specific offsets for the BBLS railings
-                        if (ObjectRefUtil::isInBBLS(object)) {
-                            ret[1] -= 7.5;
-                            ret[2] -= 3;
-                        }
-                    }
-                    break;
-                default:
-                    break;
-            }
-
-            float refScale = object->GetReferenceRuntimeData().refScale / 100.0f;
-            if (refScale != 1) {
-                ret[0] *= refScale;
-                ret[1] *= refScale;
-                ret[2] *= refScale;
-            }
-        }
-
-        return ret;
-    }
-
-    RE::BSTArray<RE::BSFurnitureMarker> Furniture::getMarkers(RE::TESObjectREFR* object) {
-        auto root = object->Get3D();
-        if (!root) {
             return {};
         }
 
-        auto extra = root->GetExtraData("FRN");
-        if (!extra) {
-            return {};
+        GameAPI::GamePosition position = object.getMarkerOffset();
+        FurnitureOffset offset = {position.x, position.y, position.z, position.r};
+
+        FurnitureType* type = FurnitureTable::getFurnitureType(object, false);
+
+        if (type->ignoreMarkerOffsetX) {
+            offset.x = 0;
+        }
+        offset.x += type->offsetX;
+        if (type->offsetXGlobal) {
+            offset.x += type->offsetXGlobal.getValue();
         }
 
-        auto node = netimmerse_cast<RE::BSFurnitureMarkerNode*>(extra);
-        if (!node) {
-            return {};
+        if (type->ignoreMarkerOffsetY) {
+            offset.y = 0;
+        }
+        offset.y += type->offsetY;
+        if (type->offsetYGlobal) {
+            offset.y += type->offsetYGlobal.getValue();
         }
 
-        return node->markers;
-    }
+        if (type->ignoreMarkerOffsetZ) {
+            offset.z = 0;
+        }
+        offset.z += type->offsetZ;
+        if (type->offsetZGlobal) {
+            offset.z += type->offsetZGlobal.getValue();
+        }
 
-    bool Furniture::isFurnitureInUse(RE::TESObjectREFR* object, bool ignoreReserved) {
-        return IsFurnitureInUse(nullptr, 0, object, ignoreReserved);
-    }
+        offset.rotation += type->rotation;
 
-    void Furniture::lockFurniture(RE::TESObjectREFR* furniture) {
-        furniture->SetActivationBlocked(true);
-        ObjectRefUtil::setOwner(furniture, Util::LookupTable::OStimEmptyFaction);
-    }
+        offset.scale = type->multiplyScale;
 
-    void Furniture::freeFurniture(RE::TESObjectREFR* furniture, RE::TESForm* owner) {
-        furniture->SetActivationBlocked(false);
-        ObjectRefUtil::setOwner(furniture, owner);
+        float scale = object.getScale();
+        if (scale != 1.0f) {
+            offset.x *= scale;
+            offset.y *= scale;
+            offset.z *= scale;
+        }
+
+        return offset;
     }
 
     void Furniture::resetClutter(RE::TESObjectREFR* centerRef, float radius) {

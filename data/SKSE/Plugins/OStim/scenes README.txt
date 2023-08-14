@@ -80,12 +80,15 @@ actor fields:
 "scaleHeigth" (float): the height against which the heel offset should be scaled (default: 120.748)
 	this can be used to keep the most important part (for example the schlong in a penetrative scene) always at the same height, no matter the heel offset
 	the default value is the total height of the vanilla skeleton
+"animationIndex" (int): the index of the animation to play (see speed fields: animation) (defaults to the actors index)
+	this can be used to invert the roles of a scene without having to register the animations twice
 "expressionAction" (int): the index of the action that takes priority for the actors facial expression (see actions README)
-"lookUp" (int): the mfg value for the eyes to look up
+"expressionOverride" (string): an expression set to override the actors expression in this scene (see facial expressions README)
+"lookUp" (int): the mfg value for the eyes to look up (default: 0)
 	possible values range from -100 to 100, with negative ones causing a look down
 "lookDown" (int): alternative to lookUp with inverted values
 	if lookUp is defined this field is ignored
-"lookLeft" (int) the mfg value for the eyes to look left
+"lookLeft" (int) the mfg value for the eyes to look left (default: 0)
 	possible values range from -100 to 100, with negative ones causing a look right
 "lookRight" (int): alternative to lookLeft with inverted values
 	if lookLeft is defined this field is ignored

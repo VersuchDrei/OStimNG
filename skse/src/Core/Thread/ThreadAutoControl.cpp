@@ -35,14 +35,15 @@ namespace OStim {
         return false;
     }
 
-    void addFurniture(std::vector<std::function<bool(Graph::Node*)>>& conditions, Furniture::FurnitureType furnitureType) {
-        if (furnitureType == Furniture::FurnitureType::NONE) {
+    void addFurniture(std::vector<std::function<bool(Graph::Node*)>>& conditions, Furniture::FurnitureType* furnitureType) {
+        std::string furnitureTypeID = furnitureType->getListType()->id;
+        if (furnitureTypeID == "none") {
             conditions.push_back([&](Graph::Node* node) {
                 return forAnyActor(node, [&](Graph::GraphActor& actor) {
                     return VectorUtil::contains(actor.tags, std::string("standing"));
                 });
             });
-        } else if (furnitureType == Furniture::FurnitureType::BED) {
+        } else if (furnitureTypeID == "bed") {
             conditions.push_back([&](Graph::Node* node) {
                 return forAllActors(node, [&](Graph::GraphActor& actor) {
                     return !VectorUtil::contains(actor.tags, std::string("standing"));
@@ -60,7 +61,7 @@ namespace OStim {
         return true;
     }
 
-    Graph::Node* getRandomForeplayNode(Graph::Node* currentNode, std::vector<Trait::ActorCondition> actorConditions, Furniture::FurnitureType furnitureType, bool lesbian, bool gay) {
+    Graph::Node* getRandomForeplayNode(Graph::Node* currentNode, std::vector<Trait::ActorCondition> actorConditions, Furniture::FurnitureType* furnitureType, bool lesbian, bool gay) {
         std::vector<std::function<bool(Graph::Node*)>> conditions;
         conditions.push_back([&](Graph::Node* node) { return node->findAnyAction({"analsex", "tribbing", "vaginalsex"}) == -1; });
         addFurniture(conditions, furnitureType);
@@ -83,7 +84,7 @@ namespace OStim {
         }
     }
 
-    Graph::Node* getRandomSexNode(Graph::Node* currentNode, std::vector<Trait::ActorCondition> actorConditions, Furniture::FurnitureType furnitureType, bool lesbian, bool gay) {
+    Graph::Node* getRandomSexNode(Graph::Node* currentNode, std::vector<Trait::ActorCondition> actorConditions, Furniture::FurnitureType* furnitureType, bool lesbian, bool gay) {
         std::vector<std::function<bool(Graph::Node*)>> conditions;
         conditions.push_back([&lesbian](Graph::Node* node) { return node->findAnyAction(std::vector<std::string>{"analsex", "tribbing", "vaginalsex"}) != -1;
         });

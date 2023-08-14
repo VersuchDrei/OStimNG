@@ -19,6 +19,8 @@ namespace GameAPI {
 
         inline static bool improvedCamSupport() { return OStimImprovedCamSupport->value != 0; }
 
+        inline static RE::TESFaction* getOStimEmptyFaction() { return OStimEmptyFaction; }
+
     private:
         inline static RE::TESObjectREFR* currentCrosshairRef = nullptr;
 
@@ -33,5 +35,7 @@ namespace GameAPI {
         inline static RE::TESImageSpaceModifier* FadeToBlackBackImod = nullptr;
 
         inline static RE::TESGlobal* OStimImprovedCamSupport = nullptr;
+
+        inline static RE::TESFaction* OStimEmptyFaction = nullptr;
     };
 }

@@ -15,7 +15,7 @@ namespace Trait {
         static std::vector<ActorCondition> create(std::vector<GameAPI::GameActor> actors);
 
         std::string type = "npc";
-        GameAPI::GameSex sex = GameAPI::GameSex::NONE;
+        GameAPI::GameSex sex = GameAPI::GameSex::AGENDER;
         uint32_t requirements = 0;
 
         bool fulfills(ActorCondition conditions);

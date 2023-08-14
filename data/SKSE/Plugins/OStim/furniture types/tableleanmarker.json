@@ -1,0 +1,16 @@
+{
+	"priority": 10,
+	"supertype": "table",
+	"multiplyScale": 0.95,
+	"conditions":[
+		{
+			"type": "anykeyword",
+			"keywords":[
+				{
+					"mod": "Skyrim.esm",
+					"formid": "0x0C4EF2"
+				}
+			]
+		}
+	]
+}

@@ -28,14 +28,15 @@ namespace OStim {
         return true;
     }
 
-    void addFurniture2(std::vector<std::function<bool(Graph::Node*)>>& conditions, Furniture::FurnitureType furnitureType) {
-        if (furnitureType == Furniture::FurnitureType::NONE) {
+    void addFurniture2(std::vector<std::function<bool(Graph::Node*)>>& conditions, Furniture::FurnitureType* furnitureType) {
+        std::string furnitureTypeID = furnitureType->getListType()->id;
+        if (furnitureTypeID == "none") {
             conditions.push_back([&](Graph::Node* node) {
                 return forAnyActor2(node, [&](Graph::GraphActor& actor) {
                     return VectorUtil::contains(actor.tags, std::string("standing"));
                 });
             });
-        } else if (furnitureType == Furniture::FurnitureType::BED) {
+        } else if (furnitureTypeID == "bed") {
             conditions.push_back([&](Graph::Node* node) {
                 return forAllActors2(node, [&](Graph::GraphActor& actor) {
                     return !VectorUtil::contains(actor.tags, std::string("standing"));

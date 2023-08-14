@@ -108,43 +108,8 @@ namespace Serialization {
             RE::FormID oldID;
             RE::FormID newID;
 
-            serial->ReadRecordData(&oldID, sizeof(oldID));
-            if (oldID != 0) {
-                if (serial->ResolveFormID(oldID, newID)) {
-                    RE::TESForm* form = RE::TESForm::LookupByID(newID);
-                    if (form) {
-                        RE::TESObjectREFR* furniture = form->As<RE::TESObjectREFR>();
-                        if (furniture) {
-                            thread.furniture = furniture;
-                        } else {
-                            logger::error("not a furniture id: {}", newID);
-                            errors |= DeserializationError::FURNITURE;
-                        }
-                    } else {
-                        logger::error("cannot find furniture with id: {}", newID);
-                        errors |= DeserializationError::FURNITURE;
-                    }
-                } else {
-                    logger::error("cannot resolve furniture id {:x}", oldID);
-                    errors |= DeserializationError::FURNITURE;
-                }
-            }
-
-            serial->ReadRecordData(&oldID, sizeof(oldID));
-            if (oldID != 0) {
-                if (serial->ResolveFormID(oldID, newID)) {
-                    RE::TESForm* form = RE::TESForm::LookupByID(newID);
-                    if (form) {
-                        thread.furnitureOwner = form;
-                    } else {
-                        logger::error("cannot find furniture owner with id: {}", newID);
-                        errors |= DeserializationError::FURNITURE;
-                    }
-                } else {
-                    logger::error("cannot resolve furniture owner id {:x}", oldID);
-                    errors |= DeserializationError::FURNITURE;
-                }
-            }
+            thread.furniture.loadSerial(serial);
+            thread.furnitureOwner.loadSerial(serial);
             
             size_t size;
             serial->ReadRecordData(&size, sizeof(size));
@@ -156,18 +121,15 @@ namespace Serialization {
         }
 
         int threadID = 0;
-        RE::TESObjectREFR* furniture = nullptr;
-        RE::TESForm* furnitureOwner = nullptr;
+        GameAPI::GameObject furniture = nullptr;
+        GameAPI::GameOwnership furnitureOwner = nullptr;
         std::vector<OldThreadActor> actors;
 
         inline void serialize(SKSE::SerializationInterface* serial) {
             serial->WriteRecordData(&threadID, sizeof(threadID));
 
-            RE::FormID furnitureID = furniture ? furniture->GetFormID() : 0;
-            serial->WriteRecordData(&furnitureID, sizeof(furnitureID));
-
-            RE::FormID furnitureOwnerID = furnitureOwner ? furnitureOwner->GetFormID() : 0;
-            serial->WriteRecordData(&furnitureOwnerID, sizeof(furnitureOwnerID));
+            furniture.writeSerial(serial);
+            furnitureOwner.writeSerial(serial);
 
             size_t size = actors.size();
             serial->WriteRecordData(&size, sizeof(size));
@@ -178,7 +140,8 @@ namespace Serialization {
 
         inline void close() {
             if (furniture) {
-                Furniture::freeFurniture(furniture, furnitureOwner);   
+                furniture.enableUse();
+                furniture.setOwner(furnitureOwner);
             }
 
             bool playerThread = false;

@@ -92,7 +92,7 @@ namespace GameAPI {
                 return actorSex == RE::SEX::kMale;
             case FEMALE:
                 return actorSex == RE::SEX::kFemale;
-            case NONE:
+            case AGENDER:
                 return actorSex == RE::SEX::kNone;
         }
         return false;
@@ -117,6 +117,11 @@ namespace GameAPI {
         } else {
             SetAngle(nullptr, 0, form, 0, 0, MathUtil::toDegrees(rotation));
         }
+    }
+
+    void GameActor::setPosition(GamePosition position) const {
+        setRotation(position.r);
+        SetPosition(form, position.x, position.y, position.z);
     }
 
     void GameActor::lockAtPosition(float x, float y, float z, float r) const {

@@ -4,7 +4,7 @@
 
 namespace Alignment {
     struct ActorKey {
-        GameAPI::GameSex sex = GameAPI::GameSex::NONE;
+        GameAPI::GameSex sex = GameAPI::GameSex::AGENDER;
         int height = 100;
         int heels = 0;
 

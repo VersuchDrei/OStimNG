@@ -19,14 +19,18 @@
 			"icon": "OStim/symbols/gender_mm"
 		},
 		{
+			"destination": "OStim2PKneelingLyingFF",
+			"description": "sit on {1}",
+			"icon": "OStim/positional/lyingback_f"
+		},
+		{
 			"destination": "OStim2PStandingCloseFF",
 			"description": "stand up",
 			"icon": "OStim/positional/standup_f"
 		}
 	],
 	"tags":[
-		"idle",
-		"intro"
+		"idle"
 	],
 	"actors":[
 		{

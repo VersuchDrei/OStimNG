@@ -23,7 +23,6 @@ namespace OStim {
     ThreadActor::ThreadActor(Thread* thread, int index, GameAPI::GameActor actor) : thread{thread}, index{index}, actor{actor} {
         scaleBefore = actor.getScale();
         positionBefore = actor.getPosition();
-        rotationBefore = actor.getRotation();
         female = actor.isSex(GameAPI::GameSex::FEMALE);
         schlong = Compatibility::CompatibilityTable::hasSchlong(actor);
         isPlayer = actor.isPlayer();
@@ -923,10 +922,8 @@ namespace OStim {
             // running this immediately can cause game freezes, running it in a task works fine, though
             // for me freezes were only in a threesome, but some users reported it in twosomes or other scenarios
             GameAPI::GameActor tempActor = actor;
-            float tempRotation = rotationBefore;
             GameAPI::GamePosition tempPosition = positionBefore;
-            SKSE::GetTaskInterface()->AddTask([tempActor, tempRotation, tempPosition] {
-                tempActor.setRotation(tempRotation);
+            SKSE::GetTaskInterface()->AddTask([tempActor, tempPosition] {
                 tempActor.setPosition(tempPosition);
             });
         }

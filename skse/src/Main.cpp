@@ -79,6 +79,7 @@ namespace {
                 Graph::GraphTable::SetupActions();
                 Trait::TraitTable::setup();
                 Alignment::Alignments::LoadAlignments();
+                Furniture::FurnitureTable::setupFurnitureTypes();
                 LegacyUtil::loadLegacyScenes();
                 Graph::GraphTable::setupNodes();
                 Graph::GraphTable::setupSequences();
@@ -87,7 +88,6 @@ namespace {
                 Util::LookupTable::setupForms();
                 Trait::TraitTable::setupForms();
                 MCM::MCMTable::setupForms();
-                Furniture::FurnitureTable::setupForms();
                 Graph::GraphTable::setupEvents();
 
                 

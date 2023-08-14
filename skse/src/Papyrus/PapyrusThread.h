@@ -150,17 +150,17 @@ namespace PapyrusThread {
     RE::TESObjectREFR* GetFurniture(RE::StaticFunctionTag*, int threadID) {
         OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
         if (thread) {
-            return thread->getFurniture();
+            return thread->getFurniture().form;
         }
         return nullptr;
     }
 
-    int GetFurnitureType(RE::StaticFunctionTag*, int threadID) {
+    std::string GetFurnitureType(RE::StaticFunctionTag*, int threadID) {
         OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
         if (thread) {
-            return thread->getFurnitureType();
+            return thread->getFurnitureType()->getListType()->id;
         }
-        return -1;
+        return "";
     }
 
 

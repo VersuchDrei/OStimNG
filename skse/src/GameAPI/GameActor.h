@@ -51,13 +51,13 @@ namespace GameAPI {
         inline float getRotation() const { return form->data.angle.z; }
         void setRotation(float rotation) const;
         void lockAtPosition(float x, float y, float z, float r) const;
-        inline GamePosition getPosition() const { return form->GetPosition(); }
-        inline void setPosition(GamePosition position) const { SetPosition(form, position.x, position.y, position.z); }
+        inline GamePosition getPosition() const { return GamePosition(form->GetPosition(), form->data.angle.z); }
+        void setPosition(GamePosition position) const;
 
         inline float getActorValue(GameActorValue actorValue) const { return form->AsActorValueOwner()->GetBaseActorValue(actorValue.actorValue); }
         inline void damageActorValue(GameActorValue actorValue, float value) const { form->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, actorValue.actorValue, -value);}
 
-        inline bool hasKeyword(GameKeyword keyword) const { return form->HasKeyword(keyword.keyword); }
+        inline bool hasKeyword(GameKeyword keyword) const { return form->HasKeyword(keyword.form); }
         inline bool hasKeyword(std::string keyword) const { return form->HasKeywordString(keyword); }
 
         inline void addToFaction(GameFaction faction) const { form->AddToFaction(faction.form, 0); }

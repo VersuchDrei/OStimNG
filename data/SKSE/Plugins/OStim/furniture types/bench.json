@@ -1,0 +1,35 @@
+{
+	"priority": 5,
+	"name": "Bench",
+	"ignoreMarkerOffsetX": true,
+	"ignoreMarkerOffsetZ": true,
+	"supertype": "chair",
+	"listIndividually": true,
+	"conditions":[
+		{
+			"type": "keywordblacklist",
+			"keywords":[
+				{
+					"mod": "Skyrim.esm",
+					"formid": "0x0C4EF2"
+				},
+				{
+					"mod": "Skyrim.esm",
+					"formid": "0x09B9A9"
+				},
+				{
+					"mod": "Skyrim.esm",
+					"formid": "0x0EAA4B"
+				}
+			]
+		},
+		{
+			"type": "markercount",
+			"markertype": "sit",
+			"minZ": 33,
+			"maxZ": 35,
+			"condition": "greater",
+			"value": 1
+		}
+	]
+}

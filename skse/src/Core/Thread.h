@@ -55,9 +55,6 @@ namespace OStim {
         ThreadActor* GetActor(int a_position);
         int getActorPosition(GameAPI::GameActor actor);
 
-        inline RE::TESObjectREFR* getFurniture() { return furniture; }
-        inline Furniture::FurnitureType getFurnitureType() { return furnitureType; }
-
         void SetSpeed(int speed);
         bool increaseSpeed();
         bool decreaseSpeed();
@@ -81,13 +78,9 @@ namespace OStim {
         bool playerThread = false;
         std::map<int32_t, ThreadActor> m_actors;
 
-        RE::TESObjectREFR* furniture;
-        Furniture::FurnitureType furnitureType = Furniture::FurnitureType::NONE;
-        RE::TESForm* furnitureOwner = nullptr;
         std::shared_mutex nodeLock;
 
         GameAPI::GamePosition center;
-        float rotation = 0;
 
         int m_currentNodeSpeed = 0;
         float relativeSpeed = -1;
@@ -142,6 +135,18 @@ namespace OStim {
 
     private:
         bool stallClimax = false;
+#pragma endregion
+
+#pragma region furniture
+    public:
+        inline GameAPI::GameObject getFurniture() { return furniture; }
+        inline Furniture::FurnitureType* getFurnitureType() { return furnitureType; }
+
+    private:
+        GameAPI::GameObject furniture;
+        Furniture::FurnitureType* furnitureType = nullptr;
+        GameAPI::GameOwnership furnitureOwner = nullptr;
+        float furnitureScaleMult = 1.0f;
 #pragma endregion
 
 #pragma region metadata

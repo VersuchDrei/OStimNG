@@ -1,0 +1,15 @@
+{
+	"priority": 10,
+	"name": "Cooking Pot",
+	"conditions":[
+		{
+			"type": "anykeyword",
+			"keywords":[
+				{
+					"mod": "Skyrim.esm",
+					"formid": "0x0A5CB3"
+				}
+			]
+		}
+	]
+}

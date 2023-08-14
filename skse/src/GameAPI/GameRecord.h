@@ -12,7 +12,7 @@ namespace GameAPI {
         inline bool operator==(const GameRecord<T> other) { return form == other.form; }
         inline bool operator!=(const GameRecord<T> other) { return form != other.form; }
 
-        void loadJson(std::string path, json json) {
+        void loadJson(std::string& path, json json) {
             if (!json.contains("mod")) {
                 logger::info("file {} does not have field 'mod' defined", path);
                 return;
@@ -38,6 +38,11 @@ namespace GameAPI {
             RE::FormID newFormID;
 
             serial.object->ReadRecordData(&oldFormID, sizeof(oldFormID));
+            if (oldFormID == 0) {
+                form = nullptr;
+                return;
+            }
+
             if (!serial.object->ResolveFormID(oldFormID, newFormID)) {
                 logger::warn("cannot resolve form id {:x}, missing mod?", oldFormID);
                 return;
@@ -47,6 +52,11 @@ namespace GameAPI {
             if (!form) {
                 logger::warn("cannot find form with form id {:x}", newFormID);
             }
+        }
+
+        void writeSerial(GameSerializationInterface serial) {
+            RE::FormID formID = form ? form->GetFormID() : 0;
+            serial.object->WriteRecordData(&formID, sizeof(formID));
         }
 
         inline uint32_t getFormID() const {return form->formID; }

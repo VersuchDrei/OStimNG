@@ -19,19 +19,23 @@
 			"icon": "OStim/symbols/gender_ff"
 		},
 		{
+			"destination": "OStim2PLyingKneelingMM",
+			"description": "switch positions",
+			"icon": "OStim/symbols/switch"
+		},
+		{
+			"destination": "OStim2PKneelingLyingFrontMM",
+			"description": "turn around ({1})",
+			"icon": "OStim/symbols/rotate_cw"
+		},
+		{
 			"destination": "OStim2PStandingApartMM",
 			"description": "stand up",
 			"icon": "OStim/positional/standup_m"
-		},
-		{
-			"destination": "OStim2PLyingKneelingMM",
-			"description": "switch positions",
-			"icon": "OStim/symbols/return"
 		}
 	],
 	"tags":[
-		"idle",
-		"intro"
+		"idle"
 	],
 	"actors":[
 		{

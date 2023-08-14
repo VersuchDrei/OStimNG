@@ -43,7 +43,8 @@
 				"CME L Finger20 [LF20]"
 			],
 			"targetBone":"NPC Genitals01 [Gen01]",
-			"maxInterval":700
+			"maxInterval":700,
+			"inverse": true
 		}	
 	],
 	"tags":[

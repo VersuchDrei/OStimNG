@@ -1,0 +1,52 @@
+{
+	"priority": 10,
+	"supertype": "bed",
+	"ignoreMarkerOffsetX": true,
+	"offsetY": 35,
+	"offsetYGlobal":{
+		"mod": "OStim.esp",
+		"formid": "0xDFE"
+	},
+	"offsetZ": 3,
+	"offsetZGlobal":{
+		"mod": "OStim.esp",
+		"formid": "0xDFF"
+	},
+	"rotation": 3.14159,
+	"conditions":[
+		{
+			"type": "keywordblacklist",
+			"keywords":[
+				{
+					"mod": "Skyrim.esm",
+					"formid": "0x0E4AD6"
+				},
+				{
+					"mod": "Dawnguard.esm",
+					"formid": "0x01932A"
+				},
+				{
+					"mod": "Dawnguard.esm",
+					"formid": "0x00B64D"
+				},
+				{
+					"mod": "Skyrim.esm",
+					"formid": "0x0FDBE9"
+				}
+			]
+		},
+		{
+			"type": "formblacklist",
+			"formlist":{
+				"mod": "OStim.esp",
+				"formid": "0xE47"
+			}
+		},
+		{
+			"type": "markercount",
+			"markertype": "sleep",
+			"condition": "equals",
+			"value": 1
+		}
+	]
+}
