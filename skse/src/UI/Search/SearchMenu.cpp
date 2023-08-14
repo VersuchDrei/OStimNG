@@ -72,12 +72,13 @@ namespace UI::Search {
         OStimMenu::Show();
         ApplyPositions();
 
+        auto controlMap = RE::ControlMap::GetSingleton();
+        controlMap->AllowTextInput(true);
+        
         QueueUITask([this]() {
             Locker locker(_lock);
             RE::GFxValue optionBoxes;
             GetControlHandler(optionBoxes);
-            auto controlMap = RE::ControlMap::GetSingleton();
-            controlMap->AllowTextInput(true);
             const RE::GFxValue arg{ true };
             optionBoxes.Invoke("SetIsOpen", nullptr, &arg, 1);           
         }); 
@@ -86,12 +87,13 @@ namespace UI::Search {
     void SearchMenu::Hide() {
         OStimMenu::Hide();
 
+        auto controlMap = RE::ControlMap::GetSingleton();
+        controlMap->AllowTextInput(false);
+
         QueueUITask([this]() {
             Locker locker(_lock);
             RE::GFxValue optionBoxes;
             GetControlHandler(optionBoxes);
-            auto controlMap = RE::ControlMap::GetSingleton();
-            controlMap->AllowTextInput(false);
             const RE::GFxValue arg{ false };
             optionBoxes.Invoke("SetIsOpen", nullptr, &arg, 1);
         });

@@ -24,7 +24,13 @@ namespace UI::Align {
         }
         UI::Settings::LoadSettings();
         ApplyPositions();
-        _isOpen = true;
+
+        QueueUITask([this]() {
+            Locker locker(_lock);
+            RE::GFxValue alignmentInfo;
+            GetAlignmentInfo(alignmentInfo);
+            alignmentInfo.Invoke("Show");
+        });
     }
 
     void AlignMenu::PostRegister() {
@@ -60,6 +66,12 @@ namespace UI::Align {
     void AlignMenu::Hide() {
         OStimMenu::Hide();
         Alignment::Alignments::SerializeAlignments();
+        QueueUITask([this]() {
+            Locker locker(_lock);
+            RE::GFxValue alignmentInfo;
+            GetAlignmentInfo(alignmentInfo);
+            alignmentInfo.Invoke("Hide");
+        });
     }
 
     void AlignMenu::UpdateSceneInfo() {

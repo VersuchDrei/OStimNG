@@ -306,11 +306,13 @@ class Option_Box_MC extends MovieClip
 		if (Edges.length == 0)
 		{
 			TweenLite.to(this,0.2,{_alpha:0});
+			TweenLite.to(settingsMC,0.2,{_alpha:0});
 			return;
 		}
 		else
 		{
 			TweenLite.to(this,0.5,{_alpha:100});
+			TweenLite.to(settingsMC,0.2,{_alpha:100});
 		}
 		for (var i = 0; i < Edges.length; i++)
 		{

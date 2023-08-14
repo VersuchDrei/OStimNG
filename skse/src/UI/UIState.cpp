@@ -36,11 +36,11 @@ namespace UI {
     }
     void UIState::CloseActiveMenu() {
         if (activeMenu != kSceneMenu) {
-            ToggleActiveMenu(activeMenu);
+            ToggleActiveMenu(activeMenu, true);
         }
     }
 
-    void UIState::ToggleActiveMenu(MenuType menu) {
+    void UIState::ToggleActiveMenu(MenuType menu, bool force) {
         if (menu == kSceneMenu)
             return;
         if (activeMenu == kSceneMenu) {
@@ -48,7 +48,7 @@ namespace UI {
             return;
         }
         if (activeMenu == menu) {
-            if (activeMenu != kSearchMenu || !UI::Search::SearchMenu::GetMenu()->IsInputtingText()) {
+            if (force || activeMenu != kSearchMenu || !UI::Search::SearchMenu::GetMenu()->IsInputtingText()) {                
                 SwitchActiveMenu(kSceneMenu);
             }            
             return;

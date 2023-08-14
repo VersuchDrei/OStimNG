@@ -19,6 +19,7 @@ class AlignmentInfo extends MovieClip
 	public var rField:InfoField;
 	public var pField:InfoField;
 
+	var prevFocus;
 	function AlignmentInfo()
 	{
 		super();
@@ -28,12 +29,26 @@ class AlignmentInfo extends MovieClip
 	{
 		if (GlobalFunc.IsKeyPressed(details))
 		{
-
 			if (details.navEquivalent == NavigationCode.TAB || details.navEquivalent == NavigationCode.ESCAPE)
 			{
 				doHideMenuRequest();
 				return true;
 			}
+		}
+	}
+
+	function Show()
+	{
+		prevFocus = Selection.getFocus();
+		Selection.setFocus(this);
+		gfx.managers.FocusHandler.instance.setFocus(this,0);
+	}
+	function Hide()
+	{
+		if (prevFocus)
+		{
+			gfx.managers.FocusHandler.instance.setFocus(prevFocus,0);
+			Selection.setFocus(prevFocus);
 		}
 	}
 

@@ -37,7 +37,7 @@ namespace UI::Search {
         void SendControl(int32_t control);
         void SetInputtingText(bool inputting) { _inputtingText = inputting; }
     private:
-        bool _inputtingText = true;
+        bool _inputtingText = false;
 
         class doSearchFunction : public RE::GFxFunctionHandler {
         public:

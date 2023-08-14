@@ -32,7 +32,7 @@ namespace UI {
         void HandleControl(Controls control);
         void CloseActiveMenu();
         void SwitchActiveMenu(MenuType type);
-        void ToggleActiveMenu(MenuType type);
+        void ToggleActiveMenu(MenuType type, bool force = false);
         inline MenuType GetActiveMenu() { return activeMenu; }
         inline void setGlpyh(int glyph) { this->glyph = glyph; }
         void loop();
