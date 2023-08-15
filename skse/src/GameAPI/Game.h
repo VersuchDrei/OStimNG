@@ -16,6 +16,8 @@ namespace GameAPI {
         inline static int getMessageBoxOptionLimit() { return 9; }
         static void showMessageBox(std::string content, std::vector<std::string> options, std::function<void(unsigned int)> callback);
 
+        static inline void runSynced(std::function<void()> func) { SKSE::GetTaskInterface()->AddTask([func]{func();}); }
+
     private:
         class MessageBoxCallback : public RE::IMessageBoxCallback {
         public:
