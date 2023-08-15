@@ -478,6 +478,7 @@ namespace Graph {
                             if (jsonAction.contains("type")) {
                                 if (jsonAction["type"].is_string()) {
                                     action.type = jsonAction["type"];
+                                    StringUtil::toLower(&action.type);
                                 } else {
                                     logger::warn("property type of action {} of scene {} isn't a string", index, node->scene_id);
                                 }

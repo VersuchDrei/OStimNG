@@ -77,7 +77,7 @@ actor fields:
 	sos angles range from -9 to 9, additionally -10 will cause a flaccid schlong
 	these cause the SoSBendX animation event to be send to the actor, with X being the sosBend value
 "scale" (float): the scale of the actor (default: 1.0)
-"scaleHeigth" (float): the height against which the heel offset should be scaled (default: 120.748)
+"scaleHeight" (float): the height against which the heel offset should be scaled (default: 120.748)
 	this can be used to keep the most important part (for example the schlong in a penetrative scene) always at the same height, no matter the heel offset
 	the default value is the total height of the vanilla skeleton
 "animationIndex" (int): the index of the animation to play (see speed fields: animation) (defaults to the actors index)

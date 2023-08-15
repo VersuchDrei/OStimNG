@@ -2486,14 +2486,15 @@ EndFunction
 
 ; I will remove these again in the future, don't call them!
 Function ShowBars()
+	int Count = GetActors().Length
 	If (AutoHideBars)
 		If (!OBars.IsBarVisible(OBars.DomBar))
 			OBars.SetBarVisible(OBars.DomBar, True)
 		EndIf
-		If (!OBars.IsBarVisible(OBars.SubBar))
+		If (Count >= 2 && !OBars.IsBarVisible(OBars.SubBar))
 			OBars.SetBarVisible(OBars.SubBar, True)
 		EndIf
-		If (!OBars.IsBarVisible(OBars.ThirdBar))
+		If (Count >= 3 && !OBars.IsBarVisible(OBars.ThirdBar))
 			OBars.SetBarVisible(OBars.ThirdBar, True)
 		EndIf
 	EndIf
