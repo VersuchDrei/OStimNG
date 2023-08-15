@@ -23,7 +23,7 @@ scene fields:
 "speeds" (list<object>): a list of available speeds for the scene (see speed fields)
 "defaultSpeed" (int): the index of the default speed of the scene (default 0)
 "noRandomSelection" (bool): if true this scene will never be chosen by random selections (default: false)
-"furniture" (string): the furniture type of this scene (default: none)
+"furniture" (string): the furniture type of this scene (default: none) (see furniture types README)
 "tags" (list<string>): a list of tags for this scene
 "autoTransitions" (map<string, string>): a map of auto transition ids and destination sceneIDs for this scene
 "actors" (list<object>): a list of actors (see actor fields)

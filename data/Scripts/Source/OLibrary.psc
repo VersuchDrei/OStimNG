@@ -1166,7 +1166,7 @@ string Function GetRandomFurnitureSceneWithAllActionsForActorAndTargetCSV(Actor[
 * * parameters given as "" will be ignored for condition checks
 * * 
 * * I don't expect a lot of people to fully understand this just from the documentation, it is way too big and complex for that
-* * so don't hesitate to join the OStim NG Discord (discord.gg/ostim) and ask for help in the ostim-dev channel
+* * so don't hesitate to join the OStim NG Discord (discord.gg/https://discord.gg/BnT5JQXynT) and ask for help in the ostim-dev channel
 * *
 * * @param: Actors, an array of actors to check scene conditions on
 * * @param: FurnitureType, the furniture type of the scene, "" means it's a no-furniture-scene

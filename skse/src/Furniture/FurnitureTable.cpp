@@ -23,6 +23,7 @@ namespace Furniture {
             JsonUtil::loadFloat(json, furnitureType.offsetX, "offsetX", filename, "furniture type", false);
             JsonUtil::loadFloat(json, furnitureType.offsetY, "offsetY", filename, "furniture type", false);
             JsonUtil::loadFloat(json, furnitureType.offsetZ, "offsetZ", filename, "furniture type", false);
+            JsonUtil::loadFloat(json, furnitureType.rotation, "rotation", filename, "furniture type", false);
             JsonUtil::loadFloat(json, furnitureType.multiplyScale, "multiplyScale", filename, "furniture type", false);
             JsonUtil::loadGameRecord(json, furnitureType.offsetXGlobal, "offsetXGlobal", filename, "furniture type", path, false);
             JsonUtil::loadGameRecord(json, furnitureType.offsetYGlobal, "offsetYGlobal", filename, "furniture type", path, false);
@@ -158,7 +159,7 @@ namespace Furniture {
                             }
                         } else if (type == "cellname") {
                             std::string cellname;
-                            JsonUtil::loadString(jsonCondition, cellname, "type", filename, "condition " + std::to_string(index) + " of furniture type", true);
+                            JsonUtil::loadString(jsonCondition, cellname, "cellname", filename, "condition " + std::to_string(index) + " of furniture type", true);
                             if (!cellname.empty()) {
                                 StringUtil::toLower(&cellname);
                                 conditions.push_back([cellname](GameAPI::GameObject object) {
