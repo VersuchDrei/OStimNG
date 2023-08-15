@@ -32,7 +32,7 @@ namespace UI {
         void HandleControl(Controls control);
         void CloseActiveMenu();
         void SwitchActiveMenu(MenuType type);
-        void ToggleActiveMenu(MenuType type);
+        void ToggleActiveMenu(MenuType type, bool force = false);
         inline MenuType GetActiveMenu() { return activeMenu; }
         inline void setGlpyh(int glyph) { this->glyph = glyph; }
         void loop();
@@ -57,6 +57,20 @@ namespace UI {
         void Call(Params& args) override {
             auto uiState = UI::UIState::GetSingleton();
             uiState->CloseActiveMenu();
+        }
+    };
+
+    class doShowAlignMenu : public RE::GFxFunctionHandler {
+    public:
+        void Call(Params& args) override {
+            UI::UIState::GetSingleton()->ToggleActiveMenu(UI::kAlignMenu);
+        }
+    };
+
+    class doShowSearchMenu : public RE::GFxFunctionHandler {
+    public:
+        void Call(Params& args) override {
+            UI::UIState::GetSingleton()->ToggleActiveMenu(UI::kSearchMenu);
         }
     };
 

@@ -24,6 +24,7 @@ namespace UI::Align {
         }
         static void Register() { OStimMenu::Register(MENU_NAME, Creator); }
         static RE::stl::owner<RE::IMenu*> Creator() { return new AlignMenu(); }
+        void PostRegister() override;
 
         void Show();
         void Hide();

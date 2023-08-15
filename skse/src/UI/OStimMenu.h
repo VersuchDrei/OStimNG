@@ -20,6 +20,12 @@ namespace UI {
 		virtual void Handle(UI::Controls control)=0;
 		virtual void PostRegister();
 
+		void OverrideFunction(RE::GFxValue& movieClip, RE::GFxFunctionHandler* fn, const char* name) {
+			RE::GFxValue dst;
+			_view->CreateFunction(&dst, fn);
+			movieClip.SetMember(name, dst);
+		}
+
 	public:
 		std::string menuName;
 

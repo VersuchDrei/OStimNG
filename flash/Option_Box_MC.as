@@ -12,21 +12,20 @@ class Option_Box_MC extends MovieClip
 	var CurrentlyHighlightedIdx:Number;
 	var maxOptionIdx:Number = -1;
 
+	var optionGutter = 14;
+	var optionGutterX = optionGutter;
+	var optionGutterY = optionGutter;
 
-	var optionGutter;
-	var optionGutterX;
-	var optionGutterY;
-
-	var menuGutter;
+	var menuGutter = 28;
 	var menuGutterX;
 
-	var menuGutterYText;
+	var menuGutterYText = 86;
 	var menuGutterYBase;
 	var menuGutterYTop;
 	var menuGutterY;
 
-	var optionWidth;
-	var optionHeight;
+	var optionWidth = 86;
+	var optionHeight = 86;
 
 	var minWidth;
 	var maxWidth;
@@ -36,40 +35,42 @@ class Option_Box_MC extends MovieClip
 	var speedUp:MovieClip;
 	var speedDown:MovieClip;
 	var speedDesc:TextField;
+	var speedControls = new Array(2);
+	var currentSpeedIdx:Number;
 
+	//0 animations;
+	//1 speed controls;
+	//2 settings menus;
+	var selectedSubMenu:Number = 0;
+	var settingsMC:MovieClip;
 
 	public function Option_Box_MC()
 	{
 		super();
+		settingsMC = _parent.settings_mc;
+
+		speedControls = [speedDown, speedUp];
 		CurrentlyHighlightedIdx = -1;
 
 		TextureLoader = new MovieClipLoader();
 		TextureLoader.addListener(this);
 
-		optionGutter = 14;
-		optionGutterX = optionGutter;
-		optionGutterY = optionGutter;
 
-		menuGutter = 28;
 		menuGutterX = menuGutter * 2;
 
-		menuGutterYText = 86;
 		menuGutterYBase = menuGutterYText + optionGutter;
 		menuGutterYTop = menuGutter;
 		menuGutterY = menuGutterYBase + menuGutterYTop;
-
-		optionWidth = 86;
-		optionHeight = 86;
 
 		minWidth = menuGutterX + 150;
 		maxWidth = menuGutterX + (3 * optionWidth) + (2 * optionGutterX);
 
 		bg._width = maxWidth;
 		bg._x = bg._width / 2;
-      	this.speedUp.stop();
-      	this.speedDown.stop();
+		this.speedUp.stop();
+		this.speedDown.stop();
 
-		//AssignData(generateTestData())// For testing in flash
+		//AssignData(generateTestData());// For testing in flash
 	}
 
 	public function HandleKeyboardInput(e:Number)
@@ -92,25 +93,163 @@ class Option_Box_MC extends MovieClip
 		switch (e)
 		{
 			case 0 :
-				Highlight(RollOver(CurrentlyHighlightedIdx + 3, colMin, colMax));
+				{
+					switch (selectedSubMenu)
+					{
+						case 0 :
+							if (CurrentlyHighlightedIdx + 3 <= colMax)
+							{
+								HighlightOption(CurrentlyHighlightedIdx + 3);
+							}
+							break;
+						case 1 :
+							if (currentSpeedIdx == 1)
+							{
+								SetSubMenu(0);
+							}
+							else
+							{
+								if (speedUp.usable)
+								{
+									HighlightSpeed(1);
+								}
+								else
+								{
+									SetSubMenu(0);
+								}
+							}
+							break;
+						case 2 :
+							settingsMC.NavUp();
+							break;
+					}
+				};
 				break;
 			case 1 :
-				Highlight(RollOver(CurrentlyHighlightedIdx - 3, colMin, colMax));
+				{
+					switch (selectedSubMenu)
+					{
+						case 0 :
+							if (CurrentlyHighlightedIdx - 3 < colMin)
+							{
+								if (speedUp._visible == true)
+								{
+									SetSubMenu(1);
+								}
+							}
+							else
+							{
+								HighlightOption(CurrentlyHighlightedIdx - 3);
+							}
+							break;
+						case 1 :
+							if (currentSpeedIdx == 1)
+							{
+								if (speedDown.usable)
+								{
+									HighlightSpeed(0);
+								}
+							}
+							break;
+						case 2 :
+							settingsMC.NavDown();
+							break;
+					}
+				};
 				break;
 			case 2 :
-				Highlight(RollOver(CurrentlyHighlightedIdx - 1, rowMin, rowMax));
+				{
+					switch (selectedSubMenu)
+					{
+						case 0 :
+							if (CurrentlyHighlightedIdx - 1 < rowMin)
+							{
+								SetSubMenu(2);
+							}
+							else
+							{
+								HighlightOption(CurrentlyHighlightedIdx - 1);
+							}
+							break;
+						case 1 :
+							SetSubMenu(2);
+							break;
+					}
+				};
 				break;
 			case 3 :
-				Highlight(RollOver(CurrentlyHighlightedIdx + 1, rowMin, rowMax));
+				{
+					switch (selectedSubMenu)
+					{
+						case 0 :
+							if (CurrentlyHighlightedIdx + 1 <= rowMax)
+							{
+								HighlightOption(CurrentlyHighlightedIdx + 1);
+							}
+							break;
+						case 2 :
+							SetSubMenu(0);
+							break;
+					}
+				};
 				break;
 			case 4 :
-				Options[CurrentlyHighlightedIdx].OnSelect();
+				switch (selectedSubMenu)
+				{
+					case 0 :
+						Options[CurrentlyHighlightedIdx].OnSelect();
+						break;
+					case 1 :
+						SelectSpeed(currentSpeedIdx);
+						break;
+					case 2 :
+						settingsMC.SelectSetting();
+						break;
+				}
+
 				break;
 		}
 
 	}
 
-	function Highlight(idx:Number)
+	function SetSubMenu(subMenu:Number)
+	{
+		switch (selectedSubMenu)
+		{
+			case 0 :
+				Options[CurrentlyHighlightedIdx].OnUnHighlight();
+				break;
+			case 1 :
+				speedUp.OnUnHighlight();
+				speedDown.OnUnHighlight();
+				break;
+			case 2 :
+				settingsMC.LeaveMenu();
+				break;
+		}
+		switch (subMenu)
+		{
+			case 0 :
+				HighlightOption(CurrentlyHighlightedIdx);
+				break;
+			case 1 :
+				if (speedUp.usable)
+				{
+					HighlightSpeed(1);
+				}
+				else
+				{
+					HighlightSpeed(0);
+				}
+				break;
+			case 2 :
+				settingsMC.EnterMenu();
+				break;
+		}
+		selectedSubMenu = subMenu;
+	}
+
+	function HighlightOption(idx:Number)
 	{
 		if (CurrentlyHighlightedIdx != -1)
 		{
@@ -121,25 +260,26 @@ class Option_Box_MC extends MovieClip
 		optionDesc.text = Options[CurrentlyHighlightedIdx].Description;
 	}
 
-
-	function RollOver(val:Number, min:Number, max:Number):Number
+	function HighlightSpeed(idx:Number)
 	{
-		if (val < min)
+		if (currentSpeedIdx != -1)
 		{
-			return max;
+			speedControls[currentSpeedIdx].OnUnHighlight();
 		}
-		else if (val > max)
+		currentSpeedIdx = idx;
+		speedControls[currentSpeedIdx].OnHighlight();
+		if (currentSpeedIdx == 0)
 		{
-			return min;
+			optionDesc.text = "Slow down";
 		}
 		else
 		{
-			return val;
+			optionDesc.text = "Speed up";
 		}
 	}
 
 
-	public function SendTransitionRequest(NodeID:String)
+	public function SelectOption(NodeID:String)
 	{
 		log("UI_TransitionRequest {}, {" + NodeID + "}");
 		doSendTransitionRequest(NodeID);
@@ -149,11 +289,6 @@ class Option_Box_MC extends MovieClip
 	{
 	}
 
-	public function SendSpeedRequest(SpeedIdx:Number)
-	{
-		log("UI_SpeedRequest {}, {" + SpeedIdx + "}");
-		skse.SendModEvent("UI_SpeedRequest",null,SpeedIdx);
-	}
 
 	public function AssignData(Edges:Array)
 	{
@@ -166,17 +301,18 @@ class Option_Box_MC extends MovieClip
 		var maxOptionRow = Math.floor(maxOptionIdx / 3);
 		var noOfCols = maxOptionIdx >= 3 ? 3 : maxOptionIdx + 1;
 		var newHeight = menuGutterY + ((maxOptionRow + 1) * optionHeight) + (maxOptionRow * optionGutterY);
-		//_width:Math.floor(Math.ceil(menuGutterX + (noOfCols * optionWidth) + ((noOfCols - 1) * optionGutterX), minWidth), maxWidth), 
 		TweenLite.to(bg,0.5,{_height:newHeight, _y:0 - (newHeight / 2)});
 
 		if (Edges.length == 0)
 		{
 			TweenLite.to(this,0.2,{_alpha:0});
+			TweenLite.to(settingsMC,0.2,{_alpha:0});
 			return;
 		}
 		else
 		{
 			TweenLite.to(this,0.5,{_alpha:100});
+			TweenLite.to(settingsMC,0.2,{_alpha:100});
 		}
 		for (var i = 0; i < Edges.length; i++)
 		{
@@ -188,7 +324,7 @@ class Option_Box_MC extends MovieClip
 			Options[i].ShowOption();
 		}
 		CurrentlyHighlightedIdx = -1;
-		Highlight(0);
+		HighlightOption(0);
 	}
 
 	function getCol(idx):Number
@@ -204,7 +340,10 @@ class Option_Box_MC extends MovieClip
 	public function GenerateOption(idx, colIdx, rowIdx):MovieClip
 	{
 		var mc = this.attachMovie("Option_MC", "o" + idx, idx + 1, {_x:(menuGutterX / 2) + (colIdx * (optionWidth + optionGutterX)) + (optionWidth / 2), _y:0 - ((menuGutterYBase) + (rowIdx * (optionHeight + optionGutterY)) + (optionHeight / 2)), _width:optionWidth, _height:optionHeight});
-
+		mc.doSelect = function()
+		{
+			_parent.SelectOption(this.NodeID);
+		};
 		mc.myIdx = idx;
 		mc.TextureLoader = this.TextureLoader;
 		return mc;
@@ -243,8 +382,6 @@ class Option_Box_MC extends MovieClip
 
 	function ShowSpeed(speedVal:String, showUp:Boolean, showDown:Boolean)
 	{
-		trace("speed " + speedVal);
-
 		speedUp._visible = true;
 		speedUp.Show(showUp);
 
@@ -253,6 +390,41 @@ class Option_Box_MC extends MovieClip
 
 		speedDesc._visible = true;
 		speedDesc.text = speedVal;
+
+		if (selectedSubMenu == 1)
+		{
+			if (currentSpeedIdx == 0)
+			{
+				if (showDown == false)
+				{
+					HighlightSpeed(1);
+				}
+				else
+				{
+					HighlightSpeed(0);
+				}
+			}
+			else if (currentSpeedIdx == 1)
+			{
+				if (showUp == false)
+				{
+					HighlightSpeed(0);
+				}
+				else
+				{
+					HighlightSpeed(1);
+				}
+			}
+		}
+	}
+
+	function SelectSpeed()
+	{
+		doChangeSpeed(currentSpeedIdx == 1);
+	}
+
+	function doChangeSpeed(val:Boolean)
+	{
 	}
 
 	function SpeedUp()
@@ -269,5 +441,10 @@ class Option_Box_MC extends MovieClip
 		speedUp._visible = false;
 		speedDown._visible = false;
 		speedDesc._visible = false;
+
+		if (selectedSubMenu == 1)
+		{
+			SetSubMenu(0);
+		}
 	}
 }

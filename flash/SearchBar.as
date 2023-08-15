@@ -53,6 +53,7 @@ class SearchBar extends MovieClip
 		// For Testing
 		//AssignData(generateTestData(5));
 	}
+	
 	//Update size based on the size of the contents. Width outer gutters
 	public function UpdateSize(newHeight:Number, newWidth:Number)
 	{
@@ -171,9 +172,6 @@ class SearchBar extends MovieClip
 
 	function ClearAndHide()
 	{
-		ClearInput();
-		AssignData([]);
-		DisableTextInput();
 		doHideMenuRequest();
 	}
 	function ClearInput()
@@ -184,11 +182,13 @@ class SearchBar extends MovieClip
 	{
 		inputtingText = false;
 		textInput.editable = false;
+		gfx.managers.FocusHandler.instance.setFocus(fakeButton,0);
 		Selection.setFocus(fakeButton);
 	}
 	function EnableTextInput()
 	{
 		textInput.editable = true;
+		gfx.managers.FocusHandler.instance.setFocus(textInput.textField,0);
 		Selection.setFocus(textInput.textField);
 		inputtingText = true;
 	}
@@ -261,10 +261,14 @@ class SearchBar extends MovieClip
 		this._isOpen = isOpen;
 		if (_isOpen)
 		{
-			Selection.setFocus(textInput.textField);
-			Selection.setSelection(0,0);
-			inputtingText = true;
-			textInput.text = "";
+			EnableTextInput();
+			ClearInput();
+		}
+		else
+		{
+			ClearInput();
+			AssignData([]);
+			DisableTextInput();
 		}
 	}
 

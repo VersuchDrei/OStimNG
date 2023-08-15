@@ -32,27 +32,11 @@ namespace UI::Search {
             Locker locker(_lock);
             RE::GFxValue optionBoxes;
             GetControlHandler(optionBoxes);
+            OverrideFunction(optionBoxes, new UI::doHideMenuRequest, "doHideMenuRequest");
+            OverrideFunction(optionBoxes, new doSearchFunction, "doSearch");
+            OverrideFunction(optionBoxes, new doSelectOptionFunction, "doSelectOption");
+            OverrideFunction(optionBoxes, new doSetInputtingTextFunction, "doSetInputtingText");
 
-            RE::GFxFunctionHandler* fn = new UI::doHideMenuRequest;
-            RE::GFxValue doHideFn;
-            _view->CreateFunction(&doHideFn, fn);
-            optionBoxes.SetMember("doHideMenuRequest", doHideFn);
-
-            RE::GFxFunctionHandler* fn2 = new doSearchFunction;
-            RE::GFxValue doSearchFn;
-            _view->CreateFunction(&doSearchFn, fn2);
-            optionBoxes.SetMember("doSearch", doSearchFn);
-
-            RE::GFxFunctionHandler* fn3 = new doSelectOptionFunction;
-            RE::GFxValue doSelectFn;
-            _view->CreateFunction(&doSelectFn, fn3);
-            optionBoxes.SetMember("doSelectOption", doSelectFn);
-
-
-            RE::GFxFunctionHandler* fn4 = new doSetInputtingTextFunction;
-            RE::GFxValue doInputtingTextFn;
-            _view->CreateFunction(&doInputtingTextFn, fn4);
-            optionBoxes.SetMember("doSetInputtingText", doInputtingTextFn);
         });
     }
 
@@ -88,12 +72,13 @@ namespace UI::Search {
         OStimMenu::Show();
         ApplyPositions();
 
+        auto controlMap = RE::ControlMap::GetSingleton();
+        controlMap->AllowTextInput(true);
+        
         QueueUITask([this]() {
             Locker locker(_lock);
             RE::GFxValue optionBoxes;
             GetControlHandler(optionBoxes);
-            auto controlMap = RE::ControlMap::GetSingleton();
-            controlMap->AllowTextInput(true);
             const RE::GFxValue arg{ true };
             optionBoxes.Invoke("SetIsOpen", nullptr, &arg, 1);           
         }); 
@@ -102,12 +87,13 @@ namespace UI::Search {
     void SearchMenu::Hide() {
         OStimMenu::Hide();
 
+        auto controlMap = RE::ControlMap::GetSingleton();
+        controlMap->AllowTextInput(false);
+
         QueueUITask([this]() {
             Locker locker(_lock);
             RE::GFxValue optionBoxes;
             GetControlHandler(optionBoxes);
-            auto controlMap = RE::ControlMap::GetSingleton();
-            controlMap->AllowTextInput(false);
             const RE::GFxValue arg{ false };
             optionBoxes.Invoke("SetIsOpen", nullptr, &arg, 1);
         });
