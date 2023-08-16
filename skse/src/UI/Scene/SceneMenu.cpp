@@ -27,7 +27,22 @@ namespace UI::Scene {
 	void SceneMenu::Show() {
         OStimMenu::Show();
         ApplyPositions();
+        //Hide HUD
+        auto msgQ = RE::UIMessageQueue::GetSingleton();
+        if (msgQ) {
+            msgQ->AddMessage(RE::HUDMenu::MENU_NAME, RE::UI_MESSAGE_TYPE::kHide, nullptr);
+        }
 	}
+
+    void SceneMenu::Hide() {
+        OStimMenu::Hide();
+
+        //Show HUD
+        auto msgQ = RE::UIMessageQueue::GetSingleton();
+        if (msgQ) {
+            msgQ->AddMessage(RE::HUDMenu::MENU_NAME, RE::UI_MESSAGE_TYPE::kShow, nullptr);
+        }
+    }
 
     void SceneMenu::SendControl(int32_t control) {
         QueueUITask([this, control]() {

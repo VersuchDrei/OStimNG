@@ -43,7 +43,6 @@ namespace UI {
     }
 
     void OStimMenu::Show() {
-        logger::info("showing {}", menuName);
         auto msgQ = RE::UIMessageQueue::GetSingleton();
         if (msgQ) {
             msgQ->AddMessage(menuName, RE::UI_MESSAGE_TYPE::kShow, nullptr);
@@ -52,7 +51,6 @@ namespace UI {
     }
 
     void OStimMenu::Hide() {
-        logger::info("hiding {}", menuName);
         auto msgQ = RE::UIMessageQueue::GetSingleton();
         if (msgQ) {
             msgQ->AddMessage(menuName, RE::UI_MESSAGE_TYPE::kHide, nullptr);
