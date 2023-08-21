@@ -353,7 +353,7 @@ namespace Graph {
 
                             if (jsonActor.contains("animationIndex")) {
                                 if (jsonActor["animationIndex"].is_number_integer()) {
-                                    actor.animationIndex = json["animationIndex"];
+                                    actor.animationIndex = jsonActor["animationIndex"];
                                 } else {
                                     actor.animationIndex = index;
                                     logger::warn("animationIndex property of actor {} of scene {} isn't an integer", index, node->scene_id);

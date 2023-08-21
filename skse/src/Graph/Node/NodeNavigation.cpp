@@ -68,8 +68,9 @@ namespace Graph {
 
                     nextRoutes.push_back({navigation.nodes.back(), newRoute});
                 }
-                routes = nextRoutes;
             }
+            routes = nextRoutes;
+            nextRoutes.clear();
         }
 
         return {};

@@ -153,52 +153,28 @@ Event OnPageReset(String Page)
 	EndIf
 EndEvent
 
-bool Function GetExternalBool(string modesp, int id)
-	;osexintegrationmain.console((game.GetFormFromFile(id, modesp) as GlobalVariable).GetValueInt())
-
-	return (game.GetFormFromFile(id, modesp) as GlobalVariable).GetValueInt() == 1
-
-endfunction
-
-Function SetExternalBool(string modesp, int id, bool val)
-	int set = 0
-	if val
-		set = 1
-	endif 
-
-	(game.GetFormFromFile(id, modesp) as GlobalVariable).SetValueInt(set)
-endfunction
-
-Function SetExternalInt(string modesp, int id, int val)
-	(game.GetFormFromFile(id, modesp) as GlobalVariable).SetValueInt(val)
-endfunction
-int Function GetExternalInt(string modesp, int id)
-	return (game.GetFormFromFile(id, modesp) as GlobalVariable).GetValueInt() 
-endfunction
-
-Function SetExternalfloat(string modesp, int id, float val)
-	(game.GetFormFromFile(id, modesp) as GlobalVariable).SetValue(val)
-endfunction
-float Function GetExternalfloat(string modesp, int id)
-	return (game.GetFormFromFile(id, modesp) as GlobalVariable).GetValue() 
-endfunction
-
-Event OnOptionHighlight(Int Option)
+Event OnOptionSelect(int Option)
 	if currPage == "$ostim_page_undress"
-		OnSlotMouseOver(option)
+		OnSlotSelect(Option)
+	EndIf
+EndEvent
+
+Event OnOptionHighlight(int Option)
+	if currPage == "$ostim_page_undress"
+		OnSlotMouseOver(Option)
 		Return
 	EndIf
 EndEvent
 
-Function OnSlotSelect(int option)
+Function OnSlotSelect(int Option)
 	int i = SlotSets.Length
 	While i
 		i -= 1
-		If SlotSets[i] == option
+		If SlotSets[i] == Option
 			int Mask = Math.Pow(2, i) as int
 			UndressingSlotMask = Math.LogicalXor(UndressingSlotMask, Mask)
 			OData.SetUndressingSlotMask(UndressingSlotMask)
-			SetToggleOptionValue(option, Math.LogicalAnd(UndressingSlotMask, Mask))
+			SetToggleOptionValue(Option, Math.LogicalAnd(UndressingSlotMask, Mask))
 
 			Return
 		EndIf

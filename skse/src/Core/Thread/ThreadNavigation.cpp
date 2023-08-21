@@ -114,6 +114,10 @@ namespace OStim {
     }
 
     void Thread::navigateTo(Graph::Node* node) {
+        if (!m_currentNode) {
+            return;
+        }
+
         clearNodeQueue();
 
         if (m_currentNode == node) {
