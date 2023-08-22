@@ -33,7 +33,7 @@ class Option_Box_Container_MC extends MovieClip
 		if (!faded)
 		{
 			TweenLite.killTweensOf(this,true,{_alpha:true});
-			TweenLite.to(this,1.0,{_alpha:0});
+			TweenLite.to(this,1.5,{_alpha:0});
 			faded = true;
 		}
 	}

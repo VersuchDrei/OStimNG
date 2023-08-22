@@ -211,7 +211,7 @@ class Option_Box_MC extends MovieClip
 
 				break;
 		}
-		_parent.StartFadeOut(1.0);
+		_parent.StartFadeOut(2.0);
 	}
 
 	function SetSubMenu(subMenu:Number)
