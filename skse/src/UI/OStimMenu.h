@@ -12,8 +12,13 @@ namespace UI {
 		void Update() {
 			while (!_taskQueue.empty()) {
 				auto& task = _taskQueue.front();
-				task();
-				_taskQueue.pop();
+				if (!task()) {
+					std::this_thread::sleep_for(std::chrono::milliseconds(250));
+					continue;
+				}
+				else {
+					_taskQueue.pop();
+				}
 			}
 		};
 		virtual void AdvanceMovie(float a_interval, std::uint32_t a_currentTime) override;
@@ -48,7 +53,7 @@ namespace UI {
 			}
 		};
 	protected:
-		using UITask = std::function<void()>;
+		using UITask = std::function<bool()>;
 
 		bool _isOpen = false;
 		RE::GPtr<RE::GFxMovieView> _view;
@@ -59,12 +64,12 @@ namespace UI {
 
 		std::queue<UITask> _taskQueue;
 	protected:
-		void QueueUITask(std::function<void()> fn) { 
+		void QueueUITask(std::function<bool()> fn) { 
 			//Show();
 			Locker locker(_lock);
 			_taskQueue.push(std::move(fn));
 		}
-		void GetRoot(RE::GFxValue& root);
+		bool GetRoot(RE::GFxValue& root);
 	};
 
 

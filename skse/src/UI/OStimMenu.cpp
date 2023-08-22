@@ -67,8 +67,10 @@ namespace UI {
         }
     }
 
-    void OStimMenu::GetRoot(RE::GFxValue& root) {
-        assert(uiMovie);
+    bool OStimMenu::GetRoot(RE::GFxValue& root) {
+        if (uiMovie == nullptr)
+            return false;
         uiMovie->GetVariable(&root, "_root");
+        return true;
     }
 }

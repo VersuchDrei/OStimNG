@@ -21,6 +21,7 @@ namespace UI::Scene {
 
             OverrideFunction(settings, new doShowAlignMenu, "doShowAlignment");
             OverrideFunction(settings, new doShowSearchMenu, "doShowSearch");
+            return true;
         });
     }
 
@@ -36,6 +37,7 @@ namespace UI::Scene {
             GetOptionBoxes(optionBoxes);
             const RE::GFxValue val{ control };
             optionBoxes.Invoke("HandleKeyboardInput", nullptr, &val, 1); 
+            return true;
         });
     }
 
@@ -63,9 +65,7 @@ namespace UI::Scene {
     void SceneMenu::ApplyPositions() {
         QueueUITask([this]() {
             RE::GFxValue root;
-            GetRoot(root);
-            if (!root.IsObject())
-                return;
+            if (!GetRoot(root)) { return false; }
 
             auto controlPositions = &UI::Settings::positionSettings.ScenePositions.ControlPosition;
             const RE::GFxValue controlX = RE::GFxValue{ controlPositions->xPos - 25 };
@@ -77,6 +77,7 @@ namespace UI::Scene {
             RE::GFxValue alignmentInfo;
             root.GetMember("optionBoxesContainer", &alignmentInfo);
             alignmentInfo.Invoke("setPosition", nullptr, controlPosArray, 4);
+            return true;
         });
     }
 
@@ -91,6 +92,7 @@ namespace UI::Scene {
             RE::GFxValue optionBoxes;
             GetOptionBoxes(optionBoxes);
             optionBoxes.Invoke("AssignData", nullptr, &menuValues, 1);
+            return true;
         });
     }
 
@@ -125,11 +127,11 @@ namespace UI::Scene {
             Locker locker(_lock);
             auto thread = UI::UIState::GetSingleton()->currentThread;
             if (!thread) {
-                return;
+                return true;
             }
             auto node = UI::UIState::GetSingleton()->currentNode;
             if (!node) {
-                return;
+                return true;
             }
             RE::GFxValue optionBoxes;
             GetOptionBoxes(optionBoxes);
@@ -144,6 +146,7 @@ namespace UI::Scene {
             else {
                 optionBoxes.Invoke("HideSpeed");
             }
+            return true;
         });
     }
 
@@ -153,6 +156,7 @@ namespace UI::Scene {
             RE::GFxValue optionBoxes;
             GetOptionBoxes(optionBoxes);
             optionBoxes.Invoke("SpeedUp");
+            return true;
         });
     }
 
@@ -162,6 +166,7 @@ namespace UI::Scene {
             RE::GFxValue optionBoxes;
             GetOptionBoxes(optionBoxes);
             optionBoxes.Invoke("SpeedDown");
+            return true;
         });
     }
     

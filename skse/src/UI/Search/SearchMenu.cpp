@@ -31,12 +31,12 @@ namespace UI::Search {
         QueueUITask([this]() {
             Locker locker(_lock);
             RE::GFxValue optionBoxes;
-            GetControlHandler(optionBoxes);
+            if (!GetControlHandler(optionBoxes)) { return false; }
             OverrideFunction(optionBoxes, new UI::doHideMenuRequest, "doHideMenuRequest");
             OverrideFunction(optionBoxes, new doSearchFunction, "doSearch");
             OverrideFunction(optionBoxes, new doSelectOptionFunction, "doSelectOption");
             OverrideFunction(optionBoxes, new doSetInputtingTextFunction, "doSetInputtingText");
-
+            return true;
         });
     }
 
@@ -45,9 +45,10 @@ namespace UI::Search {
         QueueUITask([this, control]() {
             Locker locker(_lock);
             RE::GFxValue optionBoxes;
-            GetControlHandler(optionBoxes);
+            if (!GetControlHandler(optionBoxes)) { return false; }
             const RE::GFxValue val{ control };
             optionBoxes.Invoke("HandleKeyboardInput", nullptr, &val, 1);
+            return true;
         });
     }
 
@@ -78,9 +79,10 @@ namespace UI::Search {
         QueueUITask([this]() {
             Locker locker(_lock);
             RE::GFxValue optionBoxes;
-            GetControlHandler(optionBoxes);
+            if (!GetControlHandler(optionBoxes)) { return false; }
             const RE::GFxValue arg{ true };
-            optionBoxes.Invoke("SetIsOpen", nullptr, &arg, 1);           
+            optionBoxes.Invoke("SetIsOpen", nullptr, &arg, 1);   
+            return true;
         }); 
     }
 
@@ -93,9 +95,10 @@ namespace UI::Search {
         QueueUITask([this]() {
             Locker locker(_lock);
             RE::GFxValue optionBoxes;
-            GetControlHandler(optionBoxes);
+            if (!GetControlHandler(optionBoxes)) { return false; }
             const RE::GFxValue arg{ false };
             optionBoxes.Invoke("SetIsOpen", nullptr, &arg, 1);
+            return true;
         });
     }
 
@@ -103,9 +106,9 @@ namespace UI::Search {
         QueueUITask([this]() {
             Locker locker(_lock);
             RE::GFxValue root;
-            GetRoot(root);
-            if (!root.IsObject())
-                return;
+            if (!GetRoot(root)) { return false; }
+            
+                
             auto controlPositions = &UI::Settings::positionSettings.ScenePositions.ControlPosition;
             const RE::GFxValue controlX = RE::GFxValue{ controlPositions->xPos };
             const RE::GFxValue controlY = RE::GFxValue{ controlPositions->yPos };
@@ -116,6 +119,7 @@ namespace UI::Search {
             RE::GFxValue alignmentInfo;
             root.GetMember("searchMCContainer", &alignmentInfo);
             alignmentInfo.Invoke("setPosition", nullptr, controlPosArray, 4);
+            return true;
         });
     }
 
@@ -124,7 +128,7 @@ namespace UI::Search {
         QueueUITask([this, data]() {
             Locker locker(_lock);
             RE::GFxValue optionBoxes;
-            GetControlHandler(optionBoxes);
+            if (!GetControlHandler(optionBoxes)) { return false; }
             RE::GFxValue arg;
             _view->CreateArray(&arg);
             for (auto& item : data) {
@@ -135,6 +139,7 @@ namespace UI::Search {
                 arg.PushBack(entry);
             }
             optionBoxes.Invoke("AssignData", nullptr, &arg, 1);
+            return true;
         });
     }
 
@@ -160,11 +165,14 @@ namespace UI::Search {
         });        
     }
 
-    void SearchMenu::GetControlHandler(RE::GFxValue& controlHandler) {
+    bool SearchMenu::GetControlHandler(RE::GFxValue& controlHandler) {
         RE::GFxValue root;
-        GetRoot(root);
+        if (!GetRoot(root)) { 
+            return false; 
+        }
         RE::GFxValue searchBoxContainer;
         root.GetMember("searchMCContainer", &searchBoxContainer);
         searchBoxContainer.GetMember("searchMC", &controlHandler);
+        return true;
     }
 }

@@ -30,6 +30,7 @@ namespace UI::Align {
             RE::GFxValue alignmentInfo;
             GetAlignmentInfo(alignmentInfo);
             alignmentInfo.Invoke("Show");
+            return true;
         });
     }
 
@@ -39,6 +40,7 @@ namespace UI::Align {
             RE::GFxValue alignmentInfo;
             GetAlignmentInfo(alignmentInfo);
             OverrideFunction(alignmentInfo, new UI::doHideMenuRequest, "doHideMenuRequest");
+            return true;
 
         });
     }
@@ -71,6 +73,7 @@ namespace UI::Align {
             RE::GFxValue alignmentInfo;
             GetAlignmentInfo(alignmentInfo);
             alignmentInfo.Invoke("Hide");
+            return true;
         });
     }
 
@@ -79,7 +82,8 @@ namespace UI::Align {
             auto uiState = UI::UIState::GetSingleton();
             auto currentThread = uiState->currentThread;
             auto currentNode = uiState->currentNode;
-            if (currentThread == nullptr || currentNode == nullptr) return;
+            if (currentThread == nullptr || currentNode == nullptr)
+                return true;;
 
             RE::GFxValue sceneInfo;
             GetSceneInfo(sceneInfo);
@@ -92,6 +96,7 @@ namespace UI::Align {
 
             RE::GFxValue infoArray[3]{ sceneInfoPack, sceneInfoAnimName, threadKeyValue };
             sceneInfo.Invoke("updateInfo", nullptr, infoArray, 3);
+            return true;
         });
     }
 
@@ -126,6 +131,7 @@ namespace UI::Align {
                                       currentActorInfo.sosBend };
 
             alignmentInfo.Invoke("updateInfo", nullptr, infoArray, 10);
+            return true;
         });
     }
 
@@ -177,6 +183,7 @@ namespace UI::Align {
             RE::GFxValue sceneInfo;
             GetSceneInfo(sceneInfo);
             sceneInfo.Invoke("setPosition", nullptr, infoPosArray, 4);
+            return true;
         });
     }
 
@@ -187,6 +194,7 @@ namespace UI::Align {
             GetAlignmentInfo(alignmentInfo);
             RE::GFxValue fieldValue[1]{ field };
             alignmentInfo.Invoke("selectField", nullptr, fieldValue, 1);
+            return true;
         });
     }
 
@@ -248,6 +256,7 @@ namespace UI::Align {
             GetAlignmentInfo(alignmentInfo);
             RE::GFxValue values[2]{ *currentVal, up };
             alignmentInfo.Invoke("updateDoubleField", nullptr, values, 2);
+            return true;
         });        
     }
 
@@ -259,6 +268,7 @@ namespace UI::Align {
             std::string incString = IncrementValueImpl::format(incrementValue);
             RE::GFxValue values[1]{ RE::GFxValue{incString} };
             alignmentInfo.Invoke("updateIncrement", nullptr, values, 1);
+            return true;
         });
     }
 

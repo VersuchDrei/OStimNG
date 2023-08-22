@@ -32,7 +32,7 @@ namespace UI::Search {
         void ApplyPositions();
         bool IsInputtingText() { return _inputtingText; }
     private:
-        void GetControlHandler(RE::GFxValue& controlHandler);
+        bool GetControlHandler(RE::GFxValue& controlHandler);
         void AssignData(std::vector<SearchItem>& data);
         void SendControl(int32_t control);
         void SetInputtingText(bool inputting) { _inputtingText = inputting; }
