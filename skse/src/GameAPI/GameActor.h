@@ -23,7 +23,9 @@ namespace GameAPI {
         inline uint32_t getBaseFormID() const { return form->GetActorBase()->formID; }
 
         void update3D() const;
-        bool isLoaded() const { return form->Is3DLoaded(); }
+        inline bool isLoaded() const { return form->Is3DLoaded(); }
+        inline bool isDisabled() const { return form->IsDisabled(); }
+        inline bool isDeleted() const { return form->IsMarkedForDeletion() || form->IsDeleted(); }
         inline void updateAI() const { form->EvaluatePackage(); }
         void lock() const;
         void unlock() const;

@@ -48,13 +48,12 @@ b -Tn OStim2PBothLyingMF_1 OStim2P\MF\idle\OStim2PBothLyingMF_1.hkx
 b -Tn OStim2PLyingKneelingMF_0 OStim2P\MF\idle\OStim2PLyingKneelingMF_0.hkx
 b -Tn OStim2PLyingKneelingMF_1 OStim2P\MF\idle\OStim2PLyingKneelingMF_1.hkx
 
-b -Tn OStim2PStandingGrindingDryMF_S1_0 OStim2P\MF\idle\OStim2PStandingGrindingDryMF_S1_0.hkx
-b -Tn OStim2PStandingGrindingDryMF_S1_1 OStim2P\MF\idle\OStim2PStandingGrindingDryMF_S1_1.hkx
-b -Tn OStim2PStandingGrindingDryMF_S2_0 OStim2P\MF\idle\OStim2PStandingGrindingDryMF_S2_0.hkx
-b -Tn OStim2PStandingGrindingDryMF_S2_1 OStim2P\MF\idle\OStim2PStandingGrindingDryMF_S2_1.hkx
-b -Tn OStim2PStandingGrindingDryMF_S3_0 OStim2P\MF\idle\OStim2PStandingGrindingDryMF_S3_0.hkx
-b -Tn OStim2PStandingGrindingDryMF_S3_1 OStim2P\MF\idle\OStim2PStandingGrindingDryMF_S3_1.hkx
-b -Tn OStim2PStandingSpankIdleMF_1 OStim2P\MF\idle\OStim2PStandingSpankIdleMF_1.hkx
+b -Tn OStim2PStandingGrindingDryMF_S1_0 OStim2P\MF\sensual\OStim2PStandingGrindingDryMF_S1_0.hkx
+b -Tn OStim2PStandingGrindingDryMF_S1_1 OStim2P\MF\sensual\OStim2PStandingGrindingDryMF_S1_1.hkx
+b -Tn OStim2PStandingGrindingDryMF_S2_0 OStim2P\MF\sensual\OStim2PStandingGrindingDryMF_S2_0.hkx
+b -Tn OStim2PStandingGrindingDryMF_S2_1 OStim2P\MF\sensual\OStim2PStandingGrindingDryMF_S2_1.hkx
+b -Tn OStim2PStandingGrindingDryMF_S3_0 OStim2P\MF\sensual\OStim2PStandingGrindingDryMF_S3_0.hkx
+b -Tn OStim2PStandingGrindingDryMF_S3_1 OStim2P\MF\sensual\OStim2PStandingGrindingDryMF_S3_1.hkx
 b -Tn OStim2PStandingSpankIdleMF_0 OStim2P\MF\sensual\OStim2PStandingSpankIdleMF_0.hkx
 b -Tn OStim2PStandingSpankIdleMF_1 OStim2P\MF\sensual\OStim2PStandingSpankIdleMF_1.hkx
 b -Tn OStim2PStandingSpankMF_0 OStim2P\MF\sensual\OStim2PStandingSpankMF_0.hkx

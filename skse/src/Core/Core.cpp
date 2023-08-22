@@ -22,6 +22,7 @@ namespace OStim {
     }
 
     bool isEligible(GameAPI::GameActor actor) {
-        return !actor.isChild() && Trait::TraitTable::getActorType(actor) != "" && !ThreadManager::GetSingleton()->findActor(actor);
+        return !actor.isDisabled() && !actor.isDeleted() && !actor.isChild() &&
+               Trait::TraitTable::getActorType(actor) != "" && !ThreadManager::GetSingleton()->findActor(actor);
     }
 }

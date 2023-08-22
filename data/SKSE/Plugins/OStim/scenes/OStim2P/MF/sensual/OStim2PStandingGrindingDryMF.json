@@ -18,7 +18,7 @@
 	],
 	"navigations":[
 		{
-			"destination": "OStim2PStandingHoldingFromBehind",
+			"destination": "OStim2PStandingHoldingFromBehindMF",
 			"description": "return",
 			"icon": "OStim/symbols/return"
 		},
@@ -57,6 +57,10 @@
       		"type": "buttjob",
       		"actor": 1,
       		"target": 0
+    	},
+    	{
+    		"type": "gropingbreast",
+    		"actor": 1
     	}
 	]
 }
