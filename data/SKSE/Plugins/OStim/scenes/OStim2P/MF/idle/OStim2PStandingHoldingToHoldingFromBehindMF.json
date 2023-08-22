@@ -1,0 +1,35 @@
+{
+	"name": "Standing Holding to Holding from Behind Straight",
+	"modpack": "OStim",
+	"length": 2.5,
+	"speeds":[
+		{
+			"animation": "OStim2PStandingHoldingToHoldingFromBehindMF"
+		}
+	],
+	"destination": "OStim2PStandingHoldingFromBehindMF",
+	"actors":[
+		{
+			"intendedSex": "male",
+			"scale": 1.03,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		},
+		{
+			"intendedSex": "female",
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		}
+	],
+	"actions":[
+		{
+			"type": "holdingbody",
+			"actor": 0,
+			"target": 1
+		}
+	]
+}

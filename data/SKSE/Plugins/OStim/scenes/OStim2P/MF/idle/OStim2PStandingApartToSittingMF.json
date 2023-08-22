@@ -1,0 +1,28 @@
+{
+	"name": "Standing Apart to Sitting Straight",
+	"modpack": "OStim",
+	"length": 2.5,
+	"speeds":[
+		{
+			"animation": "OStim2PStandingApartToSittingMF"
+		}
+	],
+	"destination": "OStim2PSittingMF",
+	"actors":[
+		{
+			"intendedSex": "male",
+			"scale": 1.03,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		},
+		{
+			"intendedSex": "female",
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		}
+	]
+}

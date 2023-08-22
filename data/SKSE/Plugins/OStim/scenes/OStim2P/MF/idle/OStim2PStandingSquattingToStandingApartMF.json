@@ -1,0 +1,28 @@
+{
+	"name": "Standing Squatting to Standing Apart Straight",
+	"modpack": "OStim",
+	"length": 2.0,
+	"speeds":[
+		{
+			"animation": "OStim2PStandingSquattingToStandingApartMF"
+		}
+	],
+	"destination": "OStim2PStandingApartMF",
+	"actors":[
+		{
+			"intendedSex": "male",
+			"scale": 1.03,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		},
+		{
+			"intendedSex": "female",
+			"tags": [
+				"squatting"
+			],
+			"feetOnGround": true
+		}
+	]
+}

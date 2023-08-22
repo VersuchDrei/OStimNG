@@ -1,0 +1,48 @@
+{
+	"name": "Undressing Hub Straight",
+	"modpack": "OStim",
+	"length": 2.0,
+	"speeds":[
+		{
+			"animation": "OStim2PStandingSquattingMF"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStim2PStandingSquattingMF",
+			"description": "return",
+			"icon": "OStim/symbols/return"
+		},
+		{
+			"destination": "OStim2PUndressBottom0MF",
+			"description": "take off {0}s bottom",
+			"icon": "OStim/clothes/skirt"
+		},
+		{
+			"destination": "OStim2PUndressingHub1MF",
+			"description": "undress {1}",
+			"icon": "OStim/symbols/gender_f"
+		}
+	],
+	"tags":[
+		"idle"
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"sosBend": 7,
+			"scale": 1.03,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		},
+		{
+			"intendedSex": "female",
+			"tags": [
+				"squatting"
+			],
+			"feetOnGround": true
+		}
+	]
+}

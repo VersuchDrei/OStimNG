@@ -19,9 +19,25 @@
 			"icon": "OStim/symbols/gender_mm"
 		},
 		{
-			"destination": "OStim2PSittingMF",
+			"destination": "OStim2PStandingApartToHoldingMF",
+			"description": "hold {1}",
+			"icon": "OStim/sensual/embrace_mf"
+		},
+		{
+			"destination": "OStim2PStandingApartToStandingSquattingMF",
+			"description": "squat ({1})",
+			"icon": "OStim/positional/squatting_f"
+		},
+		{
+			"destination": "OStim2PStandingApartToSittingMF",
 			"description": "sit down",
 			"icon": "OStim/positional/squatting_f"
+		},
+		{
+			"destination": "OStim2PUndressingHub1MF",
+			"description": "undressing menu",
+			"icon": "OStim/clothes/top",
+			"priority": 2000
 		}
 	],
 	"tags":[

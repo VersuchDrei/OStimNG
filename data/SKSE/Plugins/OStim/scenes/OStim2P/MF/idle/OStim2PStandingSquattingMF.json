@@ -1,0 +1,44 @@
+{
+	"name": "Standing Squatting Straight",
+	"modpack": "OStim",
+	"length": 2.0,
+	"speeds":[
+		{
+			"animation": "OStim2PStandingSquattingMF"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStim2PStandingSquattingToStandingApartMF",
+			"description": "stand up ({1})",
+			"icon": "OStim/positional/standup_f"
+		},
+		{
+			"destination": "OStim2PUndressingHub0MF",
+			"description": "undressing menu",
+			"icon": "OStim/clothes/top",
+			"priority": 2000
+		}
+	],
+	"tags":[
+		"idle"
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"sosBend": 7,
+			"scale": 1.03,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		},
+		{
+			"intendedSex": "female",
+			"tags": [
+				"squatting"
+			],
+			"feetOnGround": true
+		}
+	]
+}

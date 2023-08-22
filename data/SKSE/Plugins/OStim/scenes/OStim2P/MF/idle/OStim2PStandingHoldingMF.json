@@ -1,0 +1,47 @@
+{
+	"name": "Standing Holding Straight",
+	"modpack": "OStim",
+	"length": 2.0,
+	"speeds":[
+		{
+			"animation": "OStim2PStandingHoldingMF"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStim2PStandingHoldingToApartMF",
+			"description": "separate",
+			"icon": "OStim/symbols/x"
+		},
+		{
+			"destination": "OStim2PStandingHoldingToHoldingFromBehindMF",
+			"description": "turn around ({1})",
+			"icon": "OStim/symbols/rotate_ccw"
+		}
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"sosBend": 7,
+			"scale": 1.03,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		},
+		{
+			"intendedSex": "female",
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		}
+	],
+	"actions":[
+		{
+			"type": "holdingbody",
+			"actor": 0,
+			"target": 1
+		}
+	]
+}

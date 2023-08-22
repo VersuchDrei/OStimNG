@@ -2,11 +2,26 @@
 <system>
 
 	<bone name="NPC Pelvis [Pelv]"/>
+	<bone name="NPC GenitalsBase [GenBase]"/>
+	<bone name="NPC Genitals01 [Gen01]"/>
+	<bone name="NPC Genitals02 [Gen02]"/>
+	<bone name="NPC Genitals03 [Gen03]"/>
+	<bone name="NPC Genitals04 [Gen04]"/>
+	<bone name="NPC Genitals05 [Gen05]"/>
+	<bone name="NPC Genitals06 [Gen06]"/>
 
 	<per-vertex-shape name="DildoCollision">
 		<margin>0.1</margin>
 		<penetration>0.5</penetration>
 		<shared>internal</shared>
+		<tag>Dildo</tag>
+		<no-collide-with-tag>Dildo</no-collide-with-tag>
+	</per-vertex-shape>
+
+	<per-vertex-shape name="Dildo">
+		<margin>0.1</margin>
+		<penetration>0.5</penetration>
+		<shared>external</shared>
 		<tag>Dildo</tag>
 		<no-collide-with-tag>Dildo</no-collide-with-tag>
 	</per-vertex-shape>

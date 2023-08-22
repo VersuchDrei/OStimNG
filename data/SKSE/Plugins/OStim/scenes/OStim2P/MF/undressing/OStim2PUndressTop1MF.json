@@ -1,0 +1,30 @@
+{
+	"name": "Undress Top Straight",
+	"modpack": "OStim",
+	"length": 4.0,
+	"tags":[
+		"undressing"
+	],
+	"speeds":[
+		{
+			"animation": "OStim2PUndressTop1MF"
+		}
+	],
+	"destination": "OStim2PUndressingHub1MF",
+	"actors":[
+		{
+			"intendedSex": "male",
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		},
+		{
+			"intendedSex": "female",
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		}
+	]
+}

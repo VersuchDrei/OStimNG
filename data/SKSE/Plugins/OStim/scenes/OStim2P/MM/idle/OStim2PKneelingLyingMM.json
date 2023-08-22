@@ -19,7 +19,7 @@
 			"icon": "OStim/symbols/gender_ff"
 		},
 		{
-			"destination": "OStim2PLyingKneelingMM",
+			"destination": "OStim2PKneelingLyingToLyingKneelingMM",
 			"description": "switch positions",
 			"icon": "OStim/symbols/switch"
 		},

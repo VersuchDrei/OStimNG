@@ -1,0 +1,27 @@
+{
+	"name": "Kneeling Lying to Lying Kneeling Gay",
+	"modpack": "OStim",
+	"length": 3.0,
+	"speeds":[
+		{
+			"animation": "OStim2PKneelingLyingToLyingKneelingMM"
+		}
+	],
+	"destination": "OStim2PLyingKneelingMM",
+	"actors":[
+		{
+			"intendedSex": "male",
+			"tags": [
+				"kneeling"
+			],
+			"feetOnGround": false
+		},
+		{
+			"intendedSex": "male",
+			"tags": [
+				"kneeling"
+			],
+			"feetOnGround": false
+		}
+	]
+}

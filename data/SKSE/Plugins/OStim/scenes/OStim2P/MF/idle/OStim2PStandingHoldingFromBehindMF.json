@@ -1,0 +1,43 @@
+{
+	"name": "Standing Holding from Behind Straight",
+	"modpack": "OStim",
+	"length": 2.0,
+	"speeds":[
+		{
+			"animation": "OStim2PStandingHoldingFromBehindMF"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStim2PStandingHoldingFromBehindToHoldingMF",
+			"description": "turn around ({1})",
+			"icon": "OStim/symbols/rotate_ccw"
+		}
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"sosBend": 7,
+			"scale": 1.03,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		},
+		{
+			"intendedSex": "female",
+			"tags": [
+				"facingaway",
+				"standing"
+			],
+			"feetOnGround": true
+		}
+	],
+	"actions":[
+		{
+			"type": "holdingbody",
+			"actor": 0,
+			"target": 1
+		}
+	]
+}

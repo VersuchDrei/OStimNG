@@ -21,7 +21,9 @@ namespace OStim {
                 inDialogue = getInDialogue(params.actors);
             }
 
-            handleFurniture(params);
+            GameAPI::Game::runSynced([params]() {
+                handleFurniture(params);
+            });
         });
         startThread.detach();
     }

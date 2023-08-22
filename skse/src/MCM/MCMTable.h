@@ -249,7 +249,7 @@ namespace MCM {
             {0xE0C, {1, "moanVolume"}},
             {0xE0D, {1, "soundVolume"}},
 
-            {0xDEE, {0, "SetOnlyGayAnimsInGayScenes"}},  // intended sex only
+            {0xDEE, {1, "SetOnlyGayAnimsInGayScenes"}},  // intended sex only
             {0XDEF, {0, "PlayerAlwaysDomStraight"}},
             {0XDF0, {0, "PlayerAlwaysSubStraight"}},
             {0XDF1, {0, "PlayerAlwaysDomGay"}},
