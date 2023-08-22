@@ -362,6 +362,14 @@ namespace Graph {
                                 actor.animationIndex = index;
                             }
 
+                            if (jsonActor.contains("noStrip")) {
+                                if (jsonActor["noStrip"].is_boolean()) {
+                                    actor.noStrip = jsonActor["noStrip"];
+                                } else {
+                                    logger::warn("noStrip property of actor {} of scene {} isn't a boolean", index, node->scene_id);
+                                }
+                            }
+
                             // TODO: this is too skyrim specific
                             if (jsonActor.contains("lookUp")) {
                                 if (jsonActor["lookUp"].is_number_integer()) {

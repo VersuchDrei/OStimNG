@@ -12,6 +12,7 @@
 		{
 			"intendedSex": "male",
 			"scale": 1.03,
+			"sosBend": 7,
 			"tags": [
 				"standing"
 			],

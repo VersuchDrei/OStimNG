@@ -1,18 +1,19 @@
 {
-	"name": "Standing Holding to Holding from Behind Straight",
+	"name": "Standing Spank Straight",
 	"modpack": "OStim",
-	"length": 2.5,
+	"length": 2.666,
 	"speeds":[
 		{
-			"animation": "OStim2PStandingHoldingToHoldingFromBehindMF"
+			"animation": "OStim2PStandingSpankMF"
 		}
 	],
-	"destination": "OStim2PStandingHoldingFromBehindMF",
+	"destination": "OStim2PStandingSpankIdleMF",
 	"actors":[
 		{
 			"intendedSex": "male",
-			"scale": 1.03,
 			"sosBend": 7,
+			"scale": 1.03,
+      		"lookUp": -50,
 			"tags": [
 				"standing"
 			],
@@ -20,6 +21,8 @@
 		},
 		{
 			"intendedSex": "female",
+      		"lookUp": -30,
+      		"lookLeft": 75,
 			"tags": [
 				"standing"
 			],

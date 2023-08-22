@@ -16,7 +16,7 @@
 		{
 			"destination": "OStim2PStandingHoldingToHoldingFromBehindMF",
 			"description": "turn around ({1})",
-			"icon": "OStim/symbols/rotate_ccw"
+			"icon": "OStim/sensual/embrace_behind_mf"
 		}
 	],
 	"actors":[

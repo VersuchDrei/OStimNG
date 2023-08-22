@@ -236,6 +236,9 @@ namespace LegacyUtil {
                                 } else if (VectorUtil::contains(node->actors[pos].tags, std::string("licking"))) {
                                     node->actors[pos].expressionOverride = "tongue";
                                 }
+                                if (VectorUtil::contains(node->actors[pos].tags, std::string("nostrip"))) {
+                                    node->actors[pos].noStrip = true;
+                                }
                             }
 
                             if (auto feetOnGround = actor.attribute("feetOnGround")) {

@@ -69,6 +69,8 @@ namespace OStim {
         inline bool isFemale() { return female; }
         inline bool hasSchlong() { return schlong; }
 
+        inline Graph::GraphActor* getGraphActor() { return graphActor; }
+
         Serialization::OldThreadActor serialize();
 
     private:

@@ -1,0 +1,62 @@
+{
+	"name": "Standing Grinding Dry Straight",
+	"modpack": "OStim",
+	"length": 2.0,
+	"speeds":[
+		{
+			"animation": "OStim2PStandingGrindingDryMF_S1",
+			"displaySpeed": 1.0
+		},
+		{
+			"animation": "OStim2PStandingGrindingDryMF_S2",
+			"displaySpeed": 1.5
+		},
+		{
+			"animation": "OStim2PStandingGrindingDryMF_S3",
+			"displaySpeed": 2.0
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStim2PStandingHoldingFromBehind",
+			"description": "return",
+			"icon": "OStim/symbols/return"
+		},
+		{
+			"destination": "OStim2PStandingSpankIdleMF",
+			"description": "bend {1} over for some spankings",
+			"icon": "OStim/sexual/spank_right_mf"
+		}
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"sosBend": 2,
+			"scale": 1.03,
+			"noStrip": true,
+      		"lookUp": -50,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		},
+		{
+			"intendedSex": "female",
+			"noStrip": true,
+      		"lookUp": -30,
+      		"lookLeft": 100,
+			"tags": [
+				"facingaway",
+				"standing"
+			],
+			"feetOnGround": true
+		}
+	],
+	"actions":[
+		{
+      		"type": "buttjob",
+      		"actor": 1,
+      		"target": 0
+    	}
+	]
+}

@@ -1,28 +1,27 @@
 {
-	"name": "Standing Holding from Behind Straight",
+	"name": "Standing Spank Idle Straight",
 	"modpack": "OStim",
 	"length": 2.0,
 	"speeds":[
 		{
-			"animation": "OStim2PStandingHoldingFromBehindMF"
+			"animation": "OStim2PStandingSpankIdleMF"
 		}
 	],
 	"navigations":[
 		{
-			"destination": "OStim2PStandingHoldingFromBehindToHoldingMF",
-			"description": "turn around ({1})",
-			"icon": "OStim/symbols/rotate_ccw"
+			"destination": "OStim2PStandingHoldingFromBehindMF",
+			"description": "return",
+			"icon": "OStim/symbols/return"
+		},
+		{
+			"destination": "OStim2PStandingSpankMF",
+			"description": "spank {1}",
+			"icon": "OStim/sexual/spank_right_mf"
 		},
 		{
 			"destination": "OStim2PStandingGrindingDryMF",
 			"description": "grind your butt against {0}s crotch",
 			"icon": "OStim/sensual/embrace_behind_mf",
-			"priority": 1000
-		},
-		{
-			"destination": "OStim2PStandingSpankIdleMF",
-			"description": "bend {1} over for some spankings",
-			"icon": "OStim/sexual/spank_right_mf",
 			"priority": 1000
 		}
 	],
@@ -31,8 +30,7 @@
 			"intendedSex": "male",
 			"sosBend": 7,
 			"scale": 1.03,
-            "lookUp": -35,
-            "lookLeft": -25,
+      		"lookUp": -50,
 			"tags": [
 				"standing"
 			],
@@ -40,9 +38,10 @@
 		},
 		{
 			"intendedSex": "female",
-            "lookUp": 35,
-            "lookLeft": 50,
+      		"lookUp": -30,
+      		"lookLeft": 75,
 			"tags": [
+				"bendover",
 				"facingaway",
 				"standing"
 			],

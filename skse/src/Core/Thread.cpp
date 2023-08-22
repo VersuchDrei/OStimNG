@@ -219,7 +219,7 @@ namespace OStim {
 
 
             // --- undressing --- //
-            if (!m_currentNode->hasActorTag(actorIt.first, "nostrip")) {
+            if (!actorIt.second.getGraphActor()->noStrip) {
                 if (MCM::MCMTable::undressMidScene() && m_currentNode->doFullStrip(actorIt.first)) {
                     actorIt.second.undress();
                     actorIt.second.removeWeapons();
