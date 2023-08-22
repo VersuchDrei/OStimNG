@@ -75,8 +75,7 @@ class Option_Box_MC extends MovieClip
 
 	public function HandleKeyboardInput(e:Number)
 	{
-		_parent.KillFadeOut();
-		_parent.FadeIn();
+		
 		// 0 = up, 1 = down, 2 = left, 3 = right, 4 = select;
 
 		if (maxOptionIdx == -1)
@@ -211,6 +210,13 @@ class Option_Box_MC extends MovieClip
 
 				break;
 		}
+		FadeTrigger();
+	}
+	
+	function FadeTrigger(){
+		
+		_parent.KillFadeOut();
+		_parent.FadeIn();
 		_parent.StartFadeOut(2.0);
 	}
 
@@ -313,8 +319,9 @@ class Option_Box_MC extends MovieClip
 		}
 		else
 		{
-			TweenLite.to(this,0.5,{_alpha:100});
+			TweenLite.to(this,0.2,{_alpha:100});
 			TweenLite.to(settingsMC,0.2,{_alpha:100});
+			FadeTrigger();
 		}
 		for (var i = 0; i < Edges.length; i++)
 		{
