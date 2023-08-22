@@ -75,6 +75,8 @@ class Option_Box_MC extends MovieClip
 
 	public function HandleKeyboardInput(e:Number)
 	{
+		_parent.KillFadeOut();
+		_parent.FadeIn();
 		// 0 = up, 1 = down, 2 = left, 3 = right, 4 = select;
 
 		if (maxOptionIdx == -1)
@@ -209,7 +211,7 @@ class Option_Box_MC extends MovieClip
 
 				break;
 		}
-
+		_parent.StartFadeOut(2.0);
 	}
 
 	function SetSubMenu(subMenu:Number)

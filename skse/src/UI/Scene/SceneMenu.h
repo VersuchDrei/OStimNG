@@ -23,6 +23,7 @@ namespace UI::Scene {
 		void PostRegister() override;
 
 		void Show();		
+		void Hide();
 		
 		void Handle(UI::Controls control) override;
 		void ApplyPositions();
