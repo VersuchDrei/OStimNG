@@ -31,7 +31,7 @@ namespace UI::Scene {
         auto hudMenu = RE::UI::GetSingleton()->GetMenu(RE::HUDMenu::MENU_NAME);
         if (hudMenu) {
             auto& movie = hudMenu->uiMovie;
-            RE::GFxValue args[6]{ false,"",false, true,false,false};
+            RE::GFxValue args[6]{false, "", false, true, false, false};
             movie->Invoke("_root.HUDMovieBaseInstance.SetCrosshairTarget", nullptr, args, 6);
         }
 	}
