@@ -11,27 +11,38 @@
 		{
 			"destination": "OStim2PStandingCloseFF",
 			"description": "go to lesbian idle",
-			"icon": "OStim/symbols/gender_ff"
+			"icon": "OStim/symbols/gender_ff",
+			"priority": -1000
 		},
 		{
 			"destination": "OStim2PStandingApartMM",
 			"description": "go to gay idle",
-			"icon": "OStim/symbols/gender_mm"
+			"icon": "OStim/symbols/gender_mm",
+			"priority": -1000
 		},
 		{
 			"destination": "OStim2PStandingApartToHoldingMF",
 			"description": "hold {1}",
-			"icon": "OStim/sensual/embrace_mf"
+			"icon": "OStim/sensual/embrace_mf",
+			"priority": 0
 		},
 		{
 			"destination": "OStim2PStandingApartToStandingSquattingMF",
 			"description": "squat ({1})",
-			"icon": "OStim/positional/squatting_f"
+			"icon": "OStim/positional/squatting_f",
+			"priority": 0
 		},
 		{
 			"destination": "OStim2PStandingApartToSittingMF",
 			"description": "sit down",
-			"icon": "OStim/positional/squatting_f"
+			"icon": "OStim/positional/squatting_f",
+			"priority": 0
+		},
+		{
+			"destination": "OStim2PStandingApartToHandHoldingMF",
+			"description": "hold {1}s hand",
+			"icon": "OStim/detail/holdinghand_mf",
+			"priority": 0
 		},
 		{
 			"destination": "OStim2PUndressingHub1MF",

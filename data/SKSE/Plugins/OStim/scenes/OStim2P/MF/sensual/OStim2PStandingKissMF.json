@@ -1,0 +1,65 @@
+{
+	"name": "Standing Kiss Straight",
+	"modpack": "OStim",
+	"length": 2.0,
+	"speeds":[
+		{
+			"animation": "OStim2PStandingKissMF"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStim2PStandingHoldingMF",
+			"description": "return",
+			"icon": "OStim/symbols/return",
+			"priority": -1000
+		},
+		{
+			"destination": "OStim2PStandingHandHoldingKissMF",
+			"description": "hold {1}s hands",
+			"icon": "OStim/detail/holdinghand_mf",
+			"priority": 0
+		},
+		{
+			"destination": "OStim2PStandingKissFingeringMF",
+			"description": "finger {1}",
+			"icon": "OStim/sexual/vaginalfingering_mf",
+			"priority": 2000
+		}
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"sosBend": 7,
+			"scale": 1.03,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		},
+		{
+			"intendedSex": "female",
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		}
+	],
+  	"actions": [
+  		{
+  			"type": "kissing",
+  			"actor": 0,
+  			"target": 1
+  		},
+  		{
+  			"type": "holdinghip",
+  			"actor": 0,
+  			"target": 1
+  		},
+  		{
+  			"type": "holdinghead",
+  			"actor": 0,
+  			"target": 1
+  		}
+  	]
+}

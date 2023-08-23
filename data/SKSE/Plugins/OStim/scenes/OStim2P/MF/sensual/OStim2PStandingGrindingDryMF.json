@@ -20,12 +20,14 @@
 		{
 			"destination": "OStim2PStandingHoldingFromBehindMF",
 			"description": "return",
-			"icon": "OStim/symbols/return"
+			"icon": "OStim/symbols/return",
+			"priority": -1000
 		},
 		{
 			"destination": "OStim2PStandingSpankIdleMF",
 			"description": "bend {1} over for some spankings",
-			"icon": "OStim/sexual/spank_right_mf"
+			"icon": "OStim/sexual/spank_right_mf",
+			"priority": 2000
 		}
 	],
 	"actors":[

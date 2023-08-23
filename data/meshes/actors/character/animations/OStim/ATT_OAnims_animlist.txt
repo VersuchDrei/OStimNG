@@ -48,16 +48,38 @@ b -Tn OStim2PBothLyingMF_1 OStim2P\MF\idle\OStim2PBothLyingMF_1.hkx
 b -Tn OStim2PLyingKneelingMF_0 OStim2P\MF\idle\OStim2PLyingKneelingMF_0.hkx
 b -Tn OStim2PLyingKneelingMF_1 OStim2P\MF\idle\OStim2PLyingKneelingMF_1.hkx
 
-b -Tn OStim2PStandingGrindingDryMF_S1_0 OStim2P\MF\sensual\OStim2PStandingGrindingDryMF_S1_0.hkx
-b -Tn OStim2PStandingGrindingDryMF_S1_1 OStim2P\MF\sensual\OStim2PStandingGrindingDryMF_S1_1.hkx
-b -Tn OStim2PStandingGrindingDryMF_S2_0 OStim2P\MF\sensual\OStim2PStandingGrindingDryMF_S2_0.hkx
-b -Tn OStim2PStandingGrindingDryMF_S2_1 OStim2P\MF\sensual\OStim2PStandingGrindingDryMF_S2_1.hkx
-b -Tn OStim2PStandingGrindingDryMF_S3_0 OStim2P\MF\sensual\OStim2PStandingGrindingDryMF_S3_0.hkx
-b -Tn OStim2PStandingGrindingDryMF_S3_1 OStim2P\MF\sensual\OStim2PStandingGrindingDryMF_S3_1.hkx
+
+b -a,Tn OStim2PStandingApartToHandHoldingMF_0 OStim2P\MF\sensual\OStim2PStandingApartToHandHoldingMF_0.hkx
+b -a,Tn OStim2PStandingApartToHandHoldingMF_1 OStim2P\MF\sensual\OStim2PStandingApartToHandHoldingMF_1.hkx
+b -Tn OStim2PStandingHandHoldingMF_0 OStim2P\MF\sensual\OStim2PStandingHandHoldingMF_0.hkx
+b -Tn OStim2PStandingHandHoldingMF_1 OStim2P\MF\sensual\OStim2PStandingHandHoldingMF_1.hkx
+b -a,Tn OStim2PStandingHandHoldingToApartMF_0 OStim2P\MF\sensual\OStim2PStandingHandHoldingToApartMF_0.hkx
+b -a,Tn OStim2PStandingHandHoldingToApartMF_1 OStim2P\MF\sensual\OStim2PStandingHandHoldingToApartMF_1.hkx
+b -Tn OStim2PStandingHandHoldingBothMF_0 OStim2P\MF\sensual\OStim2PStandingHandHoldingBothMF_0.hkx
+b -Tn OStim2PStandingHandHoldingBothMF_1 OStim2P\MF\sensual\OStim2PStandingHandHoldingBothMF_1.hkx
+b -Tn OStim2PStandingHandHoldingKissMF_0 OStim2P\MF\sensual\OStim2PStandingHandHoldingKissMF_0.hkx
+b -Tn OStim2PStandingHandHoldingKissMF_1 OStim2P\MF\sensual\OStim2PStandingHandHoldingKissMF_1.hkx
+b -Tn OStim2PStandingKissMF_0 OStim2P\MF\sensual\OStim2PStandingKissMF_0.hkx
+b -Tn OStim2PStandingKissMF_1 OStim2P\MF\sensual\OStim2PStandingKissMF_1.hkx
+b -Tn OStim2PStandingGrindingDryMF_S1_0 OStim2P\MF\sensual\StandingGrindingDry\OStim2PStandingGrindingDryMF_S1_0.hkx
+b -Tn OStim2PStandingGrindingDryMF_S1_1 OStim2P\MF\sensual\StandingGrindingDry\OStim2PStandingGrindingDryMF_S1_1.hkx
+b -Tn OStim2PStandingGrindingDryMF_S2_0 OStim2P\MF\sensual\StandingGrindingDry\OStim2PStandingGrindingDryMF_S2_0.hkx
+b -Tn OStim2PStandingGrindingDryMF_S2_1 OStim2P\MF\sensual\StandingGrindingDry\OStim2PStandingGrindingDryMF_S2_1.hkx
+b -Tn OStim2PStandingGrindingDryMF_S3_0 OStim2P\MF\sensual\StandingGrindingDry\OStim2PStandingGrindingDryMF_S3_0.hkx
+b -Tn OStim2PStandingGrindingDryMF_S3_1 OStim2P\MF\sensual\StandingGrindingDry\OStim2PStandingGrindingDryMF_S3_1.hkx
 b -Tn OStim2PStandingSpankIdleMF_0 OStim2P\MF\sensual\OStim2PStandingSpankIdleMF_0.hkx
 b -Tn OStim2PStandingSpankIdleMF_1 OStim2P\MF\sensual\OStim2PStandingSpankIdleMF_1.hkx
 b -Tn OStim2PStandingSpankMF_0 OStim2P\MF\sensual\OStim2PStandingSpankMF_0.hkx
 b -Tn OStim2PStandingSpankMF_1 OStim2P\MF\sensual\OStim2PStandingSpankMF_1.hkx
+
+b -Tn OStim2PStandingKissFingeringMF_S1_0 OStim2P\MF\sexual\StandingKissFingering\OStim2PStandingKissFingeringMF_S1_0.hkx
+b -Tn OStim2PStandingKissFingeringMF_S1_1 OStim2P\MF\sexual\StandingKissFingering\OStim2PStandingKissFingeringMF_S1_1.hkx
+b -Tn OStim2PStandingKissFingeringMF_S2_0 OStim2P\MF\sexual\StandingKissFingering\OStim2PStandingKissFingeringMF_S2_0.hkx
+b -Tn OStim2PStandingKissFingeringMF_S2_1 OStim2P\MF\sexual\StandingKissFingering\OStim2PStandingKissFingeringMF_S2_1.hkx
+b -Tn OStim2PStandingKissFingeringMF_S3_0 OStim2P\MF\sexual\StandingKissFingering\OStim2PStandingKissFingeringMF_S3_0.hkx
+b -Tn OStim2PStandingKissFingeringMF_S3_1 OStim2P\MF\sexual\StandingKissFingering\OStim2PStandingKissFingeringMF_S3_1.hkx
+b -Tn OStim2PStandingKissFingeringMF_S4_0 OStim2P\MF\sexual\StandingKissFingering\OStim2PStandingKissFingeringMF_S4_0.hkx
+b -Tn OStim2PStandingKissFingeringMF_S4_1 OStim2P\MF\sexual\StandingKissFingering\OStim2PStandingKissFingeringMF_S4_1.hkx
 
 b -a,Tn OStim2PUndressBottom0MF_0 OStim2P\MF\undressing\OStim2PUndressBottom0MF_0.hkx
 b -a,Tn OStim2PUndressBottom0MF_1 OStim2P\MF\undressing\OStim2PUndressBottom0MF_1.hkx
