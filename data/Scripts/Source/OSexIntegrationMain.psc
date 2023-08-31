@@ -1228,6 +1228,20 @@ bool Property UseSoSSex
 	EndFunction
 EndProperty
 
+GlobalVariable Property OStimFutaUseMaleRole Auto
+bool Property FutaUseMaleRole
+	bool Function Get()
+		Return OStimFutaUseMaleRole.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimFutaUseMaleRole.value = 1
+		Else
+			OStimFutaUseMaleRole.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
 GlobalVariable Property OStimFutaUseMaleExcitement Auto
 bool Property FutaUseMaleExcitement
 	bool Function Get()
@@ -1982,6 +1996,10 @@ Function Startup()
 EndFunction
 
 Function OnLoadGame()
+	If SKSE.GetPluginVersion("OStim") != 0x01000001
+		Debug.MessageBox("OStim Standalone: Your OStim.dll or OSexIntegraionMain.pex is being overwritten with an old version. OStim will NOT work properly.")
+	EndIf
+
 	If (Game.GetModByName("Schlongs of Skyrim.esp") != 255)
 		SoSFaction = (Game.GetFormFromFile(0x0000AFF8, "Schlongs of Skyrim.esp")) as Faction
 	Else

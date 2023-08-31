@@ -126,6 +126,7 @@ namespace MCM {
         inline static bool unequipStrapOnIfInWay() { return settings[0xDDD].asBool(); }
 
         static bool useSoSSex();
+        static bool futaUseMaleRole();
         static bool futaUseMaleExcitement();
         static bool futaUseMaleClimax();
         static bool futaUseMaleLight();
@@ -263,6 +264,7 @@ namespace MCM {
             {0xDDD, {1, "unequipStrapOnIfInWay"}},
 
             {0xE04, {1, "useSoSSex"}},
+            {0xE48, {1, "futaUseMakeRole"}},
             {0xE05, {0, "futaUseMaleExcitement"}},
             {0xE17, {1, "futaUseMaleClimax"}},
             {0xE25, {1, "futaUseMaleLight"}},

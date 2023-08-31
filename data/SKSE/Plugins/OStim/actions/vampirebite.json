@@ -1,5 +1,6 @@
 {
 	"actor":{
+		"info": "the vampire",
 		"stimulation":0.0,
 		"muffled":true,
 		"requirements":[
@@ -14,6 +15,7 @@
 		]
 	},
 	"target":{
+		"info": "the bitten one",
 		"stimulation":0.25,
 		"maxStimulation":50,
 		"moan":true

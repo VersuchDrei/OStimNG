@@ -1,0 +1,11 @@
+cowgirl
+doggystyle
+facesitting
+gay  --- this automatically gets added if the scene has more than one actors and all actors indendedSex is male
+idle
+lesbian  --- this automatically gets added if the scene has more than one actors and all actors indendedSex is female
+missionary
+prone
+reversecowgirl
+sixtynine
+transition  --- this automaticall gets added if the scene is a transition

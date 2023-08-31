@@ -1,5 +1,6 @@
 {
 	"actor":{
+		"info": "the one with the hands",
 		"stimulation":0.1,
 		"maxStimulation":50,
 		"requirements":[
@@ -10,6 +11,7 @@
 		]
 	},
 	"target":{
+		"info": "the one with the butt",
 		"stimulation":0.1,
 		"maxStimulation":50
 	},

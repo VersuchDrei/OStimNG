@@ -4,10 +4,10 @@
 	"length": 1.5,
 	"speeds":[
 		{
-			"animation": "OStim2PStandingApartToHandHoldingMF"
+			"animation": "OStim2PStandingApartToHandHoldingLowMF"
 		}
 	],
-	"destination": "OStim2PStandingHandHoldingMF",
+	"destination": "OStim2PStandingHandHoldingLowMF",
 	"actors":[
 		{
 			"intendedSex": "male",

@@ -1,5 +1,6 @@
 {
 	"actor":{
+		"info": "the one with the mouth",
 		"stimulation":0.1,
 		"maxStimulation":50,
 		"muffled":true,
@@ -14,6 +15,7 @@
 		]
 	},
 	"target":{
+		"info": "the one with the neck",
 		"stimulation":0.1,
 		"maxStimulation":50,
 		"strippingSlots":[

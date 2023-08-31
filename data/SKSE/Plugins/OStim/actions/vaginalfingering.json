@@ -1,5 +1,7 @@
 {
+	"info": "vaginalfingering is for when actor and target are different, when they are the same use femalemasturbation",
 	"actor":{
+		"info": "the one with the hand",
 		"stimulation":0.1,
 		"maxStimulation":50,
 		"talk":true,
@@ -11,6 +13,7 @@
 		]
 	},
 	"target":{
+		"info": "the one with the vulva",
 		"stimulation":0.6,
 		"fullStrip":true,
 		"moan":true,

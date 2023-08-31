@@ -1,5 +1,7 @@
 {
+	"info": "holdingthigh is sensual, when it is merely a positional matter use holdingleg",
 	"actor":{
+		"info": "the one with the hand",
 		"requirements":[
 			"hand"
 		],
@@ -8,6 +10,7 @@
 		]
 	},
 	"target":{
+		"info": "the one with the thigh"
 	},
 	"tags":[
 		"romantic"

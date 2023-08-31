@@ -61,6 +61,10 @@ namespace MCM {
         return Compatibility::CompatibilityTable::sosInstalled() && settings[0xE04].asBool() && settings[0xE25].asBool();
     }
 
+    bool MCMTable::futaUseMaleRole() {
+        return Compatibility::CompatibilityTable::sosInstalled() && settings[0xE04].asBool() && settings[0xE48].asBool();
+    }
+
 
     void MCMTable::exportSettings() {
         json json = json::object();

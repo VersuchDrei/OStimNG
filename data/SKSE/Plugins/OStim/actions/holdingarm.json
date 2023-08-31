@@ -1,5 +1,6 @@
 {
 	"actor":{
+		"info": "the one with the hand",
 		"requirements":[
 			"hand"
 		],
@@ -8,5 +9,6 @@
 		]
 	},
 	"target":{
+		"info": "the one with the arm"
 	}
 }

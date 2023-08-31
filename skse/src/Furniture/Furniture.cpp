@@ -78,7 +78,7 @@ namespace Furniture {
                 }
 
                 // TODO GameObject
-                if (bed || centerPos.GetSquaredDistance(refPos) < centerPos.GetSquaredDistance(bed.form->GetPosition())) {
+                if (!bed || centerPos.GetSquaredDistance(refPos) < centerPos.GetSquaredDistance(bed.form->GetPosition())) {
                     bed = &ref;
                 }
             }

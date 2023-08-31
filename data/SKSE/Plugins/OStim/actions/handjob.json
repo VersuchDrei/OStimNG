@@ -1,5 +1,7 @@
 {
+	"info": "handjob is for when actor and target are different, when they are the same use malemasturbation",
 	"actor":{
+		"info": "the one with the hand",
 		"stimulation":0.1,
 		"maxStimulation":50,
 		"talk":true,
@@ -11,6 +13,7 @@
 		]
 	},
 	"target":{
+		"info": "the one with the penis",
 		"stimulation":0.9,
 		"fullStrip":true,
 		"moan":true,

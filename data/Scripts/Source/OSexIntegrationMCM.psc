@@ -133,23 +133,27 @@ Event OnPageReset(String Page)
 		SetCursorFillMode(TOP_TO_BOTTOM)
 		SetCursorPosition(0)
 
-		AddTextOption("OStimNG ", "-")
+		AddTextOption("OStim Standalone ", "-")
 		
 		AddTextOption("", "")
 		AddColoredHeader("$ostim_authors")
-		AddTextOption("OStimNG ", "$ostim_by{Aietos, Kannonfodder}")
-		AddTextOption("- ", "$ostim_and{VersuchDrei}")
-		AddTextOption("OStim ", "$ostim_by{Sairion}")
-		AddTextOption("OSA ", "$ostim_by{CE0}")
-		AddTextOption("OpenSex ", "$ostim_by{Ace Animations}")
+		AddTextOption("OStim Standalone ", "$ostim_by{Kannonfodder, VersuchDrei}")
+		AddTextOption("OStim ", "$ostim_by{Nem, Qudix, Sairion}")
+		AddColoredHeader("$ostim_contributors")
+		AddTextOption("Code ", "$ostim_by{Aietos}")
+		AddTextOption("Icons ", "$ostim_by{Keed}")
+		AddTextOption("Sounds ", "$ostim_by{BigTittyBoy, Migal130}")
+		AddTextOption("Meshes ", "$ostim_by{Calyps, Egilvar}")
+		AddTextOption("Animations ", "$ostim_by{AceAnimations, Moon}")
+		AddTextOption("Facial Expressions", "$ostim_by{AceAnimations, GusCrow}")
 
 		SetCursorPosition(1)
 		AddTextOption("Powered By Sswaye's Reshade", "")
 
 		AddTextOption("", "")
 		AddColoredHeader("$ostim_links")
-		AddTextOption("discord.gg/ostim", "")
-		AddTextOption("https://github.com/VersuchDrei/OStim", "")
+		AddTextOption("https://discord.gg/ostimofficial", "")
+		AddTextOption("https://github.com/VersuchDrei/OStimNG", "")
 	EndIf
 EndEvent
 
@@ -1582,7 +1586,7 @@ Function DrawGenderRolesPage()
 	SetCursorPosition(0)
 	AddColoredHeader("$ostim_header_animation_settings")
 	SetCursorPosition(2)
-	AddToggleOptionST("OID_ForceGayAnims", "$ostim_intended_sex_only", Main.IntendedSexOnly)
+	AddToggleOptionST("OID_IntendedSexOnly", "$ostim_intended_sex_only", Main.IntendedSexOnly)
 
 	SetCursorPosition(6)
 	AddColoredHeader("$ostim_header_player_roles")
@@ -1645,19 +1649,25 @@ Function DrawGenderRolesPage()
 	EndIf
 	AddToggleOptionST("OID_UseSoSSex", "$ostim_use_sos_sex", Main.UseSoSSex, UseSoSSexFlags)
 	SetCursorPosition(21)
+	int FutaUseMaleRoleFlags = OPTION_FLAG_NONE
+	If !Main.IntendedSexOnly || !Main.SoSInstalled || !Main.UseSoSSex
+		FutaUseMaleRoleFlags = OPTION_FLAG_DISABLED
+	EndIf
+	AddToggleOptionST("OID_FutaUseMaleRole", "$ostim_futa_use_male_role", Main.FutaUseMaleRole, FutaUseMaleRoleFlags)
+	SetCursorPosition(23)
 	int FutaFlags = OPTION_FLAG_NONE
 	If !Main.SoSInstalled || !Main.UseSoSSex
 		FutaFlags = OPTION_FLAG_DISABLED
 	EndIf
 	AddToggleOptionST("OID_FutaUseMaleExcitement", "$ostim_futa_use_male_excitement", Main.FutaUseMaleExcitement, FutaFlags)
-	SetCursorPosition(23)
-	AddToggleOptionST("OID_FutaUseMaleClimax", "$ostim_futa_use_male_orgasm", Main.FutaUseMaleClimax, FutaFlags)
 	SetCursorPosition(25)
+	AddToggleOptionST("OID_FutaUseMaleClimax", "$ostim_futa_use_male_orgasm", Main.FutaUseMaleClimax, FutaFlags)
+	SetCursorPosition(27)
 	AddToggleOptionST("OID_FutaUseMaleLight", "$ostim_futa_use_male_light", Main.FutaUseMaleLight, FutaFlags)
 EndFunction
 
 
-State OID_ForceGayAnims
+State OID_IntendedSexOnly
 	Event OnHighlightST()
 		SetInfoText("$ostim_tooltip_intended_sex_only")
 	EndEvent
@@ -1665,6 +1675,12 @@ State OID_ForceGayAnims
 	Event OnSelectST()
 		Main.IntendedSexOnly = !Main.IntendedSexOnly
 		SetToggleOptionValueST(Main.IntendedSexOnly)
+
+		int FutaUseMaleRoleFlags = OPTION_FLAG_NONE
+		If !Main.IntendedSexOnly || !Main.SoSInstalled || !Main.UseSoSSex
+			FutaUseMaleRoleFlags = OPTION_FLAG_DISABLED
+		EndIf
+		SetOptionFlagsST(FutaUseMaleRoleFlags, false, "OID_FutaUseMaleRole")
 	EndEvent
 EndState
 
@@ -1867,6 +1883,12 @@ State OID_UseSoSSex
 		Main.UseSoSSex = !Main.UseSoSSex
 		SetToggleOptionValueST(Main.UseSoSSex)
 
+		int FutaUseMaleRoleFlags = OPTION_FLAG_NONE
+		If !Main.IntendedSexOnly || !Main.UseSoSSex
+			FutaUseMaleRoleFlags = OPTION_FLAG_DISABLED
+		EndIf
+		SetOptionFlagsST(FutaUseMaleRoleFlags, false, "OID_FutaUseMaleRole")
+
 		int FutaFlags = OPTION_FLAG_NONE
 		If !Main.UseSoSSex
 			FutaFlags = OPTION_FLAG_DISABLED
@@ -1874,6 +1896,17 @@ State OID_UseSoSSex
 		SetOptionFlagsST(FutaFlags, false, "OID_FutaUseMaleExcitement")
 		SetOptionFlagsST(FutaFlags, false, "OID_FutaUseMaleClimax")
 		SetOptionFlagsST(FutaFlags, false, "OID_FutaUseMaleLight")
+	EndEvent
+EndState
+
+State OID_FutaUseMaleRole
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_futa_use_male_role")
+	EndEvent
+
+	Event OnSelectST()
+		Main.FutaUseMaleRole = !Main.FutaUseMaleRole
+		SetToggleOptionValueST(Main.FutaUseMaleRole)
 	EndEvent
 EndState
 

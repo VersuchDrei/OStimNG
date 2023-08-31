@@ -16,15 +16,21 @@
 		},
 		{
 			"destination": "OStim2PStandingKissMF",
-			"description": "embrace {1}",
+			"description": "hold {1}",
 			"icon": "OStim/sensual/embrace_mf",
 			"priority": 0
 		},
 		{
-			"destination": "OStim2PStandingHandHoldingBothMF",
+			"destination": "OStim2PStandingHandHoldingHighMF",
 			"description": "stop kissing {1}",
 			"icon": "OStim/sensual/kissing_end",
 			"priority": 1950
+		},
+		{
+			"destination": "OStim2PStandingApartHandjobMF",
+			"description": "jerk off {0}",
+			"icon": "OStim/sexual/handjob_mf",
+			"priority": 2000
 		},
 		{
 			"destination": "OStim2PStandingKissFingeringMF",

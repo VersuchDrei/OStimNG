@@ -40,6 +40,7 @@ namespace Graph {
         int actor = -1;
         int target = -1;
         int performer = -1;
+        bool muted = false;
 
         bool doFullStrip(int position);
         uint32_t getStrippingMask(int position);

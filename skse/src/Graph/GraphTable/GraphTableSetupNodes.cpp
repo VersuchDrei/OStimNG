@@ -523,6 +523,14 @@ namespace Graph {
                             } else {
                                 action.performer = action.actor;
                             }
+
+                            if (jsonAction.contains("muted")) {
+                                if (jsonAction["muted"].is_boolean()) {
+                                    action.muted = jsonAction["muted"];
+                                } else {
+                                    logger::warn("property muted of action {} of scene {} isn't a boolean", index, node->scene_id);
+                                }
+                            }
                         } else {
                             logger::warn("action {} of scene {} is malformed", index, node->scene_id);
                         }
@@ -532,6 +540,34 @@ namespace Graph {
                     }
                 } else {
                     logger::warn("actions property of scene {} isn't a list", node->scene_id);
+                }
+            }
+
+            if (node->isTransition) {
+                node->tryAddTag("transition");
+            }
+
+            if (node->actors.size() >= 2) {
+                bool gay = true;
+                bool lesbian = true;
+
+                for (GraphActor actor : node->actors) {
+                    if (actor.condition.sex != GameAPI::GameSex::MALE) {
+                        gay = false;
+                    }
+                    if (actor.condition.sex != GameAPI::GameSex::FEMALE) {
+                        lesbian = false;
+                    }
+
+                    if (!gay && !lesbian) {
+                        break;
+                    }
+                }
+
+                if (gay) {
+                    node->tryAddTag("gay");
+                } else if (lesbian) {
+                    node->tryAddTag("lesbian");
                 }
             }
 

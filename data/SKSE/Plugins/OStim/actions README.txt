@@ -11,6 +11,7 @@ field summary:
 note: all string values are converted to lower case when parsed, so capitalization does not matter
 
 action fields:
+"info" (string): this field does not get parsed, it's just there to help understanding how to properly use this action
 "actor" (object): a collection of attributes for the action actor (see actor fields)
 "target" (object): a collection of attributes for the action target (see actor fields)
 "performer" (object): a collection of attributes for the action performer (see actor fields)
@@ -19,6 +20,7 @@ action fields:
 	these can be used by addons to filter actions
 
 actor fields:
+"info" (string): this field does not get parsed, it's just there to help understanding how to properly use this action
 "stimulation" (float): the amount of stimulation this action generates every second for this Skyrim actor
 	in an animation with multiple stimulating actions the Skyrim actor will get stimulation equal to the highest stimulation defined for them plus 10% of all other stimulation defined for them
 "maxStimulation" (float): a stimulation threshold after which this action will no longer generate any stimulation

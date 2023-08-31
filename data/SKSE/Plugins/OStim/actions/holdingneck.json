@@ -1,5 +1,6 @@
 {
 	"actor":{
+		"info": "the one with the hand",
 		"requirements":[
 			"hand"
 		],
@@ -8,6 +9,7 @@
 		]
 	},
 	"target":{
+		"info": "the one with the neck",
 		"stimulation":0.1,
 		"maxStimulation":50
 	}
