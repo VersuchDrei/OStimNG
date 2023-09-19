@@ -43,6 +43,8 @@ class Option_Box_MC extends MovieClip
 	//2 settings menus;
 	var selectedSubMenu:Number = 0;
 	var settingsMC:MovieClip;
+	
+	var fadeOutTime = 2.0;
 
 	public function Option_Box_MC()
 	{
@@ -71,6 +73,10 @@ class Option_Box_MC extends MovieClip
 		this.speedDown.stop();
 
 		//AssignData(generateTestData());// For testing in flash
+	}
+	
+	public function SetSettings(fadeOutTime:Number){
+		this.fadeOutTime = fadeOutTime;
 	}
 
 	public function HandleKeyboardInput(e:Number)
@@ -211,7 +217,7 @@ class Option_Box_MC extends MovieClip
 
 				break;
 		}
-		_parent.StartFadeOut(2.0);
+		_parent.StartFadeOut(fadeOutTime);
 	}
 
 	function SetSubMenu(subMenu:Number)

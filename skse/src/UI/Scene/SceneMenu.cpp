@@ -21,6 +21,9 @@ namespace UI::Scene {
 
             OverrideFunction(settings, new doShowAlignMenu, "doShowAlignment");
             OverrideFunction(settings, new doShowSearchMenu, "doShowSearch");
+
+            RE::GFxValue args[1]{ UI::Settings::fadeTime };
+            optionBoxes.Invoke("SetSettings", nullptr, args, 1);
         });
     }
 
