@@ -24,7 +24,7 @@ scene fields:
 "defaultSpeed" (int): the index of the default speed of the scene (default 0)
 "noRandomSelection" (bool): if true this scene will never be chosen by random selections (default: false)
 "furniture" (string): the furniture type of this scene (default: none) (see furniture types README)
-"tags" (list<string>): a list of tags for this scene
+"tags" (list<string>): a list of tags for this scene, (see list of commonly used scene tags)
 "autoTransitions" (map<string, string>): a map of auto transition ids and destination sceneIDs for this scene
 "actors" (list<object>): a list of actors (see actor fields)
 "actions" (list<object>): a list of actions (see action fields)
@@ -93,7 +93,7 @@ actor fields:
 	possible values range from -100 to 100, with negative ones causing a look right
 "lookRight" (int): alternative to lookLeft with inverted values
 	if lookLeft is defined this field is ignored
-"tags" (list<string>): a list of tags for this actor
+"tags" (list<string>): a list of tags for this actor (see list of commonly used actor tags)
 "feetOnGround" (bool): if true heel scaling is in effect, if false the heel offset will be removed
 	this value defaults to true if the actor has the "standing" or "squatting" tag and false otherwise
 "autoTransitions" (map<string, string>): a map of auto transition ids and destination sceneIDs for this actor

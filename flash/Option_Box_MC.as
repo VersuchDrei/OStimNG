@@ -38,12 +38,12 @@ class Option_Box_MC extends MovieClip
 	var speedControls = new Array(2);
 	var currentSpeedIdx:Number;
 
-	//0 animations;
-	//1 speed controls;
-	//2 settings menus;
+	// 0 animations;
+	// 1 speed controls;
+	// 2 settings menus;
 	var selectedSubMenu:Number = 0;
 	var settingsMC:MovieClip;
-	
+
 	var fadeOutTime = 2.0;
 
 	public function Option_Box_MC()
@@ -56,7 +56,6 @@ class Option_Box_MC extends MovieClip
 
 		TextureLoader = new MovieClipLoader();
 		TextureLoader.addListener(this);
-
 
 		menuGutterX = menuGutter * 2;
 
@@ -72,17 +71,17 @@ class Option_Box_MC extends MovieClip
 		this.speedUp.stop();
 		this.speedDown.stop();
 
-		//AssignData(generateTestData());// For testing in flash
+		// AssignData(generateTestData());// For testing in flash
 	}
-	
-	public function SetSettings(fadeOutTime:Number){
+
+	public function SetSettings(fadeOutTime:Number)
+	{
 		this.fadeOutTime = fadeOutTime;
 	}
 
 	public function HandleKeyboardInput(e:Number)
 	{
-		_parent.KillFadeOut();
-		_parent.FadeIn();
+
 		// 0 = up, 1 = down, 2 = left, 3 = right, 4 = select;
 
 		if (maxOptionIdx == -1)
@@ -100,17 +99,17 @@ class Option_Box_MC extends MovieClip
 
 		switch (e)
 		{
-			case 0 :
+			case 0:
 				{
 					switch (selectedSubMenu)
 					{
-						case 0 :
+						case 0:
 							if (CurrentlyHighlightedIdx + 3 <= colMax)
 							{
 								HighlightOption(CurrentlyHighlightedIdx + 3);
 							}
 							break;
-						case 1 :
+						case 1:
 							if (currentSpeedIdx == 1)
 							{
 								SetSubMenu(0);
@@ -127,17 +126,17 @@ class Option_Box_MC extends MovieClip
 								}
 							}
 							break;
-						case 2 :
+						case 2:
 							settingsMC.NavUp();
 							break;
 					}
 				};
 				break;
-			case 1 :
+			case 1:
 				{
 					switch (selectedSubMenu)
 					{
-						case 0 :
+						case 0:
 							if (CurrentlyHighlightedIdx - 3 < colMin)
 							{
 								if (speedUp._visible == true)
@@ -150,7 +149,7 @@ class Option_Box_MC extends MovieClip
 								HighlightOption(CurrentlyHighlightedIdx - 3);
 							}
 							break;
-						case 1 :
+						case 1:
 							if (currentSpeedIdx == 1)
 							{
 								if (speedDown.usable)
@@ -159,17 +158,17 @@ class Option_Box_MC extends MovieClip
 								}
 							}
 							break;
-						case 2 :
+						case 2:
 							settingsMC.NavDown();
 							break;
 					}
 				};
 				break;
-			case 2 :
+			case 2:
 				{
 					switch (selectedSubMenu)
 					{
-						case 0 :
+						case 0:
 							if (CurrentlyHighlightedIdx - 1 < rowMin)
 							{
 								SetSubMenu(2);
@@ -179,44 +178,52 @@ class Option_Box_MC extends MovieClip
 								HighlightOption(CurrentlyHighlightedIdx - 1);
 							}
 							break;
-						case 1 :
+						case 1:
 							SetSubMenu(2);
 							break;
 					}
 				};
 				break;
-			case 3 :
+			case 3:
 				{
 					switch (selectedSubMenu)
 					{
-						case 0 :
+						case 0:
 							if (CurrentlyHighlightedIdx + 1 <= rowMax)
 							{
 								HighlightOption(CurrentlyHighlightedIdx + 1);
 							}
 							break;
-						case 2 :
+						case 2:
 							SetSubMenu(0);
 							break;
 					}
 				};
 				break;
-			case 4 :
+			case 4:
 				switch (selectedSubMenu)
 				{
-					case 0 :
+					case 0:
 						Options[CurrentlyHighlightedIdx].OnSelect();
 						break;
-					case 1 :
+					case 1:
 						SelectSpeed(currentSpeedIdx);
 						break;
-					case 2 :
+					case 2:
 						settingsMC.SelectSetting();
 						break;
 				}
 
 				break;
 		}
+		FadeTrigger();
+	}
+
+	function FadeTrigger()
+	{
+
+		_parent.KillFadeOut();
+		_parent.FadeIn();
 		_parent.StartFadeOut(fadeOutTime);
 	}
 
@@ -224,23 +231,23 @@ class Option_Box_MC extends MovieClip
 	{
 		switch (selectedSubMenu)
 		{
-			case 0 :
+			case 0:
 				Options[CurrentlyHighlightedIdx].OnUnHighlight();
 				break;
-			case 1 :
+			case 1:
 				speedUp.OnUnHighlight();
 				speedDown.OnUnHighlight();
 				break;
-			case 2 :
+			case 2:
 				settingsMC.LeaveMenu();
 				break;
 		}
 		switch (subMenu)
 		{
-			case 0 :
+			case 0:
 				HighlightOption(CurrentlyHighlightedIdx);
 				break;
-			case 1 :
+			case 1:
 				if (speedUp.usable)
 				{
 					HighlightSpeed(1);
@@ -250,7 +257,7 @@ class Option_Box_MC extends MovieClip
 					HighlightSpeed(0);
 				}
 				break;
-			case 2 :
+			case 2:
 				settingsMC.EnterMenu();
 				break;
 		}
@@ -286,7 +293,6 @@ class Option_Box_MC extends MovieClip
 		}
 	}
 
-
 	public function SelectOption(NodeID:String)
 	{
 		log("UI_TransitionRequest {}, {" + NodeID + "}");
@@ -296,7 +302,6 @@ class Option_Box_MC extends MovieClip
 	public function doSendTransitionRequest(sceneId:String)
 	{
 	}
-
 
 	public function AssignData(Edges:Array)
 	{
@@ -309,18 +314,19 @@ class Option_Box_MC extends MovieClip
 		var maxOptionRow = Math.floor(maxOptionIdx / 3);
 		var noOfCols = maxOptionIdx >= 3 ? 3 : maxOptionIdx + 1;
 		var newHeight = menuGutterY + ((maxOptionRow + 1) * optionHeight) + (maxOptionRow * optionGutterY);
-		TweenLite.to(bg,0.5,{_height:newHeight, _y:0 - (newHeight / 2)});
+		TweenLite.to(bg, 0.5, {_height: newHeight, _y: 0 - (newHeight / 2)});
 
 		if (Edges.length == 0)
 		{
-			TweenLite.to(this,0.2,{_alpha:0});
-			TweenLite.to(settingsMC,0.2,{_alpha:0});
+			TweenLite.to(this, 0.2, {_alpha: 0});
+			TweenLite.to(settingsMC, 0.2, {_alpha: 0});
 			return;
 		}
 		else
 		{
-			TweenLite.to(this,0.5,{_alpha:100});
-			TweenLite.to(settingsMC,0.2,{_alpha:100});
+			TweenLite.to(this, 0.2, {_alpha: 100});
+			TweenLite.to(settingsMC, 0.2, {_alpha: 100});
+			FadeTrigger();
 		}
 		for (var i = 0; i < Edges.length; i++)
 		{
@@ -347,7 +353,7 @@ class Option_Box_MC extends MovieClip
 
 	public function GenerateOption(idx, colIdx, rowIdx):MovieClip
 	{
-		var mc = this.attachMovie("Option_MC", "o" + idx, idx + 1, {_x:(menuGutterX / 2) + (colIdx * (optionWidth + optionGutterX)) + (optionWidth / 2), _y:0 - ((menuGutterYBase) + (rowIdx * (optionHeight + optionGutterY)) + (optionHeight / 2)), _width:optionWidth, _height:optionHeight});
+		var mc = this.attachMovie("Option_MC", "o" + idx, idx + 1, {_x: (menuGutterX / 2) + (colIdx * (optionWidth + optionGutterX)) + (optionWidth / 2), _y: 0 - ((menuGutterYBase) + (rowIdx * (optionHeight + optionGutterY)) + (optionHeight / 2)), _width: optionWidth, _height: optionHeight});
 		mc.doSelect = function()
 		{
 			_parent.SelectOption(this.NodeID);

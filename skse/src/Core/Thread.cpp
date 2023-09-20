@@ -252,6 +252,10 @@ namespace OStim {
         soundPlayers.clear();
 
         for (Graph::Action& action : m_currentNode->actions) {
+            if (action.muted) {
+                continue;
+            }
+
             for (Sound::SoundType* soundType : action.attributes->sounds) {
                 ThreadActor* actor = GetActor(action.actor);
                 ThreadActor* target = GetActor(action.target);
@@ -446,8 +450,8 @@ namespace OStim {
                     // TODO how to do this with GraphActor?
                     if (vm) {
                         RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-                        auto args = RE::MakeFunctionArguments<RE::TESObjectREFR*>(std::move(actorIt.second.getActor().form));
-                        vm->DispatchStaticCall("NiOverride", "ApplyNodeOverrides", args, callback);
+                        auto args = RE::MakeFunctionArguments<RE::Actor*>(std::move(actorIt.second.getActor().form));
+                        vm->DispatchStaticCall("OSKSE", "ApplyNodeOverrides", args, callback);
                     }
                 }
             }

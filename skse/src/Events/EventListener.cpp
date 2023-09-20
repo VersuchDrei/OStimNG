@@ -93,6 +93,10 @@ namespace Events {
             }
 
             if (keyCode == MCM::MCMTable::keySceneStart()) {
+                if (OStim::ThreadManager::GetSingleton()->playerThreadRunning()) {
+                    continue;
+                }
+
                 if (bEvent->IsDown()) {
                     GameAPI::GameActor player = GameAPI::GameActor::getPlayer();
                     GameAPI::GameActor target = GameAPI::Game::getCrosshairActor();

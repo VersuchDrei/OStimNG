@@ -1,0 +1,88 @@
+{
+	"name": "Standing Hanjob (right) Kiss Straight",
+	"modpack": "OStim",
+	"length": 2.0,
+	"speeds":[
+		{
+			"animation": "OStim2PStandingHandjobRKissMF_S1",
+			"displaySpeed": 0.5
+		},
+		{
+			"animation": "OStim2PStandingHandjobRKissMF_S2",
+			"displaySpeed": 1.0
+		},
+		{
+			"animation": "OStim2PStandingHandjobRKissMF_S3",
+			"displaySpeed": 2.0
+		},
+		{
+			"animation": "OStim2PStandingHandjobRKissMF_S4",
+			"displaySpeed": 3.0
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStim2PStandingApartMF",
+			"description": "return",
+			"icon": "OStim/symbols/return",
+			"priority": -1000
+		},
+		{
+			"destination": "OStim2PStandingApartHandjobMF",
+			"description": "stop kissing {1}",
+			"icon": "OStim/sensual/kissing_end",
+			"priority": 0
+		},
+		{
+			"destination": "OStim2PStandingKissFingeringMF",
+			"description": "finger {1}",
+			"icon": "OStim/sexual/vaginalfingering_mf",
+			"priority": 2000
+		},
+		{
+			"destination": "OStim2PStandingKissMF",
+			"description": "hold {1}",
+			"icon": "OStim/sensual/embrace_mf",
+			"priority": 2000
+		}
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"sosBend": -3,
+			"scale": 1.03,
+      		"scaleHeight": 80,
+      		"expressionAction": 1,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		},
+		{
+			"intendedSex": "female",
+      		"scaleHeight": 80,
+      		"expressionAction": 1,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		}
+	],
+  	"actions": [
+  		{
+      		"type": "handjob",
+      		"actor": 1,
+      		"target": 0
+    	},
+    	{
+    		"type": "kissing",
+    		"actor": 0,
+    		"target": 1
+    	},
+    	{
+    		"type": "holdingbody",
+    		"actor": 0,
+    		"target": 1
+    	}
+  	]
+}

@@ -1,0 +1,80 @@
+{
+	"name": "Standing Kiss Fingering Straight",
+	"modpack": "OStim",
+	"length": 2.0,
+	"speeds":[
+		{
+			"animation": "OStim2PStandingKissFingeringMF_S1",
+			"displaySpeed": 1.0
+		},
+		{
+			"animation": "OStim2PStandingKissFingeringMF_S2",
+			"displaySpeed": 1.5
+		},
+		{
+			"animation": "OStim2PStandingKissFingeringMF_S3",
+			"displaySpeed": 2.0
+		},
+		{
+			"animation": "OStim2PStandingKissFingeringMF_S4",
+			"displaySpeed": 2.5
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStim2PStandingHoldingMF",
+			"description": "return",
+			"icon": "OStim/symbols/return",
+			"priority": -1000
+		},
+		{
+			"destination": "OStim2PStandingHandjobRKissMF",
+			"description": "jerk off {0}",
+			"icon": "OStim/sexual/handjob_mf",
+			"priority": 2000
+		},
+		{
+			"destination": "OStim2PStandingKissMF",
+			"description": "hold {1}",
+			"icon": "OStim/sensual/embrace_mf",
+			"priority": 2000
+		}
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"sosBend": 7,
+			"scale": 1.03,
+			"expressionAction": 1,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		},
+		{
+			"intendedSex": "female",
+			"expressionAction": 1,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		}
+	],
+  	"actions": [
+  		{
+  			"type": "vaginalfingering",
+  			"actor": 0,
+  			"target": 1
+  		},
+  		{
+  			"type": "kissing",
+  			"actor": 0,
+  			"target": 1
+  		},
+  		{
+  			"type": "holdinghead",
+  			"actor": 0,
+  			"target": 1
+  		}
+  	]
+}

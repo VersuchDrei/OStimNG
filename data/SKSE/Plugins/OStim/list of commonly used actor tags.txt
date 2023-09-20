@@ -1,0 +1,17 @@
+allfours
+bendover
+drowsy
+facingaway
+handstanding
+kneeling
+lyingback
+lyingfront
+lyingside
+onbottom
+ontop
+sitting
+sleeping
+spreadlegs
+squatting
+standing
+suspended

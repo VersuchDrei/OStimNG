@@ -22,14 +22,20 @@ namespace Trait {
 
         condition.type = TraitTable::getActorType(actor);
 
-        if (actor) {
-            condition.sex = actor.getSex();
-        }
-
         // nullptr needs to meet all conditions, it's important for some add-ons
         if (!actor) {
             condition.requirements = ~0;
             return condition;
+        }
+
+        if (MCM::MCMTable::futaUseMaleRole()) {
+            if (Compatibility::CompatibilityTable::hasSchlong(actor)) {
+                condition.sex = GameAPI::GameSex::MALE;
+            } else {
+                condition.sex = GameAPI::GameSex::FEMALE;
+            }
+        } else {
+            condition.sex = actor.getSex();
         }
 
         condition.requirements |= Graph::Requirement::ANUS;

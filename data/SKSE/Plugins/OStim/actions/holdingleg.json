@@ -1,5 +1,7 @@
 {
+	"info": "holdingleg is merely positional, if they're doing it in a sensual matter use holdingthigh",
 	"actor":{
+		"info": "the one with the hand",
 		"requirements":[
 			"hand"
 		],
@@ -8,5 +10,6 @@
 		]
 	},
 	"target":{
+		"info": "the one with the leg"
 	}
 }

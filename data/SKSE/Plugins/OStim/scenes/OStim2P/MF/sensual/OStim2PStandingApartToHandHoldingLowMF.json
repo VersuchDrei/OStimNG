@@ -1,0 +1,29 @@
+{
+	"name": "Standing Apart to Hand Holding Straight",
+	"modpack": "OStim",
+	"length": 1.5,
+	"speeds":[
+		{
+			"animation": "OStim2PStandingApartToHandHoldingLowMF"
+		}
+	],
+	"destination": "OStim2PStandingHandHoldingLowMF",
+	"actors":[
+		{
+			"intendedSex": "male",
+			"scale": 1.03,
+			"sosBend": 7,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		},
+		{
+			"intendedSex": "female",
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		}
+	]
+}

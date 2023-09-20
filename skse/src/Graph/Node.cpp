@@ -35,6 +35,14 @@ namespace Graph {
         return ret;
     }
 
+
+    void Node::tryAddTag(std::string tag) {
+        if (VectorUtil::contains(tags, tag)) {
+            return;
+        }
+
+        tags.push_back(tag);
+    }
     
     void Node::mergeActionsIntoActors() {
         for (Action action : actions) {

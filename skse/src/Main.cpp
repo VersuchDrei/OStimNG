@@ -90,15 +90,16 @@ namespace {
                 MCM::MCMTable::setupForms();
                 Graph::GraphTable::setupEvents();
 
+                UI::PostRegisterMenus();
                 
                 // we are installing this hook so late because we need it to overwrite the PapyrusUtil hook
                 Events::PackageStart::Install();
             } break;
             case SKSE::MessagingInterface::kPreLoadGame: {
-                UI::PostRegisterMenus();
+                //UI::PostRegisterMenus();
             } break;
             case SKSE::MessagingInterface::kNewGame: {
-                UI::PostRegisterMenus();
+                //UI::PostRegisterMenus();
             } break;
 
         }

@@ -11,12 +11,20 @@
 		{
 			"destination": "OStim2PStandingHoldingToApartMF",
 			"description": "separate",
-			"icon": "OStim/symbols/x"
+			"icon": "OStim/symbols/x",
+			"priority": 0
 		},
 		{
 			"destination": "OStim2PStandingHoldingToHoldingFromBehindMF",
 			"description": "turn around ({1})",
-			"icon": "OStim/sensual/embrace_behind_mf"
+			"icon": "OStim/sensual/embrace_behind_mf",
+			"priority": 0
+		},
+		{
+			"destination": "OStim2PStandingKissMF",
+			"description": "kiss {1}",
+			"icon": "OStim/sensual/kissing_mf",
+			"priority": 1000
 		}
 	],
 	"actors":[

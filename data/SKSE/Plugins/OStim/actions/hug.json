@@ -1,2 +1,12 @@
 {
+	"info": "hug is one sided, if they are hugging each other add two actions",
+	"actor":{
+		"info": "the hugging one"
+	},
+	"target":{
+		"info": "the hugged one"
+	},
+	"tags":[
+		"sensual"
+	]
 }

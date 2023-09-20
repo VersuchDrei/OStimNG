@@ -31,20 +31,16 @@ namespace UI::Scene {
         OStimMenu::Show();
         ApplyPositions();
         //Hide HUD
-        auto msgQ = RE::UIMessageQueue::GetSingleton();
-        if (msgQ) {
-            msgQ->AddMessage(RE::HUDMenu::MENU_NAME, RE::UI_MESSAGE_TYPE::kHide, nullptr);
+        auto hudMenu = RE::UI::GetSingleton()->GetMenu(RE::HUDMenu::MENU_NAME);
+        if (hudMenu) {
+            auto& movie = hudMenu->uiMovie;
+            RE::GFxValue args[6]{false, "", false, true, false, false};
+            movie->Invoke("_root.HUDMovieBaseInstance.SetCrosshairTarget", nullptr, args, 6);
         }
 	}
 
     void SceneMenu::Hide() {
         OStimMenu::Hide();
-
-        //Show HUD
-        auto msgQ = RE::UIMessageQueue::GetSingleton();
-        if (msgQ) {
-            msgQ->AddMessage(RE::HUDMenu::MENU_NAME, RE::UI_MESSAGE_TYPE::kShow, nullptr);
-        }
     }
 
     void SceneMenu::SendControl(int32_t control) {

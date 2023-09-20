@@ -40,16 +40,19 @@ Function UpdateHeelOffset(Actor Act, float Offset, bool Add, bool Remove, bool I
 	nioverride.UpdateNodeTransform(Act, false, IsFemale, "NPC")
 EndFunction
 
+;/* ApplyNodeOverrides
+* * relays the ApplyNodeOverrides call through Papyrus
+* * for some users the game CTDs when the .dll directly calls the NiOverride script
+* * so by relaying it through this script this will hopefully end up to only be a Papyrus log entry
+* *
+* * @param: Act, the actor
+*/;
+Function ApplyNodeOverrides(Actor Act) Global
+	NiOverride.ApplyNodeOverrides(Act)
+EndFunction
+
 ; TEMPORARY ONLY
 ; don't call any of these, we will remove them again in later versions
-
-Function StartScene(Actor Dom, Actor Sub, Actor Third) Global
-	OUtils.GetOstim().StartScene(Dom, Sub, zThirdActor = Third)
-EndFunction
-
-Function Masturbate(Actor Act) Global
-	OUtils.GetOStim().Masturbate(Act)
-EndFunction
 
 Function ShowBars() Global
 	OUtils.GetOStim().ShowBars()

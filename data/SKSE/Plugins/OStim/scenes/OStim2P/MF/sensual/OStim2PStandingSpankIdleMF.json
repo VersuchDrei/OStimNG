@@ -11,18 +11,20 @@
 		{
 			"destination": "OStim2PStandingHoldingFromBehindMF",
 			"description": "return",
-			"icon": "OStim/symbols/return"
+			"icon": "OStim/symbols/return",
+			"priority": -1000
 		},
 		{
 			"destination": "OStim2PStandingSpankMF",
 			"description": "spank {1}",
-			"icon": "OStim/sexual/spank_right_mf"
+			"icon": "OStim/sexual/spank_right_mf",
+			"priority": 0
 		},
 		{
 			"destination": "OStim2PStandingGrindingDryMF",
 			"description": "grind your butt against {0}s crotch",
 			"icon": "OStim/sensual/embrace_behind_mf",
-			"priority": 1000
+			"priority": 2000
 		}
 	],
 	"actors":[

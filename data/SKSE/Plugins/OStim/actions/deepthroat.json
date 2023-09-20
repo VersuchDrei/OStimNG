@@ -1,5 +1,6 @@
 {
 	"actor":{
+		"info": "the one with the mouth",
 		"stimulation":0.1,
 		"maxStimulation":75,
 		"muffled":true,
@@ -20,6 +21,7 @@
 		}
 	},
 	"target":{
+		"info": "the one with the penis",
 		"stimulation":1.4,
 		"fullStrip":true,
 		"moan":true,
