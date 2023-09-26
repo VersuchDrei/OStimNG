@@ -22,6 +22,7 @@ namespace OStim {
         void UntrackAllThreads();
         bool AnySceneRunning();
         bool playerThreadRunning();
+        inline int getThreadCount() { return m_threadMap.size(); }
 
 
         Thread* findThread(GameAPI::GameActor actor);

@@ -110,12 +110,10 @@ namespace UI::Scene {
         auto currentNode = state->currentNode;
         if (!state->currentNode)
             return;
-        if (currentNode->isTransition || state->currentThread->areNodesQueued()) {
+        if (currentNode->isTransition || state->currentThread->isInSequence()) {
             menuData.options.clear();
         } else {
-            logger::info("before building conditions");
             std::vector<Trait::ActorCondition> conditions = state->currentThread->getActorConditions();
-            logger::info("after building conditions");
             for (auto& nav : currentNode->navigations) {
                 if (nav.fulfilledBy(conditions) && state->currentThread->getFurnitureType()->isChildOf(nav.nodes.back()->furnitureType)) {
                     menuData.options.push_back(

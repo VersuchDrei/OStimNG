@@ -1586,11 +1586,12 @@ EndFunction
 * * 27 = OStim NG 6.0 to 6.7
 * * 28 = OStim NG 6.8
 * * 29 = OStim Standalone Public Beta
+* * 30 = OStim Standalone 7.1
 * *
 * * @return: the version of the current API
 */;
 Int Function GetAPIVersion()
-	Return 29
+	Return 30
 EndFunction
 
 Bool Function ActorHasFacelight(Actor Act)
@@ -1996,8 +1997,8 @@ Function Startup()
 EndFunction
 
 Function OnLoadGame()
-	If SKSE.GetPluginVersion("OStim") != 0x01000001
-		Debug.MessageBox("OStim Standalone: Your OStim.dll or OSexIntegraionMain.pex is being overwritten with an old version. OStim will NOT work properly.")
+	If SKSE.GetPluginVersion("OStim") != 0x01000002
+		Debug.MessageBox("OStim Standalone: Your OStim.dll or OSexIntegraionMain.pex is being overwritten with an old version. OStim and its addons will NOT work properly. Please don't report any other bugs while this issue persists.")
 	EndIf
 
 	If (Game.GetModByName("Schlongs of Skyrim.esp") != 255)

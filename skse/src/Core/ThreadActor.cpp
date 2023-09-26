@@ -10,6 +10,7 @@
 #include "Sound/SoundTable.h"
 #include "Trait/TraitTable.h"
 #include "Util/ActorUtil.h"
+#include "Util/APITable.h"
 #include "Util/CameraUtil.h"
 #include "Util/CompatibilityTable.h"
 #include "Util/FormUtil.h"
@@ -26,13 +27,17 @@ namespace OStim {
         female = actor.isSex(GameAPI::GameSex::FEMALE);
         schlong = Compatibility::CompatibilityTable::hasSchlong(actor);
         isPlayer = actor.isPlayer();
-        actor.addToFaction(Trait::TraitTable::getExcitementFaction());
         heelOffset = ActorUtil::getHeelOffset(actor.form);
 
         excitementMultiplier = female && (!schlong || !MCM::MCMTable::futaUseMaleExcitement()) ? MCM::MCMTable::getFemaleSexExcitementMult() : MCM::MCMTable::getMaleSexExcitementMult();
         loopExcitementDecay = MCM::MCMTable::getExcitementDecayRate() * Constants::LOOP_TIME_SECONDS;
 
         voiceSet = Sound::SoundTable::getVoiceSet(actor);
+
+        actor.addToFaction(Util::APITable::getExcitementFaction());
+        actor.addToFaction(Util::APITable::getTimesClimaxedFaction());
+        actor.addToFaction(Util::APITable::getTimeUntilClimaxFaction());
+        actor.setFactionRank(Util::APITable::getTimeUntilClimaxFaction(), -1);
     }
 
     void ThreadActor::initContinue() {
@@ -266,13 +271,6 @@ namespace OStim {
         }
         updateUnderlyingExpression();
 
-        // sound
-        if (graphActor->moan) {
-            startMoanCooldown();
-        } else {
-            stopMoanCooldown();
-        }
-
         // strap-ons
         if (!schlong) {
             if ((graphActor->condition.requirements & Graph::Requirement::PENIS) == Graph::Requirement::PENIS) {
@@ -291,6 +289,8 @@ namespace OStim {
         if (awaitingClimax) {
             climax();
         }
+
+        changeNodeSound();
     }
 
     void ThreadActor::changeSpeed(int speed) {
@@ -320,6 +320,7 @@ namespace OStim {
 
     void ThreadActor::loop() {
         loopExcitement();
+        loopClimax();
 
         // expressions
         if (overwriteExpressionCooldown > 0) {
@@ -406,6 +407,8 @@ namespace OStim {
             logger::warn("no face data on actor {}", actor.getName());
         }
 
+        loopSound();
+
         // equip objects
         for (auto& [type, object] : equipObjects) {
             if (object.variantDuration > 0) {
@@ -413,15 +416,6 @@ namespace OStim {
                 if (object.variantDuration <= 0) {
                     object.unsetVariant(actor);
                 }
-            }
-        }
-
-
-        // sound
-        if (moanCooldown > 0) {
-            moanCooldown -= Constants::LOOP_TIME_MILLISECONDS;
-            if (moanCooldown <= 0) {
-                moan();
             }
         }
     }
@@ -522,6 +516,16 @@ namespace OStim {
         }
         
         wakeExpressions(mask);
+    }
+
+    void ThreadActor::setEventExpression(std::string expression) {
+        StringUtil::toLower(&expression);
+        std::vector<Trait::FacialExpression*>* expressions = Trait::TraitTable::getExpressionsForEvent(expression);
+        if (!expressions) {
+            return;
+        }
+
+        setEventExpression(VectorUtil::randomElement(expressions));
     }
 
     void ThreadActor::setEventExpression(Trait::FacialExpression* expression) {
@@ -838,38 +842,6 @@ namespace OStim {
         if (iter != equipObjects.end()) {
             iter->second.unsetVariant(actor);
         }
-    }
-
-
-    void ThreadActor::mute() {
-        if (muted) {
-            return;
-        }
-
-        stopMoanCooldown();
-        muted = true;
-    }
-
-    void ThreadActor::unmute() {
-        muted = false;
-        startMoanCooldown();
-    }
-
-    void ThreadActor::startMoanCooldown() {
-        if (!muted && !eventExpression && voiceSet && voiceSet->moan && graphActor->moan) {
-            moanCooldown = std::uniform_int_distribution<>(MCM::MCMTable::getMoanIntervalMin(), MCM::MCMTable::getMoanIntervalMax())(Constants::RNG);
-        } else {
-            moanCooldown = -1;
-        }
-    }
-
-    void ThreadActor::stopMoanCooldown() {
-        moanCooldown = -1;
-    }
-
-    void ThreadActor::moan() {
-        playEventExpression(voiceSet->moanExpression);
-        voiceSet->moan.play(actor, MCM::MCMTable::getMoanVolume());
     }
 
 

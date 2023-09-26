@@ -30,24 +30,24 @@ namespace Graph {
 
             int index = 0;
             for (auto& entry : json["scenes"]) {
-                if (!json.is_object()) {
+                if (!entry.is_object()) {
                     logger::warn("scene {} in sequence {} is malformed", index, filename);
                     return;
                 }
 
-                if (!json.contains("id")) {
+                if (!entry.contains("id")) {
                     logger::warn("scene {} in sequence {} does not have field id defined", index, filename);
                     return;
                 }
 
-                if (!json["id"].is_string()) {
+                if (!entry["id"].is_string()) {
                     logger::warn("field id of scene {} in sequence {} is not a string", index, filename);
                     return;
                 }
 
-                Node* node = getNodeById(json["id"]);
+                Node* node = getNodeById(entry["id"]);
                 if (!node) {
-                    logger::warn("id {} of scene {} in sequence {} doesn't exist", json["node"], index, filename);
+                    logger::warn("id {} of scene {} in sequence {} doesn't exist", entry["id"], index, filename);
                     return;
                 }
 
@@ -73,21 +73,21 @@ namespace Graph {
                     sequence.furnitureType = node->furnitureType;
                 }
 
-                SequenceEntry entry = {.node = node};
+                SequenceEntry sEntry = {.node = node};
 
-                if (json.contains("duration")) {
-                    if (!json["duration"].is_number()) {
+                if (entry.contains("duration")) {
+                    if (!entry["duration"].is_number()) {
                         logger::warn("field duration of scene {} in sequence {} is not a number", index, filename);
                         return;
                     }
 
-                    entry.duration = static_cast<int>(json["duration"] * 1000.0f);
+                    sEntry.duration = static_cast<int>(static_cast<float>(entry["duration"]) * 1000.0f);
+                    logger::info("duration of {}: {}", sEntry.node->scene_id, sEntry.duration);
                 } else {
-                    entry.duration = entry.node->animationLengthMs;
+                    sEntry.duration = sEntry.node->animationLengthMs;
                 }
 
-                sequence.nodes.push_back(entry);
-
+                sequence.nodes.push_back(sEntry);
                 index++;
             }
 

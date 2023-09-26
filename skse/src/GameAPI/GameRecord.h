@@ -13,13 +13,27 @@ namespace GameAPI {
         inline bool operator!=(const GameRecord<T> other) { return form != other.form; }
 
         void loadJson(std::string& path, json json) {
+            if (!json.is_object()) {
+                logger::warn("form definition in file {} is malformed", path);
+            }
+
             if (!json.contains("mod")) {
-                logger::info("file {} does not have field 'mod' defined", path);
+                logger::warn("file {} does not have field 'mod' defined", path);
+                return;
+            }
+
+            if (!json["mod"].is_string()) {
+                logger::warn("field 'mod' of file {} isn't a string", path);
                 return;
             }
 
             if (!json.contains("formid")) {
-                logger::info("file {} does not have field 'formid' defined", path);
+                logger::warn("file {} does not have field 'formid' defined", path);
+                return;
+            }
+
+            if (!json["formid"].is_string()) {
+                logger::warn("field 'formid' of file {} isn't a string, hexadecimal numbers have to be given in string format", path);
                 return;
             }
 

@@ -41,6 +41,7 @@ namespace OStim {
 
         void handleNiNodeUpdate();
 
+        void setEventExpression(std::string expression);
         void setEventExpression(Trait::FacialExpression* expression);
         void clearEventExpression();
         void playEventExpression(std::string expression);
@@ -55,10 +56,6 @@ namespace OStim {
         bool isObjectEquipped(std::string type);
         bool setObjectVariant(std::string type, std::string variant, int duration);
         void unsetObjectVariant(std::string type);
-
-        void mute();
-        void unmute();
-        inline bool isMuted() { return muted; }
 
         inline bool setObjectVariant(std::string type, std::string variant) { return setObjectVariant(type, variant, 0); }
 
@@ -176,9 +173,7 @@ namespace OStim {
         std::unordered_map<std::string, EquipObjectHandler> equipObjects;
         std::vector<std::string> phonemeObjects;
 
-        Sound::VoiceSet* voiceSet = nullptr;
-        bool muted = false;
-        int moanCooldown = -1;
+        
 
         void checkHeelOffset();
         void applyHeelOffset(bool remove);
@@ -190,10 +185,6 @@ namespace OStim {
         void applyExpression(Trait::GenderExpression* expression, int mask, int updateSpeed);
         void checkForEyeballOverride();
         void applyEyeballOverride();
-
-        void startMoanCooldown();
-        void stopMoanCooldown();
-        void moan();
 
         void papyrusUndressCallback(std::vector<RE::TESObjectARMO*> items);
         void papyrusRedressCallback(std::vector<RE::TESObjectARMO*> items);
@@ -212,15 +203,23 @@ namespace OStim {
         inline bool getAwaitingClimax() { return awaitingClimax; }
         inline bool getStallClimax() { return stallClimax; }
         inline void setStallClimax(bool stallClimax) { this->stallClimax = stallClimax; }
-        void orgasm(bool ignoreStall);
-        void climax();
+        void orgasm(bool ignoreStall); // handles stalling / starts climax animation
+        void climax(); // plays sounds / expressions and fires events
         inline int getTimexClimaxed() { return timesClimaxed; }
 
     private:
-        bool awaitingClimax = false;
         bool stallClimax = false;
+        bool awaitingOrgasm = false; // for when orgasms are stalled
+        bool awaitingClimax = false; // for waiting for climax annotations in climax auto transitions
+        bool awaitingClimaxInner = false; // for waiting for everyone to stop talking
         int timesClimaxed = 0;
 
+        float timeUntilClimax = -1.0f;
+
+        void loopClimax();
+        void climaxInner();
+
+        void setTimeUntilClimax(float time);
 #pragma endregion
 
 #pragma region excitement
@@ -229,7 +228,7 @@ namespace OStim {
         void setExcitement(float value);
         void addExcitement(float value, bool respectMultiplier);
         inline float getMaxExcitement() { return maxExcitement; }
-        inline void setMaxExcitement(float max) { maxExcitement = max; }
+        void setMaxExcitement(float max);
         inline float getBaseExcitementInc() { return baseExcitementInc; }
         inline void setBaseExcitementInc(float inc) { baseExcitementInc = inc; }
         inline float getExcitementMultiplier() { return excitementMultiplier; }
@@ -248,6 +247,29 @@ namespace OStim {
         void loopExcitement();
         void changeSpeedExcitement();
         void recalculateLoopExcitement();
+#pragma endregion
+
+#pragma region sound
+    public:
+        void mute();
+        void unmute();
+        inline bool isMuted() { return muted; }
+
+    private:
+        Sound::VoiceSet voiceSet;
+        bool muted = false;
+        bool muffled = false;
+        int moanCooldown = -1;
+        GameAPI::GameSound* lastMoan = nullptr;
+
+        void loopSound();
+        void changeNodeSound();
+        void startMoanCooldown();
+        void stopMoanCooldown();
+        void moan();
+        void climaxMoan();
+
+        inline bool isMakingSound() { return lastMoan && lastMoan->isPlaying() || actor.isTalking(); }
 #pragma endregion
 	};	
 }

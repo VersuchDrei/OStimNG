@@ -50,6 +50,13 @@ bool Function IsRunning(int ThreadID) Global Native
 */;
 Function Stop(int ThreadID) Global Native
 
+;/* GetThreadCount
+* * return the number of currently running threads, including the player thread if it is running
+* *
+* * @return: the number of currently running threads
+*/;
+int Function GetThreadCount() Global Native
+
 
 ; ███╗   ██╗ █████╗ ██╗   ██╗██╗ ██████╗  █████╗ ████████╗██╗ ██████╗ ███╗   ██╗
 ; ████╗  ██║██╔══██╗██║   ██║██║██╔════╝ ██╔══██╗╚══██╔══╝██║██╔═══██╗████╗  ██║

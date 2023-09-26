@@ -11,5 +11,6 @@ namespace GameAPI {
 
         inline int getPriority() { return form->data.level; }
         inline bool fulfills(GameActor actor) { return form->perkConditions.IsTrue(actor.form, actor.form); }
+        inline bool fulfills(GameActor actor, GameActor target) { return form->perkConditions.IsTrue(actor.form, target.form); }
     };
 }
