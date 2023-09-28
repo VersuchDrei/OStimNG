@@ -114,10 +114,13 @@ namespace UI {
 
 		if (!json.contains("fadeTime")) {
 			logger::warn("settings file malformed - fadeTime");
-			fadeTime = 2.0;
+			json["fadeTime"] = 2.0;
 		}
-		else {
-			fadeTime = json["fadeTime"];
-		}
+		fadeTime = json["fadeTime"];
+		
+		ifs.close();
+		//Write back any defaulted settings
+		std::ofstream settingsFile(*settingsPath);
+		settingsFile << std::setw(2) << json << std::endl;
 	}
 }
