@@ -8,6 +8,7 @@ namespace OStim {
 
         if (lastMoan) {
             if (!lastMoan->isPlaying()) {
+                logger::info("clearing moan expression");
                 lastMoan = nullptr;
                 clearEventExpression();
             }
@@ -74,6 +75,7 @@ namespace OStim {
         }
 
         if (set) {
+            logger::info("starting moaning");
             setEventExpression(set->expression);
             set->sound.play(actor, MCM::MCMTable::getMoanVolume());
             lastMoan = &set->sound;

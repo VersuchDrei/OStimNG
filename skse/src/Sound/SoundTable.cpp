@@ -52,26 +52,32 @@ namespace Sound {
     VoiceSet SoundTable::getVoiceSet(GameAPI::GameActor actor) {
         auto iter = voiceSets.find(actor.getBaseFormID());
         if (iter != voiceSets.end()) {
+            logger::info("voice set found for actor {} by actor base", actor.getName());
             return iter->second;
         }
 
-        if (actor.form->GetActorBase()->voiceType) {
+        if (actor.getVoice()) {
             iter = voiceSets.find(actor.getVoice().getFormID());
             if (iter != voiceSets.end()) {
+                logger::info("voice set found for actor {} by voice type", actor.getName());
                 return iter->second;
             }
         }
 
         iter = voiceSets.find(actor.getRace().getFormID());
         if (iter != voiceSets.end()) {
+            logger::info("voice set found for actor {} by race", actor.getName());
             return iter->second;
         }
 
         if (actor.isHuman()) {
+            logger::info("no voice set found for actor {}, using default", actor.getName());
             iter = voiceSets.find(actor.isSex(GameAPI::GameSex::FEMALE) ? 1 : 0);
             if (iter != voiceSets.end()) {
                 return iter->second;
             }
+        } else {
+            logger::info("no voice set found for actor {}", actor.getName());
         }
 
         return {};
