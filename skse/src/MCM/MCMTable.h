@@ -260,7 +260,7 @@ namespace MCM {
             {0xDDD, {1, "unequipStrapOnIfInWay"}},
 
             {0xE04, {1, "useSoSSex"}},
-            {0xE48, {1, "futaUseMakeRole"}},
+            {0xE48, {1, "futaUseMaleRole"}},
             {0xE05, {0, "futaUseMaleExcitement"}},
             {0xE17, {1, "futaUseMaleClimax"}},
             {0xE25, {1, "futaUseMaleLight"}},
