@@ -103,10 +103,13 @@ set(sources
     src/Util/ActorUtil.cpp
     src/Util/APITable.cpp
     src/Util/CameraUtil.cpp
+    src/Util/CheckSum.cpp
     src/Util/CompatibilityTable.cpp
     src/Util/ControlUtil.cpp
     src/Util/FormUtil.cpp
+    src/Util/Globals.cpp
     src/Util/IDGenerator.cpp
+    src/Util/Integrity.cpp
     src/Util/JsonUtil.cpp
     src/Util/LegacyUtil.cpp
     src/Util/LookupTable.cpp
@@ -136,6 +139,7 @@ find_package(pugixml REQUIRED)
 find_package(nlohmann_json REQUIRED)
 find_package(CommonLibSSE CONFIG REQUIRED)
 find_package(ryml CONFIG REQUIRED)
+find_package(OpenSSL REQUIRED)
 find_path(ARTICUNO_INCLUDE_DIRS "articuno/articuno.h")
 
 add_commonlibsse_plugin(${PROJECT_NAME} SOURCES ${headers} ${sources})
@@ -156,7 +160,8 @@ target_link_libraries(${PROJECT_NAME}
         PRIVATE
         ryml::ryml
         pugixml
-        nlohmann_json::nlohmann_json)
+        nlohmann_json::nlohmann_json
+        OpenSSL::SSL)
 
 target_precompile_headers(${PROJECT_NAME}
         PRIVATE

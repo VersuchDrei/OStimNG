@@ -7,11 +7,12 @@
 #include "GameAPI/Game.h"
 #include "GameAPI/GameCamera.h"
 #include "GameAPI/GameTable.h"
+#include "MCM/MCMTable.h"
 #include "Serial/Manager.h"
 #include "UI/Align/AlignMenu.h"
 #include "UI/UIState.h"
+#include "Util/Globals.h"
 #include "Util/MathUtil.h"
-#include "MCM/MCMTable.h"
 #include "Util.h"
 
 namespace Events {
@@ -28,6 +29,10 @@ namespace Events {
             RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback(new CheckPapyrusUndressingCallbackFunctor());
             auto args = RE::MakeFunctionArguments();
             vm->DispatchStaticCall("OUndress", "UsePapyrusUndressing", args, callback);
+        }
+
+        if (!Util::Globals::isSceneIntegrityVerified()) {
+            GameAPI::Game::showMessageBox("OStim Standalone: Scene integrity could not be verified. OStim and its addons might not work properly. Please don't report any other bugs while this issue persists.", {"Ok"}, [](unsigned int result) {});
         }
 
         return RE::BSEventNotifyControl::kContinue;

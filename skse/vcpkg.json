@@ -13,7 +13,8 @@
             "articuno",
             "commonlibsse-ng",
             "pugixml",
-            "nlohmann-json"
+            "nlohmann-json",
+            "openssl"
           ]
         }
     },

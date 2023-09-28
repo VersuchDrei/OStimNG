@@ -15,6 +15,7 @@
 #include "Util/CompatibilityTable.h"
 #include "Util/FormUtil.h"
 #include "Util/Constants.h"
+#include "Util/Globals.h"
 #include "Util/LookupTable.h"
 #include "Util/ObjectRefUtil.h"
 #include "Util/StringUtil.h"
@@ -62,7 +63,7 @@ namespace OStim {
 
     void ThreadActor::undress() {
         // TODO properly use GameActor
-        if (MCM::MCMTable::usePapyrusUndressing()) {
+        if (Util::Globals::usePapyrusUndressing()) {
             const auto skyrimVM = RE::SkyrimVM::GetSingleton();
             auto vm = skyrimVM ? skyrimVM->impl : nullptr;
             if (vm) {
@@ -103,7 +104,7 @@ namespace OStim {
 
     void ThreadActor::undressPartial(uint32_t mask) {
         // TODO properly use GameActor
-        if (MCM::MCMTable::usePapyrusUndressing()) {
+        if (Util::Globals::usePapyrusUndressing()) {
             const auto skyrimVM = RE::SkyrimVM::GetSingleton();
             auto vm = skyrimVM ? skyrimVM->impl : nullptr;
             if (vm) {
@@ -170,7 +171,7 @@ namespace OStim {
 
     void ThreadActor::redress() {
         // TODO properly use GameActor
-        if (MCM::MCMTable::usePapyrusUndressing()) {
+        if (Util::Globals::usePapyrusUndressing()) {
             const auto skyrimVM = RE::SkyrimVM::GetSingleton();
             auto vm = skyrimVM ? skyrimVM->impl : nullptr;
             if (vm) {
@@ -196,7 +197,7 @@ namespace OStim {
 
     void ThreadActor::redressPartial(uint32_t mask) {
         // TODO properly use GameActor
-        if (MCM::MCMTable::usePapyrusUndressing()) {
+        if (Util::Globals::usePapyrusUndressing()) {
             const auto skyrimVM = RE::SkyrimVM::GetSingleton();
             auto vm = skyrimVM ? skyrimVM->impl : nullptr;
             if (vm) {
@@ -864,7 +865,7 @@ namespace OStim {
                 vm->DispatchStaticCall("OUndress", "AnimateRedress", args, callback);
             }
         } else {
-            if (MCM::MCMTable::usePapyrusUndressing()) {
+            if (Util::Globals::usePapyrusUndressing()) {
                 // this object will be destroyed before papyrus redressing is done
                 // so for this case we need to invoke Redress without a callback here
                 const auto skyrimVM = RE::SkyrimVM::GetSingleton();

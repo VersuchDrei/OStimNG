@@ -38,7 +38,7 @@ namespace Graph {
 
             if (json.contains("length")) {
                 if (json["length"].is_number()) {
-                    node->animationLengthMs = static_cast<int>(json["length"] * 1000.0f);
+                    node->animationLengthMs = static_cast<int>(static_cast<float>(json["length"]) * 1000.0f);
                 } else {
                     logger::warn("length property of scene {} isn't a number", node->scene_id);
                 }

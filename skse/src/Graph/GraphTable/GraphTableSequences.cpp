@@ -82,7 +82,6 @@ namespace Graph {
                     }
 
                     sEntry.duration = static_cast<int>(static_cast<float>(entry["duration"]) * 1000.0f);
-                    logger::info("duration of {}: {}", sEntry.node->scene_id, sEntry.duration);
                 } else {
                     sEntry.duration = sEntry.node->animationLengthMs;
                 }
