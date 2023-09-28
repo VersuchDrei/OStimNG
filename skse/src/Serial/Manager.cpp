@@ -5,6 +5,7 @@
 #include "Core/ThreadManager.h"
 #include "Game/Locker.h"
 #include "MCM/MCMTable.h"
+#include "Util/Globals.h"
 
 namespace Serialization {
     void closeOldThreads() {
@@ -122,6 +123,7 @@ namespace Serialization {
         auto locker = Locker::GetSingleton();
         locker->Revert(serial);
         OStim::ThreadManager::GetSingleton()->UntrackAllThreads();
+        Util::Globals::resetSaveGameValues();
         MCM::MCMTable::resetValues();
     }
 

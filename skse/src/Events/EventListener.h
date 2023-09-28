@@ -2,7 +2,7 @@
 
 #include "Core/Singleton.h"
 #include "Core/ThreadManager.h"
-#include "MCM/MCMTable.h"
+#include "Util/Globals.h"
 #include "Util/LookupTable.h"
 
 namespace Events {
@@ -23,7 +23,7 @@ namespace Events {
                 if (a_result.IsNoneObject()) {
                     logger::info("result is none");
                 } else if (a_result.IsBool()) {
-                    MCM::MCMTable::setPapyusUndressing(a_result.GetBool());
+                    Util::Globals::setPapyrusUndressing(a_result.GetBool());
                 } else {
                     logger::info("result is not a bool");
                 }

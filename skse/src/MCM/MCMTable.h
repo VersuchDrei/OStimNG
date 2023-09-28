@@ -100,10 +100,6 @@ namespace MCM {
         inline static uint32_t getUndressingMask() { return undressingMask; }
         inline static void setUndressingMask(uint32_t mask) { undressingMask = mask; }
 
-        // not really an MCM option but idk where else to put it
-        static void setPapyusUndressing(bool doPapyrus);
-        inline static bool usePapyrusUndressing() { return doPapyrusUndressing; }
-
         inline static int getExpressionDurationMin() { return settings[0xDB2].asInt(); }
         inline static int getExpressionDurationMax() { return settings[0xDB3].asInt(); }
 
@@ -279,8 +275,5 @@ namespace MCM {
         inline static RE::TESGlobal* OStimKeySceneStart;
 
         inline static uint32_t undressingMask = 0x3D8BC39D;
-
-        inline static bool doPapyrusUndressing = false;
-        inline static RE::TESGlobal* OStimUsePapyrusUndressing;
     };
 }

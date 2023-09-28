@@ -17,6 +17,7 @@ namespace PapyrusThread {
         return OStim::startThread(params);
     }
 
+
     bool IsRunning(RE::StaticFunctionTag*, int threadID) {
         return OStim::ThreadManager::GetSingleton()->GetThread(threadID);
     }
@@ -27,6 +28,11 @@ namespace PapyrusThread {
             thread->stopFaded();
         }
     }
+
+    int GetThreadCount(RE::StaticFunctionTag*) {
+        return OStim::ThreadManager::GetSingleton()->getThreadCount();
+    }
+
 
     std::string GetScene(RE::StaticFunctionTag*, int threadID) {
         OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
@@ -237,6 +243,7 @@ namespace PapyrusThread {
 
         BIND(IsRunning);
         BIND(Stop);
+        BIND(GetThreadCount);
 
         BIND(GetScene);
         BIND(NavigateTo);

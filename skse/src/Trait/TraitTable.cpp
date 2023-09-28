@@ -70,7 +70,6 @@ namespace Trait {
 
     void TraitTable::setupForms() {
         RE::TESDataHandler* handler = RE::TESDataHandler::GetSingleton();
-        excitementFaction.loadFile("OStim.esp", 0xD93);
         noFacialExpressionsFaction = handler->LookupForm<RE::TESFaction>(0xD92, "OStim.esp");
 
         // this needs to go in setupForms because it requires the kDataLoaded event

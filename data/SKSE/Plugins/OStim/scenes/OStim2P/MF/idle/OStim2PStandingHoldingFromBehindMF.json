@@ -14,6 +14,18 @@
 			"icon": "OStim/symbols/rotate_ccw"
 		},
 		{
+			"destination": "OStim2PStandingCuddleFromBehindMF",
+			"description": "cuddle with {1}",
+			"icon": "OStim/sensual/embrace_mf",
+			"priority": 1000
+		},
+		{
+			"destination": "OStim2PStandingGropingBreastsFromBehindMF",
+			"description": "grope {1}s breasts",
+			"icon": "OStim/detail/gropingbreast_mf",
+			"priority": 1000
+		},
+		{
 			"destination": "OStim2PStandingGrindingDryMF",
 			"description": "grind your butt against {0}s crotch",
 			"icon": "OStim/sensual/embrace_behind_mf",
@@ -24,6 +36,12 @@
 			"description": "bend {1} over for some spankings",
 			"icon": "OStim/sexual/spank_right_mf",
 			"priority": 1000
+		},
+		{
+			"destination": "OStim2PStandingFingeringFromBehindMF",
+			"description": "pleasure {1} with your hand and grope her breast",
+			"icon": "OStim/sexual/fingering_m",
+			"priority": 2000
 		}
 	],
 	"actors":[

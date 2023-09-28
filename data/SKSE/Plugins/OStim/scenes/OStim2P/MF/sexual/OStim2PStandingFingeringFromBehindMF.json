@@ -1,0 +1,65 @@
+{
+	"name": "Standing Fingering From Behind Straight",
+	"modpack": "OStim",
+	"length": 2.0,
+	"speeds":[
+		{
+			"animation": "OStim2PStandingFingeringFromBehindMF_S1",
+			"displaySpeed": 1.0
+		},
+		{
+			"animation": "OStim2PStandingFingeringFromBehindMF_S2",
+			"displaySpeed": 1.5
+		},
+		{
+			"animation": "OStim2PStandingFingeringFromBehindMF_S3",
+			"displaySpeed": 2.0
+		},
+		{
+			"animation": "OStim2PStandingFingeringFromBehindMF_S4",
+			"displaySpeed": 2.5
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStim2PStandingHoldingFromBehindMF",
+			"description": "return",
+			"icon": "OStim/symbols/return",
+			"priority": -1000
+		}
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"sosBend": -7,
+			"scale": 1.03,
+      		"lookUp": -75,
+      		"lookLeft": 50,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		},
+		{
+			"intendedSex": "female",
+      		"lookLeft": -75,
+			"tags": [
+				"facingaway",
+				"standing"
+			],
+			"feetOnGround": true
+		}
+	],
+  	"actions": [
+  		{
+  			"type": "rubbingclitoris",
+  			"actor": 0,
+  			"target": 1
+  		},
+  		{
+  			"type": "gropingbreast",
+  			"actor": 0,
+  			"target": 1
+  		}
+  	]
+}

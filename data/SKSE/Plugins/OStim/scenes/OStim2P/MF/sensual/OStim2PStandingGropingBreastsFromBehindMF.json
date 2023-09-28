@@ -1,0 +1,60 @@
+{
+	"name": "Standing Groping Breasts From Behind Straight",
+	"modpack": "OStim",
+	"length": 2.0,
+	"speeds":[
+		{
+			"animation": "OStim2PStandingGropingBreastsFromBehindMF_S1",
+			"displaySpeed": 0.5
+		},
+		{
+			"animation": "OStim2PStandingGropingBreastsFromBehindMF_S2",
+			"displaySpeed": 1.0
+		},
+		{
+			"animation": "OStim2PStandingGropingBreastsFromBehindMF_S3",
+			"displaySpeed": 1.5
+		},
+		{
+			"animation": "OStim2PStandingGropingBreastsFromBehindMF_S4",
+			"displaySpeed": 2.0
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStim2PStandingHoldingFromBehindMF",
+			"description": "return",
+			"icon": "OStim/symbols/return",
+			"priority": -1000
+		}
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"sosBend": 7,
+			"scale": 1.03,
+      		"lookUp": -75,
+      		"lookLeft": 50,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		},
+		{
+			"intendedSex": "female",
+      		"lookLeft": -75,
+			"tags": [
+				"facingaway",
+				"standing"
+			],
+			"feetOnGround": true
+		}
+	],
+  	"actions": [
+  		{
+      		"type": "gropingbreast",
+      		"actor": 0,
+      		"target": 1
+    	}
+  	]
+}

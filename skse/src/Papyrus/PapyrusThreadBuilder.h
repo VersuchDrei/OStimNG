@@ -51,6 +51,7 @@ namespace PapyrusThreadBuilder {
 
         Graph::Node* node = Graph::GraphTable::getNodeById(animation);
         if (!node) {
+            logger::warn("animation {} could not be found", animation);
             return;
         }
 
@@ -65,6 +66,7 @@ namespace PapyrusThreadBuilder {
 
         Graph::Sequence* sequencePtr = Graph::GraphTable::getSequenceByID(sequence);
         if (!sequencePtr) {
+            logger::warn("sequence {} could not be found", sequence);
             return;
         }
 

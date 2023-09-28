@@ -9,14 +9,10 @@ namespace MCM {
         for (auto& [formID, setting] : settings) {
             setting.setup(formID);
         }
-        auto dataHandler = RE::TESDataHandler::GetSingleton();
-
-        OStimUsePapyrusUndressing = dataHandler->LookupForm<RE::TESGlobal>(0xDB0, "OStim.esp");
     }
 
     void MCMTable::resetValues() {
         undressingMask = 0x3D8BC39D;
-        doPapyrusUndressing = false;
     }
 
     void MCMTable::restoreDefaults() {
@@ -36,12 +32,6 @@ namespace MCM {
         // the stripping function will treat this as a slotmask
         // so if we ever want to support multiple slots here in the future we just need to change the return value of this function
         return 1 << static_cast<int>(settings[0xDAE].asInt() - 30);
-    }
-
-    void MCMTable::setPapyusUndressing(bool doPapyrus) {
-        doPapyrusUndressing = doPapyrus;
-        OStimUsePapyrusUndressing->value = doPapyrus ? 1 : 0;
-        logger::info("papyrus undressing is {}", doPapyrus ? "enabled" : "disabled");
     }
 
 

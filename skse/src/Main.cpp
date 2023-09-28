@@ -15,7 +15,10 @@
 #include "Sound/SoundTable.h"
 #include "Trait/TraitTable.h"
 #include "UI/UIState.h"
+#include "Util/APITable.h"
 #include "Util/CompatibilityTable.h"
+#include "Util/Globals.h"
+#include "Util/Integrity.h"
 #include "Util/LegacyUtil.h"
 #include "Util/LookupTable.h"
 
@@ -67,14 +70,17 @@ namespace {
                 if (message) {
                     message->RegisterListener(nullptr, UnspecificedSenderMessageHandler);
                 }
+
+                Util::Globals::setSceneIntegrityVerified(Integrity::verifySceneIntegrity());
             } break;
             case SKSE::MessagingInterface::kInputLoaded: {
                 RE::BSInputDeviceManager::GetSingleton()->AddEventSink(Events::EventListener::GetSingleton());
             } break;
             case SKSE::MessagingInterface::kDataLoaded: {
-                // needs to be in here because a lot of these need to access forms
                 GameAPI::GameTable::setup();
 
+                Util::APITable::setupForms();
+                Util::Globals::setupForms();
                 Sound::SoundTable::setup();
                 Graph::GraphTable::SetupActions();
                 Trait::TraitTable::setup();

@@ -1,5 +1,6 @@
 #include "SoundTable.h"
 
+#include "GameAPI/GameCondition.h"
 #include "Util/JsonFileLoader.h"
 #include "Util/JsonUtil.h"
 #include "Util/LookupTable.h"
@@ -38,55 +39,95 @@ namespace Sound {
 
             VoiceSet voiceSet;
 
-            if (json.contains("moan")) {
-                voiceSet.moan.loadJson(path, json["moan"]);
-            }
-            if (json.contains("moanMuffled")) {
-                voiceSet.moanMuffled.loadJson(path, json["moanMuffled"]);
-            }
-            if (json.contains("moanExpression")) {
-                voiceSet.moanExpression = json["moanExpression"];
-            }
+            loadSoundSets(json, voiceSet.moan, "moan", "moan", "moanExpression", filename, path);
+            loadSoundSets(json, voiceSet.moanMuffled, "moanMuffled", "moan", "moanExpression", filename, path);
 
-            if (json.contains("climax")) {
-                voiceSet.climax.loadJson(path, json["climax"]);
-            }
-            if (json.contains("climaxMuffled")) {
-                voiceSet.climaxMuffled.loadJson(path, json["climaxMuffled"]);
-            }
-            if (json.contains("climaxExpression")) {
-                voiceSet.climaxExpression = json["climaxExpression"];
-            }
+            loadSoundSets(json, voiceSet.climax, "climax", "climax", "climaxExpression", filename, path);
+            loadSoundSets(json, voiceSet.climaxMuffled, "climaxMuffled", "climax", "climaxExpression", filename, path);
 
             voiceSets[formID] = voiceSet;
         });
     }
 
-    VoiceSet* SoundTable::getVoiceSet(GameAPI::GameActor actor) {
+    VoiceSet SoundTable::getVoiceSet(GameAPI::GameActor actor) {
         auto iter = voiceSets.find(actor.getBaseFormID());
         if (iter != voiceSets.end()) {
-            return &iter->second;
+            return iter->second;
         }
 
         if (actor.form->GetActorBase()->voiceType) {
             iter = voiceSets.find(actor.getVoice().getFormID());
             if (iter != voiceSets.end()) {
-                return &iter->second;
+                return iter->second;
             }
         }
 
         iter = voiceSets.find(actor.getRace().getFormID());
         if (iter != voiceSets.end()) {
-            return &iter->second;
+            return iter->second;
         }
 
         if (actor.isHuman()) {
             iter = voiceSets.find(actor.isSex(GameAPI::GameSex::FEMALE) ? 1 : 0);
             if (iter != voiceSets.end()) {
-                return &iter->second;
+                return iter->second;
             }
         }
 
-        return nullptr;
+        return {};
+    }
+
+    void SoundTable::loadSoundSets(json& json, std::vector<SoundSet>& soundSets, std::string propertyName, std::string defaultExpression, std::string expressionPropertyName, std::string& fileName, std::string& filePath) {
+        if (!json.contains(propertyName)) {
+            return;
+        }
+
+        if (json.contains(expressionPropertyName)) {
+            if (json[expressionPropertyName].is_string()) {
+                defaultExpression = json[expressionPropertyName];
+            } else {
+                logger::warn("property '{}' of voice type {} is not a string", expressionPropertyName, fileName);
+            }
+        }
+
+        if (json[propertyName].is_object()) {
+            GameAPI::GameSound sound;
+            sound.loadJson(filePath, json[propertyName]);
+            if (sound) {
+                soundSets.push_back({{}, sound, defaultExpression});
+            }
+        } else if (json[propertyName].is_array()) {
+            int index = 0;
+            for (auto& jsonSound : json[propertyName]) {
+                if (jsonSound.contains("sound")) {
+                    GameAPI::GameSound sound;
+                    sound.loadJson(filePath, jsonSound["sound"]);
+
+                    if (sound) {
+                        GameAPI::GameCondition condition;
+                        if (jsonSound.contains("condition")) {
+                            condition.loadJson(filePath, jsonSound["condition"]);
+                        }
+
+                        std::string expression = defaultExpression;
+                        if (jsonSound.contains("expression")) {
+                            if (jsonSound["expression"].is_string()) {
+                                expression = jsonSound["expression"];
+                            } else {
+                                logger::warn("property 'expression' of sound {} of voice type {} is not a string", index, fileName);
+                            }
+                        }
+
+                        soundSets.push_back({condition, sound, expression});
+                    }
+                } else {
+                    logger::warn("sound {} of sound list '{}' of voice type {} does not have field 'sound' defined", index, propertyName, fileName);
+                }
+
+                index++;
+            }
+        } else {
+            logger::warn("property '{}' of voice set {} is malformed", propertyName, fileName);
+        }
     }
 }

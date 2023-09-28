@@ -7,7 +7,7 @@ message("Using toolchain file ${CMAKE_TOOLCHAIN_FILE}.")
 ########################################################################################################################
 project(
         OStim
-        VERSION 1.0.0.1
+        VERSION 1.0.0.2
         DESCRIPTION ""
         LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 23)
@@ -38,6 +38,7 @@ set(sources
     src/Core/ThreadActor/ThreadActorAnimation.cpp
     src/Core/ThreadActor/ThreadActorClimax.cpp
     src/Core/ThreadActor/ThreadActorExcitement.cpp
+    src/Core/ThreadActor/ThreadActorSound.cpp
     src/Core/ThreadStarter/NPCThreadStarter.cpp
     src/Core/ThreadStarter/PlayerThreadStarter.cpp
     src/Core/ThreadStarter/ThreadStarter.cpp
@@ -88,6 +89,7 @@ set(sources
 	src/Sound/ActionSound/SoundPlayer.cpp
 	src/Sound/ActionSound/SoundType.cpp
 	src/Sound/SoundTable.cpp
+    src/Sound/VoiceSet.cpp
     src/Trait/Condition.cpp
     src/Trait/FacialExpression.cpp
     src/Trait/TraitTable.cpp
@@ -99,11 +101,15 @@ set(sources
     src/UI/Settings.cpp
     src/UI/UIState.cpp
     src/Util/ActorUtil.cpp
+    src/Util/APITable.cpp
     src/Util/CameraUtil.cpp
+    src/Util/CheckSum.cpp
     src/Util/CompatibilityTable.cpp
     src/Util/ControlUtil.cpp
     src/Util/FormUtil.cpp
+    src/Util/Globals.cpp
     src/Util/IDGenerator.cpp
+    src/Util/Integrity.cpp
     src/Util/JsonUtil.cpp
     src/Util/LegacyUtil.cpp
     src/Util/LookupTable.cpp
@@ -133,6 +139,7 @@ find_package(pugixml REQUIRED)
 find_package(nlohmann_json REQUIRED)
 find_package(CommonLibSSE CONFIG REQUIRED)
 find_package(ryml CONFIG REQUIRED)
+find_package(OpenSSL REQUIRED)
 find_path(ARTICUNO_INCLUDE_DIRS "articuno/articuno.h")
 
 add_commonlibsse_plugin(${PROJECT_NAME} SOURCES ${headers} ${sources})
@@ -153,7 +160,8 @@ target_link_libraries(${PROJECT_NAME}
         PRIVATE
         ryml::ryml
         pugixml
-        nlohmann_json::nlohmann_json)
+        nlohmann_json::nlohmann_json
+        OpenSSL::SSL)
 
 target_precompile_headers(${PROJECT_NAME}
         PRIVATE

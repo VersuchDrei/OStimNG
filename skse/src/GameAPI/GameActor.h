@@ -71,6 +71,7 @@ namespace GameAPI {
 
         int getRelationshipRank(GameActor other) const;
         inline bool isInDialogue() const { return IsInDialogueWithPlayer(nullptr, 0, form); }
+        inline bool isTalking() const { return form->GetActorRuntimeData().voiceTimer > 0; }
         inline bool isInCombat() const { return form->IsInCombat(); }
         void sheatheWeapon() const;
         inline bool isDead() const { return form->IsDead(); }
