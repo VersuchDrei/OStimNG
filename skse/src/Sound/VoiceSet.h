@@ -12,12 +12,12 @@ namespace Sound {
         std::vector<SoundSet> climax;
         std::vector<SoundSet> climaxMuffled;
 
-        inline SoundSet* getMoan(GameAPI::GameActor actor) { return getSound(moan, actor); }
-        inline SoundSet* getMoanMuffled(GameAPI::GameActor actor) { return getSound(moanMuffled, actor); }
-        inline SoundSet* getClimax(GameAPI::GameActor actor) { return getSound(climax, actor); }
-        inline SoundSet* getClimaxMuffled(GameAPI::GameActor actor) { return getSound(climaxMuffled, actor); }
+        inline SoundSet* getMoan(GameAPI::GameActor actor, GameAPI::GameActor target) { return getSound(moan, actor, target); }
+        inline SoundSet* getMoanMuffled(GameAPI::GameActor actor, GameAPI::GameActor target) { return getSound(moanMuffled, actor, target); }
+        inline SoundSet* getClimax(GameAPI::GameActor actor, GameAPI::GameActor target) { return getSound(climax, actor, target); }
+        inline SoundSet* getClimaxMuffled(GameAPI::GameActor actor, GameAPI::GameActor target) { return getSound(climaxMuffled, actor, target); }
 
     private:
-        static SoundSet* getSound(std::vector<SoundSet>& sounds, GameAPI::GameActor actor);
+        static SoundSet* getSound(std::vector<SoundSet>& sounds, GameAPI::GameActor actor, GameAPI::GameActor target);
     };
 }

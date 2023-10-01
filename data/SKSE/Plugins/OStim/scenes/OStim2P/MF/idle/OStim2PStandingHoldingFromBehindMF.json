@@ -15,6 +15,12 @@
 		},
 		{
 			"destination": "OStim2PStandingCuddleFromBehindMF",
+			"description": "hug {1}",
+			"icon": "OStim/sensual/embrace_mf",
+			"priority": 1000
+		},
+		{
+			"destination": "OStim2PStandingCuddleFromBehindMF",
 			"description": "cuddle with {1}",
 			"icon": "OStim/sensual/embrace_mf",
 			"priority": 1000

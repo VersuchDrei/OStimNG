@@ -12,13 +12,21 @@
 			31,
 			44,
 			55
-		]
+		],
+		"faction":{
+			"mod": "OStim.esp",
+			"formid": "0xE93"
+		}
 	},
 	"target":{
 		"info": "the bitten one",
 		"stimulation":0.25,
 		"maxStimulation":50,
-		"moan":true
+		"moan":true,
+		"faction":{
+			"mod": "OStim.esp",
+			"formid": "0xE94"
+		}
 	},
 	"sounds":[
 		{

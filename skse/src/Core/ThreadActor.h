@@ -141,6 +141,7 @@ namespace OStim {
         bool schlong;
 
         Graph::GraphActor* graphActor = nullptr;
+        GameAPI::GameActor primaryPartner;
         int speed = 0;
         float scaleMult = 1.0;
         int sosBend = 0;
@@ -259,6 +260,7 @@ namespace OStim {
         Sound::VoiceSet voiceSet;
         bool muted = false;
         bool muffled = false;
+        int soundGracePeriod = 0;
         int moanCooldown = -1;
         GameAPI::GameSound* lastMoan = nullptr;
 

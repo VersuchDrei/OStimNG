@@ -103,3 +103,4 @@ action fields:
 "actor" (int): the index of the action actor
 "target" (int): the index of the action target (default: action actor index)
 "performer" (int): the index of the action performer (default: action actor index)
+"muted" (bool): when true this action doesn't play sounds (default: false)

@@ -6,7 +6,7 @@
 namespace Graph {
     const char* ACTION_FILE_PATH{"Data/SKSE/Plugins/OStim/actions"};
 
-    ActionActor parseActionActor(json& json) {
+    ActionActor parseActionActor(std::string path, json& json) {
         ActionActor actor;
         if (json.contains("stimulation")) {
             actor.stimulation = json["stimulation"];
@@ -47,6 +47,10 @@ namespace Graph {
             for (auto& slot : json["strippingSlots"]) {
                 actor.strippingMask |= 1 << (slot.get<int>() - 30);
             }
+        }
+
+        if (json.contains("faction")) {
+            actor.faction.loadJson(path, json["faction"]);
         }
 
         if (json.contains("ints")) {
@@ -122,13 +126,13 @@ namespace Graph {
             ACTION_FILE_PATH, [&](std::string path, std::string filename, json json) {
                 Graph::ActionAttributes attr;
                 if (json.contains("actor")) {
-                    attr.actor = parseActionActor(json["actor"]);
+                    attr.actor = parseActionActor(path, json["actor"]);
                 }
                 if (json.contains("target")) {
-                    attr.target = parseActionActor(json["target"]);
+                    attr.target = parseActionActor(path, json["target"]);
                 }
                 if (json.contains("performer")) {
-                    attr.performer = parseActionActor(json["performer"]);
+                    attr.performer = parseActionActor(path, json["performer"]);
                 }
 
                 if (json.contains("sounds")) {

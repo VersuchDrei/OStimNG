@@ -9,7 +9,11 @@
 		],
 		"strippingSlots":[
 			33
-		]
+		],
+		"faction":{
+			"mod": "OStim.esp",
+			"formid": "0xE6E"
+		}
 	},
 	"target":{
 		"info": "the one with the penis",
@@ -27,7 +31,11 @@
 			52,
 			53,
 			54
-		]
+		],
+		"faction":{
+			"mod": "OStim.esp",
+			"formid": "0xE6F"
+		}
 	},
 	"performer":{
 		"floats":{

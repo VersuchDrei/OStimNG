@@ -14,7 +14,11 @@
 			52,
 			53,
 			54
-		]
+		],
+		"faction":{
+			"mod": "OStim.esp",
+			"formid": "0xE64"
+		}
 	},
 	"target":{
 		"info": "the one with the penis",
@@ -31,9 +35,17 @@
 			52,
 			53,
 			54
-		]
+		],
+		"faction":{
+			"mod": "OStim.esp",
+			"formid": "0xE65"
+		}
 	},
 	"performer":{
+		"faction":{
+			"mod": "OStim.esp",
+			"formid": "0xE66"
+		},
 		"floats":{
 			"stamina":1.0
 		}

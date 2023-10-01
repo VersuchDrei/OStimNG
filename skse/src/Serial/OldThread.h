@@ -94,6 +94,11 @@ namespace Serialization {
             if (!equipObjects.empty()) {
                 actor.update3D();
             }
+            if (!factions.empty()) {
+                for (GameAPI::GameFaction faction : factions) {
+                    actor.removeFromFaction(faction);
+                }
+            }
         }
     };
 

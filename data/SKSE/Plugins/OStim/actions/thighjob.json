@@ -13,6 +13,10 @@
 			53,
 			54
 		],
+		"faction":{
+			"mod": "OStim.esp",
+			"formid": "0xE88"
+		},
 		"stringLists":{
 			"cum":[
 				"thighs"
@@ -34,9 +38,17 @@
 			52,
 			53,
 			54
-		]
+		],
+		"faction":{
+			"mod": "OStim.esp",
+			"formid": "0xE89"
+		}
 	},
 	"performer":{
+		"faction":{
+			"mod": "OStim.esp",
+			"formid": "0xE8A"
+		},
 		"floats":{
 			"stamina":0.75
 		}

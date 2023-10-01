@@ -14,7 +14,11 @@
 			52,
 			53,
 			54
-		]
+		],
+		"faction":{
+			"mod": "OStim.esp",
+			"formid": "0xE84"
+		}
 	},
 	"target":{
 		"info": "the one with the head",
@@ -27,6 +31,10 @@
 			44,
 			55
 		],
+		"faction":{
+			"mod": "OStim.esp",
+			"formid": "0xE85"
+		},
 		"stringLists":{
 			"cum":[
 				"face"

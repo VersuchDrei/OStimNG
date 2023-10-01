@@ -8,7 +8,11 @@
 		],
 		"strippingSlots":[
 			33
-		]
+		],
+		"faction":{
+			"mod": "OStim.esp",
+			"formid": "0xE6A"
+		}
 	},
 	"target":{
 		"info": "the one with the boobs",
@@ -16,7 +20,11 @@
 		"maxStimulation":50,
 		"requirements":[
 			"breast"
-		]
+		],
+		"faction":{
+			"mod": "OStim.esp",
+			"formid": "0xE6B"
+		}
 	},
 	"performer":{
 		"floats":{

@@ -12,7 +12,11 @@
 			30,
 			44,
 			55
-		]
+		],
+		"faction":{
+			"mod": "OStim.esp",
+			"formid": "0xE80"
+		}
 	},
 	"target":{
 		"info": "the one with the butt",
@@ -29,7 +33,11 @@
 			52,
 			53,
 			54
-		]
+		],
+		"faction":{
+			"mod": "OStim.esp",
+			"formid": "0xE81"
+		}
 	},
 	"performer":{
 		"floats":{

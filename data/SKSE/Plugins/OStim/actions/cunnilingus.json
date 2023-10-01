@@ -13,7 +13,11 @@
 			31,
 			44,
 			55
-		]
+		],
+		"faction":{
+			"mod": "OStim.esp",
+			"formid": "0xE5B"
+		}
 	},
 	"target":{
 		"info": "the one with the vulva",
@@ -30,9 +34,17 @@
 			52,
 			53,
 			54
-		]
+		],
+		"faction":{
+			"mod": "OStim.esp",
+			"formid": "0xE5C"
+		}
 	},
 	"performer":{
+		"faction":{
+			"mod": "OStim.esp",
+			"formid": "0xE5D"
+		},
 		"floats":{
 			"stamina":0.75
 		}

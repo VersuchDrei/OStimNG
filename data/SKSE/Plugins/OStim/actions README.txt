@@ -36,6 +36,8 @@ actor fields:
 "requirements" (list<string>): a list of requirements for this Skyrim actor, if they are not met an animation containing this action will not show up in navigation
 	possible values are "anus", "breast", "foot", "hand", "mouth", "nipple", "penis", "testicles" and "vagina"
 "strippingSlots" (list<int>): a list of biped slots to strip on this Skyrim actor when executing this scene (if partial undressing is enabled in the MCM)
+"faction" (object): a faction the actor is put in while participating in this role in this action (see form fields)
+	this is mainly useful for condition functions for addons / voice sets
 "ints" (map<string, int>): A map of custom ints that can be used by addons
 "intLists" (map<string, list<int>>): a map of custom int lists that can be used by addons
 "floats" (map<string, float>): a map of custom floats that can be used by addons

@@ -26,6 +26,36 @@
 			"description": "return",
 			"icon": "OStim/symbols/return",
 			"priority": -1000
+		},
+		{
+			"destination": "OStim2PStandingFingeringFromBehindMF",
+			"description": "pleasure {1} with your hand",
+			"icon": "OStim/sexual/fingering_m",
+			"priority": 1000
+		},
+		{
+			"destination": "OStim2PStandingHugFromBehindMF",
+			"description": "hug {1}",
+			"icon": "OStim/sensual/embrace_mf",
+			"priority": 2000
+		},
+		{
+			"destination": "OStim2PStandingCuddleFromBehindMF",
+			"description": "cuddle with {1}",
+			"icon": "OStim/sensual/embrace_mf",
+			"priority": 2000
+		},
+		{
+			"destination": "OStim2PStandingGrindingDryMF",
+			"description": "grind your butt against {0}s crotch",
+			"icon": "OStim/sensual/embrace_behind_mf",
+			"priority": 2000
+		},
+		{
+			"destination": "OStim2PStandingSpankIdleMF",
+			"description": "bend {1} over for some spankings",
+			"icon": "OStim/sexual/spank_right_mf",
+			"priority": 2000
 		}
 	],
 	"actors":[

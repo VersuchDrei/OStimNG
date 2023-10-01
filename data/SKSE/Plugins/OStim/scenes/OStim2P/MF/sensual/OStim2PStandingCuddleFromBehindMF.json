@@ -13,6 +13,30 @@
 			"description": "return",
 			"icon": "OStim/symbols/return",
 			"priority": -1000
+		},
+		{
+			"destination": "OStim2PStandingHugFromBehindMF",
+			"description": "hug {1}",
+			"icon": "OStim/sensual/embrace_mf",
+			"priority": 1000
+		},
+		{
+			"destination": "OStim2PStandingGropingBreastsFromBehindMF",
+			"description": "grope {1}s breasts",
+			"icon": "OStim/detail/gropingbreast_mf",
+			"priority": 2000
+		},
+		{
+			"destination": "OStim2PStandingGrindingDryMF",
+			"description": "grind your butt against {0}s crotch",
+			"icon": "OStim/sensual/embrace_behind_mf",
+			"priority": 2000
+		},
+		{
+			"destination": "OStim2PStandingSpankIdleMF",
+			"description": "bend {1} over for some spankings",
+			"icon": "OStim/sexual/spank_right_mf",
+			"priority": 2000
 		}
 	],
 	"actors":[
@@ -29,7 +53,6 @@
 		},
 		{
 			"intendedSex": "female",
-      		"lookUp": -30,
       		"lookUp": 35,
       		"lookLeft": 50,
 			"tags": [

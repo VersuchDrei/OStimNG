@@ -10,7 +10,11 @@
 		],
 		"strippingSlots":[
 			33
-		]
+		],
+		"faction":{
+			"mod": "OStim.esp",
+			"formid": "0xE8C"
+		}
 	},
 	"target":{
 		"info": "the one with the vulva",
@@ -27,7 +31,11 @@
 			52,
 			53,
 			54
-		]
+		],
+		"faction":{
+			"mod": "OStim.esp",
+			"formid": "0xE8D"
+		}
 	},
 	"performer":{
 		"floats":{

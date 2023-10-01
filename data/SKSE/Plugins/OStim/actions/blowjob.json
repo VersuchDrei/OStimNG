@@ -14,6 +14,10 @@
 			44,
 			55
 		],
+		"faction":{
+			"mod": "OStim.esp",
+			"formid": "0xE52"
+		},
 		"stringLists":{
 			"cum":[
 				"mouth"
@@ -35,9 +39,17 @@
 			52,
 			53,
 			54
-		]
+		],
+		"faction":{
+			"mod": "OStim.esp",
+			"formid": "0xE53"
+		}
 	},
 	"performer":{
+		"faction":{
+			"mod": "OStim.esp",
+			"formid": "0xE54"
+		},
 		"floats":{
 			"stamina":0.75
 		}

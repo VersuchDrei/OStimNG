@@ -1,23 +1,10 @@
 {
-	"name": "Standing Fingering From Behind Straight",
+	"name": "Standing Hug From Behind Straight",
 	"modpack": "OStim",
 	"length": 2.0,
 	"speeds":[
 		{
-			"animation": "OStim2PStandingFingeringFromBehindMF_S1",
-			"displaySpeed": 1.0
-		},
-		{
-			"animation": "OStim2PStandingFingeringFromBehindMF_S2",
-			"displaySpeed": 1.5
-		},
-		{
-			"animation": "OStim2PStandingFingeringFromBehindMF_S3",
-			"displaySpeed": 2.0
-		},
-		{
-			"animation": "OStim2PStandingFingeringFromBehindMF_S4",
-			"displaySpeed": 2.5
+			"animation": "OStim2PStandingHugFromBehindMF"
 		}
 	],
 	"navigations":[
@@ -26,12 +13,18 @@
 			"description": "return",
 			"icon": "OStim/symbols/return",
 			"priority": -1000
+		}
+		{
+			"destination": "OStim2PStandingCuddleFromBehindMF",
+			"description": "cuddle with {1}",
+			"icon": "OStim/sensual/embrace_mf",
+			"priority": 1000
 		},
 		{
 			"destination": "OStim2PStandingGropingBreastsFromBehindMF",
-			"description": "stop fingering {1}",
+			"description": "grope {1}s breasts",
 			"icon": "OStim/detail/gropingbreast_mf",
-			"priority": 1000
+			"priority": 2000
 		},
 		{
 			"destination": "OStim2PStandingGrindingDryMF",
@@ -51,8 +44,8 @@
 			"intendedSex": "male",
 			"sosBend": -7,
 			"scale": 1.03,
-      		"lookUp": -75,
-      		"lookLeft": 50,
+      		"lookUp": -35,
+      		"lookLeft": -25,
 			"tags": [
 				"standing"
 			],
@@ -60,7 +53,8 @@
 		},
 		{
 			"intendedSex": "female",
-      		"lookLeft": -75,
+      		"lookUp": 35,
+      		"lookLeft": 50,
 			"tags": [
 				"facingaway",
 				"standing"
@@ -68,16 +62,11 @@
 			"feetOnGround": true
 		}
 	],
-  	"actions": [
-  		{
-  			"type": "rubbingclitoris",
-  			"actor": 0,
-  			"target": 1
-  		},
-  		{
-  			"type": "gropingbreast",
-  			"actor": 0,
-  			"target": 1
-  		}
-  	]
+	"actions":[
+		{
+			"type": "hug",
+			"actor": 0,
+			"target": 1
+		}
+	]
 }

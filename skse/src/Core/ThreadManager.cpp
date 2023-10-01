@@ -9,8 +9,11 @@ namespace OStim {
 
     ThreadManager::ThreadManager() {
         m_excitementThread = std::thread([&]() {
+            auto sleepTime = std::chrono::milliseconds(Constants::LOOP_TIME_MILLISECONDS);
+
             while (true) {
-                std::this_thread::sleep_for(std::chrono::milliseconds(Constants::LOOP_TIME_MILLISECONDS));
+                auto start = std::chrono::system_clock::now();
+
                 if (!RE::UI::GetSingleton()->GameIsPaused()) {
                     std::shared_lock<std::shared_mutex> lock(m_threadMapMtx);
                     for (auto& it : m_threadMap) {
@@ -24,6 +27,14 @@ namespace OStim {
 
                     UI::UIState::GetSingleton()->loop();
                 }
+
+                auto end = std::chrono::system_clock::now();
+                auto time = end - start;
+                if (time < sleepTime) {
+                    std::this_thread::sleep_for(sleepTime - time);
+                }
+
+                //std::this_thread::sleep_for(std::chrono::milliseconds(Constants::LOOP_TIME_MILLISECONDS));
             }
         });
         m_excitementThread.detach();

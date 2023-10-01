@@ -13,6 +13,10 @@
 			46,
 			56
 		],
+		"faction":{
+			"mod": "OStim.esp",
+			"formid": "0xE55"
+		},
 		"stringLists":{
 			"cum":[
 				"chest"
@@ -28,6 +32,10 @@
 		"requirements":[
 			"penis"
 		],
+		"faction":{
+			"mod": "OStim.esp",
+			"formid": "0xE56"
+		},
 		"strippingSlots":[
 			32,
 			49,
@@ -37,6 +45,10 @@
 		]
 	},
 	"performer":{
+		"faction":{
+			"mod": "OStim.esp",
+			"formid": "0xE57"
+		},
 		"floats":{
 			"stamina":0.75
 		}

@@ -253,6 +253,12 @@ namespace OStim {
     }
 
     void ThreadActor::changeNode(Graph::GraphActor* graphActor, std::vector<Trait::FacialExpression*>* nodeExpressions, std::vector<Trait::FacialExpression*>* overrideExpressions) {
+        if (this->graphActor) {
+            for (GameAPI::GameFaction faction : this->graphActor->factions) {
+                actor.removeFromFaction(faction);
+            }
+        }
+
         this->graphActor = graphActor;
 
         sosOffset = 0;
@@ -285,6 +291,18 @@ namespace OStim {
                     unequipObject("strapon");
                 }
             }
+        }
+
+        int partnerIndex = thread->getCurrentNode()->getPrimaryPartner(index);
+        ThreadActor* partner = thread->GetActor(partnerIndex);
+        if (partner) {
+            primaryPartner = partner->actor;
+        } else {
+            primaryPartner = actor;
+        }
+
+        for (GameAPI::GameFaction faction : graphActor->factions) {
+            actor.addToFaction(faction);
         }
 
         if (awaitingClimax) {
@@ -404,8 +422,6 @@ namespace OStim {
 
                 faceData->phenomeKeyFrame.isUpdated = false;
             }
-        } else {
-            logger::warn("no face data on actor {}", actor.getName());
         }
 
         loopSound();
@@ -853,7 +869,6 @@ namespace OStim {
             object.removeItems(actor);
         }
 
-        logger::info("starting redressing");
         // TODO properly use GameActor
         if (MCM::MCMTable::animateRedress() && !isPlayer) {
             const auto skyrimVM = RE::SkyrimVM::GetSingleton();
@@ -881,14 +896,11 @@ namespace OStim {
             addWeapons();
         }
 
-        logger::info("resetting scale");
         applyHeelOffset(false);
 
         actor.setScale(scaleBefore);
         
-        // TODO GameActor
-        logger::info("calling free function");
-        freeActor(actor.form, false);
+        freeActor(actor, false);
 
         logger::info("resetting position");
         if (MCM::MCMTable::resetPosition()) {
@@ -903,7 +915,6 @@ namespace OStim {
 
         // no need to do this in ActorUtil::free since facedata isn't written into the savefile anyways
         // TODO properly use GameActor
-        logger::info("resetting face data");
         auto faceData = actor.form->GetFaceGenAnimationData();
         if (faceData) {
             faceData->ClearExpressionOverride();
@@ -944,7 +955,6 @@ namespace OStim {
     Serialization::OldThreadActor ThreadActor::serialize() {
         Serialization::OldThreadActor oldThreadActor;
 
-        // TODO ThreadActor?
         oldThreadActor.actor = actor.form;
 
         for (auto& [type, object] : equipObjects) {
@@ -952,6 +962,8 @@ namespace OStim {
                 oldThreadActor.equipObjects.push_back(item);
             }
         }
+
+        oldThreadActor.factions = graphActor->factions;
 
         return oldThreadActor;
     }

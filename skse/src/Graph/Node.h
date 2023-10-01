@@ -59,6 +59,8 @@ namespace Graph {
         bool fulfilledBy(std::vector<Trait::ActorCondition> conditions);
         bool hasSameActorTpyes(Node* other);
 
+        int getPrimaryPartner(int position);
+
         std::vector<Trait::FacialExpression*>* getFacialExpressions(int position);
         std::vector<Trait::FacialExpression*>* getOverrideExpressions(int position);
 

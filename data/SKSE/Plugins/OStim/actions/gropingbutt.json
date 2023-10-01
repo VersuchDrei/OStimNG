@@ -8,12 +8,20 @@
 		],
 		"strippingSlots":[
 			33
-		]
+		],
+		"faction":{
+			"mod": "OStim.esp",
+			"formid": "0xE6C"
+		}
 	},
 	"target":{
 		"info": "the one with the butt",
 		"stimulation":0.1,
-		"maxStimulation":50
+		"maxStimulation":50,
+		"faction":{
+			"mod": "OStim.esp",
+			"formid": "0xE6D"
+		}
 	},
 	"performer":{
 		"floats":{

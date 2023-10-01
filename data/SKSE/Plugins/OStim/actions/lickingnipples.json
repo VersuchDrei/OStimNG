@@ -13,7 +13,11 @@
 			31,
 			44,
 			55
-		]
+		],
+		"faction":{
+			"mod": "OStim.esp",
+			"formid": "0xE77"
+		}
 	},
 	"target":{
 		"info": "the one with the nipple",
@@ -28,7 +32,11 @@
 			32,
 			46,
 			56
-		]
+		],
+		"faction":{
+			"mod": "OStim.esp",
+			"formid": "0xE78"
+		}
 	},
 	"performer":{
 		"floats":{

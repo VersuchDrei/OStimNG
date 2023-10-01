@@ -6,9 +6,13 @@ namespace OStim {
             return;
         }
 
+        if (soundGracePeriod > 0) {
+            soundGracePeriod -= Constants::LOOP_TIME_MILLISECONDS;
+            return;
+        }
+
         if (lastMoan) {
             if (!lastMoan->isPlaying()) {
-                logger::info("clearing moan expression");
                 lastMoan = nullptr;
                 clearEventExpression();
             }
@@ -69,16 +73,16 @@ namespace OStim {
     void ThreadActor::moan() {
         Sound::SoundSet* set = nullptr;
         if (muffled || graphActor->muffled) {
-            set = voiceSet.getMoanMuffled(actor);
+            set = voiceSet.getMoanMuffled(actor, primaryPartner);
         } else {
-            set = voiceSet.getMoan(actor);
+            set = voiceSet.getMoan(actor, primaryPartner);
         }
 
         if (set) {
-            logger::info("starting moaning");
             setEventExpression(set->expression);
             set->sound.play(actor, MCM::MCMTable::getMoanVolume());
             lastMoan = &set->sound;
+            soundGracePeriod = 150;
         }
     }
 
@@ -89,15 +93,16 @@ namespace OStim {
 
         Sound::SoundSet* set = nullptr;
         if (muffled || graphActor->muffled) {
-            set = voiceSet.getClimaxMuffled(actor);
+            set = voiceSet.getClimaxMuffled(actor, primaryPartner);
         } else {
-            set = voiceSet.getClimax(actor);
+            set = voiceSet.getClimax(actor, primaryPartner);
         }
 
         if (set) {
             setEventExpression(set->expression);
             set->sound.play(actor, MCM::MCMTable::getMoanVolume());
             lastMoan = &set->sound;
+            soundGracePeriod = 150;
         }
     }
 }

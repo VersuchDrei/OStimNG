@@ -7,7 +7,11 @@
 		],
 		"strippingSlots":[
 			33
-		]
+		],
+		"faction":{
+			"mod": "OStim.esp",
+			"formid": "0xE7F"
+		}
 	},
 	"target":{
 		"stimulation":0.9,

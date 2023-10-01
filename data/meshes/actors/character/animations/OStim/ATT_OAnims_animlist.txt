@@ -64,6 +64,8 @@ b -Tn OStim2PStandingKissMF_0 OStim2P\MF\sensual\OStim2PStandingKissMF_0.hkx
 b -Tn OStim2PStandingKissMF_1 OStim2P\MF\sensual\OStim2PStandingKissMF_1.hkx
 b -Tn OStim2PStandingKissHoldingHipMF_0 OStim2P\MF\sensual\OStim2PStandingHoldingHipKissMF_0.hkx
 b -Tn OStim2PStandingKissHoldingHipMF_1 OStim2P\MF\sensual\OStim2PStandingHoldingHipKissMF_1.hkx
+b -Tn OStim2PStandingHugFromBehindMF_0 OStim2P\MF\sensual\OStim2PStandingHugFromBehindMF_0.hkx
+b -Tn OStim2PStandingHugFromBehindMF_1 OStim2P\MF\sensual\OStim2PStandingHugFromBehindMF_1.hkx
 b -Tn OStim2PStandingKissEmbraceMF_0 OStim2P\MF\sensual\OStim2PStandingKissEmbraceMF_0.hkx
 b -Tn OStim2PStandingKissEmbraceMF_1 OStim2P\MF\sensual\OStim2PStandingKissEmbraceMF_1.hkx
 b -Tn OStim2PStandingKissEmbraceAltMF_0 OStim2P\MF\sensual\OStim2PStandingKissEmbraceAltMF_0.hkx

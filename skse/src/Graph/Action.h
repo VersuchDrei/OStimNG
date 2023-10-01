@@ -1,5 +1,6 @@
 #pragma once
 
+#include "GameAPI/GameFaction.h"
 #include "Sound/ActionSound/SoundType.h"
 
 namespace Graph {
@@ -14,6 +15,7 @@ namespace Graph {
         std::string expressionOverride = "";
         uint32_t requirements = 0;
 		uint32_t strippingMask = 0;
+        GameAPI::GameFaction faction;
 		std::unordered_map<std::string, int> ints;
         std::unordered_map<std::string, std::vector<int>> intLists;
         std::unordered_map<std::string, float> floats;

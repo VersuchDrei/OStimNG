@@ -1,0 +1,90 @@
+to apply annotations to an animation use hkanno: https://www.nexusmods.com/skyrimspecialedition/mods/54244
+hkanno tutorial by Distar: https://www.youtube.com/watch?v=VFwW9dVUZiE
+
+annotations don't work with FNIS, if you want to use them you have to create a Nemesis patch
+Nemesis patch tool: https://github.com/VersuchDrei/OStimBillyyThreesomePack/releases/tag/1.0
+
+OStim registers a bunch of annotations in its Nemesis patch, some of them take parameters in the payload, others are just a simple annotation
+list of annotations that OStim is reacting to:
+
+--- OStimClimax ---
+causes the actor to climax, should be used in combination with climax auto transitions
+syntax: OStimClimax
+
+--- OStimEvent ---
+causes an event to fire (see events README)
+syntax: OStimEvent.[event],[target]   or
+		OStimEvent.[event],[actor],[target],[performer]
+examples: OStimEvent.spank,1 - the actor playing the animation has spanked the actor at index 1
+		  OStimEvent.spank,0,1,0 - the actor at index 0 has spanked the actor at index 1
+
+--- OStimUndress ---
+removes all of the actors clothes
+syntax: OStimRedress
+
+--- OStimRedress ---
+redresses all previously undressed clothes on the actor
+syntax: OStimRedress
+
+--- OStimUndressPartial ---
+removes all of the actors clothes that match the slot mask, slot masks have to be given in hexadecimal notation
+for slot mask values refer to: https://www.creationkit.com/index.php?title=Slot_Masks_-_Armor
+syntax: OStmUndressPartial.[slotmask]
+examples: OStimUndressPartial.0x1 - removes the actors helmet
+		  OStimUndressPartial.0x60 - removes the actors amulet and ring
+
+--- OStimRedressPartial ---
+redresses all previously undressed clothes on the actor that match the slot mask, slot masks have to be given in hexadecimal notation
+for slot mask values refer to: https://www.creationkit.com/index.php?title=Slot_Masks_-_Armor
+syntax: OStmRedressPartial.[slotmask]
+examples: OStimRedressPartial.0x1 - redresses the actors helmet
+		  OStimRedressPartial.0x60 - redresses the actors amulet and ring
+
+--- OStimRemoveWeapons ---
+removes the actors weapons
+syntax: OStimRemoveWeapons
+
+--- OStimAddWeapons ---
+adds previously removed weapons back to the actor
+syntax: OStimAddWeapons
+
+--- OStimEquipObject ---
+equips an equip object on the actor (see equip objects README)
+syntax: OStimEquipObject.[type]
+examples: OStimEquipObject.strapon - equips a strap on
+		  OStimEquipObject.tongue - adds a tongue to the actor
+
+--- OStimUnequipObject ---
+removes an equip object from the actor (see equip objects README)syntax: OStimEquipObject.[type]
+examples: OStimUnequipObject.strapon - unequips the strap on
+		  OStimUnequipObject.tongue - removes the tongue to the actor
+
+--- OStimSetLooking ---
+sets the facial modifiers of the eyeballs (for right or down use negative values in the left or up fields)
+syntax: OStimSetLooking.[lookLeft]   or
+		OStimSetLooking.[lookLeft],[lookUp]
+examples: OStimSetLooking.-100 - makes the actor look to the right
+		  OStimSetLooking.25,25 - makes the actor look slightly left up
+
+--- OStimUnsetLooking ---
+removes the facial modifiers of the eyeballs, making actors look straight ahead
+syntax: OStimUnsetLooking
+
+--- OStimResetLooking ---
+resets the facial modifiers to what was defined in the scene file (see scenes README)
+syntax: OStimResetLooking
+
+--- OStimPlayExpression ---
+makes the actor play the expression event (see facial expressions README)
+syntax: OStimPlayExpression.[expression]
+example: OStimPlayExpression.moan - causes the actor to make a moan expression (but not a moan sound)
+
+--- OStimBendSoS ---
+bends the schlong relatively to the value defined in the scene file (see scenes README)
+syntax: OStimBendSoS.[angle]
+examples: OStimBendSoS.2 - causes the schlongs angle to increase by 2, if it is set to 3 in the scene file it will now go to 5
+		  OStimBendSoS.-3 - causes the schlongs angle to reduce by -3
+
+--- OStimResetSoS ---
+resets the schlong angle to the value defined in the scene file (see scenes README)
+syntax: OStimResetSoS
