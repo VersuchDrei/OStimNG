@@ -49,7 +49,7 @@ namespace OStim {
 
         void loop();
 
-        inline std::map<int32_t, ThreadActor> getActors() { return m_actors; }
+        inline std::map<int32_t, ThreadActor>& getActors() { return m_actors; }
 
         ThreadActor* GetActor(GameAPI::GameActor a_actor);
         ThreadActor* GetActor(int a_position);
@@ -180,6 +180,14 @@ namespace OStim {
         std::queue<Graph::SequenceEntry> nodeQueue;
 
         void clearNodeQueue();
+#pragma endregion
+
+#pragma region sound
+    public:
+        bool isAnyActorTalking();
+
+    private:
+        bool playingClimaxSound = false;
 #pragma endregion
     };
 

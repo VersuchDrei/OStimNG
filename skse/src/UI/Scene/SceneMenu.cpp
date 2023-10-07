@@ -146,7 +146,6 @@ namespace UI::Scene {
                 auto speed = thread->getCurrentSpeed();
                 auto& speedObj = node->speeds[speed];
                 const std::string speedStr = std::to_string(speedObj.displaySpeed);
-                logger::info("{}"sv, speedStr);
                 RE::GFxValue args[3]{ RE::GFxValue{ speedStr }, speed != (node->speeds.size() - 1), speed != 0 };
                 optionBoxes.Invoke("ShowSpeed", nullptr, args, 3);
             }

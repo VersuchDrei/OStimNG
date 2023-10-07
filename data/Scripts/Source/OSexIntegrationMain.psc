@@ -1488,7 +1488,7 @@ int Property MoanIntervalMin
 		Return OStimMoanIntervalMin.value As int
 	EndFunction
 	Function Set(int Value)
-		If ExpressionDurationMax < Value
+		If MoanIntervalMax < Value
 			OStimMoanIntervalMin.value = OStimMoanIntervalMax.value
 			OStimMoanIntervalMax.value = Value
 		Else
@@ -1503,7 +1503,7 @@ int Property MoanIntervalMax
 		Return OStimMoanIntervalMax.value As int
 	EndFunction
 	Function Set(int Value)
-		If ExpressionDurationMin > Value
+		If MoanIntervalMin > Value
 			OStimMoanIntervalMax.value = OStimMoanIntervalMin.value
 			OStimMoanIntervalMin.value = Value
 		Else
@@ -1521,6 +1521,67 @@ float Property MoanVolume
 		OStimMoanVolume.value = Value
 	EndFunction
 EndProperty
+
+GlobalVariable Property OStimMaleDialogueCountdownMin Auto
+int Property MaleDialogueCountdownMin
+	int Function Get()
+		Return OStimMaleDialogueCountdownMin.value As int
+	EndFunction
+	Function Set(int Value)
+		If MaleDialogueCountdownMax < Value
+			OStimMaleDialogueCountdownMin.value = OStimMaleDialogueCountdownMax.value
+			OStimMaleDialogueCountdownMax.value = Value
+		Else
+			OStimMaleDialogueCountdownMin.value = Value
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimMaleDialogueCountdownMax Auto
+int Property MaleDialogueCountdownMax
+	int Function Get()
+		Return OStimMaleDialogueCountdownMax.value As int
+	EndFunction
+	Function Set(int Value)
+		If MaleDialogueCountdownMin > Value
+			OStimMaleDialogueCountdownMax.value = OStimMaleDialogueCountdownMin.value
+			OStimMaleDialogueCountdownMin.value = Value
+		Else
+			OStimMaleDialogueCountdownMax.value = Value
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimFemaleDialogueCountdownMin Auto
+int Property FemaleDialogueCountdownMin
+	int Function Get()
+		Return OStimFemaleDialogueCountdownMin.value As int
+	EndFunction
+	Function Set(int Value)
+		If FemaleDialogueCountdownMax < Value
+			OStimFemaleDialogueCountdownMin.value = OStimFemaleDialogueCountdownMax.value
+			OStimFemaleDialogueCountdownMax.value = Value
+		Else
+			OStimFemaleDialogueCountdownMin.value = Value
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimFemaleDialogueCountdownMax Auto
+int Property FemaleDialogueCountdownMax
+	int Function Get()
+		Return OStimFemaleDialogueCountdownMax.value As int
+	EndFunction
+	Function Set(int Value)
+		If FemaleDialogueCountdownMin > Value
+			OStimFemaleDialogueCountdownMax.value = OStimFemaleDialogueCountdownMin.value
+			OStimFemaleDialogueCountdownMin.value = Value
+		Else
+			OStimFemaleDialogueCountdownMax.value = Value
+		EndIf
+	EndFunction
+EndProperty
+
 
 GlobalVariable Property OStimSoundVolume Auto
 float Property SoundVolume

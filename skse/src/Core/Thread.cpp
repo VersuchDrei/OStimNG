@@ -497,7 +497,7 @@ namespace OStim {
     void Thread::callEvent(std::string eventName, int actorIndex, int targetIndex, int performerIndex) {
         // legacy mod event
         if (playerThread && actorIndex == 0 && targetIndex == 1 && eventName == "spank") {
-            FormUtil::sendModEvent(GetActor(0)->getActor().form, "ostim_spank", "", 0);
+            FormUtil::sendModEvent(GetActor(1)->getActor().form, "ostim_spank", "", 0);
         }
 
         Graph::Event* graphEvent = Graph::GraphTable::getEvent(eventName);
@@ -505,8 +505,12 @@ namespace OStim {
             return;
         }
 
+        ThreadActor* actor = GetActor(actorIndex);
+        ThreadActor* target = GetActor(targetIndex);
+        ThreadActor* performer = GetActor(performerIndex);
+
         if (graphEvent->sound) {
-            graphEvent->sound.play(GetActor(actorIndex)->getActor(), MCM::MCMTable::getSoundVolume());
+            graphEvent->sound.play(actor->getActor(), MCM::MCMTable::getSoundVolume());
         }
 
         if (graphEvent->cameraShakeDuration > 0 && graphEvent->cameraShakeStrength > 0) {
@@ -517,25 +521,31 @@ namespace OStim {
             ControlUtil::rumbleController(graphEvent->cameraShakeStrength, graphEvent->cameraShakeDuration);
         }
 
-        if (graphEvent->actor.stimulation > 0.0) {
-            ThreadActor* actor = GetActor(actorIndex);
+        if (actor && graphEvent->actor.stimulation > 0.0) {
             if (actor->getExcitement() < graphEvent->actor.maxStimulation || actor->getExcitement() < actor->getMaxExcitement()) {
                 actor->addExcitement(graphEvent->actor.stimulation, true);
             }
         }
 
-        if (graphEvent->target.stimulation > 0.0) {
-            ThreadActor* target = GetActor(targetIndex);
+        if (target && graphEvent->target.stimulation > 0.0) {
             if (target->getExcitement() < graphEvent->target.maxStimulation || target->getExcitement() < target->getMaxExcitement()) {
                 target->addExcitement(graphEvent->target.stimulation, true);
             }
         }
 
-        if (graphEvent->performer.stimulation > 0.0) {
-            ThreadActor* performer = GetActor(performerIndex);
+        if (performer && graphEvent->performer.stimulation > 0.0) {
             if (performer->getExcitement() < graphEvent->performer.maxStimulation || performer->getExcitement() < performer->getMaxExcitement()) {
                 performer->addExcitement(graphEvent->performer.stimulation, true);
             }
+        }
+
+        if (actor && target) {
+            actor->reactToEvent(graphEvent->actor.reactionDelay, eventName, target->getActor(), [](Sound::VoiceSet& voiceSet){return &voiceSet.eventActorReactions;});
+            target->reactToEvent(graphEvent->target.reactionDelay, eventName, actor->getActor(), [](Sound::VoiceSet& voiceSet){return &voiceSet.eventTargetReactions;});
+        }
+
+        if (actor && performer) {
+            performer->reactToEvent(graphEvent->performer.reactionDelay, eventName, actor->getActor(), [](Sound::VoiceSet& voiceSet){return &voiceSet.eventPerformerReactions;});
         }
     }
 

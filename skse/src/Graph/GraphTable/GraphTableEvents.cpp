@@ -16,6 +16,14 @@ namespace Graph {
             actor.maxStimulation = json["maxStimulation"];
         }
 
+        if (json.contains("reactionDelay")) {
+            if (json["reactionDelay"].is_number()) {
+                actor.reactionDelay = static_cast<int>(static_cast<float>(json["reactionDelay"]) * 1000.0f);
+            } else {
+                // TODO logger
+            }
+        }
+
         if (json.contains("ints")) {
             for (auto& [key, val] : json["ints"].items()) {
                 std::string mutableKey = key;

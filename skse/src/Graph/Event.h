@@ -6,6 +6,7 @@ namespace Graph {
     struct EventActor {
         float stimulation = 0.0;
         float maxStimulation = 100.0;
+        int reactionDelay = 0;
         std::unordered_map<std::string, int> ints;
         std::unordered_map<std::string, std::vector<int>> intLists;
         std::unordered_map<std::string, float> floats;

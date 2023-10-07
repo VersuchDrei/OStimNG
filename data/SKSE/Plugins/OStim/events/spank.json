@@ -1,11 +1,13 @@
 {
 	"actor":{
 		"stimulation":2.5,
-		"maxStimulation":50
+		"maxStimulation":50,
+		"reactionDelay": 0.5
 	},
 	"target":{
 		"stimulation":5.0,
-		"maxStimulation":75
+		"maxStimulation":75,
+		"reactionDelay": 0.5
 	},
 	"sound":{
 		"mod":"OStim.esp",

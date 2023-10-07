@@ -162,7 +162,18 @@ namespace GameAPI {
         }
     }
 
-    std::vector<GameActor> GameActor::getNearbyActors(float radius, std::function<bool(GameActor)> condition) {
+    void GameActor::sayTo(GameActor target, GameDialogue dialogue) const {
+        const auto scriptFactory = RE::IFormFactory::GetConcreteFormFactoryByType<RE::Script>();
+        const auto script = scriptFactory ? scriptFactory->Create() : nullptr;
+        if (script) {
+            const auto selectedRef = RE::Console::GetSelectedRef();
+            script->SetCommand("sayTo " + std::format("{:x}", target.getFormID()) + " " + std::format("{:x}", dialogue.getFormID()));
+            script->CompileAndRun(form);
+            delete script;
+        }
+    }
+
+    std::vector<GameActor> GameActor::getNearbyActors(float radius, std::function<bool(GameActor)> condition) const {
         std::vector<GameActor> actors;
 
         GameUtil::forEachReferenceInRange(form->GetPosition(), radius, [&actors, &condition](RE::TESObjectREFR& ref) {

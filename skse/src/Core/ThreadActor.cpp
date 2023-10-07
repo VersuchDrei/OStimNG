@@ -35,6 +35,8 @@ namespace OStim {
 
         voiceSet = Sound::SoundTable::getVoiceSet(actor);
 
+        setDialogueCountdown();
+
         actor.addToFaction(Util::APITable::getExcitementFaction());
         actor.addToFaction(Util::APITable::getTimesClimaxedFaction());
         actor.addToFaction(Util::APITable::getTimeUntilClimaxFaction());
@@ -572,9 +574,9 @@ namespace OStim {
             }
             eventExpression = nullptr;
             wakeExpressions(mask);
-
-            startMoanCooldown();
         }
+
+        startMoanCooldown();
     }
 
     void ThreadActor::playEventExpression(std::string expression) {

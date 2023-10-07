@@ -2,6 +2,7 @@
 
 #include "GameActorBone.h"
 #include "GameActorValue.h"
+#include "GameDialogue.h"
 #include "GameFaction.h"
 #include "GameKeyword.h"
 #include "GamePosition.h"
@@ -70,8 +71,6 @@ namespace GameAPI {
         int getFactionRank(GameFaction faction) const;
 
         int getRelationshipRank(GameActor other) const;
-        inline bool isInDialogue() const { return IsInDialogueWithPlayer(nullptr, 0, form); }
-        inline bool isTalking() const { return form->GetActorRuntimeData().voiceTimer > 0; }
         inline bool isInCombat() const { return form->IsInCombat(); }
         void sheatheWeapon() const;
         inline bool isDead() const { return form->IsDead(); }
@@ -79,7 +78,11 @@ namespace GameAPI {
 
         inline GameActorBone getBone(std::string bone) const { return form->GetNodeByName(bone); }
 
-        std::vector<GameActor> getNearbyActors(float radius, std::function<bool(GameActor)> condition);
+        inline bool isInDialogue() const { return IsInDialogueWithPlayer(nullptr, 0, form); }
+        inline bool isTalking() const { return form->GetActorRuntimeData().voiceTimer > 0; }
+        void sayTo(GameActor target, GameDialogue dialogue) const;
+
+        std::vector<GameActor> getNearbyActors(float radius, std::function<bool(GameActor)> condition) const;
 
     private:
         inline static bool IsInDialogueWithPlayer(RE::BSScript::IVirtualMachine* vm, RE::VMStackID stackID, RE::TESObjectREFR* object) {

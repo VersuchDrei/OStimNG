@@ -106,6 +106,12 @@ namespace MCM {
         inline static int getMoanIntervalMin() { return settings[0xE0A].asInt(); }
         inline static int getMoanIntervalMax() { return settings[0xE0B].asInt(); }
         inline static float getMoanVolume() { return settings[0xE0C].asFloat(); }
+
+        inline static int getMaleDialogueCountdownMin() { return settings[0xE95].asInt(); }
+        inline static int getMaleDialogueCountdownMax() { return settings[0xE96].asInt(); }
+        inline static int getFemaleDialogueCountdownMin() { return settings[0xE97].asInt(); }
+        inline static int getFemaleDialogueCountdownMax() { return settings[0xE98].asInt(); }
+
         inline static float getSoundVolume() { return settings[0xE0D].asFloat(); }
 
         inline static bool intendedSexOnly() { return settings[0xDEE].asBool(); }
@@ -244,6 +250,10 @@ namespace MCM {
             {0xE0A, {2500, "moanIntervalMin"}},
             {0xE0B, {5000, "moanIntervalMax"}},
             {0xE0C, {1, "moanVolume"}},
+            {0xE95, {3, "maleDialogueCountdownMin"}},
+            {0xE96, {6, "maleDialogueCountdownMax"}},
+            {0xE97, {1, "femaleDialogueCountdownMin"}},
+            {0xE98, {3, "femaleDialogueCountdownMax"}},
             {0xE0D, {1, "soundVolume"}},
 
             {0xDEE, {1, "SetOnlyGayAnimsInGayScenes"}},  // intended sex only

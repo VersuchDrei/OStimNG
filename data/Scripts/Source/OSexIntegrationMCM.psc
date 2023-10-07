@@ -2391,6 +2391,17 @@ Function DrawSoundPage()
 	SetCursorPosition(6)
 	AddSliderOptionST("OID_MoanVolume", "$ostim_moan_volume", Main.MoanVolume, "{2}")
 
+	SetCursorPosition(10)
+	AddColoredHeader("$ostim_header_dialogue")
+	SetCursorPosition(12)
+	AddSliderOptionST("OID_MaleDialogueCountdownMin", "$ostim_male_dialogue_countdown_min", Main.MaleDialogueCountdownMin, "{0}")
+	SetCursorPosition(14)
+	AddSliderOptionST("OID_MaleDialogueCountdownMax", "$ostim_male_dialogue_countdown_max", Main.MaleDialogueCountdownMax, "{0}")
+	SetCursorPosition(16)
+	AddSliderOptionST("OID_FemaleDialogueCountdownMin", "$ostim_female_dialogue_countdown_min", Main.FemaleDialogueCountdownMin, "{0}")
+	SetCursorPosition(18)
+	AddSliderOptionST("OID_FemaleDialogueCountdownMay", "$ostim_female_dialogue_countdown_max", Main.FemaleDialogueCountdownMax, "{0}")
+
 	SetCursorPosition(1)
 	AddColoredHeader("$ostim_header_sounds")
 	SetCursorPosition(3)
@@ -2452,6 +2463,84 @@ State OID_MoanVolume
 		SetSliderOptionValueST(Value, "{2}")
 	EndEvent
 EndState
+
+
+State OID_MaleDialogueCountdownMin
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_male_dialogue_countdown_min")
+	EndEvent
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(Main.MaleDialogueCountdownMin)
+		SetSliderDialogDefaultValue(3)
+		SetSliderDialogRange(1, 10)
+		SetSliderDialogInterval(1)
+	EndEvent
+
+	Event OnSliderAcceptST(float Value)
+		Main.MaleDialogueCountdownMin = Value as int
+		SetSliderOptionValueST(Main.MaleDialogueCountdownMin, "{0}")
+		SetSliderOptionValueST(Main.MaleDialogueCountdownMax, "{0}", false, "OID_MaleDialogueCountdownMax")
+	EndEvent
+EndState
+
+State OID_MaleDialogueCountdownMax
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_male_dialogue_countdown_max")
+	EndEvent
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(Main.MaleDialogueCountdownMax)
+		SetSliderDialogDefaultValue(6)
+		SetSliderDialogRange(1, 10)
+		SetSliderDialogInterval(1)
+	EndEvent
+
+	Event OnSliderAcceptST(float Value)
+		Main.MaleDialogueCountdownMax = Value as int
+		SetSliderOptionValueST(Main.MaleDialogueCountdownMin, "{0}", false, "OID_MaleDialogueCountdownMin")
+		SetSliderOptionValueST(Main.MaleDialogueCountdownMax, "{0}")
+	EndEvent
+EndState
+
+State OID_FemaleDialogueCountdownMin
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_female_dialogue_countdown_min")
+	EndEvent
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(Main.FemaleDialogueCountdownMin)
+		SetSliderDialogDefaultValue(1)
+		SetSliderDialogRange(1, 10)
+		SetSliderDialogInterval(1)
+	EndEvent
+
+	Event OnSliderAcceptST(float Value)
+		Main.FemaleDialogueCountdownMin = Value as int
+		SetSliderOptionValueST(Main.FemaleDialogueCountdownMin, "{0}")
+		SetSliderOptionValueST(Main.FemaleDialogueCountdownMax, "{0}", false, "OID_FemaleDialogueCountdownMax")
+	EndEvent
+EndState
+
+State OID_FemaleDialogueCountdownMax
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_female_dialogue_countdown_max")
+	EndEvent
+
+	Event OnSliderOpenST()
+		SetSliderDialogStartValue(Main.FemaleDialogueCountdownMax)
+		SetSliderDialogDefaultValue(3)
+		SetSliderDialogRange(1, 10)
+		SetSliderDialogInterval(1)
+	EndEvent
+
+	Event OnSliderAcceptST(float Value)
+		Main.FemaleDialogueCountdownMax = Value as int
+		SetSliderOptionValueST(Main.FemaleDialogueCountdownMin, "{0}", false, "OID_FemaleDialogueCountdownMin")
+		SetSliderOptionValueST(Main.FemaleDialogueCountdownMax, "{0}")
+	EndEvent
+EndState
+
 
 State OID_SoundVolume
 	Event OnHighlightST()

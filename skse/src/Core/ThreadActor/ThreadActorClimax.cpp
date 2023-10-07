@@ -12,6 +12,10 @@ namespace OStim {
             if (!stallClimax && !thread->getStallClimax()) {
                 orgasm(false);
             }
+        } else if (awaitingClimaxInner) {
+            if (!lastMoan && !actor.isTalking()) {
+                climaxInner();
+            }
         }
     }
 
@@ -41,16 +45,27 @@ namespace OStim {
     void ThreadActor::climax() {
         awaitingClimax = false;
         setTimeUntilClimax(0.0f);
-        climaxInner();
+
+        if (lastMoan || actor.isTalking()) {
+            awaitingClimaxInner = true;
+        } else {
+            climaxInner();
+        }
     }
 
     void ThreadActor::climaxInner() {
+        awaitingClimaxInner = false;
         excitement = -3;
 
         timesClimaxed++;
         actor.setFactionRank(Util::APITable::getTimesClimaxedFaction(), timesClimaxed);
 
-        climaxMoan();
+        if (schlong) {
+            thread->SetSpeed(0);
+        }
+        actor.damageActorValue(GameAPI::GameActorValues::STAMINA, 250);
+
+        playClimaxSound();
 
         if (thread->isPlayerThread()) {
             // TODO properly use GameActor here
@@ -80,13 +95,7 @@ namespace OStim {
         // TODO properly use GameActor here
         FormUtil::sendModEvent(actor.form, "ostim_actor_orgasm", thread->getCurrentNode()->scene_id, thread->m_threadId);
 
-        actor.damageActorValue(GameAPI::GameActorValues::STAMINA, 250);
-
         // todo give other actor excitement when in vaginalsex
-
-        if (schlong) {
-            thread->SetSpeed(0);
-        }
 
         if (MCM::MCMTable::endOnAllOrgasm()) {
             bool end = true;

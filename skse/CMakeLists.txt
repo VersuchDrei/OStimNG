@@ -35,6 +35,7 @@ set(sources
     src/Core/Thread/ThreadAutoControl.cpp
     src/Core/Thread/ThreadClimax.cpp
     src/Core/Thread/ThreadNavigation.cpp
+    src/Core/Thread/ThreadSound.cpp
     src/Core/ThreadActor/ThreadActorAnimation.cpp
     src/Core/ThreadActor/ThreadActorClimax.cpp
     src/Core/ThreadActor/ThreadActorExcitement.cpp
@@ -90,7 +91,7 @@ set(sources
 	src/Sound/ActionSound/SoundPlayer.cpp
 	src/Sound/ActionSound/SoundType.cpp
 	src/Sound/SoundTable.cpp
-    src/Sound/VoiceSet.cpp
+    src/Sound/SoundUtil.cpp
     src/Trait/Condition.cpp
     src/Trait/FacialExpression.cpp
     src/Trait/TraitTable.cpp

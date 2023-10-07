@@ -201,7 +201,7 @@ namespace OStim {
 
 #pragma region climax
     public:
-        inline bool getAwaitingClimax() { return awaitingClimax; }
+        inline bool getAwaitingClimax() { return awaitingClimax || awaitingClimaxInner; }
         inline bool getStallClimax() { return stallClimax; }
         inline void setStallClimax(bool stallClimax) { this->stallClimax = stallClimax; }
         void orgasm(bool ignoreStall); // handles stalling / starts climax animation
@@ -256,6 +256,9 @@ namespace OStim {
         void unmute();
         inline bool isMuted() { return muted; }
 
+        void reactToEvent(int timer, std::string type, GameAPI::GameActor partner, std::function<std::unordered_map<std::string, Sound::ReactionSet>*(Sound::VoiceSet&)> setGetter);
+        void reactToClimax(GameAPI::GameActor partner);
+
     private:
         Sound::VoiceSet voiceSet;
         bool muted = false;
@@ -264,12 +267,33 @@ namespace OStim {
         int moanCooldown = -1;
         GameAPI::GameSound* lastMoan = nullptr;
 
+        int eventTimer = 0;
+        Sound::ReactionSet* eventReaction = nullptr;
+        GameAPI::GameActor eventPartner;
+
+        int dialogueCountdown = 2;
+        bool isTalking = false;
+
+        bool isPlayingClimaxSound = false;
+
         void loopSound();
         void changeNodeSound();
+
+        bool canMakeSound();
+        bool canTalk();
+
         void startMoanCooldown();
         void stopMoanCooldown();
         void moan();
         void climaxMoan();
+        void eventMoan();
+
+        void setDialogueCountdown();
+        void talk();
+
+        void playClimaxSound();
+        void reactToOwnClimax();
+        void playEventSound();
 
         inline bool isMakingSound() { return lastMoan && lastMoan->isPlaying() || actor.isTalking(); }
 #pragma endregion
