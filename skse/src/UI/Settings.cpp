@@ -35,6 +35,8 @@ namespace UI {
 		json["search"] = json::object();
 		json["search"]["menu"] = json::object();
 		CreateDefaultLocationSettings(json["search"]["menu"]);
+
+		json["fadeTime"] = 2.0;
 	}
 	void Settings::LoadSettings() {
 		logger::info("loading ui settings");
@@ -109,5 +111,16 @@ namespace UI {
 				LoadPosition(menu, positionSettings.SearchPositions.MenuPosition);
 			}
 		}
+
+		if (!json.contains("fadeTime")) {
+			logger::warn("settings file malformed - fadeTime");
+			json["fadeTime"] = 2.0;
+		}
+		fadeTime = json["fadeTime"];
+		
+		ifs.close();
+		//Write back any defaulted settings
+		std::ofstream settingsFile(*settingsPath);
+		settingsFile << std::setw(2) << json << std::endl;
 	}
 }

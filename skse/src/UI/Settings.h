@@ -27,10 +27,12 @@ namespace UI {
 		SceneMenuPositions ScenePositions;
 		SearchMenuPositions SearchPositions;
 	};
+	
 
 	class Settings {
 	public:
 		static void LoadSettings();
 		inline static MenuPositions positionSettings;
+		inline static float fadeTime;
 	};
 }
