@@ -36,7 +36,7 @@ namespace UI {
 		json["search"]["menu"] = json::object();
 		CreateDefaultLocationSettings(json["search"]["menu"]);
 
-		json["fadeTime"] = 2.0;
+		json["fadeTime"] = 10.0;
 	}
 	void Settings::LoadSettings() {
 		logger::info("loading ui settings");
@@ -113,8 +113,8 @@ namespace UI {
 		}
 
 		if (!json.contains("fadeTime")) {
-			logger::warn("settings file malformed - fadeTime");
-			json["fadeTime"] = 2.0;
+			logger::info("settings file outdated - adding fadeTime");
+			json["fadeTime"] = 10.0;
 		}
 		fadeTime = json["fadeTime"];
 		
