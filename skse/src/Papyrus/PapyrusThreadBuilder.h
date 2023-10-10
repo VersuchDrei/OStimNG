@@ -97,7 +97,25 @@ namespace PapyrusThreadBuilder {
             return;
         }
 
-        params->noAutoMode = true;
+        params->threadFlags |= OStim::ThreadFlag::NO_AUTO_MODE;
+    }
+
+    void NoPlayerControl(RE::StaticFunctionTag*, int builderID) {
+        OStim::ThreadStartParams* params = OStim::ThreadBuilder::get(builderID);
+        if (!params) {
+            return;
+        }
+
+        params->threadFlags |= OStim::ThreadFlag::NO_PLAYER_CONTROL;
+    }
+
+    void NoUndressing(RE::StaticFunctionTag*, int builderID) {
+        OStim::ThreadStartParams* params = OStim::ThreadBuilder::get(builderID);
+        if (!params) {
+            return;
+        }
+
+        params->threadFlags |= OStim::ThreadFlag::NO_UNDRESSING;
     }
 
     void NoFurniture(RE::StaticFunctionTag*, int builderID) {
@@ -158,6 +176,8 @@ namespace PapyrusThreadBuilder {
         BIND(EndAfterSequence);
         BIND(UndressActors);
         BIND(NoAutoMode);
+        BIND(NoPlayerControl);
+        BIND(NoUndressing);
         BIND(SetMetadata);
         BIND(SetMetadataCSV);
 

@@ -79,7 +79,7 @@ namespace OStim {
             }
         }
 
-        if (!params.noAutoMode) {
+        if ((params.threadFlags | ThreadFlag::NO_AUTO_MODE) == 0) {
             evaluateAutoMode();
         }
         
@@ -223,9 +223,6 @@ namespace OStim {
                 if (MCM::MCMTable::undressMidScene() && m_currentNode->doFullStrip(actorIt.first)) {
                     actorIt.second.undress();
                     actorIt.second.removeWeapons();
-                    // it is intended that the else fires if undressMidScene is checked but the action is not tagged as
-                    // sexual because some non sexual actions still have slots for partial stripping for example kissing
-                    // undresses helmets without being sexual
                 } else if (MCM::MCMTable::partialUndressing()) {
                     uint32_t slotMask = m_currentNode->getStrippingMask(actorIt.first);
                     if (slotMask != 0) {

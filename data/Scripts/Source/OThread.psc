@@ -2,6 +2,8 @@
 * * collection of methods to modify threads
 * * the thread containing the player will always have the ThreadID 0
 * * NPC on NPC threads will always have positive ThreadIDs
+* *
+* * required API Version: 29
 */;
 ScriptName OThread
 

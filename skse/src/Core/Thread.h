@@ -27,6 +27,8 @@ namespace OStim {
 
         void initContinue();
 
+        inline ThreadFlags getThreadFlags() { return threadFlags; }
+
         inline Graph::Node* getCurrentNode() { return m_currentNode; }
         inline int getCurrentSpeed() { return m_currentNodeSpeed; }
 
@@ -74,6 +76,8 @@ namespace OStim {
         Serialization::OldThread serialize();
 
     private:
+        ThreadFlags threadFlags = 0;
+
         Graph::Node* m_currentNode = nullptr;
         bool playerThread = false;
         std::map<int32_t, ThreadActor> m_actors;

@@ -2391,13 +2391,7 @@ Bool Property MuteOSA
 	EndFunction
 EndProperty
 
-bool Property DisableOSAControls
-	bool Function Get()
-		return false
-	EndFunction
-	Function Set(bool Value)
-	EndFunction
-EndProperty
+bool Property DisableOSAControls = false Auto
 
 Actor Function GetDomActor()
 	Return GetActor(0)
@@ -2817,6 +2811,10 @@ Bool Function StartScene(Actor Dom, Actor Sub, Bool zUndressDom = False, Bool zU
 		Actor[] DominantActors = new Actor[1]
 		DominantActors[0] = aggressingActor
 		OThreadBuilder.SetDominantActors(BuilderID, DominantActors)
+	EndIf
+
+	If DisableOSAControls
+		OThreadBuilder.NoPlayerControl(BuilderID)
 	EndIf
 
 	Return OThreadBuilder.Start(BuilderID) >= 0

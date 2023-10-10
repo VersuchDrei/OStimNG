@@ -1,3 +1,8 @@
+;/* OActorUtil
+* * collection of utility functions related to actors
+* *
+* * required API Version: 29
+*/;
 ScriptName OActorUtil
 
 ;/* HasSchlong

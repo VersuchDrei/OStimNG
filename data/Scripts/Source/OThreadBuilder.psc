@@ -2,6 +2,8 @@
 * * helper script to build threads with more complex starting parameter
 * * basically a factory but limited by Papyrus, so not really a factory
 * *
+* * required API Version: 29
+* *
 * * note: the BuilderID is most likely not going to be the same as the thread id
 */;
 ScriptName OThreadBuilder
@@ -44,6 +46,8 @@ Function SetStartingAnimation(int BuilderID, string Animation) Global Native
 ;/* SetStartingSequence
 * * sets the starting sequence of the scene
 * *
+* * required API version: 30
+* *
 * * @param: BuilderID, the id of the thread builder
 * * @param: Sequence, the id of the sequence
 */;
@@ -80,6 +84,25 @@ Function UndressActors(int BuilderID) Global Native
 * * @param: BuilderID, the id of the thread builder
 */;
 Function NoAutoMode(int BuilderID) Global Native
+
+;/* NoPlayerControl
+* * disables player control for the scene, does nothing on NPCxNPC scenes
+* *
+* * required API Version: 30
+* *
+* * @param: BuilderID, the id of the thread builder
+*/;
+Function NoPlayerControl(int BuilderID) Global Native
+
+;/* NoUnressing
+* * disables all undressing during the scene, no matter the MCM settings
+* * this also overrules UndressActors
+* *
+* * required API Version: 30
+* *
+* * @param: BuilderID, the id of the thread builder
+*/;
+Function NoUndressing(int BuilderID) Global Native
 
 ;/* NoFurniture
 * * disables furniture for the scene

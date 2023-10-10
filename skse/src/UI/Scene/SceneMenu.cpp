@@ -113,7 +113,7 @@ namespace UI::Scene {
         auto currentNode = state->currentNode;
         if (!state->currentNode)
             return;
-        if (currentNode->isTransition || state->currentThread->isInSequence()) {
+        if (currentNode->isTransition || state->currentThread->isInSequence() || (state->currentThread->getThreadFlags() | OStim::ThreadFlag::NO_PLAYER_CONTROL) == OStim::ThreadFlag::NO_PLAYER_CONTROL) {
             menuData.options.clear();
         } else {
             std::vector<Trait::ActorCondition> conditions = state->currentThread->getActorConditions();

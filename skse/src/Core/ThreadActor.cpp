@@ -64,6 +64,10 @@ namespace OStim {
 
 
     void ThreadActor::undress() {
+        if ((thread->getThreadFlags() | ThreadFlag::NO_UNDRESSING) == ThreadFlag::NO_UNDRESSING) {
+            return;
+        }
+
         // TODO properly use GameActor
         if (Util::Globals::usePapyrusUndressing()) {
             const auto skyrimVM = RE::SkyrimVM::GetSingleton();
@@ -105,6 +109,10 @@ namespace OStim {
     }
 
     void ThreadActor::undressPartial(uint32_t mask) {
+        if ((thread->getThreadFlags() | ThreadFlag::NO_UNDRESSING) == ThreadFlag::NO_UNDRESSING) {
+            return;
+        }
+
         // TODO properly use GameActor
         if (Util::Globals::usePapyrusUndressing()) {
             const auto skyrimVM = RE::SkyrimVM::GetSingleton();

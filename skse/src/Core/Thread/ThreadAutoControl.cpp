@@ -133,6 +133,10 @@ namespace OStim {
             return;
         }
 
+        if ((threadFlags | ThreadFlag::NO_AUTO_MODE) == ThreadFlag::NO_AUTO_MODE) {
+            return;
+        }
+
         if (autoModeStage == AutoModeStage::NONE) {
             if (m_actors.size() == 1) {
                 autoModeStage = AutoModeStage::MAIN;

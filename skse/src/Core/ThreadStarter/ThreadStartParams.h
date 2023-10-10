@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Core/ThreadFlag.h"
+
 #include "GameAPI/GameActor.h"
 #include "GameAPI/GameObject.h"
 #include "Graph/Node.h"
@@ -14,8 +16,8 @@ namespace OStim {
         Graph::Sequence* startingSequence = nullptr;
         bool endAfterSequence = false;
         bool stripActors = false;
-        bool noAutoMode = false;
         bool noFurniture = false;
+        ThreadFlags threadFlags = 0;
         std::vector<std::string> metadata;
     };
 }
