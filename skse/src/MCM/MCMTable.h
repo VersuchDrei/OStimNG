@@ -248,7 +248,7 @@ namespace MCM {
             {0xDB3, {3000, "SetExpressionDurationMax"}},
 
             {0xE0A, {2500, "moanIntervalMin"}},
-            {0xE0B, {5000, "moanIntervalMax"}},
+            {0xE0B, {4000, "moanIntervalMax"}},
             {0xE0C, {1, "moanVolume"}},
             {0xE95, {3, "maleDialogueCountdownMin"}},
             {0xE96, {6, "maleDialogueCountdownMax"}},

@@ -8,8 +8,10 @@ namespace Graph {
         moan |= actor.moan;
         talk |= actor.talk;
         muffled |= actor.muffled;
-        if (actor.faction && !VectorUtil::contains(factions, actor.faction)) {
-            factions.push_back(actor.faction);
+        for (GameAPI::GameFaction faction : actor.factions) {
+            if (!VectorUtil::contains(factions, faction)) {
+                factions.push_back(faction);
+            }
         }
     }
 }

@@ -1,0 +1,61 @@
+{
+	"name": "Standing Cuddle Holding Head Straight",
+	"modpack": "OStim",
+	"length": 2.0,
+	"speeds":[
+		{
+			"animation": "OStim2PStandingCuddleHoldingHeadMF"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStim2PStandingHoldingMF",
+			"description": "return",
+			"icon": "OStim/symbols/return",
+			"priority": -1000
+		},
+		{
+			"destination": "OStim2PStandingHugMF",
+			"description": "stop holding {1}s head",
+			"icon": "OStim/detail/grab_m",
+			"priority": 0
+		}
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"sosBend": -5,
+			"scale": 1.03,
+      		"lookUp": -30,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		},
+		{
+			"intendedSex": "female",
+      		"lookUp": -30,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		}
+	],
+	"actions":[
+		{
+			"type": "cuddling",
+			"actor": 0,
+			"target": 1
+		},
+		{
+			"type": "cuddling",
+			"actor": 1,
+			"target": 0
+		},
+		{
+			"type": "holdinghead",
+			"actor": 0,
+			"target": 1
+		}
+	]
+}

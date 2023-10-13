@@ -1,11 +1,12 @@
 {
+	"info": "anilingus is without a tongue, if you want a tongue use rimjob",
 	"actor":{
 		"info": "the one with the mouth",
 		"stimulation":0.1,
 		"maxStimulation":50,
 		"moan":true,
 		"muffled":true,
-		"expressionOverride":"tongue",
+		"expressionOverride":"openmouth",
 		"requirements":[
 			"mouth"
 		],
@@ -17,41 +18,40 @@
 		],
 		"faction":{
 			"mod": "OStim.esp",
-			"formid": "0xE79"
-		},
-		"stringLists":{
-			"cum":[
-				"mouth"
-			]
+			"formid": "0xE99"
 		}
 	},
 	"target":{
-		"info": "the one with the penis",
-		"stimulation":1.4,
+		"info": "the one with the butt",
+		"stimulation":0.3,
 		"fullStrip":true,
 		"moan":true,
 		"talk":true,
 		"requirements":[
-			"penis"
+			"anus"
 		],
 		"strippingSlots":[
 			32,
 			49,
 			52,
-			53
+			53,
+			54
 		],
 		"faction":{
 			"mod": "OStim.esp",
-			"formid": "0xE7A"
+			"formid": "0xE9A"
 		}
 	},
 	"performer":{
+		"faction":{
+			"mod": "OStim.esp",
+			"formid": "0xE9B"
+		},
 		"floats":{
-			"stamina":0.5
+			"stamina":0.75
 		}
 	},
 	"tags":[
-		"oral",
 		"sexual"
 	]
 }

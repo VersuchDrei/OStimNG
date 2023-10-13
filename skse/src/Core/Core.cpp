@@ -17,6 +17,7 @@ namespace OStim {
         }
 
         actor.removeFromFaction(Util::APITable::getExcitementFaction());
+        actor.removeFromFaction(Util::APITable::getSchlongifiedFaction());
         actor.removeFromFaction(Util::APITable::getTimesClimaxedFaction());
         actor.removeFromFaction(Util::APITable::getTimeUntilClimaxFaction());
         actor.unlock();

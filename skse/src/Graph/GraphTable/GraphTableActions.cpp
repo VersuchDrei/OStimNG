@@ -50,7 +50,21 @@ namespace Graph {
         }
 
         if (json.contains("faction")) {
-            actor.faction.loadJson(path, json["faction"]);
+            if (json["faction"].is_array()) {
+                for (auto& jsonFaction : json["faction"]) {
+                    GameAPI::GameFaction faction;
+                    faction.loadJson(path, jsonFaction);
+                    if (faction) {
+                        actor.factions.push_back(faction);
+                    }
+                }
+            } else {
+                GameAPI::GameFaction faction;
+                faction.loadJson(path, json["faction"]);
+                if (faction) {
+                    actor.factions.push_back(faction);
+                }
+            }
         }
 
         if (json.contains("ints")) {

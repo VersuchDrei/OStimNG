@@ -1,0 +1,56 @@
+{
+	"name": "Standing Hug Straight",
+	"modpack": "OStim",
+	"length": 2.0,
+	"speeds":[
+		{
+			"animation": "OStim2PStandingHugMF"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStim2PStandingHoldingMF",
+			"description": "return",
+			"icon": "OStim/symbols/return",
+			"priority": -1000
+		},
+		{
+			"destination": "OStim2PStandingHugMF",
+			"description": "hold {1}s head",
+			"icon": "OStim/detail/holdinghead_mf",
+			"priority": 0
+		}
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"sosBend": -5,
+			"scale": 1.03,
+      		"lookUp": -30,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		},
+		{
+			"intendedSex": "female",
+      		"lookUp": -30,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		}
+	],
+	"actions":[
+		{
+			"type": "hug",
+			"actor": 0,
+			"target": 1
+		},
+		{
+			"type": "hug",
+			"actor": 1,
+			"target": 0
+		}
+	]
+}

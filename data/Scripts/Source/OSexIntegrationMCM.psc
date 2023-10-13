@@ -2434,7 +2434,7 @@ State OID_MoanIntervalMax
 
 	Event OnSliderOpenST()
 		SetSliderDialogStartValue(Main.MoanIntervalMax / 1000.0)
-		SetSliderDialogDefaultValue(5)
+		SetSliderDialogDefaultValue(4.0)
 		SetSliderDialogRange(0.1, 10)
 		SetSliderDialogInterval(0.05)
 	EndEvent

@@ -37,6 +37,10 @@ namespace OStim {
 
         setDialogueCountdown();
 
+        if (schlong) {
+            actor.addToFaction(Util::APITable::getSchlongifiedFaction());
+        }
+
         actor.addToFaction(Util::APITable::getExcitementFaction());
         actor.addToFaction(Util::APITable::getTimesClimaxedFaction());
         actor.addToFaction(Util::APITable::getTimeUntilClimaxFaction());

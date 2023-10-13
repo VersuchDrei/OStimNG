@@ -1,0 +1,16 @@
+{
+	"actor":{
+		"info": "the one with the eyes",
+		"faction":{
+			"mod": "OStim.esp",
+			"formid": "0xE9D"
+		}
+	},
+	"target":{
+		"info": "the one doing stuff",
+		"faction":{
+			"mod": "OStim.esp",
+			"formid": "0xE9E"
+		}
+	}
+}

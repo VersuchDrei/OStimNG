@@ -8,11 +8,13 @@ namespace Util {
         static void setupForms();
 
         static inline GameAPI::GameFaction getExcitementFaction() { return OStimExcitementFaction; }
+        static inline GameAPI::GameFaction getSchlongifiedFaction() { return OStimSchlongifiedFaction; }
         static inline GameAPI::GameFaction getTimesClimaxedFaction() { return OStimTimesClimaxedFaction; }
         static inline GameAPI::GameFaction getTimeUntilClimaxFaction() { return OStimTimeUntilClimaxFaction; }
 
     private:
         static inline GameAPI::GameFaction OStimExcitementFaction;
+        static inline GameAPI::GameFaction OStimSchlongifiedFaction;
         static inline GameAPI::GameFaction OStimTimesClimaxedFaction;
         static inline GameAPI::GameFaction OStimTimeUntilClimaxFaction;
     };

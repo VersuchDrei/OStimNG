@@ -3,6 +3,7 @@
 	"actor":{
 		"stimulation":0.1,
 		"maxStimulation":50,
+		"moan":true,
 		"muffled":true,
 		"expressionOverride":"tongue",
 		"requirements":[
@@ -22,6 +23,7 @@
 	"target":{
 		"stimulation":0.1,
 		"maxStimulation":50,
+		"moan":true,
 		"muffled":true,
 		"expressionOverride":"tongue",
 		"requirements":[

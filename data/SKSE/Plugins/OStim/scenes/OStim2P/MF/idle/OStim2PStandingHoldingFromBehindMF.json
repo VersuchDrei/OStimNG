@@ -14,7 +14,7 @@
 			"icon": "OStim/symbols/rotate_ccw"
 		},
 		{
-			"destination": "OStim2PStandingCuddleFromBehindMF",
+			"destination": "OStim2PStandingHugFromBehindMF",
 			"description": "hug {1}",
 			"icon": "OStim/sensual/embrace_mf",
 			"priority": 1000
