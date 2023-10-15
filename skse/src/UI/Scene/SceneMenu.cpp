@@ -16,11 +16,11 @@ namespace UI::Scene {
             OverrideFunction(optionBoxes, new doSendTransitionRequest, "doSendTransitionRequest");
             OverrideFunction(optionBoxes, new doChangeSpeed, "doChangeSpeed");
 
-            RE::GFxValue settings;
-            GetSettingsMenu(settings);
+            RE::GFxValue menuSelectorMenu;
+            GetMenuSelectorMenu(menuSelectorMenu);
 
-            OverrideFunction(settings, new doShowAlignMenu, "doShowAlignment");
-            OverrideFunction(settings, new doShowSearchMenu, "doShowSearch");
+            OverrideFunction(menuSelectorMenu, new doShowAlignMenu, "doShowAlignment");
+            OverrideFunction(menuSelectorMenu, new doShowSearchMenu, "doShowSearch");
 
             RE::GFxValue args[1]{ UI::Settings::fadeTime };
             optionBoxes.Invoke("SetSettings", nullptr, args, 1);
@@ -204,11 +204,11 @@ namespace UI::Scene {
         optionBoxesContainer.GetMember("optionBoxes", &optionBoxes);
     }
 
-    void SceneMenu::GetSettingsMenu(RE::GFxValue& settingsMenu) {
+    void SceneMenu::GetMenuSelectorMenu(RE::GFxValue& menuSelectorMenu) {
         RE::GFxValue root;
         GetRoot(root);
         RE::GFxValue optionBoxesContainer;
         root.GetMember("optionBoxesContainer", &optionBoxesContainer);
-        optionBoxesContainer.GetMember("settings_mc", &settingsMenu);
+        optionBoxesContainer.GetMember("menuselector_mc", &menuSelectorMenu);
     }
 }

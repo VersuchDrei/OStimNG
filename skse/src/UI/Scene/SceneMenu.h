@@ -4,6 +4,7 @@
 #include <UI/OStimMenu.h>
 #include <Core/Thread.h>
 #include <Core/Singleton.h>
+#include "Datatypes.h"
 
 namespace UI::Scene {
 	class SceneMenu : public UI::OStimMenu {
@@ -37,38 +38,13 @@ namespace UI::Scene {
 		void SpeedUp();
 		void SpeedDown();
 			
-		struct OptionData{
-			std::string nodeId;
-			std::string title;
-			std::string imagePath;
-			std::string border;
-			std::string description;
-			void loadValues(RE::GFxValue& option) {				
-				option.SetMember("NodeID", RE::GFxValue{ nodeId.c_str() });
-				option.SetMember("Title", RE::GFxValue{ title.c_str() });
-				option.SetMember("ImagePath", RE::GFxValue{ imagePath.c_str() });
-				option.SetMember("Border", RE::GFxValue{ border.c_str() });
-				option.SetMember("Description", RE::GFxValue{ description.c_str() });
-			}
-		};
-
-		struct MenuData {
-			std::vector<OptionData> options;
-			void loadValues(RE::GPtr<RE::GFxMovieView> view, RE::GFxValue& menu) {				
-				for (auto& option : options) {
-					RE::GFxValue optionValue;
-					view->CreateObject(&optionValue);
-					option.loadValues(optionValue);
-					menu.PushBack(optionValue);
-				}				
-			}
-		};
+		
 
 	private:
 		void BuildMenuData(MenuData& menudata);
 		void SendControl(int32_t control);
 		void GetOptionBoxes(RE::GFxValue& optionBoxes);
-		void GetSettingsMenu(RE::GFxValue& settingsMenu);
+		void GetMenuSelectorMenu(RE::GFxValue& settingsMenu);
 	};
 
 	class doSendTransitionRequest : public RE::GFxFunctionHandler {
