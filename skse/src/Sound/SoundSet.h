@@ -8,5 +8,6 @@ namespace Sound {
         GameAPI::GameCondition condition;
         GameAPI::GameSound sound;
         std::string expression = "";
+        int moanIntervalOverride = 0;
     };
 }

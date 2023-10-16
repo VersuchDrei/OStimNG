@@ -45,6 +45,8 @@ namespace OStim {
         actor.addToFaction(Util::APITable::getTimesClimaxedFaction());
         actor.addToFaction(Util::APITable::getTimeUntilClimaxFaction());
         actor.setFactionRank(Util::APITable::getTimeUntilClimaxFaction(), -1);
+
+        startMoanCooldown();
     }
 
     void ThreadActor::initContinue() {
@@ -322,8 +324,6 @@ namespace OStim {
         if (awaitingClimax) {
             climax();
         }
-
-        changeNodeSound();
     }
 
     void ThreadActor::changeSpeed(int speed) {
@@ -560,8 +560,6 @@ namespace OStim {
     }
 
     void ThreadActor::setEventExpression(Trait::FacialExpression* expression) {
-        stopMoanCooldown();
-
         int mask = 0;
         if (eventExpression) {
             mask = eventExpression->typeMask;
@@ -587,8 +585,6 @@ namespace OStim {
             eventExpression = nullptr;
             wakeExpressions(mask);
         }
-
-        startMoanCooldown();
     }
 
     void ThreadActor::playEventExpression(std::string expression) {

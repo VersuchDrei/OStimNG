@@ -28,20 +28,27 @@ namespace Trait {
             return condition;
         }
 
-        if (MCM::MCMTable::futaUseMaleRole()) {
-            if (Compatibility::CompatibilityTable::hasSchlong(actor)) {
-                condition.sex = GameAPI::GameSex::MALE;
-            } else {
-                condition.sex = GameAPI::GameSex::FEMALE;
-            }
-        } else {
-            condition.sex = actor.getSex();
+        GameAPI::GameSex sex = actor.getSex();
+        switch (sex) {
+            case GameAPI::GameSex::FEMALE:
+                if (MCM::MCMTable::futaUseMaleRole() && Compatibility::CompatibilityTable::hasSchlong(actor)) {
+                    condition.sex = GameAPI::GameSex::AGENDER; // despite the name this means both, not none
+                } else {
+                    condition.sex = GameAPI::GameSex::FEMALE;
+                }
+                break;
+            default:
+                condition.sex = sex;
+            break;
         }
 
         condition.requirements |= Graph::Requirement::ANUS;
 
         if (actor.isSex(GameAPI::GameSex::FEMALE)) {
             condition.requirements |= Graph::Requirement::BREAST;
+            if (MCM::MCMTable::unequipStrapOnIfNotNeeded() || MCM::MCMTable::unequipStrapOnIfInWay() || !threadActor || !threadActor->isObjectEquipped("strapon")) {
+                condition.requirements |= Graph::Requirement::VAGINA;
+            }
         }
 
         condition.requirements |= Graph::Requirement::FOOT;
@@ -54,24 +61,8 @@ namespace Trait {
             condition.requirements |= Graph::Requirement::PENIS;
             condition.requirements |= Graph::Requirement::TESTICLES;
         } else {
-            if (MCM::MCMTable::unequipStrapOnIfNotNeeded() || MCM::MCMTable::unequipStrapOnIfInWay()) {
-                condition.requirements |= Graph::Requirement::VAGINA;
-            } else {
-                if (threadActor) {
-                    if (!threadActor->isObjectEquipped("strapon")) {
-                        condition.requirements |= Graph::Requirement::VAGINA;
-                    }
-                } else {
-                    condition.requirements |= Graph::Requirement::VAGINA;
-                }
-            }
-
-            if (MCM::MCMTable::equipStrapOnIfNeeded()) {
+            if (MCM::MCMTable::equipStrapOnIfNeeded() || threadActor && threadActor->isObjectEquipped("strapon")) {
                 condition.requirements |= Graph::Requirement::PENIS;
-            } else {
-                if (threadActor && threadActor->isObjectEquipped("strapon")) {
-                    condition.requirements |= Graph::Requirement::PENIS;
-                }
             }
         }
 

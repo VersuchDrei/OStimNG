@@ -14,7 +14,7 @@ namespace UI::Search {
             RE::UI_MENU_FLAGS::kRequiresUpdate,
             RE::UI_MENU_FLAGS::kModal,
             RE::UI_MENU_FLAGS::kUsesCursor,
-            //RE::UI_MENU_FLAGS::kPausesGame,
+            RE::UI_MENU_FLAGS::kPausesGame,
             RE::UI_MENU_FLAGS::kAdvancesUnderPauseMenu,
             RE::UI_MENU_FLAGS::kRendersUnderPauseMenu,
             RE::UI_MENU_FLAGS::kUsesBlurredBackground

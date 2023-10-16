@@ -17,6 +17,7 @@
 		"stimulation":0.9,
 		"fullStrip":true,
 		"moan":true,
+		"talk": true,
 		"requirements":[
 			"vagina"
 		],

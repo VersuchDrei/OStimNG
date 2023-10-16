@@ -23,6 +23,8 @@
 		"info": "the one with the neck",
 		"stimulation":0.1,
 		"maxStimulation":50,
+		"moan":true,
+		"talk":true,
 		"strippingSlots":[
 			45
 		],

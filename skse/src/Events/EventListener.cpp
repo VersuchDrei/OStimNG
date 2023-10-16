@@ -65,7 +65,7 @@ namespace Events {
             return RE::BSEventNotifyControl::kContinue;
         }
         
-        if (RE::UI::GetSingleton()->GameIsPaused()) {
+        if (RE::UI::GetSingleton()->GameIsPaused() && UI::UIState::GetSingleton()->GetActiveMenu() != UI::MenuType::kSearchMenu) {
             return RE::BSEventNotifyControl::kContinue;
         }
 

@@ -277,23 +277,23 @@ namespace OStim {
         bool isPlayingClimaxSound = false;
 
         void loopSound();
-        void changeNodeSound();
 
         bool canMakeSound();
         bool canTalk();
 
         void startMoanCooldown();
-        void stopMoanCooldown();
+        inline void stopMoanCooldown() { moanCooldown = -1; };
         void moan();
         void climaxMoan();
         void eventMoan();
+
+        void playSound(Sound::ReactionSet* reactionSet, GameAPI::GameActor partner);
 
         void setDialogueCountdown();
         void talk();
 
         void playClimaxSound();
         void reactToOwnClimax();
-        void playEventSound();
 
         inline bool isMakingSound() { return lastMoan && lastMoan->isPlaying() || actor.isTalking(); }
 #pragma endregion
