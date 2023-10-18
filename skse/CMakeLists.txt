@@ -68,6 +68,7 @@ set(sources
     src/Graph/GraphTable/GraphTableNodes.cpp
     src/Graph/GraphTable/GraphTableSequences.cpp
     src/Graph/GraphTable/GraphTableSetupNodes.cpp
+    src/Graph/GraphTable/GraphTableSetupOptions.cpp
     src/Graph/Node/NodeNavigation.cpp
     src/Graph/Action.cpp
     src/Graph/GraphActor.cpp
@@ -98,6 +99,7 @@ set(sources
     src/UI/Align/AlignMenu.cpp
     src/UI/Align/IncrementValue.cpp
     src/UI/Scene/SceneMenu.cpp
+    src/UI/Scene/SceneOptions.cpp
     src/UI/Search/SearchMenu.cpp
     src/UI/OStimMenu.cpp
     src/UI/Settings.cpp

@@ -58,7 +58,7 @@ navigation fields:
 "description" (string): the display text of the navigation in game
 "icon" (string): the path to the .dds file to be used as the icon
 	this path will be appended to "../Data/Interface/OStim/icons", the file ending ".dds" will be added automatically
-"border" (string): the hexadecimal RBG code of the icon border (default: ffffff)
+"border" (string): the hexadecimal RGB code of the icon border (default: ffffff)
 "noWarnings" (bool): disables warnings about origin or destination not existing (default: false)
 	this can be used to prevent spamming the log when connecting to other animation packs that a user might not have installed
 	doesn't prevent warnings about mismatching furniture types or actor counts

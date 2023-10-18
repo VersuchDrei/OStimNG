@@ -1,3 +1,5 @@
+#pragma once
+
 namespace UI::Scene {
 	struct OptionData {
 		std::string nodeId;
@@ -25,4 +27,6 @@ namespace UI::Scene {
 			}
 		}
 	};
+
+	
 }

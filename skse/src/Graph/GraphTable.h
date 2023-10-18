@@ -7,6 +7,7 @@
 
 #include "Furniture/FurnitureType.h"
 #include "Trait/Condition.h"
+#include "Option.h"
 
 namespace Graph{
     class GraphTable {
@@ -73,5 +74,15 @@ namespace Graph{
     private:
         inline static std::unordered_map<std::string, Sequence> sequences;
 #pragma endregion
+
+#pragma region options
+    public:
+        static void setupOptions();
+        static std::vector<MenuNode>& getOptions() { return rootOptions; };
+    private:
+        static MenuNode* constructHeirarchy(MenuNode* leaf, std::vector<MenuNode*>& heirarchy, std::unordered_map<std::string, MenuNode>& rawPages);
+        inline static std::vector<MenuNode> rootOptions;    
+#pragma endregion
+
     };
 }

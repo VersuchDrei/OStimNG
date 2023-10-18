@@ -4,6 +4,7 @@
 #include "Util/LegacyUtil.h"
 #include "Util/RNGUtil.h"
 #include "Util/StringUtil.h"
+#include <Util/UIUtil.h>
 
 namespace Graph {
     void GraphTable::addNode(Node* node) {
@@ -109,9 +110,9 @@ namespace Graph {
                 navigation.border = raw.border;
             }
             if (raw.icon == "") {
-                navigation.icon = "OStim/icons/" + LegacyUtil::getIcon(navigation.nodes.back() == start ? navigation.nodes.front() : navigation.nodes.back()) + ".dds";
+                navigation.icon = UI::getIconTexture(LegacyUtil::getIcon(navigation.nodes.back() == start ? navigation.nodes.front() : navigation.nodes.back()));
             } else {
-                navigation.icon = "OStim/icons/" + raw.icon + ".dds";
+                navigation.icon = UI::getIconTexture(raw.icon);
             }
 
             start->navigations.push_back(navigation);

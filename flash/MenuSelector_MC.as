@@ -1,5 +1,4 @@
-﻿
-class MenuSelector_MC extends MovieClip
+﻿class MenuSelector_MC extends MovieClip
 {
 	var main:Option_Box_MC;
 	var bg:MovieClip;
@@ -21,7 +20,7 @@ class MenuSelector_MC extends MovieClip
 
 	function GenerateOption(idx:Number):MovieClip
 	{
-		var mc = this.attachMovie("Option_MC", "s" + idx, idx + 1, {_x:bg._width / 2, _y:0 - (main.menuGutter + ((main.optionGutter + main.optionHeight) * idx) + (main.optionHeight / 2)), _width:main.optionWidth, _height:main.optionHeight});
+		var mc = this.attachMovie("Option_MC", "s" + idx, idx + 1, {_x: bg._width / 2, _y: 0 - (main.menuGutter + ((main.optionGutter + main.optionHeight) * idx) + (main.optionHeight / 2)), _width: main.optionWidth, _height: main.optionHeight});
 		mc.DrawBorder('FFFFFF');
 		mc.myIdx = idx;
 		mc.TextureLoader = main.TextureLoader;
@@ -35,20 +34,23 @@ class MenuSelector_MC extends MovieClip
 			options[i] = GenerateOption(i);
 			options[i].ShowOption();
 		}
-		options[0].SetData({Description:"Options (Coming soon)", ImagePath:"Ostim/icons/OStim/symbols/settings.dds", NodeID:""});
+		options[0].SetData( {Description: "Options", ImagePath: "Ostim/icons/OStim/symbols/settings.dds", NodeID: ""});
 		options[0].doSelect = function()
 		{
-			_parent.ShowOptions();
+			_parent.doShowOptions();
+			return 1;
 		};
-		options[1].SetData({Description:"Alignment", ImagePath:"Ostim/icons/OStim/symbols/alignment.dds", NodeID:""});
+		options[1].SetData( {Description: "Alignment", ImagePath: "Ostim/icons/OStim/symbols/alignment.dds", NodeID: ""});
 		options[1].doSelect = function()
 		{
 			_parent.doShowAlignment();
+			return 0;
 		};
-		options[2].SetData({Description:"Search", ImagePath:"Ostim/icons/OStim/symbols/search.dds", NodeID:""});
+		options[2].SetData( {Description: "Search", ImagePath: "Ostim/icons/OStim/symbols/search.dds", NodeID: ""});
 		options[2].doSelect = function()
 		{
 			_parent.doShowSearch();
+			return 0;
 		};
 	}
 
@@ -82,9 +84,10 @@ class MenuSelector_MC extends MovieClip
 			Highlight(currentlyHighlightedIdx);
 		}
 	}
-	
-	function SelectOption(){
-		options[currentlyHighlightedIdx].OnSelect();
+
+	function SelectOption()
+	{
+		return options[currentlyHighlightedIdx].OnSelect();
 	}
 
 	function Highlight(idx:Number):Void
@@ -92,8 +95,8 @@ class MenuSelector_MC extends MovieClip
 		options[idx].OnHighlight();
 		main.optionDesc.text = options[idx].Description;
 	}
-
-	function ShowOptions()
+	
+	function doShowOptions()
 	{
 	}
 

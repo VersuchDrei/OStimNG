@@ -1,0 +1,66 @@
+{
+  "pages": [
+    {
+      "name": "FaceLights",
+      "description": "Face lights",
+      "icon": "OStim/symbols/gender_f",
+      "parent": null
+    },
+    {
+      "name": "Test2",
+      "description": "Second Test",
+      "icon": "OStim/symbols/gender_m",
+      "parent": null
+    },
+    {
+      "name": "Test3",
+      "description": "Third Test",
+      "icon": "OStim/symbols/gradient_fff",
+      "parent": "Test2"
+    }
+  ],
+  "options": [
+    {
+      "name": "Toggle Facelights",
+      "page": "FaceLights",
+      "toggle": true,
+      "states": {
+        "on": {
+          "icon": "OStim/symbols/gender_f",
+          "description": "Toggle facelight off for {actor}",
+          "border": "FF0000",
+          "nextState": "off"
+        },
+        "off": {
+          "icon": "OStim/symbols/gender_m",
+          "description": "Toggle facelight off for {actor}",
+          "border": "00FF00",
+          "nextState": "on"
+        }
+      },
+      "function": "OSKSE/ApplyFaceLight",
+      "repeat": "actor"
+    },
+    {
+      "name": "Test 4",
+      "page": "Test3",
+      "toggle": true,
+      "states": {
+        "on": {
+          "icon": "OStim/symbols/gender_f",
+          "description": "Do a Test Thing",
+          "border": "FF0000",
+          "nextState": "off"
+        },
+        "off": {
+          "icon": "OStim/symbols/gender_m",
+          "description": "Do a different Test Thing",
+          "border": "00FF00",
+          "nextState": "on"
+        }
+      },
+      "function": "OSKSE/ApplyFaceLight",
+      "repeat": "actor"
+    }
+  ]
+}
