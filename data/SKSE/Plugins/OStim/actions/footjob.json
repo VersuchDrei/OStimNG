@@ -12,6 +12,7 @@
 			37
 		],
 		"faction":{
+			"info": "OStimFootjobActorFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE5F"
 		},
@@ -38,6 +39,7 @@
 			54
 		],
 		"faction":{
+			"info": "OStimFootjobTargetFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE60"
 		}

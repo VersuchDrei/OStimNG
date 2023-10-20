@@ -2400,7 +2400,9 @@ Function DrawSoundPage()
 	SetCursorPosition(16)
 	AddSliderOptionST("OID_FemaleDialogueCountdownMin", "$ostim_female_dialogue_countdown_min", Main.FemaleDialogueCountdownMin, "{0}")
 	SetCursorPosition(18)
-	AddSliderOptionST("OID_FemaleDialogueCountdownMay", "$ostim_female_dialogue_countdown_max", Main.FemaleDialogueCountdownMax, "{0}")
+	AddSliderOptionST("OID_FemaleDialogueCountdownMax", "$ostim_female_dialogue_countdown_max", Main.FemaleDialogueCountdownMax, "{0}")
+	SetCursorPosition(20)
+	AddMenuOptionST("OID_PlayerVoice", "$ostim_player_voice", OData.GetVoiceSetName(0x7))
 
 	SetCursorPosition(1)
 	AddColoredHeader("$ostim_header_sounds")
@@ -2538,6 +2540,24 @@ State OID_FemaleDialogueCountdownMax
 		Main.FemaleDialogueCountdownMax = Value as int
 		SetSliderOptionValueST(Main.FemaleDialogueCountdownMin, "{0}", false, "OID_FemaleDialogueCountdownMin")
 		SetSliderOptionValueST(Main.FemaleDialogueCountdownMax, "{0}")
+	EndEvent
+EndState
+
+State OID_PlayerVoice
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_player_voice")
+	EndEvent
+
+	Event OnMenuOpenST()
+		OpenVoiceSetMenu(0x7)
+	EndEvent
+
+	Event OnMenuAcceptST(int Index)
+		SetVoiceSet(0x7, Index)
+	EndEvent
+
+	Event OnDefaultST()
+		SetVoiceSetToDefault(0x7)
 	EndEvent
 EndState
 
@@ -2679,4 +2699,24 @@ Function SetEquipObjectIDToDefault(int FormID, string Type)
 	EndIf
 	OData.SetEquipObjectID(FormID, Type, ID)
 	SetMenuOptionValueST(ID)
+EndFunction
+
+
+string[] VoiceSetPairs
+
+Function OpenVoiceSetMenu(int FormID)
+	VoiceSetPairs = OData.GetVoiceSetPairs()
+	SetMenuDialogOptions(OData.PairsToNames(VoiceSetPairs))
+	SetMenuDialogStartIndex(0)
+	SetMenuDialogDefaultIndex(0)
+EndFunction
+
+Function SetVoiceSet(int FormID, int Index)
+	OData.SetVoiceSet(FormID, VoiceSetPairs[Index * 2])
+	SetMenuOptionValueST(VoiceSetPairs[Index * 2 + 1])
+EndFunction
+
+Function SetVoiceSetToDefault(int FormID)
+	OData.SetVoiceSet(FormID, 0)
+	SetMenuOptionValueST("default")
 EndFunction

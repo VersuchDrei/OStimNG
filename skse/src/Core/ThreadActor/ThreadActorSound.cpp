@@ -14,10 +14,6 @@ namespace OStim {
         } else if (isTalking) {
             isTalking = false;
             clearEventExpression();
-
-            if (isPlayingClimaxSound) {
-                reactToOwnClimax();
-            }
             return;
         }
 
@@ -25,9 +21,6 @@ namespace OStim {
             if (!lastMoan->isPlaying()) {
                 lastMoan = nullptr;
                 clearEventExpression();
-                if (isPlayingClimaxSound) {
-                    reactToOwnClimax();
-                }
             }
             return;
         }
@@ -36,7 +29,7 @@ namespace OStim {
             eventTimer -= Constants::LOOP_TIME_MILLISECONDS;
 
             if (eventTimer <= 0) {
-                playSound(eventReaction, eventPartner);
+                playSound(eventReaction, eventPartner, true);
                 eventReaction = nullptr;
                 eventPartner = nullptr;
             }
@@ -51,11 +44,7 @@ namespace OStim {
         if (moanCooldown > 0) {
             moanCooldown -= Constants::LOOP_TIME_MILLISECONDS;
             if (moanCooldown <= 0) {
-                playSound(&voiceSet.moan, primaryPartner);
-
-                if (moanCooldown <= 0) {
-                    startMoanCooldown();
-                }
+                playSound(&voiceSet.moan, primaryPartner, false);
             }
         }
     }
@@ -119,6 +108,10 @@ namespace OStim {
 
 
     void ThreadActor::startMoanCooldown() {
+        if (moanCooldown > 0) {
+            return;
+        }
+
         moanCooldown = std::uniform_int_distribution<>(MCM::MCMTable::getMoanIntervalMin(), MCM::MCMTable::getMoanIntervalMax())(Constants::RNG);
     }
 
@@ -138,50 +131,11 @@ namespace OStim {
         }
     }
 
-    void ThreadActor::climaxMoan() {
-        if (muted) {
-            return;
-        }
-
-        Sound::SoundSet* set = nullptr;
-        if (muffled || graphActor->muffled) {
-            set = voiceSet.climax.getSoundMuffled(actor, primaryPartner);
-        } else {
-            set = voiceSet.climax.getSound(actor, primaryPartner);
-        }
-
-        if (set) {
-            setEventExpression(set->expression);
-            set->sound.play(actor, MCM::MCMTable::getMoanVolume());
-            lastMoan = &set->sound;
-            soundGracePeriod = 150;
-            isPlayingClimaxSound = true;
-        }
-    }
-
-    void ThreadActor::eventMoan() {
-        if (muted) {
-            return;
-        }
-
-        Sound::SoundSet* set = nullptr;
-        if (muffled || graphActor->muffled) {
-            set = eventReaction->getSoundMuffled(actor, eventPartner);
-        } else {
-            set = eventReaction->getSound(actor, eventPartner);
-        }
-
-        if (set) {
-            setEventExpression(set->expression);
-            set->sound.play(actor, MCM::MCMTable::getMoanVolume());
-            lastMoan = &set->sound;
-            soundGracePeriod = 150;
-        }
-    }
-
-    void ThreadActor::playSound(Sound::ReactionSet* reactionSet, GameAPI::GameActor partner) {
-        dialogueCountdown--;
-        if (graphActor->talk && canTalk()) {
+    void ThreadActor::playSound(Sound::ReactionSet* reactionSet, GameAPI::GameActor partner, bool ignoreChecks) {
+        moanCooldown = 0;
+        logger::info("dialogueCountdown: {}", dialogueCountdown);
+        if ((ignoreChecks || graphActor->talk) && canTalk()) {
+            dialogueCountdown--;
             Sound::DialogueSet* set = reactionSet->getDialogue(actor, partner);
 
             if (set) {
@@ -194,12 +148,13 @@ namespace OStim {
                     soundGracePeriod = 250;
                     moanCooldown = set->moanIntervalOverride;
                     setDialogueCountdown();
+                    startMoanCooldown();
                     return;
                 }
             }
         }
 
-        if (graphActor->moan && canMakeSound()) {
+        if ((ignoreChecks || graphActor->moan) && canMakeSound()) {
             Sound::SoundSet* set = nullptr;
             if (muffled || graphActor->muffled) {
                 set = reactionSet->getSoundMuffled(actor, partner);
@@ -215,6 +170,8 @@ namespace OStim {
                 moanCooldown = set->moanIntervalOverride;
             }
         }
+
+        startMoanCooldown();
     }
 
 
@@ -226,29 +183,6 @@ namespace OStim {
         }
     }
 
-    void ThreadActor::talk() {
-        if (!canTalk() || !graphActor->talk) {
-            moan();
-            return;
-        }
-
-        Sound::DialogueSet* set = voiceSet.moan.getDialogue(actor, primaryPartner);
-
-        if (set) {
-            if (set->expression != "") {
-                setEventExpression(set->expression);
-            }
-            actor.sayTo(primaryPartner, set->dialogue);
-            isTalking = true;
-            soundGracePeriod = 250;
-        } else {
-            moan();
-            return;
-        }
-
-        setDialogueCountdown();
-    }
-
     void ThreadActor::playClimaxSound() {
         for (auto& [index, threadActor] : thread->getActors()) {
             if (threadActor.actor != actor) {
@@ -256,31 +190,22 @@ namespace OStim {
             }
         }
 
-        if (!canMakeSound()) {
+        dialogueCountdown = 0;
+        playSound(&voiceSet.climax, primaryPartner, true);
+
+        // post climax comment
+        // the event timer will only start counting down once the previous sound has stopped playing
+        if (voiceSet.climaxCommentSelf.empty()) {
             return;
         }
 
-        if (!canTalk()) {
-            climaxMoan();
-            return;
+        if (!voiceSet.climaxCommentSelf.dialogue.empty()) {
+            dialogueCountdown = 0;
         }
 
-        Sound::DialogueSet* set = voiceSet.climax.getDialogue(actor, primaryPartner);
-
-        if (set) {
-            if (set->expression != "") {
-                setEventExpression(set->expression);
-            }
-            actor.sayTo(primaryPartner, set->dialogue);
-            isTalking = true;
-            isPlayingClimaxSound = true;
-            soundGracePeriod = 250;
-        } else {
-            climaxMoan();
-            return;
-        }
-
-        setDialogueCountdown();
+        eventTimer = 1000;
+        eventReaction = &voiceSet.climaxCommentSelf;
+        eventPartner = actor;
     }
 
     void ThreadActor::reactToEvent(int timer, std::string type, GameAPI::GameActor partner, std::function<std::unordered_map<std::string, Sound::ReactionSet>*(Sound::VoiceSet&)> setGetter) {
@@ -308,21 +233,5 @@ namespace OStim {
         eventTimer = 750;
         eventReaction = &voiceSet.climaxCommentOther;
         eventPartner = partner;
-    }
-
-    void ThreadActor::reactToOwnClimax() {
-        isPlayingClimaxSound = false;
-
-        if (voiceSet.climaxCommentSelf.empty()) {
-            return;
-        }
-
-        if (!voiceSet.climaxCommentSelf.dialogue.empty()) {
-            dialogueCountdown = 0;
-        }
-
-        eventTimer = 1000;
-        eventReaction = &voiceSet.climaxCommentSelf;
-        eventPartner = actor;
     }
 }

@@ -12,6 +12,7 @@
 			33
 		],
 		"faction":{
+			"info": "OStimAnalFistingActorFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE4D"
 		}
@@ -33,6 +34,7 @@
 			54
 		],
 		"faction":{
+			"info": "OStimAnalFistingTargetFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE4E"
 		}

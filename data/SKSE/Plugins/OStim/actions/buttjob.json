@@ -16,6 +16,7 @@
 			54
 		],
 		"faction":{
+			"info": "OStimButtjobActorFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE58"
 		},
@@ -42,12 +43,14 @@
 			54
 		],
 		"faction":{
+			"info": "OStimButtjobTargetFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE59"
 		}
 	},
 	"performer":{
 		"faction":{
+			"info": "OStimButtjobPerformerFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE5A"
 		},

@@ -115,6 +115,7 @@ set(sources
     src/Util/JsonUtil.cpp
     src/Util/LegacyUtil.cpp
     src/Util/LookupTable.cpp
+    src/Util/MathUtil.cpp
     src/Util/ObjectRefUtil.cpp
     src/Util/SerializationUtil.cpp
     src/Util/StringUtil.cpp

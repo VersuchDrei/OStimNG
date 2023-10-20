@@ -11,6 +11,10 @@ namespace Sound {
 
         static VoiceSet getVoiceSet(GameAPI::GameActor actor);
 
+        static std::vector<std::string> getVoiceSetPairs();
+        static std::string getVoiceSetName(RE::FormID formID);
+        static void setVoiceSet(RE::FormID formID, std::string voice);
+
     private:
         inline static std::unordered_map<uint32_t, VoiceSet> voiceSets;
 

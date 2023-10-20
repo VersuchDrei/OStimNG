@@ -12,6 +12,7 @@
 			33
 		],
 		"faction":{
+			"info": "OStimGropingBreastActorFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE6A"
 		}
@@ -26,6 +27,7 @@
 			"breast"
 		],
 		"faction":{
+			"info": "OStimGropingBreastTargetFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE6B"
 		}

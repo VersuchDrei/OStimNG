@@ -12,6 +12,7 @@
 			33
 		],
 		"faction":{
+			"info": "OStimGropingButtActorFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE6C"
 		}
@@ -23,6 +24,7 @@
 		"moan": true,
 		"talk": true,
 		"faction":{
+			"info": "OStimGropingButtTargetFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE6D"
 		}

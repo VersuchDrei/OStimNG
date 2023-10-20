@@ -16,10 +16,18 @@
 			44,
 			55
 		],
-		"faction":{
-			"mod": "OStim.esp",
-			"formid": "0xE80"
-		}
+		"faction":[
+			{
+				"info": "OStimRimjobActorFaction",
+				"mod": "OStim.esp",
+				"formid": "0xE80"
+			},
+			{
+				"info": "OStimAnyOralActorFaction",
+				"mod": "OStim.esp",
+				"formid": "0xEA7"
+			}
+		]
 	},
 	"target":{
 		"info": "the one with the butt",
@@ -37,10 +45,18 @@
 			53,
 			54
 		],
-		"faction":{
-			"mod": "OStim.esp",
-			"formid": "0xE81"
-		}
+		"faction":[
+			{
+				"info": "OStimRimjobTargetFaction",
+				"mod": "OStim.esp",
+				"formid": "0xE81"
+			},
+			{
+				"info": "OStimAnyOralTargetFaction",
+				"mod": "OStim.esp",
+				"formid": "0xEA8"
+			}
+		]
 	},
 	"performer":{
 		"floats":{

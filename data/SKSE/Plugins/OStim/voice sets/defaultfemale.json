@@ -4,11 +4,39 @@
 		"formid":"0x000001"
 	},
 	"moan":{
-		"mod":"OStim.esp",
-		"formid":"0xE08"
+		"sound":[
+			{
+				"sound":{
+					"mod":"OStim.esp",
+					"formid":"0xE08"
+				},
+				"expression": "moan"
+			}
+		],
+		"soundMuffled":[
+			{
+				"info": "blowjob sucking sound",
+				"condition":{
+					"mod": "OStim.esp",
+					"formid": "0xEA6"
+				},
+				"sound":{
+					"mod":"OStim.esp",
+					"formid": "0xE15"
+				},
+				"moanIntervalOverride": 1.0
+			}
+		]
 	},
 	"climax":{
-		"mod":"OStim.esp",
-		"formid":"0xE0E"
+		"sound":[
+			{
+				"sound":{
+					"mod":"OStim.esp",
+					"formid":"0xE0E"
+				},
+				"expression": "climax"
+			}
+		]
 	}
 }

@@ -15,7 +15,6 @@
 	},
 	"target":{
 		"info": "the one with the face",
-		"stimulation":0.5,
 		"strippingSlots":[
 			30,
 			31,

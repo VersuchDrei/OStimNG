@@ -13,6 +13,7 @@
 			33
 		],
 		"faction":{
+			"info": "OStimVaginalFingeringActorFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE8C"
 		}
@@ -34,6 +35,7 @@
 			54
 		],
 		"faction":{
+			"info": "OStimVaginalFingeringTargetFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE8D"
 		}

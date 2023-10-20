@@ -15,6 +15,7 @@
 			55
 		],
 		"faction":{
+			"info": "OStimVampireBiteActorFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE93"
 		}
@@ -25,6 +26,7 @@
 		"maxStimulation":50,
 		"moan":true,
 		"faction":{
+			"info": "OStimVampireBiteTargetFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE94"
 		}

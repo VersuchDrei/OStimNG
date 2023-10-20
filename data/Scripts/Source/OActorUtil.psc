@@ -18,6 +18,15 @@ ScriptName OActorUtil
 */;
 bool Function HasSchlong(Actor Act) Global Native
 
+;/* SayTo
+* * says the dialogue topic the the target actor
+* *
+* * @param: Act, the actor to say the topic
+* * @param: Target, the actor to say the topic to
+* * @param: Dialogue, the topic to say
+*/;
+Function SayTo(Actor Act, Actor Target, Topic Dialogue) Global Native
+
 ;/* EmptyArray
 * * returns a size zero array of type Actor
 * *

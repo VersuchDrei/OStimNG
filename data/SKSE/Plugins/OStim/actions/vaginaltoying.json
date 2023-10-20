@@ -1,27 +1,19 @@
 {
-	"info": "tribbing is two sided, you don't need to add two actions for it",
 	"actor":{
-		"stimulation":1.0,
+		"info": "the one holding the toy",
+		"stimulation":0.1,
+		"maxStimulation":75,
 		"fullStrip":true,
 		"moan":true,
 		"talk":true,
-		"requirements":[
-			"vagina"
-		],
-		"strippingSlots":[
-			32,
-			49,
-			52,
-			53,
-			54
-		],
 		"faction":{
-			"info": "OStimTribbingFaction",
+			"info": "OStimVaginalToyingActorFaction",
 			"mod": "OStim.esp",
-			"formid": "0xE8B"
+			"formid": "0xEA3"
 		}
 	},
 	"target":{
+		"info": "the one with the vulva",
 		"stimulation":1.0,
 		"fullStrip":true,
 		"moan":true,
@@ -37,17 +29,18 @@
 			54
 		],
 		"faction":{
-			"info": "OStimTribbingFaction",
+			"info": "OStimVaginalToyingTargetFaction",
 			"mod": "OStim.esp",
-			"formid": "0xE8B"
+			"formid": "0xEA4"
 		}
 	},
 	"performer":{
 		"floats":{
-			"stamina":1.0
+			"stamina":0.75
 		}
 	},
 	"tags":[
-		"sexual"
+		"sexual",
+		"toy"
 	]
 }

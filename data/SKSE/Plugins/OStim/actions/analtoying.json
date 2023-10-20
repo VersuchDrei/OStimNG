@@ -1,30 +1,25 @@
 {
 	"actor":{
-		"info": "the one with the hand",
+		"info": "the one holding the toy",
 		"stimulation":0.1,
-		"maxStimulation":50,
-		"moan": true,
+		"maxStimulation":75,
+		"fullStrip":true,
+		"moan":true,
 		"talk":true,
-		"requirements":[
-			"hand"
-		],
-		"strippingSlots":[
-			33
-		],
 		"faction":{
-			"info": "OStimRubbingClitorisActorFaction",
+			"info": "OStimAnalToyingActorFaction",
 			"mod": "OStim.esp",
-			"formid": "0xE82"
+			"formid": "0xEA1"
 		}
 	},
 	"target":{
 		"info": "the one with the vulva",
-		"stimulation":1.3,
+		"stimulation":0.3,
 		"fullStrip":true,
 		"moan":true,
 		"talk":true,
 		"requirements":[
-			"vagina"
+			"anus"
 		],
 		"strippingSlots":[
 			32,
@@ -34,9 +29,9 @@
 			54
 		],
 		"faction":{
-			"info": "OStimRubbingClitorisTargetFaction",
+			"info": "OStimAnalToyingTargetFaction",
 			"mod": "OStim.esp",
-			"formid": "0xE83"
+			"formid": "0xEA2"
 		}
 	},
 	"performer":{
@@ -45,6 +40,7 @@
 		}
 	},
 	"tags":[
-		"sexual"
+		"sexual",
+		"toy"
 	]
 }

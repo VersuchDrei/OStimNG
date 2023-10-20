@@ -16,6 +16,7 @@
 			55
 		],
 		"faction":{
+			"info": "OStimFrenchKissingFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE61"
 		}
@@ -36,6 +37,7 @@
 			55
 		],
 		"faction":{
+			"info": "OStimFrenchKissingFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE61"
 		}

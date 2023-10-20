@@ -11,6 +11,11 @@ namespace PapyrusActorUtil {
         return Compatibility::CompatibilityTable::hasSchlong(actor);
     }
 
+    void SayTo(RE::StaticFunctionTag*, RE::Actor* actor, RE::Actor* target, RE::TESTopic* dialogue) {
+        GameAPI::GameActor gameActor = actor;
+        gameActor.sayTo(target, dialogue);
+    }
+
     std::vector<RE::Actor*> EmptyArray(RE::StaticFunctionTag*) {
         return {};
     }
@@ -51,6 +56,7 @@ namespace PapyrusActorUtil {
         const auto obj = "OActorUtil"sv;
 
         BIND(HasSchlong);
+        BIND(SayTo);
 
         BIND(EmptyArray);
         BIND(ToArray);

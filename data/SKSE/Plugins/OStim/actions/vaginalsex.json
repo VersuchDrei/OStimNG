@@ -16,6 +16,7 @@
 			54
 		],
 		"faction":{
+			"info": "OStimVaginalSexActorFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE90"
 		}
@@ -37,6 +38,7 @@
 			54
 		],
 		"faction":{
+			"info": "OStimVaginalSexTargetFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE91"
 		},
@@ -48,6 +50,7 @@
 	},
 	"performer":{
 		"faction":{
+			"info": "OStimVaginalSexPerformerFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE92"
 		},

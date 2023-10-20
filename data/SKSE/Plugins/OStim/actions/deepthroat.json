@@ -15,6 +15,18 @@
 			44,
 			55
 		],
+		"faction":[
+			{
+				"info": "OStimBlowjobActorFaction",
+				"mod": "OStim.esp",
+				"formid": "0xE52"
+			},
+			{
+				"info": "OStimAnyOralActorFaction",
+				"mod": "OStim.esp",
+				"formid": "0xEA7"
+			}
+		],
 		"stringLists":{
 			"cum":[
 				"throat"
@@ -36,6 +48,18 @@
 			52,
 			53,
 			54
+		],
+		"faction":[
+			{
+				"info": "OStimBlowjobTargetFaction",
+				"mod": "OStim.esp",
+				"formid": "0xE53"
+			},
+			{
+				"info": "OStimAnyOralTargetFaction",
+				"mod": "OStim.esp",
+				"formid": "0xEA8"
+			}
 		]
 	},
 	"performer":{

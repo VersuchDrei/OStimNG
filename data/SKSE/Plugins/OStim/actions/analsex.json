@@ -16,6 +16,7 @@
 			54
 		],
 		"faction":{
+			"info": "OStimAnalSexActorFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE4F"
 		}
@@ -37,6 +38,7 @@
 			54
 		],
 		"faction":{
+			"info": "OStimAnalSexTargetFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE50"
 		},
@@ -47,6 +49,11 @@
 		}
 	},
 	"performer":{
+		"faction":{
+			"info": "OStimAnalSexPerformerFaction",
+			"mod": "OStim.esp",
+			"formid": "0xE51"
+		},
 		"floats":{
 			"stamina":1.0
 		}

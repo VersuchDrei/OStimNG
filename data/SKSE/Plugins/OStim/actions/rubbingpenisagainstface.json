@@ -16,6 +16,7 @@
 			54
 		],
 		"faction":{
+			"info": "OStimRubbingPenisAgainstFaceActorFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE84"
 		}
@@ -33,6 +34,7 @@
 			55
 		],
 		"faction":{
+			"info": "OStimRubbingPenisAgainstFaceTargetFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE85"
 		},

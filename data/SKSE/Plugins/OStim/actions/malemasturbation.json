@@ -9,6 +9,7 @@
 			33
 		],
 		"faction":{
+			"info": "OStimMaleMasturbationFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE7F"
 		}

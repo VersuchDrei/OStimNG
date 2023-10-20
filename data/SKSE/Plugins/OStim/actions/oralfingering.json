@@ -1,0 +1,43 @@
+{
+	"actor":{
+		"info": "the one with the hand",
+		"moan": true,
+		"talk":true,
+		"requirements":[
+			"hand"
+		],
+		"strippingSlots":[
+			33
+		],
+		"faction":{
+			"info": "OStimOralFingeringActorFaction",
+			"mod": "OStim.esp",
+			"formid": "0xE9F"
+		}
+	},
+	"target":{
+		"info": "the one with the mouth",
+		"stimulation":0.1,
+		"maxStimulation": 50,
+		"moan":true,
+		"muffled":true,
+		"expressionOverride":"openmouth",
+		"requirements":[
+			"mouth"
+		],
+		"strippingSlots":[
+			30,
+			31,
+			44,
+			55
+		],
+		"faction":{
+			"info": "OStimOralFingeringTargetFaction",
+			"mod": "OStim.esp",
+			"formid": "0xEA0"
+		}
+	},
+	"tags":[
+		"sensual"
+	]
+}

@@ -20,6 +20,9 @@ namespace Serialization {
     std::string getEquipObject(RE::FormID formID, std::string type);
     void setEquipObject(RE::FormID formID, std::string type, std::string id);
 
+    RE::FormID getVoiceSet(RE::FormID formID);
+    void setVoiceSet(RE::FormID formID, RE::FormID voice);
+
     void Save(SKSE::SerializationInterface* a_intfc);
     void Load(SKSE::SerializationInterface* a_intfc);
     void Revert(SKSE::SerializationInterface* a_intfc);

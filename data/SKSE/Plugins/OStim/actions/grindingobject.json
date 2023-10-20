@@ -14,12 +14,14 @@
 			54
 		],
 		"faction":{
+			"info": "OStimGrindingObjectActorFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE62"
 		}
 	},
 	"performer":{
 		"faction":{
+			"info": "OStimGrindingObjectPerformerFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE63"
 		},

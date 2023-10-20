@@ -12,6 +12,7 @@
 			33
 		],
 		"faction":{
+			"info": "OStimAnalFingeringActorFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE4B"
 		}
@@ -33,15 +34,12 @@
 			54
 		],
 		"faction":{
+			"info": "OStimAnalFingeringTargetFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE4C"
 		}
 	},
 	"performer":{
-		"faction":{
-			"mod": "OStim.esp",
-			"formid": "0xE51"
-		},
 		"floats":{
 			"stamina":0.75
 		}

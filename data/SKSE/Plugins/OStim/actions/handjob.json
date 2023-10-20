@@ -13,6 +13,7 @@
 			33
 		],
 		"faction":{
+			"info": "OStimHandjobActorFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE70"
 		}
@@ -34,6 +35,7 @@
 			54
 		],
 		"faction":{
+			"info": "OStimHandjobTargetFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE71"
 		}
@@ -48,7 +50,7 @@
 			"type":"bonedistance",
 			"sound":{
 				"mod":"OStim.esp",
-				"formid":"0xE14"
+				"formid":"0xEA5"
 			},
 			"actorBone":[
 				"CME R Finger20 [RF20]",

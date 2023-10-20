@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Sound/SoundTable.h"
 #include "Trait/TraitTable.h"
 #include "MCM/MCMTable.h"
 #include "Util/StringUtil.h"
@@ -14,6 +15,7 @@ namespace PapyrusData {
 	void SetUndressingSlotMask(RE::StaticFunctionTag*, uint32_t mask) {
 		MCM::MCMTable::setUndressingMask(mask); }
 
+
     std::vector<std::string> PairsToNames(RE::StaticFunctionTag*, std::vector<std::string> pairs) {
         std::vector<std::string> names;
         for (int i = 1; i < pairs.size(); i += 2) {
@@ -21,6 +23,7 @@ namespace PapyrusData {
         }
         return names;
     }
+
 
 	std::vector<std::string> GetEquipObjectPairs(RE::StaticFunctionTag*, int formID, std::string type) {
         StringUtil::toLower(&type);
@@ -39,6 +42,19 @@ namespace PapyrusData {
 	}
 
 
+	std::vector<std::string> GetVoiceSetPairs(RE::StaticFunctionTag*) {
+		return Sound::SoundTable::getVoiceSetPairs();
+	}
+
+	std::string GetVoiceSetName(RE::StaticFunctionTag*, int formID) {
+        return Sound::SoundTable::getVoiceSetName(formID);
+	}
+
+	void SetVoiceSet(RE::StaticFunctionTag*, int formID, std::string voice) {
+        Sound::SoundTable::setVoiceSet(formID, voice);
+	}
+
+
 	void ResetSettings(RE::StaticFunctionTag*) {
 		MCM::MCMTable::restoreDefaults();
 	}
@@ -51,6 +67,7 @@ namespace PapyrusData {
 		MCM::MCMTable::importSettings();
 	}
 
+
 	bool Bind(VM* a_vm) {
         const auto obj = "OData"sv;
 
@@ -62,6 +79,10 @@ namespace PapyrusData {
 		BIND(GetEquipObjectPairs);
         BIND(GetEquipObjectName);
         BIND(SetEquipObjectID);
+
+		BIND(GetVoiceSetPairs);
+        BIND(GetVoiceSetName);
+        BIND(SetVoiceSet);
 
 		BIND(ResetSettings);
         BIND(ExportSettings);

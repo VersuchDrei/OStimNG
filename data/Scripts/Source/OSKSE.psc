@@ -51,6 +51,11 @@ Function ApplyNodeOverrides(Actor Act) Global
 	NiOverride.ApplyNodeOverrides(Act)
 EndFunction
 
+Function SayPostDialogue(Actor Act, Actor Target, Topic Dialogue) Global
+	Utility.Wait(1.5)
+	OActorUtil.SayTo(Act, Target, Dialogue)
+EndFunction
+
 ; TEMPORARY ONLY
 ; don't call any of these, we will remove them again in later versions
 

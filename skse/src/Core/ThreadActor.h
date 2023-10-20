@@ -141,7 +141,7 @@ namespace OStim {
         bool schlong;
 
         Graph::GraphActor* graphActor = nullptr;
-        GameAPI::GameActor primaryPartner;
+        GameAPI::GameActor primaryPartner = nullptr;
         int speed = 0;
         float scaleMult = 1.0;
         int sosBend = 0;
@@ -274,8 +274,6 @@ namespace OStim {
         int dialogueCountdown = 2;
         bool isTalking = false;
 
-        bool isPlayingClimaxSound = false;
-
         void loopSound();
 
         bool canMakeSound();
@@ -284,16 +282,12 @@ namespace OStim {
         void startMoanCooldown();
         inline void stopMoanCooldown() { moanCooldown = -1; };
         void moan();
-        void climaxMoan();
-        void eventMoan();
 
-        void playSound(Sound::ReactionSet* reactionSet, GameAPI::GameActor partner);
+        void playSound(Sound::ReactionSet* reactionSet, GameAPI::GameActor partner, bool ignoreChecks);
 
         void setDialogueCountdown();
-        void talk();
 
         void playClimaxSound();
-        void reactToOwnClimax();
 
         inline bool isMakingSound() { return lastMoan && lastMoan->isPlaying() || actor.isTalking(); }
 #pragma endregion

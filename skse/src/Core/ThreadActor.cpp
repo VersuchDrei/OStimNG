@@ -70,7 +70,7 @@ namespace OStim {
 
 
     void ThreadActor::undress() {
-        if ((thread->getThreadFlags() | ThreadFlag::NO_UNDRESSING) == ThreadFlag::NO_UNDRESSING) {
+        if ((thread->getThreadFlags() & ThreadFlag::NO_UNDRESSING) == ThreadFlag::NO_UNDRESSING) {
             return;
         }
 
@@ -115,7 +115,7 @@ namespace OStim {
     }
 
     void ThreadActor::undressPartial(uint32_t mask) {
-        if ((thread->getThreadFlags() | ThreadFlag::NO_UNDRESSING) == ThreadFlag::NO_UNDRESSING) {
+        if ((thread->getThreadFlags() & ThreadFlag::NO_UNDRESSING) == ThreadFlag::NO_UNDRESSING) {
             return;
         }
 
@@ -932,6 +932,19 @@ namespace OStim {
         }
 
         logger::info("freed actor {}-{}: {}", thread->m_threadId, index, actor.getName());
+
+        if (!actor.isPlayer() && thread->getActors().size() > 1) {
+            // TODO: GameActor??
+            if (voiceSet.postSceneDialogue) {
+                const auto skyrimVM = RE::SkyrimVM::GetSingleton();
+                auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+                if (vm) {
+                    RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
+                    auto args = RE::MakeFunctionArguments(std::move(actor.form), std::move(primaryPartner.form), std::move(voiceSet.postSceneDialogue.form));
+                    vm->DispatchStaticCall("OSKSE", "SayPostDialogue", args, callback);
+                }
+            }
+        }
     }
 
     void ThreadActor::papyrusUndressCallback(std::vector<RE::TESObjectARMO*> items) {

@@ -16,10 +16,18 @@
 			44,
 			55
 		],
-		"faction":{
-			"mod": "OStim.esp",
-			"formid": "0xE7D"
-		}
+		"faction":[
+			{
+				"info": "OStimLickingVaginaActorFaction",
+				"mod": "OStim.esp",
+				"formid": "0xE7D"
+			},
+			{
+				"info": "OStimAnyOralActorFaction",
+				"mod": "OStim.esp",
+				"formid": "0xEA7"
+			}
+		]
 	},
 	"target":{
 		"info": "the one with the vulva",
@@ -37,10 +45,18 @@
 			53,
 			54
 		],
-		"faction":{
-			"mod": "OStim.esp",
-			"formid": "0xE7E"
-		}
+		"faction":[
+			{
+				"info": "OStimLickingVaginaTargetFaction",
+				"mod": "OStim.esp",
+				"formid": "0xE7E"
+			},
+			{
+				"info": "OStimAnyOralTargetFaction",
+				"mod": "OStim.esp",
+				"formid": "0xEA8"
+			}
+		]
 	},
 	"performer":{
 		"floats":{

@@ -15,6 +15,7 @@
 			54
 		],
 		"faction":{
+			"info": "OStimThighjobActorFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE88"
 		},
@@ -41,6 +42,7 @@
 			54
 		],
 		"faction":{
+			"info": "OStimThighjobTargetFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE89"
 		}

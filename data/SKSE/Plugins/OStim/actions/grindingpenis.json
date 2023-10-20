@@ -16,6 +16,7 @@
 			54
 		],
 		"faction":{
+			"info": "OStimGrindingPenisActorFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE64"
 		}
@@ -37,12 +38,14 @@
 			54
 		],
 		"faction":{
+			"info": "OStimGrindingPenisTargetFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE65"
 		}
 	},
 	"performer":{
 		"faction":{
+			"info": "OStimGrindingPenisPerformerFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE66"
 		},

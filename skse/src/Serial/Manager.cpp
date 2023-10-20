@@ -36,6 +36,26 @@ namespace Serialization {
         }
     }
 
+
+    RE::FormID getVoiceSet(RE::FormID formID) {
+        auto iter = actorData.find(formID);
+        if (iter != actorData.end()) {
+            return iter->second.voiceSet;
+        }
+
+        return 0;
+    }
+
+    void setVoiceSet(RE::FormID formID, RE::FormID voiceSet) {
+        auto iter = actorData.find(formID);
+        if (iter != actorData.end()) {
+            iter->second.voiceSet = voiceSet;
+        } else {
+            actorData[formID] = {.voiceSet = voiceSet};
+        }
+    }
+
+
     void Save(SKSE::SerializationInterface* serial) {
         std::unique_lock lock(_lock);
         logger::info("serializing data");
@@ -60,7 +80,7 @@ namespace Serialization {
             oldThread.serialize(serial);
         }
 
-        if (!serial->OpenRecord(actorDataRecord, 0)) {
+        if (!serial->OpenRecord(actorDataRecord, ACTOR_DATA_VERSION)) {
             logger::error("Unable to open record to write cosave data.");
             return;
         }
@@ -104,7 +124,7 @@ namespace Serialization {
                     RE::FormID newID;
                     bool valid = serial->ResolveFormID(oldID, newID);
 
-                    ActorData data = ActorData::deserialize(serial);
+                    ActorData data = ActorData::deserialize(serial, version);
 
                     if (valid) {
                         actorData.emplace(newID, data);

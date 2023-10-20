@@ -12,6 +12,7 @@
 			33
 		],
 		"faction":{
+			"info": "OStimGropingTesticlesActorFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE6E"
 		}
@@ -34,6 +35,7 @@
 			54
 		],
 		"faction":{
+			"info": "OStimGropingTesticlesTargetFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE6F"
 		}

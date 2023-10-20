@@ -16,6 +16,7 @@
 			54
 		],
 		"faction":{
+			"info": "OStimGrindingThighActorFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE67"
 		}
@@ -32,12 +33,14 @@
 			54
 		],
 		"faction":{
+			"info": "OStimGrindingThighTargetFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE68"
 		}
 	},
 	"performer":{
 		"faction":{
+			"info": "OStimGrindingThighPerformerFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE69"
 		},
