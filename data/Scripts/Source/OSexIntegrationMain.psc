@@ -1900,6 +1900,7 @@ EndFunction
 
 
 Event OStimStart(String EventName, String sceneId, Float index, Form Sender)
+	_Actors = OThread.GetActors(0)
 	MostRecentOrgasmedActor = None
 	StartTime = Utility.GetCurrentRealTime()
 EndEvent
@@ -1908,7 +1909,7 @@ Event OStimEnd(String EventName, String sceneId, Float index, Form Sender)
 	OSANative.EndPlayerDialogue()
 EndEvent
 
-Event OstimOrgasm(String EventName, String sceneId, Float index, Form Sender)
+Event OStimOrgasm(String EventName, String sceneId, Float index, Form Sender)
 	Actor Act = Sender As Actor
 	MostRecentOrgasmedActor = Act
 
@@ -2099,9 +2100,9 @@ Function OnLoadGame()
 	POSITION_TAGS[14] = "standing"
 	POSITION_TAGS[15] = "suspended"
 
-	RegisterForModEvent("ostim_start", "OstimStart")
-	RegisterForModEvent("ostim_end", "OstimEnd")
-	RegisterForModEvent("ostim_orgasm", "OstimOrgasm")
+	RegisterForModEvent("ostim_start", "OStimStart")
+	RegisterForModEvent("ostim_end", "OStimEnd")
+	RegisterForModEvent("ostim_orgasm", "OStimOrgasm")
 EndFunction
 
 
@@ -2694,8 +2695,9 @@ Function Orgasm(Actor Act)
 	OActor.Climax(Act, false)
 EndFunction
 
+Actor[] _Actors
 Actor[] Function GetActors()
-	Return OThread.GetActors(0)
+	Return _Actors
 EndFunction
 
 Actor Function GetActor(int Index)

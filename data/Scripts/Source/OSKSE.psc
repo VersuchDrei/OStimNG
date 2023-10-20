@@ -51,9 +51,26 @@ Function ApplyNodeOverrides(Actor Act) Global
 	NiOverride.ApplyNodeOverrides(Act)
 EndFunction
 
+;/* SayPostDialogue
+* * makes the actor say the dialogue after a short delay
+* *
+* * @param: Act, the actor that should say the dialogue
+* * @param: Target, the actor the dialogue should be said to
+* * @param: Dialogue, the dialogue
+*/;
 Function SayPostDialogue(Actor Act, Actor Target, Topic Dialogue) Global
 	Utility.Wait(1.5)
 	OActorUtil.SayTo(Act, Target, Dialogue)
+EndFunction
+
+Function FadeToBlack(float fadeDuration) Global
+	Game.FadeOutGame(true, true, 0.0, fadeDuration)
+	Utility.Wait(fadeDuration * 0.7)
+	Game.FadeOutGame(false, true, 99.0, 99.0)
+EndFunction
+
+Function FadeFromBlack(float fadeDuration) Global
+	Game.FadeOutGame(false, true, 0.0, fadeDuration)
 EndFunction
 
 ; TEMPORARY ONLY

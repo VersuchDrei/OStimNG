@@ -14,9 +14,6 @@ namespace GameAPI {
         inline static RE::BGSKeyword* getVampireKeyword() { return Vampire; }
         inline static RE::TESRace* getManakinRace() { return ManakinRace; }
 
-        inline static RE::TESImageSpaceModifier* getFadeToBlackHoldImod() { return FadeToBlackHoldImod; }
-        inline static RE::TESImageSpaceModifier* getFadeToBlackBackImod() { return FadeToBlackBackImod; }
-
         inline static bool improvedCamSupport() { return OStimImprovedCamSupport->value != 0; }
 
         inline static RE::TESFaction* getOStimEmptyFaction() { return OStimEmptyFaction; }
@@ -29,10 +26,6 @@ namespace GameAPI {
         inline static RE::BGSKeyword* ActorTypeNPC = nullptr;
         inline static RE::BGSKeyword* Vampire = nullptr;
         inline static RE::TESRace* ManakinRace = nullptr;
-
-        inline static RE::TESImageSpaceModifier* FadeToBlackImod = nullptr;
-        inline static RE::TESImageSpaceModifier* FadeToBlackHoldImod = nullptr;
-        inline static RE::TESImageSpaceModifier* FadeToBlackBackImod = nullptr;
 
         inline static RE::TESGlobal* OStimImprovedCamSupport = nullptr;
 

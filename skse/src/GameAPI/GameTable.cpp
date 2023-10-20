@@ -10,10 +10,6 @@ namespace GameAPI {
         Vampire = handler->LookupForm<RE::BGSKeyword>(0x0A82BB, "Skyrim.esm");
         ManakinRace = handler->LookupForm<RE::TESRace>(0x10760A, "Skyrim.esm");
 
-        FadeToBlackImod = handler->LookupForm<RE::TESImageSpaceModifier>(0x0F756D, "Skyrim.esm");
-        FadeToBlackHoldImod = handler->LookupForm<RE::TESImageSpaceModifier>(0x0F756E, "Skyrim.esm");
-        FadeToBlackBackImod = handler->LookupForm<RE::TESImageSpaceModifier>(0x0F756F, "Skyrim.esm");
-
         OStimImprovedCamSupport = handler->LookupForm<RE::TESGlobal>(0xDE6, "OStim.esp");
 
         OStimEmptyFaction = handler->LookupForm<RE::TESFaction>(0xDED, "OStim.esp");
