@@ -24,7 +24,7 @@ string[] Function GetVoiceSetPairs() Global Native
 
 string Function GetVoiceSetName(int FormID) Global Native
 
-string Function SetVoiceSet(int FormID, string Voice) Global Native 
+Function SetVoiceSet(int FormID, string Voice) Global Native 
 
 
 Function ResetSettings() Global Native
