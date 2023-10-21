@@ -81,6 +81,7 @@ namespace GameAPI {
         inline bool isInDialogue() const { return IsInDialogueWithPlayer(nullptr, 0, form); }
         inline bool isTalking() const { return form->GetActorRuntimeData().voiceTimer > 0; }
         void sayTo(GameActor target, GameDialogue dialogue) const;
+        double getLightLevel() const { return GetLightLevel(form); }
 
         std::vector<GameActor> getNearbyActors(float radius, std::function<bool(GameActor)> condition) const;
 
@@ -134,10 +135,16 @@ namespace GameAPI {
         }
 
         inline static void TranslateTo(RE::BSScript::IVirtualMachine* vm, RE::VMStackID stackID, RE::TESObjectREFR* object, float afX, float afY, float afZ, float afAngleX, float afAngleY, float afAngleZ, float afSpeed, float afMaxRotationSpeed) {
-        using func_t = decltype(TranslateTo);
-        REL::Relocation<func_t> func{RELOCATION_ID(55706, 56237)};
-        func(vm, stackID, object, afX, afY, afZ, afAngleX, afAngleY, afAngleZ, afSpeed, afMaxRotationSpeed);
-    }
+            using func_t = decltype(TranslateTo);
+            REL::Relocation<func_t> func{RELOCATION_ID(55706, 56237)};
+            func(vm, stackID, object, afX, afY, afZ, afAngleX, afAngleY, afAngleZ, afSpeed, afMaxRotationSpeed);
+        }
+
+        inline static double GetLightLevel(RE::Actor* actor) {
+            using func_t = decltype(GetLightLevel);
+            REL::Relocation<func_t> func{RELOCATION_ID(36759, 37775)};
+            return func(actor);
+        }
 
         inline static void SetPosition(RE::TESObjectREFR* object, float x, float y, float z) { object->SetPosition(x, y, z); }
     };

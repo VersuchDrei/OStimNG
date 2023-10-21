@@ -15,6 +15,8 @@ namespace MCM {
         inline static bool useIntroScenes() { return settings[0xDA1].asBool(); }
         inline static bool addActorsAtStart() { return settings[0xE45].asBool(); }
 
+        inline static bool onlyLightInDark() { return settings[0xE24].asBool(); }
+
         inline static int keyUp() { return settings[0xE28].asInt(); }
         inline static int keyDown() { return settings[0xE29].asInt(); }
         inline static int keyLeft() { return settings[0xE2A].asInt(); }
@@ -151,11 +153,7 @@ namespace MCM {
             {0xDA1, {1, "SetUseIntroScenes"}},
             {0xE45, {1, "addActorsAtStart"}},
 
-            {0xE22, {0, "SetDomLightMode"}},
-            {0xE23, {0, "SetSubLightMode"}},
             {0xE24, {0, "SetOnlyLightInDark"}},
-            {0xE26, {0, "SetDomLightBrightness"}},
-            {0xE27, {0, "SetSubLightBrightness"}},
 
             {0xE28, {72, "SetOsaUpKey"}},
             {0xE29, {76, "SetOsaDownKey"}},
@@ -273,7 +271,6 @@ namespace MCM {
             {0xE48, {1, "futaUseMaleRole"}},
             {0xE05, {0, "futaUseMaleExcitement"}},
             {0xE17, {1, "futaUseMaleClimax"}},
-            {0xE25, {1, "futaUseMaleLight"}},
             
             {0xD94, {0, "SetScaling"}},
             {0xD97, {0, "SetSchlongBending"}},

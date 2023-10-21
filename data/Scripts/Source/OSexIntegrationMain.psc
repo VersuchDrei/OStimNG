@@ -1231,20 +1231,6 @@ bool Property FutaUseMaleClimax
 	EndFunction
 EndProperty
 
-GlobalVariable Property OStimFutaUseMaleLight Auto
-bool Property FutaUseMaleLight
-	bool Function Get()
-		Return OStimFutaUseMaleLight.value != 0
-	EndFunction
-	Function Set(bool Value)
-		If Value
-			OStimFutaUseMaleLight.value = 1
-		Else
-			OStimFutaUseMaleLight.value = 0
-		EndIf
-	EndFunction
-EndProperty
-
 ; -------------------------------------------------------------------------------------------------
 ; ALIGNMENT SETTINGS  -----------------------------------------------------------------------------
 

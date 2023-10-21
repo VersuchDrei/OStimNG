@@ -120,6 +120,13 @@ namespace OStim {
             UI::Scene::SceneMenu::GetMenu()->Show();
         }
 
+        if (!MCM::MCMTable::onlyLightInDark() || GetActor(0)->getActor().getLightLevel() < 20) {
+            logger::info("trying to add facelights");
+            for (auto& [index, actor] : m_actors) {
+                actor.equipObject("light");
+            }
+        }
+
         if (playerThread) {
             FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_prestart", "", 0);
             FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_start", "", 0);

@@ -324,7 +324,7 @@ namespace Trait {
 
     std::vector<std::string> TraitTable::getEquipObjectPairs(RE::FormID formID, std::string type) {
         std::vector<std::string> ret;
-        if (defaultEquipObjects.contains("type") || formID > 1) {
+        if (defaultEquipObjects.contains(type) || formID > 1) {
             ret.push_back("default");
             ret.push_back("default");
         }
@@ -355,7 +355,7 @@ namespace Trait {
     std::string TraitTable::getEquipObjectName(RE::FormID formID, std::string type) {
         std::string id = Serialization::getEquipObject(formID, type);
         if (id == "") {
-            return defaultEquipObjects.contains("type") || formID >= 1 ? "default" : "random";
+            return defaultEquipObjects.contains(type) || formID > 1 ? "default" : "random";
         } else if (id == "default") {
             return "default";
         } else if (id == "random") {
