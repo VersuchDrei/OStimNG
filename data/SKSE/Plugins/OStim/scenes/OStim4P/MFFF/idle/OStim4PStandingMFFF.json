@@ -1,5 +1,5 @@
 {
-	"name": "Standing MMMF",
+	"name": "Standing MFFF",
 	"modpack": "OStim",
 	"length": 10.0,
 	"speeds":[
@@ -9,17 +9,17 @@
 	],
 	"navigations":[
 		{
-			"destination": "OStim4PLyingMMFF",
+			"destination": "OStim4PStandingMMMF",
+			"description": "go to MMMF idle",
+			"icon": "OStim/symbols/gender_mmf"
+		},
+		{
+			"destination": "OStim4PStandingMMFF",
 			"description": "go to MMFF idle",
 			"icon": "OStim/symbols/gender_mf"
 		},
 		{
 			"destination": "OStim4PLyingMFFF",
-			"description": "go to MFFF idle",
-			"icon": "OStim/symbols/gender_mff"
-		},
-		{
-			"destination": "OStim4PLyingMMMF",
 			"description": "lie down",
 			"icon": "OStim/positional/lyingback_m"
 		}
@@ -40,7 +40,7 @@
 			"lookLeft": 40
 		},
 		{
-			"intendedSex": "male",
+			"intendedSex": "female",
 			"tags": [
 				"standing"
 			],
@@ -50,7 +50,7 @@
 			"lookLeft": 10
 		},
 		{
-			"intendedSex": "male",
+			"intendedSex": "female",
 			"tags": [
 				"standing"
 			],

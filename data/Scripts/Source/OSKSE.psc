@@ -63,14 +63,24 @@ Function SayPostDialogue(Actor Act, Actor Target, Topic Dialogue) Global
 	OActorUtil.SayTo(Act, Target, Dialogue)
 EndFunction
 
-Function FadeToBlack(float fadeDuration) Global
-	Game.FadeOutGame(true, true, 0.0, fadeDuration)
+;/* FadeToBlack
+* * fades the game to a blackscreen
+* *
+* * @param: FadeDuration, the duration in seconds for the fade to reach full black
+*/;
+Function FadeToBlack(float FadeDuration) Global
+	Game.FadeOutGame(true, true, 0.0, FadeDuration)
 	Utility.Wait(fadeDuration * 0.7)
 	Game.FadeOutGame(false, true, 99.0, 99.0)
 EndFunction
 
-Function FadeFromBlack(float fadeDuration) Global
-	Game.FadeOutGame(false, true, 0.0, fadeDuration)
+;/* FadeFromBlack
+* * fades the game from a blackscreen back to normal
+* *
+* * @param: FadeDuration, the duration in seconds for the fade to reach normal
+*/;
+Function FadeFromBlack(float FadeDuration) Global
+	Game.FadeOutGame(false, true, 0.0, FadeDuration)
 EndFunction
 
 ; TEMPORARY ONLY

@@ -83,7 +83,9 @@ namespace OStim {
             evaluateAutoMode();
         }
         
-        if (!playerThread) {
+        if (params.duration > 0) {
+            stopTimer = params.duration;
+        } else if (!playerThread) {
             stopTimer = MCM::MCMTable::npcSceneDuration();
         }
 

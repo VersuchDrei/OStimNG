@@ -34,6 +34,17 @@ Function SetDominantActors(int BuilderID, Actor[] Actors) Global Native
 */;
 Function SetFurniture(int BuilderID, ObjectReference FurnitureRef) Global Native
 
+;/* SetDuration
+* * sets the duration of the thread (in seconds), when this duration is over the thread ends
+* * the thread can still end sooner than that due to player input or stop conditions (like end on climax)
+* *
+* * required API version: 30
+* *
+* * @param: BuilderID, the id of the thread builder
+* * @param: Duration, the duration for the thread
+*/;
+Function SetDuration(int BuilderID, float Duration) Global Native
+
 ;/* SetStartingAnimation
 * * sets the starting animation of the scene
 * * if a starting sequence is set the starting animation is ignored
@@ -130,6 +141,7 @@ Function SetMetadata(int BuilderID, string[] Metadata) Global Native
 * * @param: Metadata, a csv-string of metadata
 */;
 Function SetMetadataCSV(int BuilderID, string Metadata) Global Native
+
 
 ;/* Start
 * * starts the thread

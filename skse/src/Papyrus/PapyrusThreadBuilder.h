@@ -43,6 +43,15 @@ namespace PapyrusThreadBuilder {
         params->furniture = furniture;
     }
 
+    void SetDuration(RE::StaticFunctionTag*, int builderID, float duration) {
+        OStim::ThreadStartParams* params = OStim::ThreadBuilder::get(builderID);
+        if (!params) {
+            return;
+        }
+
+        params->duration = duration * 1000.0f;
+    }
+
     void SetStartingAnimation(RE::StaticFunctionTag*, int builderID, std::string animation) {
         OStim::ThreadStartParams* params = OStim::ThreadBuilder::get(builderID);
         if (!params) {
@@ -171,6 +180,7 @@ namespace PapyrusThreadBuilder {
         BIND(Create);
         BIND(SetDominantActors);
         BIND(SetFurniture);
+        BIND(SetDuration);
         BIND(SetStartingAnimation);
         BIND(SetStartingSequence);
         BIND(EndAfterSequence);

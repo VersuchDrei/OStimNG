@@ -12,6 +12,7 @@ namespace OStim {
         std::vector<GameAPI::GameActor> actors;
         std::vector<GameAPI::GameActor> dominantActors;
         GameAPI::GameObject furniture;
+        int duration = 0;
         Graph::Node* startingNode = nullptr;
         Graph::Sequence* startingSequence = nullptr;
         bool endAfterSequence = false;
