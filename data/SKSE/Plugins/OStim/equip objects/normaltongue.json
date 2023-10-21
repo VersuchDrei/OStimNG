@@ -1,6 +1,7 @@
 {
 	"type": "tongue",
 	"name": "Normal Tongue",
+	"default": true,
 	"mod": "OStim.esp",
 	"formid": "0xDC6",
 	"variants":{

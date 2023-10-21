@@ -121,26 +121,6 @@ bool Property AddActorsAtStart
 EndProperty
 
 
-GlobalVariable Property OStimMaleLightMode Auto
-int Property DomLightPos
-	int Function Get()
-		Return OStimMaleLightMode.value As int
-	EndFunction
-	Function Set(int Value)
-		OStimMaleLightMode.value = Value
-	EndFunction
-EndProperty
-
-GlobalVariable Property OStimFemaleLightMode Auto
-int Property SubLightPos
-	int Function Get()
-		Return OStimFemaleLightMode.value As int
-	EndFunction
-	Function Set(int Value)
-		OStimFemaleLightMode.value = Value
-	EndFunction
-EndProperty
-
 GlobalVariable Property OStimOnlyLightInDark Auto
 bool Property LowLightLevelLightsOnly
 	bool Function Get()
@@ -155,25 +135,6 @@ bool Property LowLightLevelLightsOnly
 	EndFunction
 EndProperty
 
-GlobalVariable Property OStimMaleLightBrightness Auto
-int Property DomLightBrightness
-	int Function Get()
-		Return OStimMaleLightBrightness.value As int
-	EndFunction
-	Function Set(int Value)
-		OStimMaleLightBrightness.value = Value
-	EndFunction
-EndProperty
-
-GlobalVariable Property OStimFemaleLightBrightness Auto
-int Property SubLightBrightness
-	int Function Get()
-		Return OStimFemaleLightBrightness.value As int
-	EndFunction
-	Function Set(int Value)
-		OStimFemaleLightBrightness.value = Value
-	EndFunction
-EndProperty
 
 
 ; -------------------------------------------------------------------------------------------------
@@ -2367,6 +2328,11 @@ Bool property EndedProper
 	Function Set(bool Value)
 	EndFunction
 EndProperty
+
+int Property DomLightPos = 0 Auto
+int Property SubLightPos = 0 Auto
+int Property DomLightBrightness = 0 Auto
+int Property SubLightBrightness = 0 Auto
 
 Bool Property MuteOSA
 	bool Function Get()

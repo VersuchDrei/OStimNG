@@ -10,6 +10,9 @@ field summary:
 equip object:
 "type" (string): the type of the equip object, types used by OStim are "strapon" and "tongue", but addons can equip any custom type you want
 "name" (string): the name of the equip object, this is the name that will be displayed in the MCM when selecting equip objects
+"default" (bool): if true this equip object will be considered the default one for all actors that don't have anything else defined
+	if no default object exists the default is random
+	if more than one default object exists they will overwrite each other and lead to unpredictable behavior
 "mod" (string): the file name of the mod the armor item is defined in, including file extension
 "formid" (string): the form id of the armor item in hexadecimal notation, excluding the load order id (leading zeroes are optional)
 "variants" (map<string, object>): a map of variants for this equip objects, with the keys being the variants ids (see variant)

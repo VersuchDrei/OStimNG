@@ -5,13 +5,6 @@ int UndressingSlotMask
 
 ; actor role settings
 
-; light settings
-String[] DomLightModeList
-String[] SubLightModeList
-
-String[] SubLightBrightList
-String[] DomLightBrightList
-
 ; ai control settings
 Int SetControlToggle
 
@@ -39,24 +32,6 @@ EndEvent
 
 Function Init()
 	Parent.OnGameReload()
-
-	DomLightModeList = new String[3]
-	DomLightModeList[0] = "$ostim_light_mode_none"
-	DomLightModeList[1] = "$ostim_light_mode_rear"
-	DomLightModeList[2] = "$ostim_light_mode_face"
-
-	SubLightModeList = new String[3]
-	SubLightModeList[0] = "$ostim_light_mode_none"
-	SubLightModeList[1] = "$ostim_light_mode_rear"
-	SubLightModeList[2] = "$ostim_light_mode_face"
-
-	SubLightBrightList = new String[2]
-	SubLightBrightList[0] = "$ostim_light_type_dim"
-	SubLightBrightList[1] = "Bright"
-
-	DomLightBrightList = new String[2]
-	DomLightBrightList[0] = "$ostim_light_type_dim"
-	DomLightBrightList[1] = "$ostim_light_type_bright"
 
 	playerref = game.getplayer()
 
@@ -271,14 +246,12 @@ Function DrawGeneralPage()
 	SetCursorPosition(14)
 	AddColoredHeader("$ostim_header_lights")
 	SetCursorPosition(16)
-	AddMenuOptionST("OID_MaleLightMode", "$ostim_male_light_mode", DomLightModeList[Main.DomLightPos])
+	AddMenuOptionST("OID_MaleLightMode", "$ostim_male_light_mode", OData.GetEquipObjectName(0x0, "light"))
 	SetCursorPosition(18)
-	AddMenuOptionST("OID_MaleLightBrightness", "$ostim_male_light_brightness", DomLightBrightList[Main.DomLightBrightness])
+	AddMenuOptionST("OID_FemaleLightMode", "$ostim_female_light_mode", OData.GetEquipObjectName(0x1, "light"))
 	SetCursorPosition(20)
-	AddMenuOptionST("OID_FemaleLightMode", "$ostim_female_light_mode", DomLightModeList[Main.SubLightPos])
+	AddMenuOptionST("OID_PlayerLightMode", "$ostim_player_light_mode", OData.GetEquipObjectName(0x7, "light"))
 	SetCursorPosition(22)
-	AddMenuOptionST("OID_FemaleLightBrightness", "$ostim_female_light_brightness", DomLightBrightList[Main.SubLightBrightness])
-	SetCursorPosition(24)
 	AddToggleOptionST("OID_OnlyLightInDark", "$ostim_dark_light", Main.LowLightLevelLightsOnly)
 
 	SetCursorPosition(1)
@@ -366,37 +339,15 @@ State OID_MaleLightMode
 	EndEvent
 
 	Event OnMenuOpenST()
-		SetMenuDialogOptions(DomLightModeList)
+		OpenEquipObjectMenu(0x0, "light")
 	EndEvent
 
 	Event OnMenuAcceptST(int Index)
-		Main.DomLightPos = Index
-		SetMenuOptionValueST(DomLightModeList[Index])
+		SetEquipObjectID(0x0, "light", Index)
 	EndEvent
 
 	Event OnDefaultST()
-		Main.DomLightPos = 0
-		SetMenuOptionValueST(DomLightModeList[0])
-	EndEvent
-EndState
-
-State OID_MaleLightBrightness
-	Event OnHighlightST()
-		SetInfoText("$ostim_tooltip_male_light_brightness")
-	EndEvent
-
-	Event OnMenuOpenST()
-		SetMenuDialogOptions(DomLightBrightList)
-	EndEvent
-
-	Event OnMenuAcceptST(int Index)
-		Main.DomLightBrightness = Index
-		SetMenuOptionValueST(DomLightBrightList[Index])
-	EndEvent
-
-	Event OnDefaultST()
-		Main.DomLightBrightness = 0
-		SetMenuOptionValueST(DomLightBrightList[0])
+		SetEquipObjectIDToDefault(0x0, "light")
 	EndEvent
 EndState
 
@@ -406,37 +357,33 @@ State OID_FemaleLightMode
 	EndEvent
 
 	Event OnMenuOpenST()
-		SetMenuDialogOptions(DomLightModeList)
+		OpenEquipObjectMenu(0x1, "light")
 	EndEvent
 
 	Event OnMenuAcceptST(int Index)
-		Main.SubLightPos = Index
-		SetMenuOptionValueST(DomLightModeList[Index])
+		SetEquipObjectID(0x1, "light", Index)
 	EndEvent
 
 	Event OnDefaultST()
-		Main.SubLightPos = 0
-		SetMenuOptionValueST(DomLightModeList[0])
+		SetEquipObjectIDToDefault(0x1, "light")
 	EndEvent
 EndState
 
-State OID_FemaleLightBrightness
+State OID_PlayerLightMode
 	Event OnHighlightST()
-		SetInfoText("$ostim_tooltip_female_light_brightness")
+		SetInfoText("$ostim_tooltip_player_light_mode")
 	EndEvent
 
 	Event OnMenuOpenST()
-		SetMenuDialogOptions(DomLightBrightList)
+		OpenEquipObjectMenu(0x7, "light")
 	EndEvent
 
 	Event OnMenuAcceptST(int Index)
-		Main.SubLightBrightness = Index
-		SetMenuOptionValueST(DomLightBrightList[Index])
+		SetEquipObjectID(0x7, "light", Index)
 	EndEvent
 
 	Event OnDefaultST()
-		Main.SubLightBrightness = 0
-		SetMenuOptionValueST(DomLightBrightList[0])
+		SetEquipObjectIDToDefault(0x7, "light")
 	EndEvent
 EndState
 

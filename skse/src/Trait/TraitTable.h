@@ -46,7 +46,8 @@ namespace Trait {
         inline static std::unordered_map<std::string, std::vector<FacialExpression*>*> expressionsByEvents;
         inline static std::unordered_map<std::string, std::vector<FacialExpression*>*> expressionsBySets;
 
-        inline static std::unordered_map <std::string, std::unordered_map<std::string, EquipObject*>> equipObjects;
+        inline static std::unordered_map<std::string, std::unordered_map<std::string, EquipObject*>> equipObjects;
+        inline static std::unordered_map<std::string, EquipObject*> defaultEquipObjects;
 
         inline static RE::TESFaction* noFacialExpressionsFaction;
     };
