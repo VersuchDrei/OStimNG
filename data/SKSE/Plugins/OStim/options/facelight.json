@@ -7,60 +7,64 @@
       "parent": null
     },
     {
-      "name": "Test2",
-      "description": "Second Test",
+      "name": "FaceLightsPerActor",
+      "description": "Face lights for {actor}",
       "icon": "OStim/symbols/gender_m",
-      "parent": null
-    },
-    {
-      "name": "Test3",
-      "description": "Third Test",
-      "icon": "OStim/symbols/gradient_fff",
-      "parent": "Test2"
+      "parent": "FaceLights",
+      "repeat": "actor"
     }
   ],
   "options": [
     {
-      "name": "Toggle Facelights",
-      "page": "FaceLights",
-      "toggle": true,
+      "name": "Toggle Facelight",
+      "page": "FaceLightsPerActor",
       "states": {
-        "on": {
+        "0": {
           "icon": "OStim/symbols/gender_f",
-          "description": "Toggle facelight off for {actor}",
-          "border": "FF0000",
-          "nextState": "off"
+          "description": "Toggle facelight on for {actor}",
+          "border": "FFFF00"
         },
-        "off": {
+        "1": {
           "icon": "OStim/symbols/gender_m",
           "description": "Toggle facelight off for {actor}",
-          "border": "00FF00",
-          "nextState": "on"
+          "border": "0000FF"
         }
       },
-      "function": "OSKSE/ApplyFaceLight",
-      "repeat": "actor"
+      "function": "OSKSE/ApplyFaceLight"
     },
     {
-      "name": "Test 4",
-      "page": "Test3",
-      "toggle": true,
+      "name": "Toggle Buttlight",
+      "page": "FaceLightsPerActor",
       "states": {
-        "on": {
+        "0": {
           "icon": "OStim/symbols/gender_f",
-          "description": "Do a Test Thing",
-          "border": "FF0000",
-          "nextState": "off"
+          "description": "Toggle buttlight on for {actor}",
+          "border": "FF00FF"
         },
-        "off": {
+        "1": {
           "icon": "OStim/symbols/gender_m",
-          "description": "Do a different Test Thing",
-          "border": "00FF00",
-          "nextState": "on"
+          "description": "Toggle buttlight off for {actor}",
+          "border": "00FF00"
         }
       },
-      "function": "OSKSE/ApplyFaceLight",
-      "repeat": "actor"
+      "function": "OSKSE/ApplyButtLight"
+    },
+    {
+      "name": "Toggle Crotchlight",
+      "page": "FaceLightsPerActor",
+      "states": {
+        "0": {
+          "icon": "OStim/symbols/gender_f",
+          "description": "Toggle buttlight on for {actor}",
+          "border": "00FFFF"
+        },
+        "1": {
+          "icon": "OStim/symbols/gender_m",
+          "description": "Toggle buttlight off for {actor}",
+          "border": "FF0000"
+        }
+      },
+      "function": "OSKSE/ApplyCrotchLight"
     }
   ]
 }

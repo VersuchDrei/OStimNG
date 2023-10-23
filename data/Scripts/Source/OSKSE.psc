@@ -95,3 +95,39 @@ EndFunction
 Function ShowBars() Global
 	OUtils.GetOStim().ShowBars()
 EndFunction
+
+Function ApplyFaceLight (string stateVal, Actor act) Global
+	Faction fact = Game.GetFormFromFile(0x00000EA0, "OStim.esp") as Faction
+	int nextStateVal = 0;
+	if (stateVal == "1")
+		nextStateVal = 0
+	else 
+		nextStateVal = 1
+	endif
+	act.setFactionRank(fact, nextStateVal)
+	Debug.MessageBox("ApplyFaceLight "+ act.GetDisplayName() + " " + stateVal)
+EndFunction
+
+Function ApplyButtLight (string stateVal, Actor act) Global
+	Faction fact = Game.GetFormFromFile(0x00000EA0, "OStim.esp") as Faction
+	int nextStateVal = 0;
+	if (stateVal == "1")
+		nextStateVal = 0
+	else 
+		nextStateVal = 1
+	endif
+	act.setFactionRank(fact, nextStateVal)
+	Debug.MessageBox("ApplyButtLight "+ act.GetDisplayName() + " " + stateVal)
+EndFunction
+
+Function ApplyCrotchLight (string stateVal, Actor act) Global
+	Faction fact = Game.GetFormFromFile(0x00000EA0, "OStim.esp") as Faction
+	int nextStateVal = 0;
+	if (stateVal == "1")
+		nextStateVal = 0
+	else 
+		nextStateVal = 1
+	endif
+	act.setFactionRank(fact, nextStateVal)
+	Debug.MessageBox("ApplyCrotchLight "+ act.GetDisplayName() + " " + stateVal)
+EndFunction

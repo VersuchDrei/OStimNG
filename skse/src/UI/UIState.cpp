@@ -59,6 +59,7 @@ namespace UI {
         currentThread = thread;
         currentNode = thread->getCurrentNode();
         UI::Align::AlignMenu::GetMenu()->ThreadChanged();
+        UI::Scene::SceneMenu::GetMenu()->BuildOptionsData();
         UI::Scene::SceneMenu::GetMenu()->UpdateMenuData();
     }
 

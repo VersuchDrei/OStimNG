@@ -11,7 +11,7 @@ namespace Graph {
 
     void GraphTable::setupOptions() {
         std::unordered_map<std::string, MenuNode> rawPages;
-        std::vector<OptionNode*> options;
+        std::vector<OptionNode> options;
         Util::JsonFileLoader::LoadFilesInSubfolders(OPTION_FILE_PATH, [&rawPages, &options](std::string path, std::string filename, json json) {
             if (json.contains("pages")) {
 
@@ -46,6 +46,10 @@ namespace Graph {
                             if (page.contains("border") && page["border"].is_string()) {
                                 node.border = page["border"];
                             }
+
+                            if (page.contains("repeat") && page["repeat"].is_string()) {
+                                node.repeat = page["repeat"];
+                            }
                         }
                         else {
                             logger::warn("page doesnt contain name {}", path);
@@ -66,49 +70,55 @@ namespace Graph {
                 if (json["options"].is_array()) {
                     auto index = 0;
                     for (auto& option : json["options"]) {
-                        OptionNode* node = new OptionNode();
+                        OptionNode node;
                         if (!option.contains("name"))
                         {
                             logger::warn("option contains no name {} {}", path, index);
                             continue;
                         }
                         if (option["name"].is_string()) {
-                            node->name = option["name"];
+                            node.name = option["name"];
                         }
                         if (!option.contains("page")) {
-                            logger::warn("option doesn't contain page {} {}", path, node->name);
+                            logger::warn("option doesn't contain page {} {}", path, node.name);
                             continue;
                         }
                         if (option["page"].is_string()) {
-                            node->parentName = option["page"];
+                            node.parentName = option["page"];
                         }
                         else {
-                            logger::warn("option->page is not string, {} {}", path, node->name);
+                            logger::warn("option->page is not string, {} {}", path, node.name);
                         }
 
-                        if (option.contains("toggle") && option["toggle"].is_boolean()) {
-                            node->toggle = option["toggle"];
-                        }
                         if (option.contains("function") && option["function"].is_string()) {
                             auto fn = option["function"].get<std::string>();
                             auto split = stl::string_split(fn, '/');
                             if (split.size() != 2) {
-                                logger::warn("function not valid {}", node->parentName);
+                                logger::warn("function not valid {}", node.parentName);
+                                continue;
                             }
-                            node->script = split[0];
-                            node->function = split[1];
+                            node.script = split[0];
+                            node.function = split[1];
+                        }
+                        if (option.contains("stateFaction") && option["stateFaction"].is_string()) {
+                            auto split = stl::string_split(option["stateFaction"].get<std::string>(), ';');
+                            if (split.size() != 2) {
+                                logger::warn("state faction not valid {}", node.parentName);
+                                continue;
+                            }
+                            node.stateFaction = option["stateFaction"].get<std::string>();
                         }
                         if (option.contains("repeat") && option["repeat"].is_string()) {
-                            node->repeat = option["repeat"];
+                            node.repeat = option["repeat"];
                         }
 
                         if (!option.contains("states")) {
-                            logger::warn("option contains no states {}", node->name);
+                            logger::warn("option contains no states {}", node.name);
                         }
                         else {
                             auto states = option["states"];
                             for (json::iterator it = states.begin(); it != states.end(); ++it) {
-                                OptionStateGroupData data;
+                                OptionData data;
                                 if (it.value().contains("description") && it.value()["description"].is_string()) {
                                     data.description = it.value()["description"];
                                 }
@@ -118,10 +128,7 @@ namespace Graph {
                                 if (it.value().contains("border") && it.value()["border"].is_string()) {
                                     data.border = it.value()["border"];
                                 }
-                                if (it.value().contains("nextState") && it.value()["nextState"].is_string()) {
-                                    data.nextState = it.value()["nextState"];
-                                }
-                                node->states.insert(std::make_pair(it.key(), data));
+                                node.states.insert(std::make_pair(it.key(), data));
                             }
                         }
                         options.push_back(node);
@@ -138,35 +145,13 @@ namespace Graph {
         for (auto& rawPage : rawPages) {
             std::vector<MenuNode*> heirarchy;
             constructHeirarchy(&rawPage.second, heirarchy, rawPages);
-            std::function<Graph::MenuNode*(Graph::MenuNode*, std::vector<Graph::MenuNode>*)> findParent = [&](Graph::MenuNode* findingNode, std::vector<Graph::MenuNode>* options) -> Graph::MenuNode* {
-                Graph::MenuNode* parent = nullptr;
-                for (auto& node : *options) {
-                    logger::info("checking {}", node.name);
-                    if (node.name == findingNode->parentName){ //Found the parent
-                        logger::info("found {}", findingNode->parentName);
-                        for (auto& child : node.subNodes) {
-                            if (child.name == findingNode->name) {
-                                return nullptr;
-                            }
-                        }
-                        logger::info("retrning");
-                        return &node;
-                    } else { //Check the children
-                        if(parent == nullptr)
-                            parent = findParent(findingNode, &node.subNodes);
-                    }
-                }
-                return parent;
-            };
 
-            logger::info("heirarchy, {}", heirarchy.size());
             for (int i = 0; i <  heirarchy.size(); i++) {
 
-                logger::info("h {} {}", i, heirarchy[i]->name);
                 if (heirarchy[i] != nullptr) {
                     if (i == 0) {
                         bool found = false;
-                        for (auto& root : rootOptions) {
+                        for (auto& root : rootNode.subNodes) {
                             if (root.name == heirarchy[i]->name) {
                                 found = true;
                                 break;
@@ -174,11 +159,11 @@ namespace Graph {
                         }
                         if (!found) {
                             heirarchy[i]->parent = nullptr;
-                            rootOptions.push_back(*heirarchy[i]);
+                            rootNode.subNodes.push_back(*heirarchy[i]);
                         }
                     }
                     else {
-                        if (auto parent = findParent(heirarchy[i], &rootOptions); parent != nullptr) {
+                        if (auto parent = findParent(heirarchy[i], &rootNode.subNodes); parent != nullptr) {
                             logger::info("found parent");
                             parent->subNodes.push_back(*heirarchy[i]);
                             parent->subNodes[parent->subNodes.size() - 1].parent = parent;
@@ -187,7 +172,53 @@ namespace Graph {
                 }
             }
         }
+
+        for (auto& option : options) {
+            auto parent = findParent(&option, &rootNode.subNodes);
+            if (parent == nullptr) {
+                logger::warn("cant find parent {} for {}", option.parentName, option.name);
+                continue;
+            }
+            else { 
+                parent->options.push_back(option);
+                parent->options[parent->options.size() - 1].parent = parent;
+            }
+            if (option.stateFaction != "") {
+                logger::info("{}", option.stateFaction);
+                if (optionFactions.find(option.stateFaction) == optionFactions.end()) {
+
+                    auto split = stl::string_split(option.stateFaction, ';');
+
+                    GameAPI::GameFaction faction;
+                    faction.loadFile(split[0], std::stoi(split[1], nullptr, 16));
+                    logger::info("{}", faction.form->GetFormEditorID());
+                    optionFactions.insert(std::make_pair(option.stateFaction, faction));
+                }
+            }
+        }
+
+
     }
+
+    MenuNode* GraphTable::findParent(Graph::MenuNode* findingNode, std::vector<Graph::MenuNode>* options) {
+        Graph::MenuNode* parent = nullptr;
+        for (auto& node : *options) {
+            if (node.name == findingNode->parentName) { //Found the parent
+                for (auto& child : node.subNodes) {
+                    if (child.name == findingNode->name) {
+                        return nullptr;
+                    }
+                }
+                return &node;
+            }
+            else { //Check the children
+                if (parent == nullptr)
+                    parent = findParent(findingNode, &node.subNodes);
+            }
+        }
+        return parent;
+    }
+
     MenuNode* GraphTable::constructHeirarchy(MenuNode* leaf, std::vector<MenuNode*>& heirarchy, std::unordered_map<std::string, MenuNode>& rawPages) {
         if (auto search = rawPages.find(leaf->name); search == rawPages.end()) {
             return nullptr;

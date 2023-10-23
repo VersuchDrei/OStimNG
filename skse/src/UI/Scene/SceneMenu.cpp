@@ -216,4 +216,6 @@ namespace UI::Scene {
         root.GetMember("optionBoxesContainer", &optionBoxesContainer);
         optionBoxesContainer.GetMember("menuselector_mc", &menuSelectorMenu);
     }
+
+    void SceneMenu::BuildOptionsData() { UI::Scene::SceneOptions::GetSingleton()->BuildPageTree(); }
 }  // namespace UI::Scene

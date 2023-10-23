@@ -78,10 +78,16 @@ namespace Graph{
 #pragma region options
     public:
         static void setupOptions();
-        static std::vector<MenuNode>& getOptions() { return rootOptions; };
+        static MenuNode& getRootOptionsNode() { return rootNode; };
+        static GameAPI::GameFaction& getOptionFaction(std::string faction) {
+            return optionFactions.find(faction)->second;
+        }
+        
     private:
         static MenuNode* constructHeirarchy(MenuNode* leaf, std::vector<MenuNode*>& heirarchy, std::unordered_map<std::string, MenuNode>& rawPages);
-        inline static std::vector<MenuNode> rootOptions;    
+        static MenuNode* findParent(Graph::MenuNode* findingNode, std::vector<Graph::MenuNode>* options);
+        inline static MenuNode rootNode;  
+        inline static std::unordered_map<std::string, GameAPI::GameFaction> optionFactions;
 #pragma endregion
 
     };

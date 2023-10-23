@@ -44,6 +44,7 @@ namespace UI::Scene {
 		void SetOptionsOpen(bool isOpen) {
 			optionsOpen = isOpen;
 		}
+		void BuildOptionsData();
 
 	private:
 		void BuildMenuData(MenuData& menudata);

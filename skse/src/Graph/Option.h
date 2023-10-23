@@ -8,22 +8,19 @@ namespace Graph {
 		std::string icon;
 		std::string border = "ffffff";
 	};
-
+	struct OptionNode;
 	struct MenuNode : OptionData {
 		std::vector<MenuNode> subNodes;
+		std::vector<OptionNode> options;
 		std::string parentName;
 		MenuNode* parent = nullptr;
-	};
-	struct OptionStateGroupData :OptionData {
-		std::string nextState;
-	};
-
-	struct OptionNode :MenuNode {
-		bool toggle;
-		std::unordered_map<std::string, OptionStateGroupData> states;
-		std::string script;
-		std::string function;
 		std::string repeat;
 	};
 
+	struct OptionNode :MenuNode {
+		std::unordered_map<std::string, OptionData> states;
+		std::string script;
+		std::string function;
+		std::string stateFaction = "";
+	};
 }

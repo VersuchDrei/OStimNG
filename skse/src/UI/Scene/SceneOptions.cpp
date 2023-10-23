@@ -1,87 +1,153 @@
 #include "SceneOptions.h"
+#include "UI/UIState.h"
 #include <Graph/GraphTable.h>
 #include <Util/UIUtil.h>
+#include <Util/StringUtil.h>
 
 
 namespace UI::Scene {
 
 	HandleResult SceneOptions::Handle(int i) {
-		if (i == -1) {			
-			if (selectedNode == nullptr) {				
+		auto& rootNode = Graph::GraphTable::getRootOptionsNode();
+		if (i == -1) {
+			if (selectedPage == nullptr) {
 				return kExit;
 			}
-			else if (selectedNode->parent == nullptr) {
-				selectedNode = nullptr;
+			else if (selectedPage->parent == nullptr) {
+				selectedPage = nullptr;
 			}
 			else {
-				selectedNode = selectedNode->parent;
+				selectedPage = selectedPage->parent;
 			}
 		}
-		else if (selectedNode == nullptr) {
-			selectedNode = &Graph::GraphTable::getOptions()[i];
-		} 
-		else if (selectedNode->subNodes[i].subNodes.size() > 0) {
-			selectedNode = &selectedNode->subNodes[i];
+		else if (selectedPage == nullptr) {
+			selectedPage = &rootPages[i];
+		}
+		else if (i < selectedPage->subPages.size()) {
+			selectedPage = &selectedPage->subPages[i];
 		}
 		else {
-			auto ptr = &selectedNode->subNodes[i];
-			ExecuteOption((Graph::OptionNode*)ptr);
+			MenuOption& ptr = selectedPage->options[i - selectedPage->subPages.size()];
+			ExecuteOption(ptr);
 		}
 		return kHandled;
 	}
 
-	void SceneOptions::ExecuteOption(Graph::OptionNode* option){
-		logger::info("Do the thing {} {}", option->script, option->function);
-		return;
+	void SceneOptions::ExecuteOption(MenuOption& option){
+		logger::info("Do the thing {} {}", option.node->script, option.node->function);
 		const auto skyrimVM = RE::SkyrimVM::GetSingleton();
 		auto vm = skyrimVM ? skyrimVM->impl : nullptr;
 		if (vm) {
 			RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-			auto args = RE::MakeFunctionArguments();
-			vm->DispatchStaticCall(option->script, option->function, args, callback);
+			
+			RE::BSScript::IFunctionArguments* args = nullptr;
+			if (option.actor != nullptr) {
+				args = RE::MakeFunctionArguments(std::move(option.currentState), std::move(option.actor->form));
+			}
+			else {
+				args = RE::MakeFunctionArguments(std::move(option.currentState));
+			}
+
+			vm->DispatchStaticCall(option.node->script, option.node->function, args, callback);
+		}
+	}
+
+	void SceneOptions::BuildPageTree() {
+		auto& rootSubnodes = Graph::GraphTable::getRootOptionsNode().subNodes;
+		BuildSubPages(nullptr, rootPages, rootSubnodes);
+	}
+
+	void SceneOptions::BuildSubPages(MenuPage* parent, std::vector<MenuPage>& subPages, std::vector<Graph::MenuNode>& inputPages) {
+		for (auto& page : inputPages) {
+			if (page.repeat == "actor") {
+				auto& thread = UI::UIState::GetSingleton()->currentThread;
+				for (auto& actorKvP : thread->getActors()) {
+					MenuPage newPage;
+					newPage.node = &page;
+					newPage.actor = &actorKvP.second.getActor();
+					newPage.parent = parent;
+					auto& subNodes = page.subNodes;
+					subPages.push_back(newPage);
+					BuildSubPages(&subPages[subPages.size() - 1], subPages[subPages.size() - 1].subPages, subNodes);
+					BuildOptions(&subPages[subPages.size() - 1], page);
+				}
+			} else {
+				MenuPage newPage;
+				newPage.node = &page;
+				newPage.actor = nullptr;
+				auto& subNodes = page.subNodes;
+				newPage.parent = parent;
+				subPages.push_back(newPage);
+				BuildSubPages(&subPages[subPages.size() - 1], subPages[subPages.size() - 1].subPages, subNodes);
+				BuildOptions(&subPages[subPages.size() - 1], page);
+			}
+		}
+	}
+
+	void SceneOptions::BuildOptions(MenuPage* parent, Graph::MenuNode& page) {
+		for (auto& option : page.options) {
+			if (option.repeat == "actor") {
+				auto& thread = UI::UIState::GetSingleton()->currentThread;
+				for (auto& actorKvP : thread->getActors()) {
+					MenuOption newOption;
+					newOption.node = &option;
+					newOption.actor = &actorKvP.second.getActor();
+					newOption.parent = parent;
+					parent->options.push_back(newOption);
+				}
+			}
+			else {
+				MenuOption newOption;
+				newOption.node = &option;
+				newOption.actor = parent->actor;
+				newOption.parent = parent;
+				parent->options.push_back(newOption);
+			}
 		}
 	}
 	
 	void SceneOptions::BuildMenuData(MenuData& menuData) {
-		logger::info("node selected? {}", selectedNode != nullptr);
-		if (selectedNode == nullptr) {
+		
+		if (selectedPage == nullptr) {
 			menuData.options.push_back({
 				.nodeId = "-1",
 				.title = "exit",
 				.imagePath = UI::getIconTexture("OStim/symbols/x"),
 				.border = "ff0000",
 				.description = "Return to Navigation"
-				});
-			auto rootOptions = Graph::GraphTable::getOptions();
-			for (int i = 0; i < rootOptions.size(); i++ ) {
-				menuData.options.push_back({
-					.nodeId = std::to_string(i),
-					.title = rootOptions[i].name,
-					.imagePath = rootOptions[i].icon,
-					.border = rootOptions[i].border,
-					.description = rootOptions[i].description
-					});
-			}
+				});			
 		}
 		else {
-			logger::info("{}", selectedNode->name);
-			logger::info("{}", selectedNode->subNodes.size());
 			menuData.options.push_back({
 				.nodeId = "-1",
 				.title = "back",
 				.imagePath = UI::getIconTexture("OStim/symbols/return"),
 				.border = "ff0000",
-				.description = "Return to " + (selectedNode->parent != nullptr ? selectedNode->parent->name : "Options")
+				.description = "Return to " + (selectedPage->parent != nullptr ? selectedPage->parent->node->name : "Options")
+				});			
+		}
+		std::vector<MenuPage>* currentPages = (selectedPage == nullptr ? &rootPages : &selectedPage->subPages);
+		for (int i = 0; i < currentPages->size(); i++) {
+			auto node = currentPages->at(i).node;
+			menuData.options.push_back({
+				.nodeId = std::to_string(i),
+				.title = node->name,
+				.imagePath = node->icon,
+				.border = node->border,
+				.description = currentPages->at(i).getDescription()
 				});
-			for (int i = 0; i < selectedNode->subNodes.size(); i++) {
+		}
+		if (selectedPage != nullptr) {
+			for (int i = 0; i < selectedPage->options.size(); i++) {
+				auto& state = selectedPage->options[i].getState();
 				menuData.options.push_back({
-					.nodeId = std::to_string(i),
-					.title = selectedNode->subNodes[i].name,
-					.imagePath = selectedNode->subNodes[i].icon,
-					.border = selectedNode->subNodes[i].border,
-					.description = selectedNode->subNodes[i].description
+								.nodeId = std::to_string(i + currentPages->size()),
+								.title = state.name,
+								.imagePath = state.icon,
+								.border = state.border,
+								.description = selectedPage->options[i].getDescription()
 					});
 			}
-		}
+		}		
 	}
 }
