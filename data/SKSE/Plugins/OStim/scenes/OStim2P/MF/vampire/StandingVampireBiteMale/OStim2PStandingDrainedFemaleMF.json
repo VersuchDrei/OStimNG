@@ -1,0 +1,38 @@
+{
+	"name": "Standing Drained Female Straight",
+	"modpack": "OStim",
+	"length": 2.0,
+	"speeds":[
+		{
+			"animation": "OStim2PStandingDrainedFemaleMF"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStim2PStandingApartMF",
+			"description": "return",
+			"icon": "OStim/symbols/return",
+			"priority": -1000
+		}
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"sosBend": -5,
+			"scale": 1.03,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		},
+		{
+			"intendedSex": "female",
+      		"lookUp": -75,
+			"tags": [
+				"drowsy",
+				"standing"
+			],
+			"feetOnGround": true
+		}
+	]
+}

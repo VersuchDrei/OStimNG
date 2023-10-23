@@ -1,0 +1,30 @@
+{
+	"name": "Standing Vampire Bite Female to Drained Male Straight",
+	"modpack": "OStim",
+	"length": 3.0,
+	"speeds":[
+		{
+			"animation": "OStim2PStandingVampireBiteFemaleToDrainedMaleMF"
+		}
+	],
+	"destination": "OStim2PStandingDrainedMaleMF",
+	"actors":[
+		{
+			"intendedSex": "male",
+			"scale": 1.03,
+			"sosBend": -5,
+			"tags": [
+				"drowsy",
+				"standing"
+			],
+			"feetOnGround": true
+		},
+		{
+			"intendedSex": "female",
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		}
+	]
+}

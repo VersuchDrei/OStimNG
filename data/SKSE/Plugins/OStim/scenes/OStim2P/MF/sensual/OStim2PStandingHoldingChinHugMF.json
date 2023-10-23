@@ -1,0 +1,81 @@
+{
+	"name": "Standing Holding Chin Straight",
+	"modpack": "OStim",
+	"length": 2.0,
+	"speeds":[
+		{
+			"animation": "OStim2PStandingHoldingChinMF",
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStim2PStandingHoldingMF",
+			"description": "return",
+			"icon": "OStim/symbols/return",
+			"priority": -1000
+		},
+		{
+			"destination": "OStim2PStandingHoldingChinMF",
+			"description": "stop holding {1}",
+			"icon": "OStim/detail/grab_m",
+			"priority": 0
+		},
+		{
+			"destination": "OStim2PStandingHugMF",
+			"description": "embrace {1}",
+			"icon": "OStim/sensual/embrace_mf",
+			"priority": 0
+		},
+		{
+			"destination": "OStim2PStandingCuddleHoldingHeadMF",
+			"description": "hold {1}s head",
+			"icon": "OStim/detail/holdinghead_mf",
+			"priority": 0
+		},
+		{
+			"destination": "OStim2PStandingHoldingChinKissMF",
+			"description": "kiss {1}",
+			"icon": "OStim/sensual/kissing_mf",
+			"priority": 0
+		}
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"sosBend": 6,
+			"scale": 1.03,
+      		"lookUp": -20,
+      		"lookLeft": 40,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		},
+		{
+			"intendedSex": "female",
+      		"lookUp": 20,
+      		"lookLeft": -40,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		}
+	],
+  	"actions": [
+  		{
+  			"type": "holdingchin",
+  			"actor": 0,
+  			"target": 1
+  		},
+		{
+			"type": "hug",
+			"actor": 0,
+			"target": 1
+		},
+		{
+			"type": "hug",
+			"actor": 1,
+			"target": 0
+		}
+  	]
+}

@@ -1,0 +1,29 @@
+{
+	"name": "Standing Apart to Vampire Bite Male Straight",
+	"modpack": "OStim",
+	"length": 3.0,
+	"speeds":[
+		{
+			"animation": "OStim2PStandingApartToVampireBiteMaleMF"
+		}
+	],
+	"destination": "OStim2PStandingVampireBiteMaleMF",
+	"actors":[
+		{
+			"intendedSex": "male",
+			"scale": 1.03,
+			"sosBend": -5,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		},
+		{
+			"intendedSex": "female",
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		}
+	]
+}

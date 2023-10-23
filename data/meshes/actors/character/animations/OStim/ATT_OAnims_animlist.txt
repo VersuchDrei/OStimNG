@@ -68,6 +68,14 @@ b -Tn OStim2PStandingKissHoldingHipMF_0 OStim2P\MF\sensual\OStim2PStandingKissHo
 b -Tn OStim2PStandingKissHoldingHipMF_1 OStim2P\MF\sensual\OStim2PStandingKissHoldingHipMF_1.hkx
 b -Tn OStim2PStandingHugFromBehindMF_0 OStim2P\MF\sensual\OStim2PStandingHugFromBehindMF_0.hkx
 b -Tn OStim2PStandingHugFromBehindMF_1 OStim2P\MF\sensual\OStim2PStandingHugFromBehindMF_1.hkx
+b -Tn OStim2PStandingHoldingChinMF_0 OStim2P\MF\sensual\OStim2PStandingHoldingChinMF_0.hkx
+b -Tn OStim2PStandingHoldingChinMF_1 OStim2P\MF\sensual\OStim2PStandingHoldingChinMF_1.hkx
+b -a,Tn OStim2PStandingHoldingChinToHoldingChinHugMF_0 OStim2P\MF\sensual\OStim2PStandingHoldingChinToHoldingChinHugMF_0.hkx
+b -a,Tn OStim2PStandingHoldingChinToHoldingChinHugMF_1 OStim2P\MF\sensual\OStim2PStandingHoldingChinToHoldingChinHugMF_1.hkx
+b -Tn OStim2PStandingHoldingChinHugMF_0 OStim2P\MF\sensual\OStim2PStandingHoldingChinHugMF_0.hkx
+b -Tn OStim2PStandingHoldingChinHugMF_1 OStim2P\MF\sensual\OStim2PStandingHoldingChinHugMF_1.hkx
+b -Tn OStim2PStandingHoldingChinKissMF_0 OStim2P\MF\sensual\OStim2PStandingHoldingChinKissMF_0.hkx
+b -Tn OStim2PStandingHoldingChinKissMF_1 OStim2P\MF\sensual\OStim2PStandingHoldingChinKissMF_1.hkx
 b -Tn OStim2PStandingHugMF_0 OStim2P\MF\sensual\OStim2PStandingHugMF_0.hkx
 b -Tn OStim2PStandingHugMF_1 OStim2P\MF\sensual\OStim2PStandingHugMF_1.hkx
 b -Tn OStim2PStandingKissEmbraceMF_0 OStim2P\MF\sensual\OStim2PStandingKissEmbraceMF_0.hkx
@@ -174,6 +182,24 @@ b -a,Tn OStim2PUndressHead1MF_0 OStim2P\MF\undressing\OStim2PUndressHead1MF_0.hk
 b -a,Tn OStim2PUndressHead1MF_1 OStim2P\MF\undressing\OStim2PUndressHead1MF_1.hkx
 b -a,Tn OStim2PUndressTop1MF_0 OStim2P\MF\undressing\OStim2PUndressTop1MF_0.hkx
 b -a,Tn OStim2PUndressTop1MF_1 OStim2P\MF\undressing\OStim2PUndressTop1MF_1.hkx
+
+b -a,Tn OStim2PStandingApartToVampireBiteFemaleMF_0 OStim2P\MF\vampire\StandingVampireBiteFemale\OStim2PStandingApartToVampireBiteFemaleMF_0.hkx
+b -a,Tn OStim2PStandingApartToVampireBiteFemaleMF_1 OStim2P\MF\vampire\StandingVampireBiteFemale\OStim2PStandingApartToVampireBiteFemaleMF_1.hkx
+b -Tn OStim2PStandingVampireBiteFemaleMF_0 OStim2P\MF\vampire\StandingVampireBiteFemale\OStim2PStandingVampireBiteFemaleMF_0.hkx
+b -Tn OStim2PStandingVampireBiteFemaleMF_1 OStim2P\MF\vampire\StandingVampireBiteFemale\OStim2PStandingVampireBiteFemaleMF_1.hkx
+b -a,Tn OStim2PStandingVampireBiteFemaleToDrainedMaleMF_0 OStim2P\MF\vampire\StandingVampireBiteFemale\OStim2PStandingVampireBiteFemaleToDrainedMaleMF_0.hkx
+b -a,Tn OStim2PStandingVampireBiteFemaleToDrainedMaleMF_1 OStim2P\MF\vampire\StandingVampireBiteFemale\OStim2PStandingVampireBiteFemaleToDrainedMaleMF_1.hkx
+b -Tn OStim2PStandingDrainedMaleMF_0 OStim2P\MF\vampire\StandingVampireBiteFemale\OStim2PStandingDrainedMaleMF_0.hkx
+b -Tn OStim2PStandingDrainedMaleMF_1 OStim2P\MF\vampire\StandingVampireBiteFemale\OStim2PStandingDrainedMaleMF_1.hkx
+
+b -a,Tn OStim2PStandingApartToVampireBiteMaleMF_0 OStim2P\MF\vampire\StandingVampireBiteMale\OStim2PStandingApartToVampireBiteMaleMF_0.hkx
+b -a,Tn OStim2PStandingApartToVampireBiteMaleMF_1 OStim2P\MF\vampire\StandingVampireBiteMale\OStim2PStandingApartToVampireBiteMaleMF_1.hkx
+b -Tn OStim2PStandingVampireBiteMaleMF_0 OStim2P\MF\vampire\StandingVampireBiteMale\OStim2PStandingVampireBiteMaleMF_0.hkx
+b -Tn OStim2PStandingVampireBiteMaleMF_1 OStim2P\MF\vampire\StandingVampireBiteMale\OStim2PStandingVampireBiteMaleMF_1.hkx
+b -a,Tn OStim2PStandingVampireBiteMaleToDrainedFemaleMF_0 OStim2P\MF\vampire\StandingVampireBiteMale\OStim2PStandingVampireBiteMaleToDrainedFemaleMF_0.hkx
+b -a,Tn OStim2PStandingVampireBiteMaleToDrainedFemaleMF_1 OStim2P\MF\vampire\StandingVampireBiteMale\OStim2PStandingVampireBiteMaleToDrainedFemaleMF_1.hkx
+b -Tn OStim2PStandingDrainedFemaleMF_0 OStim2P\MF\vampire\StandingVampireBiteMale\OStim2PStandingDrainedFemaleMF_0.hkx
+b -Tn OStim2PStandingDrainedFemaleMF_1 OStim2P\MF\vampire\StandingVampireBiteMale\OStim2PStandingDrainedFemaleMF_1.hkx
 
 b -Tn OStim2PStandingCloseFF_0 OStim2P\FF\idle\OStim2PStandingCloseFF_0.hkx
 b -Tn OStim2PStandingCloseFF_1 OStim2P\FF\idle\OStim2PStandingCloseFF_1.hkx

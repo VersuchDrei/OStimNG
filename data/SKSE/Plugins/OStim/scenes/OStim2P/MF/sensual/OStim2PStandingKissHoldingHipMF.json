@@ -27,6 +27,12 @@
 			"priority": 0
 		},
 		{
+			"destination": "OStim2PStandingHoldingChinKissMF",
+			"description": "hold {1}s chin",
+			"icon": "OStim/detail/holdingneck_mf",
+			"priority": 0
+		},
+		{
 			"destination": "OStim2PStandingHandHoldingKissMF",
 			"description": "hold {1}s hands",
 			"icon": "OStim/detail/holdinghand_mf",

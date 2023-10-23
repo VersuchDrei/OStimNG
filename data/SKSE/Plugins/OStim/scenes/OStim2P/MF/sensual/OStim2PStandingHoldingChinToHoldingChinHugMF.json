@@ -1,0 +1,40 @@
+{
+	"name": "Standing Holding Chin to Holding Chin Hug",
+	"modpack": "OStim",
+	"length": 2.5,
+	"speeds":[
+		{
+			"animation": "OStim2PStandingHoldingChinToHoldingChinHugMF"
+		}
+	],
+	"destination": "OStim2PStandingHoldingChinHugMF",
+	"actors":[
+		{
+			"intendedSex": "male",
+			"sosBend": 6,
+			"scale": 1.03,
+      		"lookUp": -20,
+      		"lookLeft": 40,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		},
+		{
+			"intendedSex": "female",
+      		"lookUp": 20,
+      		"lookLeft": -40,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		}
+	],
+	"actions":[
+		{
+  			"type": "holdingchin",
+  			"actor": 0,
+  			"target": 1
+  		}
+	]
+}

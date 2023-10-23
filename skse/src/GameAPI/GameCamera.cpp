@@ -1,6 +1,7 @@
 #include "GameCamera.h"
 
 #include "GameTable.h"
+#include "Core/ThreadManager.h"
 
 namespace GameAPI {
     void GameCamera::shakeCamera(float strength, float duration, bool firstPersonOnly) {

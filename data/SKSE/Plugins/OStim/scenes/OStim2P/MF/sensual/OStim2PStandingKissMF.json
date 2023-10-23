@@ -21,6 +21,12 @@
 			"priority": 0
 		},
 		{
+			"destination": "OStim2PStandingHoldingChinKissMF",
+			"description": "hold {1}s chin",
+			"icon": "OStim/detail/holdingneck_mf",
+			"priority": 0
+		},
+		{
 			"destination": "OStim2PStandingKissHoldingHipMF",
 			"description": "put both hands on {1}s hip",
 			"icon": "OStim/detail/holdinghip_mf",
@@ -35,7 +41,8 @@
 		{
 			"destination": "OStim2PStandingKissGropingButtMF",
 			"description": "grab {1}s butt",
-			"icon": "OStim/detail/gropingbutt_mf"
+			"icon": "OStim/detail/gropingbutt_mf",
+			"priority": 0
 		},
 		{
 			"destination": "OStim2PStandingHandjobRKissMF",

@@ -1,10 +1,10 @@
 {
-	"name": "Standing Kiss Embrace Straight",
+	"name": "Standing Holding Chin Kiss Straight",
 	"modpack": "OStim",
 	"length": 2.0,
 	"speeds":[
 		{
-			"animation": "OStim2PStandingKissEmbraceMF"
+			"animation": "OStim2PStandingHoldingChinKissMF",
 		}
 	],
 	"navigations":[
@@ -15,20 +15,26 @@
 			"priority": -1000
 		},
 		{
+			"destination": "OStim2PStandingHoldingChinMF",
+			"description": "stop kissing {1}",
+			"icon": "OStim/sensual/kissing_end",
+			"priority": 0
+		},
+		{
 			"destination": "OStim2PStandingKissMF",
 			"description": "hold {1}s head",
 			"icon": "OStim/detail/holdinhead_mf",
 			"priority": 0
 		},
 		{
-			"destination": "OStim2PStandingHoldingChinKissMF",
-			"description": "hold {1}s chin",
-			"icon": "OStim/detail/holdingneck_mf",
+			"destination": "OStim2PStandingKissEmbraceMF",
+			"description": "embrace {1}",
+			"icon": "OStim/sensual/embrace_mf",
 			"priority": 0
 		},
 		{
 			"destination": "OStim2PStandingKissHoldingHipMF",
-			"description": "hold {1}s hip",
+			"description": "put both hands on {1}s hip",
 			"icon": "OStim/detail/holdinghip_mf",
 			"priority": 0
 		},
@@ -41,7 +47,8 @@
 		{
 			"destination": "OStim2PStandingKissGropingButtMF",
 			"description": "grab {1}s butt",
-			"icon": "OStim/detail/gropingbutt_mf"
+			"icon": "OStim/detail/gropingbutt_mf",
+			"priority": 0
 		},
 		{
 			"destination": "OStim2PStandingHandjobRKissMF",
@@ -59,7 +66,7 @@
 	"actors":[
 		{
 			"intendedSex": "male",
-      		"sosBend": -5,
+			"sosBend": 6,
 			"scale": 1.03,
 			"tags": [
 				"standing"
@@ -81,14 +88,9 @@
   			"target": 1
   		},
   		{
-  			"type": "hug",
+  			"type": "holdingchin",
   			"actor": 0,
   			"target": 1
-  		},
-  		{
-  			"type": "hug",
-  			"actor": 1,
-  			"target": 0
   		}
   	]
 }

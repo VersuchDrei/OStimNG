@@ -1,0 +1,56 @@
+{
+	"name": "Standing Vampire Bite Male Straight",
+	"modpack": "OStim",
+	"length": 2.0,
+	"speeds":[
+		{
+			"animation": "OStim2PStandingVampireBiteMaleMF"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStim2PStandingVampireBiteMaleToDrainedFemaleMF",
+			"description": "return",
+			"icon": "OStim/sensual/kissing_end",
+			"priority": -1000
+		}
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"sosBend": -5,
+			"scale": 1.03,
+      		"lookUp": -25,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		},
+		{
+			"intendedSex": "female",
+      		"lookUp": -75,
+      		"lookLeft": -75,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		}
+	],
+  	"actions": [
+  		{
+  			"type": "vampirebite",
+  			"actor": 0,
+  			"target": 1
+  		},
+  		{
+  			"type": "holdinghead",
+  			"actor": 0,
+  			"target": 1
+  		},
+  		{
+  			"type": "holdingbody",
+  			"actor": 0,
+  			"target": 1
+  		}
+  	]
+}
