@@ -81,7 +81,8 @@ namespace GameAPI {
         inline bool isInDialogue() const { return IsInDialogueWithPlayer(nullptr, 0, form); }
         inline bool isTalking() const { return form->GetActorRuntimeData().voiceTimer > 0; }
         void sayTo(GameActor target, GameDialogue dialogue) const;
-        double getLightLevel() const { return GetLightLevel(form); }
+        inline bool hasLight() const { return form->AsMagicTarget()->HasEffectWithArchetype(RE::MagicTarget::Archetype::kLight); }
+        inline double getLightLevel() const { return GetLightLevel(form); }
 
         std::vector<GameActor> getNearbyActors(float radius, std::function<bool(GameActor)> condition) const;
 

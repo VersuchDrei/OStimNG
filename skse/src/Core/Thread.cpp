@@ -123,7 +123,9 @@ namespace OStim {
         if (!MCM::MCMTable::onlyLightInDark() || GetActor(0)->getActor().getLightLevel() < 20) {
             logger::info("trying to add facelights");
             for (auto& [index, actor] : m_actors) {
-                actor.equipObject("light");
+                if (!actor.getActor().hasLight()) {
+                    actor.equipObject("light");
+                }
             }
         }
 
