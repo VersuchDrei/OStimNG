@@ -13,7 +13,7 @@
 			"description": "return",
 			"icon": "OStim/symbols/return",
 			"priority": -1000
-		}
+		},
 		{
 			"destination": "OStim2PStandingCuddleFromBehindMF",
 			"description": "cuddle with {1}",
