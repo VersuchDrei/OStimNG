@@ -66,6 +66,12 @@ Event OnConfigRegister()
 	ImportSettings()
 endEvent
 
+Event OnConfigClose()
+	If Main.AutoExportSettings
+		ExportSettings()
+	EndIf
+EndEvent
+
 Event OnPageReset(String Page)
 	{Called when a new page is selected, including the initial empty page}
 	currPage = page
@@ -266,6 +272,10 @@ Function DrawGeneralPage()
 	SetCursorPosition(11)
 	AddTextOptionST("OID_ImportSettings", "$ostim_import", "$ostim_done")
 	SetCursorPosition(13)
+	AddToggleOptionST("OID_AutoExportSettings", "$ostim_auto_export", Main.AutoExportSettings)
+	SetCursorPosition(15)
+	AddToggleOptionST("OID_AutoImportSettings", "$ostim_auto_import", Main.AutoImportSettings)
+	SetCursorPosition(17)
 	AddTextOptionST("OID_ResetSettings", "$ostim_import_default", "$ostim_done")
 EndFunction
 
@@ -428,6 +438,28 @@ State OID_ImportSettings
 
 	Event OnSelectST()
 		ImportSettings()
+	EndEvent
+EndState
+
+State OID_AutoExportSettings
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_auto_export")
+	EndEvent
+
+	Event OnSelectST()
+		Main.AutoExportSettings = !Main.AutoExportSettings
+		SetToggleOptionValueST(Main.AutoExportSettings)
+	EndEvent
+EndState
+
+State OID_AutoImportSettings
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_auto_import")
+	EndEvent
+
+	Event OnSelectST()
+		Main.AutoImportSettings = !Main.AutoImportSettings
+		SetToggleOptionValueST(Main.AutoImportSettings)
 	EndEvent
 EndState
 

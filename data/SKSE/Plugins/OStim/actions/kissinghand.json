@@ -2,23 +2,23 @@
 	"actor":{
 		"info": "the one with the mouth",
 		"stimulation":0.1,
-		"maxStimulation":50,
-		"moan":true,
+		"maxStimulation":25,
+		"moan": true,
 		"muffled":true,
 		"requirements":[
 			"mouth"
 		],
 		"strippingSlots":[
 			30,
-			31,
+			33,
 			44,
 			55
 		],
 		"faction":[
 			{
-				"info": "OStimKissingFeetActorFaction",
+				"info": "OStimKissingHandActorFaction",
 				"mod": "OStim.esp",
-				"formid": "0xE73"
+				"formid": "0xEC5"
 			},
 			{
 				"info": "OStimAnyKissingActorFaction",
@@ -28,22 +28,19 @@
 		]
 	},
 	"target":{
-		"info": "the one with the foot",
+		"info": "the one with the hand",
 		"stimulation":0.1,
-		"maxStimulation":50,
-		"moan":true,
-		"talk":true,
-		"requirements":[
-			"feet"
-		],
+		"maxStimulation":25,
+		"moan": true,
+		"talk": true,
 		"strippingSlots":[
-			37
+			33
 		],
 		"faction":[
 			{
-				"info": "OStimKissingFeetTargetFaction",
+				"info": "OStimKissingHandTargetFaction",
 				"mod": "OStim.esp",
-				"formid": "0xE74"
+				"formid": "0xEC6"
 			},
 			{
 				"info": "OStimAnyKissingTargetFaction",
@@ -53,6 +50,7 @@
 		]
 	},
 	"tags":[
+		"romantic",
 		"sensual"
 	]
 }

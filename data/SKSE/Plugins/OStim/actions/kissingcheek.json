@@ -1,24 +1,24 @@
 {
+	"info": "kissingcheek refers to the cheek in the face, not the buttcheek",
 	"actor":{
 		"info": "the one with the mouth",
 		"stimulation":0.1,
-		"maxStimulation":50,
-		"moan":true,
+		"maxStimulation":25,
+		"moan": true,
 		"muffled":true,
 		"requirements":[
 			"mouth"
 		],
 		"strippingSlots":[
 			30,
-			31,
 			44,
 			55
 		],
 		"faction":[
 			{
-				"info": "OStimKissingFeetActorFaction",
+				"info": "OStimKissingCheekActorFaction",
 				"mod": "OStim.esp",
-				"formid": "0xE73"
+				"formid": "0xEC3"
 			},
 			{
 				"info": "OStimAnyKissingActorFaction",
@@ -28,22 +28,21 @@
 		]
 	},
 	"target":{
-		"info": "the one with the foot",
+		"info": "the one with the cheek",
 		"stimulation":0.1,
-		"maxStimulation":50,
-		"moan":true,
-		"talk":true,
-		"requirements":[
-			"feet"
-		],
+		"maxStimulation":25,
+		"moan": true,
+		"talk": true,
 		"strippingSlots":[
-			37
+			30,
+			44,
+			55
 		],
 		"faction":[
 			{
-				"info": "OStimKissingFeetTargetFaction",
+				"info": "OStimKissingCheekTargetFaction",
 				"mod": "OStim.esp",
-				"formid": "0xE74"
+				"formid": "0xEC4"
 			},
 			{
 				"info": "OStimAnyKissingTargetFaction",
@@ -53,6 +52,7 @@
 		]
 	},
 	"tags":[
+		"romantic",
 		"sensual"
 	]
 }

@@ -16,6 +16,7 @@ namespace OStim {
             // TODO: clear potential heel offset
         }
 
+        actor.removeFromFaction(Util::APITable::getActorCountFaction());
         actor.removeFromFaction(Util::APITable::getExcitementFaction());
         actor.removeFromFaction(Util::APITable::getSchlongifiedFaction());
         actor.removeFromFaction(Util::APITable::getTimesClimaxedFaction());

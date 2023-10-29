@@ -136,6 +136,35 @@ bool Property LowLightLevelLightsOnly
 EndProperty
 
 
+GlobalVariable Property OStimAutoExportSettings Auto
+bool Property AutoExportSettings
+	bool Function Get()
+		Return OStimAutoExportSettings.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimAutoExportSettings.value = 1
+		Else
+			OStimAutoExportSettings.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimAutoImportSettings Auto
+bool Property AutoImportSettings
+	bool Function Get()
+		Return OStimAutoImportSettings.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimAutoImportSettings.value = 1
+		Else
+			OStimAutoImportSettings.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+
 
 ; -------------------------------------------------------------------------------------------------
 ; CONTROLS SETTINGS  ------------------------------------------------------------------------------
@@ -2050,6 +2079,12 @@ Function OnLoadGame()
 	RegisterForModEvent("ostim_start", "OStimStart")
 	RegisterForModEvent("ostim_end", "OStimEnd")
 	RegisterForModEvent("ostim_orgasm", "OStimOrgasm")
+
+	If AutoImportSettings
+		Console("Loading Ostim settings.")
+		OData.ImportSettings()
+		Console("Loaded Ostim settings.")
+	EndIf
 EndFunction
 
 

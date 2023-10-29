@@ -15,11 +15,18 @@
 			44,
 			55
 		],
-		"faction":{
-			"info": "OStimFrenchKissingFaction",
-			"mod": "OStim.esp",
-			"formid": "0xE61"
-		}
+		"faction":[
+			{
+				"info": "OStimFrenchKissingFaction",
+				"mod": "OStim.esp",
+				"formid": "0xE61"
+			},
+			{
+				"info": "OStimAnyKissingActorFaction",
+				"mod": "OStim.esp",
+				"formid": "0xEC7"
+			}
+		]
 	},
 	"target":{
 		"stimulation":0.1,
@@ -36,11 +43,18 @@
 			44,
 			55
 		],
-		"faction":{
-			"info": "OStimFrenchKissingFaction",
-			"mod": "OStim.esp",
-			"formid": "0xE61"
-		}
+		"faction":[
+			{
+				"info": "OStimFrenchKissingFaction",
+				"mod": "OStim.esp",
+				"formid": "0xE61"
+			},
+			{
+				"info": "OStimAnyKissingActorFaction",
+				"mod": "OStim.esp",
+				"formid": "0xEC7"
+			}
+		]
 	},
 	"tags":[
 		"romantic",

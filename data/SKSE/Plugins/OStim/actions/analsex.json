@@ -15,11 +15,18 @@
 			53,
 			54
 		],
-		"faction":{
-			"info": "OStimAnalSexActorFaction",
-			"mod": "OStim.esp",
-			"formid": "0xE4F"
-		}
+		"faction":[
+			{
+				"info": "OStimAnalSexActorFaction",
+				"mod": "OStim.esp",
+				"formid": "0xE4F"
+			},
+			{
+				"info": "OStimAnySexMateFaction",
+				"mod": "OStim.esp",
+				"formid": "0xEC9"
+			}
+		]
 	},
 	"target":{
 		"info": "the one with the butt",
@@ -37,11 +44,18 @@
 			53,
 			54
 		],
-		"faction":{
-			"info": "OStimAnalSexTargetFaction",
-			"mod": "OStim.esp",
-			"formid": "0xE50"
-		},
+		"faction":[
+			{
+				"info": "OStimAnalSexTargetFaction",
+				"mod": "OStim.esp",
+				"formid": "0xE50"
+			},
+			{
+				"info": "OStimAnySexMateFaction",
+				"mod": "OStim.esp",
+				"formid": "0xEC9"
+			}
+		],
 		"stringLists":{
 			"cum":[
 				"rectum"

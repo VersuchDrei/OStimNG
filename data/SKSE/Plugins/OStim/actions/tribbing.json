@@ -15,11 +15,18 @@
 			53,
 			54
 		],
-		"faction":{
-			"info": "OStimTribbingFaction",
-			"mod": "OStim.esp",
-			"formid": "0xE8B"
-		}
+		"faction":[
+			{
+				"info": "OStimTribbingFaction",
+				"mod": "OStim.esp",
+				"formid": "0xE8B"
+			},
+			{
+				"info": "OStimAnySexMateFaction",
+				"mod": "OStim.esp",
+				"formid": "0xEC9"
+			}
+		]
 	},
 	"target":{
 		"stimulation":1.0,
@@ -36,11 +43,18 @@
 			53,
 			54
 		],
-		"faction":{
-			"info": "OStimTribbingFaction",
-			"mod": "OStim.esp",
-			"formid": "0xE8B"
-		}
+		"faction":[
+			{
+				"info": "OStimTribbingFaction",
+				"mod": "OStim.esp",
+				"formid": "0xE8B"
+			},
+			{
+				"info": "OStimAnySexMateFaction",
+				"mod": "OStim.esp",
+				"formid": "0xEC9"
+			}
+		]
 	},
 	"performer":{
 		"floats":{

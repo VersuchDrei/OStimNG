@@ -18,6 +18,7 @@
 #include "Util/LookupTable.h"
 #include "Util/MathUtil.h"
 #include "MCM/MCMTable.h"
+#include "Util/APITable.h"
 #include "Util/LookupTable.h"
 #include "Util/ObjectRefUtil.h"
 #include "Util/StringUtil.h"
@@ -53,6 +54,11 @@ namespace OStim {
         for (int i = 0; i < params.actors.size(); i++) {
             // TODO GameActor
             addActorInner(i, params.actors[i].form);
+        }
+
+        for (auto& [index, actor] : m_actors) {
+            actor.getActor().addToFaction(Util::APITable::getActorCountFaction());
+            actor.getActor().setFactionRank(Util::APITable::getActorCountFaction(), getActorCount());
         }
 
         if (furniture && MCM::MCMTable::resetClutter()) {

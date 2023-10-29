@@ -15,11 +15,18 @@
 			53,
 			54
 		],
-		"faction":{
-			"info": "OStimVaginalSexActorFaction",
-			"mod": "OStim.esp",
-			"formid": "0xE90"
-		}
+		"faction":[
+			{
+				"info": "OStimVaginalSexActorFaction",
+				"mod": "OStim.esp",
+				"formid": "0xE90"
+			},
+			{
+				"info": "OStimAnySexMateFaction",
+				"mod": "OStim.esp",
+				"formid": "0xEC9"
+			}
+		]
 	},
 	"target":{
 		"info": "the one with the vulva",
@@ -37,11 +44,18 @@
 			53,
 			54
 		],
-		"faction":{
-			"info": "OStimVaginalSexTargetFaction",
-			"mod": "OStim.esp",
-			"formid": "0xE91"
-		},
+		"faction":[
+			{
+				"info": "OStimVaginalSexTargetFaction",
+				"mod": "OStim.esp",
+				"formid": "0xE91"
+			},
+			{
+				"info": "OStimAnySexMateFaction",
+				"mod": "OStim.esp",
+				"formid": "0xEC9"
+			}
+		],
 		"stringLists":{
 			"cum":[
 				"vagina"
