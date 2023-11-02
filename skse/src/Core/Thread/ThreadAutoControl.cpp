@@ -133,7 +133,7 @@ namespace OStim {
             return;
         }
 
-        if ((threadFlags | ThreadFlag::NO_AUTO_MODE) == ThreadFlag::NO_AUTO_MODE) {
+        if ((threadFlags & ThreadFlag::NO_AUTO_MODE) == ThreadFlag::NO_AUTO_MODE) {
             return;
         }
 

@@ -163,6 +163,8 @@ namespace GameAPI {
     }
 
     void GameActor::sayTo(GameActor target, GameDialogue dialogue) const {
+        std::string com = "sayTo " + std::format("{:x}", target.getFormID()) + " " + std::format("{:x}", dialogue.getFormID());
+        logger::info("{}", com);
         const auto scriptFactory = RE::IFormFactory::GetConcreteFormFactoryByType<RE::Script>();
         const auto script = scriptFactory ? scriptFactory->Create() : nullptr;
         if (script) {

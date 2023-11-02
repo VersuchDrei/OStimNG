@@ -29,7 +29,7 @@ namespace Graph {
 
         std::string ret = description;
         for (auto& [index, actor] : thread->getActors()) {
-            StringUtil::replaceAll(description, "{" + std::to_string(index) + "}", actor.getActor().getName());
+            StringUtil::replaceAll(ret, "{" + std::to_string(index) + "}", actor.getActor().getName());
         }
 
         return ret;

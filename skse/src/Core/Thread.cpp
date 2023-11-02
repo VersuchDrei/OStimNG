@@ -85,7 +85,7 @@ namespace OStim {
             }
         }
 
-        if ((params.threadFlags | ThreadFlag::NO_AUTO_MODE) == 0) {
+        if ((params.threadFlags & ThreadFlag::NO_AUTO_MODE) == 0) {
             evaluateAutoMode();
         }
         

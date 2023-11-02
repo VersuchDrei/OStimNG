@@ -7,6 +7,9 @@ So it is recommended to start all your scene names with your personal signature 
 
 A lot of the fields in scenes have default values and don't necessarily have to be listed in the .json file.
 
+WARNING: Whatever you do, do NOT start folder or filenames with the "OStim" prefix, that namespace is reserved for OStim alone.
+Failure to comply will cause the integrity check to fail!
+
 field summary:
 
 scene fields:
