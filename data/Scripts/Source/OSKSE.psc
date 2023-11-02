@@ -72,6 +72,7 @@ Function FadeToBlack(float FadeDuration) Global
 	Game.FadeOutGame(true, true, 0.0, FadeDuration)
 	Utility.Wait(fadeDuration * 0.7)
 	Game.FadeOutGame(false, true, 99.0, 99.0)
+	(Game.GetFormFromFile(0xECB, "OStim.esp") As GlobalVariable).value = 1
 EndFunction
 
 ;/* FadeFromBlack
@@ -80,7 +81,12 @@ EndFunction
 * * @param: FadeDuration, the duration in seconds for the fade to reach normal
 */;
 Function FadeFromBlack(float FadeDuration) Global
+	GlobalVariable OStimFinishedFadeToBlack = Game.GetFormFromFile(0xECB, "OStim.esp") As GlobalVariable
+	While OStimFinishedFadeToBlack.Value == 0
+		Utility.Wait(0.1)
+	EndWhile
 	Game.FadeOutGame(false, true, 0.0, FadeDuration)
+	OStimFinishedFadeToBlack.Value = 0
 EndFunction
 
 ; TEMPORARY ONLY
