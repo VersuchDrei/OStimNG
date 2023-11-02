@@ -3,6 +3,7 @@
 #include "Core/Thread.h"
 
 #include "Util/APITable.h"
+#include "Util/Constants.h"
 
 namespace OStim {
     void ThreadActor::setExcitement(float value) {

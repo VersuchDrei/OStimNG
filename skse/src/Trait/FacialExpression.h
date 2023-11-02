@@ -1,7 +1,7 @@
 #pragma once
 
 #include "GameAPI/GameActor.h"
-#include "Util/Constants.h"
+#include "Util/RNGUtil.h"
 
 namespace Trait {
     static const std::vector<int> eyelidModifierTypes = {0, 1, 12, 13};
@@ -27,11 +27,11 @@ namespace Trait {
         int delayVariance = 0;
 
         inline int calculate(float speed, float excitement) {
-            return (int)(baseValue + (variance == 0 ? 0 : std::uniform_int_distribution<int>(0, variance)(Constants::RNG)) + speedMultiplier * speed + excitementMultiplier * excitement);
+            return (int)(baseValue + (variance == 0 ? 0 : RNGUtil::uniformInt(0, variance)) + speedMultiplier * speed + excitementMultiplier * excitement);
         }
 
         inline int randomizeDelay() {
-            return delay + (delayVariance == 0 ? 0 : std::uniform_int_distribution<int>(0, delayVariance)(Constants::RNG));
+            return delay + (delayVariance == 0 ? 0 : RNGUtil::uniformInt(0, delayVariance));
         }
     };
 

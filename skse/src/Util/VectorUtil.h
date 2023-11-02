@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Util.h"
-#include "Util/Constants.h"
+#include "Util/RNGUtil.h"
 
 namespace VectorUtil {
 	template<class T>
@@ -53,7 +53,7 @@ namespace VectorUtil {
 
     template <class T>
     T randomElement(std::vector<T>* vec) {
-        return vec->at(std::uniform_int_distribution<>(0, vec->size() - 1)(Constants::RNG));
+        return vec->at(RNGUtil::uniformInt(0, vec->size() - 1));
     }
 
     template <class T>

@@ -1,6 +1,8 @@
 #include "Graph/GraphTable.h"
 
+#include "Util/Constants.h"
 #include "Util/LegacyUtil.h"
+#include "Util/RNGUtil.h"
 #include "Util/StringUtil.h"
 
 namespace Graph {
@@ -175,7 +177,7 @@ namespace Graph {
         // the copy is to prevent race conditions if several scripts try to call this at once
         std::vector<Node*> copy = *iter2->second;
 
-        std::shuffle(std::begin(copy), std::end(copy), Constants::RNG);
+        std::shuffle(std::begin(copy), std::end(copy), RNGUtil::RNG);
 
         for (Node* node : copy) {
             if (!node->isTransition && !node->noRandomSelection && furnitureType->isChildOf(node->furnitureType) && node->fulfilledBy(actorConditions) && nodeCondition(node)) {

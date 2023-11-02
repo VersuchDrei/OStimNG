@@ -1,6 +1,7 @@
 #include "Graph/GraphTable.h"
 
 #include "Util/JsonFileLoader.h"
+#include "Util/RNGUtil.h"
 #include "Util/StringUtil.h"
 
 namespace Graph {
@@ -144,7 +145,7 @@ namespace Graph {
             return nullptr;
         }
 
-        std::shuffle(std::begin(copy), std::end(copy), Constants::RNG);
+        std::shuffle(std::begin(copy), std::end(copy), RNGUtil::RNG);
 
         for (Sequence* sequence : copy) {
             if (sequence->fulfilledBy(actorConditions) && sequenceCondition(sequence)) {

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Util/RNGUtil.h"
+
 namespace MapUtil {
 	template <class T, class V>
 	V getOrFallback(std::unordered_map<T, V> &map, T key, V fallback) {
@@ -42,7 +44,7 @@ namespace MapUtil {
     template <class T, class V>
     V randomValue(std::unordered_map<T, V>& map) {
         auto iter = map.begin();
-        std::advance(iter, std::uniform_int_distribution<>(0, map.size() - 1)(Constants::RNG));
+        std::advance(iter, RNGUtil::uniformInt(0, map.size() - 1));
         return iter->second;
     }
 }

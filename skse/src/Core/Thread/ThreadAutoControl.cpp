@@ -2,7 +2,6 @@
 
 #include "Graph/GraphTable.h"
 #include "Util/Constants.h"
-#include "Util/MathUtil.h"
 #include "Util/VectorUtil.h"
 
 namespace OStim {
@@ -141,14 +140,14 @@ namespace OStim {
             if (m_actors.size() == 1) {
                 autoModeStage = AutoModeStage::MAIN;
             } else {
-                if (MathUtil::chanceRoll(MCM::MCMTable::autoModeForeplayChance())) {
+                if (RNGUtil::chanceRoll(MCM::MCMTable::autoModeForeplayChance())) {
                     autoModeStage = AutoModeStage::FOREPLAY;
-                    foreplayThreshold = MathUtil::randomInt(MCM::MCMTable::autoModeForeplayThresholdMin(), MCM::MCMTable::autoModeForeplayThresholdMax());
+                    foreplayThreshold = RNGUtil::uniformInt(MCM::MCMTable::autoModeForeplayThresholdMin(), MCM::MCMTable::autoModeForeplayThresholdMax());
                 } else {
                     autoModeStage = AutoModeStage::MAIN;
                 }
-                if (MathUtil::chanceRoll(MCM::MCMTable::autoModePulloutChance())) {
-                    pulloutThreshold = MathUtil::randomInt(MCM::MCMTable::autoModePulloutThresholdMin(), MCM::MCMTable::autoModePulloutThresholdMax());
+                if (RNGUtil::chanceRoll(MCM::MCMTable::autoModePulloutChance())) {
+                    pulloutThreshold = RNGUtil::uniformInt(MCM::MCMTable::autoModePulloutThresholdMin(), MCM::MCMTable::autoModePulloutThresholdMax());
                 }
             }
         }
@@ -165,7 +164,7 @@ namespace OStim {
     }
 
     void Thread::startAutoModeCooldown() {
-        autoModeCooldown = MathUtil::randomInt(MCM::MCMTable::autoModeAnimDurationMin(), MCM::MCMTable::autoModeAnimDurationMax());
+        autoModeCooldown = RNGUtil::uniformInt(MCM::MCMTable::autoModeAnimDurationMin(), MCM::MCMTable::autoModeAnimDurationMax());
     }
 
     void Thread::progressAutoMode() {
@@ -227,10 +226,10 @@ namespace OStim {
                 } else {
                     chance = ((excitement - min) * 100) / (max - min);
                 }
-                if (MathUtil::chanceRoll(chance)) {
+                if (RNGUtil::chanceRoll(chance)) {
                     increaseSpeed();
                 }
-                autoSpeedControlCooldown = MathUtil::randomInt(MCM::MCMTable::autoSpeedControlIntervalMin(), MCM::MCMTable::autoSpeedControlIntervalMax());
+                autoSpeedControlCooldown = RNGUtil::normalInt(MCM::MCMTable::autoSpeedControlIntervalMin(), MCM::MCMTable::autoSpeedControlIntervalMax());
             }
         }
 

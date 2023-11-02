@@ -2,6 +2,9 @@
 
 #include "Core/Thread.h"
 
+#include "Util/Constants.h"
+#include "Util/RNGUtil.h"
+
 namespace OStim {
     void ThreadActor::loopSound() {
         if (soundGracePeriod > 0) {
@@ -112,7 +115,7 @@ namespace OStim {
             return;
         }
 
-        moanCooldown = std::uniform_int_distribution<>(MCM::MCMTable::getMoanIntervalMin(), MCM::MCMTable::getMoanIntervalMax())(Constants::RNG);
+        moanCooldown = RNGUtil::normalInt(MCM::MCMTable::getMoanIntervalMin(), MCM::MCMTable::getMoanIntervalMax());
     }
 
     void ThreadActor::moan() {
@@ -177,9 +180,9 @@ namespace OStim {
 
     void ThreadActor::setDialogueCountdown() {
         if (female) {
-            dialogueCountdown = std::uniform_int_distribution<>(MCM::MCMTable::getFemaleDialogueCountdownMin(), MCM::MCMTable::getFemaleDialogueCountdownMax())(Constants::RNG) + 1;
+            dialogueCountdown = RNGUtil::normalInt(MCM::MCMTable::getFemaleDialogueCountdownMin(), MCM::MCMTable::getFemaleDialogueCountdownMax()) + 1;
         } else {
-            dialogueCountdown = std::uniform_int_distribution<>(MCM::MCMTable::getMaleDialogueCountdownMin(), MCM::MCMTable::getMaleDialogueCountdownMax())(Constants::RNG) + 1;
+            dialogueCountdown = RNGUtil::normalInt(MCM::MCMTable::getMaleDialogueCountdownMin(), MCM::MCMTable::getMaleDialogueCountdownMax()) + 1;
         }
     }
 

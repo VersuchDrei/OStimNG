@@ -21,6 +21,7 @@
 #include "Util/Integrity.h"
 #include "Util/LegacyUtil.h"
 #include "Util/LookupTable.h"
+#include "Util/RNGUtil.h"
 
 using namespace RE::BSScript;
 using namespace SKSE;
@@ -139,6 +140,8 @@ SKSEPluginLoad(const LoadInterface* skse) {
     serial->SetRevertCallback(Serialization::Revert);
 
     UI::RegisterMenus();
+
+    RNGUtil::setup();
     log::info("{} has finished loading.", plugin->GetName());
     return true;
 }

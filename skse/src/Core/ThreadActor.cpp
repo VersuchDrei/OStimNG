@@ -18,6 +18,7 @@
 #include "Util/Globals.h"
 #include "Util/LookupTable.h"
 #include "Util/ObjectRefUtil.h"
+#include "Util/RNGUtil.h"
 #include "Util/StringUtil.h"
 #include "Util/VectorUtil.h"
 
@@ -378,7 +379,7 @@ namespace OStim {
                 if (eyeballModifierOverride.size() == 1 && eyeballModifierOverride.contains(8) && eyeballModifierOverride[8].baseValue == 100) {
                     resetLooking();
                 } else {
-                    if (std::uniform_int_distribution<int>(0, 4)(Constants::RNG) == 0) {
+                    if (RNGUtil::uniformInt(0, 4) == 0) {
                         setLooking({{8, {.baseValue = 100}}});
                     }
                 }
@@ -528,7 +529,7 @@ namespace OStim {
             }
             applyExpression(underlyingExpression, mask, 1);
         }
-        underlyingExpressionCooldown = std::uniform_int_distribution<>(MCM::MCMTable::getExpressionDurationMin(), MCM::MCMTable::getExpressionDurationMax())(Constants::RNG);
+        underlyingExpressionCooldown = RNGUtil::normalInt(MCM::MCMTable::getExpressionDurationMin(), MCM::MCMTable::getExpressionDurationMax());
     }
 
     void ThreadActor::updateOverrideExpression() {
@@ -540,7 +541,7 @@ namespace OStim {
             overrideExpression = VectorUtil::randomElement(overrideExpressions)->getGenderExpression(female);
             mask &= ~overrideExpression->typeMask;
             applyExpression(overrideExpression, overrideExpression->typeMask, 5);
-            overwriteExpressionCooldown = std::uniform_int_distribution<>(MCM::MCMTable::getExpressionDurationMin(), MCM::MCMTable::getExpressionDurationMax())(Constants::RNG);
+            overwriteExpressionCooldown = RNGUtil::normalInt(MCM::MCMTable::getExpressionDurationMin(), MCM::MCMTable::getExpressionDurationMax());
         } else {
             overrideExpression = nullptr;
             overwriteExpressionCooldown = -1;
