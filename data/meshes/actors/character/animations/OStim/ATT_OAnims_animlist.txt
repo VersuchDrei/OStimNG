@@ -41,6 +41,8 @@ b -a,Tn OStim2PStandingSquattingToStandingApartMF_0 OStim2P\MF\idle\OStim2PStand
 b -a,Tn OStim2PStandingSquattingToStandingApartMF_1 OStim2P\MF\idle\OStim2PStandingSquattingToStandingApartMF_1.hkx
 b -Tn OStim2PSittingMF_0 OStim2P\MF\idle\OStim2PSittingMF_0.hkx
 b -Tn OStim2PSittingMF_1 OStim2P\MF\idle\OStim2PSittingMF_1.hkx
+b -Tn OStim2PDoggyIdleMF_0 OStim2P\MF\idle\OStim2PDoggyIdleMF_0.hkx
+b -Tn OStim2PDoggyIdleMF_1 OStim2P\MF\idle\OStim2PDoggyIdleMF_1.hkx
 b -Tn OStim2PLyingOnTopMF_0 OStim2P\MF\idle\OStim2PLyingOnTopMF_0.hkx
 b -Tn OStim2PLyingOnTopMF_1 OStim2P\MF\idle\OStim2PLyingOnTopMF_1.hkx
 b -Tn OStim2PBothLyingMF_0 OStim2P\MF\idle\OStim2PBothLyingMF_0.hkx

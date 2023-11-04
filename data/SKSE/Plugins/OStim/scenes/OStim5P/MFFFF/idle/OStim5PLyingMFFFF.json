@@ -9,6 +9,11 @@
 	],
 	"navigations":[
 		{
+			"destination": "OStim5PLyingMMMMF",
+			"description": "go to MMMMF idle",
+			"icon": "OStim/symbols/gender_mmf"
+		},
+		{
 			"destination": "OStim5PStandingMMMMF",
 			"description": "stand up",
 			"icon": "OStim/positional/standup_m"
@@ -30,7 +35,7 @@
 			"lookLeft": 40
 		},
 		{
-			"intendedSex": "male",
+			"intendedSex": "female",
 			"tags": [
 				"lyingback"
 			],
@@ -40,7 +45,7 @@
 			"lookLeft": -10
 		},
 		{
-			"intendedSex": "male",
+			"intendedSex": "female",
 			"tags": [
 				"sitting"
 			],
@@ -48,7 +53,7 @@
 			"sosBend": -10
 		},
 		{
-			"intendedSex": "male",
+			"intendedSex": "female",
 			"tags": [
 				"sitting"
 			],

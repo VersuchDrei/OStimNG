@@ -1,4 +1,9 @@
 {
+	"aliases":[
+		"holdhand",
+		"holdhands",
+		"holdinghands"
+	],
 	"info": "holdinghand is two sided, you don't need to add two actions for it",
 	"actor":{
 		"requirements":[

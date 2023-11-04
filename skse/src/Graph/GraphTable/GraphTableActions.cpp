@@ -138,6 +138,22 @@ namespace Graph {
     void GraphTable::SetupActions() {
         Util::JsonFileLoader::LoadFilesInFolder(
             ACTION_FILE_PATH, [&](std::string path, std::string filename, json json) {
+                if (json.contains("aliases")) {
+                    if (json["aliases"].is_array()) {
+                        int index = 0;
+                        for (auto& alias : json["aliases"]) {
+                            if (alias.is_string()) {
+                                actionAliases[alias] = filename;
+                            } else {
+                                logger::warn("alias {} of action '{}' is not a string", index, filename);
+                            }
+                            index++;
+                        }
+                    } else {
+                        logger::warn("property 'aliases' of action '{}' is not a list", filename);
+                    }
+                }
+
                 Graph::ActionAttributes attr;
                 if (json.contains("actor")) {
                     attr.actor = parseActionActor(path, json["actor"]);
@@ -171,9 +187,17 @@ namespace Graph {
             });
     }
 
+    std::string GraphTable::getActionAlias(std::string type) {
+        if (auto it = actionAliases.find(type); it != actionAliases.end()) {
+            return it->second;
+        }
+
+        return type;
+    }
+
     ActionAttributes* GraphTable::GetActionAttributesByType(std::string type) {
         if (auto it = actions.find(type); it != actions.end()) {
-            return &actions.at(type);
+            return &it->second;
         } else {
             logger::warn("No action found for {} using default", type);
             return &actions.at("default");

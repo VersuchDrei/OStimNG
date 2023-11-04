@@ -1,5 +1,7 @@
 #include "Action.h"
 
+#include "GraphTable.h"
+
 #include "Util/VectorUtil.h"
 
 namespace Graph {
@@ -17,5 +19,18 @@ namespace Graph {
         return (actor == position ? attributes->actor.strippingMask : 0) |
                (target == position ? attributes->target.strippingMask : 0) |
                (performer == position ? attributes->performer.strippingMask : 0);
+    }
+
+    bool Action::isType(std::string type) {
+        return this->type == GraphTable::getActionAlias(type);
+    }
+
+    bool Action::isType(std::vector<std::string> types) {
+        for (std::string& type : types) {
+            if (isType(type)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

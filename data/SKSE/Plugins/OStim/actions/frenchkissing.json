@@ -1,4 +1,7 @@
 {
+	"aliases":[
+		"frenchkiss"	
+	],
 	"info": "frenchkissing is two sided, you don't need to add two actions for it",
 	"actor":{
 		"stimulation":0.1,

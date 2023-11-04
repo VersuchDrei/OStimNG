@@ -229,7 +229,7 @@ namespace OStim {
                 if (RNGUtil::chanceRoll(chance)) {
                     increaseSpeed();
                 }
-                autoSpeedControlCooldown = RNGUtil::normalInt(MCM::MCMTable::autoSpeedControlIntervalMin(), MCM::MCMTable::autoSpeedControlIntervalMax());
+                autoSpeedControlCooldown = RNGUtil::uniformInt(MCM::MCMTable::autoSpeedControlIntervalMin(), MCM::MCMTable::autoSpeedControlIntervalMax());
             }
         }
 

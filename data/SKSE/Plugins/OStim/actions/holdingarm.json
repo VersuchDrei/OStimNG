@@ -1,4 +1,9 @@
 {
+	"aliases":[
+		"holdarm",
+		"holdarms",
+		"holdingarms"
+	],
 	"actor":{
 		"info": "the one with the hand",
 		"requirements":[

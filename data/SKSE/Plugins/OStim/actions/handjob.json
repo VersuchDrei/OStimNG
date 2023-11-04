@@ -1,5 +1,9 @@
 {
 	"info": "handjob is for when actor and target are different, when they are the same use malemasturbation",
+	"aliases":[
+		"handj",
+		"hj"
+	],
 	"actor":{
 		"info": "the one with the hand",
 		"stimulation":0.1,

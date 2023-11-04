@@ -1,5 +1,8 @@
 {
 	"info": "holdingbody is one sided, if they are holding each other add two actions",
+	"aliases":[
+		"holdbody"
+	],
 	"actor":{
 		"info": "the one with the hand",
 		"requirements":[

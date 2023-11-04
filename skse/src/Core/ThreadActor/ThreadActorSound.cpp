@@ -115,7 +115,7 @@ namespace OStim {
             return;
         }
 
-        moanCooldown = RNGUtil::normalInt(MCM::MCMTable::getMoanIntervalMin(), MCM::MCMTable::getMoanIntervalMax());
+        moanCooldown = RNGUtil::uniformInt(MCM::MCMTable::getMoanIntervalMin(), MCM::MCMTable::getMoanIntervalMax());
     }
 
     void ThreadActor::moan() {
@@ -136,7 +136,6 @@ namespace OStim {
 
     void ThreadActor::playSound(Sound::ReactionSet* reactionSet, GameAPI::GameActor partner, bool ignoreChecks) {
         moanCooldown = 0;
-        logger::info("dialogueCountdown: {}", dialogueCountdown);
         if ((ignoreChecks || graphActor->talk) && canTalk()) {
             dialogueCountdown--;
             Sound::DialogueSet* set = reactionSet->getDialogue(actor, partner);
@@ -180,9 +179,9 @@ namespace OStim {
 
     void ThreadActor::setDialogueCountdown() {
         if (female) {
-            dialogueCountdown = RNGUtil::normalInt(MCM::MCMTable::getFemaleDialogueCountdownMin(), MCM::MCMTable::getFemaleDialogueCountdownMax()) + 1;
+            dialogueCountdown = RNGUtil::uniformInt(MCM::MCMTable::getFemaleDialogueCountdownMin(), MCM::MCMTable::getFemaleDialogueCountdownMax()) + 1;
         } else {
-            dialogueCountdown = RNGUtil::normalInt(MCM::MCMTable::getMaleDialogueCountdownMin(), MCM::MCMTable::getMaleDialogueCountdownMax()) + 1;
+            dialogueCountdown = RNGUtil::uniformInt(MCM::MCMTable::getMaleDialogueCountdownMin(), MCM::MCMTable::getMaleDialogueCountdownMax()) + 1;
         }
     }
 

@@ -1,5 +1,8 @@
 {
 	"info": "kissing is two sided, you don't need to add two actions for it",
+	"aliases":[
+		"kiss"
+	],
 	"actor":{
 		"stimulation":0.1,
 		"maxStimulation":50,

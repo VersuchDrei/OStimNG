@@ -44,7 +44,7 @@ namespace PapyrusLibrary {
     // *********************************************************
     bool hasAction(Graph::Node* node, std::string type, std::vector<int> actors, std::vector<int> targets, std::vector<int> performers, std::vector<int> matesAny, std::vector<int> matesAll, std::vector<int> participantsAny, std::vector<int> participantsAll) {
         for (Graph::Action action : node->actions) {
-            if ((action.type == type || action.attributes->hasTag(type)) &&
+            if ((action.isType(type) || action.attributes->hasTag(type)) &&
                 (actors.empty() || VectorUtil::contains(actors, action.actor)) &&
                 (targets.empty() || VectorUtil::contains(targets, action.target)) &&
                 (performers.empty() || VectorUtil::contains(performers, action.performer)) &&
@@ -81,7 +81,7 @@ namespace PapyrusLibrary {
 
     bool isActionListed(Graph::Action action, std::vector<std::string> types, std::vector<std::vector<int>> actors, std::vector<std::vector<int>> targets, std::vector<std::vector<int>> performers, std::vector<std::vector<int>> matesAny, std::vector<std::vector<int>> matesAll, std::vector<std::vector<int>> participantsAny, std::vector<std::vector<int>> participantsAll) {
         for (int i = 0; i < types.size(); i++) {
-            if (action.type == types[i] || action.attributes->hasTag(types[i])) {
+            if (action.isType(types[i]) || action.attributes->hasTag(types[i])) {
                 std::vector<int> actorsList = VectorUtil::getElementOrEmpty(actors, i);
                 std::vector<int> targetsList = VectorUtil::getElementOrEmpty(targets, i);
                 std::vector<int> performersList = VectorUtil::getElementOrEmpty(performers, i);

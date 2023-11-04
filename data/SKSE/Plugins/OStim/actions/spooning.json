@@ -1,4 +1,7 @@
 {
+	"aliases":[
+		"spoon"
+	],
 	"actor":{
 		"info": "the big spoon"
 	},

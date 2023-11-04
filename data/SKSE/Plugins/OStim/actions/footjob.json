@@ -1,4 +1,10 @@
 {
+	"aliases":[
+		"feetj",
+		"feetjob",
+		"fj",
+		"footj"	
+	],
 	"actor":{
 		"info": "the one with the feet",
 		"stimulation":0.1,

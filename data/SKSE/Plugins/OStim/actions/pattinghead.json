@@ -1,4 +1,7 @@
 {
+	"aliases":[
+		"pathead"
+	],
 	"actor":{
 		"info": "the one with the hand",
 		"requirements":[

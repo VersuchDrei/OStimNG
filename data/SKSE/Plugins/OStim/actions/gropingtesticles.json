@@ -1,4 +1,13 @@
 {
+	"aliases":[
+		"gropeballs",
+		"gropeballsack",
+		"gropetesticle",
+		"gropetesticles",
+		"gropingballs",
+		"gropingballsack",
+		"gropringtesticle"	
+	],
 	"actor":{
 		"info": "the one with the hands",
 		"stimulation":0.1,

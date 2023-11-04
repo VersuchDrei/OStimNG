@@ -1,4 +1,11 @@
 {
+	"aliases":[
+		"vampbite",
+		"vampdrain",
+		"vampiredrain",
+		"vampiricbite",
+		"vampiricdrain"
+	],
 	"actor":{
 		"info": "the vampire",
 		"stimulation":0.0,

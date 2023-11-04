@@ -31,7 +31,7 @@ namespace OStim {
         }
 
         // --- setting up the vehicle --- //
-        this->center = furniture ? furniture.getPosition() : params.actors.front().getPosition();
+        this->center = furniture ? furniture.getPosition() : (playerThread ? GameAPI::GameActor::getPlayer().getPosition() : params.actors.front().getPosition());
 
         if (furniture) {
             furnitureType = Furniture::FurnitureTable::getFurnitureType(furniture, false);

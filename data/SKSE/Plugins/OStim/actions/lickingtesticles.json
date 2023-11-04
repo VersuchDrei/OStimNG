@@ -1,4 +1,9 @@
 {
+	"aliases":[
+		"licktesticle",
+		"licktesticles",
+		"lickingtesticle"
+	],
 	"actor":{
 		"info": "the one with the mouth",
 		"stimulation":0.1,

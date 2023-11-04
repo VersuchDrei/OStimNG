@@ -1,5 +1,10 @@
 {
 	"info": "kissingcheek refers to the cheek in the face, not the buttcheek",
+	"aliases":[
+		"kisscheek",
+		"kisscheeks",
+		"kissingcheeks"
+	],
 	"actor":{
 		"info": "the one with the mouth",
 		"stimulation":0.1,

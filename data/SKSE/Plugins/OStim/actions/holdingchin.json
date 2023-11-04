@@ -1,4 +1,7 @@
 {
+	"aliases":[
+		"holdchin"
+	],
 	"actor":{
 		"info": "the one with the hand",
 		"requirements":[

@@ -199,35 +199,35 @@ namespace Graph {
     }
 
     int Node::findAction(std::string type) {
-        return findAction([type](Action action) { return action.type == type; });
+        return findAction([type](Action action) { return action.isType(type); });
     }
 
     int Node::findAnyAction(std::vector<std::string> types) {
-        return findAction([types](Action action) { return VectorUtil::contains(types, action.type); });
+        return findAction([types](Action action) { return action.isType(types); });
     }
 
     int Node::findActionForActor(int position, std::string type) {
-        return findAction([position, type](Action action) {return action.actor == position && action.type == type;});
+        return findAction([position, type](Action action) {return action.actor == position && action.isType(type);});
     }
 
     int Node::findAnyActionForActor(int position, std::vector<std::string> types) {
-        return findAction([position, types](Action action) {return action.actor == position && VectorUtil::contains(types, action.type);});
+        return findAction([position, types](Action action) {return action.actor == position && action.isType(types);});
     }
 
     int Node::findActionForTarget(int position, std::string type) {
-        return findAction([position, type](Action action) {return action.target == position && action.type == type;});
+        return findAction([position, type](Action action) {return action.target == position && action.isType(type);});
     }
 
     int Node::findAnyActionForTarget(int position, std::vector<std::string> types) {
-        return findAction([position, types](Action action) {return action.target == position && VectorUtil::contains(types, action.type);});
+        return findAction([position, types](Action action) {return action.target == position && action.isType(types);});
     }
 
     int Node::findActionForActorAndTarget(int actorPosition, int targetPosition, std::string type) {
-        return findAction([actorPosition, targetPosition, type](Action action) {return action.actor == actorPosition && action.target == targetPosition && action.type == type;});
+        return findAction([actorPosition, targetPosition, type](Action action) {return action.actor == actorPosition && action.target == targetPosition && action.isType(type);});
     }
 
     int Node::findAnyActionForActorAndTarget(int actorPosition, int targetPosition, std::vector<std::string> types) {
-        return findAction([actorPosition, targetPosition, types](Action action) {return action.actor == actorPosition && action.target == targetPosition && VectorUtil::contains(types, action.type);});
+        return findAction([actorPosition, targetPosition, types](Action action) {return action.actor == actorPosition && action.target == targetPosition && action.isType(types);});
     }
 
 

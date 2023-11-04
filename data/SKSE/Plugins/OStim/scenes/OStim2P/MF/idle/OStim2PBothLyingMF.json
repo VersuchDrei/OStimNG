@@ -22,6 +22,11 @@
 			"destination": "OStim2PSittingMF",
 			"description": "sit up",
 			"icon": "OStim/positional/leanback_f"
+		},
+		{
+			"destination": "OStim2PDoggyIdleMF",
+			"description": "get on all fours ({1})",
+			"icon": "OStim/positional/allfours_alt_f"
 		}
 	],
 	"tags":[

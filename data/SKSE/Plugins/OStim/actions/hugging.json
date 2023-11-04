@@ -1,5 +1,8 @@
 {
-	"info": "hug is one sided, if they are hugging each other add two actions",
+	"info": "hugging is one sided, if they are hugging each other add two actions",
+	"aliases":[
+		"hug"
+	],
 	"actor":{
 		"info": "the hugging one"
 	},

@@ -1,32 +1,22 @@
 {
-	"name": "Sitting Straight",
+	"name": "Doggy Idle Straight",
 	"modpack": "OStim",
 	"length": 2.0,
 	"speeds":[
 		{
-			"animation": "OStim2PSittingMF"
+			"animation": "OStim2PDoggyIdleMF"
 		}
 	],
 	"navigations":[
-		{
-			"destination": "OStim2PKneelingLyingFF",
-			"description": "go to lesbian idle",
-			"icon": "OStim/symbols/gender_ff"
-		},
-		{
-			"destination": "OStim2PKneelingLyingFrontMM",
-			"description": "go to gay idle",
-			"icon": "OStim/symbols/gender_mm"
-		},
 		{
 			"destination": "OStim2PStandingApartMF",
 			"description": "stand up",
 			"icon": "OStim/positional/standup_m"
 		},
 		{
-			"destination": "OStim2PDoggyIdleMF",
-			"description": "get on all fours ({1})",
-			"icon": "OStim/positional/allfours_alt_f"
+			"destination": "OStim2PStandingApartToSittingMF",
+			"description": "sit down",
+			"icon": "OStim/positional/squatting_f"
 		},
 		{
 			"destination": "OStim2PLyingOnTopMF",
@@ -45,17 +35,21 @@
 	"actors":[
 		{
 			"intendedSex": "male",
-			"sosBend": 7,
+			"sosBend": 2,
 			"scale": 1.03,
+      		"lookUp": -50,
 			"tags": [
-				"sitting"
+				"kneeling"
 			],
 			"feetOnGround": false
 		},
 		{
 			"intendedSex": "female",
+      		"lookUp": -100,
+      		"lookLeft": 30,
 			"tags": [
-				"sitting"
+				"allfours",
+				"facingaway"
 			],
 			"feetOnGround": false
 		}

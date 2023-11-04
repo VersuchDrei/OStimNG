@@ -46,5 +46,7 @@ namespace Graph {
 
         bool doFullStrip(int position);
         uint32_t getStrippingMask(int position);
+        bool isType(std::string type);
+        bool isType(std::vector<std::string> types);
     };
 }

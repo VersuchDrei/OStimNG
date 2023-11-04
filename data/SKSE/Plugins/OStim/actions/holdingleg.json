@@ -1,5 +1,10 @@
 {
 	"info": "holdingleg is merely positional, if they're doing it in a sensual matter use holdingthigh",
+	"aliases":[
+		"holdleg",
+		"holdlegs",
+		"holdinglegs"
+	],
 	"actor":{
 		"info": "the one with the hand",
 		"requirements":[

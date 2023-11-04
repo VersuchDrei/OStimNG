@@ -529,7 +529,7 @@ namespace OStim {
             }
             applyExpression(underlyingExpression, mask, 1);
         }
-        underlyingExpressionCooldown = RNGUtil::normalInt(MCM::MCMTable::getExpressionDurationMin(), MCM::MCMTable::getExpressionDurationMax());
+        underlyingExpressionCooldown = RNGUtil::uniformInt(MCM::MCMTable::getExpressionDurationMin(), MCM::MCMTable::getExpressionDurationMax());
     }
 
     void ThreadActor::updateOverrideExpression() {
@@ -541,7 +541,7 @@ namespace OStim {
             overrideExpression = VectorUtil::randomElement(overrideExpressions)->getGenderExpression(female);
             mask &= ~overrideExpression->typeMask;
             applyExpression(overrideExpression, overrideExpression->typeMask, 5);
-            overwriteExpressionCooldown = RNGUtil::normalInt(MCM::MCMTable::getExpressionDurationMin(), MCM::MCMTable::getExpressionDurationMax());
+            overwriteExpressionCooldown = RNGUtil::uniformInt(MCM::MCMTable::getExpressionDurationMin(), MCM::MCMTable::getExpressionDurationMax());
         } else {
             overrideExpression = nullptr;
             overwriteExpressionCooldown = -1;
@@ -875,6 +875,13 @@ namespace OStim {
 
     void ThreadActor::free() {
         logger::info("freeing actor {}-{}: {}", thread->m_threadId, index, actor.getName());
+
+        if (this->graphActor) {
+            for (GameAPI::GameFaction faction : this->graphActor->factions) {
+                actor.removeFromFaction(faction);
+            }
+        }
+
         for (auto& [type, object] : equipObjects) {
             object.unequip(actor);
             object.removeItems(actor);

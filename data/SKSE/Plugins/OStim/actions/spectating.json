@@ -1,4 +1,9 @@
 {
+	"aliases":[
+		"specate",
+		"watch",
+		"watching"
+	],
 	"actor":{
 		"info": "the one with the eyes",
 		"moan": true,

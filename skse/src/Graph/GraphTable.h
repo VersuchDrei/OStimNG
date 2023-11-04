@@ -29,9 +29,11 @@ namespace Graph{
 #pragma region actions
     public:
         static void SetupActions();
+        static std::string getActionAlias(std::string type);
         static ActionAttributes* GetActionAttributesByType(std::string type);
 
     private:
+        inline static std::unordered_map<std::string, std::string> actionAliases;
         inline static std::unordered_map<std::string, ActionAttributes> actions;
 #pragma endregion
 

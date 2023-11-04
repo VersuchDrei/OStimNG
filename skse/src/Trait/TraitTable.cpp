@@ -1,6 +1,8 @@
 #include "TraitTable.h"
 
 #include "FacialExpression.h"
+
+#include "Graph/GraphTable.h"
 #include "Serial/Manager.h"
 #include "Util/ActorUtil.h"
 #include "Util/MapUtil.h"
@@ -48,13 +50,13 @@ namespace Trait {
 
             if (json.contains("actionActors")) {
                 for (auto& action : json["actionActors"]) {
-                    addToTable(&expressionsByActionActors, action, expression);
+                    addToTable(&expressionsByActionActors, Graph::GraphTable::getActionAlias(action), expression);
                 }
             }
 
             if (json.contains("actionTargets")) {
                 for (auto& action : json["actionTargets"]) {
-                    addToTable(&expressionsByActionTargets, action, expression);
+                    addToTable(&expressionsByActionTargets, Graph::GraphTable::getActionAlias(action), expression);
                 }
             }
         });

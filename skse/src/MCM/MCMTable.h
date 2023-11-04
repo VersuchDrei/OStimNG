@@ -155,6 +155,9 @@ namespace MCM {
 
             {0xE24, {0, "SetOnlyLightInDark"}},
 
+            {0xEC1, {0, "autoExportSettings"}},
+            {0xEC2, {0, "autoImportSettings"}},
+
             {0xE28, {72, "SetOsaUpKey"}},
             {0xE29, {76, "SetOsaDownKey"}},
             {0xE2A, {75, "SetOsaLeftKey"}},
