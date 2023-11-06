@@ -21,19 +21,7 @@ namespace Events {
 
         Serialization::closeOldThreads();
 
-        OStim::ThreadBuilder::reset();
-
-        const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-        auto vm = skyrimVM ? skyrimVM->impl : nullptr;
-        if (vm) {
-            RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback(new CheckPapyrusUndressingCallbackFunctor());
-            auto args = RE::MakeFunctionArguments();
-            vm->DispatchStaticCall("OUndress", "UsePapyrusUndressing", args, callback);
-        }
-
-        if (!Util::Globals::isSceneIntegrityVerified()) {
-            GameAPI::Game::showMessageBox("OStim Standalone: Scene integrity could not be verified. OStim and its addons might not work properly. Please don't report any other bugs while this issue persists.", {"Ok"}, [](unsigned int result) {});
-        }
+        handleGameLoad();
 
         return RE::BSEventNotifyControl::kContinue;
     }
@@ -181,5 +169,26 @@ namespace Events {
         }
 
         return RE::BSEventNotifyControl::kContinue;
+    }
+
+    
+    void EventListener::handleGameLoad() {
+        OStim::ThreadBuilder::reset();
+
+        const auto skyrimVM = RE::SkyrimVM::GetSingleton();
+        auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+        if (vm) {
+            RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback(
+                new CheckPapyrusUndressingCallbackFunctor());
+            auto args = RE::MakeFunctionArguments();
+            vm->DispatchStaticCall("OUndress", "UsePapyrusUndressing", args, callback);
+        }
+
+        if (!Util::Globals::isSceneIntegrityVerified()) {
+            GameAPI::Game::showMessageBox(
+                "OStim Standalone: Scene integrity could not be verified. OStim and its addons might not work "
+                "properly. Please don't report any other bugs while this issue persists.",
+                {"Ok"}, [](unsigned int result) {});
+        }
     }
 }

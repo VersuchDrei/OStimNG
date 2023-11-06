@@ -13,7 +13,7 @@ namespace Integrity {
             }
 
             auto pathStr = file.path().string();
-            if (pathStr.starts_with("Data\\SKSE\\Plugins\\OStim\\scenes\\OStim")) {
+            if (pathStr.starts_with("Data\\SKSE\\Plugins\\OStim\\scenes\\OStim") && pathStr.ends_with(".json")) {
                 files.push_back(pathStr);
             }
         }
@@ -27,6 +27,7 @@ namespace Integrity {
         integrity.seekg(0, std::ios::beg);
 
         if (length / MD5_DIGEST_LENGTH != files.size()) {
+            logger::warn("scene count mismatch: expected {}, encountered {}", length / MD5_DIGEST_LENGTH, files.size());
             return false;
         }
 
@@ -39,6 +40,7 @@ namespace Integrity {
             std::string checkSum = CheckSum::createCheckSum(file);
 
             if (fileSumStr != checkSum) {
+                logger::warn("checksum mismatch for {}: expected {}, encountered {}", file, fileSumStr, checkSum);
                 return false;
             }
         }

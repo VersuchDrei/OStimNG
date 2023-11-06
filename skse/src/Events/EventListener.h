@@ -17,6 +17,8 @@ namespace Events {
         virtual RE::BSEventNotifyControl ProcessEvent(const SKSE::CrosshairRefEvent* a_event, RE::BSTEventSource<SKSE::CrosshairRefEvent>* a_eventSource) override;
         virtual RE::BSEventNotifyControl ProcessEvent(RE::InputEvent* const* a_events, RE::BSTEventSource<RE::InputEvent*>* a_eventSource) override;
 
+        static void handleGameLoad();
+
     private:
         class CheckPapyrusUndressingCallbackFunctor : public RE::BSScript::IStackCallbackFunctor {
             virtual inline void operator()(RE::BSScript::Variable a_result) override {

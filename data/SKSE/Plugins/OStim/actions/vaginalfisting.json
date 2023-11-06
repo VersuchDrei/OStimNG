@@ -1,4 +1,7 @@
 {
+	"aliases":[
+		"fisting"
+	],
 	"actor":{
 		"info": "the one with the hand",
 		"stimulation":0.1,

@@ -106,6 +106,7 @@ namespace {
                 //UI::PostRegisterMenus();
             } break;
             case SKSE::MessagingInterface::kNewGame: {
+                Events::EventListener::handleGameLoad();
                 //UI::PostRegisterMenus();
             } break;
 

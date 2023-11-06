@@ -1,4 +1,7 @@
 {
+	"aliases":[
+		"toying"
+	],
 	"actor":{
 		"info": "the one holding the toy",
 		"stimulation":0.1,

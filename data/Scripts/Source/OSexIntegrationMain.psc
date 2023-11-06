@@ -2035,7 +2035,7 @@ Function Startup()
 EndFunction
 
 Function OnLoadGame()
-	If SKSE.GetPluginVersion("OStim") != 0x01000002
+	If SKSE.GetPluginVersion("OStim") != 0x01000003
 		Debug.MessageBox("OStim Standalone: Your OStim.dll or OSexIntegraionMain.pex is being overwritten with an old version. OStim and its addons will NOT work properly. Please don't report any other bugs while this issue persists.")
 	EndIf
 
@@ -2052,6 +2052,7 @@ Function OnLoadGame()
 		OStimImprovedCamSupport.value = 0
 	EndIf
 		
+	DisableOSAControls = false
 	OBars.OnGameLoad()
 
 	BBLS_FaceLightFaction = Game.GetFormFromFile(0x00755331, "BBLS_SKSE64_Patch.esp") as Faction
@@ -2802,8 +2803,9 @@ Bool Function StartScene(Actor Dom, Actor Sub, Bool zUndressDom = False, Bool zU
 		OThreadBuilder.SetDominantActors(BuilderID, DominantActors)
 	EndIf
 
-	If DisableOSAControls
+	If DisableOSAControls && (Dom == PlayerRef || Sub == PlayerRef || zThirdActor == PlayerRef)
 		OThreadBuilder.NoPlayerControl(BuilderID)
+		DisableOSAControls = false
 	EndIf
 
 	Return OThreadBuilder.Start(BuilderID) >= 0
