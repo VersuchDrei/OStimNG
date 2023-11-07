@@ -41,6 +41,19 @@ form[] Function GetEquippedAmmo(actor act) Global Native
 
 bool Function IsWig(Actor act, Armor item) Global Native
 
+Function SetFaceLight (string stateVal, Actor act, string light) Global Native
+Function ApplyFaceLight (string stateVal, Actor act) Global
+	SetFaceLight(stateVal, act, "")
+EndFunction
+
+Function FireDebugOption(string stateVal) Global
+	Debug.MessageBox("Debug " + stateVal)
+EndFunction
+
+Function FireDebugActorOption(string stateVal, Actor act) Global 
+	Debug.MessageBox("Debug " + stateVal + " " + act.GetDisplayName())
+EndFunction
+
 ;  ██████╗ ██████╗ ███╗   ██╗████████╗██████╗  ██████╗ ██╗     ███████╗
 ; ██╔════╝██╔═══██╗████╗  ██║╚══██╔══╝██╔══██╗██╔═══██╗██║     ██╔════╝
 ; ██║     ██║   ██║██╔██╗ ██║   ██║   ██████╔╝██║   ██║██║     ███████╗

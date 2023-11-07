@@ -1,0 +1,37 @@
+{
+  "pages": [
+    {
+      "name": "DebugOptions",
+      "description": "Test options",
+      "icon": "OStim/symbols/222",
+      "parent": null
+    }
+  ],
+  "options": [
+    {
+      "name": "FireMessage",
+      "page": "DebugOptions",
+      "states": {
+        "0": {
+          "icon": "OStim/symbols/arrow_down",
+          "description": "Fire Message",
+          "border": "FFFFFF",
+          "function": "OSANative/FireDebugOption"
+        }
+      }
+    },
+    {
+      "name": "FireMessageForActor",
+      "page": "DebugOptions",
+      "repeat": "actor",
+      "states": {
+        "0": {
+          "icon": "OStim/symbols/arrow_up",
+          "description": "Fire Message for {actor}",
+          "border": "FFFFFF",
+          "function": "OSANative/FireDebugActorOption"
+        }
+      }
+    }
+  ]
+}

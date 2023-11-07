@@ -324,6 +324,16 @@ namespace Trait {
         return MapUtil::randomValue(iter->second);
     }
 
+    std::vector<std::string> TraitTable::getEquipObjectsOfType(std::string type) {
+        std::vector<std::string> ret;
+        if (auto iter = equipObjects.find(type); iter != equipObjects.end()) {
+            for (auto& object : iter->second) {
+                ret.push_back(object.second->name);
+           }
+        }
+        return ret;
+    }
+
     std::vector<std::string> TraitTable::getEquipObjectPairs(RE::FormID formID, std::string type) {
         std::vector<std::string> ret;
         if (defaultEquipObjects.contains(type) || formID > 1) {

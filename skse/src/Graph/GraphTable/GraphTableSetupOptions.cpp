@@ -49,6 +49,9 @@ namespace Graph {
 
                             if (page.contains("repeat") && page["repeat"].is_string()) {
                                 node.repeat = page["repeat"];
+                                if (page.contains("equipType") && page["equipType"].is_string()) {
+                                    node.equipType = page["equipType"];
+                                }
                             }
                         }
                         else {
@@ -89,17 +92,7 @@ namespace Graph {
                         else {
                             logger::warn("option->page is not string, {} {}", path, node.name);
                         }
-
-                        if (option.contains("function") && option["function"].is_string()) {
-                            auto fn = option["function"].get<std::string>();
-                            auto split = stl::string_split(fn, '/');
-                            if (split.size() != 2) {
-                                logger::warn("function not valid {}", node.parentName);
-                                continue;
-                            }
-                            node.script = split[0];
-                            node.function = split[1];
-                        }
+                        
                         if (option.contains("stateFaction") && option["stateFaction"].is_string()) {
                             auto split = stl::string_split(option["stateFaction"].get<std::string>(), ';');
                             if (split.size() != 2) {
@@ -110,6 +103,9 @@ namespace Graph {
                         }
                         if (option.contains("repeat") && option["repeat"].is_string()) {
                             node.repeat = option["repeat"];
+                            if (option.contains("equipType") && option["equipType"].is_string()) {
+                                node.equipType = option["equipType"];
+                            }
                         }
 
                         if (!option.contains("states")) {
@@ -118,7 +114,7 @@ namespace Graph {
                         else {
                             auto states = option["states"];
                             for (json::iterator it = states.begin(); it != states.end(); ++it) {
-                                OptionData data;
+                                StateData data;
                                 if (it.value().contains("description") && it.value()["description"].is_string()) {
                                     data.description = it.value()["description"];
                                 }
@@ -127,6 +123,16 @@ namespace Graph {
                                 }
                                 if (it.value().contains("border") && it.value()["border"].is_string()) {
                                     data.border = it.value()["border"];
+                                }
+                                if (it.value().contains("function") && it.value()["function"].is_string()) {
+                                    auto fn = it.value()["function"].get<std::string>();
+                                    auto split = stl::string_split(fn, '/');
+                                    if (split.size() != 2) {
+                                        logger::warn("function not valid {} {}", node.name, it.key());
+                                        continue;
+                                    }
+                                    data.script = split[0];
+                                    data.function = split[1];
                                 }
                                 node.states.insert(std::make_pair(it.key(), data));
                             }

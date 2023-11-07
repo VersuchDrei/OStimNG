@@ -10,17 +10,21 @@
 struct MenuPage;
 struct MenuOption {
 	Graph::OptionNode* node;
-	std::string currentState = "0";
+	std::string currentState = "";
 	GameAPI::GameActor* actor = nullptr;
+	std::string equipObjectVariant;
 	MenuPage* parent = nullptr;
 	std::string getDescription() {
 		std::string description = getState().description;
 		if (actor != nullptr) {
 			StringUtil::replaceAll(description, "{actor}", actor->getName());
 		}
+		if (equipObjectVariant != "") {
+			StringUtil::replaceAll(description, "{type}", equipObjectVariant);
+		}
 		return description;		
 	}
-	Graph::OptionData& getState() {
+	Graph::StateData& getState() {
 		if (currentState == "") {
 			return node->states.begin()->second;
 		}

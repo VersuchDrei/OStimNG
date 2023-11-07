@@ -3,6 +3,7 @@
 #include <Graph/GraphTable.h>
 #include <Util/UIUtil.h>
 #include <Util/StringUtil.h>
+#include <Trait/TraitTable.h>
 
 
 namespace UI::Scene {
@@ -34,21 +35,30 @@ namespace UI::Scene {
 	}
 
 	void SceneOptions::ExecuteOption(MenuOption& option){
-		logger::info("Do the thing {} {}", option.node->script, option.node->function);
+		auto& state = option.getState();
 		const auto skyrimVM = RE::SkyrimVM::GetSingleton();
 		auto vm = skyrimVM ? skyrimVM->impl : nullptr;
 		if (vm) {
 			RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
 			
 			RE::BSScript::IFunctionArguments* args = nullptr;
-			if (option.actor != nullptr) {
-				args = RE::MakeFunctionArguments(std::move(option.currentState), std::move(option.actor->form));
+			if (option.actor != nullptr) {				
+				if (option.equipObjectVariant != "") {
+					auto stateVal = option.currentState;
+					auto equipObjectVariant = option.equipObjectVariant;
+					args = RE::MakeFunctionArguments(std::move(stateVal), std::move(option.actor->form), std::move(equipObjectVariant));
+				}
+				else {
+					auto stateVal = option.currentState;
+					args = RE::MakeFunctionArguments(std::move(stateVal), std::move(option.actor->form));
+				}
 			}
 			else {
-				args = RE::MakeFunctionArguments(std::move(option.currentState));
+				auto stateVal = option.currentState;
+				args = RE::MakeFunctionArguments(std::move(stateVal));
 			}
 
-			vm->DispatchStaticCall(option.node->script, option.node->function, args, callback);
+			vm->DispatchStaticCall(state.script, state.function, args, callback);
 		}
 	}
 
@@ -95,6 +105,27 @@ namespace UI::Scene {
 					newOption.parent = parent;
 					parent->options.push_back(newOption);
 				}
+			}
+			else if (option.repeat == "equipObject") {
+				if (option.equipType != "") {
+					MenuOption toggleOption;
+					toggleOption.node = &option;
+					toggleOption.actor = parent->actor;
+					toggleOption.parent = parent;
+					toggleOption.equipObjectVariant = "";
+					toggleOption.currentState = "toggle";
+					parent->options.push_back(toggleOption);
+
+					for (auto& equipObject : Trait::TraitTable::getEquipObjectsOfType(option.equipType)) {
+						MenuOption newOption;
+						newOption.node = &option;
+						newOption.actor = parent->actor;
+						newOption.parent = parent;
+						newOption.equipObjectVariant = equipObject;
+						newOption.currentState = "object";
+						parent->options.push_back(newOption);
+					}
+				}				
 			}
 			else {
 				MenuOption newOption;

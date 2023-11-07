@@ -15,12 +15,14 @@ namespace Graph {
 		std::string parentName;
 		MenuNode* parent = nullptr;
 		std::string repeat;
+		std::string equipType;
 	};
-
-	struct OptionNode :MenuNode {
-		std::unordered_map<std::string, OptionData> states;
+	struct StateData : OptionData {
 		std::string script;
 		std::string function;
+	};
+	struct OptionNode :MenuNode {
+		std::unordered_map<std::string, StateData> states;
 		std::string stateFaction = "";
 	};
 }
