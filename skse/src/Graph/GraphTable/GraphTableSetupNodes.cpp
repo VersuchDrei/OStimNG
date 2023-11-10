@@ -2,6 +2,7 @@
 
 #include "Furniture/FurnitureTable.h"
 #include "Util/JsonFileLoader.h"
+#include "Util/JsonUtil.h"
 #include "Util/StringUtil.h"
 #include "Util/VectorUtil.h"
 
@@ -294,7 +295,10 @@ namespace Graph {
                     int index = 0;
                     for (auto& jsonActor : json["actors"]) {
                         Graph::GraphActor actor;
+
                         if (jsonActor.is_object()) {
+                            std::string objectType = "actor " + std::to_string(index) + " of scene";
+
                             if (jsonActor.contains("type")) {
                                 if (jsonActor["type"].is_string()) {
                                     actor.condition.type = jsonActor["type"];
@@ -327,29 +331,10 @@ namespace Graph {
                                 }
                             }
 
-                            if (jsonActor.contains("scaleHeight")) {
-                                if (jsonActor["scaleHeight"].is_number()) {
-                                    actor.scaleHeight = jsonActor["scaleHeight"];
-                                } else {
-                                    logger::warn("scaleHeight property of actor {} of scene {} isn't a number", index, node->scene_id);
-                                }
-                            }
-
-                            if (jsonActor.contains("expressionOverride")) {
-                                if (jsonActor["expressionOverride"].is_string()) {
-                                    actor.expressionOverride = jsonActor["expressionOverride"];
-                                } else {
-                                    logger::warn("expressionOverride property of actor {} of scene {} isn't a string", index, node->scene_id);
-                                }
-                            }
-
-                            if(jsonActor.contains("expressionAction")) {
-                                if (jsonActor["expressionAction"].is_number_integer()) {
-                                    actor.expressionAction = jsonActor["expressionAction"];
-                                } else {
-                                    logger::warn("expressionAction property of actor {} of scene {} isn't an integer", index, node->scene_id);
-                                }
-                            }
+                            JsonUtil::loadFloat(jsonActor, actor.scaleHeight, "scaleHeight", node->scene_id, objectType, false);
+                            JsonUtil::loadString(jsonActor, actor.underlyingExpression, "underlyingExpression", node->scene_id, objectType, false);
+                            JsonUtil::loadString(jsonActor, actor.expressionOverride, "expressionOverride", node->scene_id, objectType, false);
+                            JsonUtil::loadInt(jsonActor, actor.expressionAction, "expressionAction", node->scene_id, objectType, false);
 
                             if (jsonActor.contains("animationIndex")) {
                                 if (jsonActor["animationIndex"].is_number_integer()) {
@@ -361,14 +346,8 @@ namespace Graph {
                             } else {
                                 actor.animationIndex = index;
                             }
-
-                            if (jsonActor.contains("noStrip")) {
-                                if (jsonActor["noStrip"].is_boolean()) {
-                                    actor.noStrip = jsonActor["noStrip"];
-                                } else {
-                                    logger::warn("noStrip property of actor {} of scene {} isn't a boolean", index, node->scene_id);
-                                }
-                            }
+                            
+                            JsonUtil::loadBool(jsonActor, actor.noStrip, "noStrip", node->scene_id, objectType, false);
 
                             // TODO: this is too skyrim specific
                             if (jsonActor.contains("lookUp")) {

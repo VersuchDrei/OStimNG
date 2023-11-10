@@ -24,6 +24,8 @@ namespace OStim {
         actor.unlock();
         
         actor.updateAI();
+
+        actor.playAnimation("SOSFlaccid");
     }
 
     bool isEligible(GameAPI::GameActor actor) {

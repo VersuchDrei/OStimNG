@@ -12,6 +12,7 @@ note: all string values are converted to lower case when parsed, so capitalizati
 
 action fields:
 "info" (string): this field does not get parsed, it's just there to help understanding how to properly use this action
+"aliases" (list<string>): a list of aliases for this action, using an alias in a scene file will result in it being treated as if this action was used
 "actor" (object): a collection of attributes for the action actor (see actor fields)
 "target" (object): a collection of attributes for the action target (see actor fields)
 "performer" (object): a collection of attributes for the action performer (see actor fields)

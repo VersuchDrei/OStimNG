@@ -86,7 +86,9 @@ actor fields:
 	the default value is the total height of the vanilla skeleton
 "animationIndex" (int): the index of the animation to play (see speed fields: animation) (defaults to the actors index)
 	this can be used to invert the roles of a scene without having to register the animations twice
-"expressionAction" (int): the index of the action that takes priority for the actors facial expression (see actions README)
+"underlyingExpression" (string): an expression set to be used as the underlying expression, if left out the underlying expression will be determined based on the actions instead (see facial expressions README)
+"expressionAction" (int): the index of the action that takes priority for the actors facial expression (see facial expressions README)
+	this does nothing if the "underlyingExpression" property is used
 "expressionOverride" (string): an expression set to override the actors expression in this scene (see facial expressions README)
 "lookUp" (int): the mfg value for the eyes to look up (default: 0)
 	possible values range from -100 to 100, with negative ones causing a look down

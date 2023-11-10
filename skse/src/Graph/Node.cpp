@@ -246,6 +246,12 @@ namespace Graph {
 
 
     std::vector<Trait::FacialExpression*>* Node::getFacialExpressions(int position) {
+        if (actors[position].underlyingExpression != "") {
+            if (auto expressions = Trait::TraitTable::getExpressionsForSet(actors[position].underlyingExpression)) {
+                return expressions;
+            }
+        }
+
         if (actors[position].expressionAction != -1 && actors[position].expressionAction < actions.size()) {
             auto& action = actions[actors[position].expressionAction];
             if (action.target == position) {

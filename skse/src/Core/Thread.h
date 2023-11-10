@@ -60,6 +60,8 @@ namespace OStim {
         void SetSpeed(int speed);
         bool increaseSpeed();
         bool decreaseSpeed();
+        inline int getSpeed() { return m_currentNodeSpeed; }
+        inline float getRelativeSpeed() { return m_currentNode ? static_cast<float>(m_currentNodeSpeed) / static_cast<float>(m_currentNode->speeds.size()) : 0; }
 
         float getMaxExcitement();
 

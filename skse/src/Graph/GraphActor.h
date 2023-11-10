@@ -15,6 +15,7 @@ namespace Graph {
         bool feetOnGround = false;
         int expressionAction = -1;
         int animationIndex = -1;
+        std::string underlyingExpression = "";
         std::string expressionOverride = "";
         bool noStrip = false;
         bool moan = false;

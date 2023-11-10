@@ -424,7 +424,11 @@ namespace OStim {
                             continue;
                         }
 
-                        faceData->phenomeKeyFrame.values[key] = updater.step() / 100.0f;
+                        if (actor.isTalking()) {
+                            updater.step();
+                        } else {
+                            faceData->phenomeKeyFrame.values[key] = updater.step() / 100.0f;
+                        }
                         if (updater.isDone()) {
                             toDelete.push_back(key);
                         }
@@ -659,7 +663,7 @@ namespace OStim {
 
         // expression
         if ((mask & Trait::ExpressionType::EXPRESSION) == Trait::ExpressionType::EXPRESSION) {
-            if (auto value = expression->expression.calculate(speed, excitement)) {
+            if (auto value = expression->expression.calculate(thread->getRelativeSpeed(), excitement)) {
                 faceData->exprOverride = false;
                 faceData->SetExpressionOverride(expression->expression.type, static_cast<float>(value) / 100.0f);
                 faceData->exprOverride = true;
@@ -678,7 +682,7 @@ namespace OStim {
                 int delay = 0;
                 auto iter = expression->eyelidModifiers.find(i);
                 if (iter != expression->eyelidModifiers.end()) {
-                    goal = iter->second.calculate(speed, excitement);
+                    goal = iter->second.calculate(thread->getRelativeSpeed(), excitement);
                     delay = iter->second.randomizeDelay();
                 }
                 if (current == goal) {
@@ -700,7 +704,7 @@ namespace OStim {
                 int delay = 0;
                 auto iter = expression->eyebrowModifiers.find(i);
                 if (iter != expression->eyebrowModifiers.end()) {
-                    goal = iter->second.calculate(speed, excitement);
+                    goal = iter->second.calculate(thread->getRelativeSpeed(), excitement);
                     delay = iter->second.randomizeDelay();
                 }
                 if (current == goal) {
@@ -722,7 +726,7 @@ namespace OStim {
                 int delay = 0;
                 auto iter = expression->eyeballModifiers.find(i);
                 if (iter != expression->eyeballModifiers.end()) {
-                    goal = iter->second.calculate(speed, excitement);
+                    goal = iter->second.calculate(thread->getRelativeSpeed(), excitement);
                     delay = iter->second.randomizeDelay();
                 }
                 if (current == goal) {
@@ -745,7 +749,7 @@ namespace OStim {
                 int delay = 0;
                 auto iter = expression->phonemes.find(i);
                 if (iter != expression->phonemes.end()) {
-                    goal = iter->second.calculate(speed, excitement);
+                    goal = iter->second.calculate(thread->getRelativeSpeed(), excitement);
                     delay = iter->second.randomizeDelay();
                 }
                 if (current == goal) {
@@ -806,7 +810,7 @@ namespace OStim {
             int delay = 0;
             auto iter = eyeballModifierOverride.find(i);
             if (iter != eyeballModifierOverride.end()) {
-                goal = iter->second.calculate(speed, excitement);
+                goal = iter->second.calculate(thread->getRelativeSpeed(), excitement);
                 delay = iter->second.randomizeDelay();
             }
             if (current == goal) {

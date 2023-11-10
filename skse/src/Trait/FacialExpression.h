@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GameAPI/GameActor.h"
+#include "Util/MathUtil.h"
 #include "Util/RNGUtil.h"
 
 namespace Trait {
@@ -27,7 +28,7 @@ namespace Trait {
         int delayVariance = 0;
 
         inline int calculate(float speed, float excitement) {
-            return (int)(baseValue + (variance == 0 ? 0 : RNGUtil::uniformInt(0, variance)) + speedMultiplier * speed + excitementMultiplier * excitement);
+            return MathUtil::clamp((int)(baseValue + (variance == 0 ? 0 : RNGUtil::uniformInt(0, variance)) + speedMultiplier * speed + excitementMultiplier * excitement), 0, 100);
         }
 
         inline int randomizeDelay() {

@@ -6,7 +6,15 @@
 		"gropetesticles",
 		"gropingballs",
 		"gropingballsack",
-		"gropringtesticle"	
+		"gropringtesticle",
+		"holdballs",
+		"holdballsack",
+		"holdingballs",
+		"holdingballsack",
+		"holdingtesticle",
+		"holdingtesticles",
+		"holdtesticle",
+		"holdtesticles"
 	],
 	"actor":{
 		"info": "the one with the hands",
