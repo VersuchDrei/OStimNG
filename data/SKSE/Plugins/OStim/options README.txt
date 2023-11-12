@@ -28,9 +28,7 @@ stategroup fields:
   equipObject:
    "object" (state): UI to display for the equip object variants
    "toggle" (state): UI to display for the button to toggle the equipObject on or off
-  <name>: 
-"off" (state): UI to display when in off state (and if no toggle is false)
-"on" (state): UI to display when in on state
+  <name>: UI to display when in named state
 
 state fields:
 "icon" (string): the path to the .dds file to be used as the icon
