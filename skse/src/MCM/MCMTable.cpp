@@ -39,20 +39,24 @@ namespace MCM {
         return Compatibility::CompatibilityTable::sosInstalled() && settings[0xE04].asBool();
     }
 
+    bool MCMTable::useTNGSex() {
+        return Compatibility::CompatibilityTable::tngInstalled() && settings[0xECC].asBool();
+    }
+
     bool MCMTable::futaUseMaleExcitement() {
-        return Compatibility::CompatibilityTable::sosInstalled() && settings[0xE04].asBool() && settings[0xE05].asBool();
+        return Compatibility::CompatibilityTable::customGenitalInstalled() && settings[0xE04].asBool() && settings[0xE05].asBool();
     }
 
     bool MCMTable::futaUseMaleClimax() {
-        return Compatibility::CompatibilityTable::sosInstalled() && settings[0xE04].asBool() && settings[0xE17].asBool();
+        return Compatibility::CompatibilityTable::customGenitalInstalled() && settings[0xE04].asBool() && settings[0xE17].asBool();
     }
     
     bool MCMTable::futaUseMaleLight() {
-        return Compatibility::CompatibilityTable::sosInstalled() && settings[0xE04].asBool() && settings[0xE25].asBool();
+        return Compatibility::CompatibilityTable::customGenitalInstalled() && settings[0xE04].asBool() && settings[0xE25].asBool();
     }
 
     bool MCMTable::futaUseMaleRole() {
-        return Compatibility::CompatibilityTable::sosInstalled() && settings[0xE04].asBool() && settings[0xE48].asBool();
+        return Compatibility::CompatibilityTable::customGenitalInstalled() && settings[0xE04].asBool() && settings[0xE48].asBool();
     }
 
 

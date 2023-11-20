@@ -133,7 +133,7 @@ namespace OStim {
         }
 
         GameAPI::Game::showMessageBox("Add actor?", options, [params, actors](unsigned int result) {
-            if (result > 0) {
+            if (result > 0 && result <= actors.size()) {
                 addActor(params, actors[result - 1]);
             } else {
                 handleActorSorting(params);

@@ -315,13 +315,8 @@ namespace Graph {
                                 }
                             }
 
-                            if (jsonActor.contains("sosBend")) {
-                                if (jsonActor["sosBend"].is_number_integer()) {
-                                    actor.sosBend = jsonActor["sosBend"];
-                                } else {
-                                    logger::warn("sosBend property of actor {} of scene {} isn't an integer", index, node->scene_id);
-                                }
-                            }
+                            JsonUtil::loadInt(jsonActor, actor.sosBend, "sosBend", node->scene_id, objectType, false);
+                            JsonUtil::loadInt(jsonActor, actor.sosBend, "tngBend", node->scene_id, objectType, false);
 
                             if (jsonActor.contains("scale")) {
                                 if (jsonActor["scale"].is_number()) {

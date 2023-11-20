@@ -86,6 +86,10 @@ namespace Trait {
             return false;
         }
 
+        if (MCM::MCMTable::unrestrictedNavigation()) {
+            return true;
+        }
+
         if (MCM::MCMTable::intendedSexOnly() && sex != GameAPI::GameSex::AGENDER && other.sex != GameAPI::GameSex::AGENDER && sex != other.sex) {
             return false;
         }

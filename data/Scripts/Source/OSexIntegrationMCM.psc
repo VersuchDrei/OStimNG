@@ -39,7 +39,7 @@ Function Init()
 EndFunction
 
 int Function GetVersion()
-	Return 8
+	Return 9
 EndFunction
 
 Event OnVersionUpdate(int version)
@@ -47,7 +47,7 @@ Event OnVersionUpdate(int version)
 EndEvent
 
 Function SetupPages()
-	Pages = new string[12]
+	Pages = new string[13]
 	Pages[0] = "$ostim_page_general"
 	Pages[1] = "$ostim_page_controls"
 	Pages[2] = "$ostim_page_auto_control"
@@ -59,7 +59,8 @@ Function SetupPages()
 	Pages[8] = "$ostim_page_expression"
 	Pages[9] = "$ostim_page_sound"
 	Pages[10] = "$ostim_page_alignment"
-	Pages[11] = "$ostim_page_about"
+	Pages[11] = "$ostim_page_debug"
+	Pages[12] = "$ostim_page_about"
 EndFunction
 
 Event OnConfigRegister()
@@ -108,6 +109,8 @@ Event OnPageReset(String Page)
 		DrawSoundPage()
 	ElseIf Page == "$ostim_page_alignment"
 		DrawAlignmentPage()
+	ElseIf Page == "$ostim_page_debug"
+		DrawDebugPage()
 	ElseIf (Page == "$ostim_page_about")
 		UnloadCustomContent()
 		SetInfoText(" ")
@@ -1628,18 +1631,24 @@ Function DrawGenderRolesPage()
 	EndIf
 	AddToggleOptionST("OID_UseSoSSex", "$ostim_use_sos_sex", Main.UseSoSSex, UseSoSSexFlags)
 	SetCursorPosition(21)
+	int UseTNGSexFlags = OPTION_FLAG_NONE
+	If !Main.TNGInstalled
+		UseTNGSexFlags = OPTION_FLAG_DISABLED
+	EndIf
+	AddToggleOptionST("OID_UseTNGSex", "$ostim_use_tng_sex", Main.UseTNGSex, UseTNGSexFlags)
+	SetCursorPosition(23)
 	int FutaUseMaleRoleFlags = OPTION_FLAG_NONE
-	If !Main.IntendedSexOnly || !Main.SoSInstalled || !Main.UseSoSSex
+	If !Main.IntendedSexOnly || (!Main.SoSInstalled || !Main.UseSoSSex) && (!Main.TNGInstalled || !Main.UseTNGSex)
 		FutaUseMaleRoleFlags = OPTION_FLAG_DISABLED
 	EndIf
 	AddToggleOptionST("OID_FutaUseMaleRole", "$ostim_futa_use_male_role", Main.FutaUseMaleRole, FutaUseMaleRoleFlags)
-	SetCursorPosition(23)
+	SetCursorPosition(25)
 	int FutaFlags = OPTION_FLAG_NONE
-	If !Main.SoSInstalled || !Main.UseSoSSex
+	If (!Main.SoSInstalled || !Main.UseSoSSex) && (!Main.TNGInstalled || !Main.UseTNGSex)
 		FutaFlags = OPTION_FLAG_DISABLED
 	EndIf
 	AddToggleOptionST("OID_FutaUseMaleExcitement", "$ostim_futa_use_male_excitement", Main.FutaUseMaleExcitement, FutaFlags)
-	SetCursorPosition(25)
+	SetCursorPosition(27)
 	AddToggleOptionST("OID_FutaUseMaleClimax", "$ostim_futa_use_male_orgasm", Main.FutaUseMaleClimax, FutaFlags)
 EndFunction
 
@@ -1868,6 +1877,30 @@ State OID_UseSoSSex
 
 		int FutaFlags = OPTION_FLAG_NONE
 		If !Main.UseSoSSex
+			FutaFlags = OPTION_FLAG_DISABLED
+		EndIf
+		SetOptionFlagsST(FutaFlags, false, "OID_FutaUseMaleExcitement")
+		SetOptionFlagsST(FutaFlags, false, "OID_FutaUseMaleClimax")
+	EndEvent
+EndState
+
+State OID_UseTNGSex
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_use_tng_sex")
+	EndEvent
+
+	Event OnSelectST()
+		Main.UseTNGSex = !Main.UseTNGSex
+		SetToggleOptionValueST(Main.UseTNGSex)
+
+		int FutaUseMaleRoleFlags = OPTION_FLAG_NONE
+		If !Main.IntendedSexOnly || !Main.UseTNGSex
+			FutaUseMaleRoleFlags = OPTION_FLAG_DISABLED
+		EndIf
+		SetOptionFlagsST(FutaUseMaleRoleFlags, false, "OID_FutaUseMaleRole")
+
+		int FutaFlags = OPTION_FLAG_NONE
+		If !Main.UseTNGSex
 			FutaFlags = OPTION_FLAG_DISABLED
 		EndIf
 		SetOptionFlagsST(FutaFlags, false, "OID_FutaUseMaleExcitement")
@@ -2632,6 +2665,32 @@ State OID_AlignmentGroupByHeels
 	Event OnSelectST()
 		Main.AlignmentGroupByHeels = !Main.AlignmentGroupByHeels
 		SetToggleOptionValueST(Main.AlignmentGroupByHeels)
+	EndEvent
+EndState
+
+
+; ██████╗ ███████╗██████╗ ██╗   ██╗ ██████╗ 
+; ██╔══██╗██╔════╝██╔══██╗██║   ██║██╔════╝ 
+; ██║  ██║█████╗  ██████╔╝██║   ██║██║  ███╗
+; ██║  ██║██╔══╝  ██╔══██╗██║   ██║██║   ██║
+; ██████╔╝███████╗██████╔╝╚██████╔╝╚██████╔╝
+; ╚═════╝ ╚══════╝╚═════╝  ╚═════╝  ╚═════╝
+
+Function DrawDebugPage()
+	SetCursorFillMode(TOP_TO_BOTTOM)
+	SetCursorPosition(0)
+	AddToggleOptionST("OID_UnrestrictedNavigation", "$ostim_unrestricted_navigation", Main.UnrestrictedNavigation)
+EndFunction
+
+
+State OID_UnrestrictedNavigation
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_unrestricted_navigation")
+	EndEvent
+
+	Event OnSelectST()
+		Main.UnrestrictedNavigation = !Main.UnrestrictedNavigation
+		SetToggleOptionValueST(Main.UnrestrictedNavigation)
 	EndEvent
 EndState
 

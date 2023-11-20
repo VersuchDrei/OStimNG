@@ -6,6 +6,7 @@
 namespace GameAPI {
     class Game {
     public:
+        inline static bool isPaused() { return RE::UI::GetSingleton()->GameIsPaused(); }
         inline static float getTimeScale() { return GameTable::getTimescale()->value; }
         inline static void setTimeScale(float scale) { GameTable::getTimescale()->value = scale; }
         static void setGameSpeed(float speed);

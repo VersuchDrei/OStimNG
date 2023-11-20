@@ -12,6 +12,11 @@ namespace Compatibility {
             logger::info("SoS full is not installed.");
         }
 
+        if (handler->GetLoadedLightModIndex("TheNewGentleman.esp")) {
+            TNG_Gentified.loadFile("TheNewGentleman.esp", 0xE00);
+            TNG_Ungentified.loadFile("TheNewGentleman.esp", 0xE01);
+        }
+
         if (handler->GetLoadedModIndex("SOS - No Futanari Schlong - Addon.esp")) {
             tryAddNoSchlongFaction("SOS - No Futanari Schlong - Addon.esp", 0x000D63);
         }
@@ -53,26 +58,28 @@ namespace Compatibility {
         }
     }
 
-    bool CompatibilityTable::sosInstalled() {
-        return SOS_SchlongifiedFaction;
-    }
-
     bool CompatibilityTable::hasSchlong(GameAPI::GameActor actor) {
-        if (!MCM::MCMTable::useSoSSex()) {
-            return actor.isSex(GameAPI::GameSex::MALE);
-        }
-
-        if (!actor.isInFaction(SOS_SchlongifiedFaction)) {
-            return false;
-        }
-
-        for (GameAPI::GameFaction faction : noSchlongFactions) {
-            if (actor.isInFaction(faction)) {
+        if (MCM::MCMTable::useSoSSex()) {
+            if (!actor.isInFaction(SOS_SchlongifiedFaction)) {
                 return false;
+            }
+
+            for (GameAPI::GameFaction faction : noSchlongFactions) {
+                if (actor.isInFaction(faction)) {
+                    return false;
+                }
+            }
+
+            return true;
+        } else if (MCM::MCMTable::useTNGSex()) {
+            if (actor.isSex(GameAPI::GameSex::MALE)) {
+                return !TNG_Ungentified.contains(actor);
+            } else {
+                return TNG_Gentified.contains(actor);
             }
         }
 
-        return true;
+        return actor.isSex(GameAPI::GameSex::MALE);
     }
 
     void CompatibilityTable::tryAddNoSchlongFaction(std::string modName, RE::FormID formID) {

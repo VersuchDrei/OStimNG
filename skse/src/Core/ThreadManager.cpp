@@ -14,7 +14,7 @@ namespace OStim {
             while (true) {
                 auto start = std::chrono::system_clock::now();
 
-                if (!RE::UI::GetSingleton()->GameIsPaused()) {
+                if (!GameAPI::Game::isPaused()) {
                     std::shared_lock<std::shared_mutex> lock(m_threadMapMtx);
                     for (auto& it : m_threadMap) {
                         it.second->loop();

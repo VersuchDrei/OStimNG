@@ -1218,6 +1218,20 @@ bool Property UseSoSSex
 	EndFunction
 EndProperty
 
+GlobalVariable Property OStimUseTNGSex Auto
+bool Property UseTNGSex
+	bool Function Get()
+		Return OStimUseTNGSex.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimUseTNGSex.value = 1
+		Else
+			OStimUseTNGSex.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
 GlobalVariable Property OStimFutaUseMaleRole Auto
 bool Property FutaUseMaleRole
 	bool Function Get()
@@ -1566,6 +1580,23 @@ float Property SoundVolume
 	EndFunction
 	Function Set(float Value)
 		OStimSoundVolume.value = Value
+	EndFunction
+EndProperty
+
+; -------------------------------------------------------------------------------------------------
+; DEBUG SETTINGS  ---------------------------------------------------------------------------------
+
+GlobalVariable Property OStimUnrestrictedNavigation Auto
+bool Property UnrestrictedNavigation
+	bool Function Get()
+		Return OStimUnrestrictedNavigation.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimUnrestrictedNavigation.value = 1
+		Else
+			OStimUnrestrictedNavigation.value = 0
+		EndIf
 	EndFunction
 EndProperty
 
@@ -2015,7 +2046,7 @@ Function Profile(String Name = "")
 EndFunction
 
 Bool Property SoSInstalled Auto
-Faction SoSFaction
+Bool Property TNGInstalled Auto
 
 int rnd_s1
 int rnd_s2
@@ -2039,12 +2070,8 @@ Function OnLoadGame()
 		Debug.MessageBox("OStim Standalone: Your OStim.dll or OSexIntegraionMain.pex is being overwritten with an old version. OStim and its addons will NOT work properly. Please don't report any other bugs while this issue persists.")
 	EndIf
 
-	If (Game.GetModByName("Schlongs of Skyrim.esp") != 255)
-		SoSFaction = (Game.GetFormFromFile(0x0000AFF8, "Schlongs of Skyrim.esp")) as Faction
-	Else
-		SoSFaction = none
-	EndIf
-	SoSInstalled = SoSFaction
+	SoSInstalled = Game.GetModByName("Schlongs of Skyrim.esp") != 0xFF
+	TNGInstalled = Game.GetLightModByName("TheNewGentleman.esp") != 0xFFFF
 
 	If SKSE.GetPluginVersion("ImprovedCameraSE") != -1
 		OStimImprovedCamSupport.value = 1

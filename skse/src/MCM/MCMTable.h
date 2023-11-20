@@ -130,6 +130,7 @@ namespace MCM {
         inline static bool unequipStrapOnIfInWay() { return settings[0xDDD].asBool(); }
 
         static bool useSoSSex();
+        static bool useTNGSex();
         static bool futaUseMaleRole();
         static bool futaUseMaleExcitement();
         static bool futaUseMaleClimax();
@@ -141,6 +142,8 @@ namespace MCM {
         
         inline static float bedRealignment() { return settings[0xDFE].asFloat(); }
         inline static float bedOffset() { return settings[0xDFF].asFloat(); }
+
+        inline static bool unrestrictedNavigation() { return settings[0xECD].asBool(); }
 
         static void exportSettings();
         static void importSettings();
@@ -271,6 +274,7 @@ namespace MCM {
             {0xDDD, {1, "unequipStrapOnIfInWay"}},
 
             {0xE04, {1, "useSoSSex"}},
+            {0xECC, {1, "useTNGSex"}},
             {0xE48, {1, "futaUseMaleRole"}},
             {0xE05, {0, "futaUseMaleExcitement"}},
             {0xE17, {1, "futaUseMaleClimax"}},
@@ -279,10 +283,10 @@ namespace MCM {
             {0xD97, {0, "SetSchlongBending"}},
             {0xDE3, {1, "alignmentGroupBySex"}},
             {0xDE4, {0, "alignmentGroupByHeight"}},
-            {0xDE5, {1, "alignmentGroupByHeels"}}
-        };
+            {0xDE5, {1, "alignmentGroupByHeels"}},
 
-        inline static RE::TESGlobal* OStimKeySceneStart;
+            {0xECD, {0, "unrestrictedNavigation"}}
+        };
 
         inline static uint32_t undressingMask = 0x3D8BC39D;
     };
