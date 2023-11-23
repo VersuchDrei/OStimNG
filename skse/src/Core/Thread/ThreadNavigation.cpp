@@ -139,6 +139,10 @@ namespace OStim {
     }
 
     void Thread::playSequence(Graph::Sequence* sequence, bool navigateTo, bool useFades) {
+        if (!sequence->fulfilledBy(getActorConditions())) {
+            return;
+        }
+
         clearNodeQueue();
 
         bool doWarp = false;

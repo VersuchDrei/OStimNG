@@ -45,6 +45,9 @@ namespace GameAPI {
         RE::Actor* actor = form;
         SKSE::GetTaskInterface()->AddTask([actor]() {
             actor->SetGraphVariableBool("bHumanoidFootIKDisable", true);
+            actor->SetGraphVariableBool("bHeadTrackSpine", false);
+            actor->SetGraphVariableBool("bHeadTracking", false);
+            actor->SetGraphVariableBool("tdmHeadtrackingBehavior", false);
         });
     }
 
@@ -66,6 +69,9 @@ namespace GameAPI {
         RE::Actor* actor = form;
         SKSE::GetTaskInterface()->AddTask([actor]() {
             actor->SetGraphVariableBool("bHumanoidFootIKDisable", false);
+            actor->SetGraphVariableBool("bHeadTrackSpine", true);
+            actor->SetGraphVariableBool("bHeadTracking", true);
+            actor->SetGraphVariableBool("tdmHeadtrackingBehavior", true);
             actor->NotifyAnimationGraph("IdleForceDefaultState");
         });
     }

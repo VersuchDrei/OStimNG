@@ -132,6 +132,17 @@ int Function GetSpeed(int ThreadID) Global Native
 */;
 Function SetSpeed(int ThreadID, int Speed) Global Native
 
+;/* PlaySequence
+* * plays the sequence on the thread
+* *
+* * required API version: 31
+* *
+* * @param: Sequence, the sequence to play
+* * @param: NavigateTo, if true tries to navigate to the sequence start instead of warping there
+* * @param: UseFades, if true uses fade to black when warping to the sequence start if navigation wasn't possible or is disabled
+*/;
+Function PlaySequence(int ThreadID, string Sequence, bool NavigateTo = false, bool UseFades = false) Global Native
+
 
 ;  █████╗  ██████╗████████╗ ██████╗ ██████╗ ███████╗
 ; ██╔══██╗██╔════╝╚══██╔══╝██╔═══██╗██╔══██╗██╔════╝

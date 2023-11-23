@@ -946,13 +946,22 @@ namespace OStim {
         logger::info("freed actor {}-{}: {}", thread->m_threadId, index, actor.getName());
 
         if (!actor.isPlayer() && thread->getActors().size() > 1) {
-            // TODO: GameActor??
             if (voiceSet.postSceneDialogue) {
+                GameAPI::GameActor target = thread->isPlayerThread() ? GameAPI::GameActor::getPlayer() : primaryPartner;
+                if (actor == target) {
+                    for (auto& [index, threadActor] : thread->getActors()) {
+                        if (threadActor.getActor() != actor) {
+                            target = threadActor.getActor();
+                            break;
+                        }
+                    }
+                }
+
                 const auto skyrimVM = RE::SkyrimVM::GetSingleton();
                 auto vm = skyrimVM ? skyrimVM->impl : nullptr;
                 if (vm) {
                     RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-                    auto args = RE::MakeFunctionArguments(std::move(actor.form), std::move(primaryPartner.form), std::move(voiceSet.postSceneDialogue.form));
+                    auto args = RE::MakeFunctionArguments(std::move(actor.form), std::move(target.form), std::move(voiceSet.postSceneDialogue.form));
                     vm->DispatchStaticCall("OSKSE", "SayPostDialogue", args, callback);
                 }
             }

@@ -92,6 +92,20 @@ namespace PapyrusThread {
         }
     }
 
+    void PlaySequence(RE::StaticFunctionTag*, int threadID, std::string sequence, bool navigateTo, bool useFades) {
+        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        if (!thread) {
+            return;
+        }
+
+        Graph::Sequence* sequenceObj = Graph::GraphTable::getSequenceByID(sequence);
+        if (!sequenceObj) {
+            return;
+        }
+
+        thread->playSequence(sequenceObj, navigateTo, useFades);
+    }
+
 
     std::vector<RE::Actor*> GetActors(RE::StaticFunctionTag*, int threadID) {
         OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
@@ -252,6 +266,7 @@ namespace PapyrusThread {
         BIND(AutoTransitionForActor);
         BIND(GetSpeed);
         BIND(SetSpeed);
+        BIND(PlaySequence);
 
         BIND(GetActors);
         BIND(GetActor);

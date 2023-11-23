@@ -144,13 +144,16 @@ EndEvent
 Event OnOptionSelect(int Option)
 	if currPage == "$ostim_page_undress"
 		OnSlotSelect(Option)
+	ElseIf CurrPage == "$ostim_page_debug"
+		OnOptionSelectDebug(Option)
 	EndIf
 EndEvent
 
 Event OnOptionHighlight(int Option)
 	if currPage == "$ostim_page_undress"
 		OnSlotMouseOver(Option)
-		Return
+	ElseIf currPage == "$ostim_page_debug"
+		OnOptionHighlightDebug(Option)
 	EndIf
 EndEvent
 
@@ -2676,23 +2679,26 @@ EndState
 ; ██████╔╝███████╗██████╔╝╚██████╔╝╚██████╔╝
 ; ╚═════╝ ╚══════╝╚═════╝  ╚═════╝  ╚═════╝
 
+int OID_UnrestrictedNavigation
+
 Function DrawDebugPage()
 	SetCursorFillMode(TOP_TO_BOTTOM)
 	SetCursorPosition(0)
-	AddToggleOptionST("OID_UnrestrictedNavigation", "$ostim_unrestricted_navigation", Main.UnrestrictedNavigation)
+	OID_UnrestrictedNavigation = AddToggleOption("$ostim_unrestricted_navigation", Main.UnrestrictedNavigation)
 EndFunction
 
-
-State OID_UnrestrictedNavigation
-	Event OnHighlightST()
+Function OnOptionHighlightDebug(int Option)
+	If Option == OID_UnrestrictedNavigation
 		SetInfoText("$ostim_tooltip_unrestricted_navigation")
-	EndEvent
+	EndIf
+EndFunction
 
-	Event OnSelectST()
+Function OnOptionSelectDebug(int Option)
+	If Option == OID_UnrestrictedNavigation
 		Main.UnrestrictedNavigation = !Main.UnrestrictedNavigation
-		SetToggleOptionValueST(Main.UnrestrictedNavigation)
-	EndEvent
-EndState
+		SetToggleOptionValue(Option, Main.UnrestrictedNavigation)
+	EndIf
+EndFunction
 
 
 ; ██╗   ██╗████████╗██╗██╗     ██╗████████╗██╗   ██╗
