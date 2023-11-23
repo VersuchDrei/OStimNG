@@ -20,7 +20,7 @@ namespace OStim {
 
         int index;
 
-		inline GameAPI::GameActor getActor() { return actor; }
+		inline GameAPI::GameActor& getActor() { return actor; }
 
         inline Thread* getThread() { return thread; }
 

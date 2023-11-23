@@ -96,6 +96,7 @@ namespace {
                 Trait::TraitTable::setupForms();
                 MCM::MCMTable::setupForms();
                 Graph::GraphTable::setupEvents();
+                Graph::GraphTable::setupOptions();
 
                 UI::PostRegisterMenus();
                 

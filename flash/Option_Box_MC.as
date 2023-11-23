@@ -42,14 +42,14 @@ class Option_Box_MC extends MovieClip
 	// 1 speed controls;
 	// 2 settings menus;
 	var selectedSubMenu:Number = 0;
-	var settingsMC:MovieClip;
+	var menuselector_mc:MovieClip;
 
 	var fadeOutTime = 2.0;
 
 	public function Option_Box_MC()
 	{
 		super();
-		settingsMC = _parent.settings_mc;
+		menuselector_mc = _parent.menuselector_mc;
 
 		speedControls = [speedDown, speedUp];
 		CurrentlyHighlightedIdx = -1;
@@ -127,7 +127,7 @@ class Option_Box_MC extends MovieClip
 							}
 							break;
 						case 2:
-							settingsMC.NavUp();
+							menuselector_mc.NavUp();
 							break;
 					}
 				};
@@ -159,7 +159,7 @@ class Option_Box_MC extends MovieClip
 							}
 							break;
 						case 2:
-							settingsMC.NavDown();
+							menuselector_mc.NavDown();
 							break;
 					}
 				};
@@ -210,7 +210,9 @@ class Option_Box_MC extends MovieClip
 						SelectSpeed(currentSpeedIdx);
 						break;
 					case 2:
-						settingsMC.SelectSetting();
+						if(menuselector_mc.SelectOption() == 1){
+							SetSubMenu(0)
+						}
 						break;
 				}
 
@@ -239,7 +241,7 @@ class Option_Box_MC extends MovieClip
 				speedDown.OnUnHighlight();
 				break;
 			case 2:
-				settingsMC.LeaveMenu();
+				menuselector_mc.LeaveMenu();
 				break;
 		}
 		switch (subMenu)
@@ -258,7 +260,7 @@ class Option_Box_MC extends MovieClip
 				}
 				break;
 			case 2:
-				settingsMC.EnterMenu();
+				menuselector_mc.EnterMenu();
 				break;
 		}
 		selectedSubMenu = subMenu;
@@ -296,10 +298,10 @@ class Option_Box_MC extends MovieClip
 	public function SelectOption(NodeID:String)
 	{
 		log("UI_TransitionRequest {}, {" + NodeID + "}");
-		doSendTransitionRequest(NodeID);
+		doSelectOption(NodeID);
 	}
 
-	public function doSendTransitionRequest(sceneId:String)
+	public function doSelectOption(sceneId:String)
 	{
 	}
 
@@ -319,13 +321,13 @@ class Option_Box_MC extends MovieClip
 		if (Edges.length == 0)
 		{
 			TweenLite.to(this, 0.2, {_alpha: 0});
-			TweenLite.to(settingsMC, 0.2, {_alpha: 0});
+			TweenLite.to(menuselector_mc, 0.2, {_alpha: 0});
 			return;
 		}
 		else
 		{
 			TweenLite.to(this, 0.2, {_alpha: 100});
-			TweenLite.to(settingsMC, 0.2, {_alpha: 100});
+			TweenLite.to(menuselector_mc, 0.2, {_alpha: 100});
 			FadeTrigger();
 		}
 		for (var i = 0; i < Edges.length; i++)

@@ -2,8 +2,10 @@
 #include <UI/UIInterop.h>
 #include <UI/Settings.h>
 #include <UI/OStimMenu.h>
+#include "SceneOptions.h"
 #include <Core/Thread.h>
 #include <Core/Singleton.h>
+#include "Datatypes.h"
 
 namespace UI::Scene {
 	class SceneMenu : public UI::OStimMenu {
@@ -36,45 +38,34 @@ namespace UI::Scene {
 
 		void SpeedUp();
 		void SpeedDown();
-			
-		struct OptionData{
-			std::string nodeId;
-			std::string title;
-			std::string imagePath;
-			std::string border;
-			std::string description;
-			void loadValues(RE::GFxValue& option) {				
-				option.SetMember("NodeID", RE::GFxValue{ nodeId.c_str() });
-				option.SetMember("Title", RE::GFxValue{ title.c_str() });
-				option.SetMember("ImagePath", RE::GFxValue{ imagePath.c_str() });
-				option.SetMember("Border", RE::GFxValue{ border.c_str() });
-				option.SetMember("Description", RE::GFxValue{ description.c_str() });
-			}
-		};
-
-		struct MenuData {
-			std::vector<OptionData> options;
-			void loadValues(RE::GPtr<RE::GFxMovieView> view, RE::GFxValue& menu) {				
-				for (auto& option : options) {
-					RE::GFxValue optionValue;
-					view->CreateObject(&optionValue);
-					option.loadValues(optionValue);
-					menu.PushBack(optionValue);
-				}				
-			}
-		};
+		
+		bool IsOptionsOpen() { return optionsOpen; }	
+		void HandleOption(std::string idx);
+		void SetOptionsOpen(bool isOpen) {
+			optionsOpen = isOpen;
+		}
+		void BuildOptionsData();
 
 	private:
 		void BuildMenuData(MenuData& menudata);
 		void SendControl(int32_t control);
 		void GetOptionBoxes(RE::GFxValue& optionBoxes);
-		void GetSettingsMenu(RE::GFxValue& settingsMenu);
+		void GetMenuSelectorMenu(RE::GFxValue& settingsMenu);
+
+	private:
+		bool optionsOpen = false;
 	};
 
-	class doSendTransitionRequest : public RE::GFxFunctionHandler {
+	class doSelectOption : public RE::GFxFunctionHandler {
 	public:
 		void Call(Params& args) override {
-			UI::Scene::SceneMenu::GetMenu()->ChangeAnimation(args.args[0].GetString());
+			auto sceneMenu = UI::Scene::SceneMenu::GetMenu();
+			if (sceneMenu->IsOptionsOpen()) {
+				sceneMenu->HandleOption(args.args[0].GetString());
+			}
+			else {
+				sceneMenu->ChangeAnimation(args.args[0].GetString());
+			}
 		}
 	};
 
@@ -84,5 +75,15 @@ namespace UI::Scene {
 				logger::info("change speed");
 				UI::Scene::SceneMenu::GetMenu()->ChangeSpeed(args.args[0].GetBool());
 			}
+	};
+
+	class doShowOptions : public RE::GFxFunctionHandler {
+	public:
+		void Call(Params& args) override {
+			logger::info("show options");
+			auto sceneMenu = UI::Scene::SceneMenu::GetMenu();
+			sceneMenu->SetOptionsOpen(true);			
+			sceneMenu->UpdateMenuData();
+		}
 	};
 }

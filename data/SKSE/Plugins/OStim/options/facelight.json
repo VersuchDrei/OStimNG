@@ -1,0 +1,39 @@
+{
+  "pages": [
+    {
+      "name": "FaceLights",
+      "description": "Face lights",
+      "icon": "OStim/symbols/gender_f",
+      "parent": null
+    },
+    {
+      "name": "FaceLightsPerActor",
+      "description": "Face lights for {actor}",
+      "icon": "OStim/symbols/gender_m",
+      "parent": "FaceLights",
+      "repeat": "actor"
+    }
+  ],
+  "options": [
+    {
+      "name": "Toggle Facelight",
+      "page": "FaceLightsPerActor",
+      "states": {
+        "object": {
+          "icon": "OStim/symbols/gender_f",
+          "description": "Set facelight type to {type} for {actor}",
+          "border": "FFFF00",
+          "function": "OSANative/SetFaceLight"
+        },
+        "toggle": {
+          "icon": "OStim/symbols/gender_m",
+          "description": "Toggle facelight for {actor}",
+          "border": "00FF00",
+          "function": "OSANative/ApplyFaceLight"
+        }
+      },
+      "repeat": "equipObject",
+      "equipType": "light"
+    }
+  ]
+}

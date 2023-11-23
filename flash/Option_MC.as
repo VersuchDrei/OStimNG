@@ -43,7 +43,7 @@ class Option_MC extends MovieClip
 	public function OnSelect()
 	{
 		TweenLite.to(this,0.5,{_width:_w + 7, _height:_h + 7});
-		doSelect();
+		return doSelect();
 	}
 	
 	public function doSelect(){}

@@ -2,6 +2,7 @@
 
 #include "Graph/GraphTable.h"
 #include "Util/FormUtil.h"
+#include "Core/ThreadManager.h"
 
 namespace PapyrusActor {
     using VM = RE::BSScript::IVirtualMachine;
@@ -204,6 +205,23 @@ namespace PapyrusActor {
         return FormUtil::isWig(actor, armor);
     }
 
+    void SetFaceLight(RE::StaticFunctionTag*, std::string stateVal, RE::Actor* actor, std::string light) {
+        if (actor != nullptr) {
+            OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+            if (light == "") {
+                if (threadActor->isObjectEquipped("light")) {
+                    threadActor->unequipObject("light");
+                }
+                else {
+                    threadActor->equipObject("light");
+                }
+            }
+            else {                
+                threadActor->setObjectVariant("light", light);
+            }
+        }        
+    }
+
     bool Bind(VM* a_vm) {
         const auto obj = "OSANative"sv;
 
@@ -221,6 +239,7 @@ namespace PapyrusActor {
         BIND(ToggleCombat);
         BIND(DetectionActive);
         BIND(IsWig);
+        BIND(SetFaceLight);
 
         return true;
     }

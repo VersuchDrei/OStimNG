@@ -28,6 +28,7 @@ namespace Trait {
         static EquipObject* getEquipObject(GameAPI::GameActor actor, std::string type);
 
         static std::vector<std::string> getEquipObjectPairs(RE::FormID formID, std::string type);
+        static std::vector<std::string> getEquipObjectsOfType(std::string type);
         static std::string getEquipObjectName(RE::FormID formID, std::string type);
         static void setEquipObjectID(RE::FormID formID, std::string type, std::string id);
 
