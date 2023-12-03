@@ -2,6 +2,7 @@
 
 #include "Core/Thread.h"
 
+#include "Trait/TraitTable.h"
 #include "Util/Constants.h"
 #include "Util/RNGUtil.h"
 
@@ -17,6 +18,7 @@ namespace OStim {
         } else if (isTalking) {
             isTalking = false;
             clearEventExpression();
+            wakeExpressions(Trait::ExpressionType::PHONEME);
             return;
         }
 
@@ -146,6 +148,7 @@ namespace OStim {
                         setEventExpression(set->expression);
                     }
                     actor.sayTo(primaryPartner, set->dialogue);
+                    applyExpression(&Trait::TraitTable::fallbackExpression.female, Trait::ExpressionType::PHONEME, 5);
                     isTalking = true;
                     soundGracePeriod = 250;
                     moanCooldown = set->moanIntervalOverride;

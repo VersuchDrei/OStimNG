@@ -54,17 +54,12 @@ namespace Furniture {
         return ret;
     }
 
-    GameAPI::GameObject findBed(RE::TESObjectREFR* centerRef, float radius, float sameFloor) {
-        if (!centerRef) {
+    GameAPI::GameObject findFurniture(FurnitureType* type, RE::TESObjectREFR* centerRef, float radius, float sameFloor) {
+        if (!type || type->id == "none" || !centerRef) {
             return {};
         }
 
-        FurnitureType* bedType = FurnitureTable::getFurnitureType("bed");
-        if (!bedType) {
-            return {};
-        }
-
-        GameAPI::GameObject bed = nullptr;
+        GameAPI::GameObject furniture;
 
         auto centerPos = centerRef->GetPosition();
 
@@ -73,20 +68,20 @@ namespace Furniture {
 
             if (sameFloor == 0.0 || std::fabs(centerPos.z - refPos.z) <= sameFloor) {
                 FurnitureType* type = FurnitureTable::getFurnitureType(&ref, true);
-                if (!type->isChildOf(bedType)) {
+                if (!type->isChildOf(type)) {
                     return RE::BSContainer::ForEachResult::kContinue;
                 }
 
                 // TODO GameObject
-                if (!bed || centerPos.GetSquaredDistance(refPos) < centerPos.GetSquaredDistance(bed.form->GetPosition())) {
-                    bed = &ref;
+                if (!furniture || centerPos.GetSquaredDistance(refPos) < centerPos.GetSquaredDistance(furniture.form->GetPosition())) {
+                    furniture = &ref;
                 }
             }
 
             return RE::BSContainer::ForEachResult::kContinue;
         });
 
-        return bed;
+        return furniture;
     }
 
     FurnitureOffset getOffset(GameAPI::GameObject object) {

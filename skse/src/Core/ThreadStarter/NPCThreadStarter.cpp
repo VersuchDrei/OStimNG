@@ -10,8 +10,8 @@
 namespace OStim {
     int startNPCThread(ThreadStartParams& params) {
         if (!params.noFurniture && !params.furniture && MCM::MCMTable::useFurniture()) {
-            if (params.startingNode) {
-                params.furniture = Furniture::findBed(params.actors[0].form, MCM::MCMTable::furnitureSearchDistance(), 96.0f);
+            if (!params.startingNodes.empty()) {
+                params.furniture = Furniture::findFurniture(Furniture::FurnitureTable::getFurnitureType("bed"), params.actors[0].form, MCM::MCMTable::furnitureSearchDistance(), 96.0f);
             } else {
                 std::vector<std::pair<Furniture::FurnitureType*, GameAPI::GameObject>> furniture = Furniture::findFurniture(params.actors.size(), params.actors[0].form, MCM::MCMTable::furnitureSearchDistance(), 96.0f);
                 if (!furniture.empty()) {
@@ -20,25 +20,29 @@ namespace OStim {
             }
         }
 
-        if (!params.startingNode && !params.startingSequence) {
+        if (params.startingNodes.empty()) {
             ActorUtil::sort(params.actors, params.dominantActors, -1);
         }
 
-        if (!params.startingNode && !params.startingSequence) {
+        if (params.startingNodes.empty()) {
             Furniture::FurnitureType* furnitureType = Furniture::FurnitureTable::getFurnitureType(params.furniture, false);
             std::string furnitureTypeID = furnitureType->getListType()->id;
 
+            Graph::Node* node = nullptr;
             if (furnitureTypeID == "none") {
-                params.startingNode = Graph::GraphTable::getRandomNode(furnitureType, Trait::ActorCondition::create(params.actors), [&](Graph::Node* node) { return node->hasActorTagOnAny("standing"); });
+                node = Graph::GraphTable::getRandomNode(furnitureType, Trait::ActorCondition::create(params.actors), [&](Graph::Node* node) { return node->hasActorTagOnAny("standing"); });
             } else if (furnitureTypeID == "bed") {
-                params.startingNode = Graph::GraphTable::getRandomNode(furnitureType, Trait::ActorCondition::create(params.actors), [&](Graph::Node* node) { return !node->hasActorTagOnAny("standing"); });
+                node = Graph::GraphTable::getRandomNode(furnitureType, Trait::ActorCondition::create(params.actors), [&](Graph::Node* node) { return !node->hasActorTagOnAny("standing"); });
             } else {
-                params.startingNode = Graph::GraphTable::getRandomNode(furnitureType, Trait::ActorCondition::create(params.actors), [&](Graph::Node*) { return true; });
+                node = Graph::GraphTable::getRandomNode(furnitureType, Trait::ActorCondition::create(params.actors), [&](Graph::Node*) { return true; });
             }
-        }
 
-        if (!params.startingNode && !params.startingSequence) {
-            return -1;
+            if (node) {
+                params.startingNodes.push_back({node->animationLengthMs, node});
+            } else {
+                logger::info("no starting node found");
+                return -1;
+            }
         }
 
         return ThreadManager::GetSingleton()->startThread(params);

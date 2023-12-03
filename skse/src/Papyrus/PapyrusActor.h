@@ -3,6 +3,7 @@
 #include "Graph/GraphTable.h"
 #include "Util/FormUtil.h"
 #include "Core/ThreadManager.h"
+#include "Trait/TraitTable.h"
 
 namespace PapyrusActor {
     using VM = RE::BSScript::IVirtualMachine;
@@ -211,13 +212,12 @@ namespace PapyrusActor {
             if (light == "") {
                 if (threadActor->isObjectEquipped("light")) {
                     threadActor->unequipObject("light");
-                }
-                else {
+                } else {
                     threadActor->equipObject("light");
                 }
-            }
-            else {                
-                threadActor->setObjectVariant("light", light);
+            } else {
+                Trait::TraitTable::setEquipObjectID(actor->GetFormID(), "light", light);       
+                threadActor->refreshObject("light");
             }
         }        
     }

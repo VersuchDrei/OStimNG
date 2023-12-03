@@ -40,14 +40,17 @@ namespace OStim {
         }
 
         std::vector<Trait::ActorCondition> conditions = Trait::ActorCondition::create(params.actors);
-        if (params.startingSequence && !params.startingSequence->fulfilledBy(conditions)) {
-            logger::info("actors don't fulfill requirements of sequence {}", params.startingSequence->id);
-            params.startingSequence = nullptr;
-        }
-
-        if (params.startingNode && !params.startingNode->fulfilledBy(Trait::ActorCondition::create(params.actors))) {
-            logger::info("actors don't fulfill requirements of scene {}", params.startingNode->scene_id);
-            params.startingNode = nullptr;
+        if (!params.startingNodes.empty()) {
+            bool fulfills = true;
+            for (Graph::SequenceEntry& entry : params.startingNodes) {
+                if (!entry.node->fulfilledBy(conditions)) {
+                    logger::info("actor's dont fulfill requirements of scene {}", entry.node->scene_id);
+                    fulfills = false;
+                }
+            }
+            if (!fulfills) {
+                params.startingNodes.clear();
+            }
         }
 
         if (hasPlayer) {

@@ -58,8 +58,8 @@ EndFunction
 * * @param: Target, the actor the dialogue should be said to
 * * @param: Dialogue, the dialogue
 */;
-Function SayPostDialogue(Actor Act, Actor Target, Topic Dialogue) Global
-	Utility.Wait(1.5)
+Function SayPostDialogue(Actor Act, Actor Target, Topic Dialogue, float Delay) Global
+	Utility.Wait(Delay)
 	OActorUtil.SayTo(Act, Target, Dialogue)
 EndFunction
 

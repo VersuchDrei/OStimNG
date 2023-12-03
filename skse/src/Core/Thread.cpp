@@ -97,7 +97,7 @@ namespace OStim {
             stopTimer = MCM::MCMTable::npcSceneDuration();
         }
 
-        endAfterSequence = params.startingSequence && params.endAfterSequence;
+        endAfterSequence = params.startingNodes.size() > 1 && params.endAfterSequence;
     }
 
     Thread::~Thread() {
@@ -333,7 +333,7 @@ namespace OStim {
         m_actors.insert(std::make_pair(index, ThreadActor(this, index, actor)));
         ThreadActor* threadActor = GetActor(index);
         threadActor->initContinue();
-        if (MCM::MCMTable::undressAtStart()) {
+        if ((threadFlags & ThreadFlag::UNDRESS) == ThreadFlag::UNDRESS ||  MCM::MCMTable::undressAtStart()) {
             threadActor->undress();
         }
         if (MCM::MCMTable::removeWeaponsAtStart()) {

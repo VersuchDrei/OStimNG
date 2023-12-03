@@ -1,0 +1,55 @@
+{
+	"name": "Sitting Standing FFF",
+	"modpack": "OStim",
+	"length": 2.0,
+	"furniture": "chair",
+	"speeds":[
+		{
+			"animation": "OStimBench3PSittingStandingFFF"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStimChair3PSittingStandingMMM",
+			"description": "go to MMM idle",
+			"icon": "OStim/symbols/gender_mmm"
+		},
+		{
+			"destination": "OStimChair3PSittingStandingMMF",
+			"description": "go to MMF idle",
+			"icon": "OStim/symbols/gender_mmf"
+		},
+		{
+			"destination": "OStimChair3PSittingStandingMFF",
+			"description": "go to MFF idle",
+			"icon": "OStim/symbols/gender_mff"
+		}
+	],
+	"tags":[
+		"idle",
+		"intro"
+	],
+	"actors":[
+		{
+			"intendedSex": "female",
+			"tags": [
+				"sitting"
+			],
+			"feetOnGround": false
+		},
+		{
+			"intendedSex": "female",
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		},
+		{
+			"intendedSex": "female",
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		}
+	]
+}

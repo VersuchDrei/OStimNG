@@ -38,6 +38,7 @@ set(sources
     src/Core/Thread/ThreadSound.cpp
     src/Core/ThreadActor/ThreadActorAnimation.cpp
     src/Core/ThreadActor/ThreadActorClimax.cpp
+    src/Core/ThreadActor/ThreadActorEquipObjects.cpp
     src/Core/ThreadActor/ThreadActorExcitement.cpp
     src/Core/ThreadActor/ThreadActorSound.cpp
     src/Core/ThreadStarter/NPCThreadStarter.cpp

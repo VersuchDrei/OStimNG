@@ -294,6 +294,23 @@ b -Tn OStimBench2PSittingKneelingFF_0 OStimBench2P\FF\idle\OStimBench2PSittingKn
 b -Tn OStimBench2PSittingKneelingFF_1 OStimBench2P\FF\idle\OStimBench2PSittingKneelingFF_1.hkx
 
 
+b -Tn OStimBench3PSittingStandingMMM_0 OStimBench3P\MMM\idle\OStimBench3PSittingStandingMMM_0.hkx
+b -Tn OStimBench3PSittingStandingMMM_1 OStimBench3P\MMM\idle\OStimBench3PSittingStandingMMM_1.hkx
+b -Tn OStimBench3PSittingStandingMMM_2 OStimBench3P\MMM\idle\OStimBench3PSittingStandingMMM_2.hkx
+
+b -Tn OStimBench3PSittingStandingMMF_0 OStimBench3P\MMF\idle\OStimBench3PSittingStandingMMF_0.hkx
+b -Tn OStimBench3PSittingStandingMMF_1 OStimBench3P\MMF\idle\OStimBench3PSittingStandingMMF_1.hkx
+b -Tn OStimBench3PSittingStandingMMF_2 OStimBench3P\MMF\idle\OStimBench3PSittingStandingMMF_2.hkx
+
+b -Tn OStimBench3PSittingStandingMFF_0 OStimBench3P\MFF\idle\OStimBench3PSittingStandingMFF_0.hkx
+b -Tn OStimBench3PSittingStandingMFF_1 OStimBench3P\MFF\idle\OStimBench3PSittingStandingMFF_1.hkx
+b -Tn OStimBench3PSittingStandingMFF_2 OStimBench3P\MFF\idle\OStimBench3PSittingStandingMFF_2.hkx
+
+b -Tn OStimBench3PSittingStandingFFF_0 OStimBench3P\FFF\idle\OStimBench3PSittingStandingFFF_0.hkx
+b -Tn OStimBench3PSittingStandingFFF_1 OStimBench3P\FFF\idle\OStimBench3PSittingStandingFFF_1.hkx
+b -Tn OStimBench3PSittingStandingFFF_2 OStimBench3P\FFF\idle\OStimBench3PSittingStandingFFF_2.hkx
+
+
 
 b -Tn OStimTable1PSittingM_0 OStimTable1P\M\idle\OStimTable1PSittingM_0.hkx
 

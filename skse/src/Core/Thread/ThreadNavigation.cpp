@@ -139,7 +139,8 @@ namespace OStim {
     }
 
     void Thread::playSequence(Graph::Sequence* sequence, bool navigateTo, bool useFades) {
-        if (!sequence->fulfilledBy(getActorConditions())) {
+        std::vector<Trait::ActorCondition> conditions = getActorConditions();
+        if (!sequence->fulfilledBy(conditions)) {
             return;
         }
 
@@ -149,7 +150,7 @@ namespace OStim {
         inSequence = true;
 
         if (navigateTo && m_currentNode) {
-            std::vector<Graph::SequenceEntry> nodes = m_currentNode->getRoute(MCM::MCMTable::navigationDistanceMax(), getActorConditions(), sequence->nodes.front().node);
+            std::vector<Graph::SequenceEntry> nodes = m_currentNode->getRoute(MCM::MCMTable::navigationDistanceMax(), conditions, sequence->nodes.front().node);
             if (nodes.empty()) {
                 doWarp = true;
             } else {
@@ -191,6 +192,70 @@ namespace OStim {
         } else {
             for (int i = 1; i < sequence->nodes.size(); i++) {
                 nodeQueue.push(sequence->nodes[i]);
+            }
+        }
+    }
+
+    void Thread::playSequence(std::vector<Graph::SequenceEntry> nodes, bool navigateTo, bool useFades) {
+        if (nodes.empty()) {
+            return;
+        }
+
+        std::vector<Trait::ActorCondition> conditions = getActorConditions();
+        for (Graph::SequenceEntry& entry : nodes) {
+            if (!entry.node->fulfilledBy(conditions)) {
+                return;
+            }
+        }
+
+        clearNodeQueue();
+
+        bool doWarp = false;
+        inSequence = true;
+
+        if (navigateTo && m_currentNode) {
+            std::vector<Graph::SequenceEntry> path = m_currentNode->getRoute(MCM::MCMTable::navigationDistanceMax(), conditions, nodes.front().node);
+            if (path.empty()) {
+                doWarp = true;
+            } else {
+                for (int i = 1; i < path.size(); i++) {
+                    nodeQueue.push(path[i]);
+                }
+                nodeQueueCooldown = path.front().duration;
+                ChangeNode(path.front().node);
+            }
+        } else {
+            doWarp = true;
+        }
+        
+
+        if (doWarp) {
+            if (useFades && playerThread) {
+                std::thread fadeThread = std::thread([nodes] {
+                    GameAPI::GameCamera::fadeToBlack(1);
+                    std::this_thread::sleep_for(std::chrono::milliseconds(700));
+                    Thread* thread = ThreadManager::GetSingleton()->getPlayerThread();
+                    if (thread) {
+                        for (int i = 1; i < nodes.size(); i++) {
+                            thread->nodeQueue.push(nodes[i]);
+                        }
+                        thread->nodeQueueCooldown = nodes.front().duration;
+                        thread->ChangeNode(nodes.front().node);
+                    }
+                    std::this_thread::sleep_for(std::chrono::milliseconds(550));
+                    GameAPI::GameCamera::fadeFromBlack(1);
+                });
+                fadeThread.detach();
+            } else {
+                for (int i = 1; i < nodes.size(); i++) {
+                    nodeQueue.push(nodes[i]);
+                }
+                nodeQueueCooldown = nodes.front().duration;
+                ChangeNode(nodes.front().node);
+            }
+        } else {
+            for (int i = 1; i < nodes.size(); i++) {
+                nodeQueue.push(nodes[i]);
             }
         }
     }

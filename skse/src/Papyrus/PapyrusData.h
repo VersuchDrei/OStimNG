@@ -36,8 +36,6 @@ namespace PapyrusData {
 	}
 
 	void SetEquipObjectID(RE::StaticFunctionTag*, int formID, std::string type, std::string id) {
-        StringUtil::toLower(&type);
-        StringUtil::toLower(&id);
         Trait::TraitTable::setEquipObjectID(formID, type, id);
 	}
 

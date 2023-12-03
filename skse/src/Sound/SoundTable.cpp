@@ -37,6 +37,9 @@ namespace Sound {
                 formID += mod->GetCompileIndex() << 24;
             } else if (const RE::TESFile* mod = dataHandler->LookupLoadedLightModByName(file)) {
                 formID += mod->GetPartialIndex() << 12;
+            } else {
+                logger::warn("file {} links to unknown mod {}", path, file);
+                return;
             }
 
             VoiceSet voiceSet;

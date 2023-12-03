@@ -62,10 +62,10 @@ namespace OStim {
         Thread* thread = new Thread(threadID, params);
         m_threadMap.insert(std::make_pair(threadID, thread));
         thread->initContinue();
-        if (params.startingSequence) {
-            thread->playSequence(params.startingSequence, false, false);
-        } else {
-            thread->ChangeNode(params.startingNode);
+        if (params.startingNodes.size() == 1) {
+            thread->ChangeNode(params.startingNodes.front().node);
+        } else if (!params.startingNodes.empty()) {
+            thread->playSequence(params.startingNodes, false, false);
         }
         return threadID;
     }

@@ -281,6 +281,7 @@ namespace Trait {
     }
 
     EquipObject* TraitTable::getEquipObject(GameAPI::GameActor actor, std::string type) {
+        StringUtil::toLower(&type);
         auto iter = equipObjects.find(type);
         if (iter == equipObjects.end()) {
             return nullptr;
@@ -388,6 +389,8 @@ namespace Trait {
     }
 
     void TraitTable::setEquipObjectID(RE::FormID formID, std::string type, std::string id) {
+        StringUtil::toLower(&type);
+        StringUtil::toLower(&id);
         Serialization::setEquipObject(formID, type, id);
     }
 }

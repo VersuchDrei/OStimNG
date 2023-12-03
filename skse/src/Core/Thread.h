@@ -175,6 +175,7 @@ namespace OStim {
         void warpTo(Graph::Node* node, bool useFades);
         void navigateTo(Graph::Node* node);
         void playSequence(Graph::Sequence* sequence, bool navigateTo, bool useFades);
+        void playSequence(std::vector<Graph::SequenceEntry> nodes, bool navigateTo, bool useFades);
         bool pullOut();
         inline bool areNodesQueued() { return !nodeQueue.empty(); }
         inline bool isInSequence() { return inSequence; }

@@ -20,7 +20,10 @@ namespace OstimNG_API
              OStim::ThreadStartParams params;
 
              params.actors = GameAPI::GameActor::convertVector(actorList);
-             params.startingNode = Graph::GraphTable::getNodeById(startingAnimation);
+             Graph::Node* node = Graph::GraphTable::getNodeById(startingAnimation);
+             if (node) {
+                params.startingNodes.push_back({node->animationLengthMs, node});
+             }
              params.furniture = furniture;
              
               *threadID = OStim::startThread(params); 
@@ -36,7 +39,10 @@ namespace OstimNG_API
              OStim::ThreadStartParams params;
 
              params.actors = GameAPI::GameActor::convertVector({ dom, sub});
-             params.startingNode = Graph::GraphTable::getNodeById(startingAnimation);
+             Graph::Node* node = Graph::GraphTable::getNodeById(startingAnimation);
+             if (node) {
+                params.startingNodes.push_back({node->animationLengthMs, node});
+             }
              params.furniture = furniture;
              
               *threadID = OStim::startThread(params); 
@@ -52,7 +58,10 @@ namespace OstimNG_API
             if (!firstActor || !secondActor || !thirdActor) return APIResult::Invalid;  
              OStim::ThreadStartParams params;
              params.actors = GameAPI::GameActor::convertVector({ firstActor, secondActor, thirdActor});
-             params.startingNode = Graph::GraphTable::getNodeById(startingAnimation);
+             Graph::Node* node = Graph::GraphTable::getNodeById(startingAnimation);
+             if (node) {
+                params.startingNodes.push_back({node->animationLengthMs, node});
+             }
              params.furniture = furniture;
              
               *threadID = OStim::startThread(params); 
@@ -68,7 +77,10 @@ namespace OstimNG_API
              if (!firstActor || !secondActor || !thirdActor || !fourthActor) return APIResult::Invalid;
              OStim::ThreadStartParams params;
              params.actors = GameAPI::GameActor::convertVector({firstActor, secondActor, thirdActor, fourthActor});
-             params.startingNode = Graph::GraphTable::getNodeById(startingAnimation);
+             Graph::Node* node = Graph::GraphTable::getNodeById(startingAnimation);
+             if (node) {
+                params.startingNodes.push_back({node->animationLengthMs, node});
+             }
              params.furniture = furniture;
 
              *threadID = OStim::startThread(params);

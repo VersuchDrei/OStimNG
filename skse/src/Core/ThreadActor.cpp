@@ -424,11 +424,7 @@ namespace OStim {
                             continue;
                         }
 
-                        if (actor.isTalking()) {
-                            updater.step();
-                        } else {
-                            faceData->phenomeKeyFrame.values[key] = updater.step() / 100.0f;
-                        }
+                        faceData->phenomeKeyFrame.values[key] = updater.step() / 100.0f;
                         if (updater.isDone()) {
                             toDelete.push_back(key);
                         }
@@ -651,6 +647,10 @@ namespace OStim {
     }
 
     void ThreadActor::applyExpression(Trait::GenderExpression* expression, int mask, int updateSpeed) {
+        if (isTalking) {
+            mask &= ~Trait::ExpressionType::PHONEME;
+        }
+
         if (mask == 0) {
             return;
         }
@@ -821,61 +821,6 @@ namespace OStim {
         }
     }
 
-    bool ThreadActor::equipObject(std::string type) {
-        auto iter = equipObjects.find(type);
-        if (iter != equipObjects.end()) {
-            iter->second.equip(actor);
-            return true;
-        }
-        
-        Trait::EquipObject* object = Trait::TraitTable::getEquipObject(actor, type);
-        if (object) {
-            equipObjects[type] = {.actor = actor, .object = object};
-            equipObjects[type].equip(actor);
-
-            return true;
-        }
-
-        return false;
-    }
-
-    void ThreadActor::unequipObject(std::string type) {
-        auto iter = equipObjects.find(type);
-        if (iter != equipObjects.end()) {
-            iter->second.unequip(actor);
-        }
-    }
-
-    bool ThreadActor::isObjectEquipped(std::string type) {
-        auto iter = equipObjects.find(type);
-        if (iter != equipObjects.end()) {
-            return iter->second.equipped;
-        }
-        return false;
-    }
-
-    bool ThreadActor::setObjectVariant(std::string type, std::string variant, int duration) {
-        auto iter = equipObjects.find(type);
-        if (iter != equipObjects.end()) {
-            return iter->second.setVariant(actor, variant, duration);
-        }
-
-        Trait::EquipObject* object = Trait::TraitTable::getEquipObject(actor, type);
-        if (object) {
-            equipObjects[type] = {.actor = actor, .object = object};
-            return equipObjects[type].setVariant(actor, variant, duration);
-        }
-
-        return false;
-    }
-
-    void ThreadActor::unsetObjectVariant(std::string type) {
-        auto iter = equipObjects.find(type);
-        if (iter != equipObjects.end()) {
-            iter->second.unsetVariant(actor);
-        }
-    }
-
 
     void ThreadActor::free() {
         logger::info("freeing actor {}-{}: {}", thread->m_threadId, index, actor.getName());
@@ -961,7 +906,7 @@ namespace OStim {
                 auto vm = skyrimVM ? skyrimVM->impl : nullptr;
                 if (vm) {
                     RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-                    auto args = RE::MakeFunctionArguments(std::move(actor.form), std::move(target.form), std::move(voiceSet.postSceneDialogue.form));
+                    auto args = RE::MakeFunctionArguments(std::move(actor.form), std::move(target.form), std::move(voiceSet.postSceneDialogue.form), std::move(RNGUtil::uniformFloat(1.0f, 2.0f)));
                     vm->DispatchStaticCall("OSKSE", "SayPostDialogue", args, callback);
                 }
             }

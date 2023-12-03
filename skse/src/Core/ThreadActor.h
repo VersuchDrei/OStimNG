@@ -51,14 +51,6 @@ namespace OStim {
         void unsetLooking();
         void resetLooking();
 
-        bool equipObject(std::string type);
-        void unequipObject(std::string type);
-        bool isObjectEquipped(std::string type);
-        bool setObjectVariant(std::string type, std::string variant, int duration);
-        void unsetObjectVariant(std::string type);
-
-        inline bool setObjectVariant(std::string type, std::string variant) { return setObjectVariant(type, variant, 0); }
-
         void loop();
 
         void free();
@@ -171,11 +163,6 @@ namespace OStim {
         std::unordered_map<int, ExpressionUpdater> modifierUpdaters;
         std::unordered_map<int, ExpressionUpdater> phonemeUpdaters;
 
-        std::unordered_map<std::string, EquipObjectHandler> equipObjects;
-        std::vector<std::string> phonemeObjects;
-
-        
-
         void checkHeelOffset();
         void applyHeelOffset(bool remove);
         void updateHeelOffset();
@@ -221,6 +208,22 @@ namespace OStim {
         void climaxInner();
 
         void setTimeUntilClimax(float time);
+#pragma endregion
+
+#pragma region equipobjects
+    public:
+        bool equipObject(std::string type);
+        void unequipObject(std::string type);
+        bool isObjectEquipped(std::string type);
+        bool setObjectVariant(std::string type, std::string variant, int duration);
+        void unsetObjectVariant(std::string type);
+        void refreshObject(std::string type);
+
+        inline bool setObjectVariant(std::string type, std::string variant) { return setObjectVariant(type, variant, 0); }
+
+    private:
+        std::unordered_map<std::string, EquipObjectHandler> equipObjects;
+        std::vector<std::string> phonemeObjects;
 #pragma endregion
 
 #pragma region excitement

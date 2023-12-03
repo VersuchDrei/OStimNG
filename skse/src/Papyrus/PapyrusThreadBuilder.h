@@ -64,7 +64,7 @@ namespace PapyrusThreadBuilder {
             return;
         }
 
-        params->startingNode = node;
+        params->startingNodes = {{node->animationLengthMs, node}};
     }
 
     void SetStartingSequence(RE::StaticFunctionTag*, int builderID, std::string sequence) {
@@ -79,7 +79,10 @@ namespace PapyrusThreadBuilder {
             return;
         }
 
-        params->startingSequence = sequencePtr;
+        params->startingNodes.clear();
+        for (Graph::SequenceEntry& entry : sequencePtr->nodes) {
+            params->startingNodes.push_back(entry);
+        }
     }
 
     void EndAfterSequence(RE::StaticFunctionTag*, int builderID) {
@@ -97,7 +100,7 @@ namespace PapyrusThreadBuilder {
             return;
         }
 
-        params->stripActors = true;
+        params->threadFlags |= OStim::ThreadFlag::UNDRESS;
     }
 
     void NoAutoMode(RE::StaticFunctionTag*, int builderID) {

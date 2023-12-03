@@ -36,13 +36,6 @@ namespace PapyrusObject {
             return {};
         }
 
-        const auto handler = RE::TESDataHandler::GetSingleton();
-        const auto keyword = handler->LookupForm(0xFD0E1, "Skyrim.esm"sv)->As<RE::BGSKeyword>();
-        if (!handler || !keyword) {
-            a_vm->TraceStack("Could not find Furniture Keyword 0xFD0E1 (Skyrim.esm)", a_stackID);
-            return {};
-        }
-
         const auto originPos = a_centerRef->GetPosition();
         std::vector<RE::TESObjectREFR*> vec;
         util::iterate_attached_cells(originPos, a_radius, [&](RE::TESObjectREFR& a_ref) {
@@ -50,7 +43,7 @@ namespace PapyrusObject {
             if (isType) {
                 const auto refPos = a_ref.GetPosition();
                 bool sameFloor = (a_sameFloor > 0.0) ? (std::fabs(originPos.z - refPos.z) <= a_sameFloor) : true;
-                if (sameFloor && a_ref.HasKeyword(keyword) && IsBed(&a_ref)) vec.push_back(&a_ref);
+                if (sameFloor && IsBed(&a_ref)) vec.push_back(&a_ref);
             }
             return RE::BSContainer::ForEachResult::kContinue;
         });

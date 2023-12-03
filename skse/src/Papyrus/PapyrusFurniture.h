@@ -19,6 +19,10 @@ namespace PapyrusFurniture {
         return ret;
     }
 
+    RE::TESObjectREFR* FindFurnitureOfType(RE::StaticFunctionTag*, std::string type, RE::TESObjectREFR* centerRef, float radius, float sameFloor) {
+        return Furniture::findFurniture(Furniture::FurnitureTable::getFurnitureType(type), centerRef, radius, sameFloor).form;
+    }
+
     std::vector<float> GetOffset(RE::StaticFunctionTag*, RE::TESObjectREFR* furnitureRef) {
         Furniture::FurnitureOffset offset = Furniture::getOffset(furnitureRef);
         return {offset.x, offset.y, offset.z, offset.rotation, offset.scale};
@@ -33,6 +37,7 @@ namespace PapyrusFurniture {
 
         BIND(GetFurnitureType);
         BIND(FindFurniture);
+        BIND(FindFurnitureOfType);
         BIND(GetOffset);
         BIND(ResetClutter);
 

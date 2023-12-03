@@ -60,7 +60,7 @@ namespace OStim {
         return true;
     }
 
-    Graph::Node* getRandomForeplayNode(Graph::Node* currentNode, std::vector<Trait::ActorCondition> actorConditions, Furniture::FurnitureType* furnitureType, bool lesbian, bool gay) {
+    Graph::Node* getRandomForeplayNode(Graph::Node* currentNode, std::vector<Trait::ActorCondition> actorConditions, Furniture::FurnitureType* furnitureType) {
         std::vector<std::function<bool(Graph::Node*)>> conditions;
         conditions.push_back([&](Graph::Node* node) { return node->findAnyAction({"analsex", "tribbing", "vaginalsex"}) == -1; });
         addFurniture(conditions, furnitureType);
@@ -69,12 +69,6 @@ namespace OStim {
                 return VectorUtil::contains(action.attributes->tags, std::string("sexual"));
             });
         });
-        // TODO do this with intended sex setting instead
-        if (lesbian) {
-            conditions.push_back([&](Graph::Node* node) { return VectorUtil::contains(node->tags, std::string("lesbian")); });
-        } else if (gay) {
-            conditions.push_back([&](Graph::Node* node) { return VectorUtil::contains(node->tags, std::string("gay")); });
-        }
 
         if (currentNode->hasActionTag("sexual") && MCM::MCMTable::autoModeLimitToNavigationDistance()) {
             return currentNode->getRandomNodeInRange(MCM::MCMTable::navigationDistanceMax(), actorConditions, [&conditions](Graph::Node* node) { return checkConditions(conditions, node); });
@@ -83,17 +77,11 @@ namespace OStim {
         }
     }
 
-    Graph::Node* getRandomSexNode(Graph::Node* currentNode, std::vector<Trait::ActorCondition> actorConditions, Furniture::FurnitureType* furnitureType, bool lesbian, bool gay) {
+    Graph::Node* getRandomSexNode(Graph::Node* currentNode, std::vector<Trait::ActorCondition> actorConditions, Furniture::FurnitureType* furnitureType) {
         std::vector<std::function<bool(Graph::Node*)>> conditions;
-        conditions.push_back([&lesbian](Graph::Node* node) { return node->findAnyAction(std::vector<std::string>{"analsex", "tribbing", "vaginalsex"}) != -1;
+        conditions.push_back([&](Graph::Node* node) { return node->findAnyAction(std::vector<std::string>{"analsex", "tribbing", "vaginalsex"}) != -1;
         });
         addFurniture(conditions, furnitureType);
-        // TODO do this with intended sex setting instead
-        if (lesbian) {
-            conditions.push_back([&](Graph::Node* node) { return VectorUtil::contains(node->tags, std::string("lesbian")); });
-        } else if (gay) {
-            conditions.push_back([&](Graph::Node* node) { return VectorUtil::contains(node->tags, std::string("gay")); });
-        }
 
         if (currentNode->hasActionTag("sexual") && MCM::MCMTable::autoModeLimitToNavigationDistance()) {
             return currentNode->getRandomNodeInRange(MCM::MCMTable::navigationDistanceMax(), actorConditions, [&conditions](Graph::Node* node) { return checkConditions(conditions, node); });
@@ -173,25 +161,10 @@ namespace OStim {
             std::string action = GetActor(0)->hasSchlong() ? "malemasturbation" : "femalemasturbation";
             next = Graph::GraphTable::getRandomNode(furnitureType, getActorConditions(), [&action](Graph::Node* node) { return node->findAction(action) != -1; });
         } else {
-            // TODO actually do this with intended sex
-            bool lesbian = true;
-            bool gay = true;
-            if (MCM::MCMTable::intendedSexOnly()) {
-                for (auto& [index, actor] : m_actors) {
-                    if (actor.isFemale()) {
-                        gay = false;
-                    } else {
-                        lesbian = false;
-                    }
-                }
-            } else {
-                lesbian = false;
-                gay = false;
-            }
             if (autoModeStage == AutoModeStage::FOREPLAY) {
-                next = getRandomForeplayNode(m_currentNode, getActorConditions(), furnitureType, lesbian, gay);
+                next = getRandomForeplayNode(m_currentNode, getActorConditions(), furnitureType);
             } else if (autoModeStage == AutoModeStage::MAIN) {
-                next = getRandomSexNode(m_currentNode, getActorConditions(), furnitureType, lesbian, gay);
+                next = getRandomSexNode(m_currentNode, getActorConditions(), furnitureType);
             }
         }
 

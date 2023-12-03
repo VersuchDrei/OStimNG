@@ -39,8 +39,8 @@ namespace OStim {
 
     void handleFurniture(ThreadStartParams params) {
         if (!params.noFurniture && !params.furniture && MCM::MCMTable::useFurniture()) {
-            if (params.startingNode || params.startingSequence) {
-                GameAPI::GameObject bed = Furniture::findBed(params.actors[0].form, MCM::MCMTable::furnitureSearchDistance(), 96.0f);
+            if (!params.startingNodes.empty()) {
+                GameAPI::GameObject bed = Furniture::findFurniture(Furniture::FurnitureTable::getFurnitureType("bed"), params.actors[0].form, MCM::MCMTable::furnitureSearchDistance(), 96.0f);
                 if (bed) {
                     if (MCM::MCMTable::selectFurniture()) {
                         GameAPI::Game::showMessageBox("Do you want to use the nearby bed?", {"Yes", "No"}, [params, bed](unsigned int result) {
@@ -94,7 +94,7 @@ namespace OStim {
     }
 
     void handleActorAdding(ThreadStartParams params) {
-        if (params.startingNode || params.startingSequence) {
+        if (!params.startingNodes.empty()) {
             startInner(params);
             return;
         }
@@ -147,7 +147,7 @@ namespace OStim {
     }
 
     void handleActorSorting(ThreadStartParams params) {
-        if (params.startingNode || params.startingSequence) {
+        if (!params.startingNodes.empty()) {
             startInner(params);
             return;
         }
@@ -182,23 +182,26 @@ namespace OStim {
     }
 
     void handleStartingNode(ThreadStartParams params) {
-        if (!params.startingNode && !params.startingSequence) {
+        if (params.startingNodes.empty()) {
             std::string nodeTag = MCM::MCMTable::useIntroScenes() ? "intro" : "idle";
             Furniture::FurnitureType* furnitureType = Furniture::FurnitureTable::getFurnitureType(params.furniture, false);
             std::string furnitureTypeID = furnitureType->getListType()->id;
 
+            Graph::Node* node = nullptr;
             if (furnitureTypeID == "none") {
-                params.startingNode = Graph::GraphTable::getRandomNode(furnitureType, Trait::ActorCondition::create(params.actors), [&nodeTag](Graph::Node* node) { return node->hasNodeTag(nodeTag) && node->hasActorTagOnAny("standing"); });
+                node = Graph::GraphTable::getRandomNode(furnitureType, Trait::ActorCondition::create(params.actors), [&nodeTag](Graph::Node* node) { return node->hasNodeTag(nodeTag) && node->hasActorTagOnAny("standing"); });
             } else if (furnitureTypeID == "bed") {
-                params.startingNode = Graph::GraphTable::getRandomNode(furnitureType, Trait::ActorCondition::create(params.actors), [&nodeTag](Graph::Node* node) { return node->hasNodeTag(nodeTag) && !node->hasActorTagOnAny("standing"); });
+                node = Graph::GraphTable::getRandomNode(furnitureType, Trait::ActorCondition::create(params.actors), [&nodeTag](Graph::Node* node) { return node->hasNodeTag(nodeTag) && !node->hasActorTagOnAny("standing"); });
             } else {
-                params.startingNode = Graph::GraphTable::getRandomNode(furnitureType, Trait::ActorCondition::create(params.actors), [&nodeTag](Graph::Node* node) { return node->hasNodeTag(nodeTag); });
+                node = Graph::GraphTable::getRandomNode(furnitureType, Trait::ActorCondition::create(params.actors), [&nodeTag](Graph::Node* node) { return node->hasNodeTag(nodeTag); });
             }
-        }
-        
-        if (!params.startingNode && !params.startingSequence) {
-            GameAPI::Game::notification("no starting animation found");
-            return;
+
+            if (node) {
+                params.startingNodes.push_back({node->animationLengthMs, node});
+            } else {
+                GameAPI::Game::notification("no starting animation found");
+                return;
+            }
         }
 
         startInner(params);
