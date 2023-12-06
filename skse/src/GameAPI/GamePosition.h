@@ -21,5 +21,25 @@ namespace GameAPI {
             this->z = z;
             this->r = r;
         }
+
+        inline GamePosition operator+(GamePosition other) {
+            return {x + other.x, y + other.y, z + other.z, r + other.r};
+        }
+
+        inline void operator+=(GamePosition other) {
+            x += other.x;
+            y += other.y;
+            z += other.z;
+            r += other.r;
+        }
+
+        inline void operator*=(float mult) {
+            x *= mult;
+            y *= mult;
+            z *= mult;
+            r *= mult;
+        }
+
+        void loadJson(std::string& path, json json);
     };
 }

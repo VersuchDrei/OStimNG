@@ -52,9 +52,11 @@ namespace Graph {
         std::vector<Action> actions;
         std::vector<Navigation> navigations;
         std::string modpack = "";
+        GameAPI::GamePosition offset;
+        bool scaleOffsetWithFurniture = false;
 
         void tryAddTag(std::string tag);
-        void mergeActionsIntoActors();
+        void mergeNodeIntoActors();
 
         bool fulfilledBy(std::vector<Trait::ActorCondition> conditions);
         bool hasSameActorTpyes(Node* other);

@@ -44,7 +44,7 @@ namespace Graph {
         tags.push_back(tag);
     }
     
-    void Node::mergeActionsIntoActors() {
+    void Node::mergeNodeIntoActors() {
         for (Action action : actions) {
             if (action.actor < actors.size()) {
                 actors[action.actor].merge(action.attributes->actor);
@@ -55,6 +55,10 @@ namespace Graph {
             if (action.performer < actors.size()) {
                 actors[action.performer].merge(action.attributes->performer);
             }
+        }
+
+        for (GraphActor& actor : actors) {
+            actor.offset += offset;
         }
     }
 

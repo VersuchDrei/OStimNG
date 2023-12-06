@@ -400,7 +400,7 @@ namespace LegacyUtil {
             }
         }
 
-        node->mergeActionsIntoActors();
+        node->mergeNodeIntoActors();
 
         Graph::GraphTable::addNode(node);
     }

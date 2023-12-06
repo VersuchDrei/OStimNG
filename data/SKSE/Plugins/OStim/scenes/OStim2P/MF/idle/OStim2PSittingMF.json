@@ -37,6 +37,26 @@
 			"destination": "OStim2PBothLyingMF",
 			"description": "$ostim_nav_lie_down",
 			"icon": "OStim/positional/lyingback_m"
+		},
+		{
+			"destination": "OStimDoubleBed2PBothSittingLeftMF",
+			"description": "$ostim_nav_sit_on_bed_left",
+			"icon": "OStim/positional/chair/sitting_f"
+		},
+		{
+			"destination": "OStimDoubleBed2PBothSittingRightMF",
+			"description": "$ostim_nav_sit_on_bed_right",
+			"icon": "OStim/positional/chair/sitting_f"
+		},
+		{
+			"destination": "OStimSingleBed2PBothSittingLeftMF",
+			"description": "$ostim_nav_sit_on_bed_left",
+			"icon": "OStim/positional/chair/sitting_f"
+		},
+		{
+			"destination": "OStimSingleBed2PBothSittingRightMF",
+			"description": "$ostim_nav_sit_on_bed_right",
+			"icon": "OStim/positional/chair/sitting_f"
 		}
 	],
 	"tags":[

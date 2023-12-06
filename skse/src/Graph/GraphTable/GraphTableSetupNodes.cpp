@@ -258,6 +258,11 @@ namespace Graph {
                 node->furnitureType = Furniture::FurnitureTable::getFurnitureType("none");
             }
 
+            if (json.contains("offset")) {
+                node->offset.loadJson(path, json["offset"]);
+            }
+            JsonUtil::loadBool(json, node->scaleOffsetWithFurniture, "scaleOffsetWithFurniture", node->scene_id, "scene", false);
+
             if (json.contains("tags")) {
                 if (json["tags"].is_array()) {
                     int index = 0;
@@ -395,6 +400,10 @@ namespace Graph {
                                 } else {
                                     logger::warn("lookRight property of actor {} of scene {} isn't an integer", index, node->scene_id);
                                 }
+                            }
+
+                            if (jsonActor.contains("offset")) {
+                                actor.offset.loadJson(path, json["offset"]);
                             }
 
                             if (jsonActor.contains("tags")) {
@@ -545,7 +554,7 @@ namespace Graph {
                 }
             }
 
-            node->mergeActionsIntoActors();
+            node->mergeNodeIntoActors();
 
             addNode(node);
         });

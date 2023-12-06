@@ -2,6 +2,7 @@
 
 #include "Action.h"
 
+#include "GameAPI/GamePosition.h"
 #include "GameAPI/GameSex.h"
 #include "Trait/Condition.h"
 #include "Trait/FacialExpression.h"
@@ -21,6 +22,7 @@ namespace Graph {
         bool moan = false;
         bool talk = false;
         bool muffled = false;
+        GameAPI::GamePosition offset;
         std::vector<GameAPI::GameFaction> factions;
         std::unordered_map<int, Trait::FaceModifier> eyeballModifierOverride;
         std::vector<std::string> tags;

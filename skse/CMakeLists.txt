@@ -60,6 +60,7 @@ set(sources
     src/GameAPI/GameActor.cpp
     src/GameAPI/GameCamera.cpp
     src/GameAPI/GameObject.cpp
+    src/GameAPI/GamePosition.cpp
     src/GameAPI/GameSex.cpp
     src/GameAPI/GameSound.cpp
     src/GameAPI/GameUtil.cpp

@@ -363,11 +363,25 @@ namespace OStim {
         float sin = std::sin(center.r);
         float cos = std::cos(center.r);
         
+        GameAPI::GamePosition offset{};
+        if (Graph::GraphActor* graphActor = threadActor->getGraphActor()) {
+            offset = graphActor->offset;
+        }
+
+        if (furniture && m_currentNode && m_currentNode->scaleOffsetWithFurniture) {
+            offset *= furniture.getScale();
+        }
+
+        float x = alignment.offsetX + offset.x;
+        float y = alignment.offsetY + offset.y;
+        float z = alignment.offsetZ + offset.z;
+        float r = alignment.rotation + offset.r;
+
         threadActor->getActor().lockAtPosition(
-            center.x + cos * alignment.offsetX + sin * alignment.offsetY,
-            center.y - sin * alignment.offsetX + cos * alignment.offsetY,
-            center.z + alignment.offsetZ,
-            center.r + MathUtil::toRadians(alignment.rotation));
+            center.x + cos * x + sin * y,
+            center.y - sin * x + cos * y,
+            center.z + z,
+            center.r + MathUtil::toRadians(r));
 
         threadActor->setScaleMult(alignment.scale * furnitureScaleMult);
         threadActor->setSoSBend(alignment.sosBend);
