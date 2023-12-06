@@ -14,7 +14,7 @@ namespace Furniture {
             FurnitureType furnitureType{.id = filename};
             StringUtil::toLower(&furnitureType.id);
 
-            JsonUtil::loadString(json, furnitureType.name, "name", filename, "furniture type", false);
+            JsonUtil::loadTranslatedString(json, furnitureType.name, "name", filename, "furniture type", false);
             JsonUtil::loadInt(json, furnitureType.priority, "priority", filename, "furniture type", false);
             JsonUtil::loadBool(json, furnitureType.listIndividually, "listIndividually", filename, "furniture type", false);
             JsonUtil::loadBool(json, furnitureType.ignoreMarkerOffsetX, "ignoreMarkerOffsetX", filename, "furniture type", false);

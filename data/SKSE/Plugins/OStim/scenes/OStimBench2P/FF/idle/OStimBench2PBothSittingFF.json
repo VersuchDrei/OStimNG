@@ -11,22 +11,22 @@
 	"navigations":[
 		{
 			"destination": "OStimBench2PBothSittingMF",
-			"description": "go to straight idle",
+			"description": "$ostim_nav_idle_mf",
 			"icon": "OStim/symbols/gender_mf"
 		},
 		{
 			"destination": "OStimBench2PBothSittingMM",
-			"description": "go to gay idle",
+			"description": "$ostim_nav_idle_mm",
 			"icon": "OStim/symbols/gender_mm"
 		},
 		{
 			"destination": "OStimChair2PSittingStandingFF",
-			"description": "stand up ({1})",
+			"description": "$ostim_nav_stand_up_a{1}",
 			"icon": "OStim/positional/standup_f"
 		},
 		{
 			"destination": "OStimChair2PStandingSittingFF",
-			"description": "stand up ({0})",
+			"description": "$ostim_nav_stand_up_a{0}",
 			"icon": "OStim/positional/standup_f"
 		}
 	],

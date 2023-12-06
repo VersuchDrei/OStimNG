@@ -1,5 +1,5 @@
 {
-	"name": "Standing Hand Holding Straight",
+	"name": "$OStim2PStandingHandHoldingLowMF",
 	"modpack": "OStim",
 	"length": 2.0,
 	"speeds":[
@@ -10,19 +10,19 @@
 	"navigations":[
 		{
 			"destination": "OStim2PStandingHandHoldingToApartMF",
-			"description": "return",
+			"description": "$ostim_nav_return",
 			"icon": "OStim/symbols/return",
 			"priority": -1000
 		},
 		{
 			"destination": "OStim2PStandingHandHoldingHighMF",
-			"description": "lift your hands",
+			"description": "$ostim_nav_hands_raise",
 			"icon": "OStim/detail/holdinghand_mf",
 			"priority": 0
 		},
 		{
 			"destination": "OStim2PStandingHeadPattingMF",
-			"description": "pat {1}s head",
+			"description": "$ostim_nav_pat_head_t{1}",
 			"icon": "OStim/detail/holdinghead_mf",
 			"priority": 1000
 		}

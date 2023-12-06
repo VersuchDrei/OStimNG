@@ -1,0 +1,108 @@
+{
+	"actionActors":[
+		"rubbingpenisagainstface"	
+	],
+	"actionTargets": [
+		"analfingering",
+		"blowjob",
+		"boobjob",
+		"buttjob",
+		"cunnilingus",
+		"femalemasturbation",
+		"footjob",
+		"gropingbreast",
+		"handjob",
+		"lickingnipples",
+		"lickingpenis",
+		"lickingtesticles",
+		"lickingvagina",
+		"malemasturbation",
+		"rimjob",
+		"rubbingclitoris",
+		"suckingnipples",
+		"thighjob",
+		"vaginalfingering"
+	],
+	"female": {
+		"phonemes": [{
+			"type": 8,
+			"baseValue": 20,
+			"variance": 20,
+			"delayVariance":0.3,
+			"excitementMultiplier": 0.2,
+			"speedMultiplier": 20.0
+		}, {
+			"type": 12,
+			"baseValue": 20,
+			"variance": 10,
+			"excitementMultiplier": 0.2,
+			"speedMultiplier": 15.0
+		}],
+		"modifiers": [{
+			"type": 3,
+			"baseValue": 30,
+			"variance": 30,
+			"delayVariance":0.2,
+			"excitementMultiplier": 0.3
+		}, {
+			"type": 5,
+			"baseValue": 0,
+			"delayVariance":0.3,
+			"speedMultiplier": 50.0
+		}, {
+			"type": 8,
+			"baseValue": 10,
+			"variance": 30,
+			"delayVariance": 0.6,
+			"excitementMultiplier": -0.4,
+			"speedMultiplier": 30.0
+		}, {
+			"type": 13,
+			"baseValue": 30,
+			"variance": 20,
+			"delayVariance":0.1,
+			"speedMultiplier": 20.0
+		}]
+	},
+	"male": {
+		"phonemes": [{
+			"type": 8,
+			"baseValue": 20,
+			"variance": 20,
+			"delayVariance":0.3,
+			"excitementMultiplier": 0.2,
+			"speedMultiplier": 20.0
+		}, {
+			"type": 12,
+			"baseValue": 20,
+			"variance": 10,
+			"excitementMultiplier": 0.2,
+			"speedMultiplier": 15.0
+		}],
+		"modifiers": [{
+			"type": 3,
+			"baseValue": 30,
+			"variance": 30,
+			"delayVariance":0.2,
+			"excitementMultiplier": 0.3
+		}, {
+			"type": 5,
+			"baseValue": 0,
+			"delayVariance":0.3,
+			"speedMultiplier": 50.0
+		}, {
+			"type": 8,
+			"baseValue": 10,
+			"variance": 30,
+			"delayVariance": 0.6,
+			"excitementMultiplier": -0.4,
+			"speedMultiplier": 30.0
+		}, {
+			"type": 13,
+			"baseValue": 30,
+			"variance": 20,
+			"delayVariance":0.1,
+			"speedMultiplier": 20.0
+		}]
+	}
+}

@@ -1,6 +1,6 @@
 {
 	"type": "light",
-	"name": "AssLight Dim",
+	"name": "$ostim_light_ass_dim",
 	"mod": "OStim.esp",
 	"formid": "0xEC0"
 }

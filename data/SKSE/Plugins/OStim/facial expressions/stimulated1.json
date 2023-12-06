@@ -25,55 +25,78 @@
 	],
 	"female": {
 		"expression": {
-			"type": 0,
+			"type": 12,
 			"baseValue": 30,
-			"excitementMultiplier": 0.5
+			"variance": 20,
+			"excitementMultiplier": 0.5,
+			"speedMultiplier": 40.0
 		},
 		"phonemes": [{
-			"type": 4,
-			"baseValue": 40,
-			"excitementMultiplier": 0.3
+			"type": 6,
+			"baseValue": 10,
+			"variance": 15,
+			"excitementMultiplier": 0.1
 		}, {
-			"type": 12,
-			"baseValue": 20,
-			"excitementMultiplier": 0.3
+			"type": 11,
+			"baseValue": 30,
+			"variance": 15,
+			"excitementMultiplier": 0.2,
+			"speedMultiplier": 20.0
 		}],
 		"modifiers": [{
+			"type": 5,
+			"baseValue": 60,
+			"variance": 30,
+			"excitementMultiplier": 0.4,
+			"speedMultiplier": 30.0
+		}, {
 			"type": 6,
 			"baseValue": 20,
-			"excitementMultiplier": 0.3
+			"excitementMultiplier": 0.3,
+			"speedMultiplier": 30.0
 		}, {
-			"type": 7,
-			"baseValue": 20,
-			"excitementMultiplier": 0.3
-		}, {
-			"type": 12,
-			"baseValue": 20,
-			"excitementMultiplier": 0.6
-		}, {
-			"type": 13,
-			"baseValue": 20,
-			"excitementMultiplier": 0.6
+			"type": 8,
+			"variance": 20,
+			"excitementMultiplier": 0.2,
+			"speedMultiplier": 30.0
 		}]
 	},
 	"male": {
 		"expression": {
-			"type": 0,
-			"baseValue": 20,
-			"excitementMultiplier": 0.2
-		},
-		"modifiers": [{
 			"type": 12,
-			"baseValue": 10,
-			"excitementMultiplier": 0.3
-		}, {
-			"type": 13,
-			"baseValue": 10,
-			"excitementMultiplier": 0.3
-		}],
+			"baseValue": 30,
+			"variance": 20,
+			"excitementMultiplier": 0.5,
+			"speedMultiplier": 40.0
+		},
 		"phonemes": [{
-			"type": 3,
-			"baseValue": 15
+			"type": 6,
+			"baseValue": 10,
+			"variance": 15,
+			"excitementMultiplier": 0.1
+		}, {
+			"type": 11,
+			"baseValue": 30,
+			"variance": 15,
+			"excitementMultiplier": 0.2,
+			"speedMultiplier": 20.0
+		}],
+		"modifiers": [{
+			"type": 5,
+			"baseValue": 60,
+			"variance": 30,
+			"excitementMultiplier": 0.4,
+			"speedMultiplier": 30.0
+		}, {
+			"type": 6,
+			"baseValue": 20,
+			"excitementMultiplier": 0.3,
+			"speedMultiplier": 30.0
+		}, {
+			"type": 8,
+			"variance": 20,
+			"excitementMultiplier": 0.2,
+			"speedMultiplier": 30.0
 		}]
 	}
 }

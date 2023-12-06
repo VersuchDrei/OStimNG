@@ -1,5 +1,5 @@
 {
-	"name": "Behind Gay",
+	"name": "$OStimShelf2PBehindMM",
 	"modpack": "OStim",
 	"length": 2.0,
 	"furniture": "shelf",
@@ -11,12 +11,12 @@
 	"navigations":[
 		{
 			"destination": "OStimShelf2PBehindMF",
-			"description": "go to straight idle",
+			"description": "$ostim_nav_idle_mf",
 			"icon": "OStim/symbols/gender_mf"
 		},
 		{
 			"destination": "OStimShelf2PBehindFF",
-			"description": "go to lesbian idle",
+			"description": "$ostim_nav_idle_ff",
 			"icon": "OStim/symbols/gender_ff"
 		}
 	],

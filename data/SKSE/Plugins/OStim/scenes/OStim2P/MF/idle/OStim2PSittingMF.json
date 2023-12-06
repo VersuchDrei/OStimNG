@@ -1,5 +1,5 @@
 {
-	"name": "Sitting Straight",
+	"name": "$OStim2PSittingMF",
 	"modpack": "OStim",
 	"length": 2.0,
 	"speeds":[
@@ -10,32 +10,32 @@
 	"navigations":[
 		{
 			"destination": "OStim2PKneelingLyingFF",
-			"description": "go to lesbian idle",
+			"description": "$ostim_nav_idle_ff",
 			"icon": "OStim/symbols/gender_ff"
 		},
 		{
 			"destination": "OStim2PKneelingLyingFrontMM",
-			"description": "go to gay idle",
+			"description": "$ostim_nav_idle_mm",
 			"icon": "OStim/symbols/gender_mm"
 		},
 		{
 			"destination": "OStim2PStandingApartMF",
-			"description": "stand up",
+			"description": "$ostim_nav_stand_up",
 			"icon": "OStim/positional/standup_m"
 		},
 		{
 			"destination": "OStim2PDoggyIdleMF",
-			"description": "get on all fours ({1})",
+			"description": "$ostim_nav_all_fours_a{1}",
 			"icon": "OStim/positional/allfours_alt_f"
 		},
 		{
 			"destination": "OStim2PLyingOnTopMF",
-			"description": "lie on {1}",
+			"description": "$ostim_nav_lie_on_t{1}",
 			"icon": "OStim/positional/lyingback_f"
 		},
 		{
 			"destination": "OStim2PBothLyingMF",
-			"description": "lie down",
+			"description": "$ostim_nav_lie_down",
 			"icon": "OStim/positional/lyingback_m"
 		}
 	],

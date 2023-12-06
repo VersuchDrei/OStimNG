@@ -67,6 +67,37 @@ namespace PapyrusThreadBuilder {
         params->startingNodes = {{node->animationLengthMs, node}};
     }
 
+    void AddStartingAnimation(RE::StaticFunctionTag*, int builderID, std::string animation, float duration, bool navigateTo) {
+        OStim::ThreadStartParams* params = OStim::ThreadBuilder::get(builderID);
+        if (!params) {
+            return;
+        }
+
+        Graph::Node* node = Graph::GraphTable::getNodeById(animation);
+        if (!node) {
+            logger::warn("animation {} could not be found", animation);
+            return;
+        }
+
+        if (navigateTo && !params->startingNodes.empty() && params->startingNodes.back().node != node) {
+            std::vector<Graph::SequenceEntry> path = params->startingNodes.back().node->getRoute(MCM::MCMTable::navigationDistanceMax(), Trait::ActorCondition::create(params->actors), node);
+            if (path.empty()) {
+                params->startingNodes.push_back({duration > 0.0f ? static_cast<int>(duration * 1000) : node->animationLengthMs, node});
+            } else {
+                for (Graph::SequenceEntry& entry : path) {
+                    params->startingNodes.push_back(entry);
+                }
+
+                if (duration > 0.0f) {
+                    params->startingNodes.back().duration = duration;
+                }
+            }
+            
+        } else {
+            params->startingNodes.push_back({duration > 0.0f ? static_cast<int>(duration * 1000) : node->animationLengthMs, node});
+        }
+    }
+
     void SetStartingSequence(RE::StaticFunctionTag*, int builderID, std::string sequence) {
         OStim::ThreadStartParams* params = OStim::ThreadBuilder::get(builderID);
         if (!params) {
@@ -80,6 +111,33 @@ namespace PapyrusThreadBuilder {
         }
 
         params->startingNodes.clear();
+        for (Graph::SequenceEntry& entry : sequencePtr->nodes) {
+            params->startingNodes.push_back(entry);
+        }
+    }
+
+    void ConcatStartingSequence(RE::StaticFunctionTag*, int builderID, std::string sequence, bool navigateTo) {
+        OStim::ThreadStartParams* params = OStim::ThreadBuilder::get(builderID);
+        if (!params) {
+            return;
+        }
+
+        Graph::Sequence* sequencePtr = Graph::GraphTable::getSequenceByID(sequence);
+        if (!sequencePtr) {
+            logger::warn("sequence {} could not be found", sequence);
+            return;
+        }
+
+        if (navigateTo && !params->startingNodes.empty() && params->startingNodes.back().node != sequencePtr->nodes.front().node) {
+            std::vector<Graph::SequenceEntry> path = params->startingNodes.back().node->getRoute( MCM::MCMTable::navigationDistanceMax(), Trait::ActorCondition::create(params->actors), sequencePtr->nodes.front().node);
+            if (!path.empty()) {
+                for (Graph::SequenceEntry& entry : path) {
+                    params->startingNodes.push_back(entry);
+                }
+                params->startingNodes.pop_back();
+            }
+        }
+
         for (Graph::SequenceEntry& entry : sequencePtr->nodes) {
             params->startingNodes.push_back(entry);
         }
@@ -185,6 +243,7 @@ namespace PapyrusThreadBuilder {
         BIND(SetFurniture);
         BIND(SetDuration);
         BIND(SetStartingAnimation);
+        BIND(AddStartingAnimation);
         BIND(SetStartingSequence);
         BIND(EndAfterSequence);
         BIND(UndressActors);

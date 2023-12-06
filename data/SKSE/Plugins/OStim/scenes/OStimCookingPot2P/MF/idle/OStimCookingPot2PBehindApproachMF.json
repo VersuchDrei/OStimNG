@@ -1,5 +1,5 @@
 {
-	"name": "Behind Approach Straight",
+	"name": "$OStimCookingPot2PBehindApproachMF",
 	"modpack": "OStim",
 	"length": 2.0,
 	"furniture": "cookingpot",
@@ -11,7 +11,7 @@
 	"navigations":[
 		{
 			"destination": "OStimCookingPot2PBehindMF",
-			"description": "back off",
+			"description": "$ostim_nav_back_off_a{0}",
 			"icon": "OStim/symbols/x"
 		}
 	],

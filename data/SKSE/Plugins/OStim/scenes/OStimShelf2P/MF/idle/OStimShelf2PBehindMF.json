@@ -1,5 +1,5 @@
 {
-	"name": "Behind Straight",
+	"name": "$OStimShelf2PBehindMF",
 	"modpack": "OStim",
 	"length": 2.0,
 	"furniture": "shelf",
@@ -11,17 +11,17 @@
 	"navigations":[
 		{
 			"destination": "OStimShelf2PBehindFF",
-			"description": "go to lesbian idle",
+			"description": "$ostim_nav_idle_ff",
 			"icon": "OStim/symbols/gender_ff"
 		},
 		{
 			"destination": "OStimShelf2PBehindMM",
-			"description": "go to gay idle",
+			"description": "$ostim_nav_idle_mm",
 			"icon": "OStim/symbols/gender_mm"
 		},
 		{
 			"destination": "OStimShelf2PBendOverMF",
-			"description": "bend over",
+			"description": "$ostim_nav_bend_over_a{1}",
 			"icon": "OStim/positional/bendover_f"
 		}
 	],

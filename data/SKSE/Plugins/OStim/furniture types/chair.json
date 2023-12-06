@@ -1,5 +1,5 @@
 {
-	"name": "Chair",
+	"name": "$ostim_furniture_chair",
 	"ignoreMarkerOffsetZ": true,
 	"conditions":[
 		{

@@ -1,6 +1,6 @@
 {
 	"type": "tongue",
-	"name": "Snake Tongue Piercing",
+	"name": "$ostim_tongue_snake_piercing",
 	"mod": "OStim.esp",
 	"formid": "0xDD2",
 	"variants":{

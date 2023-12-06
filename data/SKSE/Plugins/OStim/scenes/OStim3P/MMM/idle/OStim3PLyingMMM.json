@@ -1,5 +1,5 @@
 {
-	"name": "Lying MMM",
+	"name": "$OStim3PLyingMMM",
 	"modpack": "OStim",
 	"length": 2.0,
 	"speeds":[
@@ -10,22 +10,22 @@
 	"navigations":[
 		{
 			"destination": "OStim3PLyingMMF",
-			"description": "go to MMF idle",
+			"description": "$ostim_nav_idle_mmf",
 			"icon": "OStim/symbols/gender_mmf"
 		},
 		{
 			"destination": "OStim3PLyingMFF",
-			"description": "go to MFF idle",
+			"description": "$ostim_nav_idle_mff",
 			"icon": "OStim/symbols/gender_mff"
 		},
 		{
 			"destination": "OStim3PLyingFFF",
-			"description": "go to FFF idle",
+			"description": "$ostim_nav_idle_fff",
 			"icon": "OStim/symbols/gender_fff"
 		},
 		{
 			"destination": "OStim3PStandingMMM",
-			"description": "stand up",
+			"description": "$ostim_nav_stand_up",
 			"icon": "OStim/positional/standup_m"
 		}
 	],

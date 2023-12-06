@@ -263,6 +263,11 @@ b -Tn OStim5PLyingMMMMF_4 OStim5P\MMMMF\idle\Ostim5PLyingMMMMF_4.hkx
 
 
 
+b -Tn OStimBed2PBothSittingMF_0 OStimBed2P\MF\idle\OStimBed2PBothSittingMF_0.hkx
+b -Tn OStimBed2PBothSittingMF_1 OStimBed2P\MF\idle\OStimBed2PBothSittingMF_1.hkx
+
+
+
 b -Tn OStimBench1PSittingM_0 OStimBench1P\M\idle\OStimBench1PSittingM_0.hkx
 
 b -Tn OStimBench1PSittingF_0 OStimBench1P\F\idle\OStimBench1PSittingF_0.hkx

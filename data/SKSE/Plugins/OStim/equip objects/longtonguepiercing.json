@@ -1,6 +1,6 @@
 {
 	"type": "tongue",
-	"name": "Long Tongue Piercing",
+	"name": "$ostim_tongue_long_piercing",
 	"mod": "OStim.esp",
 	"formid": "0xDCC",
 	"variants":{

@@ -12,45 +12,110 @@
 	],
 	"female": {
 		"expression": {
-			"type": 3,
-			"baseValue": 50
+			"type": 4,
+			"baseValue": 30,
+			"variance": 40,
+			"excitementMultiplier": 0.3,
+			"speedMultiplier": 30.0
 		},
 		"phonemes": [{
-			"type": 11,
-			"baseValue": 20
+			"type": 0,
+			"baseValue": 20,
+			"variance": 20,
+			"excitementMultiplier": 0.3
 		}, {
 			"type": 12,
-			"baseValue": 30
+			"baseValue": 40,
+			"variance": 30,
+			"delay": 0.4,
+			"delayVariance":0.2,
+			"excitementMultiplier": 0.2
+		}, {
+			"type": 7,
+			"baseValue": 40,
+			"variance": 50,
+			"delay": 0.6,
+			"delayVariance":0.3,
+			"excitementMultiplier": 0.3
 		}],
 		"modifiers": [{
 			"type": 8,
-			"baseValue": 75
+			"baseValue": 10
 		}, {
-			"type": 12,
-			"baseValue": 100
+			"type": 0,
+			"baseValue": 70,
+			"variance": 20
 		}, {
-			"type": 13,
-			"baseValue": 100
+			"type": 1,
+			"baseValue": 70,
+			"variance": 20
+		},{
+			"type": 6,
+			"baseValue": 30,
+			"variance": 40,
+			"delayVariance":0.4,
+			"excitementMultiplier": 0.3,
+			"speedMultiplier": 30.0
+		}, {
+			"type": 7,
+			"baseValue": 30,
+			"variance": 40,
+			"delayVariance":0.4,
+			"excitementMultiplier": 0.3,
+			"speedMultiplier": 30.0
 		}]
 	},
 	"male": {
 		"expression": {
-			"type": 0,
-			"baseValue": 40
+			"type": 4,
+			"baseValue": 30,
+			"variance": 40,
+			"excitementMultiplier": 0.3,
+			"speedMultiplier": 30.0
 		},
+		"phonemes": [{
+			"type": 0,
+			"baseValue": 20,
+			"variance": 20,
+			"excitementMultiplier": 0.3
+		}, {
+			"type": 12,
+			"baseValue": 40,
+			"variance": 30,
+			"excitementMultiplier": 0.2
+		}, {
+			"type": 7,
+			"baseValue": 40,
+			"variance": 50,
+			"delay": 0.5,
+			"delayVariance":0.3,
+			"excitementMultiplier": 0.3
+		}],
 		"modifiers": [{
 			"type": 8,
-			"baseValue": 75
+			"baseValue": 10
 		}, {
-			"type": 12,
-			"baseValue": 90
+			"type": 0,
+			"baseValue": 70,
+			"variance": 20
 		}, {
-			"type": 13,
-			"baseValue": 90
-		}],
-		"phonemes": [{
-			"type": 12,
-			"baseValue": 40
+			"type": 1,
+			"baseValue": 70,
+			"variance": 20
+		},{
+			"type": 6,
+			"baseValue": 30,
+			"variance": 40,
+			"delayVariance":0.4,
+			"excitementMultiplier": 0.3,
+			"speedMultiplier": 30.0
+		}, {
+			"type": 7,
+			"baseValue": 30,
+			"variance": 40,
+			"delayVariance":0.4,
+			"excitementMultiplier": 0.3,
+			"speedMultiplier": 30.0
 		}]
 	}
 }

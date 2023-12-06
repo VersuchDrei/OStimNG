@@ -1,6 +1,6 @@
 {
 	"priority": 10,
-	"name": "Wall",
+	"name": "$ostim_furniture_wall",
 	"conditions":[
 		{
 			"type": "formlist",

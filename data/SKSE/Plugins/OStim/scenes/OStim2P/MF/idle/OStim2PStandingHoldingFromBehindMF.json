@@ -1,5 +1,5 @@
 {
-	"name": "Standing Holding from Behind Straight",
+	"name": "$OStim2PStandingHoldingFromBehindMF",
 	"modpack": "OStim",
 	"length": 2.0,
 	"speeds":[
@@ -10,42 +10,42 @@
 	"navigations":[
 		{
 			"destination": "OStim2PStandingHoldingFromBehindToHoldingMF",
-			"description": "turn around ({1})",
+			"description": "$ostim_nav_turn_around_a{1}",
 			"icon": "OStim/symbols/rotate_ccw"
 		},
 		{
 			"destination": "OStim2PStandingHugFromBehindMF",
-			"description": "hug {1}",
+			"description": "$ostim_nav_hug_t{1}",
 			"icon": "OStim/sensual/embrace_mf",
 			"priority": 1000
 		},
 		{
 			"destination": "OStim2PStandingCuddleFromBehindMF",
-			"description": "cuddle with {1}",
+			"description": "$ostim_nav_cuddle_t{1}",
 			"icon": "OStim/sensual/embrace_mf",
 			"priority": 1000
 		},
 		{
 			"destination": "OStim2PStandingGropingBreastsFromBehindMF",
-			"description": "grope {1}s breasts",
+			"description": "$ostim_nav_grope_breasts_t{1}",
 			"icon": "OStim/detail/gropingbreast_mf",
 			"priority": 1000
 		},
 		{
 			"destination": "OStim2PStandingGrindingDryMF",
-			"description": "grind your butt against {0}s crotch",
+			"description": "$ostim_nav_grind_butt_against_crotch_t{0}",
 			"icon": "OStim/sensual/embrace_behind_mf",
 			"priority": 1000
 		},
 		{
 			"destination": "OStim2PStandingSpankIdleMF",
-			"description": "bend {1} over for some spankings",
+			"description": "$ostim_nav_bend_over_spank_t{1}",
 			"icon": "OStim/sexual/spank_right_mf",
 			"priority": 1000
 		},
 		{
 			"destination": "OStim2PStandingFingeringFromBehindMF",
-			"description": "pleasure {1} with your hand and grope her breast",
+			"description": "$ostim_nav_pleasure_hand_grope_breast_t{1}",
 			"icon": "OStim/sexual/fingering_m",
 			"priority": 2000
 		}

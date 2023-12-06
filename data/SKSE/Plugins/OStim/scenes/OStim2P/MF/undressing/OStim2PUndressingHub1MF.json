@@ -1,5 +1,5 @@
 {
-	"name": "Undressing Hub Straight",
+	"name": "$OStim2PUndressingHub1MF",
 	"modpack": "OStim",
 	"length": 2.0,
 	"speeds":[
@@ -10,37 +10,37 @@
 	"navigations":[
 		{
 			"destination": "OStim2PStandingApartMF",
-			"description": "return",
+			"description": "$ostim_nav_return",
 			"icon": "OStim/symbols/return"
 		},
 		{
 			"destination": "OStim2PUndressTop1MF",
-			"description": "take off your top ({1})",
+			"description": "$ostim_undress_top_a{1}",
 			"icon": "OStim/clothes/top"
 		},
 		{
 			"destination": "OStim2PUndressBottom1MF",
-			"description": "take off your bottom ({1})",
+			"description": "$ostim_undress_bottom_a{1}",
 			"icon": "OStim/clothes/skirt"
 		},
 		{
 			"destination": "OStim2PUndressHead1MF",
-			"description": "take off your helmet ({1})",
+			"description": "$ostim_undress_helmet_a{1}",
 			"icon": "OStim/clothes/helmet"
 		},
 		{
 			"destination": "OStim2PUndressGloves1MF",
-			"description": "take off your gloves ({1})",
+			"description": "$ostim_undress_gloves_a{1}",
 			"icon": "OStim/clothes/gauntlets"
 		},
 		{
 			"destination": "OStim2PUndressBoots1MF",
-			"description": "take off your boots ({1})",
+			"description": "$ostim_undress_boots_a{1}",
 			"icon": "OStim/clothes/boots"
 		},
 		{
 			"destination": "OStim2PUndressingHub0MF",
-			"description": "undress {0}",
+			"description": "$ostim_undress_hub_t{0}",
 			"icon": "OStim/symbols/gender_m"
 		}
 	],

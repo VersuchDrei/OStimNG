@@ -1,5 +1,5 @@
 {
-	"name": "Doggy Idle Straight",
+	"name": "$OStim2PDoggyIdleMF",
 	"modpack": "OStim",
 	"length": 2.0,
 	"speeds":[
@@ -10,22 +10,22 @@
 	"navigations":[
 		{
 			"destination": "OStim2PStandingApartMF",
-			"description": "stand up",
+			"description": "$ostim_nav_stand_up",
 			"icon": "OStim/positional/standup_m"
 		},
 		{
 			"destination": "OStim2PStandingApartToSittingMF",
-			"description": "sit down",
+			"description": "$ostim_nav_sit_down",
 			"icon": "OStim/positional/squatting_f"
 		},
 		{
 			"destination": "OStim2PLyingOnTopMF",
-			"description": "lie on {1}",
+			"description": "ostim_nav_lie_on_t{1}",
 			"icon": "OStim/positional/lyingback_f"
 		},
 		{
 			"destination": "OStim2PBothLyingMF",
-			"description": "lie down",
+			"description": "$ostim_nav_lie_down",
 			"icon": "OStim/positional/lyingback_m"
 		}
 	],

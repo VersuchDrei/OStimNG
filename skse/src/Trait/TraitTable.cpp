@@ -115,7 +115,7 @@ namespace Trait {
             }
 
             EquipObject* object = new EquipObject();
-            object->name = json["name"];
+            JsonUtil::loadTranslatedString(json, object->name, "name", id, "equip object", true);
             object->item = item;
 
             if (json.contains("variants")) {

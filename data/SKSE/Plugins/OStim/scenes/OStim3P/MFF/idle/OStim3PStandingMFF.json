@@ -10,22 +10,22 @@
 	"navigations":[
 		{
 			"destination": "OStim3PStandingMMM",
-			"description": "go to MMM idle",
+			"description": "$ostim_nav_idle_mmm",
 			"icon": "OStim/symbols/gender_mmm"
 		},
 		{
 			"destination": "OStim3PStandingMMF",
-			"description": "go to MMF idle",
+			"description": "$ostim_nav_idle_mmf",
 			"icon": "OStim/symbols/gender_mmf"
 		},
 		{
 			"destination": "OStim3PStandingFFF",
-			"description": "go to FFF idle",
+			"description": "$ostim_nav_idle_fff",
 			"icon": "OStim/symbols/gender_fff"
 		},
 		{
 			"destination": "OStim3PLyingMFF",
-			"description": "lie down",
+			"description": "$ostim_nav_lie_down",
 			"icon": "OStim/positional/lyingback_f"
 		}
 	],

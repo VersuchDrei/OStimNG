@@ -1,5 +1,5 @@
 {
-	"name": "Bend Over Lesbian",
+	"name": "$OStimShelf2PBendOverFF",
 	"modpack": "OStim",
 	"length": 2.0,
 	"furniture": "shelf",
@@ -11,12 +11,12 @@
 	"navigations":[
 		{
 			"destination": "OStimShelf2PBehindMF",
-			"description": "go to straight idle",
+			"description": "$ostim_nav_idle_mf",
 			"icon": "OStim/symbols/gender_mf"
 		},
 		{
 			"destination": "OStimShelf2PBehindFF",
-			"description": "stand up",
+			"description": "$ostim_nav_stand_up_a{1}",
 			"icon": "OStim/positional/standup_f"
 		}
 	],

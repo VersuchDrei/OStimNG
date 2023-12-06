@@ -1,5 +1,5 @@
 {
-	"name": "Standing Leaning Lesbian",
+	"name": "$OStimWall2PStandingLeaningFF",
 	"modpack": "OStim",
 	"length": 2.0,
 	"furniture": "wall",
@@ -11,12 +11,12 @@
 	"navigations":[
 		{
 			"destination": "OStimWall2PStandingLeaningMF",
-			"description": "go to straight idle",
+			"description": "$ostim_nav_idle_mf",
 			"icon": "OStim/symbols/gender_mf"
 		},
 		{
 			"destination": "OStimWall2PStandingLeaningMM",
-			"description": "go to gay idle",
+			"description": "$ostim_nav_idle_mm",
 			"icon": "OStim/symbols/gender_mm"
 		}
 	],

@@ -1,6 +1,6 @@
 {
 	"type": "tongue",
-	"name": "Snake Tongue",
+	"name": "$ostim_tongue_snake",
 	"mod": "OStim.esp",
 	"formid": "0xDD0",
 	"variants":{

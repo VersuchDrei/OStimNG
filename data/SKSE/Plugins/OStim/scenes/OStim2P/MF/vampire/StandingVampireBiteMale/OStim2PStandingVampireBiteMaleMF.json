@@ -1,5 +1,5 @@
 {
-	"name": "Standing Vampire Bite Male Straight",
+	"name": "$OStim2PStandingVampireBiteMaleMF",
 	"modpack": "OStim",
 	"length": 2.0,
 	"speeds":[
@@ -10,7 +10,7 @@
 	"navigations":[
 		{
 			"destination": "OStim2PStandingVampireBiteMaleToDrainedFemaleMF",
-			"description": "stop",
+			"description": "$ostim_nav_feed_stop",
 			"icon": "OStim/sensual/kissing_end",
 			"priority": -1000
 		}

@@ -26,47 +26,78 @@
 	],
 	"female": {
 		"expression": {
-			"type": 4,
-			"baseValue": 60,
-			"excitementMultiplier": 0.2
+			"type": 14,
+			"baseValue": 30,
+			"variance": 30,
+			"excitementMultiplier": 0.2,
+			"speedMultiplier": 20.0
 		},
 		"phonemes": [{
-			"type": 4,
-			"baseValue": 40,
-			"excitementMultiplier": 0.2
-		}, {
+			"type": 5,
+			"variance": 30
+		},{
 			"type": 12,
-			"baseValue": 20,
-			"excitementMultiplier": 0.1
+			"variance": 25,
+			"delayVariance":0.5,
+			"excitementMultiplier": 0.3,
+			"speedMultiplier": 20.0
+		},{
+			"type": 14,
+			"baseValue": 10,
+			"variance": 40,
+			"delayVariance":0.5,
+			"excitementMultiplier": 0.2,
+			"speedMultiplier": 20.0
 		}],
 		"modifiers": [{
-			"type": 12,
-			"baseValue": 75,
+			"type": 8,
+			"variance": 30,
+			"delayVariance":0.5,
 			"excitementMultiplier": 0.25
 		}, {
-			"type": 13,
-			"baseValue": 75,
-			"excitementMultiplier": 0.25
+			"type": 12,
+			"variance": 40,
+			"delayVariance":0.3,
+			"excitementMultiplier": 0.3,
+			"speedMultiplier": -80.0
 		}]
 	},
 	"male": {
 		"expression": {
-			"type": 4,
-			"baseValue": 40,
-			"excitementMultiplier": 0.2
+			"type": 14,
+			"baseValue": 30,
+			"variance": 30,
+			"excitementMultiplier": 0.2,
+			"speedMultiplier": 20.0
 		},
-		"modifiers": [{
-			"type": 6,
-			"baseValue": 30,
-			"excitementMultiplier": 0.3
-		}, {
-			"type": 7,
-			"baseValue": 30,
-			"excitementMultiplier": 0.3
-		}],
 		"phonemes": [{
-			"type": 1,
-			"baseValue": 30
+			"type": 5,
+			"variance": 30
+		},{
+			"type": 12,
+			"variance": 25,
+			"delayVariance":0.5,
+			"excitementMultiplier": 0.3,
+			"speedMultiplier": 20.0
+		},{
+			"type": 14,
+			"baseValue": 10,
+			"variance": 40,
+			"delayVariance":0.5,
+			"excitementMultiplier": 0.2,
+			"speedMultiplier": 20.0
+		}],
+		"modifiers": [{
+			"type": 8,
+			"variance": 30,
+			"delayVariance":0.5,
+			"excitementMultiplier": 0.25
+		}, {
+			"type": 12,
+			"variance": 40,
+			"delayVariance":0.3,
+			"excitementMultiplier": 0.3,
+			"speedMultiplier": -80.0
 		}]
 	}
 }

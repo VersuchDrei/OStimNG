@@ -1,0 +1,93 @@
+{
+	"actionActors": [
+		"kissing",
+		"kissingfeet",
+		"kissingneck"
+	],
+	"actionTargets": [
+		"kissing"
+	],
+	"events":[
+		"kiss"
+	],
+	"female": {
+		"expression": {
+			"type": 2,
+			"variance": 40,
+			"excitementMultiplier": 0.3,
+			"speedMultiplier": 20.0
+		},
+		"phonemes": [{
+			"type": 1,
+			"baseValue": 30,
+			"variance": 20,
+			"delay": 0.4,
+			"delayVariance":0.2,
+			"excitementMultiplier": 0.3
+		}, {
+			"type": 12,
+			"baseValue": 30,
+			"variance": 40,
+			"delay": 0.5,
+			"delayVariance":0.3,
+			"excitementMultiplier": 0.2
+		}, {
+			"type": 15,
+			"baseValue": 20,
+			"variance": 40
+		}],
+		"modifiers": [{
+			"type": 8,
+			"baseValue": 40,
+			"variance": 30
+		}, {
+			"type": 0,
+			"baseValue": 20,
+			"variance": 15
+		}, {
+			"type": 1,
+			"baseValue": 20,
+			"variance": 15
+		}]
+	},
+	"male": {
+		"expression": {
+			"type": 2,
+			"variance": 40,
+			"excitementMultiplier": 0.3,
+			"speedMultiplier": 20.0
+		},
+		"phonemes": [{
+			"type": 1,
+			"baseValue": 30,
+			"variance": 20,
+			"delay": 0.4,
+			"delayVariance":0.2,
+			"excitementMultiplier": 0.3
+		}, {
+			"type": 12,
+			"baseValue": 30,
+			"variance": 40,
+			"delay": 0.5,
+			"delayVariance":0.3,
+			"excitementMultiplier": 0.2
+		}, {
+			"type": 15,
+			"baseValue": 20,
+			"variance": 40
+		}],
+		"modifiers": [{
+			"type": 8,
+			"baseValue": 40,
+			"variance": 30
+		}, {
+			"type": 0,
+			"baseValue": 10,
+			"variance": 15
+		}, {
+			"type": 1,
+			"baseValue": 10,
+			"variance": 15
+		}]
+	}
+}

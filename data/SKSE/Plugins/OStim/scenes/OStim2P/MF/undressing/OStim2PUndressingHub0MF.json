@@ -1,5 +1,5 @@
 {
-	"name": "Undressing Hub Straight",
+	"name": "$OStim2PUndressingHub0MF",
 	"modpack": "OStim",
 	"length": 2.0,
 	"speeds":[
@@ -10,17 +10,17 @@
 	"navigations":[
 		{
 			"destination": "OStim2PStandingSquattingMF",
-			"description": "return",
+			"description": "$ostim_nav_return",
 			"icon": "OStim/symbols/return"
 		},
 		{
 			"destination": "OStim2PUndressBottom0MF",
-			"description": "take off {0}s bottom",
+			"description": "$ostim_undress_bottom_t{0}",
 			"icon": "OStim/clothes/skirt"
 		},
 		{
 			"destination": "OStim2PUndressingHub1MF",
-			"description": "undress {1}",
+			"description": "$ostim_undress_hub_t{1}",
 			"icon": "OStim/symbols/gender_f"
 		}
 	],

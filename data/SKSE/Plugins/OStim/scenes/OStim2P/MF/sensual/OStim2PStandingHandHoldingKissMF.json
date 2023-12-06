@@ -1,5 +1,5 @@
 {
-	"name": "Standing Hand Holding Kiss Straight",
+	"name": "$OStim2PStandingHandHoldingKissMF",
 	"modpack": "OStim",
 	"length": 2.0,
 	"speeds":[
@@ -10,31 +10,31 @@
 	"navigations":[
 		{
 			"destination": "OStim2PStandingApartMF",
-			"description": "return",
+			"description": "$ostim_nav_return",
 			"icon": "OStim/symbols/return",
 			"priority": -1000
 		},
 		{
 			"destination": "OStim2PStandingKissMF",
-			"description": "hold {1}",
+			"description": "$ostim_nav_hold_t{1}",
 			"icon": "OStim/sensual/embrace_mf",
 			"priority": 0
 		},
 		{
 			"destination": "OStim2PStandingHandHoldingHighMF",
-			"description": "stop kissing {1}",
+			"description": "$ostim_nav_kiss_stop_t{1}",
 			"icon": "OStim/sensual/kissing_end",
 			"priority": 1950
 		},
 		{
 			"destination": "OStim2PStandingApartHandjobMF",
-			"description": "jerk off {0}",
+			"description": "$ostim_nav_jerk_off_t{0}",
 			"icon": "OStim/sexual/handjob_mf",
 			"priority": 2000
 		},
 		{
 			"destination": "OStim2PStandingKissFingeringMF",
-			"description": "finger {1}",
+			"description": "$ostim_nav_finger_t{1}",
 			"icon": "OStim/sexual/vaginalfingering_mf",
 			"priority": 2000
 		}

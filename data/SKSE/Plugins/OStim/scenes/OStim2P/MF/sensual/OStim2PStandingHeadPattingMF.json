@@ -1,5 +1,5 @@
 {
-	"name": "Standing Head Caress Straight",
+	"name": "$OStim2PStandingHeadPattingMF",
 	"modpack": "OStim",
 	"length": 2.0,
 	"speeds":[
@@ -23,13 +23,13 @@
 	"navigations":[
 		{
 			"destination": "OStim2PStandingApartMF",
-			"description": "return",
+			"description": "$ostim_nav_return",
 			"icon": "OStim/symbols/return",
 			"priority": -1000
 		},
 		{
 			"destination": "OStim2PStandingHandHoldingLowMF",
-			"description": "hold {1}s hands",
+			"description": "$ostim_nav_hold_hands_t{1}",
 			"icon": "OStim/detail/holdinghand_mf",
 			"priority": 1000
 		}

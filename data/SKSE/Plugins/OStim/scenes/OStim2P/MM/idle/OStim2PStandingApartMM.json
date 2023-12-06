@@ -1,5 +1,5 @@
 {
-	"name": "Standing Apart Gay",
+	"name": "$OStim2PStandingApartMM",
 	"modpack": "OStim",
 	"length": 2.0,
 	"speeds":[
@@ -10,17 +10,17 @@
 	"navigations":[
 		{
 			"destination": "OStim2PStandingApartMF",
-			"description": "go to straight idle",
+			"description": "$ostim_nav_idle_mf",
 			"icon": "OStim/symbols/gender_mf"
 		},
 		{
 			"destination": "OStim2PStandingCloseFF",
-			"description": "go to lesbian idle",
+			"description": "$ostim_nav_idle_ff",
 			"icon": "OStim/symbols/gender_ff"
 		},
 		{
 			"destination": "OStim2PKneelingLyingMM",
-			"description": "kneel down",
+			"description": "$ostim_nav_kneel_down",
 			"icon": "OStim/positional/squatting_f"
 		}
 	],

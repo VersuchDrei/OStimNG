@@ -4,50 +4,112 @@
 	],
 	"female": {
 		"duration": 3,
-		"expression": {
-			"type": 1,
-			"baseValue": 80
+		"expression":{
+			"type":10,
+			"baseValue": 70,
+			"variance": 30
 		},
-		"phonemes": [{
-			"type": 1,
-			"baseValue": 45
-		}, {
-			"type": 14,
-			"baseValue": 40
-		}],
-		"modifiers": [{
-			"type": 12,
-			"baseValue": 75
-		}, {
-			"type": 13,
-			"baseValue": 75
-		}, {
-			"type": 0,
-			"baseValue": 75
-		}, {
-			"type": 1,
-			"baseValue": 75
-		}]
+		"phonemes":[
+			{
+				"type":0,
+				"baseValue":40,
+			    "variance": 30,
+			    "delayVariance":0.3
+			},
+			{
+				"type":1,
+				"baseValue": 30,
+			    "variance": 30,
+			    "delayVariance":0.5
+			},
+			{
+				"type":11,
+				"baseValue": 15,
+			    "variance": 20
+			},
+			{
+				"type":13,
+				"baseValue": 30
+			}
+		],
+		"modifiers":[
+			{
+				"type":6,
+				"baseValue":40,
+			    "variance": 40,
+				"delayVariance":0.3
+			},
+			{
+				"type":8,
+				"baseValue": 10,
+			    "variance": 20,
+				"delayVariance": 0.6
+			},
+			{
+				"type":12,
+				"baseValue": 40,
+				"variance": 40
+			},
+			{
+				"type":13,
+				"baseValue": 40,
+				"variance": 45
+			}
+		]
 	},
 	"male": {
 		"duration": 2,
-		"expression": {
-			"type": 2,
-			"baseValue": 40
+		"expression":{
+			"type":10,
+			"baseValue": 70,
+			"variance": 30
 		},
-		"phonemes": [{
-			"type": 4,
-			"baseValue": 20
-		}, {
-			"type": 5,
-			"baseValue": 30
-		}],
-		"modifiers": [{
-			"type": 2,
-			"baseValue": 40
-		}, {
-			"type": 3,
-			"baseValue": 40
-		}]
+		"phonemes":[
+			{
+				"type":0,
+				"baseValue":20,
+			    "variance": 30,
+			    "delayVariance":0.3
+			},
+			{
+				"type":1,
+				"baseValue": 20,
+			    "variance": 30,
+			    "delayVariance":0.5
+			},
+			{
+				"type":11,
+				"baseValue": 15,
+			    "variance": 20
+			},
+			{
+				"type":13,
+				"baseValue": 30
+			}
+		],
+		"modifiers":[
+			{
+				"type":6,
+				"baseValue":40,
+			    "variance": 40,
+				"delayVariance":0.3
+			},
+			{
+				"type":8,
+				"baseValue": 10,
+			    "variance": 20,
+				"delayVariance": 0.6
+			},
+			{
+				"type":12,
+				"baseValue": 40,
+				"variance": 40
+			},
+			{
+				"type":13,
+				"baseValue": 40,
+				"variance": 45
+			}
+		]
 	}
 }

@@ -1,5 +1,5 @@
 {
-	"name": "Standing Cuddle Holding Head Straight",
+	"name": "$OStim2PStandingCuddleHoldingHeadMF",
 	"modpack": "OStim",
 	"length": 2.0,
 	"speeds":[
@@ -10,19 +10,19 @@
 	"navigations":[
 		{
 			"destination": "OStim2PStandingHoldingMF",
-			"description": "return",
+			"description": "$ostim_nav_return",
 			"icon": "OStim/symbols/return",
 			"priority": -1000
 		},
 		{
 			"destination": "OStim2PStandingHugMF",
-			"description": "stop holding {1}s head",
+			"description": "$ostim_nav_hold_head_stop_t{1}",
 			"icon": "OStim/detail/grab_m",
 			"priority": 0
 		},
 		{
 			"destination": "OStim2PStandingHoldingChinHugMF",
-			"description": "hold {1}s chin",
+			"description": "$ostim_nav_hold_chin_t{1}",
 			"icon": "OStim/detail/holdingneck_mf",
 			"priority": 0
 		}

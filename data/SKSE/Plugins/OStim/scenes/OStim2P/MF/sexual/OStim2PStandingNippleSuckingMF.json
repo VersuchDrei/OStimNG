@@ -1,5 +1,5 @@
 {
-	"name": "Standing Nipple Sucking Straight",
+	"name": "$OStim2PStandingNippleSuckingMF",
 	"modpack": "OStim",
 	"length": 2.0,
 	"speeds":[
@@ -23,13 +23,13 @@
 	"navigations":[
 		{
 			"destination": "OStim2PStandingApartMF",
-			"description": "return",
+			"description": "$ostim_nav_return",
 			"icon": "OStim/symbols/return",
 			"priority": -1000
 		},
 		{
 			"destination": "OStim2PStandingGropingBreastsMF",
-			"description": "grope {1}s breasts",
+			"description": "$ostim_nav_grope_breast_t{1}",
 			"icon": "OStim/detail/gropingbreast_mf",
 			"priority": 2000
 		}

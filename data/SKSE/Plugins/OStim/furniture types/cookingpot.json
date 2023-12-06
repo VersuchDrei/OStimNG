@@ -1,6 +1,6 @@
 {
 	"priority": 10,
-	"name": "Cooking Pot",
+	"name": "$ostim_furniture_cooking_pot",
 	"conditions":[
 		{
 			"type": "anykeyword",

@@ -1,5 +1,5 @@
 {
-	"priority": 10,
+	"priority": 30,
 	"ignoreMarkerOffsetX": true,
 	"rotation": 3.14159,
 	"supertype": "bed",

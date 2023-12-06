@@ -1,6 +1,7 @@
 #include "Graph/GraphTable.h"
 
 #include "Furniture/FurnitureTable.h"
+#include "Game/LocaleManager.h"
 #include "Util/JsonFileLoader.h"
 #include "Util/JsonUtil.h"
 #include "Util/StringUtil.h"
@@ -14,19 +15,18 @@ namespace Graph {
 
         Util::JsonFileLoader::LoadFilesInSubfolders(NODE_FILE_PATH, [&navigations](std::string path, std::string filename, json json) {
             Node* node = new Node();
-            node->scene_id = node->lowercase_id = filename;
+            node->lowercase_id = node->scene_id = filename;
             StringUtil::toLower(&node->lowercase_id);
             
             if (json.contains("name")) {
                 if (json["name"].is_string()) {
-                    node->scene_name = json["name"];
-                    node->lowercase_name = json["name"];
+                    node->lowercase_name = node->scene_name = LocaleManager::GetSingleton()->GetLocalization(static_cast<std::string>(json["name"]));
                     StringUtil::toLower(&node->lowercase_name);
                 } else {
                     logger::warn("name property of scene {} isn't a string", node->scene_id);
                 }
             } else {
-                logger::warn("scene {} doesn't have a name property defined", node->scene_id);
+                node->lowercase_name = node->scene_name = LocaleManager::GetSingleton()->GetLocalization("$" + node->scene_id);
             }
 
             if (json.contains("modpack")) {
@@ -137,7 +137,7 @@ namespace Graph {
 
                                 if (jsonNavigation.contains("description")) {
                                     if (jsonNavigation["description"].is_string()) {
-                                        navigation.description = jsonNavigation["description"];
+                                        navigation.description = LocaleManager::GetSingleton()->GetLocalization(static_cast<std::string>(jsonNavigation["description"]));
                                     } else {
                                         logger::warn("description property of navigation {} of scene {} isn't a string", index, node->scene_id);
                                     }

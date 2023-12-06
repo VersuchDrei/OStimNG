@@ -1,5 +1,5 @@
 {
-	"name": "Standing Female",
+	"name": "$OStim1PStandingF",
 	"modpack": "OStim",
 	"length": 2.0,
 	"speeds":[
@@ -10,12 +10,12 @@
 	"navigations":[
 		{
 			"destination": "OStim1PStandingM",
-			"description": "go to male idle",
+			"description": "$ostim_nav_idle_m",
 			"icon": "OStim/symbols/gender_m"
 		},
 		{
 			"destination": "OStim1PSittingF",
-			"description": "sit down",
+			"description": "$ostim_nav_sit_down",
 			"icon": "OStim/positional/squatting_f"
 		}
 	],

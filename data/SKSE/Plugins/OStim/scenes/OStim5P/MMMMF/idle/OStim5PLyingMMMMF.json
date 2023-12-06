@@ -10,12 +10,12 @@
 	"navigations":[
 		{
 			"destination": "OStim5PLyingMFFFF",
-			"description": "go to MFFFF idle",
+			"description": "$ostim_nav_idle_mffff",
 			"icon": "OStim/symbols/gender_mff"
 		},
 		{
 			"destination": "OStim5PStandingMMMMF",
-			"description": "stand up",
+			"description": "$ostim_nav_stand_up",
 			"icon": "OStim/positional/standup_m"
 		}
 	],

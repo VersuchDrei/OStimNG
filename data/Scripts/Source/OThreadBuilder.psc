@@ -47,15 +47,28 @@ Function SetDuration(int BuilderID, float Duration) Global Native
 
 ;/* SetStartingAnimation
 * * sets the starting animation of the scene
-* * if a starting sequence is set the starting animation is ignored
+* * this will undo all prior modifications of the starting animations
 * *
 * * @param: BuilderID, the id of the thread builder
 * * @param: Animation, the id of the animation
 */;
 Function SetStartingAnimation(int BuilderID, string Animation) Global Native
 
+;/* AddStartingAnimation
+* * adds another animation to the list of starting animations
+* *
+* * required API version: 31
+* *
+* * @param: BuilderID, the id of the thread builder
+* * @param: Animation, the id of the animation
+* * @param: Duration, the duration (in seconds) for the actors to stay in this animation, if 0 the animations duration will be taken
+* * @param: NavigateTo, if true OStim will try to find a navigation route from the last animation to this instead of warping there
+*/;
+Function AddStartingAnimation(int BuilderID, string Animation, float Duration = 0.0, bool NavigateTo = false) Global Native
+
 ;/* SetStartingSequence
-* * sets the starting sequence of the scene
+* * sets a sequence as the starting animations of the scene
+* * this will undo all prior modifications of the starting animations
 * *
 * * required API version: 30
 * *
@@ -64,9 +77,19 @@ Function SetStartingAnimation(int BuilderID, string Animation) Global Native
 */;
 Function SetStartingSequence(int BuilderID, string Sequence) Global Native
 
+;/* ConcatStartingSequence
+* * adds another sequence to the list of starting animations
+* *
+* * required API version: 31
+* *
+* * @param: BuilderID, the id of the thread builder
+* * @param: Sequence, the id of the sequence
+* * @param: NavigateTo, if true OStim will try to find a navigation route from the last animation to the sequence instead of warping there
+*/;
+Function ConcatStartingSequence(int BuilderID, string Sequence, bool NavigateTo = false) Global Native
+
 ;/* EndAfterSequence
-* * sets the thread to end when the starting sequence has played through
-* * if no startin sequence is set this doesn't do anything
+* * sets the thread to end when the starting animations have played through
 * *
 * * without this the thread will get to the usual navigation after the sequence is done
 * *

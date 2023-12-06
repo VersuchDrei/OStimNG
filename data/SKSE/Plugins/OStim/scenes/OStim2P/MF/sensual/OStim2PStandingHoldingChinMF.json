@@ -1,5 +1,5 @@
 {
-	"name": "Standing Holding Chin Straight",
+	"name": "$OStim2PStandingHoldingChinMF",
 	"modpack": "OStim",
 	"length": 2.0,
 	"speeds":[
@@ -10,19 +10,19 @@
 	"navigations":[
 		{
 			"destination": "OStim2PStandingHoldingMF",
-			"description": "return",
+			"description": "$ostim_nav_return",
 			"icon": "OStim/symbols/return",
 			"priority": -1000
 		},
 		{
 			"destination": "OStim2PStandingHoldingChinToHoldingChinHugMF",
-			"description": "hold {1}",
+			"description": "$ostim_nav_hold_t{1}",
 			"icon": "OStim/sensual/embrace_mf",
 			"priority": 0
 		},
 		{
 			"destination": "OStim2PStandingHoldingChinKissMF",
-			"description": "kiss {1}",
+			"description": "$ostim_nav_kiss_t{1}",
 			"icon": "OStim/sensual/kissing_mf",
 			"priority": 0
 		}

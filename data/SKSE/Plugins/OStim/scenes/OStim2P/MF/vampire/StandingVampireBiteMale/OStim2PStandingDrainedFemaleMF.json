@@ -1,5 +1,5 @@
 {
-	"name": "Standing Drained Female Straight",
+	"name": "$OStim2PStandingDrainedFemaleMF",
 	"modpack": "OStim",
 	"length": 2.0,
 	"speeds":[
@@ -10,7 +10,7 @@
 	"navigations":[
 		{
 			"destination": "OStim2PStandingApartMF",
-			"description": "return",
+			"description": "$ostim_nav_return",
 			"icon": "OStim/symbols/return",
 			"priority": -1000
 		}

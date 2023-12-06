@@ -1,5 +1,5 @@
 {
-	"name": "Standing Sitting Straight",
+	"name": "$OStimTable2PStandingSittingMF",
 	"modpack": "OStim",
 	"length": 2.0,
 	"furniture": "table",
@@ -11,12 +11,12 @@
 	"navigations":[
 		{
 			"destination": "OStimTable2PStandingSittingFF",
-			"description": "go to lesbian idle",
+			"description": "$ostim_nav_idle_ff",
 			"icon": "OStim/symbols/gender_ff"
 		},
 		{
 			"destination": "OStimTable2PStandingLeaningMF",
-			"description": "stand up",
+			"description": "$ostim_nav_stand_up_a{1}",
 			"icon": "OStim/positional/standup_f"
 		}
 	],

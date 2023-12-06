@@ -1,5 +1,5 @@
 {
-	"name": "Behind Straight",
+	"name": "$OStimTable2PBehindMF",
 	"modpack": "OStim",
 	"length": 2.0,
 	"furniture": "table",
@@ -11,12 +11,12 @@
 	"navigations":[
 		{
 			"destination": "OStimTable2PBehindFF",
-			"description": "go to lesbian idle",
+			"description": "$ostim_nav_idle_ff",
 			"icon": "OStim/symbols/gender_ff"
 		},
 		{
 			"destination": "OStimTable2PStandingLeaningMF",
-			"description": "turn around",
+			"description": "$ostim_nav_turn_around_a{1}",
 			"icon": "OStim/symbols/return"
 		}
 	],

@@ -1,5 +1,5 @@
 {
-	"name": "Lying On Top Straight",
+	"name": "$OStim2PLyingOnTopMF",
 	"modpack": "OStim",
 	"length": 2.0,
 	"speeds":[
@@ -10,17 +10,17 @@
 	"navigations":[
 		{
 			"destination": "OStim2PBothLyingMF",
-			"description": "lie down ({0})",
+			"description": "$ostim_nav_lie_down_a{0}",
 			"icon": "OStim/positional/lyingback_m"
 		},
 		{
 			"destination": "OStim2PSittingMF",
-			"description": "sit up",
+			"description": "$ostim_nav_sit_up",
 			"icon": "OStim/positional/leanback_f"
 		},
 		{
 			"destination": "OStim2PDoggyIdleMF",
-			"description": "get on all fours ({1})",
+			"description": "$ostim_nav_all_fours_a{1}",
 			"icon": "OStim/positional/allfours_alt_f"
 		}
 	],

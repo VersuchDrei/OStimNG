@@ -1,0 +1,35 @@
+{
+	"events": [
+		"moan"
+	],
+	"female": {
+		"duration": 0.5,
+		"phonemes": [{
+				"type":1,
+				"baseValue": 20,
+			    "variance": 25,
+				"speedMultiplier": 20.0
+			},
+			{
+				"type":14,
+				"baseValue": 20,
+			    "variance": 30,
+				"speedMultiplier": 10.0
+			}]
+	},
+	"male": {
+		"duration": 0.5,
+		"phonemes": [{
+				"type":1,
+				"baseValue": 20,
+			    "variance": 15,
+				"speedMultiplier": 10.0
+			},
+			{
+				"type":14,
+				"baseValue": 20,
+			    "variance": 20,
+				"speedMultiplier": 10.0
+			}]
+	}
+}

@@ -1,5 +1,5 @@
 {
-	"name": "Standing MMMMF",
+	"name": "$OStim5PStandingMFFFF",
 	"modpack": "OStim",
 	"length": 10.0,
 	"speeds":[
@@ -10,12 +10,12 @@
 	"navigations":[
 		{
 			"destination": "OStim5PStandingMMMMF",
-			"description": "go to MMMMF idle",
+			"description": "$ostim_nav_idle_mmmmf",
 			"icon": "OStim/symbols/gender_mmf"
 		},
 		{
 			"destination": "OStim5PLyingMMMMF",
-			"description": "lie down",
+			"description": "$ostim_nav_lie_down",
 			"icon": "OStim/positional/lyingback_m"
 		}
 	],

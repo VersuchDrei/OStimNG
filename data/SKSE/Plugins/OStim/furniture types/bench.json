@@ -1,6 +1,6 @@
 {
 	"priority": 5,
-	"name": "Bench",
+	"name": "$ostim_furniture_bench",
 	"ignoreMarkerOffsetX": true,
 	"ignoreMarkerOffsetZ": true,
 	"supertype": "chair",

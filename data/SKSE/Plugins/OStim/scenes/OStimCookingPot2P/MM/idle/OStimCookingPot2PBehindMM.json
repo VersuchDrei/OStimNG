@@ -11,12 +11,12 @@
 	"navigations":[
 		{
 			"destination": "OStimCookingPot2PBehindMF",
-			"description": "go to straight idle",
+			"description": "$ostim_nav_idle_mf",
 			"icon": "OStim/symbols/gender_mf"
 		},
 		{
 			"destination": "OStimCookingPot2PBehindFF",
-			"description": "go to lesbian idle",
+			"description": "$ostim_nav_idle_ff",
 			"icon": "OStim/symbols/gender_ff"
 		}
 	],

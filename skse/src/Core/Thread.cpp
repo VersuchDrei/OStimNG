@@ -97,7 +97,7 @@ namespace OStim {
             stopTimer = MCM::MCMTable::npcSceneDuration();
         }
 
-        endAfterSequence = params.startingNodes.size() > 1 && params.endAfterSequence;
+        endAfterSequence = params.endAfterSequence;
     }
 
     Thread::~Thread() {

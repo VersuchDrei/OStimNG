@@ -1,5 +1,5 @@
 {
-	"name": "Standing Female",
+	"name": "$OStimShelf1PStandingF",
 	"modpack": "OStim",
 	"length": 2.0,
 	"furniture": "shelf",
@@ -11,12 +11,12 @@
 	"navigations":[
 		{
 			"destination": "OStimShelf1PStandingM",
-			"description": "go to male idle",
+			"description": "$ostim_nav_idle_m",
 			"icon": "OStim/symbols/gender_m"
 		},
 		{
 			"destination": "OStimShelf1PBendOverF",
-			"description": "bend over",
+			"description": "$ostim_nav_bend_over",
 			"icon": "OStim/positional/bendover_f"
 		}
 	],

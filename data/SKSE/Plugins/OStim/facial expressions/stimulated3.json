@@ -25,61 +25,90 @@
 	],
 	"female": {
 		"expression": {
-			"type": 0,
+			"type": 3,
 			"baseValue": 30,
-			"excitementMultiplier": 0.5
+			"variance": 20,
+			"excitementMultiplier": 0.5,
+			"speedMultiplier": 40.0
 		},
 		"phonemes": [{
-			"type": 4,
-			"baseValue": 20,
-			"excitementMultiplier": 0.3
+			"type": 1,
+			"baseValue": 15,
+			"delayVariance":0.5,
+			"excitementMultiplier": 0.2,
+			"speedMultiplier": 20.0
 		}, {
 			"type": 12,
-			"baseValue": 40,
+			"baseValue": 30,
+			"variance": 20,
 			"excitementMultiplier": 0.3
+		}, {
+			"type": 14,
+			"baseValue": 40,
+			"excitementMultiplier": 0.2
 		}],
 		"modifiers": [{
-			"type": 6,
+			"type": 4,
 			"baseValue": 20,
-			"excitementMultiplier": 0.3
+			"variance": 30,
+			"delayVariance":0.4,
+			"excitementMultiplier": 0.5,
+			"speedMultiplier": 40.0
 		}, {
-			"type": 7,
+			"type": 5,
 			"baseValue": 20,
-			"excitementMultiplier": 0.3
+			"variance": 30,
+			"delayVariance":0.4,
+			"excitementMultiplier": 0.5,
+			"speedMultiplier": 40.0
 		}, {
-			"type": 12,
+			"type": 8,
 			"baseValue": 20,
-			"excitementMultiplier": 0.6
-		}, {
-			"type": 13,
-			"baseValue": 20,
-			"excitementMultiplier": 0.6
-		}, {
-			"type": 0,
-			"excitementMultiplier": 0.1
-		}, {
-			"type": 1,
-			"excitementMultiplier": 0.1
+			"excitementMultiplier": 0.2
 		}]
 	},
 	"male": {
 		"expression": {
-			"type": 0,
-			"baseValue": 35,
-			"excitementMultiplier": 0.2
+			"type": 3,
+			"baseValue": 30,
+			"variance": 20,
+			"excitementMultiplier": 0.5,
+			"speedMultiplier": 40.0
 		},
-		"modifiers": [{
-			"type": 2,
-			"baseValue": 10,
+		"phonemes": [{
+			"type": 1,
+			"baseValue": 15,
+			"delayVariance":0.5,
+			"excitementMultiplier": 0.2,
+			"speedMultiplier": 20.0
+		}, {
+			"type": 12,
+			"baseValue": 30,
+			"variance": 20,
 			"excitementMultiplier": 0.3
 		}, {
-			"type": 3,
-			"baseValue": 10,
-			"excitementMultiplier": 0.3
+			"type": 14,
+			"baseValue": 40,
+			"excitementMultiplier": 0.2
 		}],
-		"phonemes": [{
-			"type": 7,
-			"baseValue": 30
+		"modifiers": [{
+			"type": 4,
+			"baseValue": 20,
+			"variance": 30,
+			"delayVariance":0.4,
+			"excitementMultiplier": 0.5,
+			"speedMultiplier": 40.0
+		}, {
+			"type": 5,
+			"baseValue": 20,
+			"variance": 30,
+			"delayVariance":0.4,
+			"excitementMultiplier": 0.5,
+			"speedMultiplier": 40.0
+		}, {
+			"type": 8,
+			"baseValue": 20,
+			"excitementMultiplier": 0.2
 		}]
 	}
 }

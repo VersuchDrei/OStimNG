@@ -1,0 +1,49 @@
+{
+	"sets": [
+		"default"
+	],
+	"female": {
+		"expression": {
+			"type": 2,
+			"baseValue": 20,
+			"variance": 20,
+			"excitementMultiplier": 0.1
+		},
+		"phonemes": [{
+			"type": 2,
+			"baseValue": 20,
+			"variance": 15,
+			"excitementMultiplier": 0.1
+		},{
+			"type": 3,
+			"baseValue": 25,
+			"variance": 30,
+			"excitementMultiplier": 0.1
+		},{
+			"type": 15,
+			"baseValue": 20
+		}]
+	},
+	"male": {
+		"expression": {
+			"type": 2,
+			"baseValue": 20,
+			"variance": 20,
+			"excitementMultiplier": 0.1
+		},
+		"phonemes": [{
+			"type": 2,
+			"baseValue": 20,
+			"variance": 15,
+			"excitementMultiplier": 0.1
+		},{
+			"type": 3,
+			"baseValue": 25,
+			"variance": 30,
+			"excitementMultiplier": 0.1
+		},{
+			"type": 15,
+			"baseValue": 20
+		}]
+	}
+}

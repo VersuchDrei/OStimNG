@@ -1,5 +1,5 @@
 {
-	"name": "Leaning Female",
+	"name": "$OStimWall1PLeaningF",
 	"modpack": "OStim",
 	"length": 2.0,
 	"furniture": "wall",
@@ -11,7 +11,7 @@
 	"navigations":[
 		{
 			"destination": "OStimWall1PLeaningM",
-			"description": "go to male idle",
+			"description": "$ostim_nav_idle_m",
 			"icon": "OStim/symbols/gender_m"
 		}
 	],

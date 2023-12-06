@@ -1,5 +1,5 @@
 {
-	"name": "Standing Apart Handjob Straight",
+	"name": "$OStim2PStandingApartHandjobMF",
 	"modpack": "OStim",
 	"length": 2.0,
 	"speeds":[
@@ -23,13 +23,13 @@
 	"navigations":[
 		{
 			"destination": "OStim2PStandingApartMF",
-			"description": "return",
+			"description": "$ostim_nav_return",
 			"icon": "OStim/symbols/return",
 			"priority": -1000
 		},
 		{
 			"destination": "OStim2PStandingHandjobRKissMF",
-			"description": "kiss {1}",
+			"description": "$ostim_nav_kiss_t{1}",
 			"icon": "OStim/sensual/kissing_mf",
 			"priority": 0
 		}

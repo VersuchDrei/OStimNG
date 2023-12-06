@@ -1,5 +1,5 @@
 {
-	"name": "Standing Apart Straight",
+	"name": "$OStim2PStandingApartMF",
 	"modpack": "OStim",
 	"length": 2.0,
 	"speeds":[
@@ -10,73 +10,73 @@
 	"navigations":[
 		{
 			"destination": "OStim2PStandingCloseFF",
-			"description": "go to lesbian idle",
+			"description": "$ostim_nav_idle_ff",
 			"icon": "OStim/symbols/gender_ff",
 			"priority": -1000
 		},
 		{
 			"destination": "OStim2PStandingApartMM",
-			"description": "go to gay idle",
+			"description": "$ostim_nav_idle_mm",
 			"icon": "OStim/symbols/gender_mm",
 			"priority": -1000
 		},
 		{
 			"destination": "OStim2PStandingApartToHoldingMF",
-			"description": "hold {1}",
+			"description": "$ostim_nav_hold_t{1}",
 			"icon": "OStim/sensual/embrace_mf",
 			"priority": 0
 		},
 		{
 			"destination": "OStim2PStandingApartToStandingSquattingMF",
-			"description": "squat ({1})",
+			"description": "$ostim_nav_squat_before_t{0}",
 			"icon": "OStim/positional/squatting_f",
 			"priority": 0
 		},
 		{
 			"destination": "OStim2PStandingApartToSittingMF",
-			"description": "sit down",
+			"description": "$ostim_nav_sit_down",
 			"icon": "OStim/positional/squatting_f",
 			"priority": 0
 		},
 		{
 			"destination": "OStim2PStandingApartToHandHoldingLowMF",
-			"description": "hold {1}s hand",
+			"description": "$ostim_nav_hold_hand_t{1}",
 			"icon": "OStim/detail/holdinghand_mf",
 			"priority": 1000
 		},
 		{
 			"destination": "OStim2PStandingHeadPattingMF",
-			"description": "pat {1}s head",
+			"description": "$ostim_nav_pat_head_t{1}",
 			"icon": "OStim/detail/holdinghead_mf",
 			"priority": 1000
 		},
 		{
 			"destination": "OStim2PStandingGropingBreastsMF",
-			"description": "grope {1}s breasts",
+			"description": "$ostim_nav_grope_breast_t{1}",
 			"icon": "OStim/detail/gropingbreast_mf",
 			"priority": 1000
 		},
 		{
 			"destination": "OStim2PStandingApartToVampireBiteMaleMF",
-			"description": "feed on {1}",
+			"description": "$ostim_nav_feed_on_t{1}",
 			"icon": "OStim/sensual/vampirebite",
 			"priority": 1500
 		},
 		{
 			"destination": "OStim2PStandingApartToVampireBiteFemaleMF",
-			"description": "feed on {0}",
+			"description": "$ostim_nav_feed_on_t{0}",
 			"icon": "OStim/sensual/vampirebite",
 			"priority": 1500
 		},
 		{
 			"destination": "OStim2PUndressingHub1MF",
-			"description": "undressing menu",
+			"description": "$ostim_nav_idle_undressing",
 			"icon": "OStim/clothes/top",
 			"priority": 2000
 		},
 		{
 			"destination": "OStim2PStandingApartHandjobMF",
-			"description": "jerk off {0}",
+			"description": "$ostim_nav_jerk_off_t{0}",
 			"icon": "OStim/sexual/handjob_mf",
 			"priority": 3000
 		}

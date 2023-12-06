@@ -1,5 +1,5 @@
 {
-	"name": "Standing Holding Straight",
+	"name": "$OStim2PStandingHoldingMF",
 	"modpack": "OStim",
 	"length": 2.0,
 	"speeds":[
@@ -10,31 +10,31 @@
 	"navigations":[
 		{
 			"destination": "OStim2PStandingHoldingToApartMF",
-			"description": "separate",
+			"description": "$ostim_nav_separate",
 			"icon": "OStim/symbols/x",
 			"priority": 0
 		},
 		{
 			"destination": "OStim2PStandingHoldingToHoldingFromBehindMF",
-			"description": "turn around ({1})",
+			"description": "$ostim_nav_turn_around_a{1}",
 			"icon": "OStim/sensual/embrace_behind_mf",
 			"priority": 0
 		},
 		{
 			"destination": "OStim2PStandingHoldingChinMF",
-			"description": "hold {1}s chin",
+			"description": "$ostim_nav_hold_chin_t{1}",
 			"icon": "OStim/detail/holdingneck_mf",
 			"priority": 1000
 		},
 		{
 			"destination": "OStim2PStandingHugMF",
-			"description": "hug {1}",
+			"description": "$ostim_nav_hug_t{1}",
 			"icon": "OStim/sensual/embrace_mf",
 			"priority": 1000
 		},
 		{
 			"destination": "OStim2PStandingKissMF",
-			"description": "kiss {1}",
+			"description": "$ostim_nav_kiss_t{1}",
 			"icon": "OStim/sensual/kissing_mf",
 			"priority": 1000
 		}

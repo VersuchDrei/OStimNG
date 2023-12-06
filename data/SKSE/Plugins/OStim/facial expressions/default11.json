@@ -1,0 +1,31 @@
+{
+	"sets": [
+		"default"
+	],
+	"female": {
+		"modifiers": [{
+			"type": 12,
+			"baseValue": 10,
+			"variance": 30,
+			"excitementMultiplier": 0.2
+		}, {
+			"type": 13,
+			"baseValue": 10,
+			"variance": 30,
+			"excitementMultiplier": 0.2
+		}]
+	},
+	"male": {
+		"modifiers": [{
+			"type": 12,
+			"baseValue": 10,
+			"variance": 30,
+			"excitementMultiplier": 0.2
+		}, {
+			"type": 13,
+			"baseValue": 10,
+			"variance": 30,
+			"excitementMultiplier": 0.2
+		}]
+	}
+}

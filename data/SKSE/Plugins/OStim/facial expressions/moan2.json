@@ -5,21 +5,31 @@
 	"female": {
 		"duration": 0.5,
 		"phonemes": [{
-			"type": 11,
-			"baseValue": 30,
-			"excitementMultiplier": 0.2
-		}, {
-			"type": 5,
-			"baseValue": 30,
-			"excitementMultiplier": 0.5
-		}]
+				"type":11,
+				"baseValue": 30,
+			    "variance": 20,
+				"speedMultiplier": 20.0
+			},
+			{
+				"type":5,
+				"baseValue": 5,
+			    "variance": 15,
+				"speedMultiplier": 10.0
+			}]
 	},
 	"male": {
 		"duration": 0.5,
 		"phonemes": [{
-			"type": 11,
-			"baseValue": 30,
-			"excitementMultiplier": 0.4
-		}]
+				"type":11,
+				"baseValue": 20,
+			    "variance": 15,
+				"speedMultiplier": 20.0
+			},
+			{
+				"type":5,
+				"baseValue": 5,
+			    "variance": 15,
+				"speedMultiplier": 10.0
+			}]
 	}
 }

@@ -43,7 +43,7 @@ namespace OStim {
                 GameAPI::GameObject bed = Furniture::findFurniture(Furniture::FurnitureTable::getFurnitureType("bed"), params.actors[0].form, MCM::MCMTable::furnitureSearchDistance(), 96.0f);
                 if (bed) {
                     if (MCM::MCMTable::selectFurniture()) {
-                        GameAPI::Game::showMessageBox("Do you want to use the nearby bed?", {"Yes", "No"}, [params, bed](unsigned int result) {
+                        GameAPI::Game::showMessageBox("$ostim_message_use_bed", {"$ostim_message_yes", "$ostim_message_no"}, [params, bed](unsigned int result) {
                             if (result == 0) {
                                 addFurniture(params, bed);
                             } else {
@@ -59,7 +59,7 @@ namespace OStim {
             } else {
                 std::vector<std::pair<Furniture::FurnitureType*, GameAPI::GameObject>> furniture = Furniture::findFurniture(params.actors.size(), params.actors[0].form, MCM::MCMTable::furnitureSearchDistance(), 96.0f);
                 if (MCM::MCMTable::selectFurniture()) {
-                    std::vector<std::string> options = {"None"};
+                    std::vector<std::string> options = {"$ostim_message_none"};
                     std::vector<GameAPI::GameObject> objects;
                     int max = std::min(static_cast<int>(furniture.size()), GameAPI::Game::getMessageBoxOptionLimit() - 1);
                     for (int i = 0; i < furniture.size(); i++) {
@@ -67,7 +67,7 @@ namespace OStim {
                         objects.push_back(furniture[i].second);
                     }
                     if (!objects.empty()) {
-                        GameAPI::Game::showMessageBox("Which furniture do you want to use?", options, [params, objects](unsigned int result) {
+                        GameAPI::Game::showMessageBox("$ostim_message_select_furniture", options, [params, objects](unsigned int result) {
                             if (result == 0) {
                                 handleActorAdding(params);
                             } else if (result > objects.size()){
@@ -122,9 +122,7 @@ namespace OStim {
             return;
         }
 
-        std::vector<std::string> options;
-
-        options.push_back("None");
+        std::vector<std::string> options = {"$ostim_message_none"};
         int max = std::min<int>(GameAPI::Game::getMessageBoxOptionLimit() - 1, actors.size());
         int i = 0;
         while (i < max) {
@@ -132,7 +130,7 @@ namespace OStim {
             i++;
         }
 
-        GameAPI::Game::showMessageBox("Add actor?", options, [params, actors](unsigned int result) {
+        GameAPI::Game::showMessageBox("$ostim_message_add_actor", options, [params, actors](unsigned int result) {
             if (result > 0 && result <= actors.size()) {
                 addActor(params, actors[result - 1]);
             } else {
@@ -168,7 +166,7 @@ namespace OStim {
             for (int i = 0; i < params.actors.size(); i++) {
                 options.push_back(positions[i]);
             }
-            GameAPI::Game::showMessageBox("Which position do you want to be in?", options, [params](unsigned int result) {
+            GameAPI::Game::showMessageBox("$ostim_message_select_position", options, [params](unsigned int result) {
                 sortActors(params, result);
             });
         } else {

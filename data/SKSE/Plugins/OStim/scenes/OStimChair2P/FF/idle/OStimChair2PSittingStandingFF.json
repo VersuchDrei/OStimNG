@@ -1,5 +1,5 @@
 {
-	"name": "Sitting Standing Lesbian",
+	"name": "$OStimChair2PSittingStandingFF",
 	"modpack": "OStim",
 	"length": 2.0,
 	"furniture": "chair",
@@ -11,27 +11,27 @@
 	"navigations":[
 		{
 			"destination": "OStimChair2PSittingStandingMF",
-			"description": "go to straight idle",
+			"description": "$ostim_nav_idle_mf",
 			"icon": "OStim/symbols/gender_mf"
 		},
 		{
 			"destination": "OStimChair2PSittingStandingMM",
-			"description": "go to gay idle",
+			"description": "$ostim_nav_idle_mm",
 			"icon": "OStim/symbols/gender_mm"
 		},
 		{
 			"destination": "OStimBench2PBothSittingFF",
-			"description": "sit down",
+			"description": "$ostim_nav_sit_down_a{1}",
 			"icon": "OStim/positional/chair/sitting_f"
 		},
 		{
 			"destination": "OStimChair2PSittingKneelingFF",
-			"description": "kneel down",
+			"description": "$ostim_nav_kneel_down_a{1}",
 			"icon": "OStim/positional/kneeling_f"
 		},
 		{
 			"destination": "OStimChair2PStandingSittingFF",
-			"description": "switch positions",
+			"description": "$ostim_nav_switch_positions",
 			"icon": "OStim/symbols/switch"
 		}
 	],

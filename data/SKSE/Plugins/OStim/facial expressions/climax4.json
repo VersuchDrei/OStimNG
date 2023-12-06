@@ -5,49 +5,72 @@
 	"female": {
 		"duration": 3,
 		"expression": {
-			"type": 4,
-			"baseValue": 80
+			"type": 1,
+			"baseValue": 100
 		},
 		"phonemes": [{
-			"type": 1,
-			"baseValue": 55
+			"type": 0,
+			"baseValue": 50,
+			"variance": 40,
+			"delayVariance":0.5
 		}, {
 			"type": 14,
-			"baseValue": 40
+			"baseValue": 30,
+			"variance": 20,
+			"delayVariance":0.2
 		}],
 		"modifiers": [{
 			"type": 12,
-			"baseValue": 75
+			"variance": 30
 		}, {
 			"type": 13,
-			"baseValue": 75
+			"variance": 30
 		}, {
 			"type": 0,
-			"baseValue": 75
+			"baseValue": 35,
+			"variance": 40,
+			"delayVariance":0.5
 		}, {
 			"type": 1,
-			"baseValue": 75
+			"baseValue": 35,
+			"variance": 40,
+			"delayVariance":0.5
 		}]
 	},
 	"male": {
 		"duration": 2,
 		"expression": {
-			"type": 4,
-			"baseValue": 80
+			"type": 1,
+			"baseValue": 60,
+			"variance": 40
 		},
 		"phonemes": [{
-			"type": 1,
-			"baseValue": 20
+			"type": 0,
+			"baseValue": 25,
+			"variance": 30,
+			"delayVariance":0.5
 		}, {
-			"type": 11,
-			"baseValue": 40
+			"type": 14,
+			"baseValue": 30,
+			"variance": 20,
+			"delayVariance":0.2
 		}],
 		"modifiers": [{
+			"type": 12,
+			"variance": 30
+		}, {
+			"type": 13,
+			"variance": 30
+		}, {
 			"type": 0,
-			"baseValue": 40
+			"baseValue": 35,
+			"variance": 40,
+			"delayVariance":0.5
 		}, {
 			"type": 1,
-			"baseValue": 40
+			"baseValue": 35,
+			"variance": 40,
+			"delayVariance":0.5
 		}]
 	}
 }

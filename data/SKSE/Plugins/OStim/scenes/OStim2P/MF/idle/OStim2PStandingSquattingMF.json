@@ -1,5 +1,5 @@
 {
-	"name": "Standing Squatting Straight",
+	"name": "$OStim2PStandingSquattingMF",
 	"modpack": "OStim",
 	"length": 2.0,
 	"speeds":[
@@ -10,12 +10,12 @@
 	"navigations":[
 		{
 			"destination": "OStim2PStandingSquattingToStandingApartMF",
-			"description": "stand up ({1})",
+			"description": "$ostim_nav_stand_up_a{1}",
 			"icon": "OStim/positional/standup_f"
 		},
 		{
 			"destination": "OStim2PUndressingHub0MF",
-			"description": "undressing menu",
+			"description": "$ostim_nav_idle_undressing",
 			"icon": "OStim/clothes/top",
 			"priority": 2000
 		}

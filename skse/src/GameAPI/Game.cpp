@@ -1,5 +1,7 @@
 #include "Game.h"
 
+#include "Game/LocaleManager.h"
+
 namespace GameAPI {
     void Game::setGameSpeed(float speed) {
         const auto scriptFactory = RE::IFormFactory::GetConcreteFormFactoryByType<RE::Script>();
@@ -26,6 +28,11 @@ namespace GameAPI {
     }
 
     void Game::showMessageBox(std::string content, std::vector<std::string> options, std::function<void(unsigned int)> callback) {
+        content = LocaleManager::GetSingleton()->GetLocalization(content);
+        for (std::string& option : options) {
+            option = LocaleManager::GetSingleton()->GetLocalization(option);
+        }
+
         auto* messagebox = RE::MessageDataFactoryManager::GetSingleton()->GetCreator<RE::MessageBoxData>(RE::InterfaceStrings::GetSingleton()->messageBoxData)->Create();
         messagebox->callback = RE::make_smart<MessageBoxCallback>(callback);
         messagebox->bodyText = content;

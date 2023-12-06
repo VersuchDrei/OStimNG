@@ -1,5 +1,5 @@
 {
-	"name": "Sitting Male",
+	"name": "$OStimTable1PSittingM",
 	"modpack": "OStim",
 	"length": 2.0,
 	"furniture": "table",
@@ -11,7 +11,7 @@
 	"navigations":[
 		{
 			"destination": "OStimTable1PSittingF",
-			"description": "go to female idle",
+			"description": "$ostim_nav_idle_f",
 			"icon": "OStim/symbols/gender_f"
 		}
 	],

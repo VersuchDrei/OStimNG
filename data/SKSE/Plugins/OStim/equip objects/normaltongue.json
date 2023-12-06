@@ -1,6 +1,6 @@
 {
 	"type": "tongue",
-	"name": "Normal Tongue",
+	"name": "$ostim_tongue_normal",
 	"default": true,
 	"mod": "OStim.esp",
 	"formid": "0xDC6",

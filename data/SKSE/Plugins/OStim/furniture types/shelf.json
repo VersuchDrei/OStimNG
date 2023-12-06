@@ -1,5 +1,5 @@
 {
-	"name": "Shelf",
+	"name": "$ostim_furniture_shelf",
 	"conditions":[
 		{
 			"type": "formlist",

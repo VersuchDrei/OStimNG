@@ -1,0 +1,21 @@
+{
+	"sets": [
+		"default"
+	],
+	"female": {
+		"phonemes": [{
+			"type": 5,
+			"baseValue": 5,
+			"variance": 30,
+			"delayVariance":0.2
+		}]
+	},
+	"male": {
+		"phonemes": [{
+			"type": 5,
+			"baseValue": 5,
+			"variance": 30,
+			"delayVariance":0.2
+		}]
+	}
+}

@@ -1,5 +1,5 @@
 {
-	"name": "Kneeling Lying Front Gay",
+	"name": "$OStim2PKneelingLyingFrontMM",
 	"modpack": "OStim",
 	"length": 2.0,
 	"speeds":[
@@ -10,22 +10,22 @@
 	"navigations":[
 		{
 			"destination": "OStim2PSittingMF",
-			"description": "go to straight idle",
+			"description": "$ostim_nav_idle_mf",
 			"icon": "OStim/symbols/gender_mf"
 		},
 		{
 			"destination": "OStim2PKneelingLyingFF",
-			"description": "go to lesbian idle",
+			"description": "$ostim_nav_idle_ff",
 			"icon": "OStim/symbols/gender_ff"
 		},
 		{
 			"destination": "OStim2PStandingApartMM",
-			"description": "stand up",
+			"description": "$ostim_nav_stand_up",
 			"icon": "OStim/positional/standup_m"
 		},
 		{
 			"destination": "OStim2PKneelingLyingMM",
-			"description": "turn around ({1})",
+			"description": "$ostim_nav_turn_around_a{1}",
 			"icon": "OStim/positional/lyingback_m"
 		}
 	],

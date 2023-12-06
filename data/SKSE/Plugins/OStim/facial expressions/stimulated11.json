@@ -1,0 +1,86 @@
+{
+	"actionActors":[
+		"rubbingpenisagainstface"	
+	],
+	"actionTargets": [
+		"analfingering",
+		"blowjob",
+		"boobjob",
+		"buttjob",
+		"cunnilingus",
+		"femalemasturbation",
+		"footjob",
+		"gropingbreast",
+		"handjob",
+		"lickingnipples",
+		"lickingpenis",
+		"lickingtesticles",
+		"lickingvagina",
+		"malemasturbation",
+		"rimjob",
+		"rubbingclitoris",
+		"suckingnipples",
+		"thighjob",
+		"vaginalfingering"
+	],
+	"female": {
+		"modifiers": [{
+			"type": 6,
+			"baseValue": 20,
+			"variance": 20,
+			"delayVariance":0.3,
+			"excitementMultiplier": 0.5
+		}, {
+			"type": 7,
+			"baseValue": 20,
+			"variance": 20,
+			"delayVariance":0.3,
+			"excitementMultiplier": 0.5
+		},{
+			"type": 11,
+			"baseValue": 0
+		}, {
+			"type": 12,
+			"baseValue": 30,
+			"variance": 20,
+			"delayVariance":0.3,
+			"excitementMultiplier": 0.4
+		}, {
+			"type": 13,
+			"baseValue": 30,
+			"variance": 20,
+			"delayVariance":0.3,
+			"excitementMultiplier": 0.4
+		}]
+	},
+	"male": {
+		"modifiers": [{
+			"type": 6,
+			"baseValue": 20,
+			"variance": 20,
+			"delayVariance":0.3,
+			"excitementMultiplier": 0.5
+		}, {
+			"type": 7,
+			"baseValue": 20,
+			"variance": 20,
+			"delayVariance":0.3,
+			"excitementMultiplier": 0.5
+		},{
+			"type": 11,
+			"baseValue": 0
+		}, {
+			"type": 12,
+			"baseValue": 30,
+			"variance": 20,
+			"delayVariance":0.3,
+			"excitementMultiplier": 0.4
+		}, {
+			"type": 13,
+			"baseValue": 30,
+			"variance": 20,
+			"delayVariance":0.3,
+			"excitementMultiplier": 0.4
+		}]
+	}
+}

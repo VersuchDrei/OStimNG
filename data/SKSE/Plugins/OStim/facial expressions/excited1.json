@@ -27,17 +27,22 @@
 	"female": {
 		"expression": {
 			"type": 1,
-			"baseValue": 50,
-			"excitementMultiplier": 0.2
+			"baseValue": 30,
+			"variance": 20,
+			"excitementMultiplier": 0.3,
+			"speedMultiplier": 30.0
 		},
 		"phonemes": [{
-			"type": 4,
-			"baseValue": 40,
-			"excitementMultiplier": 0.2
+			"type": 5,
+			"baseValue": 10,
+			"variance": 20,
+			"excitementMultiplier": 0.2,
+			"speedMultiplier": 20.0
 		}, {
-			"type": 12,
-			"baseValue": 20,
-			"excitementMultiplier": 0.1
+			"type": 11,
+			"variance": 20,
+			"excitementMultiplier": 0.2,
+			"speedMultiplier": 10.0
 		}],
 		"modifiers": [{
 			"type": 6,
@@ -47,32 +52,56 @@
 			"excitementMultiplier": 0.3
 		}, {
 			"type": 12,
-			"baseValue": 50,
-			"excitementMultiplier": 0.2
+			"variance": 40,
+			"excitementMultiplier": 0.3,
+			"speedMultiplier": 20.0
 		}, {
 			"type": 13,
-			"baseValue": 50,
-			"excitementMultiplier": 0.2
+			"variance": 40,
+			"excitementMultiplier": 0.3,
+			"speedMultiplier": 20.0
 		}]
 	},
 	"male": {
 		"expression": {
-			"type": 2,
-			"baseValue": 20,
-			"excitementMultiplier": 0.2
+			"type": 1,
+			"baseValue": 30,
+			"variance": 20,
+			"excitementMultiplier": 0.3,
+			"speedMultiplier": 30.0
 		},
+		"phonemes": [{
+			"type": 5,
+			"baseValue": 10,
+			"variance": 20,
+			"excitementMultiplier": 0.2,
+			"speedMultiplier": 20.0
+		}, {
+			"type": 11,
+			"variance": 20,
+			"excitementMultiplier": 0.2,
+			"speedMultiplier": 10.0
+		}],
 		"modifiers": [{
 			"type": 6,
-			"baseValue": 30,
+			"delayVariance":0.4,
 			"excitementMultiplier": 0.3
 		}, {
 			"type": 7,
-			"baseValue": 30,
+			"delayVariance":0.4,
 			"excitementMultiplier": 0.3
-		}],
-		"phonemes": [{
-			"type": 5,
-			"baseValue": 20
+		}, {
+			"type": 12,
+			"variance": 40,
+			"delayVariance":0.3,
+			"excitementMultiplier": 0.3,
+			"speedMultiplier": 20.0
+		}, {
+			"type": 13,
+			"variance": 40,
+			"delayVariance":0.3,
+			"excitementMultiplier": 0.3,
+			"speedMultiplier": 20.0
 		}]
 	}
 }

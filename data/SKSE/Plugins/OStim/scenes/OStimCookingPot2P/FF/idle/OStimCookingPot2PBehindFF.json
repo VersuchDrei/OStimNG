@@ -1,5 +1,5 @@
 {
-	"name": "Behind Lesbian",
+	"name": "$OStimCookingPot2PBehindFF",
 	"modpack": "OStim",
 	"length": 2.0,
 	"furniture": "cookingpot",
@@ -11,12 +11,12 @@
 	"navigations":[
 		{
 			"destination": "OStimCookingPot2PBehindMF",
-			"description": "go to straight idle",
+			"description": "$ostim_nav_idle_mf",
 			"icon": "OStim/symbols/gender_mf"
 		},
 		{
 			"destination": "OStimCookingPot2PBehindMM",
-			"description": "go to gay idle",
+			"description": "$ostim_nav_idle_mm",
 			"icon": "OStim/symbols/gender_mm"
 		}
 	],

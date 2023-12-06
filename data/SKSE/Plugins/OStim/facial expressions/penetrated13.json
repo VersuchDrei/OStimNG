@@ -1,0 +1,66 @@
+{
+	"actionTargets": [
+		"analfisting",
+		"analsex",
+		"vaginalfisting",
+		"vaginalsex"
+	],
+	"female": {
+		"phonemes": [{
+			"type": 12,
+			"baseValue": 10,
+			"variance": 30,
+			"delayVariance":0.5,
+			"excitementMultiplier": 0.1,
+			"speedMultiplier": 20.0
+		}, {
+			"type": 14,
+			"baseValue": 20,
+			"variance": 20,
+			"delayVariance":0.5,
+			"excitementMultiplier": 0.2
+		}],
+		"modifiers": [{
+			"type": 4,
+			"baseValue": 30,
+			"variance": 50,
+			"excitementMultiplier": 0.2,
+			"speedMultiplier": 20.0
+		}, {
+			"type": 5,
+			"baseValue": 30,
+			"variance": 50,
+			"excitementMultiplier": 0.3,
+			"speedMultiplier": 20.0
+		}]
+	},
+	"male": {
+		"phonemes": [{
+			"type": 12,
+			"baseValue": 10,
+			"variance": 30,
+			"delayVariance":0.5,
+			"excitementMultiplier": 0.1,
+			"speedMultiplier": 20.0
+		}, {
+			"type": 14,
+			"baseValue": 20,
+			"variance": 20,
+			"delayVariance":0.5,
+			"excitementMultiplier": 0.2
+		}],
+		"modifiers": [{
+			"type": 4,
+			"baseValue": 30,
+			"variance": 50,
+			"excitementMultiplier": 0.2,
+			"speedMultiplier": 20.0
+		}, {
+			"type": 5,
+			"baseValue": 30,
+			"variance": 50,
+			"excitementMultiplier": 0.3,
+			"speedMultiplier": 20.0
+		}]
+	}
+}

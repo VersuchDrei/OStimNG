@@ -1,5 +1,5 @@
 {
-	"name": "Lying Kneeling Straight",
+	"name": "$OStim2PLyingKneelingMF",
 	"modpack": "OStim",
 	"length": 2.0,
 	"speeds":[
@@ -10,7 +10,7 @@
 	"navigations":[
 		{
 			"destination": "OStim2PBothLyingMF",
-			"description": "lie down ({1})",
+			"description": "$ostim_nav_lie_down_a{1}",
 			"icon": "OStim/positional/lyingback_f"
 		}
 	],

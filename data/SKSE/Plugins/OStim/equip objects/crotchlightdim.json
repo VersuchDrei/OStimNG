@@ -1,6 +1,6 @@
 {
 	"type": "light",
-	"name": "CrotchLight Dim",
+	"name": "$ostim_light_crotch_dim",
 	"mod": "OStim.esp",
 	"formid": "0xEB8"
 }

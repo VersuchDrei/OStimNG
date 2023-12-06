@@ -1,0 +1,58 @@
+{
+	"actionActors":[
+		"rubbingpenisagainstface"	
+	],
+	"actionTargets": [
+		"analfingering",
+		"blowjob",
+		"boobjob",
+		"buttjob",
+		"cunnilingus",
+		"femalemasturbation",
+		"footjob",
+		"gropingbreast",
+		"handjob",
+		"lickingnipples",
+		"lickingpenis",
+		"lickingtesticles",
+		"lickingvagina",
+		"malemasturbation",
+		"rimjob",
+		"rubbingclitoris",
+		"suckingnipples",
+		"thighjob",
+		"vaginalfingering"
+	],
+	"female": {
+		"phonemes": [{
+			"type": 5,
+			"baseValue": 10,
+			"variance": 20,
+			"delayVariance":0.2,
+			"excitementMultiplier": 0.2,
+			"speedMultiplier": 20.0
+		}, {
+			"type": 11,
+			"baseValue": 20,
+			"variance": 10,
+			"excitementMultiplier": 0.2,
+			"speedMultiplier": 20.0
+		}]
+	},
+	"male": {
+		"phonemes": [{
+			"type": 5,
+			"baseValue": 10,
+			"variance": 20,
+			"delayVariance":0.2,
+			"excitementMultiplier": 0.2,
+			"speedMultiplier": 20.0
+		}, {
+			"type": 11,
+			"baseValue": 20,
+			"variance": 10,
+			"excitementMultiplier": 0.2,
+			"speedMultiplier": 20.0
+		}]
+	}
+}

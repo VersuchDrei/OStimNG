@@ -1,5 +1,5 @@
 {
-	"name": "Cooking Female",
+	"name": "$OStimCookingPot1PCookingF",
 	"modpack": "OStim",
 	"length": 2.0,
 	"furniture": "cookingpot",
@@ -11,7 +11,7 @@
 	"navigations":[
 		{
 			"destination": "OStimCookingPot1PCookingM",
-			"description": "go to male idle",
+			"description": "$ostim_nav_idle_m",
 			"icon": "OStim/symbols/gender_m"
 		}
 	],

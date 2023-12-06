@@ -1,5 +1,5 @@
 {
-	"name": "Sitting Standing MMM",
+	"name": "$OStimChair3PSittingStandingMMM",
 	"modpack": "OStim",
 	"length": 2.0,
 	"furniture": "chair",
@@ -11,17 +11,17 @@
 	"navigations":[
 		{
 			"destination": "OStimChair3PSittingStandingMMF",
-			"description": "go to MMF idle",
+			"description": "$ostim_nav_idle_mmf",
 			"icon": "OStim/symbols/gender_mmf"
 		},
 		{
 			"destination": "OStimChair3PSittingStandingMFF",
-			"description": "go to MFF idle",
+			"description": "$ostim_nav_idle_mff",
 			"icon": "OStim/symbols/gender_mff"
 		},
 		{
 			"destination": "OStimChair3PSittingStandingFFF",
-			"description": "go to FFF idle",
+			"description": "$ostim_nav_idle_fff",
 			"icon": "OStim/symbols/gender_fff"
 		}
 	],

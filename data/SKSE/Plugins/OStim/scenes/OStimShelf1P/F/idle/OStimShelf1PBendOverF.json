@@ -1,5 +1,5 @@
 {
-	"name": "Bend Over Female",
+	"name": "$OStimShelf1PBendOverF",
 	"modpack": "OStim",
 	"length": 2.0,
 	"furniture": "shelf",
@@ -11,7 +11,7 @@
 	"navigations":[
 		{
 			"destination": "OStimShelf1PStandingF",
-			"description": "stand up",
+			"description": "$ostim_nav_stand_up",
 			"icon": "OStim/positional/standup_f"
 		}
 	],

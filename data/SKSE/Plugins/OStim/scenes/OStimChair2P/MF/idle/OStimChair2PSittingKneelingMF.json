@@ -1,5 +1,5 @@
 {
-	"name": "Sitting Kneeling Straight",
+	"name": "$OStimChair2PSittingKneelingMF",
 	"modpack": "OStim",
 	"length": 2.0,
 	"furniture": "chair",
@@ -11,12 +11,12 @@
 	"navigations":[
 		{
 			"destination": "OStimChair2PSittingKneelingFF",
-			"description": "go to lesbian idle",
+			"description": "$ostim_nav_idle_ff",
 			"icon": "OStim/symbols/gender_ff"
 		},
 		{
 			"destination": "OStimChair2PSittingStandingMF",
-			"description": "stand up",
+			"description": "$ostim_nav_stand_up_a{1}",
 			"icon": "OStim/positional/standup_f"
 		}
 	],

@@ -1,5 +1,5 @@
 {
-	"name": "Bed",
+	"name": "$ostim_furniture_bed",
 	"supertype": "none",
 	"listIndividually": true
 }
