@@ -8,8 +8,9 @@ Equip objects should be marked as non playable and not otherwise used by any mod
 field summary:
 
 equip object:
-"type" (string): the type of the equip object, types used by OStim are "strapon" and "tongue", but addons can equip any custom type you want
-"name" (string): the name of the equip object, this is the name that will be displayed in the MCM when selecting equip objects
+"type" (string): the type of the equip object, types used by OStim are "light", "strapon" and "tongue", but addons can equip any custom type you want
+"name" ($string): the name of the equip object, this is the name that will be displayed in the MCM when selecting equip objects
+	$ the content of this field will be checked against translation files in data/Interface/translations
 "default" (bool): if true this equip object will be considered the default one for all actors that don't have anything else defined
 	if no default object exists the default is random
 	if more than one default object exists they will overwrite each other and lead to unpredictable behavior

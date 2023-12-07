@@ -6,7 +6,8 @@ You can then create a navigation option from a chair animation to a bench animat
 by default without any offset the scene will be placed at the first furniture marker for furniture references and at the 0,0,0 spot for other object references
 
 field summary:
-"name" (string): the display name of the furniture type
+"name" ($string): the display name of the furniture type
+	$ the content of this field will be checked against translation files in data/Interface/translations
 "priority" (int): the priority of the furniture type, if an object reference qualifies for multiple types the one with the higher priority will be chosen (default: 0)
 "listIndividually" (bool): if true this type will be listed in the selection individually from its supertype, if false it will be listed as its supertype (default: false)
 "ignoreMarkerOffsetX" (bool): if true the offset of the X position of the furniture marker will be ignored and the scene will be scentered on the 0 coordinate (default: false)

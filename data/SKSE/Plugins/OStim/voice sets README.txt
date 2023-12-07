@@ -8,6 +8,8 @@ Since OStim plays the sounds from an SKSE plugin it can play them from sound des
 field summary:
 
 voice set:
+"name" ($string): the name of the voice set, if none is set the file name will be taken, this name is displayed in the MCM when selection voice sets
+	$ the content of this field will be checked against translation files in data/Interface/translations
 "target" (object): the target for this voice set, can be either an actor base or a voice type (see form)
 	There are two exceptions, which are the form ids 0 and 1 for the default voice set for males and females, respectively
 "moan" (object): the sounds and dialogues to play randomly during scenes (see reaction set)

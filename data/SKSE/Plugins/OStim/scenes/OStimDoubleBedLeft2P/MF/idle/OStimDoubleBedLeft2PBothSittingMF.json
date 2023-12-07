@@ -1,8 +1,8 @@
 {
-	"name": "$OStimSingleBed2PBothSittingLeftMF",
+	"name": "$OStimDoubleBedLeft2PBothSittingMF",
 	"modpack": "OStim",
 	"length": 2.0,
-	"furniture": "singlebed",
+	"furniture": "doublebed",
 	"speeds":[
 		{
 			"animation": "OStimBed2PBothSittingMF"
@@ -10,7 +10,7 @@
 	],
 	"navigations":[
 		{
-			"destination": "OStimSingleBed2PBothSittingRightMF",
+			"destination": "OStimDoubleBedRight2PBothSittingMF",
 			"description": "$ostim_nav_sit_on_bed_right",
 			"icon": "OStim/symbols/switch"
 		},
@@ -21,7 +21,7 @@
 		}
 	],
 	"offset":{
-		"x": 22,
+		"x": 52,
 		"r": 90
 	},
 	"scaleOffsetWithFurniture": true,

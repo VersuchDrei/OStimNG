@@ -13,7 +13,8 @@ Failure to comply will cause the integrity check to fail!
 field summary:
 
 scene fields:
-"name" (string): the display name of the scene in game
+"name" ($string): the display name of the scene in game
+	$ the content of this field will be checked against translation files in data/Interface/translations
 "modpack" (string): the display name of the modpack in game
 "length" (float): the duration of the animation in seconds
 "destination" (string): (only for transition) the sceneID of the transition destination
@@ -55,7 +56,8 @@ navigation fields:
     	3000 climax
     it is recommended to stick to the convention so that navigation options always have a logical order
     numbers can be slightly adjusted for fine tuning (e.g. 1999 instead of 2000 if you want it to be the first in its class)
-"description" (string): the display text of the navigation in game
+"description" ($string): the display text of the navigation in game
+	$ the content of this field will be checked against translation files in data/Interface/translations
 "icon" (string): the path to the .dds file to be used as the icon
 	this path will be appended to "../Data/Interface/OStim/icons", the file ending ".dds" will be added automatically
 "border" (string): the hexadecimal RGB code of the icon border (default: ffffff)

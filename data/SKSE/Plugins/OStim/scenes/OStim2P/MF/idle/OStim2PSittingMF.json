@@ -39,22 +39,22 @@
 			"icon": "OStim/positional/lyingback_m"
 		},
 		{
-			"destination": "OStimDoubleBed2PBothSittingLeftMF",
+			"destination": "OStimDoubleBedLeft2PBothSittingMF",
 			"description": "$ostim_nav_sit_on_bed_left",
 			"icon": "OStim/positional/chair/sitting_f"
 		},
 		{
-			"destination": "OStimDoubleBed2PBothSittingRightMF",
+			"destination": "OStimDoubleBedRight2PBothSittingMF",
 			"description": "$ostim_nav_sit_on_bed_right",
 			"icon": "OStim/positional/chair/sitting_f"
 		},
 		{
-			"destination": "OStimSingleBed2PBothSittingLeftMF",
+			"destination": "OStimSingleBedLeft2PBothSittingMF",
 			"description": "$ostim_nav_sit_on_bed_left",
 			"icon": "OStim/positional/chair/sitting_f"
 		},
 		{
-			"destination": "OStimSingleBed2PBothSittingRightMF",
+			"destination": "OStimSingleBedRight2PBothSittingMF",
 			"description": "$ostim_nav_sit_on_bed_right",
 			"icon": "OStim/positional/chair/sitting_f"
 		}

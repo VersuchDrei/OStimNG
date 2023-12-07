@@ -44,7 +44,7 @@ namespace Sound {
 
             VoiceSet voiceSet;
 
-            JsonUtil::loadString(json, voiceSet.name, "name", filename, "voice set", false);
+            JsonUtil::loadTranslatedString(json, voiceSet.name, "name", filename, "voice set", false);
             if (voiceSet.name.empty()) {
                 voiceSet.name = filename;
             }
