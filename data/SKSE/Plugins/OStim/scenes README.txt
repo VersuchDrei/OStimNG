@@ -28,6 +28,10 @@ scene fields:
 "defaultSpeed" (int): the index of the default speed of the scene (default 0)
 "noRandomSelection" (bool): if true this scene will never be chosen by random selections (default: false)
 "furniture" (string): the furniture type of this scene (default: none) (see furniture types README)
+"offset" (3d offset): an offset for the animation (see 3d offset fields)
+	use with caution, unlike animations this does not have a smooth transition
+	this means a change in offset will cause the actors to teleport away and then quickly slide pack into position
+	therefore a heavy use of offsets is not recommended
 "tags" (list<string>): a list of tags for this scene (see list of commonly used scene tags)
 "autoTransitions" (map<string, string>): a map of auto transition ids and destination sceneIDs for this scene
 "actors" (list<object>): a list of actors (see actor fields)
@@ -100,6 +104,10 @@ actor fields:
 	possible values range from -100 to 100, with negative ones causing a look right
 "lookRight" (int): alternative to lookLeft with inverted values
 	if lookLeft is defined this field is ignored
+"offset" (3d offset): an offset for the actor (see 3d offset fields)
+	use with caution, unlike animations this does not have a smooth transition
+	this means a change in offset will cause the actor to teleport away and then quickly slide pack into position
+	therefore a heavy use of offsets is not recommended
 "tags" (list<string>): a list of tags for this actor (see list of commonly used actor tags)
 "feetOnGround" (bool): if true heel scaling is in effect, if false the heel offset will be removed
 	this value defaults to true if the actor has the "standing" or "squatting" tag and false otherwise
@@ -111,3 +119,9 @@ action fields:
 "target" (int): the index of the action target (default: action actor index)
 "performer" (int): the index of the action performer (default: action actor index)
 "muted" (bool): when true this action doesn't play sounds (default: false)
+
+3d position fields:
+"x" (float): the x offset
+"y" (float): the y offset
+"z" (float): the z offset
+"r" (float): the rotational offset

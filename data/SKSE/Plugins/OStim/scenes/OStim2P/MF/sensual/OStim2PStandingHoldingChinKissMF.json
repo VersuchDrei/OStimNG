@@ -52,7 +52,7 @@
 		},
 		{
 			"destination": "OStim2PStandingHandjobRKissMF",
-			"description": "$ostim_nav_jerk_off_t{0}",
+			"description": "$ostim_nav_handjob_t{0}",
 			"icon": "OStim/sexual/handjob_mf",
 			"priority": 2000
 		},
