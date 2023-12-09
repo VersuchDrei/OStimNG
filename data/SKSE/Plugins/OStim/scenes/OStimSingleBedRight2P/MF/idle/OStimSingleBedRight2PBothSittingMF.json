@@ -42,6 +42,7 @@
 		{
 			"intendedSex": "male",
 			"scale": 1.03,
+      		"lookLeft": -25,
 			"tags": [
 				"sitting"
 			],
@@ -49,6 +50,7 @@
 		},
 		{
 			"intendedSex": "female",
+      		"lookLeft": 35,
 			"tags": [
 				"sitting"
 			],

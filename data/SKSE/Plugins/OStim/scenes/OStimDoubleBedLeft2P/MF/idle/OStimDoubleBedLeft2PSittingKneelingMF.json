@@ -1,0 +1,50 @@
+{
+	"name": "$OStimDoubleBedLeft2PSittingKneelingMF",
+	"modpack": "OStim",
+	"length": 2.0,
+	"furniture": "doublebed",
+	"speeds":[
+		{
+			"animation": "OStimBed2PSittingKneelingMF"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStimDoubleBedLeft2PSittingStandingMF",
+			"description": "$ostim_nav_stand_up_a{1}",
+			"icon": "OStim/positional/standup_f"
+		}
+	],
+	"offset":{
+		"x": 48,
+		"r": 90
+	},
+	"scaleOffsetWithFurniture": true,
+	"tags":[
+		"idle"
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"scale": 1.03,
+			"tags": [
+				"sitting"
+			],
+			"feetOnGround": false
+		},
+		{
+			"intendedSex": "female",
+			"tags": [
+				"kneeling"
+			],
+			"feetOnGround": false
+		}
+	],
+	"actions":[
+		{
+			"type": "holdingleg",
+			"actor": 1,
+			"target": 0
+		}
+	]
+}

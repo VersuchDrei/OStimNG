@@ -18,6 +18,16 @@
 			"destination": "OStimDoubleBedRight2PStandingSittingMF",
 			"description": "$ostim_nav_switch_positions",
 			"icon": "OStim/symbols/switch"
+		},
+		{
+			"destination": "OStimDoubleBedRight2PSittingKneelingMF",
+			"description": "$ostim_nav_kneel_before_t{0}",
+			"icon": "OStim/positional/kneeling_f"
+		},
+		{
+			"destination": "OStimDoubleBedRight2PSittingOnLapMF",
+			"description": "$ostim_nav_sit_on_t{0}",
+			"icon": "OStim/positional/kneeling_f_end"
 		}
 	],
 	"offset":{
@@ -32,6 +42,7 @@
 		{
 			"intendedSex": "male",
 			"scale": 1.03,
+      		"lookUp": 50,
 			"tags": [
 				"sitting"
 			],
@@ -39,6 +50,7 @@
 		},
 		{
 			"intendedSex": "female",
+      		"lookUp": -50,
 			"tags": [
 				"standing"
 			],
