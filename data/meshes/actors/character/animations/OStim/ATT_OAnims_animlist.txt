@@ -276,6 +276,26 @@ b -Tn OStimBed2PStandingSittingMF_1 OStimBed2P\MF\idle\OStimBed2PStandingSitting
 b -Tn OStimBed2PStandingAllFoursMF_0 OStimBed2P\MF\idle\OStimBed2PStandingAllFoursMF_0.hkx
 b -Tn OStimBed2PStandingAllFoursMF_1 OStimBed2P\MF\idle\OStimBed2PStandingAllFoursMF_1.hkx
 
+b -Tn OStimBed2PBothSittingKissMF_0 OStimBed2P\MF\sensual\OStimBed2PBothSittingKissMF_0.hkx
+b -Tn OStimBed2PBothSittingKissMF_1 OStimBed2P\MF\sensual\OStimBed2PBothSittingKissMF_1.hkx
+
+b -Tn OStimBed2PCowgirlMF_S1_0 OStimBed2P\MF\sexual\OStimBed2PCowgirlMF\OStimBed2PCowgirlMF_S1_0.hkx
+b -Tn OStimBed2PCowgirlMF_S1_0 OStimBed2P\MF\sexual\OStimBed2PCowgirlMF\OStimBed2PCowgirlMF_S1_1.hkx
+b -Tn OStimBed2PCowgirlMF_S2_0 OStimBed2P\MF\sexual\OStimBed2PCowgirlMF\OStimBed2PCowgirlMF_S2_0.hkx
+b -Tn OStimBed2PCowgirlMF_S2_0 OStimBed2P\MF\sexual\OStimBed2PCowgirlMF\OStimBed2PCowgirlMF_S2_1.hkx
+b -Tn OStimBed2PCowgirlMF_S3_0 OStimBed2P\MF\sexual\OStimBed2PCowgirlMF\OStimBed2PCowgirlMF_S3_0.hkx
+b -Tn OStimBed2PCowgirlMF_S3_0 OStimBed2P\MF\sexual\OStimBed2PCowgirlMF\OStimBed2PCowgirlMF_S3_1.hkx
+b -Tn OStimBed2PCowgirlMF_S4_0 OStimBed2P\MF\sexual\OStimBed2PCowgirlMF\OStimBed2PCowgirlMF_S4_0.hkx
+b -Tn OStimBed2PCowgirlMF_S5_0 OStimBed2P\MF\sexual\OStimBed2PCowgirlMF\OStimBed2PCowgirlMF_S4_1.hkx
+b -Tn OStimBed2PKneelingBlowjobMF_S1_0 OStimBed2P\MF\sexual\OStimBed2PKneelingBlowjobMF\OStimBed2PKneelingBlowjobMF_S1_0.hkx
+b -Tn OStimBed2PKneelingBlowjobMF_S1_1 OStimBed2P\MF\sexual\OStimBed2PKneelingBlowjobMF\OStimBed2PKneelingBlowjobMF_S1_1.hkx
+b -Tn OStimBed2PKneelingBlowjobMF_S2_0 OStimBed2P\MF\sexual\OStimBed2PKneelingBlowjobMF\OStimBed2PKneelingBlowjobMF_S2_0.hkx
+b -Tn OStimBed2PKneelingBlowjobMF_S2_1 OStimBed2P\MF\sexual\OStimBed2PKneelingBlowjobMF\OStimBed2PKneelingBlowjobMF_S2_1.hkx
+b -Tn OStimBed2PKneelingBlowjobMF_S3_0 OStimBed2P\MF\sexual\OStimBed2PKneelingBlowjobMF\OStimBed2PKneelingBlowjobMF_S3_0.hkx
+b -Tn OStimBed2PKneelingBlowjobMF_S3_1 OStimBed2P\MF\sexual\OStimBed2PKneelingBlowjobMF\OStimBed2PKneelingBlowjobMF_S3_1.hkx
+b -Tn OStimBed2PKneelingBlowjobMF_S4_0 OStimBed2P\MF\sexual\OStimBed2PKneelingBlowjobMF\OStimBed2PKneelingBlowjobMF_S4_0.hkx
+b -Tn OStimBed2PKneelingBlowjobMF_S4_1 OStimBed2P\MF\sexual\OStimBed2PKneelingBlowjobMF\OStimBed2PKneelingBlowjobMF_S4_1.hkx
+
 
 
 b -Tn OStimBench1PSittingM_0 OStimBench1P\M\idle\OStimBench1PSittingM_0.hkx
