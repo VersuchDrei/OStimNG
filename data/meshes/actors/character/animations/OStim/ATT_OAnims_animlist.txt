@@ -265,6 +265,12 @@ b -Tn OStim5PLyingMMMMF_4 OStim5P\MMMMF\idle\Ostim5PLyingMMMMF_4.hkx
 
 b -Tn OStimBed2PBothSittingMF_0 OStimBed2P\MF\idle\OStimBed2PBothSittingMF_0.hkx
 b -Tn OStimBed2PBothSittingMF_1 OStimBed2P\MF\idle\OStimBed2PBothSittingMF_1.hkx
+b -Tn OStimBed2PSittingStandingMF_0 OStimBed2P\MF\idle\OStimBed2PSittingStandingMF_0.hkx
+b -Tn OStimBed2PSittingStandingMF_1 OStimBed2P\MF\idle\OStimBed2PSittingStandingMF_1.hkx
+b -Tn OStimBed2PStandingSittingMF_0 OStimBed2P\MF\idle\OStimBed2PStandingSittingMF_0.hkx
+b -Tn OStimBed2PStandingSittingMF_1 OStimBed2P\MF\idle\OStimBed2PStandingSittingMF_1.hkx
+b -Tn OStimBed2PStandingAllFoursMF_0 OStimBed2P\MF\idle\OStimBed2PStandingAllFoursMF_0.hkx
+b -Tn OStimBed2PStandingAllFoursMF_1 OStimBed2P\MF\idle\OStimBed2PStandingAllFoursMF_1.hkx
 
 
 

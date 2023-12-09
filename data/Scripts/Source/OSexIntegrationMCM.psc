@@ -129,7 +129,7 @@ Event OnPageReset(String Page)
 		AddTextOption("Sounds ", "$ostim_by{BigTittyBoy, Migal130}")
 		AddTextOption("Meshes ", "$ostim_by{Calyps, Egilvar}")
 		AddTextOption("Animations ", "$ostim_by{AceAnimations, Moon}")
-		AddTextOption("Facial Expressions", "$ostim_by{AceAnimations, GusCrow}")
+		AddTextOption("Facial Expressions", "$ostim_by{AceAnimations, GusCrow, Moon}")
 
 		SetCursorPosition(1)
 		AddTextOption("Powered By Sswaye's Reshade", "")

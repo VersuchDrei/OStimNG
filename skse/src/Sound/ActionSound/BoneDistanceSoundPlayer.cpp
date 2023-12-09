@@ -23,7 +23,7 @@ namespace Sound {
                 in = true;
                 if (lastDistance > maxDistance) {
                     maxDistance = lastDistance;
-                    if (minDistance != 0) {
+                    if (minDistance >= 0) {
                         calculateThreshold();
                     }
                 }
@@ -34,7 +34,7 @@ namespace Sound {
         } else if (nextDistance > lastDistance) {
             if (in) {
                 in = false;
-                if (minDistance == 0 || lastDistance < minDistance) {
+                if (minDistance < 0 || lastDistance < minDistance) {
                     minDistance = lastDistance;
                     // in starts at false, so by the time we are here max distance has been set and we don't need to check it against 0
                     calculateThreshold();

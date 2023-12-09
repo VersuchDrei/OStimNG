@@ -9,16 +9,12 @@
 		},
 		"phonemes": [
 			{
-				"type": 0,
+				"type": 1,
 				"baseValue": 100
 			},
-			{
-				"type": 3,
-				"baseValue": 20
-			},
-			{
-				"type": 11,
-				"baseValue": 50
+            {
+				"type": 5,
+				"baseValue": 80
 			}
 		],
 		"phonemeObjects":[
@@ -32,16 +28,12 @@
 		},
 		"phonemes": [
 			{
-				"type": 0,
+				"type": 1,
 				"baseValue": 100
 			},
-			{
-				"type": 3,
-				"baseValue": 20
-			},
-			{
-				"type": 11,
-				"baseValue": 50
+            {
+				"type": 5,
+				"baseValue": 80
 			}
 		],
 		"phonemeObjects":[

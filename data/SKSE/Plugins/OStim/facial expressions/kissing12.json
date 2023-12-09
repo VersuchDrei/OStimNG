@@ -38,6 +38,14 @@
 			"delayVariance":0.4,
 			"excitementMultiplier": 0.3,
 			"speedMultiplier": 30.0
+		}, {
+			"type": 0,
+			"baseValue": 70,
+			"variance": 20
+		}, {
+			"type": 1,
+			"baseValue": 70,
+			"variance": 20
 		}]
 	},
 	"male": {
@@ -68,6 +76,14 @@
 			"delayVariance":0.4,
 			"excitementMultiplier": 0.3,
 			"speedMultiplier": 30.0
+		}, {
+			"type": 0,
+			"baseValue": 70,
+			"variance": 20
+		}, {
+			"type": 1,
+			"baseValue": 70,
+			"variance": 20
 		}]
 	}
 }

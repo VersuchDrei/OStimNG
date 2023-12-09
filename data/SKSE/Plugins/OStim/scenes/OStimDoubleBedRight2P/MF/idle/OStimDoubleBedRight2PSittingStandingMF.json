@@ -1,0 +1,48 @@
+{
+	"name": "$OStimDoubleBedRight2PSittingStandingMF",
+	"modpack": "OStim",
+	"length": 2.0,
+	"furniture": "doublebed",
+	"speeds":[
+		{
+			"animation": "OStimBed2PSittingStandingMF"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStimDoubleBedRight2PBothSittingMF",
+			"description": "$ostim_nav_sit_down_a{1}",
+			"icon": "OStim/positional/chair/sitting_f"
+		},
+		{
+			"destination": "OStimDoubleBedRight2PStandingSittingMF",
+			"description": "$ostim_nav_switch_positions",
+			"icon": "OStim/symbols/switch"
+		}
+	],
+	"offset":{
+		"x": -48,
+		"r": -90
+	},
+	"scaleOffsetWithFurniture": true,
+	"tags":[
+		"idle"
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"scale": 1.03,
+			"tags": [
+				"sitting"
+			],
+			"feetOnGround": false
+		},
+		{
+			"intendedSex": "female",
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": false
+		}
+	]
+}

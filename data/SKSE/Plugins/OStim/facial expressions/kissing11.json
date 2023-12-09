@@ -37,11 +37,11 @@
 			"variance": 30
 		}, {
 			"type": 0,
-			"baseValue": 15,
+			"baseValue": 25,
 			"variance": 15
 		}, {
 			"type": 1,
-			"baseValue": 15,
+			"baseValue": 25,
 			"variance": 15
 		}]
 	},
@@ -72,12 +72,12 @@
 			"variance": 30
 		}, {
 			"type": 0,
-			"baseValue": 15,
-			"variance": 10
+			"baseValue": 25,
+			"variance": 15
 		}, {
 			"type": 1,
-			"baseValue": 15,
-			"variance": 10
+			"baseValue": 25,
+			"variance": 15
 		}]
 	}
 }

@@ -82,11 +82,11 @@
 			"variance": 30
 		}, {
 			"type": 0,
-			"baseValue": 10,
+			"baseValue": 20,
 			"variance": 15
 		}, {
 			"type": 1,
-			"baseValue": 10,
+			"baseValue": 20,
 			"variance": 15
 		}]
 	}

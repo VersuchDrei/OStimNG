@@ -15,6 +15,16 @@
 			"icon": "OStim/symbols/switch"
 		},
 		{
+			"destination": "OStimDoubleBedLeft2PSittingStandingMF",
+			"description": "$ostim_nav_stand_up_a{1}",
+			"icon": "OStim/positional/standup_f"
+		},
+		{
+			"destination": "OStimDoubleBedLeft2PStandingSittingMF",
+			"description": "$ostim_nav_stand_up_a{0}",
+			"icon": "OStim/positional/standup_m"
+		},
+		{
 			"destination": "OStim2PSittingMF",
 			"description": "$ostim_nav_sit_on_bed",
 			"icon": "OStim/positional/leanback_f"

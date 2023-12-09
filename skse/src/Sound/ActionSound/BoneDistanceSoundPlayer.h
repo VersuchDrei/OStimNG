@@ -21,9 +21,9 @@ namespace Sound {
         int initialCooldown = 1000;
         int skips = 3;
 
-        float minDistance = 0;
-        float maxDistance = 0;
-        float distanceThreshold = 0;
+        float minDistance = -1;
+        float maxDistance = -1;
+        float distanceThreshold = -1;
 
         float lastDistance = 0;
         float in = false;

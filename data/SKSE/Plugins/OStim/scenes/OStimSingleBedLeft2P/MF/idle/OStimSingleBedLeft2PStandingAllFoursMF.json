@@ -1,0 +1,43 @@
+{
+	"name": "$OStimSingleBedLeft2PStandingAllFoursMF",
+	"modpack": "OStim",
+	"length": 2.0,
+	"furniture": "singlebed",
+	"speeds":[
+		{
+			"animation": "OStimBed2PStandingAllFoursMF"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStimSingleBedLeft2PStandingSittingMF",
+			"description": "$ostim_nav_sit_down_a{1}",
+			"icon": "OStim/positional/chair/sitting_f"
+		}
+	],
+	"offset":{
+		"x": 22,
+		"r": 90
+	},
+	"scaleOffsetWithFurniture": true,
+	"tags":[
+		"idle"
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"scale": 1.03,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": false
+		},
+		{
+			"intendedSex": "female",
+			"tags": [
+				"allfours"
+			],
+			"feetOnGround": false
+		}
+	]
+}

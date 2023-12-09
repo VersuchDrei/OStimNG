@@ -80,7 +80,7 @@ Function SetStartingSequence(int BuilderID, string Sequence) Global Native
 ;/* ConcatStartingSequence
 * * adds another sequence to the list of starting animations
 * *
-* * required API version: 31
+* * required API version: 32
 * *
 * * @param: BuilderID, the id of the thread builder
 * * @param: Sequence, the id of the sequence
