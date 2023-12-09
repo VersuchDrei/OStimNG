@@ -11,41 +11,27 @@ namespace Sound {
             return;
         }
 
-        if (--skips > 0) {
-            return;
-        }
-        skips = 3;
+        float distance = calculateDistance();
 
-        float nextDistance = calculateDistance();
-
-        if (nextDistance < lastDistance) {
-            if (!in) {
-                in = true;
-                if (lastDistance > maxDistance) {
-                    maxDistance = lastDistance;
-                    if (minDistance >= 0) {
-                        calculateThreshold();
-                    }
-                }
-                if (inverse && lastDistance > distanceThreshold) {
-                    trigger();
-                }
-            }
-        } else if (nextDistance > lastDistance) {
-            if (in) {
-                in = false;
-                if (minDistance < 0 || lastDistance < minDistance) {
-                    minDistance = lastDistance;
-                    // in starts at false, so by the time we are here max distance has been set and we don't need to check it against 0
-                    calculateThreshold();
-                }
-                if (!inverse && lastDistance < distanceThreshold) {
-                    trigger();
-                }
+        if (minDistance < 0 || distance < minDistance) {
+            minDistance = distance;
+            if (maxDistance > 0) {
+                calculateThreshold();
             }
         }
 
-        lastDistance = nextDistance;
+        if (maxDistance < 0 || distance > maxDistance) {
+            maxDistance = distance;
+            calculateThreshold();
+        }
+
+        bool newInThreshold = inverse ? distance > distanceThreshold : distance < distanceThreshold;
+        if (inThreshold && !newInThreshold) {
+            trigger();
+        }
+
+        inThreshold = newInThreshold;
+
         timeSinceLastTrigger += Constants::LOOP_TIME_MILLISECONDS;
     }
 

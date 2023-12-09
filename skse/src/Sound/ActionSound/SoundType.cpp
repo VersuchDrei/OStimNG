@@ -70,8 +70,8 @@ namespace Sound {
                 inverse = json["inverse"];
             }
 
-            // default of 150 to prevent sound double playing from weird animation behavior
-            int minInterval = 150;
+            // default of 50 to prevent sound double playing from weird animation behavior
+            int minInterval = 50;
             if (json.contains("minInterval")) {
                 minInterval = json["minInterval"];
             }
