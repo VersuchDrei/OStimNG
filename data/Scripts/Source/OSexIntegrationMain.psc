@@ -1656,7 +1656,7 @@ EndFunction
 * * 29 = OStim Standalone Public Beta
 * * 30 = OStim Standalone 7.1
 * * 31 = OStim Standalone 7.1e
-* * 32 = OStim Standalone 7.1.1
+* * 32 = OStim Standalone 7.2
 * *
 * * @return: the version of the current API
 */;

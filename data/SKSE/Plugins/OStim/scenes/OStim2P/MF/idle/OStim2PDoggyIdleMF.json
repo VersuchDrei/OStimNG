@@ -14,7 +14,7 @@
 			"icon": "OStim/positional/standup_m"
 		},
 		{
-			"destination": "OStim2PStandingApartToSittingMF",
+			"destination": "OStim2PStandingSittingMF",
 			"description": "$ostim_nav_sit_down",
 			"icon": "OStim/positional/squatting_f"
 		},
