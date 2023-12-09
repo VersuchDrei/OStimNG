@@ -47,4 +47,36 @@ namespace Integrity {
 
         return true;
     }
+
+    bool verifyTranslationIntegrity() {
+        std::vector<std::string> files{"Data\\Interface\\translations\\ONav_ENGLISH.txt", "Data\\Interface\\translations\\OScenes_ENGLISH.txt"};
+
+        std::ifstream integrity;
+        integrity.open("Data\\OStim\\integrity\\translations", std::ios::binary | std::ios::in);
+
+        integrity.seekg(0, std::ios::end);
+        long length = integrity.tellg();
+        integrity.seekg(0, std::ios::beg);
+
+        if (length / MD5_DIGEST_LENGTH != 2) {
+            logger::warn("translation count mismatch: expected {}, encountered {}", length / MD5_DIGEST_LENGTH, 2);
+            return false;
+        }
+
+        char fileSum[MD5_DIGEST_LENGTH];
+        std::string fileSumStr;
+
+        for (std::string file : files) {
+            integrity.read(fileSum, MD5_DIGEST_LENGTH);
+            fileSumStr = std::string(fileSum, MD5_DIGEST_LENGTH);
+            std::string checkSum = CheckSum::createCheckSum(file);
+
+            if (fileSumStr != checkSum) {
+                logger::warn("checksum mismatch for {}: expected {}, encountered {}", file, fileSumStr, checkSum);
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

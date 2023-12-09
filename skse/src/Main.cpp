@@ -73,6 +73,7 @@ namespace {
                 }
 
                 Util::Globals::setSceneIntegrityVerified(Integrity::verifySceneIntegrity());
+                Util::Globals::setTranslationIntegrityVerified(Integrity::verifyTranslationIntegrity());
             } break;
             case SKSE::MessagingInterface::kInputLoaded: {
                 RE::BSInputDeviceManager::GetSingleton()->AddEventSink(Events::EventListener::GetSingleton());

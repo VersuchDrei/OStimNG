@@ -245,6 +245,7 @@ namespace PapyrusThreadBuilder {
         BIND(SetStartingAnimation);
         BIND(AddStartingAnimation);
         BIND(SetStartingSequence);
+        BIND(ConcatStartingSequence);
         BIND(EndAfterSequence);
         BIND(UndressActors);
         BIND(NoAutoMode);

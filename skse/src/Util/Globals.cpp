@@ -17,6 +17,11 @@ namespace Util {
         logger::info("scene integrity is {}", verified ? "verified" : "not verified");
     }
 
+    void Globals::setTranslationIntegrityVerified(bool verified) {
+        translationIntegrityVerified = verified;
+        logger::info("translation integrity is {}", verified ? "verified" : "not verified");
+    }
+
     void Globals::setPapyrusUndressing(bool doPapyrus) {
         doPapyrusUndressing = doPapyrus;
         OStimUsePapyrusUndressing->value = doPapyrus ? 1 : 0;

@@ -189,5 +189,11 @@ namespace Events {
                 "OStim Standalone: Scene integrity could not be verified. OStim and its addons might not work properly. Please don't report any other bugs while this issue persists.",
                 {"Ok"}, [](unsigned int result) {});
         }
+
+        if (!Util::Globals::isTranslationIntegrityVerified()) {
+            GameAPI::Game::showMessageBox(
+                "OStim Standalone: Your english localization files appear to be modified. This will cause upwards compatibility issues. If you are a translator create a new file ending with _<YOURLANGAUGE> instead of modifying the english one.",
+                {"Ok"}, [](unsigned int result) {});
+        }
     }
 }
