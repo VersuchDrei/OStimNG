@@ -12,7 +12,14 @@
 		{
 			"destination": "OStimDoubleBedRight2PSittingStandingMF",
 			"description": "$ostim_nav_stand_up_a{1}",
-			"icon": "OStim/positional/standup_f"
+			"icon": "OStim/positional/standup_f",
+			"priority": 0
+		},
+		{
+			"destination": "OStimDoubleBedLeft2PKneelingBlowjobMF",
+			"description": "$ostim_nav_blowjob_t{0}",
+			"icon": "OStim/sexual/blowjob_mf",
+			"priority": 3000
 		}
 	],
 	"offset":{

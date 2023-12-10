@@ -12,7 +12,14 @@
 		{
 			"destination": "OStimDoubleBedLeft2PSittingStandingMF",
 			"description": "$ostim_nav_stand_up_a{1}",
-			"icon": "OStim/positional/standup_f"
+			"icon": "OStim/positional/standup_f",
+			"priority": 0
+		},
+		{
+			"destination": "OStimDoubleBedLeft2PCowgirlMF",
+			"description": "$ostim_nav_cowgirl_t{0}",
+			"icon": "OStim/sexual/chair/cowgirl_mf",
+			"priority": 3000
 		}
 	],
 	"offset":{

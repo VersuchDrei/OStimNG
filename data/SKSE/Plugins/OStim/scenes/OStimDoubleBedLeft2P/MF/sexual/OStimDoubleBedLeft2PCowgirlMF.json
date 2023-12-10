@@ -1,0 +1,77 @@
+{
+	"name": "$OStimDoubleBedLeft2PCowgirlMF",
+	"modpack": "OStim",
+	"length": 2.0,
+	"furniture": "singlebed",
+	"speeds":[
+		{
+			"animation": "OStimBed2PCowgirlMF_S1",
+			"displaySpeed": 1.0
+		},
+		{
+			"animation": "OStimBed2PCowgirlMF_S2",
+			"displaySpeed": 1.5
+		},
+		{
+			"animation": "OStimBed2PCowgirlMF_S3",
+			"displaySpeed": 2.0
+		},
+		{
+			"animation": "OStimBed2PCowgirlMF_S4",
+			"displaySpeed": 2.5
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStimDoubleBedLeft2PSittingOnLapMF",
+			"description": "$ostim_nav_return",
+			"icon": "OStim/symbols/return"
+		}
+	],
+	"offset":{
+		"x": 48,
+		"r": 90
+	},
+	"scaleOffsetWithFurniture": true,
+	"tags":[
+		"cowgirl"
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+      		"sosBend": 3,
+			"scale": 1.03,
+      		"lookUp": 50,
+			"tags": [
+				"sitting"
+			],
+			"feetOnGround": false
+		},
+		{
+			"intendedSex": "female",
+      		"lookUp": -35,
+			"tags": [
+				"kneeling"
+			],
+			"feetOnGround": false
+		}
+	],
+	"actions":[
+		{
+			"type": "vaginalsex",
+			"actor": 0,
+			"target": 1,
+			"performer": 1
+		},
+		{
+			"type": "gropingbutt",
+			"actor": 0,
+			"target": 1
+		},
+		{
+			"type": "holdingbody",
+			"actor": 1,
+			"target": 0
+		}
+	]
+}
