@@ -36,7 +36,7 @@
 	"actors":[
 		{
 			"intendedSex": "male",
-      		"sosBend": 3,
+      		"sosBend": 4,
 			"scale": 1.03,
       		"lookUp": -75,
 			"tags": [
