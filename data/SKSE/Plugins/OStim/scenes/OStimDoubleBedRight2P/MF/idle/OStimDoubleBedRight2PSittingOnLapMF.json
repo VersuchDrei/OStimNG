@@ -10,6 +10,12 @@
 	],
 	"navigations":[
 		{
+			"destination": "OStimDoubleBedRight2PBothSittingMF",
+			"description": "$ostim_nav_sit_down_a{1}",
+			"icon": "OStim/positional/chair/sitting_f",
+			"priority": 0
+		},
+		{
 			"destination": "OStimDoubleBedRight2PSittingStandingMF",
 			"description": "$ostim_nav_stand_up_a{1}",
 			"icon": "OStim/positional/standup_f",

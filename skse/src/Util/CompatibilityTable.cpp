@@ -15,6 +15,8 @@ namespace Compatibility {
         if (handler->GetLoadedLightModIndex("TheNewGentleman.esp")) {
             TNG_Gentified.loadFile("TheNewGentleman.esp", 0xE00);
             TNG_Ungentified.loadFile("TheNewGentleman.esp", 0xE01);
+        } else {
+            logger::info("TNG is not installed");
         }
 
         if (handler->GetLoadedModIndex("SOS - No Futanari Schlong - Addon.esp")) {
