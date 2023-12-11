@@ -538,6 +538,8 @@ contrib/Distribution/**/*.pdb
 contrib/Distribution/**/*.pex
 
 build.ps1
+data/Nemesis_Engine/*
+data/OStim/integrity/*
 data/scripts/*.pex
 data/SKSE/Plugins/*.dll
 gfxfontlib.swf
