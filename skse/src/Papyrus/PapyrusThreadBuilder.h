@@ -251,6 +251,7 @@ namespace PapyrusThreadBuilder {
         BIND(NoAutoMode);
         BIND(NoPlayerControl);
         BIND(NoUndressing);
+        BIND(NoFurniture);
         BIND(SetMetadata);
         BIND(SetMetadataCSV);
 

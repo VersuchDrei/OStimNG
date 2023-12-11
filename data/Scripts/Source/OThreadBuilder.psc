@@ -145,6 +145,8 @@ Function NoUndressing(int BuilderID) Global Native
 * *
 * * without this the scene will offer or choose furniture based on the MCM settings
 * *
+* * required API Version: 32
+* *
 * * @param: BuilderID, the id of the thread builder
 */;
 Function NoFurniture(int BuilderID) Global Native

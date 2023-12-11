@@ -40,7 +40,7 @@
 			"priority": 0
 		},
 		{
-			"destination": "OStimDoubleBedLeft2PBothSittingKissMF",
+			"destination": "OStimDoubleBedRight2PBothSittingKissMF",
 			"description": "$ostim_nav_kiss_t{1}",
 			"icon": "OStim/sensual/kissing_mf",
 			"priority": 1000
