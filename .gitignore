@@ -538,7 +538,7 @@ contrib/Distribution/**/*.pdb
 contrib/Distribution/**/*.pex
 
 build.ps1
-data/Nemesis_Engine/*
+data/Nemesis_Engine/mod/oanims/*
 data/OStim/integrity/*
 data/scripts/*.pex
 data/SKSE/Plugins/*.dll
