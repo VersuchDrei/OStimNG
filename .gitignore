@@ -539,5 +539,6 @@ contrib/Distribution/**/*.pex
 
 build.ps1
 data/scripts/*.pex
+data/SKSE/Plugins/*.dll
 gfxfontlib.swf
 /data/*.zip
