@@ -185,6 +185,8 @@ if(DEFINED ENV{SKYRIM_MODS_FOLDER} AND IS_DIRECTORY "$ENV{SKYRIM_MODS_FOLDER}")
         set(OUTPUT_FOLDER "$ENV{SKYRIM_MODS_FOLDER}/OStim Standalone Public Beta Fork")
 endif()
 
+set(OUTPUT_FOLDER "../../../data")
+
 if(DEFINED OUTPUT_FOLDER)
     # If you specify an <OUTPUT_FOLDER> (including via environment variables)
     # then we'll copy your mod files into Skyrim or a mod manager for you!
@@ -201,14 +203,12 @@ if(DEFINED OUTPUT_FOLDER)
         COMMAND "${CMAKE_COMMAND}" -E copy_if_different "$<TARGET_FILE:${PROJECT_NAME}>" "${DLL_FOLDER}/$<TARGET_FILE_NAME:${PROJECT_NAME}>"
         VERBATIM
     )
-
-    # If you perform a "Debug" build, also copy .pdb file (for debug symbols)
-    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-        add_custom_command(
-            TARGET "${PROJECT_NAME}"
-            POST_BUILD
-            COMMAND "${CMAKE_COMMAND}" -E copy_if_different "$<TARGET_PDB_FILE:${PROJECT_NAME}>" "${DLL_FOLDER}/$<TARGET_PDB_FILE_NAME:${PROJECT_NAME}>"
-            VERBATIM
-        )
-    endif()
+    
+    # Copy the SKSE plugin .pdb files into the SKSE/Plugins/ folder
+    add_custom_command(
+        TARGET "${PROJECT_NAME}"
+        POST_BUILD
+        COMMAND "${CMAKE_COMMAND}" -E copy_if_different "$<TARGET_PDB_FILE:${PROJECT_NAME}>" "${DLL_FOLDER}/$<TARGET_PDB_FILE_NAME:${PROJECT_NAME}>"
+        VERBATIM
+    )
 endif()
