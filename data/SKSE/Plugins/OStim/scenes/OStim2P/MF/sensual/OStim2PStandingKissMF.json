@@ -16,13 +16,13 @@
 		},
 		{
 			"destination": "OStim2PStandingKissEmbraceMF",
-			"description": "$ostim_nav_embrace_t{}",
+			"description": "$ostim_nav_embrace_t{1}",
 			"icon": "OStim/sensual/embrace_mf",
 			"priority": 0
 		},
 		{
 			"destination": "OStim2PStandingHoldingChinKissMF",
-			"description": "$ostim_nav_hold_chin_t{}",
+			"description": "$ostim_nav_hold_chin_t{1}",
 			"icon": "OStim/detail/holdingneck_mf",
 			"priority": 0
 		},
