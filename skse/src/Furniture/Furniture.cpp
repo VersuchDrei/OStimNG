@@ -67,8 +67,8 @@ namespace Furniture {
             auto refPos = ref.GetPosition();
 
             if (sameFloor == 0.0 || std::fabs(centerPos.z - refPos.z) <= sameFloor) {
-                FurnitureType* type = FurnitureTable::getFurnitureType(&ref, true);
-                if (!type->isChildOf(type)) {
+                FurnitureType* refType = FurnitureTable::getFurnitureType(&ref, true);
+                if (!refType->isChildOf(type)) {
                     return RE::BSContainer::ForEachResult::kContinue;
                 }
 
