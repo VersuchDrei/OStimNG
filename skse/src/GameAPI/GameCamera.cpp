@@ -1,6 +1,8 @@
 #include "GameCamera.h"
 
 #include "GameTable.h"
+#include "GameUtil.h"
+
 #include "Core/ThreadManager.h"
 
 namespace GameAPI {
@@ -88,7 +90,7 @@ namespace GameAPI {
         if (script) {
             const auto selectedRef = RE::Console::GetSelectedRef();
             script->SetCommand("tfc");
-            script->CompileAndRun(selectedRef.get());
+            GameUtil::CompileAndRun(script, selectedRef.get());
             delete script;
         }
     }

@@ -25,6 +25,11 @@
 			"icon": "OStim/positional/chair/sitting_f"
 		},
 		{
+			"destination": "OStimChair2PSittingStandingFacingAwayMF",
+			"description": "$ostim_nav_turn_around_a{1}",
+			"icon": "OStim/symbols/return"
+		},
+		{
 			"destination": "OStimChair2PSittingKneelingMF",
 			"description": "$ostim_nav_kneel_down_a{1}",
 			"icon": "OStim/positional/kneeling_f"

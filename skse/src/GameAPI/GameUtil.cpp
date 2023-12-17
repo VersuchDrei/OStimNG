@@ -41,5 +41,10 @@ namespace GameAPI {
                 }
             }
         }
+
+        void CompileAndRun(RE::Script* script, RE::TESObjectREFR* targetRef, RE::COMPILER_NAME name) {
+            RE::ScriptCompiler compiler;
+            CompileAndRunImpl(script, &compiler, name, targetRef);
+        }
     }
 }

@@ -1,5 +1,7 @@
 #include "Game.h"
 
+#include "GameUtil.h"
+
 #include "Game/LocaleManager.h"
 
 namespace GameAPI {
@@ -9,7 +11,7 @@ namespace GameAPI {
         if (script) {
             const auto selectedRef = RE::Console::GetSelectedRef();
             script->SetCommand("sgtm " + std::to_string(speed));
-            script->CompileAndRun(selectedRef.get());
+            GameUtil::CompileAndRun(script, selectedRef.get());
             delete script;
         }
     }

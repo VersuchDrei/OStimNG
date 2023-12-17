@@ -163,7 +163,7 @@ namespace GameAPI {
         const auto script = factory ? factory->Create() : nullptr;
         if (script) {
             script->SetCommand("rae WeaponSheathe"sv);
-            script->CompileAndRun(form);
+            GameUtil::CompileAndRun(script, form);
             delete script;
         }
     }
@@ -174,7 +174,7 @@ namespace GameAPI {
         if (script) {
             const auto selectedRef = RE::Console::GetSelectedRef();
             script->SetCommand("sayTo " + std::format("{:x}", target.getFormID()) + " " + std::format("{:x}", dialogue.getFormID()));
-            script->CompileAndRun(form);
+            GameUtil::CompileAndRun(script, form);
             delete script;
         }
     }

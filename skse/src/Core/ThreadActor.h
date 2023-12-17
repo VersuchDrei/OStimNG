@@ -5,6 +5,7 @@
 
 #include "Alignment/ActorKey.h"
 #include "GameAPI/GameActor.h"
+#include "Graph/Event.h"
 #include "Graph/Node.h"
 #include "Serial/OldThread.h"
 #include "Sound/VoiceSet.h"
@@ -259,7 +260,7 @@ namespace OStim {
         void unmute();
         inline bool isMuted() { return muted; }
 
-        void reactToEvent(int timer, std::string type, GameAPI::GameActor partner, std::function<std::unordered_map<std::string, Sound::ReactionSet>*(Sound::VoiceSet&)> setGetter);
+        void reactToEvent(int timer, Graph::Event* event, GameAPI::GameActor partner, std::function<std::unordered_map<std::string, Sound::ReactionSet>*(Sound::VoiceSet&)> setGetter);
         void reactToClimax(GameAPI::GameActor partner);
 
     private:

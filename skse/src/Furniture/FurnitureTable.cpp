@@ -10,6 +10,7 @@ namespace Furniture {
 
     void FurnitureTable::setupFurnitureTypes() {
         std::unordered_map<std::string, std::string> rawSuperTypes;
+
         Util::JsonFileLoader::LoadFilesInSubfolders(FURNITURE_TYPE_FILE_PATH, [&rawSuperTypes](std::string path, std::string filename, json json) {
             FurnitureType furnitureType{.id = filename};
             StringUtil::toLower(&furnitureType.id);

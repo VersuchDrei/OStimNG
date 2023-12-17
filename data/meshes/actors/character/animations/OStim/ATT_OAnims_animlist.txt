@@ -271,6 +271,8 @@ b -Tn OStimBed2PSittingOnLapMF_0 OStimBed2P\MF\idle\OStimBed2PSittingOnLapMF_0.h
 b -Tn OStimBed2PSittingOnLapMF_1 OStimBed2P\MF\idle\OStimBed2PSittingOnLapMF_1.hkx
 b -Tn OStimBed2PSittingStandingMF_0 OStimBed2P\MF\idle\OStimBed2PSittingStandingMF_0.hkx
 b -Tn OStimBed2PSittingStandingMF_1 OStimBed2P\MF\idle\OStimBed2PSittingStandingMF_1.hkx
+b -Tn OStimBed2PSittingStandingFacingAwayMF_0 OStimBed2P\MF\idle\OStimBed2PSittingStandingFacingAwayMF_0.hkx
+b -Tn OStimBed2PSittingStandingFacingAwayMF_1 OStimBed2P\MF\idle\OStimBed2PSittingStandingFacingAwayMF_1.hkx
 b -Tn OStimBed2PStandingSittingMF_0 OStimBed2P\MF\idle\OStimBed2PStandingSittingMF_0.hkx
 b -Tn OStimBed2PStandingSittingMF_1 OStimBed2P\MF\idle\OStimBed2PStandingSittingMF_1.hkx
 b -Tn OStimBed2PStandingAllFoursMF_0 OStimBed2P\MF\idle\OStimBed2PStandingAllFoursMF_0.hkx
@@ -314,6 +316,8 @@ b -Tn OStimBench2PBothSittingMF_0 OStimBench2P\MF\idle\OStimBench2PBothSittingMF
 b -Tn OStimBench2PBothSittingMF_1 OStimBench2P\MF\idle\OStimBench2PBothSittingMF_1.hkx
 b -Tn OStimBench2PSittingStandingMF_0 OStimBench2P\MF\idle\OStimBench2PSittingStandingMF_0.hkx
 b -Tn OStimBench2PSittingStandingMF_1 OStimBench2P\MF\idle\OStimBench2PSittingStandingMF_1.hkx
+b -Tn OStimBench2PSittingStandingFacingAwayMF_0 OStimBench2P\MF\idle\OStimBench2PSittingStandingFacingAwayMF_0.hkx
+b -Tn OStimBench2PSittingStandingFacingAwayMF_1 OStimBench2P\MF\idle\OStimBench2PSittingStandingFacingAwayMF_1.hkx
 b -Tn OStimBench2PStandingSittingMF_0 OStimBench2P\MF\idle\OStimBench2PStandingSittingMF_0.hkx
 b -Tn OStimBench2PStandingSittingMF_1 OStimBench2P\MF\idle\OStimBench2PStandingSittingMF_1.hkx
 b -Tn OStimBench2PSittingKneelingMF_0 OStimBench2P\MF\idle\OStimBench2PSittingKneelingMF_0.hkx

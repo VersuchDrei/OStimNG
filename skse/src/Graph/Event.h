@@ -16,6 +16,9 @@ namespace Graph {
     };
 
     struct Event {
+    public:
+        std::string id;
+        Event* supertype = nullptr;
         EventActor actor;
         EventActor target;
         EventActor performer;
@@ -25,5 +28,24 @@ namespace Graph {
         float controllerRumbleDuration = 0.0;
         float controllerRumbleStrength = 0.0;
         std::vector<std::string> tags;
+
+        GameAPI::GameSound getSound();
+        float getCameraShakeDuration();
+        float getCameraShakeStrength();
+        float getControllerRumbleDuration();
+        float getControllerRumbleStrength();
+
+        float getActorStimulation();
+        float getActorMaxStimulation();
+        float getTargetStimulation();
+        float getTargetMaxStimulation();
+        float getPerformerStimulation();
+        float getPerformerMaxStimulation();
+
+        float getActorReactionDelay();
+        float getTargetReactionDelay();
+        float getPerformerReactionDelay();
+
+        bool isChildOf(Event* other);
     };
 }

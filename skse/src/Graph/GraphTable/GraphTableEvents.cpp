@@ -93,47 +93,69 @@ namespace Graph {
     };
 
     void GraphTable::setupEvents() {
-        Util::JsonFileLoader::LoadFilesInFolder(
-            EVENT_FILE_PATH, [&](std::string path, std::string filename, json json) {
-                Graph::Event graphEvent;
-                if (json.contains("actor")) {
-                    graphEvent.actor = parseEventActor(json["actor"]);
-                }
-                if (json.contains("target")) {
-                    graphEvent.target = parseEventActor(json["target"]);
-                }
-                if (json.contains("performer")) {
-                    graphEvent.performer = parseEventActor(json["performer"]);
-                }
+        std::unordered_map<std::string, std::string> rawSuperTypes;
 
-                if (json.contains("sound")) {
-                    graphEvent.sound.loadJson(path, json["sound"]);
-                }
+        Util::JsonFileLoader::LoadFilesInFolder(EVENT_FILE_PATH, [&rawSuperTypes](std::string path, std::string filename, json json) {
+            Graph::Event graphEvent;
 
-                if (json.contains("cameraShakeStrength")) {
-                    graphEvent.cameraShakeStrength = json["cameraShakeStrength"];
-                }
-                if (json.contains("cameraShakeDuration")) {
-                    graphEvent.cameraShakeDuration = json["cameraShakeDuration"];
-                }
-                if (json.contains("controllerRumbleStrength")) {
-                    graphEvent.controllerRumbleStrength = json["controllerRumbleStrength"];
-                }
-                if (json.contains("controllerRumbleDuration")) {
-                    graphEvent.controllerRumbleDuration = json["controllerRumbleDuration"];
-                }
+            graphEvent.id = filename;
+            StringUtil::toLower(&graphEvent.id);
 
-                if (json.contains("tags")) {
-                    for (auto& tag : json["tags"]) {
-                        std::string tagStr = tag.get<std::string>();
-                        StringUtil::toLower(&tagStr);
-                        graphEvent.tags.push_back(tagStr);
-                    }
+            if (json.contains("supertype")) {
+                if (json["supertype"].is_string()) {
+                    std::string supertype = json["supertype"];
+                    StringUtil::toLower(&supertype);
+                    rawSuperTypes[graphEvent.id] = supertype;
+                } else {
+                    logger::warn("property 'supertype' of event {} isn't a string", filename);
                 }
+            }
 
-                StringUtil::toLower(&filename);
-                events[filename] = graphEvent;
-            });
+            if (json.contains("actor")) {
+                graphEvent.actor = parseEventActor(json["actor"]);
+            }
+            if (json.contains("target")) {
+                graphEvent.target = parseEventActor(json["target"]);
+            }
+            if (json.contains("performer")) {
+                graphEvent.performer = parseEventActor(json["performer"]);
+            }
+
+            if (json.contains("sound")) {
+                graphEvent.sound.loadJson(path, json["sound"]);
+            }
+
+            if (json.contains("cameraShakeStrength")) {
+                graphEvent.cameraShakeStrength = json["cameraShakeStrength"];
+            }
+            if (json.contains("cameraShakeDuration")) {
+                graphEvent.cameraShakeDuration = json["cameraShakeDuration"];
+            }
+            if (json.contains("controllerRumbleStrength")) {
+                graphEvent.controllerRumbleStrength = json["controllerRumbleStrength"];
+            }
+            if (json.contains("controllerRumbleDuration")) {
+                graphEvent.controllerRumbleDuration = json["controllerRumbleDuration"];
+            }
+
+            if (json.contains("tags")) {
+                for (auto& tag : json["tags"]) {
+                    std::string tagStr = tag.get<std::string>();
+                    StringUtil::toLower(&tagStr);
+                    graphEvent.tags.push_back(tagStr);
+                }
+            }
+
+            events[graphEvent.id] = graphEvent;
+        });
+
+        for (auto& [subtype, supertype] : rawSuperTypes) {
+            if (events.contains(supertype)) {
+                events[subtype].supertype = &events[supertype];
+            } else {
+                logger::warn("supertype '{}' of event '{}' doesn't exist", supertype, subtype);
+            }
+        }
     }
 
     Event* GraphTable::getEvent(std::string eventName) {

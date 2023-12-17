@@ -213,17 +213,21 @@ namespace OStim {
         eventPartner = actor;
     }
 
-    void ThreadActor::reactToEvent(int timer, std::string type, GameAPI::GameActor partner, std::function<std::unordered_map<std::string, Sound::ReactionSet>*(Sound::VoiceSet&)> setGetter) {
+    void ThreadActor::reactToEvent(int timer, Graph::Event* event, GameAPI::GameActor partner, std::function<std::unordered_map<std::string, Sound::ReactionSet>*(Sound::VoiceSet&)> setGetter) {
         std::unordered_map<std::string, Sound::ReactionSet>* set = setGetter(voiceSet);
 
-        auto iter = set->find(type);
-        if (iter == set->end()) {
-            return;
-        }
+        while (event) {
+            auto iter = set->find(event->id);
+            if (iter != set->end()) {
+                eventTimer = timer;
+                eventReaction = &iter->second;
+                eventPartner = partner;
 
-        eventTimer = timer;
-        eventReaction = &iter->second;
-        eventPartner = partner;
+                return;
+            }
+
+            event = event->supertype;
+        }
     }
 
     void ThreadActor::reactToClimax(GameAPI::GameActor partner) {

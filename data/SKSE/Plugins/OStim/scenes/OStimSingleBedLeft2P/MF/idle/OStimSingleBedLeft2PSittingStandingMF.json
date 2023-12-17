@@ -20,6 +20,11 @@
 			"icon": "OStim/symbols/switch"
 		},
 		{
+			"destination": "OStimSingleBedLeft2PSittingStandingFacingAwayMF",
+			"description": "$ostim_nav_turn_around_a{1}",
+			"icon": "OStim/symbols/return"
+		},
+		{
 			"destination": "OStimSingleBedLeft2PSittingKneelingMF",
 			"description": "$ostim_nav_kneel_before_t{0}",
 			"icon": "OStim/positional/kneeling_f"

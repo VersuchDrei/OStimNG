@@ -524,57 +524,78 @@ namespace OStim {
 
 
     void Thread::callEvent(std::string eventName, int actorIndex, int targetIndex, int performerIndex) {
-        // legacy mod event
-        if (playerThread && actorIndex == 0 && targetIndex == 1 && eventName == "spank") {
-            FormUtil::sendModEvent(GetActor(1)->getActor().form, "ostim_spank", "", 0);
-        }
-
         Graph::Event* graphEvent = Graph::GraphTable::getEvent(eventName);
         if (!graphEvent) {
             return;
+        }
+
+        // legacy mod event
+        if (playerThread && actorIndex == 0 && targetIndex == 1 && graphEvent->isChildOf(Graph::GraphTable::getEvent("spank"))) {
+            FormUtil::sendModEvent(GetActor(1)->getActor().form, "ostim_spank", "", 0);
         }
 
         ThreadActor* actor = GetActor(actorIndex);
         ThreadActor* target = GetActor(targetIndex);
         ThreadActor* performer = GetActor(performerIndex);
 
-        if (graphEvent->sound) {
-            graphEvent->sound.play(actor->getActor(), MCM::MCMTable::getSoundVolume());
+        GameAPI::GameSound sound = graphEvent->getSound();
+        if (sound) {
+            sound.play(actor->getActor(), MCM::MCMTable::getSoundVolume());
         }
 
-        if (graphEvent->cameraShakeDuration > 0 && graphEvent->cameraShakeStrength > 0) {
-            CameraUtil::shakeCamera(graphEvent->cameraShakeStrength, graphEvent->cameraShakeDuration);
+        float cameraShakeDuration = graphEvent->getCameraShakeDuration();
+        float cameraShakeStrength = graphEvent->getCameraShakeStrength();
+        if (cameraShakeDuration > 0 && cameraShakeStrength > 0) {
+            CameraUtil::shakeCamera(cameraShakeStrength, cameraShakeDuration);
         }
 
-        if (graphEvent->controllerRumbleDuration > 0 && graphEvent->controllerRumbleStrength > 0) {
-            ControlUtil::rumbleController(graphEvent->cameraShakeStrength, graphEvent->cameraShakeDuration);
+        float controllerRumbleDuration = graphEvent->getControllerRumbleDuration();
+        float controllerRumbleStrength = graphEvent->getControllerRumbleStrength();
+        if (controllerRumbleDuration > 0 && controllerRumbleStrength > 0) {
+            ControlUtil::rumbleController(cameraShakeStrength, cameraShakeDuration);
         }
 
-        if (actor && graphEvent->actor.stimulation > 0.0) {
-            if (actor->getExcitement() < graphEvent->actor.maxStimulation || actor->getExcitement() < actor->getMaxExcitement()) {
-                actor->addExcitement(graphEvent->actor.stimulation, true);
+        if (actor) {
+            float actorStimulation = graphEvent->getActorStimulation();
+            if (actorStimulation > 0.0 && actor->getExcitement() < graphEvent->getActorMaxStimulation()) {
+                actor->addExcitement(actorStimulation, true);
             }
         }
 
-        if (target && graphEvent->target.stimulation > 0.0) {
-            if (target->getExcitement() < graphEvent->target.maxStimulation || target->getExcitement() < target->getMaxExcitement()) {
-                target->addExcitement(graphEvent->target.stimulation, true);
+        if (target) {
+            float targetStimulation = graphEvent->getTargetStimulation();
+            if (targetStimulation > 0.0 && target->getExcitement() < graphEvent->getTargetMaxStimulation()) {
+                target->addExcitement(targetStimulation, true);
             }
         }
 
-        if (performer && graphEvent->performer.stimulation > 0.0) {
-            if (performer->getExcitement() < graphEvent->performer.maxStimulation || performer->getExcitement() < performer->getMaxExcitement()) {
-                performer->addExcitement(graphEvent->performer.stimulation, true);
+        if (performer) {
+            float performerStimulation = graphEvent->getPerformerStimulation();
+            if (performerStimulation > 0.0 && performer->getExcitement() < graphEvent->getPerformerMaxStimulation()) {
+                performer->addExcitement(performerStimulation, true);
             }
         }
 
         if (actor && target) {
-            actor->reactToEvent(graphEvent->actor.reactionDelay, eventName, target->getActor(), [](Sound::VoiceSet& voiceSet){return &voiceSet.eventActorReactions;});
-            target->reactToEvent(graphEvent->target.reactionDelay, eventName, actor->getActor(), [](Sound::VoiceSet& voiceSet){return &voiceSet.eventTargetReactions;});
+            actor->reactToEvent(graphEvent->getActorReactionDelay(), graphEvent, target->getActor(), [](Sound::VoiceSet& voiceSet){return &voiceSet.eventActorReactions;});
+            target->reactToEvent(graphEvent->getTargetReactionDelay(), graphEvent, actor->getActor(), [](Sound::VoiceSet& voiceSet){return &voiceSet.eventTargetReactions;});
         }
 
         if (actor && performer) {
-            performer->reactToEvent(graphEvent->performer.reactionDelay, eventName, actor->getActor(), [](Sound::VoiceSet& voiceSet){return &voiceSet.eventPerformerReactions;});
+            performer->reactToEvent(graphEvent->getPerformerReactionDelay(), graphEvent, actor->getActor(), [](Sound::VoiceSet& voiceSet){return &voiceSet.eventPerformerReactions;});
+        }
+
+        const auto skyrimVM = RE::SkyrimVM::GetSingleton();
+        auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+        if (vm) {
+            RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
+            int tempID = m_threadId;
+            std::string type = graphEvent->id;
+            RE::Actor* reActor = actor->getActor().form;
+            RE::Actor* reTarget = target->getActor().form;
+            RE::Actor* rePerformer = performer->getActor().form;
+            auto args = RE::MakeFunctionArguments<>(std::move(tempID), std::move(type), std::move(reActor), std::move(reTarget), std::move(rePerformer));
+            vm->DispatchStaticCall("OEvent", "SendOStimEvent", args, callback);
         }
     }
 

@@ -1,0 +1,47 @@
+{
+	"name": "$OStimSingleBedRight2PSittingStandingMF",
+	"modpack": "OStim",
+	"length": 2.0,
+	"furniture": "singlebed",
+	"speeds":[
+		{
+			"animation": "OStimBed2PSittingStandingFacingAwayMF"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStimSingleBedRight2PSittingStandingMF",
+			"description": "$ostim_nav_turn_around_a{1}",
+			"icon": "OStim/symbols/return"
+		}
+	],
+	"offset":{
+		"x": -22,
+		"r": -90
+	},
+	"scaleOffsetWithFurniture": true,
+	"tags":[
+		"idle"
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"scale": 1.03,
+      		"lookUp": 50,
+			"tags": [
+				"sitting"
+			],
+			"feetOnGround": false
+		},
+		{
+			"intendedSex": "female",
+      		"lookUp": -50,
+      		"lookLeft": 100,
+			"tags": [
+				"facingaway",
+				"standing"
+			],
+			"feetOnGround": false
+		}
+	]
+}
