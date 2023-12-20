@@ -48,6 +48,7 @@
 	],
 	"offset":{
 		"x": 48,
+		"y": 21,
 		"r": 90
 	},
 	"scaleOffsetWithFurniture": true,

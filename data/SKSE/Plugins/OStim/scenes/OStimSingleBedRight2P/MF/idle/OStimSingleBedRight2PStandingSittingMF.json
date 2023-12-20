@@ -27,6 +27,7 @@
 	],
 	"offset":{
 		"x": -22,
+		"y": 21,
 		"r": -90
 	},
 	"scaleOffsetWithFurniture": true,
