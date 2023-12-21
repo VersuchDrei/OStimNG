@@ -14,7 +14,7 @@
 			"icon": "OStim/symbols/gender_m"
 		},
 		{
-			"destination": "OStim1PStandingF",
+			"destination": "OStim1PSittingToStandingF",
 			"description": "$ostim_nav_stand_up",
 			"icon": "OStim/positional/standup_f"
 		}

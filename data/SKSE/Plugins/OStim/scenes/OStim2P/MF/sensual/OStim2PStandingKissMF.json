@@ -4,7 +4,8 @@
 	"length": 2.0,
 	"speeds":[
 		{
-			"animation": "OStim2PStandingKissMF"
+			"animation": "OStim2PStandingKissMF",
+			"playbackSpeed": 0.666
 		}
 	],
 	"navigations":[

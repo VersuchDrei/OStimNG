@@ -1,0 +1,20 @@
+{
+	"name": "$OStim1PSittingToStandingF",
+	"modpack": "OStim",
+	"length": 3.5,
+	"speeds":[
+		{
+			"animation": "OStim1PSittingToStandingF"
+		}
+	],
+	"destination": "OStim1PStandingF",
+	"actors":[
+		{
+			"intendedSex": "female",
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		}
+	]
+}
