@@ -5,18 +5,22 @@
 	"speeds":[
 		{
 			"animation": "OStim2PStandingHeadPattingMF_S1",
+			"playbackSpeed": 0.666,
 			"displaySpeed": 0.5
 		},
 		{
 			"animation": "OStim2PStandingHeadPattingMF_S2",
+			"playbackSpeed": 0.666,
 			"displaySpeed": 1.0
 		},
 		{
 			"animation": "OStim2PStandingHeadPattingMF_S3",
+			"playbackSpeed": 0.666,
 			"displaySpeed": 1.5
 		},
 		{
 			"animation": "OStim2PStandingHeadPattingMF_S4",
+			"playbackSpeed": 0.666,
 			"displaySpeed": 2.0
 		}
 	],
