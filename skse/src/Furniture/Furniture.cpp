@@ -8,6 +8,8 @@
 #include "Util/StringUtil.h"
 #include "Util.h"
 
+#include "GameAPI/GameUtil.h"
+
 namespace Furniture {
    std::vector<std::pair<FurnitureType*, GameAPI::GameObject>> findFurniture(int actorCount, GameAPI::GameObject center, float radius, float sameFloor) {
         if (!center) {
@@ -133,33 +135,32 @@ namespace Furniture {
     }
 
     void Furniture::resetClutter(RE::TESObjectREFR* centerRef, float radius) {
-        if (auto TES = RE::TES::GetSingleton(); TES) {
-            TES->ForEachReferenceInRange(centerRef, radius, [&](RE::TESObjectREFR& ref) {
-                if (!ref.Is3DLoaded() || ref.IsDynamicForm() || ref.IsDisabled() || ref.IsMarkedForDeletion() || ref.IsDeleted() || ObjectRefUtil::getMotionType(&ref) == 4) {
-                    return RE::BSContainer::ForEachResult::kContinue;
-                }
-
-                auto base = ref.GetBaseObject();
-                if (!base) {
-                    return RE::BSContainer::ForEachResult::kContinue;
-                }
-
-                for (auto type : FurnitureTable::clutterForms) {
-                    if (ref.Is(type) || base->Is(type)) {
-                        const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-                        auto vm = skyrimVM ? skyrimVM->impl : nullptr;
-                        if (vm) {
-                            RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-                            auto args = RE::MakeFunctionArguments();
-                            auto handle = skyrimVM->handlePolicy.GetHandleForObject(static_cast<RE::VMTypeID>(ref.FORMTYPE), &ref);
-                            vm->DispatchMethodCall2(handle, "ObjectReference", "MoveToMyEditorLocation", args, callback);
-                        }
-                        return RE::BSContainer::ForEachResult::kContinue;
-                    }
-                }
-                
+        GameAPI::GameUtil::ForEachReferenceInRange(centerRef, radius, [&](RE::TESObjectREFR& ref) {
+            /*
+            if (!ref.Is3DLoaded() || ref.IsDynamicForm() || ref.IsDisabled() || ref.IsMarkedForDeletion() || ref.IsDeleted() || ObjectRefUtil::getMotionType(&ref) == 4) {
                 return RE::BSContainer::ForEachResult::kContinue;
-                });
-        }
+            }
+
+            auto base = ref.GetBaseObject();
+            if (!base) {
+                return RE::BSContainer::ForEachResult::kContinue;
+            }
+
+            for (auto type : FurnitureTable::clutterForms) {
+                if (ref.Is(type) || base->Is(type)) {
+                    const auto skyrimVM = RE::SkyrimVM::GetSingleton();
+                    auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+                    if (vm) {
+                        RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
+                        auto args = RE::MakeFunctionArguments();
+                        auto handle = skyrimVM->handlePolicy.GetHandleForObject(static_cast<RE::VMTypeID>(ref.FORMTYPE), &ref);
+                        vm->DispatchMethodCall2(handle, "ObjectReference", "MoveToMyEditorLocation", args, callback);
+                    }
+                    return RE::BSContainer::ForEachResult::kContinue;
+                }
+            }
+            */
+            return RE::BSContainer::ForEachResult::kContinue;
+        });
     }
 }

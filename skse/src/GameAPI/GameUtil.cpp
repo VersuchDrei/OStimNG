@@ -46,5 +46,64 @@ namespace GameAPI {
             RE::ScriptCompiler compiler;
             CompileAndRunImpl(script, &compiler, name, targetRef);
         }
+
+        void ForEachReferenceInRange(RE::TESObjectREFR* a_origin, float a_radius, std::function<RE::BSContainer::ForEachResult(RE::TESObjectREFR& a_ref)> a_callback) {
+            RE::TES* TES = RE::TES::GetSingleton();
+            if (!TES) {
+                return;
+            }
+
+            if (a_origin && a_radius > 0.0f) {
+                const auto originPos = a_origin->GetPosition();
+
+                if (TES->interiorCell) {
+                    TES->interiorCell->ForEachReferenceInRange(originPos, a_radius, [&](RE::TESObjectREFR& a_ref) { return a_callback(a_ref); });
+                } else {
+                    if (const auto gridLength = TES->gridCells ? TES->gridCells->length : 0; gridLength > 0) {
+                        const float yPlus = originPos.y + a_radius;
+                        const float yMinus = originPos.y - a_radius;
+                        const float xPlus = originPos.x + a_radius;
+                        const float xMinus = originPos.x - a_radius;
+
+                        std::uint32_t x = 0;
+                        do {
+                            std::uint32_t y = 0;
+                            do {
+                                if (const auto cell = TES->gridCells->GetCell(x, y); cell && cell->IsAttached()) {
+                                    if (const auto cellCoords = cell->GetCoordinates(); cellCoords) {
+                                        const RE::NiPoint2 worldPos{cellCoords->worldX, cellCoords->worldY};
+                                        if (worldPos.x < xPlus && (worldPos.x + 4096.0f) > xMinus &&
+                                            worldPos.y < yPlus && (worldPos.y + 4096.0f) > yMinus) {
+                                            cell->ForEachReferenceInRange(
+                                                originPos, a_radius,
+                                                [&](RE::TESObjectREFR& a_ref) { return a_callback(a_ref); });
+                                        }
+                                    }
+                                }
+                                ++y;
+                            } while (y < gridLength);
+                            ++x;
+                        } while (x < gridLength);
+                    }
+                }
+
+                // something else in there still doesn't work
+                // don't get it, don't care, we don't actually need that part anyways
+                /*
+                RE::TESWorldSpace** ptr = &TES->worldSpace;
+                if (REL::Module::get().version().patch() >= 1130) {
+                    // this is where the bandaid fix is happening
+                    ptr += 8;
+                }
+                RE::TESWorldSpace* worldSpace = *ptr;
+                if (const auto skyCell = worldSpace ? worldSpace->GetSkyCell() : nullptr; skyCell) {
+                    skyCell->ForEachReferenceInRange(originPos, a_radius, [&](RE::TESObjectREFR& a_ref) { return a_callback(a_ref); });
+                }
+                */
+            } else {
+                // also causes CTD + we don't need this for now
+                //TES->ForEachReference([&](RE::TESObjectREFR& a_ref) { return a_callback(a_ref); });
+            }
+        }
     }
 }

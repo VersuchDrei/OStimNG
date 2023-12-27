@@ -76,6 +76,7 @@ namespace UI::Search {
         if (REL::Module::get().version().patch() < 1130) {
             controlMap->AllowTextInput(true);
         } else {
+            // bandaid fix until CLib-NG is updated
             int8_t* ptr = &controlMap->textEntryCount;
             ptr += 8;
             if (*ptr != -1) {
@@ -99,6 +100,7 @@ namespace UI::Search {
         if (REL::Module::get().version().patch() < 1130) {
             controlMap->AllowTextInput(false);
         } else {
+            // bandaid fix until CLib-NG is updated
             int8_t* ptr = &controlMap->textEntryCount;
             ptr += 8;
             if (*ptr != 0) {

@@ -323,6 +323,15 @@ bool Function AutoTransition(Actor Act, string Type) Global Native
 */;
 bool Function IsInOStim(Actor Act) Global Native
 
+;/* GetSceneID
+* * gets the scene ID of the scene involding the actor
+* *
+* * @param: Act, the actor to get the scene ID for
+* *
+* * @return: the scene ID, -1 if the actor is not involved in a scene
+*/;
+int Function GetSceneID(Actor Act) Global Native
+
 ;/* VerifyActors
 * * verifies if all of the given actors are eligible for OStim scenes
 * *

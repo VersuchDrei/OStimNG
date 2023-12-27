@@ -253,6 +253,11 @@ namespace PapyrusThreadActor {
         return OStim::ThreadManager::GetSingleton()->findActor(actor);
     }
 
+    int GetSceneID(RE::StaticFunctionTag*, RE::Actor* actor) {
+        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->findThread(actor);
+        return thread ? thread->m_threadId : -1;
+    }
+
     bool VerifyActors(RE::StaticFunctionTag*, std::vector<RE::Actor*> actors) {
         for (RE::Actor* actor : actors) {
             if (!OStim::isEligible(actor)) {
@@ -301,6 +306,7 @@ namespace PapyrusThreadActor {
         BIND(AutoTransition);
 
         BIND(IsInOStim);
+        BIND(GetSceneID);
         BIND(VerifyActors);
 
         return true;

@@ -307,8 +307,11 @@ namespace OStim {
         logger::info("Sending animation changed event");
         Messaging::MessagingRegistry::GetSingleton()->SendMessageToListeners(msg);
 
-        FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_scenechanged", m_currentNode->scene_id, 0);
-        FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_scenechanged_" + m_currentNode->scene_id, "", 0);
+        if (playerThread) {
+            FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_scenechanged", m_currentNode->scene_id, 0);
+            FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_scenechanged_" + m_currentNode->scene_id, "", 0);
+        }
+        FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_thread_scenechanged", m_currentNode->scene_id, m_threadId);
     }
 
     void Thread::AddActor(RE::Actor* actor) {
@@ -490,9 +493,8 @@ namespace OStim {
 
         if (playerThread) {
             UI::UIState::GetSingleton()->SpeedChanged(this, speed);
+            FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_animationchanged", m_currentNode->scene_id, speed);
         }
-
-        FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_animationchanged", m_currentNode->scene_id, speed);
     }
 
     bool Thread::increaseSpeed() {
