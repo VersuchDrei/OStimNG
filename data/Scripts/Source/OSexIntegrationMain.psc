@@ -1657,11 +1657,12 @@ EndFunction
 * * 30 = OStim Standalone 7.1
 * * 31 = OStim Standalone 7.1e
 * * 32 = OStim Standalone 7.2
+* * 33 = OStim Standalone 7.2d
 * *
 * * @return: the version of the current API
 */;
 Int Function GetAPIVersion()
-	Return 32
+	Return 33
 EndFunction
 
 Bool Function ActorHasFacelight(Actor Act)
@@ -2068,7 +2069,7 @@ Function Startup()
 EndFunction
 
 Function OnLoadGame()
-	If SKSE.GetPluginVersion("OStim") != 0x01000005
+	If SKSE.GetPluginVersion("OStim") != 0x01000006
 		Debug.MessageBox("OStim Standalone: Your OStim.dll or OSexIntegraionMain.pex is being overwritten with an old version. OStim and its addons will NOT work properly. Please don't report any other bugs while this issue persists.")
 	EndIf
 

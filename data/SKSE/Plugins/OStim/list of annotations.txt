@@ -72,6 +72,7 @@ syntax: OStimUnsetLooking
 
 --- OStimResetLooking ---
 resets the facial modifiers to what was defined in the scene file (see scenes README)
+if the scene file has no looking direction defined this has the same effect as OStimUnsetLooking
 syntax: OStimResetLooking
 
 --- OStimPlayExpression ---

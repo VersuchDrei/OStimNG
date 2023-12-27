@@ -1,0 +1,117 @@
+------------------------------
+----- Main Thread Events -----
+------------------------------
+these events only fire on the main thread (the thread involding the player)
+
+--- ostim_start ---
+gets fired when the main thread starts
+
+RegisterForModEvent("ostim_start", "OStimStart")
+
+Event OStimStart(string EventName, string StrArg, float NumArg, Form Sender)
+EndEvent
+
+--- ostim_scenechanged ---
+gets fired when the scene of the main thread changes
+
+RegisterForModEvent("ostim_scenechanged", "OStimSceneChanged")
+
+;/*
+* * @param: SceneID, the id of the scene the thread changed to
+*/;
+Event OStimSceneChanged(string EventName, string SceneID, float NumArg, Form Sender)
+EndEvent
+
+--- ostim_orgasm ---
+gets fired when an actor on the main thread orgasms
+
+RegisterForModEvent("ostim_orgasm", "OStimOrgasm")
+
+;/*
+* * @param: SceneID, the id of the scene the thread currently is in
+* * @param: Index, the index of the actor that orgasmed
+* * @param: Sender, the actor that orgasmed
+*/;
+Event OStimOrgasm(string EventName, string SceneID, float Index, Form Sender)
+	Actor OrgasmedActor = Sender as Actor
+EndEvent
+
+--- ostim_end ---
+gets fired when the main thread ends
+
+RegisterForModEvent("ostim_end", "OStimEnd")
+
+Event OStimEnd(string EventName, string StrArg, float NumArg, Form Sender)
+EndEvent
+
+------------------------------------
+----- Main + Sub Thread Events -----
+------------------------------------
+these events fire on the main and sub threads
+
+--- ostim_thread_start ---
+gets fired when the main thread starts
+
+RegisterForModEvent("ostim_thread_start", "OStimThreadStart")
+
+;/*
+* * @param: ThreadID, the id of the thread that started
+*/;
+Event OStimThreadStart(string EventName, string StrArg, float ThreadID, Form Sender)
+EndEvent
+
+--- ostim_thread_scenechanged ---
+gets fired when the scene of a thread changes
+required API version: 33
+
+RegisterForModEvent("ostim_thread_scenechanged", "OStimThreadSceneChanged")
+
+;/*
+* * @param: SceneID, the id of the scene the thread changed to
+* * @param: ThreadID, the id of the thread that changed scenes
+*/;
+Event OStimThreadSceneChanged(string EventName, string SceneID, float ThreadID, Form Sender)
+EndEvent
+
+--- ostim_actor_orgasm ---
+gets fired when an actor orgasms
+
+RegisterForModEvent("ostim_actor_orgasm", "OStimActorOrgasm")
+
+;/*
+* * @param: SceneID, the id of the scene the thread currently is in
+* * @param: ThreadID, the id of the thread the actor is in
+* * @param: Sender, the actor that orgasmed
+*/;
+Event OStimActorOrgasm(string EventName, string SceneID, float ThreadID, Form Sender)
+	Actor OrgasmedActor = Sender as Actor
+EndEvent
+
+--- ostim_event ---
+gets fired when an event is triggered by annotations
+
+RegisterForModEvent("ostim_event", "OStimEvent")
+
+;/*
+* * @param: ThreadID, the id of the thread the event was fired in
+* * @param: Type, the type of the event (see events README)
+* * @param: EventActor, the actor of the event
+* * @param: EventTarget, the target of the event
+* * @param: EventPerformer, the performer of the event
+*/;
+Event OStimEvent(int ThreadID, string Type, Form EventActor, Form EventTarget, FormEventPerformer)
+	Actor Act = EventActor as Actor
+	Actor Target = EventTarget as Actor
+	Actor Performer = EventPerformer as Actor
+EndEvent
+
+--- ostim_thread_end ---
+gets fired when a thread ends
+
+RegisterForModEvent("ostim_thread_end", "OStimThreadEnd")
+
+;/*
+* * @param: ThreadID, the id of the thread that ended
+*/;
+Event OStimThreadEnd(string EventName, string StrArg, float ThreadID, Form Sender)
+EndEvent
