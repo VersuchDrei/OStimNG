@@ -9,9 +9,8 @@ namespace GameAPI {
         const auto scriptFactory = RE::IFormFactory::GetConcreteFormFactoryByType<RE::Script>();
         const auto script = scriptFactory ? scriptFactory->Create() : nullptr;
         if (script) {
-            const auto selectedRef = RE::Console::GetSelectedRef();
             script->SetCommand("sgtm " + std::to_string(speed));
-            GameUtil::CompileAndRun(script, selectedRef.get());
+            GameUtil::CompileAndRun(script, RE::PlayerCharacter::GetSingleton());
             delete script;
         }
     }

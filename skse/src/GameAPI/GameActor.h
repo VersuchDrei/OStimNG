@@ -27,7 +27,7 @@ namespace GameAPI {
         inline bool isLoaded() const { return form->Is3DLoaded(); }
         inline bool isDisabled() const { return form->IsDisabled(); }
         inline bool isDeleted() const { return form->IsMarkedForDeletion() || form->IsDeleted(); }
-        inline void updateAI() const { form->EvaluatePackage(); }
+        inline void updateAI() const { if(!form->IsPlayerRef()) form->EvaluatePackage(); }
         void lock() const;
         void unlock() const;
         void playAnimation(std::string animation) const;
