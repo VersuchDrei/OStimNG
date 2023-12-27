@@ -1,0 +1,53 @@
+{
+	"name": "$OStim2PStandingKneelingMF",
+	"modpack": "OStim",
+	"length": 2.0,
+	"speeds":[
+		{
+			"animation": "OStim2PStandingKneelingMF"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStim2PStandingApartMF",
+			"description": "$ostim_nav_stand_up_a{1}",
+			"icon": "OStim/positional/standup_f",
+			"priority": 0
+		},
+		{
+			"destination": "OStim2PStandingSquattingMF",
+			"description": "$ostim_nav_squat_before_t{0}",
+			"icon": "OStim/positional/squatting_f",
+			"priority": 0
+		},
+		{
+			"destination": "OStim2PStandingKneelingFemaleBehindMF",
+			"description": "$ostim_nav_turn_around_a{0}",
+			"icon": "OStim/positional/turnaround_m",
+			"priority": 0
+		}
+	],
+	"tags":[
+		"idle"
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"sosBend": 7,
+			"scale": 1.03,
+      		"lookUp": -50,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		},
+		{
+			"intendedSex": "female",
+      		"lookUp": 50,
+			"tags": [
+				"kneeling"
+			],
+			"feetOnGround": true
+		}
+	]
+}

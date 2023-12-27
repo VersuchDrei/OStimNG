@@ -27,6 +27,12 @@
 			"priority": 0
 		},
 		{
+			"destination": "OStim2PStandingKneelingMF",
+			"description": "$ostim_nav_kneel_before_t{0}",
+			"icon": "OStim/positional/kneeling_f",
+			"priority": 0
+		},
+		{
 			"destination": "OStim2PStandingApartToStandingSquattingMF",
 			"description": "$ostim_nav_squat_before_t{0}",
 			"icon": "OStim/positional/squatting_f",
@@ -36,6 +42,12 @@
 			"destination": "OStim2PStandingApartToSittingMF",
 			"description": "$ostim_nav_sit_down",
 			"icon": "OStim/positional/squatting_f",
+			"priority": 0
+		},
+		{
+			"destination": "OStim2PStandingApartFemaleBehindMF",
+			"description": "$ostim_nav_turn_around_a{0}",
+			"icon": "OStim/positional/turnaround_m",
 			"priority": 0
 		},
 		{

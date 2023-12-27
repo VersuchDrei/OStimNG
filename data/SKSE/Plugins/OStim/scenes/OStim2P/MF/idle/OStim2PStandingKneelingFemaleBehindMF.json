@@ -1,30 +1,25 @@
 {
-	"name": "$OStim2PStandingSquattingMF",
+	"name": "$OStim2PStandingKneelingMF",
 	"modpack": "OStim",
 	"length": 2.0,
 	"speeds":[
 		{
-			"animation": "OStim2PStandingSquattingMF"
+			"animation": "OStim2PStandingKneelingFemaleBehindMF",
+			"playbackSpeed": 0.666
 		}
 	],
 	"navigations":[
 		{
-			"destination": "OStim2PStandingSquattingToStandingApartMF",
+			"destination": "OStim2PStandingApartFemaleBehindMF",
 			"description": "$ostim_nav_stand_up_a{1}",
 			"icon": "OStim/positional/standup_f",
 			"priority": 0
 		},
 		{
 			"destination": "OStim2PStandingKneelingMF",
-			"description": "$ostim_nav_kneel_before_t{0}",
-			"icon": "OStim/positional/kneeling_f",
+			"description": "$ostim_nav_turn_around_a{0}",
+			"icon": "OStim/positional/turnaround_m",
 			"priority": 0
-		},
-		{
-			"destination": "OStim2PUndressingHub0MF",
-			"description": "$ostim_nav_idle_undressing",
-			"icon": "OStim/clothes/top",
-			"priority": 2000
 		}
 	],
 	"tags":[
@@ -36,14 +31,16 @@
 			"sosBend": 7,
 			"scale": 1.03,
 			"tags": [
+				"facingaway",
 				"standing"
 			],
 			"feetOnGround": true
 		},
 		{
 			"intendedSex": "female",
+      		"lookUp": 50,
 			"tags": [
-				"squatting"
+				"kneeling"
 			],
 			"feetOnGround": true
 		}

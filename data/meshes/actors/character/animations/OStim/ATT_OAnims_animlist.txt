@@ -27,6 +27,8 @@ b -a,Tn OStim2PStandingApartToStandingSquattingMF_0 OStim2P\MF\idle\OStim2PStand
 b -a,Tn OStim2PStandingApartToStandingSquattingMF_1 OStim2P\MF\idle\OStim2PStandingApartToStandingSquattingMF_1.hkx
 b -a,Tn OStim2PStandingApartToSittingMF_0 OStim2P\MF\idle\OStim2PStandingApartToSittingMF_0.hkx
 b -a,Tn OStim2PStandingApartToSittingMF_1 OStim2P\MF\idle\OStim2PStandingApartToSittingMF_1.hkx
+b -Tn OStim2PStandingApartFemaleBehindMF_0 OStim2P\MF\idle\OStim2PStandingApartFemaleBehindMF_0.hkx
+b -Tn OStim2PStandingApartFemaleBehindMF_1 OStim2P\MF\idle\OStim2PStandingApartFemaleBehindMF_1.hkx
 b -Tn OStim2PStandingHoldingMF_0 OStim2P\MF\idle\OStim2PStandingHoldingMF_0.hkx
 b -Tn OStim2PStandingHoldingMF_1 OStim2P\MF\idle\OStim2PStandingHoldingMF_1.hkx
 b -a,Tn OStim2PStandingHoldingToApartMF_0 OStim2P\MF\idle\OStim2PStandingHoldingToApartMF_0.hkx
@@ -37,6 +39,10 @@ b -Tn OStim2PStandingHoldingFromBehindMF_0 OStim2P\MF\idle\OStim2PStandingHoldin
 b -Tn OStim2PStandingHoldingFromBehindMF_1 OStim2P\MF\idle\OStim2PStandingHoldingFromBehindMF_1.hkx
 b -a,Tn OStim2PStandingHoldingFromBehindToHoldingMF_0 OStim2P\MF\idle\OStim2PStandingHoldingFromBehindToHoldingMF_0.hkx
 b -a,Tn OStim2PStandingHoldingFromBehindToHoldingMF_1 OStim2P\MF\idle\OStim2PStandingHoldingFromBehindToHoldingMF_1.hkx
+b -Tn OStim2PStandingKneelingMF_0 OStim2P\MF\idle\OStim2PStandingKneelingMF_0.hkx
+b -Tn OStim2PStandingKneelingMF_1 OStim2P\MF\idle\OStim2PStandingKneelingMF_1.hkx
+b -Tn OStim2PStandingKneelingFemaleBehindMF_0 OStim2P\MF\idle\OStim2PStandingKneelingFemaleBehindMF_0.hkx
+b -Tn OStim2PStandingKneelingFemaleBehindMF_1 OStim2P\MF\idle\OStim2PStandingKneelingFemaleBehindMF_1.hkx
 b -Tn OStim2PStandingSquattingMF_0 OStim2P\MF\idle\OStim2PStandingSquattingMF_0.hkx
 b -Tn OStim2PStandingSquattingMF_1 OStim2P\MF\idle\OStim2PStandingSquattingMF_1.hkx
 b -a,Tn OStim2PStandingSquattingToStandingApartMF_0 OStim2P\MF\idle\OStim2PStandingSquattingToStandingApartMF_0.hkx
