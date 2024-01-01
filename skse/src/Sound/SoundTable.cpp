@@ -20,11 +20,19 @@ namespace Sound {
 
             auto& target = json["target"];
             if (!target.contains("mod")) {
-                logger::warn("file {} does not have field 'target.mod' defined", path);
+                logger::warn("voice set {} does not have field 'target.mod' defined", path);
+                return;
+            }
+            if (!target["mod"].is_string()) {
+                logger::warn("field 'target.mod' of voice set {} is not a string", path);
                 return;
             }
             if (!target.contains("formid")) {
-                logger::warn("file {} does not have field 'target.formid' defined", path);
+                logger::warn("voice set {} does not have field 'target.formid' defined", path);
+                return;
+            }
+            if (!target["formid"].is_string()) {
+                logger::warn("field 'target.formid' of voice set {} is not a string", path);
                 return;
             }
 
@@ -42,7 +50,17 @@ namespace Sound {
                 return;
             }
 
+
             VoiceSet voiceSet;
+
+            RE::TESForm* targetForm = RE::TESDataHandler::GetSingleton()->LookupForm(std::stoi(stringID, nullptr, 16), target["mod"]);
+            if (targetForm) {
+                if (targetForm->Is(RE::BGSVoiceType::FORMTYPE)) {
+                    voiceSet.voice = targetForm->As<RE::BGSVoiceType>();
+                } else if (targetForm->Is(RE::TESNPC::FORMTYPE)) {
+                    voiceSet.voice = targetForm->As<RE::TESNPC>()->voiceType;
+                }
+            }
 
             JsonUtil::loadTranslatedString(json, voiceSet.name, "name", filename, "voice set", false);
             if (voiceSet.name.empty()) {

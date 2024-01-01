@@ -4,11 +4,14 @@
 #include "SoundUtil.h"
 
 #include "GameAPI/GameSound.h"
+#include "GameAPI/GameVoice.h"
 
 namespace Sound {
     struct VoiceSet {
     public:
         std::string name = "";
+
+        GameAPI::GameVoice voice;
 
         ReactionSet moan;
 

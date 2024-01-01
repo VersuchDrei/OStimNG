@@ -27,6 +27,16 @@ bool Function HasSchlong(Actor Act) Global Native
 */;
 Function SayTo(Actor Act, Actor Target, Topic Dialogue) Global Native
 
+;/* SayAs
+* * says the dialogue topic to the target actor
+* *
+* * @param: Act, the actor to say the topic
+* * @param: Target, the actor to say the topic to
+* * @param: Dialogue, the topic to say
+* * @param: Voice, the voice type to say the topic with
+*/;
+Function SayAs(Actor Act, Actor Target, Topic Dialogue, VoiceType Voice) Global Native
+
 ;/* EmptyArray
 * * returns a size zero array of type Actor
 * *

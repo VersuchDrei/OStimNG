@@ -81,7 +81,7 @@ namespace OStim {
 
     bool ThreadActor::canTalk() {
         if (isPlayer) {
-            return false;
+            //return false;
         }
 
         if (actor.isTalking()) {
@@ -147,8 +147,13 @@ namespace OStim {
                     if (set->expression != "") {
                         setEventExpression(set->expression);
                     }
-                    actor.sayTo(primaryPartner, set->dialogue);
+                    // reset mouth so lipsync doesn't look weird
                     applyExpression(&Trait::TraitTable::fallbackExpression.female, Trait::ExpressionType::PHONEME, 5);
+                    if (voiceSet.voice && voiceSet.voice != actor.getVoice()) {
+                        set->dialogue.sayAs(actor, primaryPartner, voiceSet.voice);
+                    } else {
+                        set->dialogue.sayTo(actor, primaryPartner);
+                    }
                     isTalking = true;
                     soundGracePeriod = 250;
                     moanCooldown = set->moanIntervalOverride;

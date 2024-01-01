@@ -2,7 +2,6 @@
 
 #include "GameActorBone.h"
 #include "GameActorValue.h"
-#include "GameDialogue.h"
 #include "GameFaction.h"
 #include "GameKeyword.h"
 #include "GamePosition.h"
@@ -80,7 +79,6 @@ namespace GameAPI {
 
         inline bool isInDialogue() const { return IsInDialogueWithPlayer(nullptr, 0, form); }
         inline bool isTalking() const { return form->GetActorRuntimeData().voiceTimer > 0; }
-        void sayTo(GameActor target, GameDialogue dialogue) const;
         inline bool hasLight() const { return form->AsMagicTarget()->HasEffectWithArchetype(RE::MagicTarget::Archetype::kLight); }
         inline double getLightLevel() const { return GetLightLevel(form); }
 

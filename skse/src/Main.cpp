@@ -4,6 +4,7 @@
 #include "Core/ThreadInterface.h"
 #include "Events/EventListener.h"
 #include "Furniture/FurnitureTable.h"
+#include "GameAPI/GameHooks.h"
 #include "GameAPI/GameTable.h"
 #include "Graph/GraphTable.h"
 #include "InterfaceSpec/IPluginInterface.h"
@@ -102,7 +103,7 @@ namespace {
                 UI::PostRegisterMenus();
                 
                 // we are installing this hook so late because we need it to overwrite the PapyrusUtil hook
-                Events::PackageStart::Install();
+                GameAPI::installHooksLate();
             } break;
             case SKSE::MessagingInterface::kPreLoadGame: {
                 //UI::PostRegisterMenus();
@@ -135,6 +136,8 @@ SKSEPluginLoad(const LoadInterface* skse) {
 
     Papyrus::Bind();
     UI::Settings::LoadSettings();
+
+    GameAPI::installHooks();
 
     const auto serial = SKSE::GetSerializationInterface();
     serial->SetUniqueID(_byteswap_ulong('OST'));
