@@ -51,7 +51,7 @@
 	"male": {
 		"phonemes": [{
 			"type": 10,
-			"baseValue": 30,
+			"baseValue": 10,
 			"variance": 20,
 			"delay": 0.3,
 			"delayVariance":0.2,

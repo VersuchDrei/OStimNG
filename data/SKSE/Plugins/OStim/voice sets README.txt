@@ -5,6 +5,10 @@ If that fails too it will use the default voice set for either males for females
 
 Since OStim plays the sounds from an SKSE plugin it can play them from sound descriptors directly, there is no need to create sound markers.
 
+If the actor is assigned a different voice in the MCM and/or is the player the following restrictions apply to dialogue:
+- only the first response will be played (so optimally just don't make dialogue with multiple responses)
+- the emotion defined in the Topic Info doesn't apply (so all your emotions should be defined in the expression .jsons rather than the CK)
+
 field summary:
 
 voice set:

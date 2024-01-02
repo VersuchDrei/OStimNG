@@ -647,6 +647,10 @@ namespace OStim {
     }
 
     void ThreadActor::applyExpression(Trait::GenderExpression* expression, int mask, int updateSpeed) {
+        if (MCM::MCMTable::noFacialExpressions()) {
+            return;
+        }
+
         if (isTalking) {
             mask &= ~Trait::ExpressionType::PHONEME;
         }

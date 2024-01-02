@@ -59,8 +59,8 @@
 		},
 		"phonemes": [{
 			"type": 1,
-			"baseValue": 30,
-			"variance": 20,
+			"baseValue": 10,
+			"variance": 10,
 			"delay": 0.4,
 			"delayVariance":0.2,
 			"excitementMultiplier": 0.3
@@ -82,11 +82,11 @@
 			"variance": 30
 		}, {
 			"type": 0,
-			"baseValue": 20,
+			"baseValue": 30,
 			"variance": 15
 		}, {
 			"type": 1,
-			"baseValue": 20,
+			"baseValue": 30,
 			"variance": 15
 		}]
 	}

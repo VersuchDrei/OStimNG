@@ -55,9 +55,9 @@
 			"excitementMultiplier": 0.3
 		}, {
 			"type": 0,
-			"baseValue": 20,
-			"variance": 20,
-			"excitementMultiplier": 0.2
+			"baseValue": 0,
+			"variance": 10,
+			"excitementMultiplier": 0.1
 		}, {
 			"type": 7,
 			"baseValue": 10,
@@ -72,11 +72,11 @@
 			"variance": 30
 		}, {
 			"type": 0,
-			"baseValue": 25,
+			"baseValue": 45,
 			"variance": 15
 		}, {
 			"type": 1,
-			"baseValue": 25,
+			"baseValue": 35,
 			"variance": 15
 		}]
 	}

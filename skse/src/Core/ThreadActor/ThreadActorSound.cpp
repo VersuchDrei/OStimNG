@@ -80,8 +80,8 @@ namespace OStim {
     }
 
     bool ThreadActor::canTalk() {
-        if (isPlayer) {
-            //return false;
+        if (isPlayer && !MCM::MCMTable::playerDialogue()) {
+            return false;
         }
 
         if (actor.isTalking()) {

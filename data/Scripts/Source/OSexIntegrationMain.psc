@@ -1583,6 +1583,20 @@ float Property SoundVolume
 	EndFunction
 EndProperty
 
+GlobalVariable Property OStimPlayerDialogue Auto
+bool Property PlayerDialogue
+	bool Function Get()
+		Return OStimPlayerDialogue.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimPlayerDialogue.value = 1
+		Else
+			OStimPlayerDialogue.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
 ; -------------------------------------------------------------------------------------------------
 ; DEBUG SETTINGS  ---------------------------------------------------------------------------------
 
@@ -1596,6 +1610,20 @@ bool Property UnrestrictedNavigation
 			OStimUnrestrictedNavigation.value = 1
 		Else
 			OStimUnrestrictedNavigation.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimNoFacialExpressions Auto
+bool Property NoFacialExpressions
+	bool Function Get()
+		Return OStimNoFacialExpressions.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimNoFacialExpressions.value = 1
+		Else
+			OStimNoFacialExpressions.value = 0
 		EndIf
 	EndFunction
 EndProperty

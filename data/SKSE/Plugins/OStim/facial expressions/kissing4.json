@@ -60,7 +60,7 @@
 		},
 		"phonemes": [{
 			"type": 1,
-			"baseValue": 60,
+			"baseValue": 20,
 			"delay": 0.2,
 			"delayVariance":0.2,
 			"excitementMultiplier": 0.3

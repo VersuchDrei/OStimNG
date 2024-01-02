@@ -115,6 +115,7 @@ namespace MCM {
         inline static int getFemaleDialogueCountdownMax() { return settings[0xE98].asInt(); }
 
         inline static float getSoundVolume() { return settings[0xE0D].asFloat(); }
+        inline static bool playerDialogue() { return settings[0xECF].asBool(); }
 
         inline static bool intendedSexOnly() { return settings[0xDEE].asBool(); }
         inline static bool playerAlwaysDomStraight() { return settings[0xDEF].asBool(); }
@@ -144,6 +145,7 @@ namespace MCM {
         inline static float bedOffset() { return settings[0xDFF].asFloat(); }
 
         inline static bool unrestrictedNavigation() { return settings[0xECD].asBool(); }
+        inline static bool noFacialExpressions() { return settings[0xECE].asBool(); }
 
         static void exportSettings();
         static void importSettings();
@@ -259,6 +261,7 @@ namespace MCM {
             {0xE97, {1, "femaleDialogueCountdownMin"}},
             {0xE98, {3, "femaleDialogueCountdownMax"}},
             {0xE0D, {1, "soundVolume"}},
+            {0xECF, {1, "playerDialogue"}},
 
             {0xDEE, {1, "SetOnlyGayAnimsInGayScenes"}},  // intended sex only
             {0XDEF, {0, "PlayerAlwaysDomStraight"}},
@@ -285,7 +288,8 @@ namespace MCM {
             {0xDE4, {0, "alignmentGroupByHeight"}},
             {0xDE5, {1, "alignmentGroupByHeels"}},
 
-            {0xECD, {0, "unrestrictedNavigation"}}
+            {0xECD, {0, "unrestrictedNavigation"}},
+            {0xECE, {0, "noFacialExpressions"}}
         };
 
         inline static uint32_t undressingMask = 0x3D8BC39D;

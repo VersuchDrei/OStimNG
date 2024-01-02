@@ -144,6 +144,8 @@ EndEvent
 Event OnOptionSelect(int Option)
 	if currPage == "$ostim_page_undress"
 		OnSlotSelect(Option)
+	ElseIf currPage == "$ostim_page_sound"
+		OnOptionSelectSound(Option)
 	ElseIf CurrPage == "$ostim_page_debug"
 		OnOptionSelectDebug(Option)
 	EndIf
@@ -152,6 +154,8 @@ EndEvent
 Event OnOptionHighlight(int Option)
 	if currPage == "$ostim_page_undress"
 		OnSlotMouseOver(Option)
+	ElseIf currPage == "$ostim_page_sound"
+		OnOptionHighlightSound(Option)
 	ElseIf currPage == "$ostim_page_debug"
 		OnOptionHighlightDebug(Option)
 	EndIf
@@ -2381,6 +2385,8 @@ EndState
 ; ███████║╚██████╔╝╚██████╔╝██║ ╚████║██████╔╝
 ; ╚══════╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝╚═════╝
 
+int OID_PlayerDialogue = -1
+
 Function DrawSoundPage()
 	SetCursorFillMode(TOP_TO_BOTTOM)
 	SetCursorPosition(0)
@@ -2393,16 +2399,18 @@ Function DrawSoundPage()
 	AddSliderOptionST("OID_MoanVolume", "$ostim_moan_volume", Main.MoanVolume, "{2}")
 	SetCursorPosition(8)
 	AddMenuOptionST("OID_PlayerVoice", "$ostim_player_voice", OData.GetVoiceSetName(0x7))
+	SetCursorPosition(10)
+	OID_PlayerDialogue = AddToggleOption("$ostim_player_dialogue", Main.PlayerDialogue)
 
-	SetCursorPosition(12)
-	AddColoredHeader("$ostim_header_dialogue")
 	SetCursorPosition(14)
-	AddSliderOptionST("OID_MaleDialogueCountdownMin", "$ostim_male_dialogue_countdown_min", Main.MaleDialogueCountdownMin, "{0}")
+	AddColoredHeader("$ostim_header_dialogue")
 	SetCursorPosition(16)
-	AddSliderOptionST("OID_MaleDialogueCountdownMax", "$ostim_male_dialogue_countdown_max", Main.MaleDialogueCountdownMax, "{0}")
+	AddSliderOptionST("OID_MaleDialogueCountdownMin", "$ostim_male_dialogue_countdown_min", Main.MaleDialogueCountdownMin, "{0}")
 	SetCursorPosition(18)
-	AddSliderOptionST("OID_FemaleDialogueCountdownMin", "$ostim_female_dialogue_countdown_min", Main.FemaleDialogueCountdownMin, "{0}")
+	AddSliderOptionST("OID_MaleDialogueCountdownMax", "$ostim_male_dialogue_countdown_max", Main.MaleDialogueCountdownMax, "{0}")
 	SetCursorPosition(20)
+	AddSliderOptionST("OID_FemaleDialogueCountdownMin", "$ostim_female_dialogue_countdown_min", Main.FemaleDialogueCountdownMin, "{0}")
+	SetCursorPosition(22)
 	AddSliderOptionST("OID_FemaleDialogueCountdownMax", "$ostim_female_dialogue_countdown_max", Main.FemaleDialogueCountdownMax, "{0}")
 
 	SetCursorPosition(1)
@@ -2410,6 +2418,20 @@ Function DrawSoundPage()
 	SetCursorPosition(3)
 	AddSliderOptionST("OID_SoundVolume", "$ostim_sound_volume", Main.SoundVolume, "{2}")
 EndFunction
+
+Function OnOptionHighlightSound(int Option)
+	If Option == OID_PlayerDialogue
+		SetInfoText("$ostim_tooltip_player_dialogue")
+	EndIf
+EndFunction
+
+Function OnOptionSelectSound(int Option)
+	If Option == OID_PlayerDialogue
+		Main.PlayerDialogue = !Main.PlayerDialogue
+		SetToggleOptionValue(Option, Main.PlayerDialogue)
+	EndIf
+EndFunction
+
 
 State OID_MoanIntervalMin
 	Event OnHighlightST()
@@ -2679,17 +2701,22 @@ EndState
 ; ██████╔╝███████╗██████╔╝╚██████╔╝╚██████╔╝
 ; ╚═════╝ ╚══════╝╚═════╝  ╚═════╝  ╚═════╝
 
-int OID_UnrestrictedNavigation
+int OID_UnrestrictedNavigation = -1
+int OID_NoFacialExpressions = -1
 
 Function DrawDebugPage()
 	SetCursorFillMode(TOP_TO_BOTTOM)
 	SetCursorPosition(0)
 	OID_UnrestrictedNavigation = AddToggleOption("$ostim_unrestricted_navigation", Main.UnrestrictedNavigation)
+	SetCursorPosition(1)
+	OID_NoFacialExpressions = AddToggleOption("$ostim_no_facial_expressions", Main.NoFacialExpressions)
 EndFunction
 
 Function OnOptionHighlightDebug(int Option)
 	If Option == OID_UnrestrictedNavigation
 		SetInfoText("$ostim_tooltip_unrestricted_navigation")
+	ElseIf Option == OID_NoFacialExpressions
+		SetInfoText("$ostim_tooltip_no_facial_expressions")
 	EndIf
 EndFunction
 
@@ -2697,6 +2724,9 @@ Function OnOptionSelectDebug(int Option)
 	If Option == OID_UnrestrictedNavigation
 		Main.UnrestrictedNavigation = !Main.UnrestrictedNavigation
 		SetToggleOptionValue(Option, Main.UnrestrictedNavigation)
+	ElseIf Option == OID_NoFacialExpressions
+		Main.NoFacialExpressions = !Main.NoFacialExpressions
+		SetToggleOptionValue(Option, Main.NoFacialExpressions)
 	EndIf
 EndFunction
 
