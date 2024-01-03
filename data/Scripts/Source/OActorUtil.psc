@@ -5,6 +5,13 @@
 */;
 ScriptName OActorUtil
 
+;  ██████╗ ██████╗ ███╗   ██╗██████╗ ██╗████████╗██╗ ██████╗ ███╗   ██╗███████╗
+; ██╔════╝██╔═══██╗████╗  ██║██╔══██╗██║╚══██╔══╝██║██╔═══██╗████╗  ██║██╔════╝
+; ██║     ██║   ██║██╔██╗ ██║██║  ██║██║   ██║   ██║██║   ██║██╔██╗ ██║███████╗
+; ██║     ██║   ██║██║╚██╗██║██║  ██║██║   ██║   ██║██║   ██║██║╚██╗██║╚════██║
+; ╚██████╗╚██████╔╝██║ ╚████║██████╔╝██║   ██║   ██║╚██████╔╝██║ ╚████║███████║
+;  ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚═════╝ ╚═╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝
+
 ;/* HasSchlong
 * * checks if the actor has a schlong
 * * if SoS full is not installed or use SoS gender was disabled in the MCM this will simply check for the actors sex
@@ -17,6 +24,14 @@ ScriptName OActorUtil
 * * @return: true if the actor has a schlong, otherwise false
 */;
 bool Function HasSchlong(Actor Act) Global Native
+
+
+; ██████╗ ██╗ █████╗ ██╗      ██████╗  ██████╗ ██╗   ██╗███████╗
+; ██╔══██╗██║██╔══██╗██║     ██╔═══██╗██╔════╝ ██║   ██║██╔════╝
+; ██║  ██║██║███████║██║     ██║   ██║██║  ███╗██║   ██║█████╗  
+; ██║  ██║██║██╔══██║██║     ██║   ██║██║   ██║██║   ██║██╔══╝  
+; ██████╔╝██║██║  ██║███████╗╚██████╔╝╚██████╔╝╚██████╔╝███████╗
+; ╚═════╝ ╚═╝╚═╝  ╚═╝╚══════╝ ╚═════╝  ╚═════╝  ╚═════╝ ╚══════╝
 
 ;/* SayTo
 * * says the dialogue topic the the target actor
@@ -36,6 +51,14 @@ Function SayTo(Actor Act, Actor Target, Topic Dialogue) Global Native
 * * @param: Voice, the voice type to say the topic with
 */;
 Function SayAs(Actor Act, Actor Target, Topic Dialogue, VoiceType Voice) Global Native
+
+
+;  █████╗ ██████╗ ██████╗  █████╗ ██╗   ██╗███████╗
+; ██╔══██╗██╔══██╗██╔══██╗██╔══██╗╚██╗ ██╔╝██╔════╝
+; ███████║██████╔╝██████╔╝███████║ ╚████╔╝ ███████╗
+; ██╔══██║██╔══██╗██╔══██╗██╔══██║  ╚██╔╝  ╚════██║
+; ██║  ██║██║  ██║██║  ██║██║  ██║   ██║   ███████║
+; ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚══════╝
 
 ;/* EmptyArray
 * * returns a size zero array of type Actor

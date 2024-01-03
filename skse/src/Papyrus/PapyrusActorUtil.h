@@ -12,13 +12,11 @@ namespace PapyrusActorUtil {
     }
 
     void SayTo(RE::StaticFunctionTag*, RE::Actor* actor, RE::Actor* target, RE::TESTopic* dialogue) {
-        GameAPI::GameDialogue gameDialogue(dialogue);
-        gameDialogue.sayTo(actor, target);
+        GameAPI::GameDialogue(dialogue).sayTo(actor, target);
     }
 
     void SayAs(RE::StaticFunctionTag*, RE::Actor* actor, RE::Actor* target, RE::TESTopic* dialogue, RE::BGSVoiceType* voice) {
-        GameAPI::GameDialogue gameDialogue(dialogue);
-        gameDialogue.sayAs(actor, target, voice);
+        GameAPI::GameDialogue(dialogue).sayAs(actor, target, voice);
     }
 
     std::vector<RE::Actor*> EmptyArray(RE::StaticFunctionTag*) {
