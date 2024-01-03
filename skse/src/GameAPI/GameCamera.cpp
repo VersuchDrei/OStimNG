@@ -36,7 +36,14 @@ namespace GameAPI {
         } else {
             if (GameTable::improvedCamSupport()) {
                 camera->ForceFirstPerson();
-                RE::ControlMap::GetSingleton()->enabledControls.reset(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch);
+                if (REL::Module::get().version().patch() < 1130) {
+                    RE::ControlMap::GetSingleton()->enabledControls.reset(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch);
+                } else {
+                    // bandaid fix until CLib-NG is updated
+                    auto ptr = &RE::ControlMap::GetSingleton()->enabledControls;
+                    ptr += 8;
+                    (*ptr).reset(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch);
+                }
                 camera->ForceThirdPerson();
             }
         }
@@ -47,7 +54,14 @@ namespace GameAPI {
         if (camera->IsInFreeCameraMode()) {
             toggleFlyCamInner();
         } else if (GameTable::improvedCamSupport()) {
-            RE::ControlMap::GetSingleton()->enabledControls.set(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch);
+            if (REL::Module::get().version().patch() < 1130) {
+                RE::ControlMap::GetSingleton()->enabledControls.set(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch);
+            } else {
+                // bandaid fix until CLib-NG is updated
+                auto ptr = &RE::ControlMap::GetSingleton()->enabledControls;
+                ptr += 8;
+                (*ptr).set(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch);
+            }
         }
         if (firstPerson) {
             std::thread camThread = std::thread([&] {
@@ -76,10 +90,24 @@ namespace GameAPI {
         if (camera->IsInFreeCameraMode()) {
             toggleFlyCamInner();
             camera->ForceFirstPerson();
-            RE::ControlMap::GetSingleton()->enabledControls.reset(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch);
+            if (REL::Module::get().version().patch() < 1130) {
+                RE::ControlMap::GetSingleton()->enabledControls.reset(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch);
+            } else {
+                // bandaid fix until CLib-NG is updated
+                auto ptr = &RE::ControlMap::GetSingleton()->enabledControls;
+                ptr += 8;
+                (*ptr).reset(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch);
+            }
             camera->ForceThirdPerson();
         } else {
-            RE::ControlMap::GetSingleton()->enabledControls.set(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch);
+            if (REL::Module::get().version().patch() < 1130) {
+                RE::ControlMap::GetSingleton()->enabledControls.set(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch);
+            } else {
+                // bandaid fix until CLib-NG is updated
+                auto ptr = &RE::ControlMap::GetSingleton()->enabledControls;
+                ptr += 8;
+                (*ptr).set(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch);
+            }
             toggleFlyCamInner();
         }
     }
