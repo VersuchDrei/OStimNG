@@ -1686,6 +1686,7 @@ EndFunction
 * * 31 = OStim Standalone 7.1e
 * * 32 = OStim Standalone 7.2
 * * 33 = OStim Standalone 7.2d
+* * 34 = OStim Standalone 7.3
 * *
 * * @return: the version of the current API
 */;
@@ -2097,7 +2098,7 @@ Function Startup()
 EndFunction
 
 Function OnLoadGame()
-	If SKSE.GetPluginVersion("OStim") != 0x01000006
+	If SKSE.GetPluginVersion("OStim") != 0x01000007
 		Debug.MessageBox("OStim Standalone: Your OStim.dll or OSexIntegraionMain.pex is being overwritten with an old version. OStim and its addons will NOT work properly. Please don't report any other bugs while this issue persists.")
 	EndIf
 

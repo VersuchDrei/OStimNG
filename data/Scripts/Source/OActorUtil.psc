@@ -25,6 +25,45 @@ ScriptName OActorUtil
 */;
 bool Function HasSchlong(Actor Act) Global Native
 
+;/* FulfillsCondition
+* * checks if the actor fulfills the condition functions of the perk
+* * the actor does not have to have the perk for this
+* *
+* * required API version: 34
+* *
+* * @param: Act, the actor to check
+* * @param: Condition, the perk whichs condition functions to run on the actor
+* *
+* * @return: true if the actor fulfills the condition functions, otherwise false
+*/;
+bool Function FulfillsCondition(Actor Act, Perk Condition) Global Native
+
+;/* FulfillsAnyCondition
+* * checks if the actor fulfills the condition functions of any of the perks
+* * the actor does not have to have the perks for this
+* *
+* * required API version: 34
+* *
+* * @param: Act, the actor to check
+* * @param: Conditions, the perks whichs condition functions to run on the actor
+* *
+* * @return: true if the actor fulfills the condition functions of at least one perk, otherwise false
+*/;
+bool Function FulfillsAnyCondition(Actor Act, Perk[] Conditions) Global Native
+
+;/* FulfillsAnyCondition
+* * checks if the actor fulfills the condition functions of all of the perks
+* * the actor does not have to have the perks for this
+* *
+* * required API version: 34
+* *
+* * @param: Act, the actor to check
+* * @param: Conditions, the perks whichs condition functions to run on the actor
+* *
+* * @return: true if the actor fulfills the condition functions of all perks, otherwise false
+*/;
+bool Function FulfillsAllConditions(Actor Act, Perk[] Conditions) Global Native
+
 
 ; ██████╗ ██╗ █████╗ ██╗      ██████╗  ██████╗ ██╗   ██╗███████╗
 ; ██╔══██╗██║██╔══██╗██║     ██╔═══██╗██╔════╝ ██║   ██║██╔════╝

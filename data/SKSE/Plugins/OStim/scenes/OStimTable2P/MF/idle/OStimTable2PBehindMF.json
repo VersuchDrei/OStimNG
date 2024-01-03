@@ -17,7 +17,7 @@
 		{
 			"destination": "OStimTable2PStandingLeaningMF",
 			"description": "$ostim_nav_turn_around_a{1}",
-			"icon": "OStim/symbols/return"
+			"icon": "OStim/positional/turnaround_f"
 		}
 	],
 	"tags":[

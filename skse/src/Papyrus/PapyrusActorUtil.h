@@ -1,5 +1,6 @@
 #pragma once
 
+#include "GameAPI/GameCondition.h"
 #include "Util/ActorUtil.h"
 #include "Util/CompatibilityTable.h"
 #include "Util/VectorUtil.h"
@@ -9,6 +10,28 @@ namespace PapyrusActorUtil {
 
     bool HasSchlong(RE::StaticFunctionTag*, RE::Actor* actor) {
         return Compatibility::CompatibilityTable::hasSchlong(actor);
+    }
+
+    bool FulfillsCondition(RE::StaticFunctionTag*, RE::Actor* actor, RE::BGSPerk* condition) {
+        return GameAPI::GameCondition{condition}.fulfills(actor);
+    }
+
+    bool FulfillsAnyCondition(RE::StaticFunctionTag*, RE::Actor* actor, std::vector<RE::BGSPerk*> conditions) {
+        for (RE::BGSPerk* condition : conditions) {
+            if (GameAPI::GameCondition{condition}.fulfills(actor)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool FulfillsAllConditions(RE::StaticFunctionTag*, RE::Actor* actor, std::vector<RE::BGSPerk*> conditions) {
+        for (RE::BGSPerk* condition : conditions) {
+            if (!GameAPI::GameCondition{condition}.fulfills(actor)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     void SayTo(RE::StaticFunctionTag*, RE::Actor* actor, RE::Actor* target, RE::TESTopic* dialogue) {
@@ -59,6 +82,10 @@ namespace PapyrusActorUtil {
         const auto obj = "OActorUtil"sv;
 
         BIND(HasSchlong);
+        BIND(FulfillsCondition);
+        BIND(FulfillsAnyCondition);
+        BIND(FulfillsAllConditions);
+
         BIND(SayTo);
         BIND(SayAs);
 

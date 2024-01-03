@@ -27,7 +27,7 @@
 		{
 			"destination": "OStimTable2PStandingSittingMF",
 			"description": "$ostim_nav_sit_on_table_a{1}",
-			"icon": "OStim/positional/table/sitting_f"
+			"icon": "OStim/positional/chair/sitting_f"
 		}
 	],
 	"tags":[
