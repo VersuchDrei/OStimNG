@@ -61,7 +61,7 @@
 		},
 		"phonemes": [{
 			"type": 0,
-			"baseValue": 40,
+			"baseValue": 10,
 			"variance": 20,
 			"delay": 0.4,
 			"delayVariance":0.2,

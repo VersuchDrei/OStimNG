@@ -75,8 +75,8 @@
 		},
 		"phonemes": [{
 			"type": 0,
-			"baseValue": 20,
-			"variance": 20,
+			"baseValue": 0,
+			"variance": 10,
 			"excitementMultiplier": 0.3
 		}, {
 			"type": 12,
