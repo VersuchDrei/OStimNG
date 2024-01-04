@@ -25,6 +25,10 @@ namespace PapyrusData {
     }
 
 
+	std::vector<std::string> GetEquipObjectTypes(RE::StaticFunctionTag*) {
+        return Trait::TraitTable::getEquipObjectTypes();
+	}
+
 	std::vector<std::string> GetEquipObjectPairs(RE::StaticFunctionTag*, int formID, std::string type) {
         StringUtil::toLower(&type);
         return Trait::TraitTable::getEquipObjectPairs(formID, type);
@@ -74,6 +78,7 @@ namespace PapyrusData {
 
         BIND(PairsToNames);
 
+		BIND(GetEquipObjectTypes);
 		BIND(GetEquipObjectPairs);
         BIND(GetEquipObjectName);
         BIND(SetEquipObjectID);

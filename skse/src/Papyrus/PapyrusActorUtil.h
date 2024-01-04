@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GameAPI/GameCondition.h"
+#include "GameAPI/GameUtil.h"
 #include "Util/ActorUtil.h"
 #include "Util/CompatibilityTable.h"
 #include "Util/VectorUtil.h"
@@ -78,6 +79,36 @@ namespace PapyrusActorUtil {
         return ret;
     }
 
+    std::vector<RE::Actor*> GetActorsInRange(RE::StaticFunctionTag*, RE::TESObjectREFR* center, float range, bool includeCenter, bool includePlayer, RE::BGSPerk* condition) {
+        std::vector<RE::Actor*> actors;
+
+        GameAPI::GameUtil::ForEachReferenceInRange(center, range, [&actors, center, includeCenter, includePlayer, condition](RE::TESObjectREFR& ref) {
+            if (!ref.Is(RE::Actor::FORMTYPE)) {
+                return RE::BSContainer::ForEachResult::kContinue;
+            }
+
+            RE::Actor* actor = ref.As<RE::Actor>();
+            if (!includeCenter && actor == center || !includePlayer && actor->IsPlayerRef() || condition && !condition->perkConditions.IsTrue(actor, actor)) {
+                return RE::BSContainer::ForEachResult::kContinue;
+            }
+
+            actors.push_back(actor);
+
+            return RE::BSContainer::ForEachResult::kContinue;
+        });
+
+        return actors;
+    }
+
+    std::vector<std::string> ActorsToNames(RE::StaticFunctionTag*, std::vector<RE::Actor*> actors) {
+        std::vector<std::string> names;
+        for (RE::Actor* actor : actors) {
+            names.push_back(actor->GetDisplayFullName());
+        }
+        return names;
+    }
+
+
     bool Bind(VM* a_vm) {
         const auto obj = "OActorUtil"sv;
 
@@ -93,6 +124,8 @@ namespace PapyrusActorUtil {
         BIND(ToArray);
 
         BIND(Sort);
+        BIND(GetActorsInRange);
+        BIND(ActorsToNames);
 
         return true;
     }

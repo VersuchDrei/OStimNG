@@ -39,7 +39,7 @@ Function Init()
 EndFunction
 
 int Function GetVersion()
-	Return 9
+	Return 10
 EndFunction
 
 Event OnVersionUpdate(int version)
@@ -47,7 +47,7 @@ Event OnVersionUpdate(int version)
 EndEvent
 
 Function SetupPages()
-	Pages = new string[13]
+	Pages = new string[14]
 	Pages[0] = "$ostim_page_general"
 	Pages[1] = "$ostim_page_controls"
 	Pages[2] = "$ostim_page_auto_control"
@@ -59,13 +59,20 @@ Function SetupPages()
 	Pages[8] = "$ostim_page_expression"
 	Pages[9] = "$ostim_page_sound"
 	Pages[10] = "$ostim_page_alignment"
-	Pages[11] = "$ostim_page_debug"
-	Pages[12] = "$ostim_page_about"
+	Pages[11] = "$ostim_page_actors"
+	Pages[12] = "$ostim_page_debug"
+	Pages[13] = "$ostim_page_about"
 EndFunction
 
 Event OnConfigRegister()
 	ImportSettings()
 endEvent
+
+Event OnConfigOpen()
+	CurrentActor = PlayerRef
+	CurrentActorID = 0x7
+	CurrentEquipObjectType = "light"
+EndEvent
 
 Event OnConfigClose()
 	If Main.AutoExportSettings
@@ -109,6 +116,8 @@ Event OnPageReset(String Page)
 		DrawSoundPage()
 	ElseIf Page == "$ostim_page_alignment"
 		DrawAlignmentPage()
+	ElseIf Page == "$ostim_page_actors"
+		DrawActorsPage()
 	ElseIf Page == "$ostim_page_debug"
 		DrawDebugPage()
 	ElseIf (Page == "$ostim_page_about")
@@ -141,23 +150,51 @@ Event OnPageReset(String Page)
 	EndIf
 EndEvent
 
-Event OnOptionSelect(int Option)
-	if currPage == "$ostim_page_undress"
-		OnSlotSelect(Option)
-	ElseIf currPage == "$ostim_page_sound"
-		OnOptionSelectSound(Option)
-	ElseIf CurrPage == "$ostim_page_debug"
-		OnOptionSelectDebug(Option)
-	EndIf
-EndEvent
-
 Event OnOptionHighlight(int Option)
 	if currPage == "$ostim_page_undress"
 		OnSlotMouseOver(Option)
 	ElseIf currPage == "$ostim_page_sound"
 		OnOptionHighlightSound(Option)
+	ElseIf currPage == "$ostim_page_actors"
+		OnOptionHighlightActors(Option)
 	ElseIf currPage == "$ostim_page_debug"
 		OnOptionHighlightDebug(Option)
+	EndIf
+EndEvent
+
+Event OnOptionSelect(int Option)
+	if currPage == "$ostim_page_undress"
+		OnSlotSelect(Option)
+	ElseIf currPage == "$ostim_page_sound"
+		OnOptionSelectSound(Option)
+	ElseIf currPage == "$ostim_page_actors"
+		OnOptionSelectActors(Option)
+	ElseIf CurrPage == "$ostim_page_debug"
+		OnOptionSelectDebug(Option)
+	EndIf
+EndEvent
+
+Event OnOptionMenuOpen(int Option)
+	If currPage == "$ostim_page_sound"
+		OnOptionMenuOpenSound(Option)
+	ElseIf currPage == "$ostim_page_actors"
+		OnOptionMenuOpenActors(Option)
+	EndIf
+EndEvent
+
+Event OnOptionMenuAccept(int Option, int Index)
+	If currPage == "$ostim_page_sound"
+		OnOptionMenuAcceptSound(Option, Index)
+	ElseIf currPage == "$ostim_page_actors"
+		OnOptionMenuAcceptActors(Option, Index)
+	EndIf
+EndEvent
+
+Event OnOptionDefault(int Option)
+	If currPage == "$ostim_page_sound"
+		OnOptionDefaultSound(Option)
+	ElseIf currPage == "$ostim_page_actors"
+		OnOptionDefaultActors(Option)
 	EndIf
 EndEvent
 
@@ -363,11 +400,11 @@ State OID_MaleLightMode
 	EndEvent
 
 	Event OnMenuAcceptST(int Index)
-		SetEquipObjectID(0x0, "light", Index)
+		SetEquipObjectIDST(0x0, "light", Index)
 	EndEvent
 
 	Event OnDefaultST()
-		SetEquipObjectIDToDefault(0x0, "light")
+		SetEquipObjectIDToDefaultST(0x0, "light")
 	EndEvent
 EndState
 
@@ -381,11 +418,11 @@ State OID_FemaleLightMode
 	EndEvent
 
 	Event OnMenuAcceptST(int Index)
-		SetEquipObjectID(0x1, "light", Index)
+		SetEquipObjectIDST(0x1, "light", Index)
 	EndEvent
 
 	Event OnDefaultST()
-		SetEquipObjectIDToDefault(0x1, "light")
+		SetEquipObjectIDToDefaultST(0x1, "light")
 	EndEvent
 EndState
 
@@ -399,11 +436,11 @@ State OID_PlayerLightMode
 	EndEvent
 
 	Event OnMenuAcceptST(int Index)
-		SetEquipObjectID(0x7, "light", Index)
+		SetEquipObjectIDST(0x7, "light", Index)
 	EndEvent
 
 	Event OnDefaultST()
-		SetEquipObjectIDToDefault(0x7, "light")
+		SetEquipObjectIDToDefaultST(0x7, "light")
 	EndEvent
 EndState
 
@@ -1840,11 +1877,11 @@ State OID_DefaultStrapOn
 	EndEvent
 
 	Event OnMenuAcceptST(int Index)
-		SetEquipObjectID(0x1, "strapon", Index)
+		SetEquipObjectIDST(0x1, "strapon", Index)
 	EndEvent
 
 	Event OnDefaultST()
-		SetEquipObjectIDToDefault(0x1, "strapon")
+		SetEquipObjectIDToDefaultST(0x1, "strapon")
 	EndEvent
 EndState
 
@@ -1858,11 +1895,11 @@ State OID_PlayerStrapOn
 	EndEvent
 
 	Event OnMenuAcceptST(int Index)
-		SetEquipObjectID(0x7, "strapon", Index)
+		SetEquipObjectIDST(0x7, "strapon", Index)
 	EndEvent
 
 	Event OnDefaultST()
-		SetEquipObjectIDToDefault(0x7, "strapon")
+		SetEquipObjectIDToDefaultST(0x7, "strapon")
 	EndEvent
 EndState
 
@@ -2333,11 +2370,11 @@ State OID_DefaultTongueMale
 	EndEvent
 
 	Event OnMenuAcceptST(int Index)
-		SetEquipObjectID(0x0, "tongue", Index)
+		SetEquipObjectIDST(0x0, "tongue", Index)
 	EndEvent
 
 	Event OnDefaultST()
-		SetEquipObjectIDToDefault(0x0, "tongue")
+		SetEquipObjectIDToDefaultST(0x0, "tongue")
 	EndEvent
 EndState
 
@@ -2351,11 +2388,11 @@ State OID_DefaultTongueFemale
 	EndEvent
 
 	Event OnMenuAcceptST(int Index)
-		SetEquipObjectID(0x1, "tongue", Index)
+		SetEquipObjectIDST(0x1, "tongue", Index)
 	EndEvent
 
 	Event OnDefaultST()
-		SetEquipObjectIDToDefault(0x1, "tongue")
+		SetEquipObjectIDToDefaultST(0x1, "tongue")
 	EndEvent
 EndState
 
@@ -2369,11 +2406,11 @@ State OID_PlayerTongue
 	EndEvent
 
 	Event OnMenuAcceptST(int Index)
-		SetEquipObjectID(0x7, "tongue", Index)
+		SetEquipObjectIDST(0x7, "tongue", Index)
 	EndEvent
 
 	Event OnDefaultST()
-		SetEquipObjectIDToDefault(0x7, "tongue")
+		SetEquipObjectIDToDefaultST(0x7, "tongue")
 	EndEvent
 EndState
 
@@ -2385,6 +2422,7 @@ EndState
 ; ███████║╚██████╔╝╚██████╔╝██║ ╚████║██████╔╝
 ; ╚══════╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝╚═════╝
 
+int OID_PlayerVoice = -1
 int OID_PlayerDialogue = -1
 
 Function DrawSoundPage()
@@ -2398,7 +2436,7 @@ Function DrawSoundPage()
 	SetCursorPosition(6)
 	AddSliderOptionST("OID_MoanVolume", "$ostim_moan_volume", Main.MoanVolume, "{2}")
 	SetCursorPosition(8)
-	AddMenuOptionST("OID_PlayerVoice", "$ostim_player_voice", OData.GetVoiceSetName(0x7))
+	OID_PlayerVoice = AddMenuOption("$ostim_player_voice", OData.GetVoiceSetName(0x7))
 	SetCursorPosition(10)
 	OID_PlayerDialogue = AddToggleOption("$ostim_player_dialogue", Main.PlayerDialogue)
 
@@ -2419,8 +2457,11 @@ Function DrawSoundPage()
 	AddSliderOptionST("OID_SoundVolume", "$ostim_sound_volume", Main.SoundVolume, "{2}")
 EndFunction
 
+
 Function OnOptionHighlightSound(int Option)
-	If Option == OID_PlayerDialogue
+	If Option == OID_PlayerVoice
+		SetInfoText("$ostim_tooltip_player_voice")
+	ElseIf Option == OID_PlayerDialogue
 		SetInfoText("$ostim_tooltip_player_dialogue")
 	EndIf
 EndFunction
@@ -2429,6 +2470,24 @@ Function OnOptionSelectSound(int Option)
 	If Option == OID_PlayerDialogue
 		Main.PlayerDialogue = !Main.PlayerDialogue
 		SetToggleOptionValue(Option, Main.PlayerDialogue)
+	EndIf
+EndFunction
+
+Function OnOptionMenuOpenSound(int Option)
+	If Option == OID_PlayerVoice
+		OpenVoiceSetMenu(0x7)
+	EndIf
+EndFunction
+
+Function OnOptionMenuAcceptSound(int Option, int Index)
+	If Option == OID_PlayerVoice
+		SetVoiceSet(Option, 0x7, Index)
+	EndIf
+EndFunction
+
+Function OnOptionDefaultSound(int Option)
+	If Option == OID_PlayerVoice
+		SetVoiceSetToDefault(Option, 0x7)
 	EndIf
 EndFunction
 
@@ -2486,24 +2545,6 @@ State OID_MoanVolume
 	Event OnSliderAcceptST(float Value)
 		Main.MoanVolume = Value
 		SetSliderOptionValueST(Value, "{2}")
-	EndEvent
-EndState
-
-State OID_PlayerVoice
-	Event OnHighlightST()
-		SetInfoText("$ostim_tooltip_player_voice")
-	EndEvent
-
-	Event OnMenuOpenST()
-		OpenVoiceSetMenu(0x7)
-	EndEvent
-
-	Event OnMenuAcceptST(int Index)
-		SetVoiceSet(0x7, Index)
-	EndEvent
-
-	Event OnDefaultST()
-		SetVoiceSetToDefault(0x7)
 	EndEvent
 EndState
 
@@ -2694,6 +2735,103 @@ State OID_AlignmentGroupByHeels
 EndState
 
 
+;  █████╗  ██████╗████████╗ ██████╗ ██████╗ ███████╗
+; ██╔══██╗██╔════╝╚══██╔══╝██╔═══██╗██╔══██╗██╔════╝
+; ███████║██║        ██║   ██║   ██║██████╔╝███████╗
+; ██╔══██║██║        ██║   ██║   ██║██╔══██╗╚════██║
+; ██║  ██║╚██████╗   ██║   ╚██████╔╝██║  ██║███████║
+; ╚═╝  ╚═╝ ╚═════╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚══════╝
+
+Actor CurrentActor = None
+int CurrentActorID = 0x0
+Actor[] Actors
+
+string CurrentEquipObjectType = "light"
+string[] EquipObjectTypes
+
+int OID_SelectActor = -1
+int OID_ActorVoice = -1
+
+int OID_EquipObjectType = -1
+int OID_ActorEquipObject = -1
+
+Function DrawActorsPage()
+	SetCursorPosition(0)
+	OID_SelectActor = AddMenuOption("$ostim_select_actor", CurrentActor.GetDisplayName())
+	SetCursorPosition(2)
+	OID_ActorVoice = AddMenuOption("$ostim_actor_voice", OData.GetVoiceSetName(CurrentActorID))
+
+	SetCursorPosition(1)
+	OID_EquipObjectType = AddMenuOption("$ostim_equip_object_type", CurrentEquipObjectType)
+	SetCursorPosition(3)
+	OID_ActorEquipObject = AddMenuOption("$ostim_actor_equip_object", OData.GetEquipObjectName(CurrentActorID, CurrentEquipObjectType))
+EndFunction
+
+Function OnOptionHighlightActors(int Option)
+	If Option == OID_SelectActor
+		SetInfoText("$ostim_tooltip_select_actor")
+	ElseIf Option == OID_ActorVoice
+		SetInfoText("$ostim_tootip_actor_voice")
+	ElseIf Option == OID_EquipObjectType
+		SetInfoText("$ostim_tooltip_equip_object_type")
+	ElseIf Option == OID_ActorEquipObject
+		SetInfoText("$ostim_tooltip_actor_equip_object")
+	EndIf
+EndFunction
+
+Function OnOptionSelectActors(int Option)
+
+EndFunction
+
+Function OnOptionMenuOpenActors(int Option)
+	If Option == OID_SelectActor
+		Actors = OActorUtil.GetActorsInRange(PlayerRef, 1000, true, true, Main.OStimNPCCondition)
+		SetMenuDialogOptions(OActorUtil.ActorsToNames(Actors))
+		SetMenuDialogStartIndex(Actors.Find(CurrentActor))
+		SetMenuDialogDefaultIndex(Actors.Find(PlayerRef))
+	ElseIf Option == OID_ActorVoice
+		OpenVoiceSetMenu(CurrentActorID)
+	ElseIf Option == OID_EquipObjectType
+		EquipObjectTypes = OData.GetEquipObjectTypes()
+		SetMenuDialogOptions(EquipObjectTypes)
+		SetMenuDialogStartIndex(0)
+		SetMenuDialogDefaultIndex(0)
+	ElseIf Option == OID_ActorEquipObject
+		OpenEquipObjectMenu(CurrentActorID, CurrentEquipObjectType)
+	EndIf
+EndFunction
+
+Function OnOptionMenuAcceptActors(int Option, int Index)
+	If Option == OID_SelectActor
+		CurrentActor = Actors[Index]
+		CurrentActorID = CurrentActor.GetActorBase().GetFormID()
+		ForcePageReset()
+	ElseIf Option == OID_ActorVoice
+		SetVoiceSet(Option, CurrentActorID, Index)
+	ElseIf Option == OID_EquipObjectType
+		CurrentEquipObjectType = EquipObjectTypes[Index]
+		SetMenuOptionValue(Option, CurrentEquipObjectType)
+		SetMenuOptionValue(OID_ActorEquipObject, OData.GetEquipObjectName(CurrentActorID, CurrentEquipObjectType))
+	ElseIf Option == OID_ActorEquipObject
+		SetEquipObjectID(Option, CurrentActorID, CurrentEquipObjectType, Index)
+	EndIf
+EndFunction
+
+Function OnOptionDefaultActors(int Option)
+	If Option == OID_SelectActor
+		CurrentActor == PlayerRef
+		ForcePageReset()
+	ElseIf Option == OID_ActorVoice
+		SetVoiceSetToDefault(Option, CurrentActorID)
+	ElseIf Option == OID_EquipObjectType
+		CurrentEquipObjectType = "light"
+		SetMenuOptionValue(Option, OData.GetEquipObjectName(CurrentActorID, CurrentEquipObjectType))
+	ElseIf Option == OID_ActorEquipObject
+		SetEquipObjectIDToDefault(Option, CurrentActorID, CurrentEquipObjectType)
+	EndIf
+EndFunction
+
+
 ; ██████╗ ███████╗██████╗ ██╗   ██╗ ██████╗ 
 ; ██╔══██╗██╔════╝██╔══██╗██║   ██║██╔════╝ 
 ; ██║  ██║█████╗  ██████╔╝██║   ██║██║  ███╗
@@ -2747,12 +2885,26 @@ Function OpenEquipObjectMenu(int FormID, string Type)
 	SetMenuDialogDefaultIndex(0)
 EndFunction
 
-Function SetEquipObjectID(int FormID, string Type, int Index)
+Function SetEquipObjectID(int Option, int FormID, string Type, int Index)
+	OData.SetEquipObjectID(FormID, Type, EquipObjectPairs[Index * 2])
+	SetMenuOptionValue(Option, EquipObjectPairs[Index * 2 + 1])
+EndFunction
+
+Function SetEquipObjectIDST(int FormID, string Type, int Index)
 	OData.SetEquipObjectID(FormID, Type, EquipObjectPairs[Index * 2])
 	SetMenuOptionValueST(EquipObjectPairs[Index * 2 + 1])
 EndFunction
 
-Function SetEquipObjectIDToDefault(int FormID, string Type)
+Function SetEquipObjectIDToDefault(int Option, int FormID, string Type)
+	string ID = "default"
+	If FormID < 2
+		ID = "random"
+	EndIf
+	OData.SetEquipObjectID(FormID, Type, ID)
+	SetMenuOptionValue(Option, ID)
+EndFunction
+
+Function SetEquipObjectIDToDefaultST(int FormID, string Type)
 	string ID = "default"
 	If FormID < 2
 		ID = "random"
@@ -2771,12 +2923,12 @@ Function OpenVoiceSetMenu(int FormID)
 	SetMenuDialogDefaultIndex(0)
 EndFunction
 
-Function SetVoiceSet(int FormID, int Index)
+Function SetVoiceSet(int Option, int FormID, int Index)
 	OData.SetVoiceSet(FormID, VoiceSetPairs[Index * 2])
-	SetMenuOptionValueST(VoiceSetPairs[Index * 2 + 1])
+	SetMenuOptionValue(Option, VoiceSetPairs[Index * 2 + 1])
 EndFunction
 
-Function SetVoiceSetToDefault(int FormID)
+Function SetVoiceSetToDefault(int Option, int FormID)
 	OData.SetVoiceSet(FormID, 0)
-	SetMenuOptionValueST("default")
+	SetMenuOptionValue(Option, "default")
 EndFunction

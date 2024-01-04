@@ -158,3 +158,26 @@ Actor[] Function SelectIndexAndSort(Actor[] Actors, Actor[] DominantActors) Glob
 		Return Sort(Actors, DominantActors)
 	EndIf
 EndFunction
+
+;/* GetActorsInRange
+* * gets all actors in range around the center
+* *
+* * @param: Center, the center to base the search on
+* * @param: Range, the range of the search in Skyrim units (100 units are approx. 1 meter)
+* * @param: IncludeCenter, if false the center will not be included in the list
+* * @param: IncludePlayer, if false the player will not be included in the list
+* * @param: Condition, if set only actors who fulfill the condition functions of the perk will be included
+* * 	actors do not have to have the perk for this, just fulfill it's condition functions
+* *
+* * @return: an array of all actors in range (and fulfilling the condition, if one is given)
+*/;
+Actor[] Function GetActorsInRange(ObjectReference Center, float Range, bool IncludeCenter = false, bool IncludePlayer = true, Perk Condition = None) Global Native
+
+;/* ActorsToNames
+* * converts an array of actors to an array of their names
+* *
+* * @param: Actors, the array of actors
+* *
+* * @return: a string array containing all the actor names
+*/;
+string[] Function ActorsToNames(Actor[] Actors) Global Native

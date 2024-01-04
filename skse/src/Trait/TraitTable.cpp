@@ -335,6 +335,16 @@ namespace Trait {
         return ret;
     }
 
+    std::vector<std::string> TraitTable::getEquipObjectTypes() {
+        std::vector<std::string> types;
+
+        for (auto& [type, objects] : equipObjects) {
+            types.push_back(type);
+        }
+
+        return types;
+    }
+
     std::vector<std::string> TraitTable::getEquipObjectPairs(RE::FormID formID, std::string type) {
         std::vector<std::string> ret;
         if (defaultEquipObjects.contains(type) || formID > 1) {

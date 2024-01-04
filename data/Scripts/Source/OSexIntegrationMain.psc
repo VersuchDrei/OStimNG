@@ -1631,6 +1631,8 @@ EndProperty
 ; -------------------------------------------------------------------------------------------------
 ; SCRIPTWIDE VARIABLES ----------------------------------------------------------------------------
 
+Perk Property OStimNPCCondition Auto
+
 String[] CurrScene
 
 Actor Property PlayerRef Auto
