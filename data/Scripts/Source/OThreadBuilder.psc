@@ -2,7 +2,7 @@
 * * helper script to build threads with more complex starting parameter
 * * basically a factory but limited by Papyrus, so not really a factory
 * *
-* * required API Version: 29
+* * required API Version: 7.0 (29)
 * *
 * * note: the BuilderID is most likely not going to be the same as the thread id
 */;
@@ -38,7 +38,7 @@ Function SetFurniture(int BuilderID, ObjectReference FurnitureRef) Global Native
 * * sets the duration of the thread (in seconds), when this duration is over the thread ends
 * * the thread can still end sooner than that due to player input or stop conditions (like end on climax)
 * *
-* * required API version: 30
+* * required API version: 7.1 (30)
 * *
 * * @param: BuilderID, the id of the thread builder
 * * @param: Duration, the duration for the thread
@@ -57,7 +57,7 @@ Function SetStartingAnimation(int BuilderID, string Animation) Global Native
 ;/* AddStartingAnimation
 * * adds another animation to the list of starting animations
 * *
-* * required API version: 31
+* * required API version: 7.1e (31)
 * *
 * * @param: BuilderID, the id of the thread builder
 * * @param: Animation, the id of the animation
@@ -70,7 +70,7 @@ Function AddStartingAnimation(int BuilderID, string Animation, float Duration = 
 * * sets a sequence as the starting animations of the scene
 * * this will undo all prior modifications of the starting animations
 * *
-* * required API version: 30
+* * required API version: 7.1 (30)
 * *
 * * @param: BuilderID, the id of the thread builder
 * * @param: Sequence, the id of the sequence
@@ -80,7 +80,7 @@ Function SetStartingSequence(int BuilderID, string Sequence) Global Native
 ;/* ConcatStartingSequence
 * * adds another sequence to the list of starting animations
 * *
-* * required API version: 32
+* * required API version: 7.2 (32)
 * *
 * * @param: BuilderID, the id of the thread builder
 * * @param: Sequence, the id of the sequence
@@ -122,7 +122,7 @@ Function NoAutoMode(int BuilderID) Global Native
 ;/* NoPlayerControl
 * * disables player control for the scene, does nothing on NPCxNPC scenes
 * *
-* * required API Version: 30
+* * required API Version: 7.1 (30)
 * *
 * * @param: BuilderID, the id of the thread builder
 */;
@@ -132,7 +132,7 @@ Function NoPlayerControl(int BuilderID) Global Native
 * * disables all undressing during the scene, no matter the MCM settings
 * * this also overrules UndressActors
 * *
-* * required API Version: 30
+* * required API Version: 7.1 (30)
 * *
 * * @param: BuilderID, the id of the thread builder
 */;
@@ -145,7 +145,7 @@ Function NoUndressing(int BuilderID) Global Native
 * *
 * * without this the scene will offer or choose furniture based on the MCM settings
 * *
-* * required API Version: 32
+* * required API Version: 7.2 (32)
 * *
 * * @param: BuilderID, the id of the thread builder
 */;

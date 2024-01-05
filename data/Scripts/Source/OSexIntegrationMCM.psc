@@ -151,7 +151,9 @@ Event OnPageReset(String Page)
 EndEvent
 
 Event OnOptionHighlight(int Option)
-	if currPage == "$ostim_page_undress"
+	If currPage == "$ostim_page_excitement"
+		OnOptionHighlightExcitement(Option)
+	ElseIf currPage == "$ostim_page_undress"
 		OnSlotMouseOver(Option)
 	ElseIf currPage == "$ostim_page_sound"
 		OnOptionHighlightSound(Option)
@@ -171,6 +173,18 @@ Event OnOptionSelect(int Option)
 		OnOptionSelectActors(Option)
 	ElseIf CurrPage == "$ostim_page_debug"
 		OnOptionSelectDebug(Option)
+	EndIf
+EndEvent
+
+Event OnOptionSliderOpen(int Option)
+	If currPage == "$ostim_page_excitement"
+		OnOptionSliderOpenExcitement(Option)
+	EndIf
+EndEvent
+
+Event OnOptionSliderAccept(int Option, float Value)
+	If currPage == "$ostim_page_excitement"
+		OnOptionSliderAcceptExcitement(Option, Value)
 	EndIf
 EndEvent
 
@@ -1350,6 +1364,9 @@ EndState
 ; ███████╗██╔╝ ██╗╚██████╗██║   ██║   ███████╗██║ ╚═╝ ██║███████╗██║ ╚████║   ██║
 ; ╚══════╝╚═╝  ╚═╝ ╚═════╝╚═╝   ╚═╝   ╚══════╝╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝   ╚═╝
 
+int OID_PostOrgasmExcitement = -1
+int OID_PostOrgasmExcitementMax = -1
+
 Function DrawExcitementPage()
 	SetCursorFillMode(TOP_TO_BOTTOM)
 	SetCursorPosition(0)
@@ -1362,16 +1379,20 @@ Function DrawExcitementPage()
 	AddSliderOptionST("OID_ExcitementDecayRate", "$ostim_excitement_decay_rate", Main.ExcitementDecayRate, "{2} /s")
 	SetCursorPosition(8)
 	AddSliderOptionST("OID_ExcitementDecayGracePeriod", "$ostim_excitement_decay_grace_period", Main.ExcitementDecayGracePeriod / 1000, "{1} s")
-
+	SetCursorPosition(10)
+	OID_PostOrgasmExcitement = AddSliderOption("$ostim_post_orgasm_excitement", Main.PostOrgasmExcitement, "{0}")
 	SetCursorPosition(12)
-	AddColoredHeader("$ostim_header_excitement_bars")
-	SetCursorPosition(14)
-	AddToggleOptionST("OID_EnablePlayerBar", "$ostim_player_bar", Main.EnablePlayerBar)
+	OID_PostOrgasmExcitementMax = AddSliderOption("$ostim_post_orgasm_excitement_max", Main.PostOrgasmExcitementMax, "{0}")
+
 	SetCursorPosition(16)
-	AddToggleOptionST("OID_EnableNpcBar", "$ostim_npc_bar", Main.EnableNpcBar)
+	AddColoredHeader("$ostim_header_excitement_bars")
 	SetCursorPosition(18)
-	AddToggleOptionST("OID_AutoHideBar", "$ostim_auto_hide_bar", Main.AutoHideBars)
+	AddToggleOptionST("OID_EnablePlayerBar", "$ostim_player_bar", Main.EnablePlayerBar)
 	SetCursorPosition(20)
+	AddToggleOptionST("OID_EnableNpcBar", "$ostim_npc_bar", Main.EnableNpcBar)
+	SetCursorPosition(22)
+	AddToggleOptionST("OID_AutoHideBar", "$ostim_auto_hide_bar", Main.AutoHideBars)
+	SetCursorPosition(24)
 	AddToggleOptionST("OID_MatchBarColorToGender", "$ostim_match_color_gender", Main.MatchBarColorToGender)
 
 	SetCursorPosition(1)
@@ -1395,6 +1416,39 @@ Function DrawExcitementPage()
 	SetCursorPosition(15)
 	AddToggleOptionST("OID_AutoClimaxAnimations", "$ostim_auto_climax_anims", Main.AutoClimaxAnimations)
 EndFunction
+
+Function OnOptionHighlightExcitement(int Option)
+	If Option == OID_PostOrgasmExcitement
+		SetInfoText("$ostim_tooltip_post_orgasm_excitement")
+	ElseIf Option == OID_PostOrgasmExcitementMax
+		SetInfoText("$ostim_tooltip_post_orgasm_excitement_max")
+	EndIf
+EndFunction
+
+Function OnOptionSliderOpenExcitement(int Option)
+	If Option == OID_PostOrgasmExcitement
+		SetSliderDialogStartValue(Main.PostOrgasmExcitement)
+		SetSliderDialogDefaultValue(10)
+		SetSliderDialogRange(0, 100)
+		SetSliderDialogInterval(5)
+	ElseIf Option == OID_PostOrgasmExcitementMax
+		SetSliderDialogStartValue(Main.PostOrgasmExcitementMax)
+		SetSliderDialogDefaultValue(30)
+		SetSliderDialogRange(0, 100)
+		SetSliderDialogInterval(5)
+	EndIf
+EndFunction
+
+Function OnOptionSliderAcceptExcitement(int Option, float Value)
+	If Option == OID_PostOrgasmExcitement
+		Main.PostOrgasmExcitement = Value as int
+		SetSliderOptionValue(Option, Main.PostOrgasmExcitement, "{0}")
+	ElseIf Option == OID_PostOrgasmExcitementMax
+		Main.PostOrgasmExcitementMax = Value as int
+		SetSliderOptionValue(Option, Main.PostOrgasmExcitementMax, "{0}")
+	EndIf
+EndFunction
+
 
 State OID_MaleExcitementMult
 	Event OnHighlightST()

@@ -326,7 +326,7 @@ bool Function IsInOStim(Actor Act) Global Native
 ;/* GetSceneID
 * * gets the scene ID of the scene involding the actor
 * *
-* * required API version: 33
+* * required API version: 7.2d (33)
 * *
 * * @param: Act, the actor to get the scene ID for
 * *

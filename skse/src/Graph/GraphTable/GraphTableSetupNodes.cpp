@@ -403,7 +403,7 @@ namespace Graph {
                             }
 
                             if (jsonActor.contains("offset")) {
-                                actor.offset.loadJson(path, json["offset"]);
+                                actor.offset.loadJson(path, jsonActor["offset"]);
                             }
 
                             if (jsonActor.contains("tags")) {

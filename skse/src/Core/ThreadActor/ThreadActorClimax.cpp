@@ -60,6 +60,10 @@ namespace OStim {
         timesClimaxed++;
         actor.setFactionRank(Util::APITable::getTimesClimaxedFaction(), timesClimaxed);
 
+        if (!schlong || female && !MCM::MCMTable::futaUseMaleExcitement()) {
+            excitement = std::min(MCM::MCMTable::getPostOrgasmExcitement() * timesClimaxed, MCM::MCMTable::getPostOrgasmExcitementMax());
+        }
+
         if (schlong) {
             thread->SetSpeed(0);
         }

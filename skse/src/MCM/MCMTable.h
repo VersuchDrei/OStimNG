@@ -79,6 +79,8 @@ namespace MCM {
         inline static float getFemaleSexExcitementMult() { return settings[0xDA3].asFloat(); }
         inline static float getExcitementDecayRate() { return settings[0xDB5].asFloat(); }
         inline static int getExcitementDecayGracePeriod() { return settings[0xDB4].asInt(); }
+        inline static int getPostOrgasmExcitement() { return settings[0xED0].asInt(); }
+        inline static int getPostOrgasmExcitementMax() { return settings[0xED1].asInt(); }
 
         inline static bool getSlowMotionOnOrgasm() { return settings[0xDFC].asBool(); }
         inline static bool getBlurOnOrgasm() { return settings[0xDFD].asBool(); }
@@ -228,6 +230,8 @@ namespace MCM {
             {0xDA3, {1, "SetFemaleSexExcitementMult"}},
             {0xDB5, {0.5, "excitementDecayRate"}},
             {0xDB4, {5000, "excitementDecayGracePeriod"}},
+            {0xED0, {10, "postOrgasmExcitement"}},
+            {0xED1, {30, "postOrgasmExcitementMax"}},
 
             {0xE00, {1, "enablePlayerBar"}},
             {0xE01, {1, "enableNpcBar"}},

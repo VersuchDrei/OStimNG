@@ -1,7 +1,7 @@
 ;/* OSequence
 * * collection of native functions related to sequences
 * *
-* * required API version: 30
+* * required API version: 7.1 (30)
 */;
 ScriptName OSequence
 

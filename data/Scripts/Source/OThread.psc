@@ -3,7 +3,7 @@
 * * the thread containing the player will always have the ThreadID 0
 * * NPC on NPC threads will always have positive ThreadIDs
 * *
-* * required API Version: 29
+* * required API Version: 7.0 (29)
 */;
 ScriptName OThread
 
@@ -135,7 +135,7 @@ Function SetSpeed(int ThreadID, int Speed) Global Native
 ;/* PlaySequence
 * * plays the sequence on the thread
 * *
-* * required API version: 31
+* * required API version: 7.1e (31)
 * *
 * * @param: Sequence, the sequence to play
 * * @param: NavigateTo, if true tries to navigate to the sequence start instead of warping there

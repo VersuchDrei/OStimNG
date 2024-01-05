@@ -31,7 +31,7 @@ ObjectReference[] Function FindFurniture(int ActorCount, ObjectReference CenterR
 ;/* FindFurnitureOfType
 * * searches for the closest furniture of the specified type that is not occupied or reserved
 * *
-* * required API version: 31
+* * required API version: 7.1e (31)
 * *
 * * @param: Type, the type of furniture to search
 * * @param: CenterRef, the reference to center the search around

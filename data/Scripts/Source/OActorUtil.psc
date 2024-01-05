@@ -1,7 +1,7 @@
 ;/* OActorUtil
 * * collection of utility functions related to actors
 * *
-* * required API Version: 29
+* * required API Version: 7.0 (29)
 */;
 ScriptName OActorUtil
 
@@ -29,7 +29,7 @@ bool Function HasSchlong(Actor Act) Global Native
 * * checks if the actor fulfills the condition functions of the perk
 * * the actor does not have to have the perk for this
 * *
-* * required API version: 34
+* * required API version: 7.3 (0x07030000)
 * *
 * * @param: Act, the actor to check
 * * @param: Condition, the perk whichs condition functions to run on the actor
@@ -42,7 +42,7 @@ bool Function FulfillsCondition(Actor Act, Perk Condition) Global Native
 * * checks if the actor fulfills the condition functions of any of the perks
 * * the actor does not have to have the perks for this
 * *
-* * required API version: 34
+* * required API version: 7.3 (0x07030000)
 * *
 * * @param: Act, the actor to check
 * * @param: Conditions, the perks whichs condition functions to run on the actor
@@ -55,7 +55,7 @@ bool Function FulfillsAnyCondition(Actor Act, Perk[] Conditions) Global Native
 * * checks if the actor fulfills the condition functions of all of the perks
 * * the actor does not have to have the perks for this
 * *
-* * required API version: 34
+* * required API version: 7.3 (0x07030000)
 * *
 * * @param: Act, the actor to check
 * * @param: Conditions, the perks whichs condition functions to run on the actor
@@ -83,6 +83,8 @@ Function SayTo(Actor Act, Actor Target, Topic Dialogue) Global Native
 
 ;/* SayAs
 * * says the dialogue topic to the target actor
+* *
+* * required API version: 7.3 (0x07030000)
 * *
 * * @param: Act, the actor to say the topic
 * * @param: Target, the actor to say the topic to
@@ -162,6 +164,8 @@ EndFunction
 ;/* GetActorsInRange
 * * gets all actors in range around the center
 * *
+* * required API version: 7.3 (0x07030000)
+* *
 * * @param: Center, the center to base the search on
 * * @param: Range, the range of the search in Skyrim units (100 units are approx. 1 meter)
 * * @param: IncludeCenter, if false the center will not be included in the list
@@ -175,6 +179,8 @@ Actor[] Function GetActorsInRange(ObjectReference Center, float Range, bool Incl
 
 ;/* ActorsToNames
 * * converts an array of actors to an array of their names
+* *
+* * required API version: 7.3 (0x07030000)
 * *
 * * @param: Actors, the array of actors
 * *

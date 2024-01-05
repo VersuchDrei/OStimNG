@@ -771,6 +771,26 @@ int Property ExcitementDecayGracePeriod
 	EndFunction
 EndProperty
 
+GlobalVariable Property OStimPostOrgasmExcitement Auto
+int Property PostOrgasmExcitement
+	int Function Get()
+		return OStimPostOrgasmExcitement.value as int
+	EndFunction
+	Function Set(int Value)
+		OStimPostOrgasmExcitement.value = Value
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimPostOrgasmExcitementMax Auto
+int Property PostOrgasmExcitementMax
+	int Function Get()
+		return OStimPostOrgasmExcitementMax.value as int
+	EndFunction
+	Function Set(int Value)
+		OStimPostOrgasmExcitementMax.value = Value
+	EndFunction
+EndProperty
+
 ; -------------------------------------------------------------------------------------------------
 ; EXCITEMENT BAR SETTINGS  ------------------------------------------------------------------------
 
@@ -1678,24 +1698,6 @@ OBarsScript Function GetBarScript()
 	return obars
 EndFunction
 
-;/* GetAPIVersion
-* * returns the current API version
-* * 26 = old OStim
-* * 27 = OStim NG 6.0 to 6.7
-* * 28 = OStim NG 6.8
-* * 29 = OStim Standalone Public Beta
-* * 30 = OStim Standalone 7.1
-* * 31 = OStim Standalone 7.1e
-* * 32 = OStim Standalone 7.2
-* * 33 = OStim Standalone 7.2d
-* * 34 = OStim Standalone 7.3
-* *
-* * @return: the version of the current API
-*/;
-Int Function GetAPIVersion()
-	Return 33
-EndFunction
-
 Bool Function ActorHasFacelight(Actor Act)
 	{Checks if Actor already has FaceLight. Currently we only check BBLS NPCs and Vayne}
 	If (BBLS_FaceLightFaction && Act.GetFactionRank(BBLS_FaceLightFaction) >= 0)
@@ -2100,7 +2102,7 @@ Function Startup()
 EndFunction
 
 Function OnLoadGame()
-	If SKSE.GetPluginVersion("OStim") != 0x01000007
+	If SKSE.GetPluginVersion("OStim") != 0x07030000
 		Debug.MessageBox("OStim Standalone: Your OStim.dll or OSexIntegraionMain.pex is being overwritten with an old version. OStim and its addons will NOT work properly. Please don't report any other bugs while this issue persists.")
 	EndIf
 
@@ -2442,6 +2444,26 @@ Bool Property MuteOSA
 EndProperty
 
 bool Property DisableOSAControls = false Auto
+
+;/* GetAPIVersion
+* * returns the current API version
+* * 26 = old OStim
+* * 27 = OStim NG 6.0 to 6.7
+* * 28 = OStim NG 6.8
+* * 29 = OStim Standalone Public Beta and 7.0
+* * 30 = OStim Standalone 7.1
+* * 31 = OStim Standalone 7.1e
+* * 32 = OStim Standalone 7.2
+* * 33 = OStim Standalone 7.2d
+* *
+* * starting with OStim Standalone 7.3 the API version is now equal to the .dll version
+* * read "Data/SKSE/plugins/OStim/API version README.txt" for further information
+* *
+* * @return: the version of the current API
+*/;
+Int Function GetAPIVersion()
+	Return SKSE.GetPluginVersion("OStim")
+EndFunction
 
 Actor Function GetDomActor()
 	Return GetActor(0)
