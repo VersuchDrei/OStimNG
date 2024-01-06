@@ -53,18 +53,21 @@ namespace Sound {
 
             VoiceSet voiceSet;
 
-            RE::TESForm* targetForm = RE::TESDataHandler::GetSingleton()->LookupForm(std::stoi(stringID, nullptr, 16), target["mod"]);
-            if (targetForm) {
-                if (targetForm->Is(RE::BGSVoiceType::FORMTYPE)) {
-                    voiceSet.voice = targetForm->As<RE::BGSVoiceType>();
-                } else if (targetForm->Is(RE::TESNPC::FORMTYPE)) {
-                    voiceSet.voice = targetForm->As<RE::TESNPC>()->voiceType;
-                }
-            }
-
             JsonUtil::loadTranslatedString(json, voiceSet.name, "name", filename, "voice set", false);
             if (voiceSet.name.empty()) {
                 voiceSet.name = filename;
+            }
+
+            JsonUtil::loadGameRecord(json, voiceSet.voice, "voice", filename, "voice set", path, false);
+            if (!voiceSet.voice) {
+                RE::TESForm* targetForm = RE::TESDataHandler::GetSingleton()->LookupForm(std::stoi(stringID, nullptr, 16), target["mod"]);
+                if (targetForm) {
+                    if (targetForm->Is(RE::BGSVoiceType::FORMTYPE)) {
+                        voiceSet.voice = targetForm->As<RE::BGSVoiceType>();
+                    } else if (targetForm->Is(RE::TESNPC::FORMTYPE)) {
+                        voiceSet.voice = targetForm->As<RE::TESNPC>()->voiceType;
+                    }
+                }
             }
 
             if (json.contains("moan") && json["moan"].is_object() && json["moan"].contains("mod")) {
