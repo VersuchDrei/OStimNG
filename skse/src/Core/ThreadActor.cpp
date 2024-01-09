@@ -39,13 +39,12 @@ namespace OStim {
         setDialogueCountdown();
 
         if (schlong) {
-            actor.addToFaction(Util::APITable::getSchlongifiedFaction());
+            Util::APITable::getSchlongifiedFaction().add(actor);
         }
 
-        actor.addToFaction(Util::APITable::getExcitementFaction());
-        actor.addToFaction(Util::APITable::getTimesClimaxedFaction());
-        actor.addToFaction(Util::APITable::getTimeUntilClimaxFaction());
-        actor.setFactionRank(Util::APITable::getTimeUntilClimaxFaction(), -1);
+        Util::APITable::getExcitementFaction().add(actor);
+        Util::APITable::getTimesClimaxedFaction().add(actor);
+        Util::APITable::getTimeUntilClimaxFaction().add(actor, -1);
 
         startMoanCooldown();
     }
@@ -272,7 +271,7 @@ namespace OStim {
     void ThreadActor::changeNode(Graph::GraphActor* graphActor, std::vector<Trait::FacialExpression*>* nodeExpressions, std::vector<Trait::FacialExpression*>* overrideExpressions) {
         if (this->graphActor) {
             for (GameAPI::GameFaction faction : this->graphActor->factions) {
-                actor.removeFromFaction(faction);
+                faction.remove(actor);
             }
         }
 
@@ -319,7 +318,7 @@ namespace OStim {
         }
 
         for (GameAPI::GameFaction faction : graphActor->factions) {
-            actor.addToFaction(faction);
+            faction.add(actor);
         }
 
         if (awaitingClimax) {
@@ -831,7 +830,7 @@ namespace OStim {
 
         if (this->graphActor) {
             for (GameAPI::GameFaction faction : this->graphActor->factions) {
-                actor.removeFromFaction(faction);
+                faction.remove(actor);
             }
         }
 

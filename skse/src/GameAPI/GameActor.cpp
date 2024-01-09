@@ -136,24 +136,6 @@ namespace GameAPI {
         TranslateTo(nullptr, 0, form, x, y, z, 0, 0, MathUtil::toDegrees(r) + 1, 1000000, 0.0001);
     }
 
-    void GameActor::setFactionRank(GameFaction faction, int rank) const {
-        for (auto& factionInfo : form->GetActorBase()->factions) {
-            if (factionInfo.faction == faction.form) {
-                factionInfo.rank = rank;
-            }
-        }
-    }
-
-    int GameActor::getFactionRank(GameFaction faction) const {
-        for (RE::FACTION_RANK rank : form->GetActorBase()->factions) {
-            if (rank.faction == faction.form) {
-                return rank.rank;
-            }
-        }
-        
-        return -2;
-    }
-
     int GameActor::getRelationshipRank(GameActor other) const {
         return 4 - RE::BGSRelationship::GetRelationship(form->GetActorBase(), other.form->GetActorBase())->level.underlying();
     }

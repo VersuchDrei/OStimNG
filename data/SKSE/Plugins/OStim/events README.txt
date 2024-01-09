@@ -26,6 +26,8 @@ actor fields:
 "stimulation" (float): the amount of stimulation this event generates for this Skyrim actor
 "maxStimulation" (float): a stimulation threshold after which this event will no longer generate any stimulation
 	this for example can be used by events like spanking to prevent the Skyrim actors climaxing from spanking alone
+"stimulationFaction" (object): a faction that the actor can be put in to modify the stimulation they receive from this event (see form fields)
+"maxStimulationFaction" (object): a faction that the actor can be put in to modify the maximum stimulation they can receive from this event (see form fields)
 
 form:
 "mod" (string): the name of the mod this form is defined in, including the file extension

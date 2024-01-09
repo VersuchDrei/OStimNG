@@ -5,6 +5,20 @@
 #include "Util/VectorUtil.h"
 
 namespace Graph {
+    float ActionActor::getStimulation(GameAPI::GameActor actor) {
+        if (!stimulationFaction || !stimulationFaction.contains(actor)) {
+            return stimulation;
+        }
+        return stimulationFaction.getRank(actor) * 0.05;
+    }
+
+    float ActionActor::getMaxStimulation(GameAPI::GameActor actor) {
+        if (!maxStimulationFaction || !maxStimulationFaction.contains(actor)) {
+            return maxStimulation;
+        }
+        return maxStimulationFaction.getRank(actor);
+    }
+
     bool ActionAttributes::hasTag(std::string tag) {
         return VectorUtil::contains(tags, tag);
     }

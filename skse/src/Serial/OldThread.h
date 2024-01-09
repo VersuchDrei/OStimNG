@@ -3,6 +3,7 @@
 #include "Core/Core.h"
 #include "Furniture/Furniture.h"
 #include "GameAPI/GameActor.h"
+#include "GameAPI/GameFaction.h"
 #include "Util/ActorUtil.h"
 #include "Util/FormUtil.h"
 #include "Util/ObjectRefUtil.h"
@@ -96,7 +97,7 @@ namespace Serialization {
             }
             if (!factions.empty()) {
                 for (GameAPI::GameFaction faction : factions) {
-                    actor.removeFromFaction(faction);
+                    faction.remove(actor);
                 }
             }
         }

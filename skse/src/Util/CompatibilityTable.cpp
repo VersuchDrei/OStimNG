@@ -62,12 +62,12 @@ namespace Compatibility {
 
     bool CompatibilityTable::hasSchlong(GameAPI::GameActor actor) {
         if (MCM::MCMTable::useSoSSex()) {
-            if (!actor.isInFaction(SOS_SchlongifiedFaction)) {
+            if (!SOS_SchlongifiedFaction.contains(actor)) {
                 return false;
             }
 
             for (GameAPI::GameFaction faction : noSchlongFactions) {
-                if (actor.isInFaction(faction)) {
+                if (faction.contains(actor)) {
                     return false;
                 }
             }

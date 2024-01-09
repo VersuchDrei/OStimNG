@@ -1,41 +1,24 @@
 #include "Graph/GraphTable.h"
 
 #include "Util/JsonFileLoader.h"
+#include "Util/JsonUtil.h"
 #include "Util/StringUtil.h"
 
 namespace Graph {
     const char* ACTION_FILE_PATH{"Data/SKSE/Plugins/OStim/actions"};
 
-    ActionActor parseActionActor(std::string path, json& json) {
+    ActionActor parseActionActor(std::string path, std::string filename, json& json) {
         ActionActor actor;
-        if (json.contains("stimulation")) {
-            actor.stimulation = json["stimulation"];
-        }
 
-        if (json.contains("maxStimulation")) {
-            actor.maxStimulation = json["maxStimulation"];
-        }
-
-        if (json.contains("fullStrip")) {
-            actor.fullStrip = json["fullStrip"];
-        }
-
-        if (json.contains("moan")) {
-            actor.moan = json["moan"];
-        }
-
-        if (json.contains("talk")) {
-            actor.talk = json["talk"];
-        }
-
-        if (json.contains("muffled")) {
-            actor.muffled = json["muffled"];
-        }
-
-        if (json.contains("expressionOverride")) {
-            actor.expressionOverride = json["expressionOverride"];
-            StringUtil::toLower(&actor.expressionOverride);
-        }
+        JsonUtil::loadFloat(json, actor.stimulation, "stimulation", filename, "action", false);
+        JsonUtil::loadFloat(json, actor.maxStimulation, "maxStimulation", filename, "action", false);
+        JsonUtil::loadGameRecord(json, actor.stimulationFaction, "stimulationFaction", filename, "action", path, false);
+        JsonUtil::loadGameRecord(json, actor.maxStimulationFaction, "maxStimulationFaction", filename, "action", path, false);
+        JsonUtil::loadBool(json, actor.fullStrip, "fullStrip", filename, "action", false);
+        JsonUtil::loadBool(json, actor.moan, "moan", filename, "action", false);
+        JsonUtil::loadBool(json, actor.talk, "talk", filename, "action", false);
+        JsonUtil::loadBool(json, actor.muffled, "muffled", filename, "action", false);
+        JsonUtil::loadLowerString(json, actor.expressionOverride, "expressionOverride", filename, "action", false);
 
         if (json.contains("requirements")) {
             for (auto& req : json["requirements"]) {
@@ -156,13 +139,13 @@ namespace Graph {
 
                 Graph::ActionAttributes attr;
                 if (json.contains("actor")) {
-                    attr.actor = parseActionActor(path, json["actor"]);
+                    attr.actor = parseActionActor(path, filename, json["actor"]);
                 }
                 if (json.contains("target")) {
-                    attr.target = parseActionActor(path, json["target"]);
+                    attr.target = parseActionActor(path, filename, json["target"]);
                 }
                 if (json.contains("performer")) {
-                    attr.performer = parseActionActor(path, json["performer"]);
+                    attr.performer = parseActionActor(path, filename, json["performer"]);
                 }
 
                 if (json.contains("sounds")) {

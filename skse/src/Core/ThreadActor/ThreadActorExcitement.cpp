@@ -8,7 +8,7 @@
 namespace OStim {
     void ThreadActor::setExcitement(float value) {
         excitement = value;
-        actor.setFactionRank(Util::APITable::getExcitementFaction(), (int)excitement);
+        Util::APITable::getExcitementFaction().setRank(actor, (int)excitement);
     }
 
     void ThreadActor::setMaxExcitement(float max) {
@@ -31,7 +31,7 @@ namespace OStim {
             excitement = 100;
         }
 
-        actor.setFactionRank(Util::APITable::getExcitementFaction(), (int)excitement);
+        Util::APITable::getExcitementFaction().setRank(actor, (int)excitement);
     }
 
     void ThreadActor::loopExcitement() {
@@ -47,14 +47,14 @@ namespace OStim {
                 if (excitement < maxExcitement) {
                     excitement = maxExcitement;
                 }
-                actor.setFactionRank(Util::APITable::getExcitementFaction(), (int)excitement);
+                Util::APITable::getExcitementFaction().setRank(actor, (int)excitement);
             }
         } else {  // increase excitement
             excitement += loopExcitementInc;
             if (excitement > maxExcitement) {
                 excitement = maxExcitement;
             }
-            actor.setFactionRank(Util::APITable::getExcitementFaction(), (int)excitement);
+            Util::APITable::getExcitementFaction().setRank(actor, (int)excitement);
             excitementDecayCooldown = MCM::MCMTable::getExcitementDecayGracePeriod();
 
             if (maxExcitement >= 100.0f) {

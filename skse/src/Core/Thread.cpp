@@ -59,8 +59,7 @@ namespace OStim {
         }
 
         for (auto& [index, actor] : m_actors) {
-            actor.getActor().addToFaction(Util::APITable::getActorCountFaction());
-            actor.getActor().setFactionRank(Util::APITable::getActorCountFaction(), getActorCount());
+            Util::APITable::getActorCountFaction().add(actor.getActor(), getActorCount());
         }
 
         if (furniture && MCM::MCMTable::resetClutter()) {
@@ -190,72 +189,85 @@ namespace OStim {
         }
         m_currentNode = a_node;
 
-        for (auto& actorIt : m_actors) {
+        for (auto& [position, actor] : m_actors) {
             // --- excitement calculation --- //
             float excitementInc = 0;
-            actorIt.second.setMaxExcitement(0);
-            std::vector<float> excitementVals;
+            actor.setMaxExcitement(0);
+            std::vector<float> stimulationValues;
             for (auto& action : m_currentNode->actions) {
-                if (action.actor == actorIt.first && action.attributes->actor.stimulation != 0) {
-                    excitementVals.push_back(action.attributes->actor.stimulation);
-                    auto maxStim = action.attributes->actor.maxStimulation;
-                    if (maxStim > actorIt.second.getMaxExcitement()) {
-                        actorIt.second.setMaxExcitement(maxStim);
+                if (action.actor == position) {
+                    float stimulation = action.attributes->actor.getStimulation(actor.getActor());
+                    if (stimulation != 0) {
+                        stimulationValues.push_back(stimulation);
+                        float maxStim = action.attributes->actor.getMaxStimulation(actor.getActor());
+                        if (maxStim > actor.getMaxExcitement()) {
+                            actor.setMaxExcitement(maxStim);
+                        }
                     }
                 }
-                if (action.target == actorIt.first && action.attributes->target.stimulation != 0) {
-                    excitementVals.push_back(action.attributes->target.stimulation);
-                    auto maxStim = action.attributes->target.maxStimulation;
-                    if (maxStim > actorIt.second.getMaxExcitement()) {
-                        actorIt.second.setMaxExcitement(maxStim);
+                if (action.target == position) {
+                    float stimulation = action.attributes->target.getStimulation(actor.getActor());
+                    if (stimulation != 0) {
+                        stimulationValues.push_back(stimulation);
+                        float maxStim = action.attributes->target.getMaxStimulation(actor.getActor());
+                        if (maxStim > actor.getMaxExcitement()) {
+                            actor.setMaxExcitement(maxStim);
+                        }
                     }
                 }
-                if (action.performer == actorIt.first && action.attributes->performer.stimulation != 0) {
-                    excitementVals.push_back(action.attributes->performer.stimulation);
+                if (action.performer == position) {
+                    float stimulation = action.attributes->performer.getStimulation(actor.getActor());
+                    if (stimulation != 0) {
+                        stimulationValues.push_back(stimulation);
+                        float maxStim = action.attributes->performer.getMaxStimulation(actor.getActor());
+                        if (maxStim > actor.getMaxExcitement()) {
+                            actor.setMaxExcitement(maxStim);
+                        }
+                    }
                 }
             }
 
-            switch (excitementVals.size()) {
+            switch (stimulationValues.size()) {
                 case 0:
                     excitementInc = 0;
                     break;
                 case 1:
-                    excitementInc = excitementVals[0];
+                    excitementInc = stimulationValues[0];
                     break;
                 default: {
-                    std::sort(excitementVals.begin(), excitementVals.end(), std::greater<float>());
-                    excitementInc = excitementVals[0];
-                    for (int i = 1; i < excitementVals.size(); i++) {
-                        excitementInc += excitementVals[i] * 0.1;
+                    std::sort(stimulationValues.begin(), stimulationValues.end(), std::greater<float>());
+                    excitementInc = stimulationValues[0];
+                    for (int i = 1; i < stimulationValues.size(); i++) {
+                        excitementInc += stimulationValues[i] * 0.1;
                     }
                 } break;
             }
 
-            actorIt.second.setBaseExcitementInc(excitementInc);
+            actor.setBaseExcitementInc(excitementInc);
             if (excitementInc <= 0) {
-                actorIt.second.setMaxExcitement(0);
+                actor.setMaxExcitement(0);
             }
 
 
             // --- undressing --- //
-            if (actorIt.first < m_currentNode->actors.size() && !m_currentNode->actors[actorIt.first].noStrip) {
-                if (MCM::MCMTable::undressMidScene() && m_currentNode->doFullStrip(actorIt.first)) {
-                    actorIt.second.undress();
-                    actorIt.second.removeWeapons();
+            if (position < m_currentNode->actors.size() && !m_currentNode->actors[position].noStrip) {
+                if (MCM::MCMTable::undressMidScene() && m_currentNode->doFullStrip(position)) {
+                    actor.undress();
+                    actor.removeWeapons();
                 } else if (MCM::MCMTable::partialUndressing()) {
-                    uint32_t slotMask = m_currentNode->getStrippingMask(actorIt.first);
+                    uint32_t slotMask = m_currentNode->getStrippingMask(position);
                     if (slotMask != 0) {
-                        actorIt.second.undressPartial(slotMask);
+                        actor.undressPartial(slotMask);
                         if ((slotMask & MCM::MCMTable::removeWeaponsWithSlot()) != 0) {
-                            actorIt.second.removeWeapons();
+                            actor.removeWeapons();
                         }
                     }
                 }
             }
 
             // --- scaling / heel offsets / facial expressions --- //
-            if (actorIt.first < m_currentNode->actors.size()) {
-                actorIt.second.changeNode(&(m_currentNode->actors[actorIt.first]), m_currentNode->getFacialExpressions(actorIt.first), m_currentNode->getOverrideExpressions(actorIt.first));
+            if (position < m_currentNode->actors.size()) {
+                actor.changeNode(&(m_currentNode->actors[position]), m_currentNode->getFacialExpressions(position), m_currentNode->getOverrideExpressions(position));
             }
         }
 
@@ -558,22 +570,22 @@ namespace OStim {
         }
 
         if (actor) {
-            float actorStimulation = graphEvent->getActorStimulation();
-            if (actorStimulation > 0.0 && actor->getExcitement() < graphEvent->getActorMaxStimulation()) {
+            float actorStimulation = graphEvent->getActorStimulation(actor->getActor());
+            if (actorStimulation > 0.0 && actor->getExcitement() < graphEvent->getActorMaxStimulation(actor->getActor())) {
                 actor->addExcitement(actorStimulation, true);
             }
         }
 
         if (target) {
-            float targetStimulation = graphEvent->getTargetStimulation();
-            if (targetStimulation > 0.0 && target->getExcitement() < graphEvent->getTargetMaxStimulation()) {
+            float targetStimulation = graphEvent->getTargetStimulation(target->getActor());
+            if (targetStimulation > 0.0 && target->getExcitement() < graphEvent->getTargetMaxStimulation(target->getActor())) {
                 target->addExcitement(targetStimulation, true);
             }
         }
 
         if (performer) {
-            float performerStimulation = graphEvent->getPerformerStimulation();
-            if (performerStimulation > 0.0 && performer->getExcitement() < graphEvent->getPerformerMaxStimulation()) {
+            float performerStimulation = graphEvent->getPerformerStimulation(performer->getActor());
+            if (performerStimulation > 0.0 && performer->getExcitement() < graphEvent->getPerformerMaxStimulation(performer->getActor())) {
                 performer->addExcitement(performerStimulation, true);
             }
         }
@@ -583,8 +595,17 @@ namespace OStim {
             target->reactToEvent(graphEvent->getTargetReactionDelay(), graphEvent, actor->getActor(), [](Sound::VoiceSet& voiceSet){return &voiceSet.eventTargetReactions;});
         }
 
-        if (actor && performer) {
-            performer->reactToEvent(graphEvent->getPerformerReactionDelay(), graphEvent, actor->getActor(), [](Sound::VoiceSet& voiceSet){return &voiceSet.eventPerformerReactions;});
+        if (performer) {
+            if (performer == actor) {
+                if (target) {
+                    performer->reactToEvent(graphEvent->getPerformerReactionDelay(), graphEvent, target->getActor(), [](Sound::VoiceSet& voiceSet){return &voiceSet.eventPerformerReactions;});
+                }
+            } else {
+                if (actor) {
+                    performer->reactToEvent(graphEvent->getPerformerReactionDelay(), graphEvent, actor->getActor(), [](Sound::VoiceSet& voiceSet){return &voiceSet.eventPerformerReactions;});
+                }
+            }
+            
         }
 
         const auto skyrimVM = RE::SkyrimVM::GetSingleton();

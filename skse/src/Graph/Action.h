@@ -8,6 +8,8 @@ namespace Graph {
 	public:
         float stimulation = 0.0;
         float maxStimulation = 100.0;
+        GameAPI::GameFaction stimulationFaction;
+        GameAPI::GameFaction maxStimulationFaction;
         bool fullStrip = false;
         bool moan = false;
         bool talk = false;
@@ -22,6 +24,9 @@ namespace Graph {
         std::unordered_map<std::string, std::vector<float>> floatLists;
         std::unordered_map<std::string, std::string> strings;
         std::unordered_map<std::string, std::vector<std::string>> stringLists;
+
+        float getStimulation(GameAPI::GameActor actor);
+        float getMaxStimulation(GameAPI::GameActor actor);
 	};
 
 	struct ActionAttributes {

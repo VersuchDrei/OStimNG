@@ -58,7 +58,7 @@ namespace OStim {
         excitement = -3;
 
         timesClimaxed++;
-        actor.setFactionRank(Util::APITable::getTimesClimaxedFaction(), timesClimaxed);
+        Util::APITable::getTimesClimaxedFaction().setRank(actor, timesClimaxed);
 
         if (!schlong || female && !MCM::MCMTable::futaUseMaleExcitement()) {
             excitement = std::min(MCM::MCMTable::getPostOrgasmExcitement() * timesClimaxed, MCM::MCMTable::getPostOrgasmExcitementMax());
@@ -130,11 +130,11 @@ namespace OStim {
     void ThreadActor::setTimeUntilClimax(float time) {
         timeUntilClimax = time;
         if (timeUntilClimax < 0) {
-            actor.setFactionRank(Util::APITable::getTimeUntilClimaxFaction(), -1);
+            Util::APITable::getTimeUntilClimaxFaction().setRank(actor, -1);
         } else if (timeUntilClimax > 100.0f){
-            actor.setFactionRank(Util::APITable::getTimeUntilClimaxFaction(), 101);
+            Util::APITable::getTimeUntilClimaxFaction().setRank(actor, 101);
         } else {
-            actor.setFactionRank(Util::APITable::getTimeUntilClimaxFaction(), static_cast<int>(timeUntilClimax));
+            Util::APITable::getTimeUntilClimaxFaction().setRank(actor, (int)timeUntilClimax);
         }
     }
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GameAPI/GameActor.h"
+#include "GameAPI/GameFaction.h"
 #include "GameAPI/GameList.h"
 
 namespace Compatibility {

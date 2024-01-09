@@ -188,16 +188,16 @@ namespace OStim {
 
         if (!playerThread || MCM::MCMTable::autoSpeedControl()) {
             if ((autoSpeedControlCooldown -= Constants::LOOP_TIME_MILLISECONDS) <= 0) {
-                int excitement = getMaxExcitement();
+                float stimulation = getMaxExcitement();
                 int chance;
                 int min = MCM::MCMTable::autoSpeedControlExcitementMin();
                 int max = MCM::MCMTable::autoSpeedControlExcitementMax();
-                if (excitement < min) {
+                if (stimulation < min) {
                     chance = 0;
-                } else if (excitement > max) {
+                } else if (stimulation > max) {
                     chance = 100;
                 } else {
-                    chance = ((excitement - min) * 100) / (max - min);
+                    chance = ((stimulation - min) * 100) / (max - min);
                 }
                 if (RNGUtil::chanceRoll(chance)) {
                     increaseSpeed();

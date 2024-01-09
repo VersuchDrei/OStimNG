@@ -1,5 +1,7 @@
 #include "JsonUtil.h"
 
+#include "StringUtil.h"
+
 #include "Game/LocaleManager.h"
 
 namespace JsonUtil {
@@ -7,6 +9,19 @@ namespace JsonUtil {
         if (json.contains(propertyName)) {
             if (json[propertyName].is_string()) {
                 value = json[propertyName];
+            } else {
+                logger::warn("property '{}' of {} {} isn't a string", propertyName, objectType, objectName);
+            }
+        } else if (warnIfNotExists) {
+            logger::warn("{} doesn't have property '{}' defined", objectName, propertyName);
+        }
+    }
+
+    void loadLowerString(json& json, std::string& value, std::string propertyName, std::string& objectName, std::string objectType, bool warnIfNotExists) {
+        if (json.contains(propertyName)) {
+            if (json[propertyName].is_string()) {
+                value = json[propertyName];
+                StringUtil::toLower(&value);
             } else {
                 logger::warn("property '{}' of {} {} isn't a string", propertyName, objectType, objectName);
             }

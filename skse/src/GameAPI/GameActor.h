@@ -2,7 +2,6 @@
 
 #include "GameActorBone.h"
 #include "GameActorValue.h"
-#include "GameFaction.h"
 #include "GameKeyword.h"
 #include "GamePosition.h"
 #include "GameRace.h"
@@ -62,13 +61,6 @@ namespace GameAPI {
         inline bool hasKeyword(GameKeyword keyword) const { return form->HasKeyword(keyword.form); }
         inline bool hasKeyword(std::string keyword) const { return form->HasKeywordString(keyword); }
 
-        inline void addToFaction(GameFaction faction) const { form->AddToFaction(faction.form, 0); }
-        inline void removeFromFaction(GameFaction faction) const { RemoveFromFaction(form, faction.form); }
-        inline bool isInFaction(GameFaction faction) const { return form->IsInFaction(faction.form); }
-        inline bool hasCrimeFaction(GameFaction faction) const { return form->GetCrimeFaction() == faction.form; }
-        void setFactionRank(GameFaction faction, int rank) const;
-        int getFactionRank(GameFaction faction) const;
-
         int getRelationshipRank(GameActor other) const;
         inline bool isInCombat() const { return form->IsInCombat(); }
         void sheatheWeapon() const;
@@ -89,12 +81,6 @@ namespace GameAPI {
             using func_t = decltype(IsInDialogueWithPlayer);
             REL::Relocation<func_t> func{RELOCATION_ID(55663, 56194)};
             return func(vm, stackID, object);
-        }
-
-        inline static void RemoveFromFaction(RE::Actor* actor, RE::TESFaction* faction) {
-            using func_t = decltype(RemoveFromFaction);
-            REL::Relocation<func_t> func{RELOCATION_ID(36680, 37688)};
-            func(actor, faction);
         }
 
         inline static void SetAngle(RE::BSScript::IVirtualMachine* vm, RE::VMStackID stackID, RE::TESObjectREFR* object, float afAngleX, float afAngleY, float afAngleZ) {

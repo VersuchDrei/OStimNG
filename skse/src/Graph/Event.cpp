@@ -52,62 +52,80 @@ namespace Graph {
     }
 
 
-    float Event::getActorStimulation() {
-        if (actor.stimulation != 0) {
-            return actor.stimulation;
+    float Event::getActorStimulation(GameAPI::GameActor actor) {
+        if (this->actor.stimulationFaction && this->actor.stimulationFaction.contains(actor)) {
+            return this->actor.stimulationFaction.getRank(actor) * 0.25f;
+        }
+        if (this->actor.stimulation != 0) {
+            return this->actor.stimulation;
         }
         if (supertype) {
-            return supertype->getActorStimulation();
+            return supertype->getActorStimulation(actor);
         }
         return 0.0f;
     }
 
-    float Event::getActorMaxStimulation() {
-        if (actor.maxStimulation != 100) {
-            return actor.stimulation;
+    float Event::getActorMaxStimulation(GameAPI::GameActor actor) {
+        if (this->actor.maxStimulationFaction && this->actor.maxStimulationFaction.contains(actor)) {
+            return this->actor.maxStimulationFaction.getRank(actor);
+        }
+        if (this->actor.maxStimulation != 100) {
+            return this->actor.stimulation;
         }
         if (supertype) {
-            return supertype->getActorMaxStimulation();
+            return supertype->getActorMaxStimulation(actor);
         }
         return 100.0f;
     }
 
-    float Event::getTargetStimulation() {
+    float Event::getTargetStimulation(GameAPI::GameActor actor) {
+        if (target.stimulationFaction && target.stimulationFaction.contains(actor)) {
+            return target.stimulationFaction.getRank(actor) * 0.25f;
+        }
         if (target.stimulation != 0) {
             return target.stimulation;
         }
         if (supertype) {
-            return supertype->getTargetStimulation();
+            return supertype->getTargetStimulation(actor);
         }
         return 0.0f;
     }
 
-    float Event::getTargetMaxStimulation() {
+    float Event::getTargetMaxStimulation(GameAPI::GameActor actor) {
+        if (target.maxStimulationFaction && target.maxStimulationFaction.contains(actor)) {
+            return target.maxStimulationFaction.getRank(actor);
+        }
         if (target.maxStimulation != 100) {
             return target.stimulation;
         }
         if (supertype) {
-            return supertype->getTargetMaxStimulation();
+            return supertype->getTargetMaxStimulation(actor);
         }
         return 100.0f;
     }
 
-    float Event::getPerformerStimulation() {
+    float Event::getPerformerStimulation(GameAPI::GameActor actor) {
+        if (performer.stimulationFaction && performer.stimulationFaction.contains(actor)) {
+            return performer.stimulationFaction.getRank(actor) * 0.25f;
+        }
         if (performer.stimulation != 0) {
             return performer.stimulation;
         }
         if (supertype) {
-            return supertype->getPerformerStimulation();
+            return supertype->getPerformerStimulation(actor);
         }
         return 0.0f;
     }
 
-    float Event::getPerformerMaxStimulation() {
+    float Event::getPerformerMaxStimulation(GameAPI::GameActor actor) {
+        if (performer.maxStimulationFaction && performer.maxStimulationFaction.contains(actor)) {
+            return performer.maxStimulationFaction.getRank(actor);
+        }
         if (performer.maxStimulation != 100) {
             return performer.stimulation;
         }
         if (supertype) {
-            return supertype->getPerformerMaxStimulation();
+            return supertype->getPerformerMaxStimulation(actor);
         }
         return 100.0f;
     }

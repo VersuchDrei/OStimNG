@@ -26,6 +26,8 @@ actor fields:
 	in an animation with multiple stimulating actions the Skyrim actor will get stimulation equal to the highest stimulation defined for them plus 10% of all other stimulation defined for them
 "maxStimulation" (float): a stimulation threshold after which this action will no longer generate any stimulation
 	this for example can be used by actions like kissing to prevent the Skyrim actors climaxing from kissing alone
+"stimulationFaction" (object): a faction that the actor can be put in to modify the stimulation they receive from this action (see form fields)
+"maxStimulationFaction" (object): a faction that the actor can be put in to modify the maximum stimulation they can receive from this action (see form fields)
 "fullStrip" (bool): When true executing this action will fully strip this Skyrim actor (if fully undress mid scene is enabled in the MCM)
 "moan" (bool): When true the Skyrim actor will do moaning sounds when this action is played.
 "talk" (bool): When true the Skyrim actor will talk when this action is played.
@@ -37,7 +39,7 @@ actor fields:
 "requirements" (list<string>): a list of requirements for this Skyrim actor, if they are not met an animation containing this action will not show up in navigation
 	possible values are "anus", "breast", "foot", "hand", "mouth", "nipple", "penis", "testicles" and "vagina"
 "strippingSlots" (list<int>): a list of biped slots to strip on this Skyrim actor when executing this scene (if partial undressing is enabled in the MCM)
-"faction" (object): a faction the actor is put in while participating in this role in this action (see form fields)
+"faction" (object/list<object>): a faction or list of factions the actor is put in while participating in this role in this action (see form fields)
 	this is mainly useful for condition functions for addons / voice sets
 "ints" (map<string, int>): A map of custom ints that can be used by addons
 "intLists" (map<string, list<int>>): a map of custom int lists that can be used by addons

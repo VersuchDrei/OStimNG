@@ -1,11 +1,14 @@
 #pragma once
 
+#include "GameAPI/GameFaction.h"
 #include "GameAPI/GameSound.h"
 
 namespace Graph {
     struct EventActor {
         float stimulation = 0.0;
         float maxStimulation = 100.0;
+        GameAPI::GameFaction stimulationFaction;
+        GameAPI::GameFaction maxStimulationFaction;
         int reactionDelay = 0;
         std::unordered_map<std::string, int> ints;
         std::unordered_map<std::string, std::vector<int>> intLists;
@@ -35,12 +38,12 @@ namespace Graph {
         float getControllerRumbleDuration();
         float getControllerRumbleStrength();
 
-        float getActorStimulation();
-        float getActorMaxStimulation();
-        float getTargetStimulation();
-        float getTargetMaxStimulation();
-        float getPerformerStimulation();
-        float getPerformerMaxStimulation();
+        float getActorStimulation(GameAPI::GameActor actor);
+        float getActorMaxStimulation(GameAPI::GameActor actor);
+        float getTargetStimulation(GameAPI::GameActor actor);
+        float getTargetMaxStimulation(GameAPI::GameActor actor);
+        float getPerformerStimulation(GameAPI::GameActor actor);
+        float getPerformerMaxStimulation(GameAPI::GameActor actor);
 
         float getActorReactionDelay();
         float getTargetReactionDelay();
