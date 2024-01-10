@@ -12,8 +12,6 @@ namespace Graph {
 
         JsonUtil::loadFloat(json, actor.stimulation, "stimulation", filename, "action", false);
         JsonUtil::loadFloat(json, actor.maxStimulation, "maxStimulation", filename, "action", false);
-        JsonUtil::loadGameRecord(json, actor.stimulationFaction, "stimulationFaction", filename, "action", path, false);
-        JsonUtil::loadGameRecord(json, actor.maxStimulationFaction, "maxStimulationFaction", filename, "action", path, false);
         JsonUtil::loadBool(json, actor.fullStrip, "fullStrip", filename, "action", false);
         JsonUtil::loadBool(json, actor.moan, "moan", filename, "action", false);
         JsonUtil::loadBool(json, actor.talk, "talk", filename, "action", false);
@@ -138,6 +136,9 @@ namespace Graph {
                 }
 
                 Graph::ActionAttributes attr;
+                attr.type = filename;
+                StringUtil::toLower(&attr.type);
+
                 if (json.contains("actor")) {
                     attr.actor = parseActionActor(path, filename, json["actor"]);
                 }
@@ -165,8 +166,7 @@ namespace Graph {
                     }
                 }
 
-                StringUtil::toLower(&filename);
-                actions[filename] = attr;
+                actions[attr.type] = attr;
             });
     }
 

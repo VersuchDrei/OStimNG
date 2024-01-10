@@ -2,31 +2,11 @@
 	"actor":{
 		"stimulation":2.5,
 		"maxStimulation":50,
-		"stimulationFaction":{
-			"info": "OStimSpankActorStimulationFaction",
-			"mod": "OStim.esp",
-			"formid": "0xED2"
-		},
-		"maxStimulationFaction":{
-			"info": "OStimSpankActorMaxStimulationFaction",
-			"mod": "OStim.esp",
-			"formid": "0xED3"
-		},
 		"reactionDelay": 0.5
 	},
 	"target":{
 		"stimulation":5.0,
 		"maxStimulation":75,
-		"stimulationFaction":{
-			"info": "OStimSpankTargetStimulationFaction",
-			"mod": "OStim.esp",
-			"formid": "0xED4"
-		},
-		"maxStimulationFaction":{
-			"info": "OStimSpankTargetMaxStimulationFaction",
-			"mod": "OStim.esp",
-			"formid": "0xED5"
-		},
 		"reactionDelay": 0.5
 	},
 	"sound":{

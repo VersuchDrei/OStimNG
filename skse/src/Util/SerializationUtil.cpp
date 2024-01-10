@@ -1,41 +1,55 @@
 #include "SerializationUtil.h"
 
 namespace SerializationUtil {
-    void writeString(SKSE::SerializationInterface* serial, std::string value) {
-        size_t size = value.size();
-        serial->WriteRecordData(&size, sizeof(size));
+    void writeString(GameAPI::GameSerializationInterface serial, std::string value) {
+        serial.write<size_t>(value.size());
         for (char c : value) {
-            serial->WriteRecordData(&c, sizeof(c));
+            serial.write<char>(c);
         }
     }
 
-    std::string readString(SKSE::SerializationInterface* serial) {
+    std::string readString(GameAPI::GameSerializationInterface serial) {
         std::vector<char> chars;
-        size_t size;
-        serial->ReadRecordData(&size, sizeof(size));
-        char c;
-        for (; size > 0; size--) {
-            serial->ReadRecordData(&c, sizeof(c));
-            chars.push_back(c);
+        for (size_t size = serial.read<size_t>(); size > 0; size--) {
+            chars.push_back(serial.read<char>());
         }
         return std::string(chars.begin(), chars.end());
     }
 
-    void writeStringMap(SKSE::SerializationInterface* serial, std::unordered_map<std::string, std::string> map) {
-        size_t size = map.size();
-        serial->WriteRecordData(&size, sizeof(size));
+
+    void writeFloatMap(GameAPI::GameSerializationInterface serial, std::unordered_map<std::string, float> map){
+        serial.write<size_t>(map.size());
+        for (auto& entry : map) {
+            writeString(serial, entry.first);
+            serial.write<float>(entry.second);
+        }
+    }
+
+    std::unordered_map<std::string, float> readFloatMap(GameAPI::GameSerializationInterface serial) {
+        std::unordered_map<std::string, float> map;
+
+        for (size_t size = serial.read<size_t>(); size > 0; size--) {
+            std::string key = readString(serial);
+            float value = serial.read<float>();
+            map.emplace(key, value);
+        }
+
+        return map;
+    }
+
+
+    void writeStringMap(GameAPI::GameSerializationInterface serial, std::unordered_map<std::string, std::string> map) {
+        serial.write<size_t>(map.size());
         for (auto& entry : map) {
             writeString(serial, entry.first);
             writeString(serial, entry.second);
         }
     }
 
-    std::unordered_map<std::string, std::string> readStringMap(SKSE::SerializationInterface* serial) {
+    std::unordered_map<std::string, std::string> readStringMap(GameAPI::GameSerializationInterface serial) {
         std::unordered_map<std::string, std::string> map;
 
-        size_t size;
-        serial->ReadRecordData(&size, sizeof(size));
-        for (; size > 0; size--) {
+        for (size_t size = serial.read<size_t>(); size > 0; size--) {
             std::string key = readString(serial);
             std::string value = readString(serial);
             map.emplace(key, value);

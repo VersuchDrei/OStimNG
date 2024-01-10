@@ -57,6 +57,248 @@ namespace Serialization {
     }
 
 
+    float getActionActorStimulation(RE::FormID formID, std::string action) {
+        auto iter = actorData.find(formID);
+        if (iter != actorData.end()) {
+            auto iter2 = iter->second.actionActorStimulations.find(action);
+            if (iter2 != iter->second.actionActorStimulations.end()) {
+                return iter2->second;
+            }
+        }
+        return std::numeric_limits<float>::quiet_NaN();
+    }
+
+    void setActionActorStimulation(RE::FormID formID, std::string action, float stimulation) {
+        auto iter = actorData.find(formID);
+        if (iter != actorData.end()) {
+            iter->second.actionActorStimulations[action] = stimulation;
+        } else {
+            actorData[formID] = {.actionActorStimulations = {{action, stimulation}}};
+        }
+    }
+
+    float getActionActorMaxStimulation(RE::FormID formID, std::string action) {
+        auto iter = actorData.find(formID);
+        if (iter != actorData.end()) {
+            auto iter2 = iter->second.actionActorMaxStimulations.find(action);
+            if (iter2 != iter->second.actionActorMaxStimulations.end()) {
+                return iter2->second;
+            }
+        }
+        return std::numeric_limits<float>::quiet_NaN();
+    }
+
+    void setActionActorMaxStimulation(RE::FormID formID, std::string action, float stimulation) {
+        auto iter = actorData.find(formID);
+        if (iter != actorData.end()) {
+            iter->second.actionActorMaxStimulations[action] = stimulation;
+        } else {
+            actorData[formID] = {.actionActorMaxStimulations = {{action, stimulation}}};
+        }
+    }
+
+    float getActionTargetStimulation(RE::FormID formID, std::string action) {
+        auto iter = actorData.find(formID);
+        if (iter != actorData.end()) {
+            auto iter2 = iter->second.actionTargetStimulations.find(action);
+            if (iter2 != iter->second.actionTargetStimulations.end()) {
+                return iter2->second;
+            }
+        }
+        return std::numeric_limits<float>::quiet_NaN();
+    }
+
+    void setActionTargetStimulation(RE::FormID formID, std::string action, float stimulation) {
+        auto iter = actorData.find(formID);
+        if (iter != actorData.end()) {
+            iter->second.actionTargetStimulations[action] = stimulation;
+        } else {
+            actorData[formID] = {.actionTargetStimulations = {{action, stimulation}}};
+        }
+    }
+
+    float getActionTargetMaxStimulation(RE::FormID formID, std::string action) {
+        auto iter = actorData.find(formID);
+        if (iter != actorData.end()) {
+            auto iter2 = iter->second.actionTargetMaxStimulations.find(action);
+            if (iter2 != iter->second.actionTargetMaxStimulations.end()) {
+                return iter2->second;
+            }
+        }
+        return std::numeric_limits<float>::quiet_NaN();
+    }
+
+    void setActionTargetMaxStimulation(RE::FormID formID, std::string action, float stimulation) {
+        auto iter = actorData.find(formID);
+        if (iter != actorData.end()) {
+            iter->second.actionTargetMaxStimulations[action] = stimulation;
+        } else {
+            actorData[formID] = {.actionTargetMaxStimulations = {{action, stimulation}}};
+        }
+    }
+
+    float getActionPerformerStimulation(RE::FormID formID, std::string action) {
+        auto iter = actorData.find(formID);
+        if (iter != actorData.end()) {
+            auto iter2 = iter->second.actionPerformerStimulations.find(action);
+            if (iter2 != iter->second.actionPerformerStimulations.end()) {
+                return iter2->second;
+            }
+        }
+        return std::numeric_limits<float>::quiet_NaN();
+    }
+
+    void setActionPerformerStimulation(RE::FormID formID, std::string action, float stimulation) {
+        auto iter = actorData.find(formID);
+        if (iter != actorData.end()) {
+            iter->second.actionPerformerStimulations[action] = stimulation;
+        } else {
+            actorData[formID] = {.actionPerformerStimulations = {{action, stimulation}}};
+        }
+    }
+
+    float getActionPerformerMaxStimulation(RE::FormID formID, std::string action) {
+        auto iter = actorData.find(formID);
+        if (iter != actorData.end()) {
+            auto iter2 = iter->second.actionPerformerMaxStimulations.find(action);
+            if (iter2 != iter->second.actionPerformerMaxStimulations.end()) {
+                return iter2->second;
+            }
+        }
+        return std::numeric_limits<float>::quiet_NaN();
+    }
+
+    void setActionPerformerMaxStimulation(RE::FormID formID, std::string action, float stimulation) {
+        auto iter = actorData.find(formID);
+        if (iter != actorData.end()) {
+            iter->second.actionPerformerMaxStimulations[action] = stimulation;
+        } else {
+            actorData[formID] = {.actionPerformerMaxStimulations = {{action, stimulation}}};
+        }
+    }
+
+
+    float getEventActorStimulation(RE::FormID formID, std::string ev) {
+        auto iter = actorData.find(formID);
+        if (iter != actorData.end()) {
+            auto iter2 = iter->second.eventActorStimulations.find(ev);
+            if (iter2 != iter->second.eventActorStimulations.end()) {
+                return iter2->second;
+            }
+        }
+        return std::numeric_limits<float>::quiet_NaN();
+    }
+
+    void setEventActorStimulation(RE::FormID formID, std::string ev, float stimulation) {
+        auto iter = actorData.find(formID);
+        if (iter != actorData.end()) {
+            iter->second.eventActorStimulations[ev] = stimulation;
+        } else {
+            actorData[formID] = {.eventActorStimulations = {{ev, stimulation}}};
+        }
+    }
+
+    float getEventActorMaxStimulation(RE::FormID formID, std::string ev) {
+        auto iter = actorData.find(formID);
+        if (iter != actorData.end()) {
+            auto iter2 = iter->second.eventActorMaxStimulations.find(ev);
+            if (iter2 != iter->second.eventActorMaxStimulations.end()) {
+                return iter2->second;
+            }
+        }
+        return std::numeric_limits<float>::quiet_NaN();
+    }
+
+    void setEventActorMaxStimulation(RE::FormID formID, std::string ev, float stimulation) {
+        auto iter = actorData.find(formID);
+        if (iter != actorData.end()) {
+            iter->second.eventActorMaxStimulations[ev] = stimulation;
+        } else {
+            actorData[formID] = {.eventActorMaxStimulations = {{ev, stimulation}}};
+        }
+    }
+
+    float getEventTargetStimulation(RE::FormID formID, std::string ev) {
+        auto iter = actorData.find(formID);
+        if (iter != actorData.end()) {
+            auto iter2 = iter->second.eventTargetStimulations.find(ev);
+            if (iter2 != iter->second.eventTargetStimulations.end()) {
+                return iter2->second;
+            }
+        }
+        return std::numeric_limits<float>::quiet_NaN();
+    }
+
+    void setEventTargetStimulation(RE::FormID formID, std::string ev, float stimulation) {
+        auto iter = actorData.find(formID);
+        if (iter != actorData.end()) {
+            iter->second.eventTargetStimulations[ev] = stimulation;
+        } else {
+            actorData[formID] = {.eventTargetStimulations = {{ev, stimulation}}};
+        }
+    }
+
+    float getEventTargetMaxStimulation(RE::FormID formID, std::string ev) {
+        auto iter = actorData.find(formID);
+        if (iter != actorData.end()) {
+            auto iter2 = iter->second.eventTargetMaxStimulations.find(ev);
+            if (iter2 != iter->second.eventTargetMaxStimulations.end()) {
+                return iter2->second;
+            }
+        }
+        return std::numeric_limits<float>::quiet_NaN();
+    }
+
+    void setEventTargetMaxStimulation(RE::FormID formID, std::string ev, float stimulation) {
+        auto iter = actorData.find(formID);
+        if (iter != actorData.end()) {
+            iter->second.eventTargetMaxStimulations[ev] = stimulation;
+        } else {
+            actorData[formID] = {.eventTargetMaxStimulations = {{ev, stimulation}}};
+        }
+    }
+
+    float getEventPerformerStimulation(RE::FormID formID, std::string ev) {
+        auto iter = actorData.find(formID);
+        if (iter != actorData.end()) {
+            auto iter2 = iter->second.eventPerformerStimulations.find(ev);
+            if (iter2 != iter->second.eventPerformerStimulations.end()) {
+                return iter2->second;
+            }
+        }
+        return std::numeric_limits<float>::quiet_NaN();
+    }
+
+    void setEventPerformerStimulation(RE::FormID formID, std::string ev, float stimulation) {
+        auto iter = actorData.find(formID);
+        if (iter != actorData.end()) {
+            iter->second.eventPerformerStimulations[ev] = stimulation;
+        } else {
+            actorData[formID] = {.eventPerformerStimulations = {{ev, stimulation}}};
+        }
+    }
+
+    float getEventPerformerMaxStimulation(RE::FormID formID, std::string ev) {
+        auto iter = actorData.find(formID);
+        if (iter != actorData.end()) {
+            auto iter2 = iter->second.eventPerformerMaxStimulations.find(ev);
+            if (iter2 != iter->second.eventPerformerMaxStimulations.end()) {
+                return iter2->second;
+            }
+        }
+        return std::numeric_limits<float>::quiet_NaN();
+    }
+
+    void setEventPerformerMaxStimulation(RE::FormID formID, std::string ev, float stimulation) {
+        auto iter = actorData.find(formID);
+        if (iter != actorData.end()) {
+            iter->second.eventPerformerMaxStimulations[ev] = stimulation;
+        } else {
+            actorData[formID] = {.eventPerformerMaxStimulations = {{ev, stimulation}}};
+        }
+    }
+
+
     void Save(SKSE::SerializationInterface* serial) {
         std::unique_lock lock(_lock);
         logger::info("serializing data");
@@ -175,6 +417,80 @@ namespace Serialization {
                     json["actorData"][stringID]["voice"]["formid"] = std::to_string(data.voiceSet & 0x00FFFFFF);
                 }
             }
+
+            if (!data.actionActorStimulations.empty()) {
+                json["actorData"][stringID]["actionActorStimulations"] = json::object();
+                for (auto& [action, stim] : data.actionActorStimulations) {
+                    json["actorData"][stringID]["actionActorStimulations"][action] = stim;
+                }
+            }
+            if (!data.actionActorMaxStimulations.empty()) {
+                json["actorData"][stringID]["actionActorMaxStimulations"] = json::object();
+                for (auto& [action, stim] : data.actionActorMaxStimulations) {
+                    json["actorData"][stringID]["actionActorMaxStimulations"][action] = stim;
+                }
+            }
+            if (!data.actionTargetStimulations.empty()) {
+                json["actorData"][stringID]["actionTargetStimulations"] = json::object();
+                for (auto& [action, stim] : data.actionTargetStimulations) {
+                    json["actorData"][stringID]["actionTargetStimulations"][action] = stim;
+                }
+            }
+            if (!data.actionTargetMaxStimulations.empty()) {
+                json["actorData"][stringID]["actionTargetMaxStimulations"] = json::object();
+                for (auto& [action, stim] : data.actionTargetMaxStimulations) {
+                    json["actorData"][stringID]["actionTargetMaxStimulations"][action] = stim;
+                }
+            }
+            if (!data.actionPerformerStimulations.empty()) {
+                json["actorData"][stringID]["actionPerformerStimulations"] = json::object();
+                for (auto& [action, stim] : data.actionPerformerStimulations) {
+                    json["actorData"][stringID]["actionPerformerStimulations"][action] = stim;
+                }
+            }
+            if (!data.actionPerformerMaxStimulations.empty()) {
+                json["actorData"][stringID]["actionPerformerMaxStimulations"] = json::object();
+                for (auto& [action, stim] : data.actionPerformerMaxStimulations) {
+                    json["actorData"][stringID]["actionPerformerMaxStimulations"][action] = stim;
+                }
+            }
+
+            if (!data.eventActorStimulations.empty()) {
+                json["actorData"][stringID]["eventActorStimulations"] = json::object();
+                for (auto& [ev, stim] : data.eventActorStimulations) {
+                    json["actorData"][stringID]["eventActorStimulations"][ev] = stim;
+                }
+            }
+            if (!data.eventActorMaxStimulations.empty()) {
+                json["actorData"][stringID]["eventActorMaxStimulations"] = json::object();
+                for (auto& [ev, stim] : data.eventActorMaxStimulations) {
+                    json["actorData"][stringID]["eventActorMaxStimulations"][ev] = stim;
+                }
+            }
+            if (!data.eventTargetStimulations.empty()) {
+                json["actorData"][stringID]["eventTargetStimulations"] = json::object();
+                for (auto& [ev, stim] : data.eventTargetStimulations) {
+                    json["actorData"][stringID]["eventTargetStimulations"][ev] = stim;
+                }
+            }
+            if (!data.eventTargetMaxStimulations.empty()) {
+                json["actorData"][stringID]["eventTargetMaxStimulations"] = json::object();
+                for (auto& [ev, stim] : data.eventTargetMaxStimulations) {
+                    json["actorData"][stringID]["eventTargetMaxStimulations"][ev] = stim;
+                }
+            }
+            if (!data.eventPerformerStimulations.empty()) {
+                json["actorData"][stringID]["eventPerformerStimulations"] = json::object();
+                for (auto& [ev, stim] : data.eventPerformerStimulations) {
+                    json["actorData"][stringID]["eventPerformerStimulations"][ev] = stim;
+                }
+            }
+            if (!data.eventPerformerMaxStimulations.empty()) {
+                json["actorData"][stringID]["eventPerformerMaxStimulations"] = json::object();
+                for (auto& [ev, stim] : data.eventPerformerMaxStimulations) {
+                    json["actorData"][stringID]["eventPerformerMaxStimulations"][ev] = stim;
+                }
+            }
         }
     }
 
@@ -215,6 +531,68 @@ namespace Serialization {
                         voiceID += mod->GetPartialIndex() << 12;
                     }
                     data.voiceSet = voiceID;
+                }
+
+                if (value.contains("actionActorStimulations")) {
+                    for (auto& [action, stim] : value["actionActorStimulations"].items()) {
+                        data.actionActorStimulations[action] = stim;
+                    }
+                }
+                if (value.contains("actionActorMaxStimulations")) {
+                    for (auto& [action, stim] : value["actionActorMaxStimulations"].items()) {
+                        data.actionActorMaxStimulations[action] = stim;
+                    }
+                }
+                if (value.contains("actionTargetStimulations")) {
+                    for (auto& [action, stim] : value["actionTargetStimulations"].items()) {
+                        data.actionTargetStimulations[action] = stim;
+                    }
+                }
+                if (value.contains("actionTargetMaxStimulations")) {
+                    for (auto& [action, stim] : value["actionTargetMaxStimulations"].items()) {
+                        data.actionTargetMaxStimulations[action] = stim;
+                    }
+                }
+                if (value.contains("actionPerformerStimulations")) {
+                    for (auto& [action, stim] : value["actionPerformerStimulations"].items()) {
+                        data.actionPerformerStimulations[action] = stim;
+                    }
+                }
+                if (value.contains("actionPerformerMaxStimulations")) {
+                    for (auto& [action, stim] : value["actionPerformerMaxStimulations"].items()) {
+                        data.actionPerformerMaxStimulations[action] = stim;
+                    }
+                }
+
+                if (value.contains("eventActorStimulations")) {
+                    for (auto& [ev, stim] : value["eventActorStimulations"].items()) {
+                        data.eventActorStimulations[ev] = stim;
+                    }
+                }
+                if (value.contains("eventActorMaxStimulations")) {
+                    for (auto& [ev, stim] : value["eventActorMaxStimulations"].items()) {
+                        data.eventActorMaxStimulations[ev] = stim;
+                    }
+                }
+                if (value.contains("eventTargetStimulations")) {
+                    for (auto& [ev, stim] : value["eventTargetStimulations"].items()) {
+                        data.eventTargetStimulations[ev] = stim;
+                    }
+                }
+                if (value.contains("eventTargetMaxStimulations")) {
+                    for (auto& [ev, stim] : value["eventTargetMaxStimulations"].items()) {
+                        data.eventTargetMaxStimulations[ev] = stim;
+                    }
+                }
+                if (value.contains("eventPerformerStimulations")) {
+                    for (auto& [ev, stim] : value["eventPerformerStimulations"].items()) {
+                        data.eventPerformerStimulations[ev] = stim;
+                    }
+                }
+                if (value.contains("eventPerformerMaxStimulations")) {
+                    for (auto& [ev, stim] : value["eventPerformerMaxStimulations"].items()) {
+                        data.eventPerformerMaxStimulations[ev] = stim;
+                    }
                 }
 
                 actorData[formID] = data;

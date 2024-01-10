@@ -2,26 +2,45 @@
 
 #include "GraphTable.h"
 
+#include "Serial/Manager.h"
 #include "Util/VectorUtil.h"
 
 namespace Graph {
-    float ActionActor::getStimulation(GameAPI::GameActor actor) {
-        if (!stimulationFaction || !stimulationFaction.contains(actor)) {
-            return stimulation;
-        }
-        return stimulationFaction.getRank(actor) * 0.05;
-    }
-
-    float ActionActor::getMaxStimulation(GameAPI::GameActor actor) {
-        if (!maxStimulationFaction || !maxStimulationFaction.contains(actor)) {
-            return maxStimulation;
-        }
-        return maxStimulationFaction.getRank(actor);
-    }
-
     bool ActionAttributes::hasTag(std::string tag) {
         return VectorUtil::contains(tags, tag);
     }
+
+
+    float ActionAttributes::getActorStimulation(GameAPI::GameActor actor) {
+        float stimulation = Serialization::getActionActorStimulation(actor.getBaseFormID(), type);
+        return std::isnan(stimulation) ? this->actor.stimulation : stimulation;
+    }
+
+    float ActionAttributes::getActorMaxStimulation(GameAPI::GameActor actor) {
+        float maxStimulation = Serialization::getActionActorMaxStimulation(actor.getBaseFormID(), type);
+        return std::isnan(maxStimulation) ? this->actor.maxStimulation : maxStimulation;
+    }
+
+    float ActionAttributes::getTargetStimulation(GameAPI::GameActor actor) {
+        float stimulation = Serialization::getActionTargetStimulation(actor.getBaseFormID(), type);
+        return std::isnan(stimulation) ? target.stimulation : stimulation;
+    }
+
+    float ActionAttributes::getTargetMaxStimulation(GameAPI::GameActor actor) {
+        float maxStimulation = Serialization::getActionTargetMaxStimulation(actor.getBaseFormID(), type);
+        return std::isnan(maxStimulation) ? target.maxStimulation : maxStimulation;
+    }
+
+    float ActionAttributes::getPerformerStimulation(GameAPI::GameActor actor) {
+        float stimulation = Serialization::getActionPerformerStimulation(actor.getBaseFormID(), type);
+        return std::isnan(stimulation) ? performer.stimulation : stimulation;
+    }
+
+    float ActionAttributes::getPerformerMaxStimulation(GameAPI::GameActor actor) {
+        float maxStimulation = Serialization::getActionPerformerMaxStimulation(actor.getBaseFormID(), type);
+        return std::isnan(maxStimulation) ? performer.maxStimulation : maxStimulation;
+    }
+
 
     bool Action::doFullStrip(int position) {
         return actor == position && attributes->actor.fullStrip || 

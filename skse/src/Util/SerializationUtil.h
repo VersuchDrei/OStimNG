@@ -1,9 +1,13 @@
 #pragma once
 
-namespace SerializationUtil {
-    void writeString(SKSE::SerializationInterface* serial, std::string value);
-    std::string readString(SKSE::SerializationInterface* serial);
+#include "GameAPI/GameSerializationInterface.h"
 
-    void writeStringMap(SKSE::SerializationInterface* serial, std::unordered_map<std::string, std::string> map);
-    std::unordered_map<std::string, std::string> readStringMap(SKSE::SerializationInterface* serial);
+namespace SerializationUtil {
+    void writeString(GameAPI::GameSerializationInterface serial, std::string value);
+    std::string readString(GameAPI::GameSerializationInterface serial);
+
+    void writeFloatMap(GameAPI::GameSerializationInterface serial, std::unordered_map<std::string, float> map);
+    std::unordered_map<std::string, float> readFloatMap(GameAPI::GameSerializationInterface serial);
+    void writeStringMap(GameAPI::GameSerializationInterface serial, std::unordered_map<std::string, std::string> map);
+    std::unordered_map<std::string, std::string> readStringMap(GameAPI::GameSerializationInterface serial);
 }

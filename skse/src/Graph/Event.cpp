@@ -1,5 +1,7 @@
 #include "Event.h"
 
+#include "Serial/Manager.h"
+
 namespace Graph {
     GameAPI::GameSound Event::getSound() {
         if (sound) {
@@ -53,8 +55,9 @@ namespace Graph {
 
 
     float Event::getActorStimulation(GameAPI::GameActor actor) {
-        if (this->actor.stimulationFaction && this->actor.stimulationFaction.contains(actor)) {
-            return this->actor.stimulationFaction.getRank(actor) * 0.25f;
+        float stimulation = Serialization::getEventActorStimulation(actor, id);
+        if (!std::isnan(stimulation)) {
+            return stimulation;
         }
         if (this->actor.stimulation != 0) {
             return this->actor.stimulation;
@@ -66,8 +69,9 @@ namespace Graph {
     }
 
     float Event::getActorMaxStimulation(GameAPI::GameActor actor) {
-        if (this->actor.maxStimulationFaction && this->actor.maxStimulationFaction.contains(actor)) {
-            return this->actor.maxStimulationFaction.getRank(actor);
+        float maxStimulation = Serialization::getEventActorMaxStimulation(actor, id);
+        if (!std::isnan(maxStimulation)) {
+            return maxStimulation;
         }
         if (this->actor.maxStimulation != 100) {
             return this->actor.stimulation;
@@ -79,8 +83,9 @@ namespace Graph {
     }
 
     float Event::getTargetStimulation(GameAPI::GameActor actor) {
-        if (target.stimulationFaction && target.stimulationFaction.contains(actor)) {
-            return target.stimulationFaction.getRank(actor) * 0.25f;
+        float stimulation = Serialization::getEventTargetStimulation(actor, id);
+        if (!std::isnan(stimulation)) {
+            return stimulation;
         }
         if (target.stimulation != 0) {
             return target.stimulation;
@@ -92,8 +97,9 @@ namespace Graph {
     }
 
     float Event::getTargetMaxStimulation(GameAPI::GameActor actor) {
-        if (target.maxStimulationFaction && target.maxStimulationFaction.contains(actor)) {
-            return target.maxStimulationFaction.getRank(actor);
+        float maxStimulation = Serialization::getEventTargetMaxStimulation(actor, id);
+        if (!std::isnan(maxStimulation)) {
+            return maxStimulation;
         }
         if (target.maxStimulation != 100) {
             return target.stimulation;
@@ -105,8 +111,9 @@ namespace Graph {
     }
 
     float Event::getPerformerStimulation(GameAPI::GameActor actor) {
-        if (performer.stimulationFaction && performer.stimulationFaction.contains(actor)) {
-            return performer.stimulationFaction.getRank(actor) * 0.25f;
+        float stimulation = Serialization::getEventPerformerStimulation(actor, id);
+        if (!std::isnan(stimulation)) {
+            return stimulation;
         }
         if (performer.stimulation != 0) {
             return performer.stimulation;
@@ -118,8 +125,9 @@ namespace Graph {
     }
 
     float Event::getPerformerMaxStimulation(GameAPI::GameActor actor) {
-        if (performer.maxStimulationFaction && performer.maxStimulationFaction.contains(actor)) {
-            return performer.maxStimulationFaction.getRank(actor);
+        float maxStimulation = Serialization::getEventPerformerMaxStimulation(actor, id);
+        if (!std::isnan(maxStimulation)) {
+            return maxStimulation;
         }
         if (performer.maxStimulation != 100) {
             return performer.stimulation;

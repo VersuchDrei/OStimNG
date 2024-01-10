@@ -196,30 +196,30 @@ namespace OStim {
             std::vector<float> stimulationValues;
             for (auto& action : m_currentNode->actions) {
                 if (action.actor == position) {
-                    float stimulation = action.attributes->actor.getStimulation(actor.getActor());
+                    float stimulation = action.attributes->getActorStimulation(actor.getActor());
                     if (stimulation != 0) {
                         stimulationValues.push_back(stimulation);
-                        float maxStim = action.attributes->actor.getMaxStimulation(actor.getActor());
+                        float maxStim = action.attributes->getActorMaxStimulation(actor.getActor());
                         if (maxStim > actor.getMaxExcitement()) {
                             actor.setMaxExcitement(maxStim);
                         }
                     }
                 }
                 if (action.target == position) {
-                    float stimulation = action.attributes->target.getStimulation(actor.getActor());
+                    float stimulation = action.attributes->getTargetStimulation(actor.getActor());
                     if (stimulation != 0) {
                         stimulationValues.push_back(stimulation);
-                        float maxStim = action.attributes->target.getMaxStimulation(actor.getActor());
+                        float maxStim = action.attributes->getTargetMaxStimulation(actor.getActor());
                         if (maxStim > actor.getMaxExcitement()) {
                             actor.setMaxExcitement(maxStim);
                         }
                     }
                 }
                 if (action.performer == position) {
-                    float stimulation = action.attributes->performer.getStimulation(actor.getActor());
+                    float stimulation = action.attributes->getPerformerStimulation(actor.getActor());
                     if (stimulation != 0) {
                         stimulationValues.push_back(stimulation);
-                        float maxStim = action.attributes->performer.getMaxStimulation(actor.getActor());
+                        float maxStim = action.attributes->getPerformerMaxStimulation(actor.getActor());
                         if (maxStim > actor.getMaxExcitement()) {
                             actor.setMaxExcitement(maxStim);
                         }
