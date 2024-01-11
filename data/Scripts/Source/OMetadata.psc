@@ -85,6 +85,71 @@ string Function GetAnimationId(string Id, int Index) Global Native
 */;
 string Function GetAutoTransitionForActor(string Id, int Position, string Type) Global Native
 
+;/* HasRequirement
+* * checks if the scene actor requires the requirement
+* *
+* * required API version: 7.3 (0x07030000)
+* *
+* * @param: Id, the id of the scene
+* * @param: Position, the index of the actor in the scene
+* * @param: Requirement, the requirement to check for
+* *
+* * @return: true if the scene actor requires the requirement, otherwise false
+*/;
+bool Function HasRequirement(string Id, int Position, string Requirement) Global Native
+
+;/* HasAnyRequirement
+* * checks if the scene actor requires at least one of the requirements
+* *
+* * required API version: 7.3 (0x07030000)
+* *
+* * @param: Id, the id of the scene
+* * @param: Position, the index of the actor in the scene
+* * @param: Requirements, an array of requirements to check for
+* *
+* * @return: true if the scene actor requires at least one of the requirements, otherwise false
+*/;
+bool Function HasAnyRequirement(string Id, int Position, string[] Requirements) Global Native
+
+;/* HasAnyRequirementCSV
+* * same as HasAnyRequirement, except requirements are passed as a csv-string
+* *
+* * required API version: 7.3 (0x07030000)
+* *
+* * @param: Id, the id of the scene
+* * @param: Position, the index of the actor in the scene
+* * @param: Requirements, a csv-string of requirements to check for
+* *
+* * @return: true if the scene actor requires at least one of the requirements, otherwise false
+*/;
+bool Function HasAnyRequirementCSV(string Id, int Position, string Requirements) Global Native
+
+;/* HasAllRequirements
+* * checks if the scene actor requires all of the requirements
+* *
+* * required API version: 7.3 (0x07030000)
+* *
+* * @param: Id, the id of the scene
+* * @param: Position, the index of the actor in the scene
+* * @param: Requirements, an array of requirements to check for
+* *
+* * @return: true if the scene actor requires all of the requirements, otherwise false
+*/;
+bool Function HasAllRequirements(string Id, int Position, string[] Requirements) Global Native
+
+;/* HasAllRequirementsCSV
+* * same as HasAllRequirements, except requirements are passed as a csv-string
+* *
+* * required API version: 7.3 (0x07030000)
+* *
+* * @param: Id, the id of the scene
+* * @param: Position, the index of the actor in the scene
+* * @param: Requirements, an array of requirements to check for
+* *
+* * @return: true if the scene actor requires all of the requirements, otherwise false
+*/;
+bool Function HasAllRequirementsCSV(string Id, int Position, string Requirements) Global Native
+
 
 ; ████████╗ █████╗  ██████╗ ███████╗
 ; ╚══██╔══╝██╔══██╗██╔════╝ ██╔════╝

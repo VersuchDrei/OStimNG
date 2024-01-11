@@ -94,6 +94,56 @@ namespace PapyrusMetadata {
         }
         return "";
     }
+
+    bool HasRequirement(RE::StaticFunctionTag*, std::string id, int position, std::string requirement) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
+            if (position >= 0 && node->actors.size() > position) {
+                Graph::Requirement req = Graph::GraphTable::getRequirement(requirement);
+                if (req != Graph::Requirement::NONE) {
+                    return (node->actors[position].condition.requirements | req) == req;
+                }
+            }
+        }
+        return false;
+    }
+
+    bool HasAnyRequirement(RE::StaticFunctionTag*, std::string id, int position, std::vector<std::string> requirements) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
+            if (position >= 0 && node->actors.size() > position) {
+                int req = 0;
+                for (std::string& requirement : requirements) {
+                    req |= Graph::GraphTable::getRequirement(requirement);
+                }
+                if (req != 0) {
+                    return (node->actors[position].condition.requirements | req) != 0;
+                }
+            }
+        }
+        return false;
+    }
+
+    bool HasAnyRequirementCSV(RE::StaticFunctionTag* sft, std::string id, int position, std::string requirements) {
+        return HasAnyRequirement(sft, id, position, StringUtil::toTagVector(requirements));
+    }
+
+    bool HasAllRequirements(RE::StaticFunctionTag*, std::string id, int position, std::vector<std::string> requirements) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
+            if (position >= 0 && node->actors.size() > position) {
+                int req = 0;
+                for (std::string& requirement : requirements) {
+                    req |= Graph::GraphTable::getRequirement(requirement);
+                }
+                if (req != 0) {
+                    return (node->actors[position].condition.requirements | req) == req;
+                }
+            }
+        }
+        return false;
+    }
+
+    bool HasAllRequirementsCSV(RE::StaticFunctionTag* sft, std::string id, int position, std::string requirements) {
+        return HasAllRequirements(sft, id, position, StringUtil::toTagVector(requirements));
+    }
 #pragma endregion
 
 #pragma region tags
@@ -2898,6 +2948,11 @@ namespace PapyrusMetadata {
         BIND(GetActorCount);
         BIND(GetAnimationId);
         BIND(GetAutoTransitionForActor);
+        BIND(HasRequirement);
+        BIND(HasAnyRequirement);
+        BIND(HasAnyRequirementCSV);
+        BIND(HasAllRequirements);
+        BIND(HasAllRequirementsCSV);
 
         BIND(GetSceneTags);
         BIND(HasSceneTag);
