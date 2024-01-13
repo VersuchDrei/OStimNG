@@ -26,7 +26,34 @@ string[] Function GetVoiceSetPairs() Global Native
 
 string Function GetVoiceSetName(int FormID) Global Native
 
-Function SetVoiceSet(int FormID, string Voice) Global Native 
+Function SetVoiceSet(int FormID, string Voice) Global Native
+
+
+float Function GetActionActorStimulation(int FormID, string Actn) Global Native
+Function SetActionActorStimulation(int FormID, string Actn, float Stimulation) Global Native
+float Function GetActionActorMaxStimulation(int FormID, string Actn) Global Native
+Function SetActionActorMaxStimulation(int FormID, string Actn, float Stimulation) Global Native
+float Function GetActionTargetStimulation(int FormID, string Actn) Global Native
+Function SetActionTargetStimulation(int FormID, string Actn, float Stimulation) Global Native
+float Function GetActionTargetMaxStimulation(int FormID, string Actn) Global Native
+Function SetActionTargetMaxStimulation(int FormID, string Actn, float Stimulation) Global Native
+float Function GetActionPerformerStimulation(int FormID, string Actn) Global Native
+Function SetActionPerformerStimulation(int FormID, string Actn, float Stimulation) Global Native
+float Function GetActionPerformerMaxStimulation(int FormID, string Actn) Global Native
+Function SetActionPerformerMaxStimulation(int FormID, string Actn, float Stimulation) Global Native
+
+float Function GetEventActorStimulation(int FormID, string Evt) Global Native
+Function SetEventActorStimulation(int FormID, string Evt, float Stimulation) Global Native
+float Function GetEventActorMaxStimulation(int FormID, string Evt) Global Native
+Function SetEventActorMaxStimulation(int FormID, string Evt, float Stimulation) Global Native
+float Function GetEventTargetStimulation(int FormID, string Evt) Global Native
+Function SetEventTargetStimulation(int FormID, string Evt, float Stimulation) Global Native
+float Function GetEventTargetMaxStimulation(int FormID, string Evt) Global Native
+Function SetEventTargetMaxStimulation(int FormID, string Evt, float Stimulation) Global Native
+float Function GetEventPerformerStimulation(int FormID, string Evt) Global Native
+Function SetEventPerformerStimulation(int FormID, string Evt, float Stimulation) Global Native
+float Function GetEventPerformerMaxStimulation(int FormID, string Evt) Global Native
+Function SetEventPerformerMaxStimulation(int FormID, string Evt, float Stimulation) Global Native
 
 
 Function ResetSettings() Global Native

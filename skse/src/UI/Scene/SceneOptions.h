@@ -40,7 +40,7 @@ struct MenuPage {
 	std::vector<MenuPage> subPages;
 	std::string getDescription() {
 		std::string description = node->description;
-		if (actor != nullptr) {
+		if (actor) {
 			StringUtil::replaceAll(description, "{actor}", actor->getName());
 		}
 		return description;
