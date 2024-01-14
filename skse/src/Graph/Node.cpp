@@ -46,15 +46,11 @@ namespace Graph {
     
     void Node::mergeNodeIntoActors() {
         for (Action action : actions) {
-            if (action.actor < actors.size()) {
-                actors[action.actor].merge(action.attributes->actor);
-            }
-            if (action.target < actors.size()) {
-                actors[action.target].merge(action.attributes->target);
-            }
-            if (action.performer < actors.size()) {
-                actors[action.performer].merge(action.attributes->performer);
-            }
+            action.roles.forEach([this, &action](Graph::Role role, int index) {
+                if (index < actors.size()) {
+                    actors[index].merge(*action.attributes->roles.get(role));
+                }
+            });
         }
 
         for (GraphActor& actor : actors) {
@@ -211,37 +207,37 @@ namespace Graph {
     }
 
     int Node::findActionForActor(int position, std::string type) {
-        return findAction([position, type](Action action) {return action.actor == position && action.isType(type);});
+        return findAction([position, type](Action action) {return action.roles.actor == position && action.isType(type);});
     }
 
     int Node::findAnyActionForActor(int position, std::vector<std::string> types) {
-        return findAction([position, types](Action action) {return action.actor == position && action.isType(types);});
+        return findAction([position, types](Action action) {return action.roles.actor == position && action.isType(types);});
     }
 
     int Node::findActionForTarget(int position, std::string type) {
-        return findAction([position, type](Action action) {return action.target == position && action.isType(type);});
+        return findAction([position, type](Action action) {return action.roles.target == position && action.isType(type);});
     }
 
     int Node::findAnyActionForTarget(int position, std::vector<std::string> types) {
-        return findAction([position, types](Action action) {return action.target == position && action.isType(types);});
+        return findAction([position, types](Action action) {return action.roles.target == position && action.isType(types);});
     }
 
     int Node::findActionForActorAndTarget(int actorPosition, int targetPosition, std::string type) {
-        return findAction([actorPosition, targetPosition, type](Action action) {return action.actor == actorPosition && action.target == targetPosition && action.isType(type);});
+        return findAction([actorPosition, targetPosition, type](Action action) {return action.roles.actor == actorPosition && action.roles.target == targetPosition && action.isType(type);});
     }
 
     int Node::findAnyActionForActorAndTarget(int actorPosition, int targetPosition, std::vector<std::string> types) {
-        return findAction([actorPosition, targetPosition, types](Action action) {return action.actor == actorPosition && action.target == targetPosition && action.isType(types);});
+        return findAction([actorPosition, targetPosition, types](Action action) {return action.roles.actor == actorPosition && action.roles.target == targetPosition && action.isType(types);});
     }
 
 
     int Node::getPrimaryPartner(int position) {
         for (Action& action : actions) {
-            if (action.actor == position) {
-                return action.target;
+            if (action.roles.actor == position) {
+                return action.roles.target;
             }
-            if (action.target == position) {
-                return action.actor;
+            if (action.roles.target == position) {
+                return action.roles.actor;
             }
         }
 
@@ -258,12 +254,12 @@ namespace Graph {
 
         if (actors[position].expressionAction != -1 && actors[position].expressionAction < actions.size()) {
             auto& action = actions[actors[position].expressionAction];
-            if (action.target == position) {
+            if (action.roles.target == position) {
                 if (auto expressions = Trait::TraitTable::getExpressionsForActionTarget(action.type)) {
                     return expressions;
                 }
             }
-            if (action.actor == position) {
+            if (action.roles.actor == position) {
                 if (auto expressions = Trait::TraitTable::getExpressionsForActionActor(action.type)) {
                     return expressions;
                 }
@@ -271,12 +267,12 @@ namespace Graph {
         }
 
         for (auto& action : actions) {
-            if (action.target == position) {
+            if (action.roles.target == position) {
                 if (auto expressions = Trait::TraitTable::getExpressionsForActionTarget(action.type)) {
                     return expressions;
                 }
             }
-            if (action.actor == position) {
+            if (action.roles.actor == position) {
                 if (auto expressions = Trait::TraitTable::getExpressionsForActionActor(action.type)) {
                     return expressions;
                 }
@@ -291,7 +287,7 @@ namespace Graph {
             return nullptr;
         }
 
-        std::vector<Trait::FacialExpression*>* expression;
+        std::vector<Trait::FacialExpression*>* expression = nullptr;
         if (!actors[position].expressionOverride.empty()) {
             expression = Trait::TraitTable::getExpressionsForSet(actors[position].expressionOverride);
             if (expression) {
@@ -300,23 +296,20 @@ namespace Graph {
         }
 
         for (Action action : actions) {
-            if (action.actor == position && !action.attributes->actor.expressionOverride.empty()) {
-                expression = Trait::TraitTable::getExpressionsForSet(action.attributes->actor.expressionOverride);
+            action.roles.forEach([position, &expression, &action](Graph::Role role, int index) {
                 if (expression) {
-                    return expression;
+                    return;
                 }
-            }
-            if (action.target == position && !action.attributes->target.expressionOverride.empty()) {
-                expression = Trait::TraitTable::getExpressionsForSet(action.attributes->target.expressionOverride);
-                if (expression) {
-                    return expression;
+                if (index == position) {
+                    std::string expressionSet = action.attributes->roles.get(role)->expressionOverride;
+                    if (!expressionSet.empty()) {
+                        expression = Trait::TraitTable::getExpressionsForSet(expressionSet);
+                    }
                 }
-            }
-            if (action.performer == position && !action.attributes->performer.expressionOverride.empty()) {
-                expression = Trait::TraitTable::getExpressionsForSet(action.attributes->performer.expressionOverride);
-                if (expression) {
-                    return expression;
-                }
+            });
+
+            if (expression) {
+                return expression;
             }
         }
 

@@ -479,7 +479,7 @@ namespace Graph {
 
                             if (jsonAction.contains("actor")) {
                                 if (jsonAction["actor"].is_number_integer()) {
-                                    action.actor = jsonAction["actor"];
+                                    action.roles.actor = jsonAction["actor"];
                                 } else {
                                     logger::warn("property actor of action {} of scene {} isn't an integer", index, node->scene_id);
                                 }
@@ -489,22 +489,22 @@ namespace Graph {
 
                             if (jsonAction.contains("target")) {
                                 if (jsonAction["target"].is_number_integer()) {
-                                    action.target = jsonAction["target"];
+                                    action.roles.target = jsonAction["target"];
                                 } else {
                                     logger::warn("property target of action {} of scene {} isn't an integer", index, node->scene_id);
                                 }
                             } else {
-                                action.target = action.actor;
+                                action.roles.target = action.roles.actor;
                             }
 
                             if (jsonAction.contains("performer")) {
                                 if (jsonAction["performer"].is_number_integer()) {
-                                    action.performer = jsonAction["performer"];
+                                    action.roles.performer = jsonAction["performer"];
                                 } else {
                                     logger::warn("property performer of action {} of scene {} isn't an integer", index, node->scene_id);
                                 }
                             } else {
-                                action.performer = action.actor;
+                                action.roles.performer = action.roles.actor;
                             }
 
                             if (jsonAction.contains("muted")) {

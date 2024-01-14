@@ -14,6 +14,8 @@ namespace Graph{
     public:
         static Requirement getRequirement(std::string string);
     private:
+        inline static const RoleMap<std::string> roleNames{"actor", "target", "performer"};
+
         inline static std::unordered_map<std::string, Requirement> requirements = {
             {"anus", Requirement::ANUS},
             {"breast", Requirement::BREAST},

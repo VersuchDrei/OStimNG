@@ -3,6 +3,8 @@ ScriptName OsexIntegrationMCM Extends SKI_ConfigBase
 int[] SlotSets
 int UndressingSlotMask
 
+string[] RoleKeys
+
 ; actor role settings
 
 ; ai control settings
@@ -62,6 +64,11 @@ Function SetupPages()
 	Pages[11] = "$ostim_page_actors"
 	Pages[12] = "$ostim_page_debug"
 	Pages[13] = "$ostim_page_about"
+
+	RoleKeys = new string[3]
+	RoleKeys[0] = "actor"
+	RoleKeys[1] = "target"
+	RoleKeys[2] = "performer"
 EndFunction
 
 Event OnConfigRegister()
@@ -2819,20 +2826,12 @@ string CurrentEvent = ""
 string[] Events
 
 int OID_SelectAction = -1
-int OID_ActionActorStimulation = -1
-int OID_ActionActorMaxStimulation = -1
-int OID_ActionTargetStimulation = -1
-int OID_ActionTargetMaxStimulation = -1
-int OID_ActionPerformerStimulation = -1
-int OID_ActionPerformerMaxStimulation = -1
+int[] OIDs_ActionStimulation
+int[] OIDs_ActionMaxStimulation
 
 int OID_SelectEvent = -1
-int OID_EventActorStimulation = -1
-int OID_EventActorMaxStimulation = -1
-int OID_EventTargetStimulation = -1
-int OID_EventTargetMaxStimulation = -1
-int OID_EventPerformerStimulation = -1
-int OID_EventPerformerMaxStimulation = -1
+int[] OIDs_EventStimulation
+int[] OIDs_EventMaxStimulation
 
 Function DrawActorsPage()
 	Actions = OData.GetActions()
@@ -2854,22 +2853,26 @@ Function DrawActorsPage()
 	AddColoredHeader("$ostim_header_preferences")
 
 	OID_SelectAction = AddMenuOption("$ostim_select_action", CurrentAction)
-	OID_ActionActorStimulation = AddSliderOption("$ostim_actor_stimulation", OData.GetActionActorStimulation(CurrentActorID, CurrentAction), "{2}")
-	OID_ActionActorMaxStimulation = AddSliderOption("$ostim_actor_max_stimulation", OData.GetActionActorMaxStimulation(CurrentActorID, CurrentAction), "{0}")
-	OID_ActionTargetStimulation = AddSliderOption("$ostim_target_stimulation", OData.GetActionTargetStimulation(CurrentActorID, CurrentAction), "{2}")
-	OID_ActionTargetMaxStimulation = AddSliderOption("$ostim_target_max_stimulation", OData.GetActionTargetMaxStimulation(CurrentActorID, CurrentAction), "{0}")
-	OID_ActionPerformerStimulation = AddSliderOption("$ostim_performer_stimulation", OData.GetActionPerformerStimulation(CurrentActorID, CurrentAction), "{2}")
-	OID_ActionPerformerMaxStimulation = AddSliderOption("$ostim_performer_max_stimulation", OData.GetActionPerformerMaxStimulation(CurrentActorID, CurrentAction), "{0}")
+	OIDs_ActionStimulation = new int[3]
+	OIDs_ActionMaxStimulation = new int[3]
+	int i = 0
+	While i < 3
+		OIDs_ActionStimulation[i] = AddSliderOption("$ostim_" + RoleKeys[i] + "_stimulation", OData.GetActionStimulation(Math.Pow(2, i) as int, CurrentActorID, CurrentAction), "{2}")
+		OIDs_ActionMaxStimulation[i] = AddSliderOption("$ostim_" + RoleKeys[i] + "_max_stimulation", OData.GetActionMaxStimulation(Math.Pow(2, i) as int, CurrentActorID, CurrentAction), "{0}")
+		i += 1
+	EndWhile
 
 	AddEmptyOption()
 
 	OID_SelectEvent = AddMenuOption("$ostim_select_event", CurrentEvent)
-	OID_EventActorStimulation = AddSliderOption("$ostim_actor_stimulation", OData.GetEventActorStimulation(CurrentActorID, CurrentEvent), "{2}")
-	OID_EventActorMaxStimulation = AddSliderOption("$ostim_actor_max_stimulation", OData.GetEventActorMaxStimulation(CurrentActorID, CurrentEvent), "{0}")
-	OID_EventTargetStimulation = AddSliderOption("$ostim_target_stimulation", OData.GetEventTargetStimulation(CurrentActorID, CurrentEvent), "{2}")
-	OID_EventTargetMaxStimulation = AddSliderOption("$ostim_target_max_stimulation", OData.GetEventTargetMaxStimulation(CurrentActorID, CurrentEvent), "{0}")
-	OID_EventPerformerStimulation = AddSliderOption("$ostim_performer_stimulation", OData.GetEventPerformerStimulation(CurrentActorID, CurrentEvent), "{2}")
-	OID_EventPerformerMaxStimulation = AddSliderOption("$ostim_performer_max_stimulation", OData.GetEventPerformerMaxStimulation(CurrentActorID, CurrentEvent), "{0}")
+	OIDs_ActionStimulation = new int[3]
+	OIDs_ActionMaxStimulation = new int[3]
+	i = 0
+	While i < 3
+		OIDs_EventStimulation[i] = AddSliderOption("$ostim_" + RoleKeys[i] + "_stimulation", OData.GetEventStimulation(Math.Pow(2, i) as int, CurrentActorID, CurrentAction), "{2}")
+		OIDs_EventMaxStimulation[i] = AddSliderOption("$ostim_" + RoleKeys[i] + "_max_stimulation", OData.GetEventMaxStimulation(Math.Pow(2, i) as int, CurrentActorID, CurrentAction), "{0}")
+		i += 1
+	EndWhile
 EndFunction
 
 Function OnOptionHighlightActors(int Option)
@@ -2885,33 +2888,17 @@ Function OnOptionHighlightActors(int Option)
 
 	ElseIf Option == OID_SelectAction
 		SetInfoText("$ostim_tooltip_select_action")
-	ElseIf Option == OID_ActionActorStimulation
-		SetInfoText("$ostim_tooltip_actor_stimulation")
-	ElseIf Option == OID_ActionActorMaxStimulation
-		SetInfoText("$ostim_tooltip_actor_max_stimulation")
-	ElseIf Option == OID_ActionTargetStimulation
-		SetInfoText("$ostim_tooltip_target_stimulation")
-	ElseIf Option == OID_ActionTargetMaxStimulation
-		SetInfoText("$ostim_tooltip_target_max_stimulation")
-	ElseIf Option == OID_ActionPerformerStimulation
-		SetInfoText("$ostim_tooltip_performer_stimulation")
-	ElseIf Option == OID_ActionPerformerMaxStimulation
-		SetInfoText("$ostim_tooltip_performer_max_stimulation")
+	ElseIf OIDs_ActionStimulation.Find(Option) >= 0
+		SetInfoText("$ostim_tooltip_" + RoleKeys[OIDs_ActionStimulation.Find(Option)] + "_stimulation")
+	ElseIf OIDs_ActionMaxStimulation.Find(Option) >= 0
+		SetInfoText("$ostim_tooltip_" + RoleKeys[OIDs_ActionMaxStimulation.Find(Option)] + "_max_stimulation")
 
 	ElseIf Option == OID_SelectEvent
 		SetInfoText("$ostim_tooltip_select_event")
-	ElseIf Option == OID_EventActorStimulation
-		SetInfoText("$ostim_tooltip_actor_stimulation")
-	ElseIf Option == OID_EventActorMaxStimulation
-		SetInfoText("$ostim_tooltip_actor_max_stimulation")
-	ElseIf Option == OID_EventTargetStimulation
-		SetInfoText("$ostim_tooltip_target_stimulation")
-	ElseIf Option == OID_EventTargetMaxStimulation
-		SetInfoText("$ostim_tooltip_target_max_stimulation")
-	ElseIf Option == OID_EventPerformerStimulation
-		SetInfoText("$ostim_tooltip_performer_stimulation")
-	ElseIf Option == OID_EventPerformerMaxStimulation
-		SetInfoText("$ostim_tooltip_performer_max_stimulation")	
+	ElseIf OIDs_EventStimulation.Find(Option) >= 0
+		SetInfoText("$ostim_tooltip_" + RoleKeys[OIDs_EventStimulation.Find(Option)] + "_stimulation")
+	ElseIf OIDs_EventMaxStimulation.Find(Option) >= 0
+		SetInfoText("$ostim_tooltip_" + RoleKeys[OIDs_EventMaxStimulation.Find(Option)] + "_max_stimulation")
 	EndIf
 EndFunction
 
@@ -2920,109 +2907,72 @@ Function OnOptionSelectActors(int Option)
 EndFunction
 
 Function OnOptionSliderOpenActors(int Option)
-	If Option == OID_ActionActorStimulation
-		SetSliderDialogStartValue(OData.GetActionActorStimulation(CurrentActorID, CurrentAction))
+	int Index = OIDs_ActionStimulation.Find(Option)
+	If Index >= 0
+		SetSliderDialogStartValue(OData.GetActionStimulation(Math.Pow(2, Index) as int, CurrentActorID, CurrentAction))
 		SetSliderDialogDefaultValue(0)
 		SetSliderDialogRange(-5, 5)
 		SetSliderDialogInterval(0.05)
-	ElseIf Option == OID_ActionActorMaxStimulation
-		SetSliderDialogStartValue(OData.GetActionActorMaxStimulation(CurrentActorID, CurrentAction))
-		SetSliderDialogDefaultValue(100)
-		SetSliderDialogRange(0, 100)
-		SetSliderDialogInterval(5)
-	ElseIf Option == OID_ActionTargetStimulation
-		SetSliderDialogStartValue(OData.GetActionTargetStimulation(CurrentActorID, CurrentAction))
-		SetSliderDialogDefaultValue(0)
-		SetSliderDialogRange(-5, 5)
-		SetSliderDialogInterval(0.05)
-	ElseIf Option == OID_ActionTargetMaxStimulation
-		SetSliderDialogStartValue(OData.GetActionTargetMaxStimulation(CurrentActorID, CurrentAction))
-		SetSliderDialogDefaultValue(100)
-		SetSliderDialogRange(0, 100)
-		SetSliderDialogInterval(5)
-	ElseIf Option == OID_ActionPerformerStimulation
-		SetSliderDialogStartValue(OData.GetActionPerformerStimulation(CurrentActorID, CurrentAction))
-		SetSliderDialogDefaultValue(0)
-		SetSliderDialogRange(-5, 5)
-		SetSliderDialogInterval(0.05)
-	ElseIf Option == OID_ActionPerformerMaxStimulation
-		SetSliderDialogStartValue(OData.GetActionPerformerMaxStimulation(CurrentActorID, CurrentAction))
-		SetSliderDialogDefaultValue(100)
-		SetSliderDialogRange(0, 100)
-		SetSliderDialogInterval(5)
+		Return
+	EndIf
 
-	ElseIf Option == OID_EventActorStimulation
-		SetSliderDialogStartValue(OData.GetEventActorStimulation(CurrentActorID, CurrentAction))
-		SetSliderDialogDefaultValue(0)
-		SetSliderDialogRange(-25, 25)
-		SetSliderDialogInterval(0.25)
-	ElseIf Option == OID_EventActorMaxStimulation
-		SetSliderDialogStartValue(OData.GetEventActorMaxStimulation(CurrentActorID, CurrentAction))
+	Index = OIDs_ActionMaxStimulation.Find(Option)
+	If Index >= 0
+		SetSliderDialogStartValue(OData.GetActionMaxStimulation(Math.Pow(2, Index) as int, CurrentActorID, CurrentAction))
 		SetSliderDialogDefaultValue(100)
 		SetSliderDialogRange(0, 100)
 		SetSliderDialogInterval(5)
-	ElseIf Option == OID_EventTargetStimulation
-		SetSliderDialogStartValue(OData.GetEventTargetStimulation(CurrentActorID, CurrentAction))
+		Return
+	EndIf
+
+	Index = OIDs_EventStimulation.Find(Option)
+	If Index >= 0
+		SetSliderDialogStartValue(OData.GetEventStimulation(Math.Pow(2, Index) as int, CurrentActorID, CurrentAction))
 		SetSliderDialogDefaultValue(0)
 		SetSliderDialogRange(-25, 25)
 		SetSliderDialogInterval(0.25)
-	ElseIf Option == OID_EventTargetMaxStimulation
-		SetSliderDialogStartValue(OData.GetEventTargetMaxStimulation(CurrentActorID, CurrentAction))
+		Return
+	EndIf
+
+	Index = OIDs_EventMaxStimulation.Find(Option)
+	If Index >= 0
+		SetSliderDialogStartValue(OData.GetEventMaxStimulation(Math.Pow(2, Index) as int, CurrentActorID, CurrentAction))
 		SetSliderDialogDefaultValue(100)
 		SetSliderDialogRange(0, 100)
 		SetSliderDialogInterval(5)
-	ElseIf Option == OID_EventPerformerStimulation
-		SetSliderDialogStartValue(OData.GetEventPerformerStimulation(CurrentActorID, CurrentAction))
-		SetSliderDialogDefaultValue(0)
-		SetSliderDialogRange(-25, 25)
-		SetSliderDialogInterval(0.25)
-	ElseIf Option == OID_EventPerformerMaxStimulation
-		SetSliderDialogStartValue(OData.GetEventPerformerMaxStimulation(CurrentActorID, CurrentAction))
-		SetSliderDialogDefaultValue(100)
-		SetSliderDialogRange(0, 100)
-		SetSliderDialogInterval(5)
+		Return
 	EndIf
 EndFunction
 
 Function OnOptionSliderAcceptActors(int Option, float Value)
-	If Option == OID_ActionActorStimulation
-		OData.SetActionActorStimulation(CurrentActorID, CurrentAction, Value)
+	int Index = OIDs_ActionStimulation.Find(Option)
+	If Index >= 0
+		OData.SetActionStimulation(Math.Pow(2, Index) as int, CurrentActorID, CurrentAction, Value)
 		SetSliderOptionValue(Option, Value, "{2}")
-	ElseIf Option == OID_ActionActorMaxStimulation
-		OData.SetActionActorMaxStimulation(CurrentActorID, CurrentAction, Value)
-		SetSliderOptionValue(Option, Value, "{0}")
-	ElseIf Option == OID_ActionTargetStimulation
-		OData.SetActionTargetStimulation(CurrentActorID, CurrentAction, Value)
-		SetSliderOptionValue(Option, Value, "{2}")
-	ElseIf Option == OID_ActionTargetMaxStimulation
-		OData.SetActionTargetMaxStimulation(CurrentActorID, CurrentAction, Value)
-		SetSliderOptionValue(Option, Value, "{0}")
-	ElseIf Option == OID_ActionPerformerStimulation
-		OData.SetActionPerformerStimulation(CurrentActorID, CurrentAction, Value)
-		SetSliderOptionValue(Option, Value, "{2}")
-	ElseIf Option == OID_ActionPerformerMaxStimulation
-		OData.SetActionPerformerMaxStimulation(CurrentActorID, CurrentAction, Value)
-		SetSliderOptionValue(Option, Value, "{0}")
-
-	ElseIf Option == OID_EventActorStimulation
-		OData.SetEventActorStimulation(CurrentActorID, CurrentEvent, Value)
-		SetSliderOptionValue(Option, Value, "{2}")
-	ElseIf Option == OID_EventActorMaxStimulation
-		OData.SetEventActorMaxStimulation(CurrentActorID, CurrentEvent, Value)
-		SetSliderOptionValue(Option, Value, "{0}")
-	ElseIf Option == OID_EventTargetStimulation
-		OData.SetEventTargetStimulation(CurrentActorID, CurrentEvent, Value)
-		SetSliderOptionValue(Option, Value, "{2}")
-	ElseIf Option == OID_EventTargetMaxStimulation
-		OData.SetEventTargetMaxStimulation(CurrentActorID, CurrentEvent, Value)
-		SetSliderOptionValue(Option, Value, "{0}")
-	ElseIf Option == OID_EventPerformerStimulation
-		OData.SetEventPerformerStimulation(CurrentActorID, CurrentEvent, Value)
-		SetSliderOptionValue(Option, Value, "{2}")
-	ElseIf Option == OID_EventPerformerMaxStimulation
-		OData.SetEventPerformerMaxStimulation(CurrentActorID, CurrentEvent, Value)
-		SetSliderOptionValue(Option, Value, "{0}")
+		Return
 	EndIf
+
+	Index = OIDs_ActionMaxStimulation.Find(Option)
+	If Index >= 0
+		OData.SetActionMaxStimulation(Math.Pow(2, Index) as int, CurrentActorID, CurrentAction, Value)
+		SetSliderOptionValue(Option, Value, "{0}")
+		Return
+	EndIf
+
+	Index = OIDs_EventStimulation.Find(Option)
+	If Index >= 0
+		OData.SetEventStimulation(Math.Pow(2, Index) as int, CurrentActorID, CurrentAction, Value)
+		SetSliderOptionValue(Option, Value, "{2}")
+		Return
+	EndIf
+
+	Index = OIDs_EventMaxStimulation.Find(Option)
+	If Index >= 0
+		OData.SetEventMaxStimulation(Math.Pow(2, Index) as int, CurrentActorID, CurrentAction, Value)
+		SetSliderOptionValue(Option, Value, "{0}")
+		Return
+	EndIf
+
 EndFunction
 
 Function OnOptionMenuOpenActors(int Option)
@@ -3071,21 +3021,31 @@ Function OnOptionMenuAcceptActors(int Option, int Index)
 	ElseIf Option == OID_SelectAction
 		CurrentAction = Actions[Index]
 		SetMenuOptionValue(Option, CurrentAction)
-		SetSliderOptionValue(OID_ActionActorStimulation, OData.GetActionActorStimulation(CurrentActorID, CurrentAction), "{2}")
-		SetSliderOptionValue(OID_ActionActorMaxStimulation, OData.GetActionActorMaxStimulation(CurrentActorID, CurrentAction), "{0}")
-		SetSliderOptionValue(OID_ActionTargetStimulation, OData.GetActionTargetStimulation(CurrentActorID, CurrentAction), "{2}")
-		SetSliderOptionValue(OID_ActionTargetMaxStimulation, OData.GetActionTargetMaxStimulation(CurrentActorID, CurrentAction), "{0}")
-		SetSliderOptionValue(OID_ActionPerformerStimulation, OData.GetActionPerformerStimulation(CurrentActorID, CurrentAction), "{2}")
-		SetSliderOptionValue(OID_ActionPerformerMaxStimulation, OData.GetActionPerformerMaxStimulation(CurrentActorID, CurrentAction), "{0}")
+		int i = OIDs_ActionStimulation.Length
+		While i
+			i -= 1
+			SetSliderOptionValue(OIDs_ActionStimulation[i], OData.GetActionStimulation(Math.Pow(2, i) as int, CurrentActorID, CurrentAction), "{2}")
+		EndWhile
+
+		i = OIDs_ActionMaxStimulation.Length
+		While i
+			i -= 1
+			SetSliderOptionValue(OIDs_ActionMaxStimulation[i], OData.GetActionMaxStimulation(Math.Pow(2, i) as int, CurrentActorID, CurrentAction), "{2}")
+		EndWhile
 	ElseIf Option == OID_SelectEvent
 		CurrentEvent = Events[Index]
 		SetMenuOptionValue(Option, CurrentEvent)
-		SetSliderOptionValue(OID_EventActorStimulation, OData.GetEventActorStimulation(CurrentActorID, CurrentEvent), "{2}")
-		SetSliderOptionValue(OID_EventActorMaxStimulation, OData.GetEventActorMaxStimulation(CurrentActorID, CurrentEvent), "{0}")
-		SetSliderOptionValue(OID_EventTargetStimulation, OData.GetEventTargetStimulation(CurrentActorID, CurrentEvent), "{2}")
-		SetSliderOptionValue(OID_EventTargetMaxStimulation, OData.GetEventTargetMaxStimulation(CurrentActorID, CurrentEvent), "{0}")
-		SetSliderOptionValue(OID_EventPerformerStimulation, OData.GetEventPerformerStimulation(CurrentActorID, CurrentEvent), "{2}")
-		SetSliderOptionValue(OID_EventPerformerMaxStimulation, OData.GetEventPerformerMaxStimulation(CurrentActorID, CurrentEvent), "{0}")
+		int i = OIDs_EventStimulation.Length
+		While i
+			i -= 1
+			SetSliderOptionValue(OIDs_EventStimulation[i], OData.GetEventStimulation(Math.Pow(2, i) as int, CurrentActorID, CurrentAction), "{2}")
+		EndWhile
+
+		i = OIDs_EventMaxStimulation.Length
+		While i
+			i -= 1
+			SetSliderOptionValue(OIDs_EventMaxStimulation[i], OData.GetEventMaxStimulation(Math.Pow(2, i) as int, CurrentActorID, CurrentAction), "{2}")
+		EndWhile
 	EndIf
 EndFunction
 

@@ -71,8 +71,8 @@ namespace PapyrusData {
         return actions;
     }
 
-	float GetActionActorStimulation(RE::StaticFunctionTag*, int formID, std::string action) {
-        float stimulation = Serialization::getActionActorStimulation(formID, action);
+	float GetActionStimulation(RE::StaticFunctionTag*, int role, int formID, std::string action) {
+        float stimulation = Serialization::getActionStimulation(static_cast<Graph::Role>(role), formID, action);
         if (!std::isnan(stimulation)) {
             return stimulation;
 		}
@@ -82,15 +82,15 @@ namespace PapyrusData {
             return 0.0f;
 		}
 
-		return attributes->actor.stimulation;
+		return attributes->roles.get(static_cast<Graph::Role>(role))->stimulation;
     }
 
-    void SetActionActorStimulation(RE::StaticFunctionTag*, int formID, std::string action, float stimulation) {
-        Serialization::setActionActorStimulation(formID, action, stimulation);
+    void SetActionStimulation(RE::StaticFunctionTag*, int role, int formID, std::string action, float stimulation) {
+        Serialization::setActionStimulation(static_cast<Graph::Role>(role), formID, action, stimulation);
     }
 
-    float GetActionActorMaxStimulation(RE::StaticFunctionTag*, int formID, std::string action) {
-        float stimulation = Serialization::getActionActorMaxStimulation(formID, action);
+    float GetActionMaxStimulation(RE::StaticFunctionTag*, int role, int formID, std::string action) {
+        float stimulation = Serialization::getActionMaxStimulation(static_cast<Graph::Role>(role), formID, action);
         if (!std::isnan(stimulation)) {
             return stimulation;
         }
@@ -100,83 +100,11 @@ namespace PapyrusData {
             return 0.0f;
         }
 
-        return attributes->actor.maxStimulation;
+        return attributes->roles.get(static_cast<Graph::Role>(role))->maxStimulation;
     }
 
-    void SetActionActorMaxStimulation(RE::StaticFunctionTag*, int formID, std::string action, float stimulation) {
-        Serialization::setActionActorMaxStimulation(formID, action, stimulation);
-    }
-
-    float GetActionTargetStimulation(RE::StaticFunctionTag*, int formID, std::string action) {
-        float stimulation = Serialization::getActionTargetStimulation(formID, action);
-        if (!std::isnan(stimulation)) {
-            return stimulation;
-        }
-
-        Graph::ActionAttributes* attributes = Graph::GraphTable::GetActionAttributesByType(action);
-        if (!attributes) {
-            return 0.0f;
-        }
-
-        return attributes->target.stimulation;
-    }
-
-    void SetActionTargetStimulation(RE::StaticFunctionTag*, int formID, std::string action, float stimulation) {
-        Serialization::setActionTargetStimulation(formID, action, stimulation);
-    }
-
-    float GetActionTargetMaxStimulation(RE::StaticFunctionTag*, int formID, std::string action) {
-        float stimulation = Serialization::getActionTargetMaxStimulation(formID, action);
-        if (!std::isnan(stimulation)) {
-            return stimulation;
-        }
-
-        Graph::ActionAttributes* attributes = Graph::GraphTable::GetActionAttributesByType(action);
-        if (!attributes) {
-            return 0.0f;
-        }
-
-        return attributes->target.maxStimulation;
-    }
-
-    void SetActionTargetMaxStimulation(RE::StaticFunctionTag*, int formID, std::string action, float stimulation) {
-        Serialization::setActionTargetMaxStimulation(formID, action, stimulation);
-    }
-
-    float GetActionPerformerStimulation(RE::StaticFunctionTag*, int formID, std::string action) {
-        float stimulation = Serialization::getActionPerformerStimulation(formID, action);
-        if (!std::isnan(stimulation)) {
-            return stimulation;
-        }
-
-        Graph::ActionAttributes* attributes = Graph::GraphTable::GetActionAttributesByType(action);
-        if (!attributes) {
-            return 0.0f;
-        }
-
-        return attributes->performer.stimulation;
-    }
-
-    void SetActionPerformerStimulation(RE::StaticFunctionTag*, int formID, std::string action, float stimulation) {
-        Serialization::setActionPerformerStimulation(formID, action, stimulation);
-    }
-
-    float GetActionPerformerMaxStimulation(RE::StaticFunctionTag*, int formID, std::string action) {
-        float stimulation = Serialization::getActionPerformerMaxStimulation(formID, action);
-        if (!std::isnan(stimulation)) {
-            return stimulation;
-        }
-
-        Graph::ActionAttributes* attributes = Graph::GraphTable::GetActionAttributesByType(action);
-        if (!attributes) {
-            return 0.0f;
-        }
-
-        return attributes->performer.maxStimulation;
-    }
-
-    void SetActionPerformerMaxStimulation(RE::StaticFunctionTag*, int formID, std::string action, float stimulation) {
-        Serialization::setActionPerformerMaxStimulation(formID, action, stimulation);
+    void SetActionMaxStimulation(RE::StaticFunctionTag*, int role, int formID, std::string action, float stimulation) {
+        Serialization::setActionMaxStimulation(static_cast<Graph::Role>(role), formID, action, stimulation);
     }
 #pragma endregion
 
@@ -187,8 +115,8 @@ namespace PapyrusData {
         return events;
     }
 
-    float GetEventActorStimulation(RE::StaticFunctionTag*, int formID, std::string evt) {
-        float stimulation = Serialization::getEventActorStimulation(formID, evt);
+    float GetEventStimulation(RE::StaticFunctionTag*, int role, int formID, std::string evt) {
+        float stimulation = Serialization::getEventStimulation(static_cast<Graph::Role>(role), formID, evt);
         if (!std::isnan(stimulation)) {
             return stimulation;
         }
@@ -198,15 +126,15 @@ namespace PapyrusData {
             return 0.0f;
         }
 
-        return graphEvent->actor.stimulation;
+        return graphEvent->roles.get(static_cast<Graph::Role>(role))->stimulation;
     }
 
-    void SetEventActorStimulation(RE::StaticFunctionTag*, int formID, std::string evt, float stimulation) {
-        Serialization::setEventActorStimulation(formID, evt, stimulation);
+    void SetEventStimulation(RE::StaticFunctionTag*, int role, int formID, std::string evt, float stimulation) {
+        Serialization::setEventStimulation(static_cast<Graph::Role>(role), formID, evt, stimulation);
     }
 
-    float GetEventActorMaxStimulation(RE::StaticFunctionTag*, int formID, std::string evt) {
-        float stimulation = Serialization::getEventActorMaxStimulation(formID, evt);
+    float GetEventMaxStimulation(RE::StaticFunctionTag*, int role, int formID, std::string evt) {
+        float stimulation = Serialization::getEventMaxStimulation(static_cast<Graph::Role>(role), formID, evt);
         if (!std::isnan(stimulation)) {
             return stimulation;
         }
@@ -216,83 +144,11 @@ namespace PapyrusData {
             return 0.0f;
         }
 
-        return graphEvent->actor.maxStimulation;
+        return graphEvent->roles.get(static_cast<Graph::Role>(role))->maxStimulation;
     }
 
-    void SetEventActorMaxStimulation(RE::StaticFunctionTag*, int formID, std::string evt, float stimulation) {
-        Serialization::setEventActorMaxStimulation(formID, evt, stimulation);
-    }
-
-    float GetEventTargetStimulation(RE::StaticFunctionTag*, int formID, std::string evt) {
-        float stimulation = Serialization::getEventTargetStimulation(formID, evt);
-        if (!std::isnan(stimulation)) {
-            return stimulation;
-        }
-
-        Graph::Event* graphEvent = Graph::GraphTable::getEvent(evt);
-        if (!graphEvent) {
-            return 0.0f;
-        }
-
-        return graphEvent->target.stimulation;
-    }
-
-    void SetEventTargetStimulation(RE::StaticFunctionTag*, int formID, std::string evt, float stimulation) {
-        Serialization::setEventTargetStimulation(formID, evt, stimulation);
-    }
-
-    float GetEventTargetMaxStimulation(RE::StaticFunctionTag*, int formID, std::string evt) {
-        float stimulation = Serialization::getEventTargetMaxStimulation(formID, evt);
-        if (!std::isnan(stimulation)) {
-            return stimulation;
-        }
-
-        Graph::Event* graphEvent = Graph::GraphTable::getEvent(evt);
-        if (!graphEvent) {
-            return 0.0f;
-        }
-
-        return graphEvent->target.maxStimulation;
-    }
-
-    void SetEventTargetMaxStimulation(RE::StaticFunctionTag*, int formID, std::string evt, float stimulation) {
-        Serialization::setEventTargetMaxStimulation(formID, evt, stimulation);
-    }
-
-    float GetEventPerformerStimulation(RE::StaticFunctionTag*, int formID, std::string evt) {
-        float stimulation = Serialization::getEventPerformerStimulation(formID, evt);
-        if (!std::isnan(stimulation)) {
-            return stimulation;
-        }
-
-        Graph::Event* graphEvent = Graph::GraphTable::getEvent(evt);
-        if (!graphEvent) {
-            return 0.0f;
-        }
-
-        return graphEvent->performer.stimulation;
-    }
-
-    void SetEventPerformerStimulation(RE::StaticFunctionTag*, int formID, std::string evt, float stimulation) {
-        Serialization::setEventPerformerStimulation(formID, evt, stimulation);
-    }
-
-    float GetEventPerformerMaxStimulation(RE::StaticFunctionTag*, int formID, std::string evt) {
-        float stimulation = Serialization::getEventPerformerMaxStimulation(formID, evt);
-        if (!std::isnan(stimulation)) {
-            return stimulation;
-        }
-
-        Graph::Event* graphEvent = Graph::GraphTable::getEvent(evt);
-        if (!graphEvent) {
-            return 0.0f;
-        }
-
-        return graphEvent->performer.maxStimulation;
-    }
-
-    void SetEventPerformerMaxStimulation(RE::StaticFunctionTag*, int formID, std::string evt, float stimulation) {
-        Serialization::setEventPerformerMaxStimulation(formID, evt, stimulation);
+    void SetEventMaxStimulation(RE::StaticFunctionTag*, int role, int formID, std::string evt, float stimulation) {
+        Serialization::setEventMaxStimulation(static_cast<Graph::Role>(role), formID, evt, stimulation);
     }
 #pragma endregion
 #pragma endregion
@@ -329,33 +185,17 @@ namespace PapyrusData {
 
         BIND(GetActions);
 
-        BIND(GetActionActorStimulation);
-        BIND(SetActionActorStimulation);
-        BIND(GetActionActorMaxStimulation);
-        BIND(SetActionActorMaxStimulation);
-        BIND(GetActionTargetStimulation);
-        BIND(SetActionTargetStimulation);
-        BIND(GetActionTargetMaxStimulation);
-        BIND(SetActionTargetMaxStimulation);
-        BIND(GetActionPerformerStimulation);
-        BIND(SetActionPerformerStimulation);
-        BIND(GetActionPerformerMaxStimulation);
-        BIND(SetActionPerformerMaxStimulation);
+        BIND(GetActionStimulation);
+        BIND(SetActionStimulation);
+        BIND(GetActionMaxStimulation);
+        BIND(SetActionMaxStimulation);
 
         BIND(GetEvents);
 
-        BIND(GetEventActorStimulation);
-        BIND(SetEventActorStimulation);
-        BIND(GetEventActorMaxStimulation);
-        BIND(SetEventActorMaxStimulation);
-        BIND(GetEventTargetStimulation);
-        BIND(SetEventTargetStimulation);
-        BIND(GetEventTargetMaxStimulation);
-        BIND(SetEventTargetMaxStimulation);
-        BIND(GetEventPerformerStimulation);
-        BIND(SetEventPerformerStimulation);
-        BIND(GetEventPerformerMaxStimulation);
-        BIND(SetEventPerformerMaxStimulation);
+        BIND(GetEventStimulation);
+        BIND(SetEventStimulation);
+        BIND(GetEventMaxStimulation);
+        BIND(SetEventMaxStimulation);
 
 		BIND(ResetSettings);
         BIND(ExportSettings);

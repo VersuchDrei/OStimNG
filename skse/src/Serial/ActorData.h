@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Graph/RoleMap.h"
 #include "Util/SerializationUtil.h"
 
 namespace Serialization {
@@ -23,19 +24,19 @@ namespace Serialization {
                 }
             }
             if (version >= 2) {
-                data.actionActorStimulations = SerializationUtil::readFloatMap(serial);
-                data.actionActorMaxStimulations = SerializationUtil::readFloatMap(serial);
-                data.actionTargetStimulations = SerializationUtil::readFloatMap(serial);
-                data.actionTargetMaxStimulations = SerializationUtil::readFloatMap(serial);
-                data.actionPerformerStimulations = SerializationUtil::readFloatMap(serial);
-                data.actionPerformerMaxStimulations = SerializationUtil::readFloatMap(serial);
+                data.actionStimulations.forEach([&serial](std::unordered_map<std::string, float>& map) {
+                    map = SerializationUtil::readFloatMap(serial);
+                });
+                data.actionMaxStimulations.forEach([&serial](std::unordered_map<std::string, float>& map) {
+                    map = SerializationUtil::readFloatMap(serial);
+                });
 
-                data.eventActorStimulations = SerializationUtil::readFloatMap(serial);
-                data.eventActorMaxStimulations = SerializationUtil::readFloatMap(serial);
-                data.eventTargetStimulations = SerializationUtil::readFloatMap(serial);
-                data.eventTargetMaxStimulations = SerializationUtil::readFloatMap(serial);
-                data.eventPerformerStimulations = SerializationUtil::readFloatMap(serial);
-                data.eventPerformerMaxStimulations = SerializationUtil::readFloatMap(serial);
+                data.eventStimulations.forEach([&serial](std::unordered_map<std::string, float>& map) {
+                    map = SerializationUtil::readFloatMap(serial);
+                });
+                data.eventMaxStimulations.forEach([&serial](std::unordered_map<std::string, float>& map) {
+                    map = SerializationUtil::readFloatMap(serial);
+                });
             }
 
             return data;
@@ -43,38 +44,29 @@ namespace Serialization {
 
         std::unordered_map<std::string, std::string> equipObjects;
         RE::FormID voiceSet = 0;
-        std::unordered_map<std::string, float> actionActorStimulations;
-        std::unordered_map<std::string, float> actionActorMaxStimulations;
-        std::unordered_map<std::string, float> actionTargetStimulations;
-        std::unordered_map<std::string, float> actionTargetMaxStimulations;
-        std::unordered_map<std::string, float> actionPerformerStimulations;
-        std::unordered_map<std::string, float> actionPerformerMaxStimulations;
-
-        std::unordered_map<std::string, float> eventActorStimulations;
-        std::unordered_map<std::string, float> eventActorMaxStimulations;
-        std::unordered_map<std::string, float> eventTargetStimulations;
-        std::unordered_map<std::string, float> eventTargetMaxStimulations;
-        std::unordered_map<std::string, float> eventPerformerStimulations;
-        std::unordered_map<std::string, float> eventPerformerMaxStimulations;
+        Graph::RoleMap<std::unordered_map<std::string, float>> actionStimulations;
+        Graph::RoleMap<std::unordered_map<std::string, float>> actionMaxStimulations;
+        Graph::RoleMap<std::unordered_map<std::string, float>> eventStimulations;
+        Graph::RoleMap<std::unordered_map<std::string, float>> eventMaxStimulations;
 
         inline void serialize(SKSE::SerializationInterface* serial) {
             SerializationUtil::writeStringMap(serial, equipObjects);
 
             serial->WriteRecordData(&voiceSet, sizeof(voiceSet));
 
-            SerializationUtil::writeFloatMap(serial, actionActorStimulations);
-            SerializationUtil::writeFloatMap(serial, actionActorMaxStimulations);
-            SerializationUtil::writeFloatMap(serial, actionTargetStimulations);
-            SerializationUtil::writeFloatMap(serial, actionTargetMaxStimulations);
-            SerializationUtil::writeFloatMap(serial, actionPerformerStimulations);
-            SerializationUtil::writeFloatMap(serial, actionPerformerMaxStimulations);
+            actionStimulations.forEach([&serial](std::unordered_map<std::string, float>& map) {
+                SerializationUtil::writeFloatMap(serial, map);
+            });
+            actionMaxStimulations.forEach([&serial](std::unordered_map<std::string, float>& map) {
+                SerializationUtil::writeFloatMap(serial, map);
+            });
 
-            SerializationUtil::writeFloatMap(serial, eventActorStimulations);
-            SerializationUtil::writeFloatMap(serial, eventActorMaxStimulations);
-            SerializationUtil::writeFloatMap(serial, eventTargetStimulations);
-            SerializationUtil::writeFloatMap(serial, eventTargetMaxStimulations);
-            SerializationUtil::writeFloatMap(serial, eventPerformerStimulations);
-            SerializationUtil::writeFloatMap(serial, eventPerformerMaxStimulations);
+            eventStimulations.forEach([&serial](std::unordered_map<std::string, float>& map) {
+                SerializationUtil::writeFloatMap(serial, map);
+            });
+            eventMaxStimulations.forEach([&serial](std::unordered_map<std::string, float>& map) {
+                SerializationUtil::writeFloatMap(serial, map);
+            });
         }
     };
 }

@@ -195,36 +195,18 @@ namespace OStim {
             actor.setMaxExcitement(0);
             std::vector<float> stimulationValues;
             for (auto& action : m_currentNode->actions) {
-                if (action.actor == position) {
-                    float stimulation = action.attributes->getActorStimulation(actor.getActor());
-                    if (stimulation != 0) {
-                        stimulationValues.push_back(stimulation);
-                        float maxStim = action.attributes->getActorMaxStimulation(actor.getActor());
-                        if (maxStim > actor.getMaxExcitement()) {
-                            actor.setMaxExcitement(maxStim);
+                action.roles.forEach([position, &actor, &stimulationValues, &action](Graph::Role role, int index) {
+                    if (index == position) {
+                        float stimulation = action.attributes->getStimulation(role, actor.getActor());
+                        if (stimulation != 0) {
+                            stimulationValues.push_back(stimulation);
+                            float maxStimulation = action.attributes->getMaxStimulation(role, actor.getActor());
+                            if (maxStimulation > actor.getMaxExcitement()) {
+                                actor.setMaxExcitement(maxStimulation);
+                            }
                         }
                     }
-                }
-                if (action.target == position) {
-                    float stimulation = action.attributes->getTargetStimulation(actor.getActor());
-                    if (stimulation != 0) {
-                        stimulationValues.push_back(stimulation);
-                        float maxStim = action.attributes->getTargetMaxStimulation(actor.getActor());
-                        if (maxStim > actor.getMaxExcitement()) {
-                            actor.setMaxExcitement(maxStim);
-                        }
-                    }
-                }
-                if (action.performer == position) {
-                    float stimulation = action.attributes->getPerformerStimulation(actor.getActor());
-                    if (stimulation != 0) {
-                        stimulationValues.push_back(stimulation);
-                        float maxStim = action.attributes->getPerformerMaxStimulation(actor.getActor());
-                        if (maxStim > actor.getMaxExcitement()) {
-                            actor.setMaxExcitement(maxStim);
-                        }
-                    }
-                }
+                });
             }
 
             switch (stimulationValues.size()) {
@@ -285,8 +267,8 @@ namespace OStim {
             }
 
             for (Sound::SoundType* soundType : action.attributes->sounds) {
-                ThreadActor* actor = GetActor(action.actor);
-                ThreadActor* target = GetActor(action.target);
+                ThreadActor* actor = GetActor(action.roles.actor);
+                ThreadActor* target = GetActor(action.roles.target);
                 if (actor && target) {
                     if (playerThread || !soundType->playPlayerThreadOnly()) {
                         Sound::SoundPlayer* soundPlayer = soundType->create(actor, target);
@@ -548,13 +530,14 @@ namespace OStim {
             FormUtil::sendModEvent(GetActor(1)->getActor().form, "ostim_spank", "", 0);
         }
 
-        ThreadActor* actor = GetActor(actorIndex);
-        ThreadActor* target = GetActor(targetIndex);
-        ThreadActor* performer = GetActor(performerIndex);
+        Graph::RoleMap<ThreadActor*> roles{};
+        roles.actor = GetActor(actorIndex);
+        roles.target = GetActor(targetIndex);
+        roles.performer = GetActor(performerIndex);
 
         GameAPI::GameSound sound = graphEvent->getSound();
         if (sound) {
-            sound.play(actor->getActor(), MCM::MCMTable::getSoundVolume());
+            sound.play(roles.actor->getActor(), MCM::MCMTable::getSoundVolume());
         }
 
         float cameraShakeDuration = graphEvent->getCameraShakeDuration();
@@ -569,40 +552,28 @@ namespace OStim {
             ControlUtil::rumbleController(cameraShakeStrength, cameraShakeDuration);
         }
 
-        if (actor) {
-            float actorStimulation = graphEvent->getActorStimulation(actor->getActor());
-            if (actorStimulation > 0.0 && actor->getExcitement() < graphEvent->getActorMaxStimulation(actor->getActor())) {
-                actor->addExcitement(actorStimulation, true);
-            }
+        roles.forEach([&graphEvent](Graph::Role role, ThreadActor* actor) {
+            if (actor) {
+                float stimulation = graphEvent->getStimulation(role, actor->getActor());
+                if (stimulation > 0.0 && actor->getExcitement() < graphEvent->getMaxStimulation(role, actor->getActor())){
+                    actor->addExcitement(stimulation, true);
+                }
+            }    
+        });
+
+        if (roles.actor && roles.target) {
+            roles.actor->reactToEvent(graphEvent->getReactionDelay(Graph::Role::ACTOR), graphEvent, roles.target->getActor(), [](Sound::VoiceSet& voiceSet){return &voiceSet.eventActorReactions;});
+            roles.target->reactToEvent(graphEvent->getReactionDelay(Graph::Role::TARGET), graphEvent, roles.actor->getActor(), [](Sound::VoiceSet& voiceSet){return &voiceSet.eventTargetReactions;});
         }
 
-        if (target) {
-            float targetStimulation = graphEvent->getTargetStimulation(target->getActor());
-            if (targetStimulation > 0.0 && target->getExcitement() < graphEvent->getTargetMaxStimulation(target->getActor())) {
-                target->addExcitement(targetStimulation, true);
-            }
-        }
-
-        if (performer) {
-            float performerStimulation = graphEvent->getPerformerStimulation(performer->getActor());
-            if (performerStimulation > 0.0 && performer->getExcitement() < graphEvent->getPerformerMaxStimulation(performer->getActor())) {
-                performer->addExcitement(performerStimulation, true);
-            }
-        }
-
-        if (actor && target) {
-            actor->reactToEvent(graphEvent->getActorReactionDelay(), graphEvent, target->getActor(), [](Sound::VoiceSet& voiceSet){return &voiceSet.eventActorReactions;});
-            target->reactToEvent(graphEvent->getTargetReactionDelay(), graphEvent, actor->getActor(), [](Sound::VoiceSet& voiceSet){return &voiceSet.eventTargetReactions;});
-        }
-
-        if (performer) {
-            if (performer == actor) {
-                if (target) {
-                    performer->reactToEvent(graphEvent->getPerformerReactionDelay(), graphEvent, target->getActor(), [](Sound::VoiceSet& voiceSet){return &voiceSet.eventPerformerReactions;});
+        if (roles.performer) {
+            if (roles.performer == roles.actor) {
+                if (roles.target) {
+                    roles.performer->reactToEvent(graphEvent->getReactionDelay(Graph::Role::PERFORMER), graphEvent, roles.target->getActor(), [](Sound::VoiceSet& voiceSet){return &voiceSet.eventPerformerReactions;});
                 }
             } else {
-                if (actor) {
-                    performer->reactToEvent(graphEvent->getPerformerReactionDelay(), graphEvent, actor->getActor(), [](Sound::VoiceSet& voiceSet){return &voiceSet.eventPerformerReactions;});
+                if (roles.actor) {
+                    roles.performer->reactToEvent(graphEvent->getReactionDelay(Graph::Role::PERFORMER), graphEvent, roles.actor->getActor(), [](Sound::VoiceSet& voiceSet){return &voiceSet.eventPerformerReactions;});
                 }
             }
             
@@ -614,9 +585,9 @@ namespace OStim {
             RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
             int tempID = m_threadId;
             std::string type = graphEvent->id;
-            RE::Actor* reActor = actor->getActor().form;
-            RE::Actor* reTarget = target->getActor().form;
-            RE::Actor* rePerformer = performer->getActor().form;
+            RE::Actor* reActor = roles.actor->getActor().form;
+            RE::Actor* reTarget = roles.target->getActor().form;
+            RE::Actor* rePerformer = roles.performer->getActor().form;
             auto args = RE::MakeFunctionArguments<>(std::move(tempID), std::move(type), std::move(reActor), std::move(reTarget), std::move(rePerformer));
             vm->DispatchStaticCall("OEvent", "SendOStimEvent", args, callback);
         }

@@ -140,15 +140,12 @@ namespace Graph {
                 attr.type = filename;
                 StringUtil::toLower(&attr.type);
 
-                if (json.contains("actor")) {
-                    attr.actor = parseActionActor(path, filename, json["actor"]);
-                }
-                if (json.contains("target")) {
-                    attr.target = parseActionActor(path, filename, json["target"]);
-                }
-                if (json.contains("performer")) {
-                    attr.performer = parseActionActor(path, filename, json["performer"]);
-                }
+                attr.roles.forEach([&path, &filename, &json](Role role, ActionActor& actor) {
+                    std::string key = *RoleMapAPI::KEYS.get(role);
+                    if (json.contains(key)) {
+                        actor = parseActionActor(path, filename, json[key]);
+                    }
+                });
 
                 if (json.contains("sounds")) {
                     for (auto& sound : json["sounds"]) {

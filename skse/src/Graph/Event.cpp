@@ -54,118 +54,52 @@ namespace Graph {
     }
 
 
-    float Event::getActorStimulation(GameAPI::GameActor actor) {
-        float stimulation = Serialization::getEventActorStimulation(actor.getBaseFormID(), id);
+    float Event::getStimulation(Role role, GameAPI::GameActor actor) {
+        float stimulation = Serialization::getEventStimulation(role, actor.getBaseFormID(), id);
         if (!std::isnan(stimulation)) {
             return stimulation;
         }
-        if (this->actor.stimulation != 0) {
-            return this->actor.stimulation;
+
+        EventActor* eventActor = roles.get(role);
+        if (eventActor->stimulation != 0.0f) {
+            return eventActor->stimulation;
         }
+
         if (supertype) {
-            return supertype->getActorStimulation(actor);
+            return supertype->getStimulation(role, actor);
         }
+
         return 0.0f;
     }
 
-    float Event::getActorMaxStimulation(GameAPI::GameActor actor) {
-        float maxStimulation = Serialization::getEventActorMaxStimulation(actor.getBaseFormID(), id);
+    float Event::getMaxStimulation(Role role, GameAPI::GameActor actor) {
+        float maxStimulation = Serialization::getEventMaxStimulation(role, actor.getBaseFormID(), id);
         if (!std::isnan(maxStimulation)) {
             return maxStimulation;
         }
-        if (this->actor.maxStimulation != 100) {
-            return this->actor.maxStimulation;
+
+        EventActor* eventActor = roles.get(role);
+        if (eventActor->maxStimulation != 100.0f) {
+            return eventActor->maxStimulation;
         }
+
         if (supertype) {
-            return supertype->getActorMaxStimulation(actor);
+            return supertype->getMaxStimulation(role, actor);
         }
+
         return 100.0f;
     }
 
-    float Event::getTargetStimulation(GameAPI::GameActor actor) {
-        float stimulation = Serialization::getEventTargetStimulation(actor.getBaseFormID(), id);
-        if (!std::isnan(stimulation)) {
-            return stimulation;
+    float Event::getReactionDelay(Role role) {
+        EventActor* eventActor = roles.get(role);
+        if (eventActor->reactionDelay != 0.0f) {
+            return eventActor->reactionDelay;
         }
-        if (target.stimulation != 0) {
-            return target.stimulation;
-        }
-        if (supertype) {
-            return supertype->getTargetStimulation(actor);
-        }
-        return 0.0f;
-    }
 
-    float Event::getTargetMaxStimulation(GameAPI::GameActor actor) {
-        float maxStimulation = Serialization::getEventTargetMaxStimulation(actor.getBaseFormID(), id);
-        if (!std::isnan(maxStimulation)) {
-            return maxStimulation;
-        }
-        if (target.maxStimulation != 100) {
-            return target.maxStimulation;
-        }
         if (supertype) {
-            return supertype->getTargetMaxStimulation(actor);
+            return supertype->getReactionDelay(role);
         }
-        return 100.0f;
-    }
 
-    float Event::getPerformerStimulation(GameAPI::GameActor actor) {
-        float stimulation = Serialization::getEventPerformerStimulation(actor.getBaseFormID(), id);
-        if (!std::isnan(stimulation)) {
-            return stimulation;
-        }
-        if (performer.stimulation != 0) {
-            return performer.stimulation;
-        }
-        if (supertype) {
-            return supertype->getPerformerStimulation(actor);
-        }
-        return 0.0f;
-    }
-
-    float Event::getPerformerMaxStimulation(GameAPI::GameActor actor) {
-        float maxStimulation = Serialization::getEventPerformerMaxStimulation(actor.getBaseFormID(), id);
-        if (!std::isnan(maxStimulation)) {
-            return maxStimulation;
-        }
-        if (performer.maxStimulation != 100) {
-            return performer.maxStimulation;
-        }
-        if (supertype) {
-            return supertype->getPerformerMaxStimulation(actor);
-        }
-        return 100.0f;
-    }
-
-
-    float Event::getActorReactionDelay() {
-        if (actor.reactionDelay != 0) {
-            return actor.reactionDelay;
-        }
-        if (supertype) {
-            return supertype->getActorReactionDelay();
-        }
-        return 0.0f;
-    }
-
-    float Event::getTargetReactionDelay() {
-        if (target.reactionDelay != 0) {
-            return target.reactionDelay;
-        }
-        if (supertype) {
-            return supertype->getTargetReactionDelay();
-        }
-        return 0.0f;
-    }
-
-    float Event::getPerformerReactionDelay() {
-        if (performer.reactionDelay != 0) {
-            return performer.reactionDelay;
-        }
-        if (supertype) {
-            return supertype->getPerformerReactionDelay();
-        }
         return 0.0f;
     }
 

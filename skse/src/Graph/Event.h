@@ -1,5 +1,7 @@
 #pragma once
 
+#include "RoleMap.h"
+
 #include "GameAPI/GameFaction.h"
 #include "GameAPI/GameSound.h"
 
@@ -20,9 +22,7 @@ namespace Graph {
     public:
         std::string id;
         Event* supertype = nullptr;
-        EventActor actor;
-        EventActor target;
-        EventActor performer;
+        RoleMap<EventActor> roles;
         GameAPI::GameSound sound;
         float cameraShakeDuration = 0.0;
         float cameraShakeStrength = 0.0;
@@ -36,16 +36,9 @@ namespace Graph {
         float getControllerRumbleDuration();
         float getControllerRumbleStrength();
 
-        float getActorStimulation(GameAPI::GameActor actor);
-        float getActorMaxStimulation(GameAPI::GameActor actor);
-        float getTargetStimulation(GameAPI::GameActor actor);
-        float getTargetMaxStimulation(GameAPI::GameActor actor);
-        float getPerformerStimulation(GameAPI::GameActor actor);
-        float getPerformerMaxStimulation(GameAPI::GameActor actor);
-
-        float getActorReactionDelay();
-        float getTargetReactionDelay();
-        float getPerformerReactionDelay();
+        float getStimulation(Role role, GameAPI::GameActor actor);
+        float getMaxStimulation(Role role, GameAPI::GameActor actor);
+        float getReactionDelay(Role role);
 
         bool isChildOf(Event* other);
     };

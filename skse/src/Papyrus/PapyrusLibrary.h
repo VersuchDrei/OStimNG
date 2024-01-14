@@ -45,13 +45,13 @@ namespace PapyrusLibrary {
     bool hasAction(Graph::Node* node, std::string type, std::vector<int> actors, std::vector<int> targets, std::vector<int> performers, std::vector<int> matesAny, std::vector<int> matesAll, std::vector<int> participantsAny, std::vector<int> participantsAll) {
         for (Graph::Action action : node->actions) {
             if ((action.isType(type) || action.attributes->hasTag(type)) &&
-                (actors.empty() || VectorUtil::contains(actors, action.actor)) &&
-                (targets.empty() || VectorUtil::contains(targets, action.target)) &&
-                (performers.empty() || VectorUtil::contains(performers, action.performer)) &&
-                (matesAny.empty() || VectorUtil::containsAny(matesAny, {action.actor, action.target})) &&
-                (matesAll.empty() || VectorUtil::containsAll(matesAll, {action.actor, action.target})) &&
-                (participantsAny.empty() || VectorUtil::containsAny(participantsAny, {action.actor, action.target, action.performer})) &&
-                (participantsAll.empty() || VectorUtil::containsAll(participantsAll, {action.actor, action.target, action.performer}))) {
+                (actors.empty() || VectorUtil::contains(actors, action.roles.actor)) &&
+                (targets.empty() || VectorUtil::contains(targets, action.roles.target)) &&
+                (performers.empty() || VectorUtil::contains(performers, action.roles.performer)) &&
+                (matesAny.empty() || VectorUtil::containsAny(matesAny, {action.roles.actor, action.roles.target})) &&
+                (matesAll.empty() || VectorUtil::containsAll(matesAll, {action.roles.actor, action.roles.target})) &&
+                (participantsAny.empty() || VectorUtil::containsAny(participantsAny, {action.roles.actor, action.roles.target, action.roles.performer})) &&
+                (participantsAll.empty() || VectorUtil::containsAll(participantsAll, {action.roles.actor, action.roles.target, action.roles.performer}))) {
                 return true;
             }
         }
@@ -90,13 +90,13 @@ namespace PapyrusLibrary {
                 std::vector<int> participantsAnyList = VectorUtil::getElementOrEmpty(participantsAny, i);
                 std::vector<int> participantsAllList = VectorUtil::getElementOrEmpty(participantsAll, i);
 
-                if ((actorsList.empty() || VectorUtil::contains(actorsList, action.actor)) &&
-                    (targetsList.empty() || VectorUtil::contains(targetsList, action.target)) &&
-                    (performersList.empty() || VectorUtil::contains(performersList, action.performer)) &&
-                    (matesAnyList.empty() || VectorUtil::containsAny(matesAnyList, {action.actor, action.target})) &&
-                    (matesAllList.empty() || VectorUtil::containsAll(matesAllList, {action.actor, action.target})) &&
-                    (participantsAnyList.empty() || VectorUtil::containsAny(participantsAnyList, {action.actor, action.target, action.performer})) &&
-                    (participantsAllList.empty() || VectorUtil::containsAll(participantsAllList, {action.actor, action.target, action.performer}))) {
+                if ((actorsList.empty() || VectorUtil::contains(actorsList, action.roles.actor)) &&
+                    (targetsList.empty() || VectorUtil::contains(targetsList, action.roles.target)) &&
+                    (performersList.empty() || VectorUtil::contains(performersList, action.roles.performer)) &&
+                    (matesAnyList.empty() || VectorUtil::containsAny(matesAnyList, {action.roles.actor, action.roles.target})) &&
+                    (matesAllList.empty() || VectorUtil::containsAll(matesAllList, {action.roles.actor, action.roles.target})) &&
+                    (participantsAnyList.empty() || VectorUtil::containsAny(participantsAnyList, {action.roles.actor, action.roles.target, action.roles.performer})) &&
+                    (participantsAllList.empty() || VectorUtil::containsAll(participantsAllList, {action.roles.actor, action.roles.target, action.roles.performer}))) {
                     return true;
                 }
                 
