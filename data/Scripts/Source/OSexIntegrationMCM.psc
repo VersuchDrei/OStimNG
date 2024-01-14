@@ -179,12 +179,16 @@ EndEvent
 Event OnOptionSliderOpen(int Option)
 	If currPage == "$ostim_page_excitement"
 		OnOptionSliderOpenExcitement(Option)
+	ElseIf currPage == "$ostim_page_actors"
+		OnOptionSliderOpenActors(Option)
 	EndIf
 EndEvent
 
 Event OnOptionSliderAccept(int Option, float Value)
 	If currPage == "$ostim_page_excitement"
 		OnOptionSliderAcceptExcitement(Option, Value)
+	ElseIf currPage == "$ostim_page_actors"
+		OnOptionSliderAcceptActors(Option, Value)
 	EndIf
 EndEvent
 
@@ -2809,16 +2813,63 @@ int OID_ActorVoice = -1
 int OID_EquipObjectType = -1
 int OID_ActorEquipObject = -1
 
+string CurrentAction = ""
+string[] Actions
+string CurrentEvent = ""
+string[] Events
+
+int OID_SelectAction = -1
+int OID_ActionActorStimulation = -1
+int OID_ActionActorMaxStimulation = -1
+int OID_ActionTargetStimulation = -1
+int OID_ActionTargetMaxStimulation = -1
+int OID_ActionPerformerStimulation = -1
+int OID_ActionPerformerMaxStimulation = -1
+
+int OID_SelectEvent = -1
+int OID_EventActorStimulation = -1
+int OID_EventActorMaxStimulation = -1
+int OID_EventTargetStimulation = -1
+int OID_EventTargetMaxStimulation = -1
+int OID_EventPerformerStimulation = -1
+int OID_EventPerformerMaxStimulation = -1
+
 Function DrawActorsPage()
+	Actions = OData.GetActions()
+	CurrentAction = Actions[0]
+	Events = OData.GetEvents()
+	CurrentEvent = Events[0]
+
+	SetCursorFillMode(TOP_TO_BOTTOM)
 	SetCursorPosition(0)
 	OID_SelectActor = AddMenuOption("$ostim_select_actor", CurrentActor.GetDisplayName())
-	SetCursorPosition(2)
 	OID_ActorVoice = AddMenuOption("$ostim_actor_voice", OData.GetVoiceSetName(CurrentActorID))
+	AddEmptyOption()
+
+	AddColoredHeader("$ostim_header_equip_objects")
+	OID_EquipObjectType = AddMenuOption("$ostim_equip_object_type", CurrentEquipObjectType)
+	OID_ActorEquipObject = AddMenuOption("$ostim_actor_equip_object", OData.GetEquipObjectName(CurrentActorID, CurrentEquipObjectType))
 
 	SetCursorPosition(1)
-	OID_EquipObjectType = AddMenuOption("$ostim_equip_object_type", CurrentEquipObjectType)
-	SetCursorPosition(3)
-	OID_ActorEquipObject = AddMenuOption("$ostim_actor_equip_object", OData.GetEquipObjectName(CurrentActorID, CurrentEquipObjectType))
+	AddColoredHeader("$ostim_header_preferences")
+
+	OID_SelectAction = AddMenuOption("$ostim_select_action", CurrentAction)
+	OID_ActionActorStimulation = AddSliderOption("$ostim_actor_stimulation", OData.GetActionActorStimulation(CurrentActorID, CurrentAction), "{2}")
+	OID_ActionActorMaxStimulation = AddSliderOption("$ostim_actor_max_stimulation", OData.GetActionActorMaxStimulation(CurrentActorID, CurrentAction), "{0}")
+	OID_ActionTargetStimulation = AddSliderOption("$ostim_target_stimulation", OData.GetActionTargetStimulation(CurrentActorID, CurrentAction), "{2}")
+	OID_ActionTargetMaxStimulation = AddSliderOption("$ostim_target_max_stimulation", OData.GetActionTargetMaxStimulation(CurrentActorID, CurrentAction), "{0}")
+	OID_ActionPerformerStimulation = AddSliderOption("$ostim_performer_stimulation", OData.GetActionPerformerStimulation(CurrentActorID, CurrentAction), "{2}")
+	OID_ActionPerformerMaxStimulation = AddSliderOption("$ostim_performer_max_stimulation", OData.GetActionPerformerMaxStimulation(CurrentActorID, CurrentAction), "{0}")
+
+	AddEmptyOption()
+
+	OID_SelectEvent = AddMenuOption("$ostim_select_event", CurrentEvent)
+	OID_EventActorStimulation = AddSliderOption("$ostim_actor_stimulation", OData.GetEventActorStimulation(CurrentActorID, CurrentEvent), "{2}")
+	OID_EventActorMaxStimulation = AddSliderOption("$ostim_actor_max_stimulation", OData.GetEventActorMaxStimulation(CurrentActorID, CurrentEvent), "{0}")
+	OID_EventTargetStimulation = AddSliderOption("$ostim_target_stimulation", OData.GetEventTargetStimulation(CurrentActorID, CurrentEvent), "{2}")
+	OID_EventTargetMaxStimulation = AddSliderOption("$ostim_target_max_stimulation", OData.GetEventTargetMaxStimulation(CurrentActorID, CurrentEvent), "{0}")
+	OID_EventPerformerStimulation = AddSliderOption("$ostim_performer_stimulation", OData.GetEventPerformerStimulation(CurrentActorID, CurrentEvent), "{2}")
+	OID_EventPerformerMaxStimulation = AddSliderOption("$ostim_performer_max_stimulation", OData.GetEventPerformerMaxStimulation(CurrentActorID, CurrentEvent), "{0}")
 EndFunction
 
 Function OnOptionHighlightActors(int Option)
@@ -2826,15 +2877,152 @@ Function OnOptionHighlightActors(int Option)
 		SetInfoText("$ostim_tooltip_select_actor")
 	ElseIf Option == OID_ActorVoice
 		SetInfoText("$ostim_tootip_actor_voice")
+
 	ElseIf Option == OID_EquipObjectType
 		SetInfoText("$ostim_tooltip_equip_object_type")
 	ElseIf Option == OID_ActorEquipObject
 		SetInfoText("$ostim_tooltip_actor_equip_object")
+
+	ElseIf Option == OID_SelectAction
+		SetInfoText("$ostim_tooltip_select_action")
+	ElseIf Option == OID_ActionActorStimulation
+		SetInfoText("$ostim_tooltip_actor_stimulation")
+	ElseIf Option == OID_ActionActorMaxStimulation
+		SetInfoText("$ostim_tooltip_actor_max_stimulation")
+	ElseIf Option == OID_ActionTargetStimulation
+		SetInfoText("$ostim_tooltip_target_stimulation")
+	ElseIf Option == OID_ActionTargetMaxStimulation
+		SetInfoText("$ostim_tooltip_target_max_stimulation")
+	ElseIf Option == OID_ActionPerformerStimulation
+		SetInfoText("$ostim_tooltip_performer_stimulation")
+	ElseIf Option == OID_ActionPerformerMaxStimulation
+		SetInfoText("$ostim_tooltip_performer_max_stimulation")
+
+	ElseIf Option == OID_SelectEvent
+		SetInfoText("$ostim_tooltip_select_event")
+	ElseIf Option == OID_EventActorStimulation
+		SetInfoText("$ostim_tooltip_actor_stimulation")
+	ElseIf Option == OID_EventActorMaxStimulation
+		SetInfoText("$ostim_tooltip_actor_max_stimulation")
+	ElseIf Option == OID_EventTargetStimulation
+		SetInfoText("$ostim_tooltip_target_stimulation")
+	ElseIf Option == OID_EventTargetMaxStimulation
+		SetInfoText("$ostim_tooltip_target_max_stimulation")
+	ElseIf Option == OID_EventPerformerStimulation
+		SetInfoText("$ostim_tooltip_performer_stimulation")
+	ElseIf Option == OID_EventPerformerMaxStimulation
+		SetInfoText("$ostim_tooltip_performer_max_stimulation")	
 	EndIf
 EndFunction
 
 Function OnOptionSelectActors(int Option)
 
+EndFunction
+
+Function OnOptionSliderOpenActors(int Option)
+	If Option == OID_ActionActorStimulation
+		SetSliderDialogStartValue(OData.GetActionActorStimulation(CurrentActorID, CurrentAction))
+		SetSliderDialogDefaultValue(0)
+		SetSliderDialogRange(-5, 5)
+		SetSliderDialogInterval(0.05)
+	ElseIf Option == OID_ActionActorMaxStimulation
+		SetSliderDialogStartValue(OData.GetActionActorMaxStimulation(CurrentActorID, CurrentAction))
+		SetSliderDialogDefaultValue(100)
+		SetSliderDialogRange(0, 100)
+		SetSliderDialogInterval(5)
+	ElseIf Option == OID_ActionTargetStimulation
+		SetSliderDialogStartValue(OData.GetActionTargetStimulation(CurrentActorID, CurrentAction))
+		SetSliderDialogDefaultValue(0)
+		SetSliderDialogRange(-5, 5)
+		SetSliderDialogInterval(0.05)
+	ElseIf Option == OID_ActionTargetMaxStimulation
+		SetSliderDialogStartValue(OData.GetActionTargetMaxStimulation(CurrentActorID, CurrentAction))
+		SetSliderDialogDefaultValue(100)
+		SetSliderDialogRange(0, 100)
+		SetSliderDialogInterval(5)
+	ElseIf Option == OID_ActionPerformerStimulation
+		SetSliderDialogStartValue(OData.GetActionPerformerStimulation(CurrentActorID, CurrentAction))
+		SetSliderDialogDefaultValue(0)
+		SetSliderDialogRange(-5, 5)
+		SetSliderDialogInterval(0.05)
+	ElseIf Option == OID_ActionPerformerMaxStimulation
+		SetSliderDialogStartValue(OData.GetActionPerformerMaxStimulation(CurrentActorID, CurrentAction))
+		SetSliderDialogDefaultValue(100)
+		SetSliderDialogRange(0, 100)
+		SetSliderDialogInterval(5)
+
+	ElseIf Option == OID_EventActorStimulation
+		SetSliderDialogStartValue(OData.GetEventActorStimulation(CurrentActorID, CurrentAction))
+		SetSliderDialogDefaultValue(0)
+		SetSliderDialogRange(-25, 25)
+		SetSliderDialogInterval(0.25)
+	ElseIf Option == OID_EventActorMaxStimulation
+		SetSliderDialogStartValue(OData.GetEventActorMaxStimulation(CurrentActorID, CurrentAction))
+		SetSliderDialogDefaultValue(100)
+		SetSliderDialogRange(0, 100)
+		SetSliderDialogInterval(5)
+	ElseIf Option == OID_EventTargetStimulation
+		SetSliderDialogStartValue(OData.GetEventTargetStimulation(CurrentActorID, CurrentAction))
+		SetSliderDialogDefaultValue(0)
+		SetSliderDialogRange(-25, 25)
+		SetSliderDialogInterval(0.25)
+	ElseIf Option == OID_EventTargetMaxStimulation
+		SetSliderDialogStartValue(OData.GetEventTargetMaxStimulation(CurrentActorID, CurrentAction))
+		SetSliderDialogDefaultValue(100)
+		SetSliderDialogRange(0, 100)
+		SetSliderDialogInterval(5)
+	ElseIf Option == OID_EventPerformerStimulation
+		SetSliderDialogStartValue(OData.GetEventPerformerStimulation(CurrentActorID, CurrentAction))
+		SetSliderDialogDefaultValue(0)
+		SetSliderDialogRange(-25, 25)
+		SetSliderDialogInterval(0.25)
+	ElseIf Option == OID_EventPerformerMaxStimulation
+		SetSliderDialogStartValue(OData.GetEventPerformerMaxStimulation(CurrentActorID, CurrentAction))
+		SetSliderDialogDefaultValue(100)
+		SetSliderDialogRange(0, 100)
+		SetSliderDialogInterval(5)
+	EndIf
+EndFunction
+
+Function OnOptionSliderAcceptActors(int Option, float Value)
+	If Option == OID_ActionActorStimulation
+		OData.SetActionActorStimulation(CurrentActorID, CurrentAction, Value)
+		SetSliderOptionValue(Option, Value, "{2}")
+	ElseIf Option == OID_ActionActorMaxStimulation
+		OData.SetActionActorMaxStimulation(CurrentActorID, CurrentAction, Value)
+		SetSliderOptionValue(Option, Value, "{0}")
+	ElseIf Option == OID_ActionTargetStimulation
+		OData.SetActionTargetStimulation(CurrentActorID, CurrentAction, Value)
+		SetSliderOptionValue(Option, Value, "{2}")
+	ElseIf Option == OID_ActionTargetMaxStimulation
+		OData.SetActionTargetMaxStimulation(CurrentActorID, CurrentAction, Value)
+		SetSliderOptionValue(Option, Value, "{0}")
+	ElseIf Option == OID_ActionPerformerStimulation
+		OData.SetActionPerformerStimulation(CurrentActorID, CurrentAction, Value)
+		SetSliderOptionValue(Option, Value, "{2}")
+	ElseIf Option == OID_ActionPerformerMaxStimulation
+		OData.SetActionPerformerMaxStimulation(CurrentActorID, CurrentAction, Value)
+		SetSliderOptionValue(Option, Value, "{0}")
+
+	ElseIf Option == OID_EventActorStimulation
+		OData.SetEventActorStimulation(CurrentActorID, CurrentEvent, Value)
+		SetSliderOptionValue(Option, Value, "{2}")
+	ElseIf Option == OID_EventActorMaxStimulation
+		OData.SetEventActorMaxStimulation(CurrentActorID, CurrentEvent, Value)
+		SetSliderOptionValue(Option, Value, "{0}")
+	ElseIf Option == OID_EventTargetStimulation
+		OData.SetEventTargetStimulation(CurrentActorID, CurrentEvent, Value)
+		SetSliderOptionValue(Option, Value, "{2}")
+	ElseIf Option == OID_EventTargetMaxStimulation
+		OData.SetEventTargetMaxStimulation(CurrentActorID, CurrentEvent, Value)
+		SetSliderOptionValue(Option, Value, "{0}")
+	ElseIf Option == OID_EventPerformerStimulation
+		OData.SetEventPerformerStimulation(CurrentActorID, CurrentEvent, Value)
+		SetSliderOptionValue(Option, Value, "{2}")
+	ElseIf Option == OID_EventPerformerMaxStimulation
+		OData.SetEventPerformerMaxStimulation(CurrentActorID, CurrentEvent, Value)
+		SetSliderOptionValue(Option, Value, "{0}")
+	EndIf
 EndFunction
 
 Function OnOptionMenuOpenActors(int Option)
@@ -2845,6 +3033,7 @@ Function OnOptionMenuOpenActors(int Option)
 		SetMenuDialogDefaultIndex(Actors.Find(PlayerRef))
 	ElseIf Option == OID_ActorVoice
 		OpenVoiceSetMenu(CurrentActorID)
+
 	ElseIf Option == OID_EquipObjectType
 		EquipObjectTypes = OData.GetEquipObjectTypes()
 		SetMenuDialogOptions(EquipObjectTypes)
@@ -2852,6 +3041,15 @@ Function OnOptionMenuOpenActors(int Option)
 		SetMenuDialogDefaultIndex(0)
 	ElseIf Option == OID_ActorEquipObject
 		OpenEquipObjectMenu(CurrentActorID, CurrentEquipObjectType)
+
+	ElseIf Option == OID_SelectAction
+		SetMenuDialogOptions(Actions)
+		SetMenuDialogStartIndex(Actions.Find(CurrentAction))
+		SetMenuDialogDefaultIndex(0)
+	ElseIf Option == OID_SelectEvent
+		SetMenuDialogOptions(Events)
+		SetMenuDialogStartIndex(Events.Find(CurrentEvent))
+		SetMenuDialogDefaultIndex(0)
 	EndIf
 EndFunction
 
@@ -2862,12 +3060,32 @@ Function OnOptionMenuAcceptActors(int Option, int Index)
 		ForcePageReset()
 	ElseIf Option == OID_ActorVoice
 		SetVoiceSet(Option, CurrentActorID, Index)
+
 	ElseIf Option == OID_EquipObjectType
 		CurrentEquipObjectType = EquipObjectTypes[Index]
 		SetMenuOptionValue(Option, CurrentEquipObjectType)
 		SetMenuOptionValue(OID_ActorEquipObject, OData.GetEquipObjectName(CurrentActorID, CurrentEquipObjectType))
 	ElseIf Option == OID_ActorEquipObject
 		SetEquipObjectID(Option, CurrentActorID, CurrentEquipObjectType, Index)
+
+	ElseIf Option == OID_SelectAction
+		CurrentAction = Actions[Index]
+		SetMenuOptionValue(Option, CurrentAction)
+		SetSliderOptionValue(OID_ActionActorStimulation, OData.GetActionActorStimulation(CurrentActorID, CurrentAction), "{2}")
+		SetSliderOptionValue(OID_ActionActorMaxStimulation, OData.GetActionActorMaxStimulation(CurrentActorID, CurrentAction), "{0}")
+		SetSliderOptionValue(OID_ActionTargetStimulation, OData.GetActionTargetStimulation(CurrentActorID, CurrentAction), "{2}")
+		SetSliderOptionValue(OID_ActionTargetMaxStimulation, OData.GetActionTargetMaxStimulation(CurrentActorID, CurrentAction), "{0}")
+		SetSliderOptionValue(OID_ActionPerformerStimulation, OData.GetActionPerformerStimulation(CurrentActorID, CurrentAction), "{2}")
+		SetSliderOptionValue(OID_ActionPerformerMaxStimulation, OData.GetActionPerformerMaxStimulation(CurrentActorID, CurrentAction), "{0}")
+	ElseIf Option == OID_SelectEvent
+		CurrentEvent = Events[Index]
+		SetMenuOptionValue(Option, CurrentEvent)
+		SetSliderOptionValue(OID_EventActorStimulation, OData.GetEventActorStimulation(CurrentActorID, CurrentEvent), "{2}")
+		SetSliderOptionValue(OID_EventActorMaxStimulation, OData.GetEventActorMaxStimulation(CurrentActorID, CurrentEvent), "{0}")
+		SetSliderOptionValue(OID_EventTargetStimulation, OData.GetEventTargetStimulation(CurrentActorID, CurrentEvent), "{2}")
+		SetSliderOptionValue(OID_EventTargetMaxStimulation, OData.GetEventTargetMaxStimulation(CurrentActorID, CurrentEvent), "{0}")
+		SetSliderOptionValue(OID_EventPerformerStimulation, OData.GetEventPerformerStimulation(CurrentActorID, CurrentEvent), "{2}")
+		SetSliderOptionValue(OID_EventPerformerMaxStimulation, OData.GetEventPerformerMaxStimulation(CurrentActorID, CurrentEvent), "{0}")
 	EndIf
 EndFunction
 
@@ -2877,11 +3095,19 @@ Function OnOptionDefaultActors(int Option)
 		ForcePageReset()
 	ElseIf Option == OID_ActorVoice
 		SetVoiceSetToDefault(Option, CurrentActorID)
+
 	ElseIf Option == OID_EquipObjectType
 		CurrentEquipObjectType = "light"
 		SetMenuOptionValue(Option, OData.GetEquipObjectName(CurrentActorID, CurrentEquipObjectType))
 	ElseIf Option == OID_ActorEquipObject
 		SetEquipObjectIDToDefault(Option, CurrentActorID, CurrentEquipObjectType)
+
+	ElseIf Option == OID_SelectAction
+		CurrentAction = Actions[0]
+		SetMenuOptionValue(Option, CurrentAction)
+	ElseIf Option == OID_SelectEvent
+		CurrentEvent = Events[0]
+		SetMenuOptionValue(Option, CurrentEvent)
 	EndIf
 EndFunction
 

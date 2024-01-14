@@ -2,6 +2,7 @@
 
 #include "Util/JsonFileLoader.h"
 #include "Util/JsonUtil.h"
+#include "Util/MapUtil.h"
 #include "Util/StringUtil.h"
 
 namespace Graph {
@@ -168,6 +169,10 @@ namespace Graph {
 
                 actions[attr.type] = attr;
             });
+    }
+
+    std::vector<std::string> GraphTable::getActions() {
+        return MapUtil::keyList(actions);
     }
 
     std::string GraphTable::getActionAlias(std::string type) {

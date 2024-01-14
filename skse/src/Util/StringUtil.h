@@ -1,6 +1,7 @@
 #pragma once
 
 namespace StringUtil {
+    inline void sort(std::vector<std::string>& vector) { std::sort(vector.begin(), vector.end()); }
     void toLower(std::string* string);
     void toLower(std::vector<std::string>* strings);
     std::vector<std::string> toTagVector(std::string string);

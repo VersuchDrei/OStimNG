@@ -2,7 +2,7 @@
 
 #include "Util/StringUtil.h"
 
-namespace Graph {    
+namespace Graph {
     Requirement GraphTable::getRequirement(std::string string) {
         StringUtil::toLower(&string);
         auto iter = requirements.find(string);

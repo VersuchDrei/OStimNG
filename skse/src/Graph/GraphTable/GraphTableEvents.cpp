@@ -1,6 +1,7 @@
 #include "Graph/GraphTable.h"
 
 #include "Util/JsonFileLoader.h"
+#include "Util/MapUtil.h"
 #include "Util/StringUtil.h"
 
 namespace Graph {
@@ -156,6 +157,10 @@ namespace Graph {
                 logger::warn("supertype '{}' of event '{}' doesn't exist", supertype, subtype);
             }
         }
+    }
+
+    std::vector<std::string> GraphTable::getEvents() {
+        return MapUtil::keyList(events);
     }
 
     Event* GraphTable::getEvent(std::string eventName) {

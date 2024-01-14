@@ -29,7 +29,9 @@ namespace PapyrusData {
 
 #pragma region equip_objects
 	std::vector<std::string> GetEquipObjectTypes(RE::StaticFunctionTag*) {
-        return Trait::TraitTable::getEquipObjectTypes();
+        std::vector<std::string> types = Trait::TraitTable::getEquipObjectTypes();
+        StringUtil::sort(types);
+        return types;
 	}
 
 	std::vector<std::string> GetEquipObjectPairs(RE::StaticFunctionTag*, int formID, std::string type) {
@@ -63,6 +65,12 @@ namespace PapyrusData {
 
 #pragma region preferences
 #pragma region actions
+    std::vector<std::string> GetActions(RE::StaticFunctionTag*) {
+        std::vector<std::string> actions = Graph::GraphTable::getActions();
+        StringUtil::sort(actions);
+        return actions;
+    }
+
 	float GetActionActorStimulation(RE::StaticFunctionTag*, int formID, std::string action) {
         float stimulation = Serialization::getActionActorStimulation(formID, action);
         if (!std::isnan(stimulation)) {
@@ -173,6 +181,12 @@ namespace PapyrusData {
 #pragma endregion
 
 #pragma region events
+    std::vector<std::string> GetEvents(RE::StaticFunctionTag*) {
+        std::vector<std::string> events = Graph::GraphTable::getEvents();
+        StringUtil::sort(events);
+        return events;
+    }
+
     float GetEventActorStimulation(RE::StaticFunctionTag*, int formID, std::string evt) {
         float stimulation = Serialization::getEventActorStimulation(formID, evt);
         if (!std::isnan(stimulation)) {
@@ -313,6 +327,8 @@ namespace PapyrusData {
         BIND(GetVoiceSetName);
         BIND(SetVoiceSet);
 
+        BIND(GetActions);
+
         BIND(GetActionActorStimulation);
         BIND(SetActionActorStimulation);
         BIND(GetActionActorMaxStimulation);
@@ -325,6 +341,8 @@ namespace PapyrusData {
         BIND(SetActionPerformerStimulation);
         BIND(GetActionPerformerMaxStimulation);
         BIND(SetActionPerformerMaxStimulation);
+
+        BIND(GetEvents);
 
         BIND(GetEventActorStimulation);
         BIND(SetEventActorStimulation);

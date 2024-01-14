@@ -30,6 +30,7 @@ namespace Graph{
 #pragma region actions
     public:
         static void SetupActions();
+        static std::vector<std::string> getActions();
         static std::string getActionAlias(std::string type);
         static ActionAttributes* GetActionAttributesByType(std::string type);
 
@@ -41,6 +42,7 @@ namespace Graph{
 #pragma region events
     public:
         static void setupEvents();
+        static std::vector<std::string> getEvents();
         static Event* getEvent(std::string eventName);
 
     private:

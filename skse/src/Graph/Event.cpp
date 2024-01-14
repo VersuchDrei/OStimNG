@@ -55,7 +55,7 @@ namespace Graph {
 
 
     float Event::getActorStimulation(GameAPI::GameActor actor) {
-        float stimulation = Serialization::getEventActorStimulation(actor, id);
+        float stimulation = Serialization::getEventActorStimulation(actor.getBaseFormID(), id);
         if (!std::isnan(stimulation)) {
             return stimulation;
         }
@@ -69,12 +69,12 @@ namespace Graph {
     }
 
     float Event::getActorMaxStimulation(GameAPI::GameActor actor) {
-        float maxStimulation = Serialization::getEventActorMaxStimulation(actor, id);
+        float maxStimulation = Serialization::getEventActorMaxStimulation(actor.getBaseFormID(), id);
         if (!std::isnan(maxStimulation)) {
             return maxStimulation;
         }
         if (this->actor.maxStimulation != 100) {
-            return this->actor.stimulation;
+            return this->actor.maxStimulation;
         }
         if (supertype) {
             return supertype->getActorMaxStimulation(actor);
@@ -83,7 +83,7 @@ namespace Graph {
     }
 
     float Event::getTargetStimulation(GameAPI::GameActor actor) {
-        float stimulation = Serialization::getEventTargetStimulation(actor, id);
+        float stimulation = Serialization::getEventTargetStimulation(actor.getBaseFormID(), id);
         if (!std::isnan(stimulation)) {
             return stimulation;
         }
@@ -97,12 +97,12 @@ namespace Graph {
     }
 
     float Event::getTargetMaxStimulation(GameAPI::GameActor actor) {
-        float maxStimulation = Serialization::getEventTargetMaxStimulation(actor, id);
+        float maxStimulation = Serialization::getEventTargetMaxStimulation(actor.getBaseFormID(), id);
         if (!std::isnan(maxStimulation)) {
             return maxStimulation;
         }
         if (target.maxStimulation != 100) {
-            return target.stimulation;
+            return target.maxStimulation;
         }
         if (supertype) {
             return supertype->getTargetMaxStimulation(actor);
@@ -111,7 +111,7 @@ namespace Graph {
     }
 
     float Event::getPerformerStimulation(GameAPI::GameActor actor) {
-        float stimulation = Serialization::getEventPerformerStimulation(actor, id);
+        float stimulation = Serialization::getEventPerformerStimulation(actor.getBaseFormID(), id);
         if (!std::isnan(stimulation)) {
             return stimulation;
         }
@@ -125,12 +125,12 @@ namespace Graph {
     }
 
     float Event::getPerformerMaxStimulation(GameAPI::GameActor actor) {
-        float maxStimulation = Serialization::getEventPerformerMaxStimulation(actor, id);
+        float maxStimulation = Serialization::getEventPerformerMaxStimulation(actor.getBaseFormID(), id);
         if (!std::isnan(maxStimulation)) {
             return maxStimulation;
         }
         if (performer.maxStimulation != 100) {
-            return performer.stimulation;
+            return performer.maxStimulation;
         }
         if (supertype) {
             return supertype->getPerformerMaxStimulation(actor);

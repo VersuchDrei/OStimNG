@@ -42,6 +42,15 @@ namespace MapUtil {
     }
 
     template <class T, class V>
+    std::vector<T> keyList(std::unordered_map<T, V>& map) {
+        std::vector<std::string> keys;
+        for (auto& [key, value] : map) {
+            keys.push_back(key);
+        }
+        return keys;
+    }
+
+    template <class T, class V>
     V randomValue(std::unordered_map<T, V>& map) {
         auto iter = map.begin();
         std::advance(iter, RNGUtil::uniformInt(0, map.size() - 1));
