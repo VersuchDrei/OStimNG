@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Game/LocaleManager.h"
 #include "Graph/GraphTable.h"
 #include "MCM/MCMTable.h"
 #include "Serial/Manager.h"
@@ -166,6 +167,12 @@ namespace PapyrusData {
 	}
 
 
+    std::string Localize(RE::StaticFunctionTag*, std::string text) {
+        StringUtil::toLower(&text);
+        return LocaleManager::GetSingleton()->GetLocalization(text);
+    }
+
+
 	bool Bind(VM* a_vm) {
         const auto obj = "OData"sv;
 
@@ -200,6 +207,8 @@ namespace PapyrusData {
 		BIND(ResetSettings);
         BIND(ExportSettings);
         BIND(ImportSettings);
+
+        BIND(Localize);
 
         return true;
 	}

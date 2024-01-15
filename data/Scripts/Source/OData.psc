@@ -49,3 +49,5 @@ Function ResetSettings() Global Native
 Function ExportSettings() Global Native
 
 Function ImportSettings() Global Native
+
+string Function Localize(string Text) Global Native
