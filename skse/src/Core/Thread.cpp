@@ -5,12 +5,14 @@
 #include "Furniture/FurnitureTable.h"
 #include "GameAPI/Game.h"
 #include "GameAPI/GameCamera.h"
+#include "GameAPI/GameEvents.h"
 #include "Graph/GraphTable.h"
 #include "Graph/Node.h"
 #include <Messaging/IMessages.h>
 #include "UI/Align/AlignMenu.h"
 #include "UI/Scene/SceneMenu.h"
 #include "UI/UIState.h"
+#include "Util/APITable.h"
 #include "Util/CameraUtil.h"
 #include "Util/Constants.h"
 #include "Util/ControlUtil.h"
@@ -136,11 +138,7 @@ namespace OStim {
             }
         }
 
-        if (playerThread) {
-            FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_prestart", "", 0);
-            FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_start", "", 0);
-        }
-        FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_thread_start", "", m_threadId);
+        GameAPI::GameEvents::sendStartEvent(m_threadId);
     }
 
     void Thread::rebuildAlignmentKey() {
@@ -301,11 +299,7 @@ namespace OStim {
         logger::info("Sending animation changed event");
         Messaging::MessagingRegistry::GetSingleton()->SendMessageToListeners(msg);
 
-        if (playerThread) {
-            FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_scenechanged", m_currentNode->scene_id, 0);
-            FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_scenechanged_" + m_currentNode->scene_id, "", 0);
-        }
-        FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_thread_scenechanged", m_currentNode->scene_id, m_threadId);
+        GameAPI::GameEvents::sendSceneChangedEvent(m_threadId, m_currentNode->scene_id);
     }
 
     void Thread::AddActor(RE::Actor* actor) {
@@ -449,6 +443,14 @@ namespace OStim {
         return -1;
     }
 
+    std::vector<GameAPI::GameActor> Thread::getGameActors() {
+        std::vector<GameAPI::GameActor> gameActors;
+        for (auto& [index, actor] : m_actors) {
+            gameActors.push_back(actor.getActor());
+        }
+        return gameActors;
+    }
+
     void Thread::SetSpeed(int speed) {
         if (speed < 0) {
             speed = 0;
@@ -485,9 +487,9 @@ namespace OStim {
             actorIt.second.changeSpeed(speed);
         }
 
+        GameAPI::GameEvents::sendSpeedChangedEvent(m_threadId, m_currentNode->scene_id, speed);
         if (playerThread) {
             UI::UIState::GetSingleton()->SpeedChanged(this, speed);
-            FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_animationchanged", m_currentNode->scene_id, speed);
         }
     }
 
@@ -523,11 +525,6 @@ namespace OStim {
         Graph::Event* graphEvent = Graph::GraphTable::getEvent(eventName);
         if (!graphEvent) {
             return;
-        }
-
-        // legacy mod event
-        if (playerThread && actorIndex == 0 && targetIndex == 1 && graphEvent->isChildOf(Graph::GraphTable::getEvent("spank"))) {
-            FormUtil::sendModEvent(GetActor(1)->getActor().form, "ostim_spank", "", 0);
         }
 
         Graph::RoleMap<ThreadActor*> roles{};
@@ -575,22 +572,15 @@ namespace OStim {
                 if (roles.actor) {
                     roles.performer->reactToEvent(graphEvent->getReactionDelay(Graph::Role::PERFORMER), graphEvent, roles.actor->getActor(), [](Sound::VoiceSet& voiceSet){return &voiceSet.eventPerformerReactions;});
                 }
-            }
-            
+            }   
         }
 
-        const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-        auto vm = skyrimVM ? skyrimVM->impl : nullptr;
-        if (vm) {
-            RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-            int tempID = m_threadId;
-            std::string type = graphEvent->id;
-            RE::Actor* reActor = roles.actor->getActor().form;
-            RE::Actor* reTarget = roles.target->getActor().form;
-            RE::Actor* rePerformer = roles.performer->getActor().form;
-            auto args = RE::MakeFunctionArguments<>(std::move(tempID), std::move(type), std::move(reActor), std::move(reTarget), std::move(rePerformer));
-            vm->DispatchStaticCall("OEvent", "SendOStimEvent", args, callback);
-        }
+        Graph::RoleMap<GameAPI::GameActor> gameRoles;
+        gameRoles.forEach([&roles](Graph::Role role, GameAPI::GameActor actor) {
+            actor = (*roles.get(role))->getActor();
+        });
+
+        GameAPI::GameEvents::sendOStimEvent(m_threadId, graphEvent->id, gameRoles);
     }
 
 
@@ -655,11 +645,7 @@ namespace OStim {
         }
         logger::info("closed thread {}", m_threadId);
 
-        if (playerThread) {
-            FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_end", "", -1);
-            FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_totalend", "", 0);
-        }
-        FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_thread_end", "", m_threadId);
+        GameAPI::GameEvents::sendEndEvent(m_threadId, m_currentNode->scene_id, getGameActors());
     }
 
     void Thread::addActorSink(RE::Actor* a_actor) {

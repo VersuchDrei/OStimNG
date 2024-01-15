@@ -58,7 +58,7 @@ navigation fields:
     	1000 positional changes (e.g. kneel down during HJ)
     	2000 action changes (e.g. go from HJ to BJ)
     	3000 climax
-    it is recommended to stick to the convention so that navigation options always have a logical order
+    it is recommended to stick to the convention so that navigation options always have the same logical order
     numbers can be slightly adjusted for fine tuning (e.g. 1999 instead of 2000 if you want it to be the first in its class)
 "description" ($string): the display text of the navigation in game
 	$ the content of this field will be checked against translation files in data/Interface/translations

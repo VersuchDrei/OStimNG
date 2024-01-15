@@ -1,0 +1,9 @@
+{
+	"condition":{
+		"info": "OStimNPCCondition",
+		"mod":"OStim.esp",
+		"formid":"0xE42"
+	},
+	"type": "npc",
+	"skeleton": 120.748
+}

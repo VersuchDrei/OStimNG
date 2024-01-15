@@ -2,6 +2,13 @@
 
 namespace GameAPI {
     namespace GameUtil {
+        void sendModEvent(RE::TESForm* sender, std::string eventName, std::string strArg, float numArg) {
+            SKSE::ModCallbackEvent modEvent{eventName, strArg, numArg, sender};
+
+            auto modCallbackSource = SKSE::GetModCallbackEventSource();
+            modCallbackSource->SendEvent(&modEvent);
+        }
+
         void forEachReferenceInRange(const RE::NiPoint3& center, float radius, std::function<RE::BSContainer::ForEachResult(RE::TESObjectREFR&)> callback) {
             auto TES = RE::TES::GetSingleton();
             if (!TES) return;

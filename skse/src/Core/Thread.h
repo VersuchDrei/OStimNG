@@ -56,6 +56,7 @@ namespace OStim {
         ThreadActor* GetActor(GameAPI::GameActor a_actor);
         ThreadActor* GetActor(int a_position);
         int getActorPosition(GameAPI::GameActor actor);
+        std::vector<GameAPI::GameActor> getGameActors();
 
         void SetSpeed(int speed);
         bool increaseSpeed();

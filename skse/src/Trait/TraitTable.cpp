@@ -13,7 +13,6 @@
 #include "Util/StringUtil.h"
 
 namespace Trait {
-    const char* ACTOR_TYPE_FILE_PATH{"Data/SKSE/Plugins/OStim/actor types"};
     const char* EXPRESSION_FILE_PATH{"Data/SKSE/Plugins/OStim/facial expressions"};
     const char* EQUIP_OBJECT_FILE_PATH{"Data/SKSE/Plugins/OStim/equip objects"};
 
@@ -26,7 +25,7 @@ namespace Trait {
 
         std::srand((unsigned)time(NULL));
 
-        Util::JsonFileLoader::LoadFilesInFolder(EXPRESSION_FILE_PATH,[&](std::string,std::string filename,json json) {
+        Util::JsonFileLoader::LoadFilesInFolder(EXPRESSION_FILE_PATH, [&](std::string,std::string filename,json json) {
             FacialExpression* expression = new FacialExpression();
             if (json.contains("female")) {
                 parseGender(json["female"], &expression->female);
@@ -74,21 +73,7 @@ namespace Trait {
         RE::TESDataHandler* handler = RE::TESDataHandler::GetSingleton();
         noFacialExpressionsFaction = handler->LookupForm<RE::TESFaction>(0xD92, "OStim.esp");
 
-        // this needs to go in setupForms because it requires the kDataLoaded event
-        // actor types
-        Util::JsonFileLoader::LoadFilesInFolder(ACTOR_TYPE_FILE_PATH, [&](std::string path, std::string filename, json json) {
-            std::string id = filename;
-            StringUtil::toLower(&id);
-
-            GameAPI::GameCondition condition;
-            if (json.contains("condition")) {
-                condition.loadJson(path, json["condition"]);
-            }
-
-            if (condition) {
-                actorTypes[id] = condition;                                        
-            }
-        });
+        setupActorProperties();
 
         // equip objects
         Util::JsonFileLoader::LoadFilesInFolder(EQUIP_OBJECT_FILE_PATH, [&](std::string path, std::string filename, json json) {
@@ -229,21 +214,6 @@ namespace Trait {
             expressions->push_back(expression);
             table->insert({key, expressions});
         }
-    }
-
-
-    std::string TraitTable::getActorType(GameAPI::GameActor actor) {
-        std::string type = "";
-        int priority = -1;
-        for (auto& [id, condition] : actorTypes) {
-            if (condition.getPriority() > priority) {
-                if (condition.fulfills(actor)) {
-                    type = id;
-                    priority = condition.getPriority();
-                }
-            }
-        }
-        return type;
     }
 
 

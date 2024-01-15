@@ -3,6 +3,7 @@
 #include "Core/Core.h"
 #include "Furniture/Furniture.h"
 #include "GameAPI/GameActor.h"
+#include "GameAPI/GameEvents.h"
 #include "GameAPI/GameFaction.h"
 #include "Util/ActorUtil.h"
 #include "Util/FormUtil.h"
@@ -151,16 +152,15 @@ namespace Serialization {
             }
 
             bool playerThread = false;
+            std::vector<GameAPI::GameActor> gameActors;
 
             for (OldThreadActor actor : actors) {
                 actor.free();
                 playerThread |= actor.actor.isPlayer();
+                gameActors.push_back(actor.actor);
             }
 
-            if (playerThread) {
-                FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_end", "", -1);
-                FormUtil::sendModEvent(Util::LookupTable::OSexIntegrationMainQuest, "ostim_totalend", "", 0);
-            }
+            GameAPI::GameEvents::sendEndEvent(threadID, "", gameActors);
         }
     };
 }

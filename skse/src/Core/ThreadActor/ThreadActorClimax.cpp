@@ -72,9 +72,6 @@ namespace OStim {
         playClimaxSound();
 
         if (thread->isPlayerThread()) {
-            // TODO properly use GameActor here
-            FormUtil::sendModEvent(actor.form, "ostim_orgasm", thread->getCurrentNode()->scene_id, index);
-
             if (isPlayer) {
                 if (MCM::MCMTable::getBlurOnOrgasm()) {
                     FormUtil::apply(Util::LookupTable::OStimNutEffect, 1.0);
@@ -96,8 +93,8 @@ namespace OStim {
                 GameAPI::Game::shakeController(0.5, 0.5, 0.7);
             }
         }
-        // TODO properly use GameActor here
-        FormUtil::sendModEvent(actor.form, "ostim_actor_orgasm", thread->getCurrentNode()->scene_id, thread->m_threadId);
+
+        GameAPI::GameEvents::sendOrgasmEvent(thread->m_threadId, thread->getCurrentNode()->scene_id, index, actor);
 
         // todo give other actor excitement when in vaginalsex
 

@@ -14,6 +14,8 @@ namespace GameAPI {
         inline static RE::BGSKeyword* getVampireKeyword() { return Vampire; }
         inline static RE::TESRace* getManakinRace() { return ManakinRace; }
 
+        inline static RE::TESQuest* getMainQuest() { return OSexIntegrationMainQuest; }
+
         inline static bool improvedCamSupport() { return OStimImprovedCamSupport->value != 0; }
 
         inline static RE::TESFaction* getOStimEmptyFaction() { return OStimEmptyFaction; }
@@ -26,6 +28,8 @@ namespace GameAPI {
         inline static RE::BGSKeyword* ActorTypeNPC = nullptr;
         inline static RE::BGSKeyword* Vampire = nullptr;
         inline static RE::TESRace* ManakinRace = nullptr;
+
+        inline static RE::TESQuest* OSexIntegrationMainQuest = nullptr;
 
         inline static RE::TESGlobal* OStimImprovedCamSupport = nullptr;
 

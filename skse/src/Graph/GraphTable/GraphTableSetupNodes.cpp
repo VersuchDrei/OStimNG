@@ -477,35 +477,21 @@ namespace Graph {
                                 logger::warn("action {} of scene {} doesn't have a type property", index, node->scene_id);
                             }
 
-                            if (jsonAction.contains("actor")) {
-                                if (jsonAction["actor"].is_number_integer()) {
-                                    action.roles.actor = jsonAction["actor"];
+                            RoleMapAPI::KEYS.forEach([&jsonAction, &action, index, &node](Role role, std::string key) {
+                                if (jsonAction.contains(key)) {
+                                    if (jsonAction[key].is_number_integer()) {
+                                        *action.roles.get(role) = jsonAction[key];
+                                    } else {
+                                        logger::warn("property {} of action {} of scene {} isn't an integer", key, index, node->scene_id);
+                                    }
                                 } else {
-                                    logger::warn("property actor of action {} of scene {} isn't an integer", index, node->scene_id);
+                                    if (role == Role::ACTOR) {
+                                        logger::warn("action {} of scene {} doesn't have an actor property", index, node->scene_id);
+                                    } else {
+                                        *action.roles.get(role) = *action.roles.get(Role::ACTOR);
+                                    }
                                 }
-                            } else {
-                                logger::warn("action {} of scene {} doesn't have an actor property", index, node->scene_id);
-                            }
-
-                            if (jsonAction.contains("target")) {
-                                if (jsonAction["target"].is_number_integer()) {
-                                    action.roles.target = jsonAction["target"];
-                                } else {
-                                    logger::warn("property target of action {} of scene {} isn't an integer", index, node->scene_id);
-                                }
-                            } else {
-                                action.roles.target = action.roles.actor;
-                            }
-
-                            if (jsonAction.contains("performer")) {
-                                if (jsonAction["performer"].is_number_integer()) {
-                                    action.roles.performer = jsonAction["performer"];
-                                } else {
-                                    logger::warn("property performer of action {} of scene {} isn't an integer", index, node->scene_id);
-                                }
-                            } else {
-                                action.roles.performer = action.roles.actor;
-                            }
+                            });
 
                             if (jsonAction.contains("muted")) {
                                 if (jsonAction["muted"].is_boolean()) {

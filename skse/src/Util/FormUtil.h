@@ -1,7 +1,6 @@
 #pragma once
 
 namespace FormUtil {
-    void sendModEvent(RE::TESForm* sender, std::string eventName, std::string strArg, float numArg);
     bool isWig(RE::Actor* actor, RE::TESObjectARMO* armor);
     bool canUndress(RE::TESForm* form);
     void apply(RE::TESImageSpaceModifier*, float strength);

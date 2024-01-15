@@ -89,6 +89,16 @@ Function FadeFromBlack(float FadeDuration) Global
 	OStimFinishedFadeToBlack.Value = 0
 EndFunction
 
+Function SendOStimEvent(int ThreadId, string Type, Actor eventActor, Actor eventTarget, Actor eventPerformer) Global
+	int eventId = ModEvent.Create("ostim_event")
+	ModEvent.PushInt(eventId, ThreadId)
+	ModEvent.PushString(eventId, Type)
+	ModEvent.PushForm(eventId, eventActor)
+	ModEvent.PushForm(eventId, eventTarget)
+	ModEvent.PushForm(eventId, eventPerformer)
+	ModEvent.Send(eventId)
+EndFunction
+
 ; TEMPORARY ONLY
 ; don't call any of these, we will remove them again in later versions
 

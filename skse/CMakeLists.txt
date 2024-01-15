@@ -60,6 +60,7 @@ set(sources
     src/GameAPI/GameActor.cpp
     src/GameAPI/GameCamera.cpp
     src/GameAPI/GameDialogue.cpp
+    src/GameAPI/GameEvents.cpp
     src/GameAPI/GameFaction.cpp
     src/GameAPI/GameHooks.cpp
     src/GameAPI/GameObject.cpp
@@ -100,6 +101,7 @@ set(sources
 	src/Sound/ActionSound/SoundType.cpp
 	src/Sound/SoundTable.cpp
     src/Sound/SoundUtil.cpp
+    src/Trait/TraitTable/TraitTableActorProperties.cpp
     src/Trait/Condition.cpp
     src/Trait/FacialExpression.cpp
     src/Trait/TraitTable.cpp

@@ -62,7 +62,7 @@ EndEvent
 
 --- ostim_thread_scenechanged ---
 gets fired when the scene of a thread changes
-required API version: 33
+required API version: 7.2d (33)
 
 RegisterForModEvent("ostim_thread_scenechanged", "OStimThreadSceneChanged")
 
@@ -71,6 +71,19 @@ RegisterForModEvent("ostim_thread_scenechanged", "OStimThreadSceneChanged")
 * * @param: ThreadID, the id of the thread that changed scenes
 */;
 Event OStimThreadSceneChanged(string EventName, string SceneID, float ThreadID, Form Sender)
+EndEvent
+
+--- ostim_thread_speedchanged ---
+gets fired when the speed or scene of a thread changes
+required API version: 7.3 (0x07030000)
+
+RegisterForModEvent("ostim_thread_speedchanged", "OStimThreadSpeedChanged")
+
+;/*
+* * @param: ThreadID, the id of the thread that changed scenes
+*/;
+Event OStimThreadSpeedChanged(string EventName, string strArg, float ThreadID, Form Sender)
+	int Speed = OThread.GetSpeed(ThreadID as int)
 EndEvent
 
 --- ostim_actor_orgasm ---
