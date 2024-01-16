@@ -128,9 +128,7 @@ namespace MCM {
         inline static bool playerSelectRoleGay() { return settings[0xDF4].asBool(); }
         inline static bool playerSelectRoleThreesome() { return settings[0xDF5].asBool(); }
 
-        inline static bool equipStrapOnIfNeeded() { return settings[0xDDB].asBool(); }
         inline static bool unequipStrapOnIfNotNeeded() { return settings[0xDDC].asBool(); }
-        inline static bool unequipStrapOnIfInWay() { return settings[0xDDD].asBool(); }
 
         static bool useSoSSex();
         static bool useTNGSex();
@@ -276,9 +274,7 @@ namespace MCM {
             {0XDF4, {1, "playerSelectRoleGay"}},
             {0XDF5, {0, "playerSelectRoleThreesome"}},
 
-            {0xDDB, {1, "equipStrapOnIfNeeded"}},
             {0xDDC, {0, "unequipStrapOnIfNotNeeded"}},
-            {0xDDD, {1, "unequipStrapOnIfInWay"}},
 
             {0xE04, {1, "useSoSSex"}},
             {0xECC, {1, "useTNGSex"}},

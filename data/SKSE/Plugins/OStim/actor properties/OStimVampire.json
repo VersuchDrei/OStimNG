@@ -2,9 +2,9 @@
 	"condition":{
 		"info": "OStimVampireCondition",
 		"mod":"OStim.esp",
-		"formid":"0xE42"
+		"formid":"0xEDA"
 	},
-	"meetRequirements":[
-		"vampire"
-	]
+	"requirements":{
+		"vampire": true
+	}
 }

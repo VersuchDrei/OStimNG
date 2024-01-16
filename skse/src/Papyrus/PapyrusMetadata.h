@@ -98,10 +98,7 @@ namespace PapyrusMetadata {
     bool HasRequirement(RE::StaticFunctionTag*, std::string id, int position, std::string requirement) {
         if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (position >= 0 && node->actors.size() > position) {
-                Graph::Requirement req = Graph::GraphTable::getRequirement(requirement);
-                if (req != Graph::Requirement::NONE) {
-                    return (node->actors[position].condition.requirements | req) == req;
-                }
+                return node->actors[position].condition.requirements.contains(requirement);
             }
         }
         return false;
@@ -112,10 +109,9 @@ namespace PapyrusMetadata {
             if (position >= 0 && node->actors.size() > position) {
                 int req = 0;
                 for (std::string& requirement : requirements) {
-                    req |= Graph::GraphTable::getRequirement(requirement);
-                }
-                if (req != 0) {
-                    return (node->actors[position].condition.requirements | req) != 0;
+                    if (node->actors[position].condition.requirements.contains(requirement)) {
+                        return true;
+                    }
                 }
             }
         }
@@ -131,11 +127,11 @@ namespace PapyrusMetadata {
             if (position >= 0 && node->actors.size() > position) {
                 int req = 0;
                 for (std::string& requirement : requirements) {
-                    req |= Graph::GraphTable::getRequirement(requirement);
+                    if (!node->actors[position].condition.requirements.contains(requirement)) {
+                        return false;
+                    }
                 }
-                if (req != 0) {
-                    return (node->actors[position].condition.requirements | req) == req;
-                }
+                return true;
             }
         }
         return false;

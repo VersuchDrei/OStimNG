@@ -1,0 +1,17 @@
+{
+	"condition":{
+		"info": "OStimNPCCondition",
+		"mod":"OStim.esp",
+		"formid":"0xE42"
+	},
+	"type": "npc",
+	"skeleton": 120.748,
+	"requirements":{
+		"anus": true,
+		"foot": true,
+		"hand": true,
+		"mouth": true,
+		"nipple": true,
+		"penis": true
+	}
+}

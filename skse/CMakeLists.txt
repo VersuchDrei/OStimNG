@@ -40,6 +40,7 @@ set(sources
     src/Core/ThreadActor/ThreadActorClimax.cpp
     src/Core/ThreadActor/ThreadActorEquipObjects.cpp
     src/Core/ThreadActor/ThreadActorExcitement.cpp
+    src/Core/ThreadActor/ThreadActorExpression.cpp
     src/Core/ThreadActor/ThreadActorSound.cpp
     src/Core/ThreadStarter/NPCThreadStarter.cpp
     src/Core/ThreadStarter/PlayerThreadStarter.cpp
@@ -80,7 +81,6 @@ set(sources
     src/Graph/ActionAttributes.cpp
     src/Graph/Event.cpp
     src/Graph/GraphActor.cpp
-    src/Graph/GraphTable.cpp
     src/Graph/Node.cpp
     src/Graph/Sequence.cpp
     src/InterfaceSpec/PluginInterface.cpp

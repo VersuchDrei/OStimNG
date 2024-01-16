@@ -19,11 +19,7 @@ namespace Graph {
         JsonUtil::loadBool(json, actor.muffled, "muffled", filename, "action", false);
         JsonUtil::loadLowerString(json, actor.expressionOverride, "expressionOverride", filename, "action", false);
 
-        if (json.contains("requirements")) {
-            for (auto& req : json["requirements"]) {
-                actor.requirements |= GraphTable::getRequirement(req);
-            }
-        }
+        JsonUtil::consumeLowerStringList(json, [&actor](std::string requirement) { actor.requirements.insert(requirement); }, "requirements", filename, "action", false);
 
         if (json.contains("strippingSlots")) {
             for (auto& slot : json["strippingSlots"]) {

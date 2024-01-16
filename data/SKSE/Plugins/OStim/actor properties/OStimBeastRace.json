@@ -1,0 +1,11 @@
+{
+	"condition":{
+		"info": "OStimBeastRaceCondition",
+		"mod":"OStim.esp",
+		"formid":"0xEDB"
+	},
+	"requirements":{
+		"mouth": false,
+		"mouthbeast": true
+	}
+}

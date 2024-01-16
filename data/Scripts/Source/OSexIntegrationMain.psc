@@ -1179,20 +1179,6 @@ GlobalVariable Property OStimRoleSelectionCount Auto
 ; -------------------------------------------------------------------------------------------------
 ; STRAP-ON SETTINGS  ------------------------------------------------------------------------------
 
-GlobalVariable Property OStimEquipStrapOnIfNeeded Auto
-bool Property EquipStrapOnIfNeeded
-	bool Function Get()
-		Return OStimEquipStrapOnIfNeeded.value != 0
-	EndFunction
-	Function Set(bool Value)
-		If Value
-			OStimEquipStrapOnIfNeeded.value = 1
-		Else
-			OStimEquipStrapOnIfNeeded.value = 0
-		EndIf
-	EndFunction
-EndProperty
-
 GlobalVariable Property OStimUnequipStrapOnIfNotNeeded Auto
 bool Property UnequipStrapOnIfNotNeeded
 	bool Function Get()
@@ -1203,20 +1189,6 @@ bool Property UnequipStrapOnIfNotNeeded
 			OStimUnequipStrapOnIfNotNeeded.value = 1
 		Else
 			OStimUnequipStrapOnIfNotNeeded.value = 0
-		EndIf
-	EndFunction
-EndProperty
-
-GlobalVariable Property OStimUnequipStrapOnIfInWay Auto
-bool Property UnequipStrapOnIfInWay
-	bool Function Get()
-		Return OStimUnequipStrapOnIfInWay.value != 0
-	EndFunction
-	Function Set(bool Value)
-		If Value
-			OStimUnequipStrapOnIfInWay.value = 1
-		Else
-			OStimUnequipStrapOnIfInWay.value = 0
 		EndIf
 	EndFunction
 EndProperty
@@ -2445,18 +2417,24 @@ EndProperty
 
 bool Property DisableOSAControls = false Auto
 
+bool Property EquipStrapOnIfNeeded
+	bool Function Get()
+		Return true
+	EndFunction
+	Function Set(bool Value)
+	EndFunction
+EndProperty
+
+bool Property UnequipStrapOnIfInWay
+	bool Function Get()
+		Return true
+	EndFunction
+	Function Set(bool Value)
+	EndFunction
+EndProperty
+
 ;/* GetAPIVersion
 * * returns the current API version
-* * 26 = old OStim
-* * 27 = OStim NG 6.0 to 6.7
-* * 28 = OStim NG 6.8
-* * 29 = OStim Standalone Public Beta and 7.0
-* * 30 = OStim Standalone 7.1
-* * 31 = OStim Standalone 7.1e
-* * 32 = OStim Standalone 7.2
-* * 33 = OStim Standalone 7.2d
-* *
-* * starting with OStim Standalone 7.3 the API version is now equal to the .dll version
 * * read "Data/SKSE/plugins/OStim/API version README.txt" for further information
 * *
 * * @return: the version of the current API

@@ -1716,48 +1716,40 @@ Function DrawGenderRolesPage()
 	SetCursorPosition(1)
 	AddColoredHeader("$ostim_header_strap_ons")
 	SetCursorPosition(3)
-	AddToggleOptionST("OID_EquipStrapOnIfNeeded", "$ostim_equip_strap_on_if_needed", Main.EquipStrapOnIfNeeded)
-	SetCursorPosition(5)
 	AddToggleOptionST("OID_UnequipStrapOnIfNotNeeded", "$ostim_unequip_strap_on_if_not_needed", Main.UnequipStrapOnIfNotNeeded)
-	SetCursorPosition(7)
-	int UnequipStrapOnIfInWayFlags = OPTION_FLAG_NONE
-	If Main.UnequipStrapOnIfNotNeeded
-		UnequipStrapOnIfInWayFlags = OPTION_FLAG_DISABLED
-	EndIf
-	AddToggleOptionST("OID_UnequipStrapOnIfInWay", "$ostim_unequip_strap_on_if_in_way", Main.UnequipStrapOnIfInWay, UnequipStrapOnIfInWayFlags)
 
-	SetCursorPosition(11)
+	SetCursorPosition(7)
 	AddMenuOptionST("OID_DefaultStrapOn", "$ostim_default_strap_on", OData.GetEquipObjectName(0x1, "strapon"))
-	SetCursorPosition(13)
+	SetCursorPosition(9)
 	AddMenuOptionST("OID_PlayerStrapOn", "$ostim_player_strap_on", OData.GetEquipObjectName(0x7, "strapon"))
 
-	SetCursorPosition(17)
+	SetCursorPosition(13)
 	AddColoredHeader("$ostim_header_futanari")
-	SetCursorPosition(19)
+	SetCursorPosition(15)
 	int UseSoSSexFlags = OPTION_FLAG_NONE
 	If !Main.SoSInstalled
 		UseSoSSexFlags = OPTION_FLAG_DISABLED
 	EndIf
 	AddToggleOptionST("OID_UseSoSSex", "$ostim_use_sos_sex", Main.UseSoSSex, UseSoSSexFlags)
-	SetCursorPosition(21)
+	SetCursorPosition(17)
 	int UseTNGSexFlags = OPTION_FLAG_NONE
 	If !Main.TNGInstalled
 		UseTNGSexFlags = OPTION_FLAG_DISABLED
 	EndIf
 	AddToggleOptionST("OID_UseTNGSex", "$ostim_use_tng_sex", Main.UseTNGSex, UseTNGSexFlags)
-	SetCursorPosition(23)
+	SetCursorPosition(19)
 	int FutaUseMaleRoleFlags = OPTION_FLAG_NONE
 	If !Main.IntendedSexOnly || (!Main.SoSInstalled || !Main.UseSoSSex) && (!Main.TNGInstalled || !Main.UseTNGSex)
 		FutaUseMaleRoleFlags = OPTION_FLAG_DISABLED
 	EndIf
 	AddToggleOptionST("OID_FutaUseMaleRole", "$ostim_futa_use_male_role", Main.FutaUseMaleRole, FutaUseMaleRoleFlags)
-	SetCursorPosition(25)
+	SetCursorPosition(21)
 	int FutaFlags = OPTION_FLAG_NONE
 	If (!Main.SoSInstalled || !Main.UseSoSSex) && (!Main.TNGInstalled || !Main.UseTNGSex)
 		FutaFlags = OPTION_FLAG_DISABLED
 	EndIf
 	AddToggleOptionST("OID_FutaUseMaleExcitement", "$ostim_futa_use_male_excitement", Main.FutaUseMaleExcitement, FutaFlags)
-	SetCursorPosition(27)
+	SetCursorPosition(23)
 	AddToggleOptionST("OID_FutaUseMaleClimax", "$ostim_futa_use_male_orgasm", Main.FutaUseMaleClimax, FutaFlags)
 EndFunction
 
@@ -1893,17 +1885,6 @@ State OID_PlayerSelectRoleThreesome
 EndState
 
 
-State OID_EquipStrapOnIfNeeded
-	Event OnHighlightST()
-		SetInfoText("$ostim_tooltip_equip_strap_on_if_needed")
-	EndEvent
-
-	Event OnSelectST()
-		Main.EquipStrapOnIfNeeded = !Main.EquipStrapOnIfNeeded
-		SetToggleOptionValueST(Main.EquipStrapOnIfNeeded)
-	EndEvent
-EndState
-
 State OID_UnequipStrapOnIfNotNeeded
 	Event OnHighlightST()
 		SetInfoText("$ostim_tooltip_unequip_strap_on_if_not_needed")
@@ -1918,17 +1899,6 @@ State OID_UnequipStrapOnIfNotNeeded
 			UnequipStrapOnIfInWayFlags = OPTION_FLAG_DISABLED
 		EndIf
 		SetOptionFlagsST(UnequipStrapOnIfInWayFlags, false, "OID_UnequipStrapOnIfInWay")
-	EndEvent
-EndState
-
-State OID_UnequipStrapOnIfInWay
-	Event OnHighlightST()
-		SetInfoText("$ostim_tooltip_unequip_strap_on_if_in_way")
-	EndEvent
-
-	Event OnSelectST()
-		Main.UnequipStrapOnIfInWay = !Main.UnequipStrapOnIfInWay
-		SetToggleOptionValueST(Main.UnequipStrapOnIfInWay)
 	EndEvent
 EndState
 

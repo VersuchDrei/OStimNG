@@ -4,7 +4,9 @@
 
 namespace Graph {
     void GraphActor::merge(ActionActor& actor) {
-        condition.requirements |= actor.requirements;
+        for (const std::string& requirement : actor.requirements) {
+            condition.requirements.insert(requirement);
+        }
         moan |= actor.moan;
         talk |= actor.talk;
         muffled |= actor.muffled;

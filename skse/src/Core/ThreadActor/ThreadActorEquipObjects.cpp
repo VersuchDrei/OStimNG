@@ -4,6 +4,17 @@
 #include "Util/StringUtil.h"
 
 namespace OStim {
+    void ThreadActor::loopEquipObjects() {
+        for (auto& [type, object] : equipObjects) {
+            if (object.variantDuration > 0) {
+                object.variantDuration -= Constants::LOOP_TIME_MILLISECONDS;
+                if (object.variantDuration <= 0) {
+                    object.unsetVariant(actor);
+                }
+            }
+        }
+    }
+
     bool ThreadActor::equipObject(std::string type) {
         StringUtil::toLower(&type);
         auto iter = equipObjects.find(type);

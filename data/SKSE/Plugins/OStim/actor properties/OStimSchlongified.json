@@ -1,0 +1,10 @@
+{
+	"condition":{
+		"info": "OStimSchlongifiedCondition",
+		"mod":"OStim.esp",
+		"formid":"0xEDD"
+	},
+	"requirements":{
+		"testicles": true
+	}
+}

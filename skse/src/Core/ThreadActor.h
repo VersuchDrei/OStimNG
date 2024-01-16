@@ -42,16 +42,6 @@ namespace OStim {
 
         void handleNiNodeUpdate();
 
-        void setEventExpression(std::string expression);
-        void setEventExpression(Trait::FacialExpression* expression);
-        void clearEventExpression();
-        void playEventExpression(std::string expression);
-        void playEventExpression(Trait::FacialExpression* expression);
-        bool hasExpressionOverride();
-        void setLooking(std::unordered_map<int, Trait::FaceModifier> eyeballOverride);
-        void unsetLooking();
-        void resetLooking();
-
         void loop();
 
         void free();
@@ -152,28 +142,9 @@ namespace OStim {
         float heelOffset = 0;
         bool heelOffsetRemoved = false;
 
-        std::vector<Trait::FacialExpression*>* nodeExpressions = nullptr;
-        Trait::GenderExpression* underlyingExpression = nullptr;
-        int underlyingExpressionCooldown = 999999;
-        std::unordered_map<int, Trait::FaceModifier> eyeballModifierOverride;
-        Trait::GenderExpression* eventExpression = nullptr;
-        int eventExpressionCooldown = 0;
-        std::vector<Trait::FacialExpression*>* overrideExpressions = nullptr;
-        Trait::GenderExpression* overrideExpression = nullptr;
-        int overwriteExpressionCooldown = 0;
-        std::unordered_map<int, ExpressionUpdater> modifierUpdaters;
-        std::unordered_map<int, ExpressionUpdater> phonemeUpdaters;
-
         void checkHeelOffset();
         void applyHeelOffset(bool remove);
         void updateHeelOffset();
-
-        void updateUnderlyingExpression();
-        void updateOverrideExpression();
-        void wakeExpressions(int mask);
-        void applyExpression(Trait::GenderExpression* expression, int mask, int updateSpeed);
-        void checkForEyeballOverride();
-        void applyEyeballOverride();
 
         void papyrusUndressCallback(std::vector<RE::TESObjectARMO*> items);
         void papyrusRedressCallback(std::vector<RE::TESObjectARMO*> items);
@@ -225,6 +196,8 @@ namespace OStim {
     private:
         std::unordered_map<std::string, EquipObjectHandler> equipObjects;
         std::vector<std::string> phonemeObjects;
+
+        void loopEquipObjects();
 #pragma endregion
 
 #pragma region excitement
@@ -254,17 +227,55 @@ namespace OStim {
         void recalculateLoopExcitement();
 #pragma endregion
 
+#pragma region expression
+    public:
+        void setEventExpression(std::string expression);
+        void setEventExpression(Trait::FacialExpression* expression);
+        void clearEventExpression();
+        void playEventExpression(std::string expression);
+        void playEventExpression(Trait::FacialExpression* expression);
+        bool hasExpressionOverride();
+        void setLooking(std::unordered_map<int, Trait::FaceModifier> eyeballOverride);
+        void unsetLooking();
+        void resetLooking();
+
+    private:
+        std::vector<Trait::FacialExpression*>* nodeExpressions = nullptr;
+        Trait::GenderExpression* underlyingExpression = nullptr;
+        int underlyingExpressionCooldown = 999999;
+        std::unordered_map<int, Trait::FaceModifier> eyeballModifierOverride;
+        Trait::GenderExpression* eventExpression = nullptr;
+        int eventExpressionCooldown = 0;
+        std::vector<Trait::FacialExpression*>* overrideExpressions = nullptr;
+        Trait::GenderExpression* overrideExpression = nullptr;
+        int overwriteExpressionCooldown = 0;
+        std::vector<Trait::FacialExpression*>* actorExpressions = nullptr;
+        std::unordered_map<int, ExpressionUpdater> modifierUpdaters;
+        std::unordered_map<int, ExpressionUpdater> phonemeUpdaters;
+
+        void loopExpression();
+
+        void updateUnderlyingExpression();
+        void updateOverrideExpression();
+        void wakeExpressions(int mask);
+        void applyExpression(Trait::GenderExpression* expression, int mask, int updateSpeed);
+        void checkForEyeballOverride();
+        void applyEyeballOverride();
+#pragma endregion
+
 #pragma region sound
     public:
         void mute();
         void unmute();
-        inline bool isMuted() { return muted; }
+        inline bool isMuted() { return actorMuted || muted; }
 
         void reactToEvent(int timer, Graph::Event* event, GameAPI::GameActor partner, std::function<std::unordered_map<std::string, Sound::ReactionSet>*(Sound::VoiceSet&)> setGetter);
         void reactToClimax(GameAPI::GameActor partner);
 
     private:
         Sound::VoiceSet voiceSet;
+        bool actorMuted = false;
+        bool actorMuffled = false;
         bool muted = false;
         bool muffled = false;
         int soundGracePeriod = 0;
@@ -285,7 +296,6 @@ namespace OStim {
 
         void startMoanCooldown();
         inline void stopMoanCooldown() { moanCooldown = -1; };
-        void moan();
 
         void playSound(Sound::ReactionSet* reactionSet, GameAPI::GameActor partner, bool ignoreChecks);
 

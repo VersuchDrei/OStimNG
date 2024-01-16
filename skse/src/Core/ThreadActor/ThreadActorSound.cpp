@@ -80,6 +80,10 @@ namespace OStim {
     }
 
     bool ThreadActor::canTalk() {
+        if (actorMuted || muted) {
+            return false;
+        }
+
         if (isPlayer && !MCM::MCMTable::playerDialogue()) {
             return false;
         }
@@ -92,7 +96,7 @@ namespace OStim {
             return false;
         }
 
-        if (muffled || graphActor->muffled) {
+        if (actorMuffled || muffled || graphActor->muffled) {
             return false;
         }
 
@@ -118,22 +122,6 @@ namespace OStim {
         }
 
         moanCooldown = RNGUtil::uniformInt(MCM::MCMTable::getMoanIntervalMin(), MCM::MCMTable::getMoanIntervalMax());
-    }
-
-    void ThreadActor::moan() {
-        Sound::SoundSet* set = nullptr;
-        if (muffled || graphActor->muffled) {
-            set = voiceSet.moan.getSoundMuffled(actor, primaryPartner);
-        } else {
-            set = voiceSet.moan.getSound(actor, primaryPartner);
-        }
-
-        if (set) {
-            setEventExpression(set->expression);
-            set->sound.play(actor, MCM::MCMTable::getMoanVolume());
-            lastMoan = &set->sound;
-            soundGracePeriod = 150;
-        }
     }
 
     void ThreadActor::playSound(Sound::ReactionSet* reactionSet, GameAPI::GameActor partner, bool ignoreChecks) {
@@ -166,7 +154,7 @@ namespace OStim {
 
         if ((ignoreChecks || graphActor->moan) && canMakeSound()) {
             Sound::SoundSet* set = nullptr;
-            if (muffled || graphActor->muffled) {
+            if (actorMuffled || muffled || graphActor->muffled) {
                 set = reactionSet->getSoundMuffled(actor, partner);
             } else {
                 set = reactionSet->getSound(actor, partner);

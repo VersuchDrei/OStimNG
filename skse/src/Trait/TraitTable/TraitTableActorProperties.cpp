@@ -15,26 +15,38 @@ namespace Trait {
                 return;
             }
 
-            std::string type;
-            JsonUtil::loadString(json, type, "type", filename, "actor property", false);
-            if (!type.empty()) {
-                actorTypes.push_back({condition, type});
-            }
+            JsonUtil::consumeLowerString(json, [condition](std::string type) {actorTypes.add({condition, type});}, "type", filename, "actor property", false);
+            JsonUtil::consumeLowerString(json, [condition](std::string expression) {actorExpressions.add({condition, expression});}, "expression", filename, "actor property", false);
+            JsonUtil::consumeBool(json, [condition](bool mute) {actorMutes.add({condition, mute});}, "mute", filename, "actor property", false);
+            JsonUtil::consumeBool(json, [condition](bool muffle) {actorMuffles.add({condition, muffle});}, "muffle", filename, "actor property", false);
+            JsonUtil::consumeBoolMap(json, [condition](std::string requirement, bool meet){actorRequirements.insert({requirement, {}}).first->second.add({condition, meet});}, true, "requirements", filename, "actor property", false);
         });
 
-        std::stable_sort(actorTypes.begin(), actorTypes.end(), [&](ActorProperty<std::string> a, ActorProperty<std::string> b) {
-            return a.condition.getPriority() > b.condition.getPriority();
-        });
+        actorTypes.sort();
+        actorExpressions.sort();
+        actorMutes.sort();
+        actorMuffles.sort();
+
+        for (auto& [type, list] : actorRequirements) {
+            list.sort();
+        }
     }
 
+    std::set<std::string> TraitTable::getActorRequirements(GameAPI::GameActor actor) {
+        std::set<std::string> requirements;
 
-    std::string TraitTable::getActorType(GameAPI::GameActor actor) {
-        for (ActorProperty<std::string> type : actorTypes) {
-            if (type.condition.fulfills(actor)) {
-                return type.value;
+        if (actor) {
+            for (auto& [id, list] : actorRequirements) {
+                if (list.get(actor, false)) {
+                    requirements.insert(id);
+                }
+            }
+        } else {
+            for (auto& [id, list] : actorRequirements) {
+                requirements.insert(id);
             }
         }
 
-        return "";
+        return requirements;
     }
 }

@@ -16,7 +16,7 @@ namespace Trait {
 
         std::string type = "npc";
         GameAPI::GameSex sex = GameAPI::GameSex::AGENDER;
-        uint32_t requirements = 0;
+        std::set<std::string> requirements;
 
         bool fulfills(ActorCondition conditions);
 

@@ -12,7 +12,7 @@ namespace Graph {
         bool talk = false;
         bool muffled = false;
         std::string expressionOverride = "";
-        uint32_t requirements = 0;
+        std::set<std::string> requirements;
         uint32_t strippingMask = 0;
         std::vector<GameAPI::GameFaction> factions;
         std::unordered_map<std::string, int> ints;

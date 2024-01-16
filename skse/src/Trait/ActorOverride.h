@@ -4,6 +4,7 @@
 
 namespace Trait {
     struct ActorOverride {
+    public:
         GameAPI::GameCondition condition;
         float skeletonHeight = 0;
         std::string expression = "";
