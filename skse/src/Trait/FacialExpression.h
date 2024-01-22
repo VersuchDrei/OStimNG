@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GameAPI/GameActor.h"
+#include "GameAPI/GameFaction.h"
 #include "Util/MathUtil.h"
 #include "Util/RNGUtil.h"
 
@@ -24,12 +25,12 @@ namespace Trait {
         float variance = 0;
         float speedMultiplier = 0;
         float excitementMultiplier = 0;
+        GameAPI::GameFaction faction;
+        int factionFallback = 0;
         int delay = 0;
         int delayVariance = 0;
 
-        inline int calculate(float speed, float excitement) {
-            return MathUtil::clamp((int)(baseValue + (variance == 0 ? 0 : RNGUtil::uniformInt(0, variance)) + speedMultiplier * speed + excitementMultiplier * excitement), 0, 100);
-        }
+        int calculate(GameAPI::GameActor actor, float speed, float excitement);
 
         inline int randomizeDelay() {
             return delay + (delayVariance == 0 ? 0 : RNGUtil::uniformInt(0, delayVariance));

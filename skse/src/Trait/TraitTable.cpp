@@ -25,14 +25,14 @@ namespace Trait {
 
         std::srand((unsigned)time(NULL));
 
-        Util::JsonFileLoader::LoadFilesInFolder(EXPRESSION_FILE_PATH, [&](std::string,std::string filename,json json) {
+        Util::JsonFileLoader::LoadFilesInFolder(EXPRESSION_FILE_PATH, [&](std::string path,std::string filename,json json) {
             FacialExpression* expression = new FacialExpression();
             if (json.contains("female")) {
-                parseGender(json["female"], &expression->female);
+                parseGender(path, json["female"], &expression->female);
             }
 
             if (json.contains("male")) {
-                parseGender(json["male"], &expression->male);
+                parseGender(path, json["male"], &expression->male);
             }
 
             if (json.contains("sets")) {
@@ -133,19 +133,19 @@ namespace Trait {
         });
     }
 
-    void TraitTable::parseGender(nlohmann::json json, GenderExpression* genderExpression) {
+    void TraitTable::parseGender(std::string& path, nlohmann::json json, GenderExpression* genderExpression) {
         if (json.contains("duration")) {
             genderExpression->duration = json["duration"];
         }
 
         if (json.contains("expression")) {
-            genderExpression->expression = parseModifier(json["expression"]);
+            genderExpression->expression = parseModifier(path, json["expression"]);
             genderExpression->typeMask |= ExpressionType::EXPRESSION;
         }
 
         if (json.contains("modifiers")) {
             for (auto& modifier : json["modifiers"]) {
-                auto mod = parseModifier(modifier);
+                auto mod = parseModifier(path, modifier);
                 if (VectorUtil::contains(eyelidModifierTypes, mod.type)) {
                     genderExpression->eyelidModifiers.insert({mod.type, mod});
                     genderExpression->typeMask |= ExpressionType::LID_MODIFIER;
@@ -161,7 +161,7 @@ namespace Trait {
 
         if (json.contains("phonemes")) {
             for (auto& phoneme : json["phonemes"]) {
-                auto mod = parseModifier(phoneme);
+                auto mod = parseModifier(path, phoneme);
                 genderExpression->phonemes.insert({mod.type, mod});
             }
             genderExpression->typeMask |= ExpressionType::PHONEME;
@@ -178,7 +178,7 @@ namespace Trait {
         }
     }
 
-    FaceModifier TraitTable::parseModifier(nlohmann::json json) {
+    FaceModifier TraitTable::parseModifier(std::string& path, nlohmann::json json) {
         FaceModifier modifier{};
         if (json.contains("type")) {
             modifier.type = json["type"];
@@ -194,6 +194,12 @@ namespace Trait {
         }
         if (json.contains("excitementMultiplier")) {
             modifier.excitementMultiplier = json["excitementMultiplier"];
+        }
+        if (json.contains("faction")) {
+            modifier.faction.loadJson(path, json["faction"]);
+        }
+        if (json.contains("factionFallback")) {
+            modifier.factionFallback = json["factionFallback"];
         }
         if (json.contains("delay")) {
             modifier.delay = json["delay"];

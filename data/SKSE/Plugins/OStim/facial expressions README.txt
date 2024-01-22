@@ -63,11 +63,19 @@ properties:
 	the expression strength will be (a random number between (baseValue) and (baseValue + variance) + (speed and expression multipliers)
 "speedMultiplier" (float): a multiplier for the animation speed to be added to the base value (can be negative)
 "excitementMultiplier" (float): a multiplier for the actors excitement to be added to the base value (can be negative)
+"faction" (object): a faction whose faction rank to add to the base value
+"factionFallback" (int): a fallback value for when the actor is not a member of the faction
+	if no faction was provided this value is ignored
 "delay" (float): a delay in seconds before this expression/modifier/phoneme will be applied
 	this can be used to not make the entire face move at once, so it doesn't look like the actor is just changing from one expression to another (even though they technically are)
 "delayVariance" (float): a variance for the delay which will get randomized 
 	this can be used to make the expression change not always look the same and make the actor look even more life like
 	the delay will be a random number between (delay) and (delay + delay variance)
+
+form fields:
+"mod" (string): the name of the mod this form is defined in, including the file extension
+"formid" (string): the form id of the form in hexadecimal notation
+	note: json doesn't support hexadecimal notation, which is why this is a string and not an int
 
 
 F.A.Q.

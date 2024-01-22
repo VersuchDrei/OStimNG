@@ -35,8 +35,8 @@ namespace Trait {
         inline static bool areFacialExpressionsBlocked(RE::Actor* actor) { return actor->IsInFaction(noFacialExpressionsFaction); }
 
     private:
-        static void parseGender(nlohmann::json json, GenderExpression* genderExpression);
-        static FaceModifier parseModifier(nlohmann::json json);
+        static void parseGender(std::string& path, nlohmann::json json, GenderExpression* genderExpression);
+        static FaceModifier parseModifier(std::string& path, nlohmann::json json);
         static void addToTable(std::unordered_map<std::string, std::vector<FacialExpression*>*>* table, std::string key, FacialExpression* expression);
         static std::vector<FacialExpression*>* getExpressionsFromTable(std::unordered_map<std::string, std::vector<FacialExpression*>*> table, std::string key);
 
