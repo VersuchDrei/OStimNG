@@ -26,7 +26,10 @@ namespace OStim {
 
     void ThreadActor::scale() {
         if (MCM::MCMTable::isScalingDisabled()) {
-            actor.setScale(scaleBefore * scaleMult);
+            float newScale = scaleBefore * scaleMult;
+            if (!actor.isScale(newScale)) {
+                actor.setScale(newScale);
+            }
             return;
         }
 

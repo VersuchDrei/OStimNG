@@ -238,7 +238,7 @@ namespace Serialization {
             }
 
             if (data.voiceSet != 0) {
-                RE::TESForm* voice = RE::TESForm::LookupByID(formID);
+                RE::TESForm* voice = RE::TESForm::LookupByID(data.voiceSet);
                 if (voice) {
                     json["actorData"][stringID]["voice"] = json::object();
                     json["actorData"][stringID]["voice"]["mod"] = voice->GetFile(0)->GetFilename();
