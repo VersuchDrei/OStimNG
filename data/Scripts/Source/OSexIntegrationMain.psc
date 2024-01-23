@@ -1620,6 +1620,20 @@ bool Property NoFacialExpressions
 	EndFunction
 EndProperty
 
+GlobalVariable Property OStimFixDarkFaces Auto
+bool Property FixDarkFaces
+	bool Function Get()
+		Return OStimFixDarkFaces.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimFixDarkFaces.value = 1
+		Else
+			OStimFixDarkFaces.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
 ; -------------------------------------------------------------------------------------------------
 ; SCRIPTWIDE VARIABLES ----------------------------------------------------------------------------
 

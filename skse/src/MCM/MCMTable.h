@@ -146,6 +146,7 @@ namespace MCM {
 
         inline static bool unrestrictedNavigation() { return settings[0xECD].asBool(); }
         inline static bool noFacialExpressions() { return settings[0xECE].asBool(); }
+        inline static bool fixDarkFace() { return settings[0xEDE].asBool(); }
 
         static void exportSettings();
         static void importSettings();
@@ -289,7 +290,8 @@ namespace MCM {
             {0xDE5, {1, "alignmentGroupByHeels"}},
 
             {0xECD, {0, "unrestrictedNavigation"}},
-            {0xECE, {0, "noFacialExpressions"}}
+            {0xECE, {0, "noFacialExpressions"}},
+            {0xEDE, {0, "fixDarkFace"}}
         };
 
         inline static uint32_t undressingMask = 0x3D8BC39D;

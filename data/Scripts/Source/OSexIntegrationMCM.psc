@@ -3051,13 +3051,13 @@ EndFunction
 
 int OID_UnrestrictedNavigation = -1
 int OID_NoFacialExpressions = -1
+int OID_FixDarkFaces = -1
 
 Function DrawDebugPage()
 	SetCursorFillMode(TOP_TO_BOTTOM)
-	SetCursorPosition(0)
 	OID_UnrestrictedNavigation = AddToggleOption("$ostim_unrestricted_navigation", Main.UnrestrictedNavigation)
-	SetCursorPosition(1)
 	OID_NoFacialExpressions = AddToggleOption("$ostim_no_facial_expressions", Main.NoFacialExpressions)
+	OID_FixDarkFaces = AddToggleOption("$ostim_fix_dark_faces", Main.FixDarkFaces)
 EndFunction
 
 Function OnOptionHighlightDebug(int Option)
@@ -3065,6 +3065,8 @@ Function OnOptionHighlightDebug(int Option)
 		SetInfoText("$ostim_tooltip_unrestricted_navigation")
 	ElseIf Option == OID_NoFacialExpressions
 		SetInfoText("$ostim_tooltip_no_facial_expressions")
+	ElseIf Option == OID_FixDarkFaces
+		SetInfoText("$ostim_tooltip_fix_dark_faces")
 	EndIf
 EndFunction
 
@@ -3075,6 +3077,9 @@ Function OnOptionSelectDebug(int Option)
 	ElseIf Option == OID_NoFacialExpressions
 		Main.NoFacialExpressions = !Main.NoFacialExpressions
 		SetToggleOptionValue(Option, Main.NoFacialExpressions)
+	ElseIf Option == OID_FixDarkFaces
+		Main.FixDarkFaces = !Main.FixDarkFaces
+		SetToggleOptionValue(Option, Main.FixDarkFaces)
 	EndIf
 EndFunction
 
