@@ -36,8 +36,7 @@ actor fields:
 	this is mainly used for when an actor has their mouth full (usually by performing an oral action)
 "expressionOverride" (string): when set executing this action will override this Skyrim actors facial expression with one for this set (see facial expression README for how to define an expression set)
 	this can be used to open the mouth and/or stick out the tongue for oral actions
-"requirements" (list<string>): a list of requirements for this Skyrim actor, if they are not met an animation containing this action will not show up in navigation
-	possible values are "anus", "breast", "foot", "hand", "mouth", "nipple", "penis", "testicles" and "vagina"
+"requirements" (list<string>): a list of requirements for this Skyrim actor, if they are not met an animation containing this action will not show up in navigation (see actor properties README)
 "strippingSlots" (list<int>): a list of biped slots to strip on this Skyrim actor when executing this scene (if partial undressing is enabled in the MCM)
 "faction" (object/list<object>): a faction or list of factions the actor is put in while participating in this role in this action (see form fields)
 	this is mainly useful for condition functions for addons / voice sets

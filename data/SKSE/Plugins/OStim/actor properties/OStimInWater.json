@@ -1,0 +1,10 @@
+{
+	"condition":{
+		"info": "OStimInWaterCondition",
+		"mod":"OStim.esp",
+		"formid":"0xEE0"
+	},
+	"requirements":{
+		"inwater": true
+	}
+}

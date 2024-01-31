@@ -20,7 +20,7 @@ namespace Trait {
     ActorCondition ActorCondition::create(GameAPI::GameActor actor, OStim::ThreadActor* threadActor) {
         ActorCondition condition;
 
-        if (!threadActor) {
+        if (!threadActor && actor) {
             if (Compatibility::CompatibilityTable::hasSchlong(actor)) {
                 Util::APITable::getSchlongifiedFaction().add(actor);
             }
@@ -28,7 +28,7 @@ namespace Trait {
 
         condition.requirements = Trait::TraitTable::getActorRequirements(actor);
 
-        if (!threadActor) {
+        if (!threadActor && actor) {
             Util::APITable::getSchlongifiedFaction().remove(actor);
         }
 

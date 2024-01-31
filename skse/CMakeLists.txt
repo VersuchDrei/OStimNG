@@ -7,7 +7,7 @@ message("Using toolchain file ${CMAKE_TOOLCHAIN_FILE}.")
 ########################################################################################################################
 project(
         OStim
-        VERSION 7.3.0.0
+        VERSION 7.3.0.1
         DESCRIPTION ""
         LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 23)
@@ -131,6 +131,7 @@ set(sources
     src/Util/SerializationUtil.cpp
     src/Util/StringUtil.cpp
     src/Util/VectorUtil.cpp
+	src/Core.cpp
 	src/Util.cpp
 	src/main.cpp
         src/ModAPI/OstimNG-API-Main.cpp 

@@ -50,7 +50,9 @@ navigation fields:
 	conventional priorities in idles are:
 		   0 other idles
 		1000 romantic scenes
+    	1500 vampire bites
 		2000 undressing scenes
+    	2500 bathing
 		3000 sexual scenes
 	conventional priorities in other scenes are:
    	   -1000 return to idle
@@ -108,6 +110,7 @@ actor fields:
 	use with caution, unlike animations this does not have a smooth transition
 	this means a change in offset will cause the actor to teleport away and then quickly slide pack into position
 	therefore a heavy use of offsets is not recommended
+"requirements" (list<string>): a list of requirements for this actor, if they are not met this scene will not show up in navigation (see actor properties README)
 "tags" (list<string>): a list of tags for this actor (see list of commonly used actor tags)
 "feetOnGround" (bool): if true heel scaling is in effect, if false the heel offset will be removed
 	this value defaults to true if the actor has the "standing" or "squatting" tag and false otherwise

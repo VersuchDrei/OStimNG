@@ -1,6 +1,8 @@
 b -Tn OStim1PStandingM_0 OStim1P\M\idle\OStim1PStandingM_0.hkx
 b -Tn OStim1PSittingM_0 OStim1P\M\idle\OStim1PSittingM_0.hkx
 
+b -a,Tn OStim1PStandingWashingUpperBodyM_0 OStim1P\M\bathing\OStim1PStandingWashingUpperBodyM_0.hkx
+
 b -Tn OStim1PStandingF_0 OStim1P\F\idle\OStim1PStandingF_0.hkx
 b -a,Tn OStim1PStandingToSittingF_0 OStim1P\F\idle\OStim1PStandingToSittingF_0.hkx
 b -Tn OStim1PSittingF_0 OStim1P\F\idle\OStim1PSittingF_0.hkx

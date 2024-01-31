@@ -304,49 +304,17 @@ namespace Graph {
                         if (jsonActor.is_object()) {
                             std::string objectType = "actor " + std::to_string(index) + " of scene";
 
-                            if (jsonActor.contains("type")) {
-                                if (jsonActor["type"].is_string()) {
-                                    actor.condition.type = jsonActor["type"];
-                                } else {
-                                    logger::warn("type property of actor {} of scene {} isn't a string", index, node->scene_id);
-                                }
-                            }
-
-                            if (jsonActor.contains("intendedSex")) {
-                                if (jsonActor["intendedSex"].is_string()) {
-                                    actor.condition.sex = GameAPI::GameSexAPI::fromString(jsonActor["intendedSex"]);
-                                } else {
-                                    logger::warn("itendedSex property of actor {} of scene {} isn't a string", index, node->scene_id);
-                                }
-                            }
-
+                            JsonUtil::loadLowerString(jsonActor, actor.condition.type, "type", node->scene_id, objectType, false);
+                            JsonUtil::consumeString(jsonActor, [&actor](std::string sex){actor.condition.sex = GameAPI::GameSexAPI::fromString(sex);}, "intendedSex", node->scene_id, objectType, false);
                             JsonUtil::loadInt(jsonActor, actor.sosBend, "sosBend", node->scene_id, objectType, false);
                             JsonUtil::loadInt(jsonActor, actor.sosBend, "tngBend", node->scene_id, objectType, false);
-
-                            if (jsonActor.contains("scale")) {
-                                if (jsonActor["scale"].is_number()) {
-                                    actor.scale = jsonActor["scale"];
-                                } else {
-                                    logger::warn("scale property of actor {} of scene {} isn't a number", index, node->scene_id);
-                                }
-                            }
-
+                            JsonUtil::loadFloat(jsonActor, actor.scale, "scale", node->scene_id, objectType, false);
                             JsonUtil::loadFloat(jsonActor, actor.scaleHeight, "scaleHeight", node->scene_id, objectType, false);
                             JsonUtil::loadString(jsonActor, actor.underlyingExpression, "underlyingExpression", node->scene_id, objectType, false);
                             JsonUtil::loadString(jsonActor, actor.expressionOverride, "expressionOverride", node->scene_id, objectType, false);
                             JsonUtil::loadInt(jsonActor, actor.expressionAction, "expressionAction", node->scene_id, objectType, false);
-
-                            if (jsonActor.contains("animationIndex")) {
-                                if (jsonActor["animationIndex"].is_number_integer()) {
-                                    actor.animationIndex = jsonActor["animationIndex"];
-                                } else {
-                                    actor.animationIndex = index;
-                                    logger::warn("animationIndex property of actor {} of scene {} isn't an integer", index, node->scene_id);
-                                }
-                            } else {
-                                actor.animationIndex = index;
-                            }
-                            
+                            actor.animationIndex = index;
+                            JsonUtil::loadInt(jsonActor, actor.animationIndex, "animationIndex", node->scene_id, objectType, false);                            
                             JsonUtil::loadBool(jsonActor, actor.noStrip, "noStrip", node->scene_id, objectType, false);
 
                             // TODO: this is too skyrim specific
@@ -406,47 +374,11 @@ namespace Graph {
                                 actor.offset.loadJson(path, jsonActor["offset"]);
                             }
 
-                            if (jsonActor.contains("tags")) {
-                                if (jsonActor["tags"].is_array()) {
-                                    int index2 = 0;
-                                    for (auto& jsonTag : jsonActor["tags"]) {
-                                        if (jsonTag.is_string()) {
-                                            std::string tag = jsonTag;
-                                            StringUtil::toLower(&tag);
-                                            actor.tags.push_back(tag);
-                                        } else {
-                                            logger::warn("tag {} of actor {} of scene {} isn't a string", index2, index, node->scene_id);
-                                        }
-                                        index2++;
-                                    }
-                                } else {
-                                    logger::warn("tags property of actor {} of scene {} isn't a list", index, node->scene_id);
-                                }
-                            }
-
-                            if (jsonActor.contains("feetOnGround")) {
-                                if (jsonActor["feetOnGround"].is_boolean()) {
-                                    actor.feetOnGround = jsonActor["feetOnGround"];
-                                } else {
-                                    logger::warn("feetOnGround property of actor {} of scene {} isn't a boolean", index, node->scene_id);
-                                }
-                            } else {
-                                actor.feetOnGround = VectorUtil::containsAny(actor.tags, {"standing", "squatting"});
-                            }
-
-                            if (jsonActor.contains("autoTransitions")) {
-                                if (jsonActor["autoTransitions"].is_object()) {
-                                    for (auto& [id, transition] : jsonActor["autoTransitions"].items()) {
-                                        if (transition.is_string()) {
-                                            actor.autoTransitions[id] = transition;
-                                        } else {
-                                            logger::warn("autoTransition {} of actor {} of scene {} isn't a string", index, id, node->scene_id);
-                                        }
-                                    }
-                                } else {
-                                    logger::warn("autoTransitions property of actor {} of scene {} is malformed", index, node->scene_id);
-                                }
-                            }
+                            JsonUtil::consumeLowerStringList(jsonActor, [&actor](std::string requirement){actor.condition.requirements.insert(requirement);}, "requirements", node->scene_id, objectType, false);
+                            JsonUtil::consumeLowerStringList(jsonActor, [&actor](std::string tag){actor.tags.push_back(tag);}, "tags", node->scene_id, objectType, false);
+                            actor.feetOnGround = VectorUtil::containsAny(actor.tags, {"standing", "squatting"});
+                            JsonUtil::loadBool(jsonActor, actor.feetOnGround, "feetOnGround", node->scene_id, objectType, false);
+                            JsonUtil::consumeLowerStringMap(jsonActor, [&actor](std::string id, std::string transition){actor.autoTransitions[id] = transition;}, true, "autoTransitions", node->scene_id, objectType, false);
                         } else {
                             logger::warn("actor {} of scene {} is malformed", index, node->scene_id);
                         }

@@ -1,0 +1,26 @@
+{
+	"name": "$OStim1PStandingWashingUpperBodyM",
+	"modpack": "OStim",
+	"length": 17.5,
+	"speeds":[
+		{
+			"animation": "OStim1PStandingWashingUpperBodyM"
+		}
+	],
+	"destination": "OStim1PBathingHubStandingM",
+	"actors":[
+		{
+			"intendedSex": "male",
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		}
+	],
+	"actions":[
+		{
+			"type": "bathing",
+			"actor": 0
+		}
+	]
+}

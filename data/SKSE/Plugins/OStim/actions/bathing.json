@@ -1,0 +1,39 @@
+{
+	"aliases":[
+		"bathe"
+	],
+	"actor":{
+		"info": "the one who is doing the washing",
+		"faction":{
+			"info": "OStimBathingActorFaction",
+			"mod": "OStim.esp",
+			"formid": "0xEE1"
+		}
+	},
+	"target":{
+		"info": "the one who is getting washed",
+		"requirements":[
+			"inwater"
+		],
+		"strippingSlots":[
+			30,
+			31,
+			32,
+			33,
+			34,
+			37,
+			38,
+			44,
+			49,
+			52,
+			53,
+			54,
+			55
+		],
+		"faction":{
+			"info": "OStimBathingTargetFaction",
+			"mod": "OStim.esp",
+			"formid": "0xEE2"
+		}
+	}
+}

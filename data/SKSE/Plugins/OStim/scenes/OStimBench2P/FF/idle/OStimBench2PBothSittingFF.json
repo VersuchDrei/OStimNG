@@ -37,7 +37,8 @@
 	"actors":[
 		{
 			"intendedSex": "female",
-			"scale": 1.03,
+			"lookLeft": 70,
+			"lookUp": 10,
 			"tags": [
 				"sitting"
 			],
@@ -45,6 +46,8 @@
 		},
 		{
 			"intendedSex": "female",
+			"lookLeft": -65,
+			"lookUp": -50,
 			"tags": [
 				"sitting"
 			],

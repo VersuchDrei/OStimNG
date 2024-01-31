@@ -60,8 +60,13 @@ namespace OStim {
             addActorInner(i, params.actors[i].form);
         }
 
+        // TODO game API?
+        bool inWater = params.actors[0].form->GetWaterHeight() > center.z - 40;
         for (auto& [index, actor] : m_actors) {
             Util::APITable::getActorCountFaction().add(actor.getActor(), getActorCount());
+            if (inWater) {
+                Util::APITable::getInWaterFaction().add(actor.getActor());
+            }
         }
 
         if (furniture && MCM::MCMTable::resetClutter()) {

@@ -1,27 +1,17 @@
 #include <stddef.h>
 
-#include "Alignment/Alignments.h"
+#include "Core.h"
+
 #include "Core/ThreadInterface.h"
 #include "Events/EventListener.h"
-#include "Furniture/FurnitureTable.h"
 #include "GameAPI/GameHooks.h"
 #include "GameAPI/GameTable.h"
-#include "Graph/GraphTable.h"
 #include "InterfaceSpec/IPluginInterface.h"
 #include "InterfaceSpec/PluginInterface.h"
-#include "MCM/MCMTable.h"
 #include "Messaging/IMessages.h"
 #include "Papyrus/Papyrus.h"
 #include "Serial/Manager.h"
-#include "Sound/SoundTable.h"
-#include "Trait/TraitTable.h"
 #include "UI/UIState.h"
-#include "Util/APITable.h"
-#include "Util/CompatibilityTable.h"
-#include "Util/Globals.h"
-#include "Util/Integrity.h"
-#include "Util/LegacyUtil.h"
-#include "Util/LookupTable.h"
 #include "Util/RNGUtil.h"
 
 using namespace RE::BSScript;
@@ -73,8 +63,10 @@ namespace {
                     message->RegisterListener(nullptr, UnspecificedSenderMessageHandler);
                 }
 
-                Util::Globals::setSceneIntegrityVerified(Integrity::verifySceneIntegrity());
-                Util::Globals::setTranslationIntegrityVerified(Integrity::verifyTranslationIntegrity());
+                Core::postLoad();
+            } break;
+            case SKSE::MessagingInterface::kPostPostLoad: {
+                Core::postpostLoad();
             } break;
             case SKSE::MessagingInterface::kInputLoaded: {
                 RE::BSInputDeviceManager::GetSingleton()->AddEventSink(Events::EventListener::GetSingleton());
@@ -82,28 +74,13 @@ namespace {
             case SKSE::MessagingInterface::kDataLoaded: {
                 GameAPI::GameTable::setup();
 
-                Util::APITable::setupForms();
-                Util::Globals::setupForms();
-                Sound::SoundTable::setup();
-                Graph::GraphTable::SetupActions();
-                Trait::TraitTable::setup();
-                Alignment::Alignments::LoadAlignments();
-                Furniture::FurnitureTable::setupFurnitureTypes();
-                LegacyUtil::loadLegacyScenes();
-                Graph::GraphTable::setupNodes();
-                Graph::GraphTable::setupSequences();
-
-                Compatibility::CompatibilityTable::setupForms();
-                Util::LookupTable::setupForms();
-                Trait::TraitTable::setupForms();
-                MCM::MCMTable::setupForms();
-                Graph::GraphTable::setupEvents();
-                Graph::GraphTable::setupOptions();
-
                 UI::PostRegisterMenus();
                 
                 // we are installing this hook so late because we need it to overwrite the PapyrusUtil hook
                 GameAPI::installHooksLate();
+
+                Core::dataLoaded();
+                SKSE::GetTaskInterface()->AddTask([]() { Core::postDataLoaded(); });
             } break;
             case SKSE::MessagingInterface::kPreLoadGame: {
                 //UI::PostRegisterMenus();
@@ -125,6 +102,8 @@ SKSEPluginLoad(const LoadInterface* skse) {
     log::info("{} {} is loading...", plugin->GetName(), version);
 
     Init(skse);
+
+    Core::init();
 
     InterfaceMap::GetSingleton()->AddInterface("Messaging", Messaging::MessagingRegistry::GetSingleton());
     InterfaceMap::GetSingleton()->AddInterface("Threads", Interfaces::ThreadInterface::GetSingleton());

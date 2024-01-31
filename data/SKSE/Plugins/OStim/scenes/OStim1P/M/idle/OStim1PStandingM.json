@@ -11,12 +11,20 @@
 		{
 			"destination": "OStim1PStandingF",
 			"description": "$ostim_nav_idle_f",
-			"icon": "OStim/symbols/gender_f"
+			"icon": "OStim/symbols/gender_f",
+			"priority": 0
 		},
 		{
 			"destination": "OStim1PSittingM",
 			"description": "$ostim_nav_sit_down",
-			"icon": "OStim/positional/squatting_f"
+			"icon": "OStim/positional/squatting_f",
+			"priority": 0
+		},
+		{
+			"destination": "OStim1PBathingHubStandingM",
+			"description": "$ostim_nav_idle_bathing",
+			"icon": "OStim/action/washing_m",
+			"priority": 2500
 		}
 	],
 	"tags":[

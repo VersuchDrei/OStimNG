@@ -18,6 +18,7 @@ namespace OStim {
 
         Util::APITable::getActorCountFaction().remove(actor);
         Util::APITable::getExcitementFaction().remove(actor);
+        Util::APITable::getInWaterFaction().remove(actor);
         Util::APITable::getSchlongifiedFaction().remove(actor);
         Util::APITable::getTimesClimaxedFaction().remove(actor);
         Util::APITable::getTimeUntilClimaxFaction().remove(actor);
