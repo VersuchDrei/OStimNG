@@ -14,7 +14,7 @@ namespace Graph {
     uint32_t Action::getStrippingMask(int position) {
         int mask = 0;
         roles.forEach([this, position, &mask](Role role, int index) {
-            mask |= index == position ? attributes->roles.get(role)->fullStrip : 0;
+            mask |= index == position ? attributes->roles.get(role)->strippingMask : 0;
         });
         return mask;
     }

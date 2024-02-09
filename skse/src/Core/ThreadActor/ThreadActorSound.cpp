@@ -138,9 +138,9 @@ namespace OStim {
                     // reset mouth so lipsync doesn't look weird
                     applyExpression(&Trait::TraitTable::fallbackExpression.female, Trait::ExpressionType::PHONEME, 5);
                     if (voiceSet.voice && voiceSet.voice != actor.getVoice()) {
-                        set->dialogue.sayAs(actor, primaryPartner, voiceSet.voice);
+                        set->dialogue.sayAs(actor, partner, voiceSet.voice);
                     } else {
-                        set->dialogue.sayTo(actor, primaryPartner);
+                        set->dialogue.sayTo(actor, partner);
                     }
                     isTalking = true;
                     soundGracePeriod = 250;

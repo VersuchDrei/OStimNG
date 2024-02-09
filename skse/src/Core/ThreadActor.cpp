@@ -140,7 +140,6 @@ namespace OStim {
         auto inventory = actor.form->GetInventory();
         for (const auto& [obj, data] : inventory) {
             auto& [count, entry] = data;
-
             if (!entry->IsWorn() || !obj->IsArmor() || !FormUtil::canUndress(obj)) {
                 continue;
             }

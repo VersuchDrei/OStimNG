@@ -12,9 +12,8 @@
 	},
 	"target":{
 		"info": "the one with the foot",
-		"fullStrip":true,
 		"requirements":[
-			"feet"
+			"foot"
 		],
 		"strippingSlots":[
 			37

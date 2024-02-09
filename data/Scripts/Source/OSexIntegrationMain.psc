@@ -2091,7 +2091,7 @@ Function OnLoadGame()
 	int PluginVersion = SKSE.GetPluginVersion("OStim")
 	If PluginVersion == 0
 		Debug.MessageBox("OStim Standalone: The OStim.dll isn't loaded. Make sure to run the game through SKSE.")
-	ElseIf PluginVersion != 0x07030001
+	ElseIf PluginVersion != 0x07030002
 		Debug.MessageBox("OStim Standalone: Your OStim.dll or OSexIntegraionMain.pex is being overwritten with an old version. OStim and its addons will NOT work properly. Please don't report any other bugs while this issue persists.")
 	EndIf
 
