@@ -111,8 +111,9 @@ namespace Sound {
             return iter->second;
         }
 
-        if (actor.getVoice()) {
-            iter = voiceSets.find(actor.getVoice().getFormID());
+        GameAPI::GameVoice voice = actor.getVoice();
+        if (voice) {
+            iter = voiceSets.find(voice.getFormID());
             if (iter != voiceSets.end()) {
                 logger::info("voice set found for actor {} by voice type", actor.getName());
                 return iter->second;

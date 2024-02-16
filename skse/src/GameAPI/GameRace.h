@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GameRecord.h"
+#include "GameVoice.h"
 
 namespace GameAPI {
     struct GameRace : public GameRecord<RE::TESRace> {

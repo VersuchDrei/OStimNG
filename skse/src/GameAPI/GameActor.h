@@ -41,7 +41,7 @@ namespace GameAPI {
         bool isHuman() const;
         inline bool isVampire() const { return form->HasKeyword(GameTable::getVampireKeyword()); }
         inline bool isChild() const { return form->IsChild(); }
-        inline GameAPI::GameVoice getVoice() const { return form->GetActorBase()->voiceType; }
+        GameAPI::GameVoice getVoice() const;
         inline bool hasVoice(GameAPI::GameVoice voice) const { return form->GetActorBase()->voiceType == voice.form; }
 
 

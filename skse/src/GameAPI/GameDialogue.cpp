@@ -16,14 +16,6 @@ namespace GameAPI {
     }
 
     void GameDialogue::sayAs(GameActor speaker, GameActor target, GameVoice voice) const {
-        /*
-        RE::BGSVoiceType* oldVoice = speaker.form->GetActorBase()->voiceType;
-        speaker.form->GetActorBase()->voiceType = voice.form;
-        sayTo(speaker, target);
-        speaker.form->GetActorBase()->voiceType = oldVoice;
-        return;
-        */
-
         std::vector<RE::TESTopicInfo*> topicInfos;
 
         bool random = false;
@@ -64,7 +56,6 @@ namespace GameAPI {
                 }
                 condition = condition->next;
             }
-            // TODO evaluate conditions;
 
             if (valid) {
                 if (random) {
@@ -83,6 +74,10 @@ namespace GameAPI {
                     return;
                 }
             }
+        }
+
+        if (random && !topicInfos.empty()) {
+            say(speaker.form, VectorUtil::randomElement(&topicInfos), voice.form);
         }
     }
 

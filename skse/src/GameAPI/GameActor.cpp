@@ -108,6 +108,15 @@ namespace GameAPI {
         return !form->IsChild() && form->HasKeyword(GameTable::getNPCKeyword()) && form->GetActorBase()->GetRace() != GameTable::getManakinRace();
     }
 
+    GameAPI::GameVoice GameActor::getVoice() const {
+        RE::TESNPC* base = form->GetActorBase();
+        if (base->voiceType) {
+            return base->voiceType;
+        }
+
+        return base->race->defaultVoiceTypes[base->GetSex()];
+    }
+
     void GameActor::setScale(float scale) const {
         RE::Actor* actor = form;
         SKSE::GetTaskInterface()->AddTask([actor, scale] {

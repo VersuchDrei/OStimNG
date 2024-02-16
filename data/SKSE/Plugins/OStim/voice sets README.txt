@@ -26,7 +26,7 @@ voice set:
 "eventActorReactions" (map<string, object>): a map of sounds and dialogues to play after events where this actor was the event actor (see reaction set)
 "eventTargetReactions" (map<string, object>): a map of sounds and dialogues to play after events where this actor was the event target (see reaction set)
 "eventPerformerReactions" (map<string, object>): a map of sounds and dialogues to play after events where this actor was the event reactions (see reaction set)
-"postSceneDialogue" (object): the topic info to play after the scene ended (see form)
+"postSceneDialogue" (object): the topic to play after the scene ended (see form)
 
 form:
 "mod" (string): the name of the mod this form is defined in, including the file extension
@@ -47,6 +47,6 @@ sound set:
 dialogue set:
 "condition" (object): the perk which condition functions evaluate if this dialogue can play
 "expression" (string): the expression set to play while playing the dialogue (optional) (see expressions README)
-"dialogue": (object): the topic info to play (see form)
+"dialogue": (object): the topic to play (see form)
 "moanIntervalOverride" (float): overrides the moan interval from the players MCM (optional)
 "dialogueThreshold" (int): the threshold for the dialogue countdown, higher numbers means dialogue plays more often, modifies the players MCM option (optional)
