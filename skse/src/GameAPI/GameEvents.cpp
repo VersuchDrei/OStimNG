@@ -1,44 +1,45 @@
 #include "GameEvents.h"
 
 #include "GameUtil.h"
-#include "GameTable.h"
+
+#include "GameLogic/GameTable.h"
 
 namespace GameAPI {
     namespace GameEvents {
         void sendStartEvent(int threadID) {
             // legacy mod event
             if (threadID == 0) {
-                GameUtil::sendModEvent(GameTable::getMainQuest(), "ostim_prestart", "", 0);
-                GameUtil::sendModEvent(GameTable::getMainQuest(), "ostim_start", "", 0);
+                GameUtil::sendModEvent(GameLogic::GameTable::getMainQuest(), "ostim_prestart", "", 0);
+                GameUtil::sendModEvent(GameLogic::GameTable::getMainQuest(), "ostim_start", "", 0);
             }
-            GameUtil::sendModEvent(GameTable::getMainQuest(), "ostim_thread_start", "", threadID);
+            GameUtil::sendModEvent(GameLogic::GameTable::getMainQuest(), "ostim_thread_start", "", threadID);
         }
 
         void sendSceneChangedEvent(int threadID, std::string sceneID) {
             // legacy mod event
             if (threadID == 0) {
-                GameUtil::sendModEvent(GameTable::getMainQuest(), "ostim_scenechanged", sceneID, 0);
-                GameUtil::sendModEvent(GameTable::getMainQuest(), "ostim_scenechanged_" + sceneID, "", 0);
+                GameUtil::sendModEvent(GameLogic::GameTable::getMainQuest(), "ostim_scenechanged", sceneID, 0);
+                GameUtil::sendModEvent(GameLogic::GameTable::getMainQuest(), "ostim_scenechanged_" + sceneID, "", 0);
             }
-            GameUtil::sendModEvent(GameTable::getMainQuest(), "ostim_thread_scenechanged", sceneID, threadID);
+            GameUtil::sendModEvent(GameLogic::GameTable::getMainQuest(), "ostim_thread_scenechanged", sceneID, threadID);
         }
 
         void sendSpeedChangedEvent(int threadID, std::string sceneID, int speed) {
             // legacy mod event
             if (threadID == 0) {
-                GameUtil::sendModEvent(GameTable::getMainQuest(), "ostim_animationchanged", sceneID, speed);
+                GameUtil::sendModEvent(GameLogic::GameTable::getMainQuest(), "ostim_animationchanged", sceneID, speed);
             }
 
-            GameUtil::sendModEvent(GameTable::getMainQuest(), "ostim_thread_speedchanged", std::to_string(speed), threadID);
+            GameUtil::sendModEvent(GameLogic::GameTable::getMainQuest(), "ostim_thread_speedchanged", std::to_string(speed), threadID);
         }
 
         void sendEndEvent(int threadID, std::string sceneID, std::vector<GameActor> actors) {
             // legacy mod event
             if (threadID == 0) {
-                GameUtil::sendModEvent(GameTable::getMainQuest(), "ostim_end", "", -1);
-                GameUtil::sendModEvent(GameTable::getMainQuest(), "ostim_totalend", "", 0);
+                GameUtil::sendModEvent(GameLogic::GameTable::getMainQuest(), "ostim_end", "", -1);
+                GameUtil::sendModEvent(GameLogic::GameTable::getMainQuest(), "ostim_totalend", "", 0);
             }
-            GameUtil::sendModEvent(GameTable::getMainQuest(), "ostim_thread_end", "", threadID);
+            GameUtil::sendModEvent(GameLogic::GameTable::getMainQuest(), "ostim_thread_end", "", threadID);
         }
 
 

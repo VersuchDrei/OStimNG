@@ -25,6 +25,7 @@ set(headers
         include/Header/Header.h)
 
 set(sources
+    src/ActorProperties/ActorPropertyTable.cpp
     src/Alignment/ActorKey.cpp
     src/Alignment/Alignments.cpp
     src/Alignment/ThreadKey.cpp
@@ -63,13 +64,13 @@ set(sources
     src/GameAPI/GameDialogue.cpp
     src/GameAPI/GameEvents.cpp
     src/GameAPI/GameFaction.cpp
-    src/GameAPI/GameHooks.cpp
     src/GameAPI/GameObject.cpp
     src/GameAPI/GamePosition.cpp
     src/GameAPI/GameSex.cpp
     src/GameAPI/GameSound.cpp
     src/GameAPI/GameUtil.cpp
-    src/GameAPI/GameTable.cpp
+    src/GameLogic/GameHooks.cpp
+    src/GameLogic/GameTable.cpp
     src/Graph/GraphTable/GraphTableActions.cpp
     src/Graph/GraphTable/GraphTableEvents.cpp
     src/Graph/GraphTable/GraphTableNodes.cpp
@@ -101,7 +102,6 @@ set(sources
 	src/Sound/ActionSound/SoundType.cpp
 	src/Sound/SoundTable.cpp
     src/Sound/SoundUtil.cpp
-    src/Trait/TraitTable/TraitTableActorProperties.cpp
     src/Trait/Condition.cpp
     src/Trait/FacialExpression.cpp
     src/Trait/TraitTable.cpp

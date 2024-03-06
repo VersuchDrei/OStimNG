@@ -5,7 +5,8 @@
 #include "GameOwnership.h"
 #include "GamePosition.h"
 #include "GameRecord.h"
-#include "GameTable.h"
+
+#include "GameLogic/GameTable.h"
 
 namespace GameAPI {
     struct GameObject : public GameRecord<RE::TESObjectREFR> {
@@ -31,7 +32,7 @@ namespace GameAPI {
 
         GameOwnership getOwner() const;
         inline void setOwner(GameOwnership owner) const { SetOwnerForm(&form->extraList, owner.form); }
-        inline void setPrivate() const { setOwner(GameTable::getOStimEmptyFaction()); }
+        inline void setPrivate() const { setOwner(GameLogic::GameTable::getOStimEmptyFaction()); }
 
         inline float getSquaredDistance(GameObject other) const { return form->GetPosition().GetSquaredDistance(other.form->GetPosition()); }
         inline std::string getParentCellID() const { return form->GetParentCell()->GetFormEditorID(); }

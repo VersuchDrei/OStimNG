@@ -28,6 +28,7 @@ namespace OStim {
         void initContinue();
 
         inline ThreadFlags getThreadFlags() { return threadFlags; }
+        inline bool isFlagged(ThreadFlag flag) { return (threadFlags & flag) == flag; }
 
         inline Graph::Node* getCurrentNode() { return m_currentNode; }
         inline int getCurrentSpeed() { return m_currentNodeSpeed; }

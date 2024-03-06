@@ -1,3 +1,14 @@
+b -Tn OStimRedressFeetF OStim\OStimRedressFeetF.hkx
+b -Tn OStimRedressFeetM OStim\OStimRedressFeetM.hkx
+b -Tn OStimRedressHandsF OStim\OStimRedressHandsF.hkx
+b -Tn OStimRedressHandsM OStim\OStimRedressHandsM.hkx
+b -Tn OStimRedressHeadF OStim\OStimRedressHeadF.hkx
+b -Tn OStimRedressHeadM OStim\OStimRedressHeadM.hkx
+b -Tn OStimRedressTorsoF OStim\OStimRedressTorsoF.hkx
+b -Tn OStimRedressTorsoM OStim\OStimRedressTorsoM.hkx
+
+
+
 b -Tn OStim1PStandingM_0 OStim1P\M\idle\OStim1PStandingM_0.hkx
 b -Tn OStim1PSittingM_0 OStim1P\M\idle\OStim1PSittingM_0.hkx
 
@@ -324,14 +335,16 @@ b -Tn OStimBench2PStandingSittingMM_1 OStimBench2P\MM\idle\OStimBench2PStandingS
 
 b -Tn OStimBench2PBothSittingMF_0 OStimBench2P\MF\idle\OStimBench2PBothSittingMF_0.hkx
 b -Tn OStimBench2PBothSittingMF_1 OStimBench2P\MF\idle\OStimBench2PBothSittingMF_1.hkx
+b -Tn OStimBench2PSittingKneelingMF_0 OStimBench2P\MF\idle\OStimBench2PSittingKneelingMF_0.hkx
+b -Tn OStimBench2PSittingKneelingMF_1 OStimBench2P\MF\idle\OStimBench2PSittingKneelingMF_1.hkx
+b -Tn OStimBench2PSittingOnLapMF_0 OStimBench2P\MF\idle\OStimBench2PSittingOnLapMF_0.hkx
+b -Tn OStimBench2PSittingOnLapMF_1 OStimBench2P\MF\idle\OStimBench2PSittingOnLapMF_1.hkx
 b -Tn OStimBench2PSittingStandingMF_0 OStimBench2P\MF\idle\OStimBench2PSittingStandingMF_0.hkx
 b -Tn OStimBench2PSittingStandingMF_1 OStimBench2P\MF\idle\OStimBench2PSittingStandingMF_1.hkx
 b -Tn OStimBench2PSittingStandingFacingAwayMF_0 OStimBench2P\MF\idle\OStimBench2PSittingStandingFacingAwayMF_0.hkx
 b -Tn OStimBench2PSittingStandingFacingAwayMF_1 OStimBench2P\MF\idle\OStimBench2PSittingStandingFacingAwayMF_1.hkx
 b -Tn OStimBench2PStandingSittingMF_0 OStimBench2P\MF\idle\OStimBench2PStandingSittingMF_0.hkx
 b -Tn OStimBench2PStandingSittingMF_1 OStimBench2P\MF\idle\OStimBench2PStandingSittingMF_1.hkx
-b -Tn OStimBench2PSittingKneelingMF_0 OStimBench2P\MF\idle\OStimBench2PSittingKneelingMF_0.hkx
-b -Tn OStimBench2PSittingKneelingMF_1 OStimBench2P\MF\idle\OStimBench2PSittingKneelingMF_1.hkx
 
 b -Tn OStimBench2PBothSittingFF_0 OStimBench2P\FF\idle\OStimBench2PBothSittingFF_0.hkx
 b -Tn OStimBench2PBothSittingFF_1 OStimBench2P\FF\idle\OStimBench2PBothSittingFF_1.hkx

@@ -73,8 +73,6 @@ namespace Trait {
         RE::TESDataHandler* handler = RE::TESDataHandler::GetSingleton();
         noFacialExpressionsFaction = handler->LookupForm<RE::TESFaction>(0xD92, "OStim.esp");
 
-        setupActorProperties();
-
         // equip objects
         Util::JsonFileLoader::LoadFilesInFolder(EQUIP_OBJECT_FILE_PATH, [&](std::string path, std::string filename, json json) {
             std::string id = filename;

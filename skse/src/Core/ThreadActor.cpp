@@ -3,6 +3,8 @@
 #include "Core.h"
 #include "Thread.h"
 #include "ThreadManager.h"
+
+#include "ActorProperties/ActorPropertyTable.h"
 #include "GameAPI/Game.h"
 #include "GameAPI/GameCamera.h"
 #include "Graph/GraphTable.h"
@@ -33,9 +35,9 @@ namespace OStim {
         loopExcitementDecay = MCM::MCMTable::getExcitementDecayRate() * Constants::LOOP_TIME_SECONDS;
 
         voiceSet = Sound::SoundTable::getVoiceSet(actor);
-        actorMuted = Trait::TraitTable::isActorMuted(actor);
-        actorMuffled = Trait::TraitTable::isActorMuffled(actor);
-        actorExpressions = Trait::TraitTable::getExpressionsForSet(Trait::TraitTable::getActorExpression(actor));
+        actorMuted = ActorProperties::ActorPropertyTable::isActorMuted(actor);
+        actorMuffled = ActorProperties::ActorPropertyTable::isActorMuffled(actor);
+        actorExpressions = Trait::TraitTable::getExpressionsForSet(ActorProperties::ActorPropertyTable::getActorExpression(actor));
 
         setDialogueCountdown();
 
@@ -71,7 +73,7 @@ namespace OStim {
 
 
     void ThreadActor::undress() {
-        if ((thread->getThreadFlags() & ThreadFlag::NO_UNDRESSING) == ThreadFlag::NO_UNDRESSING) {
+        if (thread->isFlagged(ThreadFlag::NO_UNDRESSING)) {
             return;
         }
 

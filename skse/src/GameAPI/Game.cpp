@@ -21,8 +21,8 @@ namespace GameAPI {
     }
 
     GameActor Game::getCrosshairActor() {
-        if (GameTable::getCurrentCrosshairRef()) {
-            return GameTable::getCurrentCrosshairRef()->As<RE::Actor>();
+        if (GameLogic::GameTable::getCurrentCrosshairRef()) {
+            return GameLogic::GameTable::getCurrentCrosshairRef()->As<RE::Actor>();
         } else {
             return {};
         }

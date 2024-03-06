@@ -25,9 +25,14 @@
 			"icon": "OStim/positional/chair/sitting_f"
 		},
 		{
+			"destination": "OStimChair2PStandingSittingMF",
+			"description": "$ostim_nav_switch_positions",
+			"icon": "OStim/symbols/switch"
+		},
+		{
 			"destination": "OStimChair2PSittingStandingFacingAwayMF",
 			"description": "$ostim_nav_turn_around_a{1}",
-			"icon": "OStim/symbols/return"
+			"icon": "OStim/symbols/rotate_cw"
 		},
 		{
 			"destination": "OStimChair2PSittingKneelingMF",
@@ -35,9 +40,9 @@
 			"icon": "OStim/positional/kneeling_f"
 		},
 		{
-			"destination": "OStimChair2PStandingSittingMF",
-			"description": "$ostim_nav_switch_positions",
-			"icon": "OStim/symbols/switch"
+			"destination": "OStimChair2PSittingOnLapMF",
+			"description": "$ostim_nav_sit_on_t{0}",
+			"icon": "OStim/positional/kneeling_f_end"
 		}
 	],
 	"tags":[

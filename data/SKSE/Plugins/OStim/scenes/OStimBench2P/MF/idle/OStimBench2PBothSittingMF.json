@@ -20,6 +20,12 @@
 			"icon": "OStim/symbols/gender_ff"
 		},
 		{
+			"destination": "OStimChair2PSittingOnLapMF",
+			"description": "$ostim_nav_sit_on_t{0}",
+			"icon": "OStim/positional/kneeling_f_end",
+			"priority": 0
+		},
+		{
 			"destination": "OStimChair2PSittingStandingMF",
 			"description": "$ostim_nav_stand_up_a{1}",
 			"icon": "OStim/positional/standup_f"

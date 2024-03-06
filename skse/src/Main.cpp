@@ -4,8 +4,8 @@
 
 #include "Core/ThreadInterface.h"
 #include "Events/EventListener.h"
-#include "GameAPI/GameHooks.h"
-#include "GameAPI/GameTable.h"
+#include "GameLogic/GameHooks.h"
+#include "GameLogic/GameTable.h"
 #include "InterfaceSpec/IPluginInterface.h"
 #include "InterfaceSpec/PluginInterface.h"
 #include "Messaging/IMessages.h"
@@ -67,17 +67,17 @@ namespace {
             } break;
             case SKSE::MessagingInterface::kPostPostLoad: {
                 Core::postpostLoad();
+
+                // we are installing this hook so late because we need it to overwrite the PapyrusUtil hook
+                GameLogic::installHooksPostPost();
             } break;
             case SKSE::MessagingInterface::kInputLoaded: {
                 RE::BSInputDeviceManager::GetSingleton()->AddEventSink(Events::EventListener::GetSingleton());
             } break;
             case SKSE::MessagingInterface::kDataLoaded: {
-                GameAPI::GameTable::setup();
+                GameLogic::GameTable::setup();
 
                 UI::PostRegisterMenus();
-                
-                // we are installing this hook so late because we need it to overwrite the PapyrusUtil hook
-                GameAPI::installHooksLate();
 
                 Core::dataLoaded();
                 SKSE::GetTaskInterface()->AddTask([]() { Core::postDataLoaded(); });
@@ -116,7 +116,7 @@ SKSEPluginLoad(const LoadInterface* skse) {
     Papyrus::Bind();
     UI::Settings::LoadSettings();
 
-    GameAPI::installHooks();
+    GameLogic::installHooks();
 
     const auto serial = SKSE::GetSerializationInterface();
     serial->SetUniqueID(_byteswap_ulong('OST'));

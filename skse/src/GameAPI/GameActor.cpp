@@ -1,7 +1,8 @@
 #include "GameActor.h"
 
-#include "GameTable.h"
 #include "GameUtil.h"
+
+#include "GameLogic/GameTable.h"
 
 #include "Util/MathUtil.h"
 
@@ -68,6 +69,7 @@ namespace GameAPI {
 
         RE::Actor* actor = form;
         SKSE::GetTaskInterface()->AddTask([actor]() {
+            actor->SetGraphVariableFloat("OStimSpeed", 1.0);
             actor->SetGraphVariableBool("bHumanoidFootIKDisable", false);
             actor->SetGraphVariableBool("bHeadTrackSpine", true);
             actor->SetGraphVariableBool("bHeadTracking", true);
@@ -105,7 +107,7 @@ namespace GameAPI {
     }
 
     bool GameActor::isHuman() const {
-        return !form->IsChild() && form->HasKeyword(GameTable::getNPCKeyword()) && form->GetActorBase()->GetRace() != GameTable::getManakinRace();
+        return !form->IsChild() && form->HasKeyword(GameLogic::GameTable::getNPCKeyword()) && form->GetActorBase()->GetRace() != GameLogic::GameTable::getManakinRace();
     }
 
     GameAPI::GameVoice GameActor::getVoice() const {

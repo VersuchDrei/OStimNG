@@ -45,33 +45,33 @@ Function AnimateRedress(Actor Act, bool IsFemale, Armor[] Armors, Form[] Weapons
 	; so when that goes public on the nexus this part will need to get updated
 	If Math.LogicalAnd(TotalSlotMask, bodyMask) != 0
 		If IsFemale
-			PlayRedressAnimation(Act, "redress_torso", 3, 1.5, Armors, bodyMask)
+			PlayRedressAnimation(Act, "OStimRedressTorsoF", 3, 1.5, Armors, bodyMask)
 		Else
-			PlayRedressAnimation(Act, "redress_torso", 3, 1.5, Armors, bodyMask)
+			PlayRedressAnimation(Act, "OStimRedressTorsoM", 3, 1.5, Armors, bodyMask)
 		EndIf
 	EndIf
 
 	If Math.LogicalAnd(TotalSlotMask, footMask) != 0
 		If IsFemale
-			PlayRedressAnimation(Act, "redress_feet", 3, 2.9, Armors, footMask)
+			PlayRedressAnimation(Act, "OStimRedressFeetF", 3, 2.9, Armors, footMask)
 		Else
-			PlayRedressAnimation(Act, "redress_feet", 3, 2.9, Armors, footMask)
+			PlayRedressAnimation(Act, "OStimRedressFeetM", 3, 2.9, Armors, footMask)
 		EndIf
 	EndIf
 
 	If Math.LogicalAnd(TotalSlotMask, handMask) != 0
 		If IsFemale
-			PlayRedressAnimation(Act, "redress_hands", 2, 1.6, Armors, handMask)
+			PlayRedressAnimation(Act, "OStimRedressHandsF", 2, 1.6, Armors, handMask)
 		Else
-			PlayRedressAnimation(Act, "redress_hands", 2, 1.6, Armors, handMask)
+			PlayRedressAnimation(Act, "OStimRedressHandsM", 2, 1.6, Armors, handMask)
 		EndIf
 	EndIf
 
 	If Math.LogicalAnd(TotalSlotMask, headMask) != 0
 		If IsFemale
-			PlayRedressAnimation(Act, "redress_head", 2, 1.9, Armors, headMask)
+			PlayRedressAnimation(Act, "OStimRedressHeadF", 2, 1.9, Armors, headMask)
 		Else
-			PlayRedressAnimation(Act, "redress_head", 2, 1.9, Armors, headMask)
+			PlayRedressAnimation(Act, "OStimRedressHeadM", 2, 1.9, Armors, headMask)
 		EndIf
 	EndIf
 

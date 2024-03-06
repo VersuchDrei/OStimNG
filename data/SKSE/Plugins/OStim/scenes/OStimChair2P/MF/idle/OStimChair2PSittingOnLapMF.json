@@ -1,0 +1,57 @@
+{
+	"name": "$OStimChair2PSittingOnLapMF",
+	"modpack": "OStim",
+	"length": 2.0,
+	"furniture": "chair",
+	"speeds":[
+		{
+			"animation": "OStimBench2PSittingOnLapMF"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStimBench2PBothSittingMF",
+			"description": "$ostim_nav_sit_down_a{1}",
+			"icon": "OStim/positional/chair/sitting_f",
+			"priority": 0
+		},
+		{
+			"destination": "OStimChair2PSittingStandingMF",
+			"description": "$ostim_nav_stand_up_a{1}",
+			"icon": "OStim/positional/standup_f",
+			"priority": 0
+		}
+	],
+	"tags":[
+		"idle"
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"scale": 1.03,
+			"tags": [
+				"sitting"
+			],
+			"feetOnGround": false
+		},
+		{
+			"intendedSex": "female",
+			"tags": [
+				"kneeling"
+			],
+			"feetOnGround": false
+		}
+	],
+	"actions":[
+		{
+			"type": "holdingbody",
+			"actor": 0,
+			"target": 1
+		},
+		{
+			"type": "holdingbody",
+			"actor": 1,
+			"target": 0
+		}
+	]
+}

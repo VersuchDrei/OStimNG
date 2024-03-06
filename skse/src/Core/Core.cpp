@@ -2,6 +2,7 @@
 
 #include "ThreadManager.h"
 
+#include "ActorProperties/ActorPropertyTable.h"
 #include "MCM/MCMTable.h"
 #include "Trait/TraitTable.h"
 #include "Util/ActorUtil.h"
@@ -30,6 +31,6 @@ namespace OStim {
     }
 
     bool isEligible(GameAPI::GameActor actor) {
-        return !actor.isDisabled() && !actor.isDeleted() && !actor.isChild() && !actor.isDead() && Trait::TraitTable::getActorType(actor) != "" && !ThreadManager::GetSingleton()->findActor(actor);
+        return !actor.isDisabled() && !actor.isDeleted() && !actor.isChild() && !actor.isDead() && ActorProperties::ActorPropertyTable::getActorType(actor) != "" && !ThreadManager::GetSingleton()->findActor(actor);
     }
 }

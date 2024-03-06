@@ -6,7 +6,7 @@
 #include "Core/ThreadManager.h"
 #include "GameAPI/Game.h"
 #include "GameAPI/GameCamera.h"
-#include "GameAPI/GameTable.h"
+#include "GameLogic/GameTable.h"
 #include "MCM/MCMTable.h"
 #include "Serial/Manager.h"
 #include "UI/Align/AlignMenu.h"
@@ -41,9 +41,9 @@ namespace Events {
     RE::BSEventNotifyControl EventListener::ProcessEvent(const SKSE::CrosshairRefEvent* a_event, RE::BSTEventSource<SKSE::CrosshairRefEvent>* a_eventSource) {
         if (a_event->crosshairRef) {
             // weird As call has to be made to make it non const
-            GameAPI::GameTable::setCurrentCrosshairRef(a_event->crosshairRef->As<RE::TESObjectREFR>());
+            GameLogic::GameTable::setCurrentCrosshairRef(a_event->crosshairRef->As<RE::TESObjectREFR>());
         } else {
-            GameAPI::GameTable::setCurrentCrosshairRef(nullptr);
+            GameLogic::GameTable::setCurrentCrosshairRef(nullptr);
         }
         return RE::BSEventNotifyControl::kContinue;
     }
@@ -57,7 +57,7 @@ namespace Events {
             return RE::BSEventNotifyControl::kContinue;
         }
 
-        if (RE::UI::GetSingleton()->IsMenuOpen("Dialogue Menu")) {
+        if (RE::UI::GetSingleton()->IsMenuOpen("Dialogue Menu") || RE::UI::GetSingleton()->IsMenuOpen("Crafting Menu")) {
             return RE::BSEventNotifyControl::kContinue;
         }
 

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "ActorPropertyList.h"
 #include "EquipObject.h"
 #include "FacialExpression.h"
 
@@ -49,24 +48,5 @@ namespace Trait {
         inline static std::unordered_map<std::string, EquipObject*> defaultEquipObjects;
 
         inline static RE::TESFaction* noFacialExpressionsFaction;
-
-#pragma region actorProperties
-    public:
-        inline static std::string getActorType(GameAPI::GameActor actor) {return actorTypes.get(actor, "");}
-        inline static std::string getActorExpression(GameAPI::GameActor actor) {return actorExpressions.get(actor, "");}
-        inline static bool isActorMuted(GameAPI::GameActor actor) { return actorMutes.get(actor, false); }
-        inline static bool isActorMuffled(GameAPI::GameActor actor) { return actorMuffles.get(actor, false); }
-        static std::set<std::string> getActorRequirements(GameAPI::GameActor actor);
-
-    private:
-        inline static ActorPropertyList<std::string> actorTypes;
-        inline static ActorPropertyList<std::string> actorExpressions;
-        inline static ActorPropertyList<bool> actorMutes;
-        inline static ActorPropertyList<bool> actorMuffles;
-        inline static std::unordered_map<std::string, ActorPropertyList<bool>> actorRequirements;
-
-
-        static void setupActorProperties();
-#pragma endregion
     };
 }

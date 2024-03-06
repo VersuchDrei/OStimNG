@@ -1,7 +1,8 @@
 #include "GameCamera.h"
 
-#include "GameTable.h"
 #include "GameUtil.h"
+
+#include "GameLogic/GameTable.h"
 
 #include "Core/ThreadManager.h"
 
@@ -17,7 +18,7 @@ namespace GameAPI {
 
 
     void GameCamera::startSceneMode(bool freeCam) {
-        if (GameTable::improvedCamSupport()) {
+        if (GameLogic::GameTable::improvedCamSupport()) {
             RE::PlayerControls::GetSingleton()->data.povScriptMode = true;
         }
 
@@ -34,7 +35,7 @@ namespace GameAPI {
                 camThread.detach();
             }
         } else {
-            if (GameTable::improvedCamSupport()) {
+            if (GameLogic::GameTable::improvedCamSupport()) {
                 camera->ForceFirstPerson();
                 if (REL::Module::get().version().patch() < 1130) {
                     RE::ControlMap::GetSingleton()->enabledControls.reset(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch);
@@ -53,7 +54,7 @@ namespace GameAPI {
         RE::PlayerCamera* camera = RE::PlayerCamera::GetSingleton();
         if (camera->IsInFreeCameraMode()) {
             toggleFlyCamInner();
-        } else if (GameTable::improvedCamSupport()) {
+        } else if (GameLogic::GameTable::improvedCamSupport()) {
             if (REL::Module::get().version().patch() < 1130) {
                 RE::ControlMap::GetSingleton()->enabledControls.set(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch);
             } else {
@@ -70,7 +71,7 @@ namespace GameAPI {
             camThread.detach();
         }
 
-        if (GameTable::improvedCamSupport()) {
+        if (GameLogic::GameTable::improvedCamSupport()) {
             RE::PlayerControls::GetSingleton()->data.povScriptMode = false;
         }
     }
@@ -78,7 +79,7 @@ namespace GameAPI {
     void GameCamera::toggleFreeCam() {
         auto camera = RE::PlayerCamera::GetSingleton();
 
-        if (!GameTable::improvedCamSupport()) {
+        if (!GameLogic::GameTable::improvedCamSupport()) {
             if (camera->IsInFirstPerson()) {
                 camera->ForceThirdPerson();
             }

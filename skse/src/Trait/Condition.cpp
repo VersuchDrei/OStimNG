@@ -1,7 +1,6 @@
 #include "Condition.h"
 
-#include "TraitTable.h"
-
+#include "ActorProperties/ActorPropertyTable.h"
 #include "Core/ThreadActor.h"
 #include "Core/ThreadManager.h"
 #include "MCM/MCMTable.h"
@@ -26,7 +25,7 @@ namespace Trait {
             }
         }
 
-        condition.requirements = Trait::TraitTable::getActorRequirements(actor);
+        condition.requirements = ActorProperties::ActorPropertyTable::getActorRequirements(actor);
 
         if (!threadActor && actor) {
             Util::APITable::getSchlongifiedFaction().remove(actor);
@@ -38,7 +37,7 @@ namespace Trait {
             return condition;
         }
 
-        condition.type = TraitTable::getActorType(actor);
+        condition.type = ActorProperties::ActorPropertyTable::getActorType(actor);
 
         GameAPI::GameSex sex = actor.getSex();
         switch (sex) {

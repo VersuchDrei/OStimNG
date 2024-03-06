@@ -1,5 +1,6 @@
 #include "Core.h"
 
+#include "ActorProperties/ActorPropertyTable.h"
 #include "Alignment/Alignments.h"
 #include "Furniture/FurnitureTable.h"
 #include "Graph/GraphTable.h"
@@ -23,6 +24,7 @@ namespace Core {
     void postpostLoad() {}
 
     void dataLoaded() {
+        ActorProperties::ActorPropertyTable::setup();
         Util::APITable::setupForms();
         Util::Globals::setupForms();
         Sound::SoundTable::setup();

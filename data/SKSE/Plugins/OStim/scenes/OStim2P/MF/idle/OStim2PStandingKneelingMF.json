@@ -47,7 +47,7 @@
 			"tags": [
 				"kneeling"
 			],
-			"feetOnGround": true
+			"feetOnGround": false
 		}
 	]
 }

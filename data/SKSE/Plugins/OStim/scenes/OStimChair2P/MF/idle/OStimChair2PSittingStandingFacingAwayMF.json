@@ -1,5 +1,5 @@
 {
-	"name": "$OStimChair2PSittingStandingMF",
+	"name": "$OStimChair2PSittingStandingFacingAwayMF",
 	"modpack": "OStim",
 	"length": 2.0,
 	"furniture": "chair",
@@ -12,7 +12,7 @@
 		{
 			"destination": "OStimChair2PSittingStandingMF",
 			"description": "$ostim_nav_turn_around_a{1}",
-			"icon": "OStim/symbols/return"
+			"icon": "OStim/symbols/rotate_cw"
 		}
 	],
 	"tags":[

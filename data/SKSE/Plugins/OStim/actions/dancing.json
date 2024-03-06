@@ -1,0 +1,9 @@
+{
+	"actor":{
+		"faction":{
+			"info": "OStimDancingFaction",
+			"mod": "OStim.esp",
+			"formid": "0xEE3"
+		}
+	}
+}

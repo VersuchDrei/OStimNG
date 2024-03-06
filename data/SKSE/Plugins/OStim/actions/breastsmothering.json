@@ -1,0 +1,56 @@
+{
+	"aliases":[
+		"boobsmothering",
+		"smothering"
+	],
+	"actor":{
+		"info": "the one with the boobs",
+		"stimulation":0.1,
+		"maxStimulation":50,
+		"moan": true,
+		"talk":true,
+		"requirements":[
+			"breast"
+		],
+		"strippingSlots":[
+			32,
+			46,
+			56
+		],
+		"faction":{
+			"info": "OStimBreastSmotheringActorFaction",
+			"mod": "OStim.esp",
+			"formid": "0xEE4"
+		}
+	},
+	"target":{
+		"info": "the one with the head",
+		"stimulation":0.3,
+		"maxStimulation": 75,
+		"moan":true,
+		"strippingSlots":[
+			30,
+			31,
+			44,
+			55
+		],
+		"faction":{
+			"info": "OStimBreastSmotheringTargetFaction",
+			"mod": "OStim.esp",
+			"formid": "0xEE5"
+		}
+	},
+	"performer":{
+		"faction":{
+			"info": "OStimBreastSmotheringPerformerFaction",
+			"mod": "OStim.esp",
+			"formid": "0xEE6"
+		},
+		"floats":{
+			"stamina":0.3
+		}
+	},
+	"tags":[
+		"sensual"
+	]
+}
