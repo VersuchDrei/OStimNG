@@ -49,6 +49,17 @@ namespace OStim {
         Util::APITable::getTimesClimaxedFaction().add(actor);
         Util::APITable::getTimeUntilClimaxFaction().add(actor, -1);
 
+        if (MCM::MCMTable::removeWeaponsAtStart()) {
+            removeWeapons();
+        }
+        if (thread->isFlagged(ThreadFlag::UNDRESS) || MCM::MCMTable::undressAtStart()) {
+            undress();
+        }
+
+        for (std::string object : ActorProperties::ActorPropertyTable::getEquipObjects(actor)) {
+            equipObject(object);
+        }
+
         startMoanCooldown();
     }
 

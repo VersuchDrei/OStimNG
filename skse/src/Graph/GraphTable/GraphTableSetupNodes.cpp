@@ -65,7 +65,7 @@ namespace Graph {
 
                             if (json.contains("description")) {
                                 if (json["description"].is_string()) {
-                                    navigation.description = json["description"];
+                                    navigation.description = LocaleManager::GetSingleton()->GetLocalization(static_cast<std::string>(json["description"]));
                                 } else {
                                     logger::warn("description property of scene {} isn't a string", node->scene_id);
                                 }
