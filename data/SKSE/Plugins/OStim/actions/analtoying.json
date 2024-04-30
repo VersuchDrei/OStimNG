@@ -32,7 +32,8 @@
 			"info": "OStimAnalToyingTargetFaction",
 			"mod": "OStim.esp",
 			"formid": "0xEA2"
-		}
+		},
+		"toySlot": "anal"
 	},
 	"performer":{
 		"floats":{

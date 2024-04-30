@@ -5,8 +5,8 @@
 namespace Sound {
     class BoneDistanceSoundPlayer : public SoundPlayer{
     public:
-        inline BoneDistanceSoundPlayer(GameAPI::GameSound sound, bool muteWithActor, bool muteWithTarget, OStim::ThreadActor* actor, OStim::ThreadActor* target, bool inverse, int minInterval, int maxInterval)
-            : SoundPlayer(sound, muteWithActor, muteWithTarget, actor, target), inverse{inverse}, minInterval{minInterval}, maxInterval{maxInterval} {}
+        inline BoneDistanceSoundPlayer(SoundPlayerParams params, bool inverse, int minInterval, int maxInterval)
+            : SoundPlayer(params), inverse{inverse}, minInterval{minInterval}, maxInterval{maxInterval} {}
 
         virtual void loop();
 

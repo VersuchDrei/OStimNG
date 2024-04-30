@@ -2,6 +2,7 @@
 
 #include "Core/Thread.h"
 
+#include "MCM/MCMTable.h"
 #include "Trait/TraitTable.h"
 #include "Util/StringUtil.h"
 #include "Util/VectorUtil.h"

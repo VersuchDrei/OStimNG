@@ -1,5 +1,7 @@
 #include "Core/ThreadActor.h"
 
+#include "MCM/MCMTable.h"
+
 namespace OStim {
     void ThreadActor::playAnimation(Graph::Speed& speed) {
         if (!graphActor) {

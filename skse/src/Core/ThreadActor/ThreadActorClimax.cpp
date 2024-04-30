@@ -3,6 +3,7 @@
 #include "Core/Thread.h"
 
 #include "GameAPI/Game.h"
+#include "MCM/MCMTable.h"
 #include "Util/APITable.h"
 #include "Util/CameraUtil.h"
 

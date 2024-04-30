@@ -31,6 +31,8 @@ namespace fs = std::filesystem;
 
 using json = nlohmann::json;
 
+using actionIndex = uint8_t;
+
 namespace util {
     using SKSE::stl::report_and_fail;
 }

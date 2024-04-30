@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Action/Peak/PeakType.h"
 #include "ActionActor.h"
 #include "RoleMap.h"
 
@@ -10,6 +11,7 @@ namespace Graph {
     public:
         std::string type;
         RoleMap<ActionActor> roles;
+        Action::Peak::PeakType* peakType;
         std::vector<Sound::SoundType*> sounds;
         std::vector<std::string> tags;
 

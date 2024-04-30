@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Action.h"
+#include "Action/Action.h"
 
 #include "GameAPI/GamePosition.h"
 #include "GameAPI/GameSex.h"

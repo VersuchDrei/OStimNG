@@ -79,6 +79,143 @@ namespace JsonUtil {
     }
 
 
+    void loadStringList(json& json, std::vector<std::string>& list, std::string propertyName, std::string& objectName, std::string objectType, bool warnIfNotExists) {
+        if (json.contains(propertyName)) {
+            if (json[propertyName].is_array()) {
+                int index = 0;
+                for (auto& element : json[propertyName]) {
+                    if (element.is_string()) {
+                        list.push_back(element);
+                    } else {
+                        logger::warn("element {} of property '{}' of {} {} isn't a string", index, propertyName, objectType, objectName);
+                    }
+                    index++;
+                }
+            } else if(json[propertyName].is_string()) {
+                list.push_back(json[propertyName]);
+            } else {
+                logger::warn("property '{}' of {} {} isn't a list", propertyName, objectType, objectName);
+            }
+        } else if (warnIfNotExists) {
+            logger::warn("{} doesn't have property '{}' defined", objectName, propertyName);
+        }
+    }
+
+    void loadLowerStringList(json& json, std::vector<std::string>& list, std::string propertyName, std::string& objectName, std::string objectType, bool warnIfNotExists) {
+        if (json.contains(propertyName)) {
+            if (json[propertyName].is_array()) {
+                int index = 0;
+                for (auto& element : json[propertyName]) {
+                    if (element.is_string()) {
+                        std::string value = element;
+                        StringUtil::toLower(&value);
+                        list.push_back(value);
+                    } else {
+                        logger::warn("element {} of property '{}' of {} {} isn't a string", index, propertyName, objectType, objectName);
+                    }
+                    index++;
+                }
+            } else if (json[propertyName].is_string()) {
+                std::string value = json[propertyName];
+                StringUtil::toLower(&value);
+                list.push_back(value);
+            } else {
+                logger::warn("property '{}' of {} {} isn't a list", propertyName, objectType, objectName);
+            }
+        } else if (warnIfNotExists) {
+            logger::warn("{} doesn't have property '{}' defined", objectName, propertyName);
+        }
+    }
+
+    void loadTranslatedStringList(json& json, std::vector<std::string>& list, std::string propertyName, std::string& objectName, std::string objectType, bool warnIfNotExists) {
+        if (json.contains(propertyName)) {
+            if (json[propertyName].is_array()) {
+                int index = 0;
+                for (auto& element : json[propertyName]) {
+                    if (element.is_string()) {
+                        list.push_back(LocaleManager::GetSingleton()->GetLocalization(static_cast<std::string>(element)));
+                    } else {
+                        logger::warn("element {} of property '{}' of {} {} isn't a string", index, propertyName, objectType, objectName);
+                    }
+                    index++;
+                }
+            } else if (json[propertyName].is_string()) {
+                list.push_back(LocaleManager::GetSingleton()->GetLocalization(static_cast<std::string>(json[propertyName])));
+            } else {
+                logger::warn("property '{}' of {} {} isn't a list", propertyName, objectType, objectName);
+            }
+        } else if (warnIfNotExists) {
+            logger::warn("{} doesn't have property '{}' defined", objectName, propertyName);
+        }
+    }
+
+    void loadFloatList(json& json, std::vector<float>& list, std::string propertyName, std::string& objectName, std::string objectType, bool warnIfNotExists) {
+        if (json.contains(propertyName)) {
+            if (json[propertyName].is_array()) {
+                int index = 0;
+                for (auto& element : json[propertyName]) {
+                    if (element.is_number()) {
+                        list.push_back(element);
+                    } else {
+                        logger::warn("element {} of property '{}' of {} {} isn't a number", index, propertyName, objectType, objectName);
+                    }
+                    index++;
+                }
+            } else if (json[propertyName].is_number()) {
+                list.push_back(json[propertyName]);
+            } else {
+                logger::warn("property '{}' of {} {} isn't a list", propertyName, objectType, objectName);
+            }
+        } else if (warnIfNotExists) {
+            logger::warn("{} doesn't have property '{}' defined", objectName, propertyName);
+        }
+    }
+
+    void loadIntList(json& json, std::vector<int>& list, std::string propertyName, std::string& objectName, std::string objectType, bool warnIfNotExists) {
+        if (json.contains(propertyName)) {
+            if (json[propertyName].is_array()) {
+                int index = 0;
+                for (auto& element : json[propertyName]) {
+                    if (element.is_number_integer()) {
+                        list.push_back(element);
+                    } else {
+                        logger::warn("element {} of property '{}' of {} {} isn't an integer", index, propertyName, objectType, objectName);
+                    }
+                    index++;
+                }
+            } else if (json[propertyName].is_number_integer()) {
+                list.push_back(json[propertyName]);
+            } else {
+                logger::warn("property '{}' of {} {} isn't a list", propertyName, objectType, objectName);
+            }
+        } else if (warnIfNotExists) {
+            logger::warn("{} doesn't have property '{}' defined", objectName, propertyName);
+        }
+    }
+
+    void loadBoolList(json& json, std::vector<bool>& list, std::string propertyName, std::string& objectName, std::string objectType, bool warnIfNotExists) {
+        if (json.contains(propertyName)) {
+            if (json[propertyName].is_array()) {
+                int index = 0;
+                for (auto& element : json[propertyName]) {
+                    if (element.is_boolean()) {
+                        list.push_back(element);
+                    } else {
+                        logger::warn("element {} of property '{}' of {} {} isn't a boolean", index, propertyName, objectType, objectName);
+                    }
+                    index++;
+                }
+            } else if (json[propertyName].is_boolean()) {
+                list.push_back(json[propertyName]);
+            } else {
+                logger::warn("property '{}' of {} {} isn't a list", propertyName, objectType, objectName);
+            }
+        } else if (warnIfNotExists) {
+            logger::warn("{} doesn't have property '{}' defined", objectName, propertyName);
+        }
+    }
+
+
     void consumeString(json& json, std::function<void(std::string)> consumer, std::string propertyName, std::string& objectName, std::string objectType, bool warnIfNotExists) {
         if (json.contains(propertyName)) {
             if (json[propertyName].is_string()) {
@@ -166,6 +303,8 @@ namespace JsonUtil {
                     }
                     index++;
                 }
+            } else if(json[propertyName].is_string()) {
+                consumer(json[propertyName]);
             } else {
                 logger::warn("property '{}' of {} {} isn't a list", propertyName, objectType, objectName);
             }
@@ -188,6 +327,10 @@ namespace JsonUtil {
                     }
                     index++;
                 }
+            } else if (json[propertyName].is_string()) {
+                std::string value = json[propertyName];
+                StringUtil::toLower(&value);
+                consumer(value);
             } else {
                 logger::warn("property '{}' of {} {} isn't a list", propertyName, objectType, objectName);
             }
@@ -208,6 +351,8 @@ namespace JsonUtil {
                     }
                     index++;
                 }
+            } else if (json[propertyName].is_string()) {
+                consumer(LocaleManager::GetSingleton()->GetLocalization(static_cast<std::string>(json[propertyName])));
             } else {
                 logger::warn("property '{}' of {} {} isn't a list", propertyName, objectType, objectName);
             }
@@ -228,6 +373,8 @@ namespace JsonUtil {
                     }
                     index++;
                 }
+            } else if (json[propertyName].is_number()) {
+                consumer(json[propertyName]);
             } else {
                 logger::warn("property '{}' of {} {} isn't a list", propertyName, objectType, objectName);
             }
@@ -248,6 +395,8 @@ namespace JsonUtil {
                     }
                     index++;
                 }
+            } else if (json[propertyName].is_number_integer()) {
+                consumer(json[propertyName]);
             } else {
                 logger::warn("property '{}' of {} {} isn't a list", propertyName, objectType, objectName);
             }
@@ -268,6 +417,8 @@ namespace JsonUtil {
                     }
                     index++;
                 }
+            } else if (json[propertyName].is_boolean()) {
+                consumer(json[propertyName]);
             } else {
                 logger::warn("property '{}' of {} {} isn't a list", propertyName, objectType, objectName);
             }

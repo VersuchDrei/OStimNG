@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Action.h"
+#include "Action/Action.h"
 #include "GraphActor.h"
 #include "RawNavigation.h"
 #include "SequenceEntry.h"
@@ -49,7 +49,7 @@ namespace Graph {
         std::unordered_map<std::string, std::string> autoTransitions;
         std::vector<std::string> tags;
         std::vector<GraphActor> actors;
-        std::vector<Action> actions;
+        std::vector<Action::Action> actions;
         std::vector<Navigation> navigations;
         std::string modpack = "";
         GameAPI::GamePosition offset;
@@ -79,8 +79,8 @@ namespace Graph {
         bool hasOnlyListedActorTags(int position, std::vector<std::string> tags);
         bool hasActorTagOnAny(std::string tag);
 
-        int findAction(std::function<bool(Action)> condition);
-        std::vector<int> findActions(std::function<bool(Action)> condition);
+        int findAction(std::function<bool(Action::Action)> condition);
+        std::vector<int> findActions(std::function<bool(Action::Action)> condition);
 
         bool hasActionTag(std::string tag);
 

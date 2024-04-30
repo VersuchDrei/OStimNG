@@ -26,7 +26,8 @@
 				"mod": "OStim.esp",
 				"formid": "0xEC9"
 			}
-		]
+		],
+		"toySlot": "genital"
 	},
 	"target":{
 		"stimulation":1.0,
@@ -54,7 +55,8 @@
 				"mod": "OStim.esp",
 				"formid": "0xEC9"
 			}
-		]
+		],
+		"toySlot": "genital"
 	},
 	"performer":{
 		"floats":{

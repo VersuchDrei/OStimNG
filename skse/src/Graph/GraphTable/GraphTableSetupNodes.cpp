@@ -375,7 +375,7 @@ namespace Graph {
                             }
 
                             JsonUtil::consumeLowerStringList(jsonActor, [&actor](std::string requirement){actor.condition.requirements.insert(requirement);}, "requirements", node->scene_id, objectType, false);
-                            JsonUtil::consumeLowerStringList(jsonActor, [&actor](std::string tag){actor.tags.push_back(tag);}, "tags", node->scene_id, objectType, false);
+                            JsonUtil::loadLowerStringList(jsonActor, actor.tags, "tags", node->scene_id, objectType, false);
                             actor.feetOnGround = VectorUtil::containsAny(actor.tags, {"standing", "squatting"});
                             JsonUtil::loadBool(jsonActor, actor.feetOnGround, "feetOnGround", node->scene_id, objectType, false);
                             JsonUtil::consumeLowerStringMap(jsonActor, [&actor](std::string id, std::string transition){actor.autoTransitions[id] = transition;}, true, "autoTransitions", node->scene_id, objectType, false);
@@ -396,18 +396,12 @@ namespace Graph {
                 if (json["actions"].is_array()) {
                     int index = 0;
                     for (auto& jsonAction : json["actions"]) {
-                        Graph::Action action;
+                        Graph::Action::Action action;
+                        action.index = index;
                         if (jsonAction.is_object()) {
-                            if (jsonAction.contains("type")) {
-                                if (jsonAction["type"].is_string()) {
-                                    action.type = getActionAlias(jsonAction["type"]);
-                                    StringUtil::toLower(&action.type);
-                                } else {
-                                    logger::warn("property type of action {} of scene {} isn't a string", index, node->scene_id);
-                                }
-                            } else {
-                                logger::warn("action {} of scene {} doesn't have a type property", index, node->scene_id);
-                            }
+                            std::string objectType = "action " + std::to_string(index) + " of node";
+
+                            JsonUtil::consumeString(jsonAction, [&action](std::string type) { action.type = getActionAlias(type); }, "type", node->scene_id, objectType, true);
 
                             RoleMapAPI::KEYS.forEach([&jsonAction, &action, index, &node](Role role, std::string key) {
                                 if (jsonAction.contains(key)) {
@@ -425,13 +419,9 @@ namespace Graph {
                                 }
                             });
 
-                            if (jsonAction.contains("muted")) {
-                                if (jsonAction["muted"].is_boolean()) {
-                                    action.muted = jsonAction["muted"];
-                                } else {
-                                    logger::warn("property muted of action {} of scene {} isn't a boolean", index, node->scene_id);
-                                }
-                            }
+                            JsonUtil::loadBool(jsonAction, action.muted, "muted", node->scene_id, objectType, false);
+                            JsonUtil::loadBool(jsonAction, action.doPeaks, "doPeaks", node->scene_id, objectType, false);
+                            JsonUtil::loadBool(jsonAction, action.peaksAnnotated, "peaksAnnotated", node->scene_id, objectType, false);
                         } else {
                             logger::warn("action {} of scene {} is malformed", index, node->scene_id);
                         }

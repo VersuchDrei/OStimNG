@@ -7,8 +7,8 @@
 namespace Sound {
     class SingleBoneDistanceSoundPlayer : public BoneDistanceSoundPlayer {
     public:
-        inline SingleBoneDistanceSoundPlayer(GameAPI::GameSound sound, bool muteWithActor, bool muteWithTarget, OStim::ThreadActor* actor, OStim::ThreadActor* target, bool inverse, int minInterval, int maxInterval, GameAPI::GameActorBone actorBone, GameAPI::GameActorBone targetBone)
-            : BoneDistanceSoundPlayer(sound, muteWithActor, muteWithTarget, actor, target, inverse, minInterval, maxInterval), actorBone{actorBone}, targetBone{targetBone} {}
+        inline SingleBoneDistanceSoundPlayer(SoundPlayerParams params, bool inverse, int minInterval, int maxInterval, GameAPI::GameActorBone actorBone, GameAPI::GameActorBone targetBone)
+            : BoneDistanceSoundPlayer(params, inverse, minInterval, maxInterval), actorBone{actorBone}, targetBone{targetBone} {}
 
     protected:
         virtual float calculateDistance();

@@ -42,7 +42,8 @@
 			"info": "OStimHandjobTargetFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE71"
-		}
+		},
+		"toySlot": "genital"
 	},
 	"performer":{
 		"floats":{

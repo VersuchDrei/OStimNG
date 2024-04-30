@@ -2849,7 +2849,7 @@ Function OnOptionHighlightActors(int Option)
 	If Option == OID_SelectActor
 		SetInfoText("$ostim_tooltip_select_actor")
 	ElseIf Option == OID_ActorVoice
-		SetInfoText("$ostim_tootip_actor_voice")
+		SetInfoText("$ostim_tooltip_actor_voice")
 
 	ElseIf Option == OID_EquipObjectType
 		SetInfoText("$ostim_tooltip_equip_object_type")
@@ -3057,7 +3057,7 @@ Function DrawDebugPage()
 	SetCursorFillMode(TOP_TO_BOTTOM)
 	OID_UnrestrictedNavigation = AddToggleOption("$ostim_unrestricted_navigation", Main.UnrestrictedNavigation)
 	OID_NoFacialExpressions = AddToggleOption("$ostim_no_facial_expressions", Main.NoFacialExpressions)
-	OID_FixDarkFace = AddToggleOption("$ostim_fix_dark_faces", Main.FixDarkFace)
+	OID_FixDarkFace = AddToggleOption("$ostim_fix_dark_face", Main.FixDarkFace)
 EndFunction
 
 Function OnOptionHighlightDebug(int Option)

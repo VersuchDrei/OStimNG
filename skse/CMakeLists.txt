@@ -71,6 +71,10 @@ set(sources
     src/GameAPI/GameUtil.cpp
     src/GameLogic/GameHooks.cpp
     src/GameLogic/GameTable.cpp
+    src/Graph/Action/Peak/Distance/BoneDistance/BoneDistancePeakType.cpp
+    src/Graph/Action/Peak/Loop/LoopPeakType.cpp
+    src/Graph/Action/Peak/PeakType.cpp
+    src/Graph/Action/Action.cpp
     src/Graph/GraphTable/GraphTableActions.cpp
     src/Graph/GraphTable/GraphTableEvents.cpp
     src/Graph/GraphTable/GraphTableNodes.cpp
@@ -78,7 +82,6 @@ set(sources
     src/Graph/GraphTable/GraphTableSetupNodes.cpp
     src/Graph/GraphTable/GraphTableSetupOptions.cpp
     src/Graph/Node/NodeNavigation.cpp
-    src/Graph/Action.cpp
     src/Graph/ActionAttributes.cpp
     src/Graph/Event.cpp
     src/Graph/GraphActor.cpp
@@ -91,7 +94,16 @@ set(sources
 	src/PCH.h
 	src/Papyrus/Papyrus.cpp
 	src/Papyrus/Script.h
+    src/PluginInterfaceImplementation/SexToys/SexToyInterfaceImpl.cpp
+    src/PluginInterfaceImplementation/InterfaceMapImpl.cpp
 	src/Serial/Manager.cpp
+    src/SexToys/Settings/Settings.cpp
+    src/SexToys/Settings/ToySettings.cpp
+    src/SexToys/ToyGroup.cpp
+    src/SexToys/ToyHandler.cpp
+    src/SexToys/ToyTable.cpp
+    src/SexToys/ToyThread.cpp
+    src/SexToys/ToyWrapper.cpp
 	src/Sound/ActionSound/BoneDistanceSoundPlayer.cpp
 	src/Sound/ActionSound/BoneDistanceSoundType.cpp
 	src/Sound/ActionSound/LoopSoundPlayer.cpp
@@ -102,6 +114,12 @@ set(sources
 	src/Sound/ActionSound/SoundType.cpp
 	src/Sound/SoundTable.cpp
     src/Sound/SoundUtil.cpp
+    src/Threading/Thread/Peak/Distance/BoneDistance/MultiBoneDistancePeakHandler.cpp
+    src/Threading/Thread/Peak/Distance/BoneDistance/SingleBoneDistancePeakHandler.cpp
+    src/Threading/Thread/Peak/Distance/DistancePeakHandler.cpp
+    src/Threading/Thread/Peak/Loop/LoopPeakHandler.cpp
+    src/Threading/Thread/Peak/PeakHandler.cpp
+    src/Threading/Thread/NodeHandler.cpp
     src/Trait/Condition.cpp
     src/Trait/FacialExpression.cpp
     src/Trait/TraitTable.cpp

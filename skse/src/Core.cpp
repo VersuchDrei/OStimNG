@@ -4,7 +4,10 @@
 #include "Alignment/Alignments.h"
 #include "Furniture/FurnitureTable.h"
 #include "Graph/GraphTable.h"
+#include "MCM/MCMTable.h"
+#include "PluginInterfaceImplementation/InterfaceMapImpl.h"
 #include "Util/Integrity.h"
+#include "SexToys/ToyTable.h"
 #include "Sound/SoundTable.h"
 #include "Trait/TraitTable.h"
 #include "Util/APITable.h"
@@ -14,14 +17,20 @@
 #include "Util/LookupTable.h"
 
 namespace Core {
-    void init() { }
+    void init() { 
+        RNGUtil::setup();
+
+        Interface::InterfaceMapImpl::GetSingleton()->setupInterfaces();
+    }
 
     void postLoad() {
         Util::Globals::setSceneIntegrityVerified(Integrity::verifySceneIntegrity());
         Util::Globals::setTranslationIntegrityVerified(Integrity::verifyTranslationIntegrity());
     }
 
-    void postpostLoad() {}
+    void postpostLoad() {
+        Toys::ToyTable::reloadToys();
+    }
 
     void dataLoaded() {
         ActorProperties::ActorPropertyTable::setup();

@@ -7,7 +7,7 @@
 #include "GameAPI/GameActor.h"
 
 namespace Sound {
-    SoundPlayer* BoneDistanceSoundType::create(OStim::ThreadActor* taActor, OStim::ThreadActor* taTarget) {
+    SoundPlayer* BoneDistanceSoundType::create(int actionIndex, OStim::ThreadActor* taActor, OStim::ThreadActor* taTarget) {
         GameAPI::GameActor actor(taActor->getActor());
         GameAPI::GameActor target(taTarget->getActor());
 
@@ -36,9 +36,9 @@ namespace Sound {
         }
 
         if (actorBonePointers.size() == 1 && targetBonePointers.size() == 1) {
-            return new SingleBoneDistanceSoundPlayer(sound, muteWithActor, muteWithTarget, taActor, taTarget, inverse, minInterval, maxInterval, actorBonePointers[0], targetBonePointers[0]);
+            return new SingleBoneDistanceSoundPlayer({actionIndex, sound, muteWithActor, muteWithTarget, taActor, taTarget}, inverse, minInterval, maxInterval, actorBonePointers[0], targetBonePointers[0]);
         }
 
-        return new MultiBoneDistanceSoundPlayer(sound, muteWithActor, muteWithTarget, taActor, taTarget, inverse, minInterval, maxInterval, actorBonePointers, targetBonePointers);
+        return new MultiBoneDistanceSoundPlayer({actionIndex, sound, muteWithActor, muteWithTarget, taActor, taTarget}, inverse, minInterval, maxInterval, actorBonePointers, targetBonePointers);
     }
 }

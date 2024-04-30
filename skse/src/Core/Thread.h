@@ -2,6 +2,8 @@
 
 #include "ThreadStarter/ThreadStartParams.h"
 
+#include "Threading/Thread/NodeHandler.h"
+
 #include <shared_mutex>
 
 #include "AutoModeStage.h"
@@ -15,7 +17,6 @@
 #include "Util/VectorUtil.h"
 
 namespace OStim {
-
     using ThreadId = int64_t;
     class Thread : public RE::BSTEventSink<RE::BSAnimationGraphEvent>{
     public:
@@ -74,7 +75,9 @@ namespace OStim {
         void close();
 
         inline bool isPlayerThread() { return playerThread; }
-    public:
+
+        inline Threading::Thread::NodeHandler* getNodeHandler() { return &nodeHandler; }
+    
         virtual RE::BSEventNotifyControl ProcessEvent(const RE::BSAnimationGraphEvent* a_event, RE::BSTEventSource<RE::BSAnimationGraphEvent>* a_eventSource) override;
 
         Serialization::OldThread serialize();
@@ -101,6 +104,8 @@ namespace OStim {
 
         int stopTimer = 0;
         bool isStopping = false;
+
+        Threading::Thread::NodeHandler nodeHandler;
 
         std::vector<Sound::SoundPlayer*> soundPlayers;
 
@@ -143,6 +148,26 @@ namespace OStim {
 
     private:
         bool stallClimax = false;
+#pragma endregion
+
+#pragma region events
+    public:
+        // if you want to register for an event only for the duration of a node register to the NodeHandlers version of the event
+        // NodeHandlers will be cleared on every node change
+        inline void registerLoopListener(std::function<void()> listener) { loopListeners.push_back(listener); }
+        inline void registerPeakListener(std::function<void(actionIndex)> listener) { peakListeners.push_back(listener); }
+        inline void registerNodeChangedListener(std::function<void()> listener) { nodeChangedListeners.push_back(listener); }
+        inline void registerSpeedChangedListener(std::function<void()> listener) { speedChangedListeners.push_back(listener); }
+        inline void registerThreadEndListener(std::function<void()> listener) { threadEndListeners.push_back(listener); }
+
+        void sendPeak(actionIndex peak);
+
+    private:
+        std::vector<std::function<void()>> loopListeners;
+        std::vector<std::function<void(actionIndex)>> peakListeners;
+        std::vector<std::function<void()>> nodeChangedListeners;
+        std::vector<std::function<void()>> speedChangedListeners;
+        std::vector<std::function<void()>> threadEndListeners;
 #pragma endregion
 
 #pragma region furniture

@@ -212,6 +212,7 @@ namespace OStim {
         inline float getExcitementMultiplier() { return excitementMultiplier; }
         void setExcitementMultiplier(float multiplier);
         inline void setLoopExcitementInc(float inc) { loopExcitementInc = inc; }
+        inline float getLoopExcitementInc() { return loopExcitementInc; }
 
     private:
         float excitement = 0;                  // current excitement

@@ -43,7 +43,7 @@ namespace PapyrusLibrary {
     // helper functions specifically for superload
     // *********************************************************
     bool hasAction(Graph::Node* node, std::string type, std::vector<int> actors, std::vector<int> targets, std::vector<int> performers, std::vector<int> matesAny, std::vector<int> matesAll, std::vector<int> participantsAny, std::vector<int> participantsAll) {
-        for (Graph::Action action : node->actions) {
+        for (Graph::Action::Action action : node->actions) {
             if ((action.isType(type) || action.attributes->hasTag(type)) &&
                 (actors.empty() || VectorUtil::contains(actors, action.roles.actor)) &&
                 (targets.empty() || VectorUtil::contains(targets, action.roles.target)) &&
@@ -79,7 +79,7 @@ namespace PapyrusLibrary {
         return true;
     }
 
-    bool isActionListed(Graph::Action action, std::vector<std::string> types, std::vector<std::vector<int>> actors, std::vector<std::vector<int>> targets, std::vector<std::vector<int>> performers, std::vector<std::vector<int>> matesAny, std::vector<std::vector<int>> matesAll, std::vector<std::vector<int>> participantsAny, std::vector<std::vector<int>> participantsAll) {
+    bool isActionListed(Graph::Action::Action action, std::vector<std::string> types, std::vector<std::vector<int>> actors, std::vector<std::vector<int>> targets, std::vector<std::vector<int>> performers, std::vector<std::vector<int>> matesAny, std::vector<std::vector<int>> matesAll, std::vector<std::vector<int>> participantsAny, std::vector<std::vector<int>> participantsAll) {
         for (int i = 0; i < types.size(); i++) {
             if (action.isType(types[i]) || action.attributes->hasTag(types[i])) {
                 std::vector<int> actorsList = VectorUtil::getElementOrEmpty(actors, i);
@@ -106,7 +106,7 @@ namespace PapyrusLibrary {
     }
 
     bool hasOnlyListedActions(Graph::Node* node, std::vector<std::string> types, std::vector<std::vector<int>> actors, std::vector<std::vector<int>> targets, std::vector<std::vector<int>> performers, std::vector<std::vector<int>> matesAny, std::vector<std::vector<int>> matesAll, std::vector<std::vector<int>> participantsAny, std::vector<std::vector<int>> participantsAll) {
-        for (Graph::Action action : node->actions) {
+        for (Graph::Action::Action action : node->actions) {
             if (!isActionListed(action, types, actors, targets, performers, matesAny, matesAll, participantsAny, participantsAll)) {
                 return false;
             }

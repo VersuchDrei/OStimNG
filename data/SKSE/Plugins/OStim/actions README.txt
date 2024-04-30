@@ -48,6 +48,9 @@ actor fields:
 "strings" (map<string, string>): a map of custom strings that can be used by addons
 "stringLists" (map<string, list<string>>): a map of custom string lists that can be used by addons
 	known ones are: "cum" for the cum overlay slots for OCum
+"toySlot" (string): used for sex toys, when this animation is played this slot is activated for the actor
+	toy slots are just strings so you can use your own custom slots if needed, players can then assign their toys to the slots in the MCM
+	by vanilla the slots genital, anal, nipples, scrotum and clitoris are used
 
 form fields:
 "mod" (string): the name of the mod this form is defined in, including the file extension

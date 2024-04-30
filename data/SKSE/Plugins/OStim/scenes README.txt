@@ -122,6 +122,11 @@ action fields:
 "target" (int): the index of the action target (default: action actor index)
 "performer" (int): the index of the action performer (default: action actor index)
 "muted" (bool): when true this action doesn't play sounds (default: false)
+"doPeaks" (bool): when true this action will handle peak events (default: true)
+	peak events are used for impact sounds for example
+"peaksAnnotated" (bool): when true peaks will be triggered by annotations on the .hkx file (default: false)
+	when true the actions peak definition will be completely ignored
+	does nothing if doPeaks is set to false
 
 3d position fields:
 "x" (float): the x offset

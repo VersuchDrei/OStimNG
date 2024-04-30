@@ -10,9 +10,7 @@
 #include <shared_mutex>
 
 namespace OStim {    
-
     class ThreadManager final : public ISingleton<ThreadManager> {
-        
     public:
         ThreadManager();
         int startThread(ThreadStartParams params);

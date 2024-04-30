@@ -2,6 +2,7 @@
 
 #include "Core/Thread.h"
 
+#include "MCM/MCMTable.h"
 #include "Util/APITable.h"
 #include "Util/Constants.h"
 

@@ -21,13 +21,14 @@
 #include "Util/MathUtil.h"
 #include "MCM/MCMTable.h"
 #include "Util/APITable.h"
+#include "Util/EventUtil.h"
 #include "Util/LookupTable.h"
 #include "Util/ObjectRefUtil.h"
 #include "Util/StringUtil.h"
 #include "Util.h"
 
 namespace OStim {
-    Thread::Thread(int threadID, ThreadStartParams params) : m_threadId{threadID}, furniture{params.furniture} {
+    Thread::Thread(int threadID, ThreadStartParams params) : m_threadId{threadID}, furniture{params.furniture}, nodeHandler{{this}} {
         for (GameAPI::GameActor actor : params.actors) {
             playerThread |= actor.isPlayer();
         }
@@ -258,13 +259,16 @@ namespace OStim {
 
         alignActors();
 
+        EventUtil::invokeListeners(nodeChangedListeners);
+
         // sounds
+        // sounds need to happen after the node handler is reset because of peak sounds
         for (Sound::SoundPlayer* soundPlayer : soundPlayers) {
             delete soundPlayer;
         }
         soundPlayers.clear();
 
-        for (Graph::Action& action : m_currentNode->actions) {
+        for (Graph::Action::Action& action : m_currentNode->actions) {
             if (action.muted) {
                 continue;
             }
@@ -274,7 +278,7 @@ namespace OStim {
                 ThreadActor* target = GetActor(action.roles.target);
                 if (actor && target) {
                     if (playerThread || !soundType->playPlayerThreadOnly()) {
-                        Sound::SoundPlayer* soundPlayer = soundType->create(actor, target);
+                        Sound::SoundPlayer* soundPlayer = soundType->create(action.index, actor, target);
                         if (soundPlayer) {
                             soundPlayers.push_back(soundPlayer);
                         }
@@ -419,6 +423,8 @@ namespace OStim {
         for (Sound::SoundPlayer* player : soundPlayers) {
             player->loop();
         }
+
+        EventUtil::invokeListeners(loopListeners);
     }
 
     ThreadActor* Thread::GetActor(GameAPI::GameActor a_actor) {
@@ -488,6 +494,7 @@ namespace OStim {
             actorIt.second.changeSpeed(speed);
         }
 
+        EventUtil::invokeListeners(speedChangedListeners);
         GameAPI::GameEvents::sendSpeedChangedEvent(m_threadId, m_currentNode->scene_id, speed);
         if (playerThread) {
             UI::UIState::GetSingleton()->SpeedChanged(this, speed);
@@ -646,6 +653,8 @@ namespace OStim {
         }
         logger::info("closed thread {}", m_threadId);
 
+        EventUtil::invokeListeners(threadEndListeners);
+
         GameAPI::GameEvents::sendEndEvent(m_threadId, m_currentNode->scene_id, getGameActors());
     }
 
@@ -752,6 +761,8 @@ namespace OStim {
             GetActor(actor)->offsetSoSBend(bend);
         } else if (tag == "OStimResetSoS") {
             GetActor(actor)->offsetSoSBend(0);
+        } else if (tag == "OStimPeak") {
+            nodeHandler.handlePeakAnnotation(std::stoi(a_event->payload.c_str()));
         }
 
         return RE::BSEventNotifyControl::kContinue;
@@ -773,4 +784,7 @@ namespace OStim {
         return oldThread;
     }
 
+    void Thread::sendPeak(actionIndex action) {
+        EventUtil::invokeListeners(peakListeners, action);
+    }
 }  // namespace OStim

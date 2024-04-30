@@ -50,7 +50,8 @@
 			"info": "OStimButtjobTargetFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE59"
-		}
+		},
+		"toySlot": "genital"
 	},
 	"performer":{
 		"faction":{

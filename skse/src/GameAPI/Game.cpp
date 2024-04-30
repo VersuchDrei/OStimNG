@@ -17,7 +17,7 @@ namespace GameAPI {
 
     void Game::shakeController(float leftStrength, float rightStrength, float duration) {
         ShakeController(true, leftStrength, duration);
-        ShakeController(true, rightStrength, duration);
+        ShakeController(false, rightStrength, duration);
     }
 
     GameActor Game::getCrosshairActor() {

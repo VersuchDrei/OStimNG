@@ -8,6 +8,13 @@ namespace JsonUtil {
     void loadInt(json& json, int& value, std::string propertyName, std::string& objectName, std::string objectType, bool warnIfNotExists);
     void loadBool(json& json, bool& value, std::string propertyName, std::string& objectName, std::string objectType, bool warnIfNotExists);
 
+    void loadStringList(json& json, std::vector<std::string>& list, std::string propertyName, std::string& objectName, std::string objectType, bool warnIfNotExists);
+    void loadLowerStringList(json& json, std::vector<std::string>& list, std::string propertyName, std::string& objectName, std::string objectType, bool warnIfNotExists);
+    void loadTranslatedStringList(json& json, std::vector<std::string>& list, std::string propertyName, std::string& objectName, std::string objectType, bool warnIfNotExists);
+    void loadFloatList(json& json, std::vector<float>& list, std::string propertyName, std::string& objectName, std::string objectType, bool warnIfNotExists);
+    void loadIntList(json& json, std::vector<int>& list, std::string propertyName, std::string& objectName, std::string objectType, bool warnIfNotExists);
+    void loadBoolList(json& json, std::vector<bool>& list, std::string propertyName, std::string& objectName, std::string objectType, bool warnIfNotExists);
+
     void consumeString(json& json, std::function<void(std::string)> consumer, std::string propertyName, std::string& objectName, std::string objectType, bool warnIfNotExists);
     void consumeLowerString(json& json, std::function<void(std::string)> consumer, std::string propertyName, std::string& objectName, std::string objectType, bool warnIfNotExists);
     void consumeTranslatedString(json& json, std::function<void(std::string)> consumer, std::string propertyName, std::string& objectName, std::string objectType, bool warnIfNotExists);

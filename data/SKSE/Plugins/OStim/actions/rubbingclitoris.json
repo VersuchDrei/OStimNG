@@ -42,7 +42,8 @@
 			"info": "OStimRubbingClitorisTargetFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE83"
-		}
+		},
+		"toySlot": "genital"
 	},
 	"performer":{
 		"floats":{

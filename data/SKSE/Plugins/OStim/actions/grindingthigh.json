@@ -22,7 +22,8 @@
 			"info": "OStimGrindingThighActorFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE67"
-		}
+		},
+		"toySlot": "genital"
 	},
 	"target":{
 		"info": "the one with the thigh",

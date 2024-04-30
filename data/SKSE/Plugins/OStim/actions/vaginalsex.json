@@ -29,7 +29,8 @@
 				"mod": "OStim.esp",
 				"formid": "0xEC9"
 			}
-		]
+		],
+		"toySlot": "genital"
 	},
 	"target":{
 		"info": "the one with the vulva",
@@ -63,7 +64,8 @@
 			"cum":[
 				"vagina"
 			]
-		}
+		},
+		"toySlot": "genital"
 	},
 	"performer":{
 		"faction":{

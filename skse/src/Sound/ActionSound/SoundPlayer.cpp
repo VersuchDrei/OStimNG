@@ -1,6 +1,7 @@
 #include "SoundType.h"
 
 #include "Core/ThreadActor.h"
+#include "MCM/MCMTable.h"
 
 namespace Sound {
     void SoundPlayer::play() {

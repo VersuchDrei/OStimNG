@@ -5,8 +5,8 @@
 namespace Sound {
     class LoopSoundPlayer : public SoundPlayer {
     public:
-        inline LoopSoundPlayer(GameAPI::GameSound sound, bool muteWithActor, bool muteWithTarget, OStim::ThreadActor* actor, OStim::ThreadActor* target, int delay)
-            : SoundPlayer(sound, muteWithActor, muteWithTarget, actor, target), delay{delay} {
+        inline LoopSoundPlayer(SoundPlayerParams params, int delay)
+            : SoundPlayer(params), delay{delay} {
             currentDelay = delay;
             play();
         }

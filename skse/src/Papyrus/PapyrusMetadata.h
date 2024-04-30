@@ -9,7 +9,7 @@
 namespace PapyrusMetadata {
     using VM = RE::BSScript::IVirtualMachine;
 
-    int findAction(std::string id, std::function<bool(Graph::Action)> condition) {
+    int findAction(std::string id, std::function<bool(Graph::Action::Action)> condition) {
         if (auto node = Graph::GraphTable::getNodeById(id)) {
             size_t size = node->actions.size();
             for (int i = 0; i < size; i++) {
@@ -21,7 +21,7 @@ namespace PapyrusMetadata {
         return -1;
     }
 
-    std::vector<int> findActions(std::string id, std::function<bool(Graph::Action)> condition) {
+    std::vector<int> findActions(std::string id, std::function<bool(Graph::Action::Action)> condition) {
         std::vector<int> ret;
         if (auto node = Graph::GraphTable::getNodeById(id)) {
             size_t size = node->actions.size();
@@ -37,8 +37,8 @@ namespace PapyrusMetadata {
     // *********************************************************
     // helper functions specifically for superload
     // *********************************************************
-    bool checkConditions(std::vector<std::function<bool(Graph::Action)>> &conditions, Graph::Action action) {
-        for (std::function<bool(Graph::Action)> condition : conditions) {
+    bool checkConditions(std::vector<std::function<bool(Graph::Action::Action)>>& conditions, Graph::Action::Action action) {
+        for (std::function<bool(Graph::Action::Action)> condition : conditions) {
             if (!condition(action)) {
                 return false;
             }
@@ -275,12 +275,12 @@ namespace PapyrusMetadata {
 
     int FindAction(RE::StaticFunctionTag*, std::string id, std::string type) {
         StringUtil::toLower(&type);
-        return findAction(id, [type](Graph::Action action) { return action.isType(type); });
+        return findAction(id, [type](Graph::Action::Action action) { return action.isType(type); });
     }
 
     int FindAnyAction(RE::StaticFunctionTag*, std::string id, std::vector<std::string> types) {
         StringUtil::toLower(&types);
-        return findAction(id, [types](Graph::Action action) { return action.isType(types); });
+        return findAction(id, [types](Graph::Action::Action action) { return action.isType(types); });
     }
 
     int FindAnyActionCSV(RE::StaticFunctionTag* sft, std::string id, std::string types) {
@@ -289,12 +289,12 @@ namespace PapyrusMetadata {
 
     std::vector<int> FindActions(RE::StaticFunctionTag*, std::string id, std::string type) {
         StringUtil::toLower(&type);
-        return findActions(id, [type](Graph::Action action) { return action.isType(type); });
+        return findActions(id, [type](Graph::Action::Action action) { return action.isType(type); });
     }
 
     std::vector<int> FindAllActions(RE::StaticFunctionTag*, std::string id, std::vector<std::string> types) {
         StringUtil::toLower(&types);
-        return findActions(id, [types](Graph::Action action) { return action.isType(types); });
+        return findActions(id, [types](Graph::Action::Action action) { return action.isType(types); });
     }
 
     std::vector<int> FindAllActionsCSV(RE::StaticFunctionTag* sft, std::string id, std::string types) {
@@ -305,12 +305,12 @@ namespace PapyrusMetadata {
 #pragma region actions_by_actor
     int FindActionForActor(RE::StaticFunctionTag*, std::string id, int position, std::string type) {
         StringUtil::toLower(&type);
-        return findAction(id, [position, type](Graph::Action action) { return action.roles.actor == position && action.isType(type); });
+        return findAction(id, [position, type](Graph::Action::Action action) { return action.roles.actor == position && action.isType(type); });
     }
 
     int FindAnyActionForActor(RE::StaticFunctionTag*, std::string id, int position, std::vector<std::string> types) {
         StringUtil::toLower(&types);
-        return findAction(id, [position, types](Graph::Action action) { return action.roles.actor == position && action.isType(types); });
+        return findAction(id, [position, types](Graph::Action::Action action) { return action.roles.actor == position && action.isType(types); });
     }
 
     int FindAnyActionForActorCSV(RE::StaticFunctionTag* sft, std::string id, int position, std::string types) {
@@ -319,12 +319,12 @@ namespace PapyrusMetadata {
 
     std::vector<int> FindActionsForActor(RE::StaticFunctionTag*, std::string id, int position, std::string type) {
         StringUtil::toLower(&type);
-        return findActions(id, [position, type](Graph::Action action) { return action.roles.actor == position && action.isType(type); });
+        return findActions(id, [position, type](Graph::Action::Action action) { return action.roles.actor == position && action.isType(type); });
     }
 
     std::vector<int> FindAllActionsForActor(RE::StaticFunctionTag*, std::string id, int position, std::vector<std::string> types) {
         StringUtil::toLower(&types);
-        return findActions(id, [position, types](Graph::Action action) { return action.roles.actor == position && action.isType(types); });
+        return findActions(id, [position, types](Graph::Action::Action action) { return action.roles.actor == position && action.isType(types); });
     }
 
     std::vector<int> FindAllActionsForActorCSV(RE::StaticFunctionTag* sft, std::string id, int position, std::string types) {
@@ -333,7 +333,7 @@ namespace PapyrusMetadata {
 
     int FindActionForActors(RE::StaticFunctionTag*, std::string id, std::vector<int> positions, std::string type) {
         StringUtil::toLower(&type);
-        return findAction(id, [positions, type](Graph::Action action) { return VectorUtil::contains(positions, action.roles.actor) && action.isType(type); });
+        return findAction(id, [positions, type](Graph::Action::Action action) { return VectorUtil::contains(positions, action.roles.actor) && action.isType(type); });
     }
 
     int FindActionForActorsCSV(RE::StaticFunctionTag* sft, std::string id, std::string positions, std::string type) {
@@ -342,7 +342,7 @@ namespace PapyrusMetadata {
 
     int FindAnyActionForActors(RE::StaticFunctionTag*, std::string id, std::vector<int> positions, std::vector<std::string> types) {
         StringUtil::toLower(&types);
-        return findAction(id, [positions, types](Graph::Action action) { return VectorUtil::contains(positions, action.roles.actor) && action.isType(types); });
+        return findAction(id, [positions, types](Graph::Action::Action action) { return VectorUtil::contains(positions, action.roles.actor) && action.isType(types); });
     }
 
     int FindAnyActionForActorsCSV(RE::StaticFunctionTag* sft, std::string id, std::string positions, std::string types) {
@@ -351,7 +351,7 @@ namespace PapyrusMetadata {
 
     std::vector<int> FindActionsForActors(RE::StaticFunctionTag*, std::string id, std::vector<int> positions, std::string type) {
         StringUtil::toLower(&type);
-        return findActions(id, [positions, type](Graph::Action action) { return VectorUtil::contains(positions, action.roles.actor) && action.isType(type); });
+        return findActions(id, [positions, type](Graph::Action::Action action) { return VectorUtil::contains(positions, action.roles.actor) && action.isType(type); });
     }
 
     std::vector<int> FindActionsForActorsCSV(RE::StaticFunctionTag* sft, std::string id, std::string positions, std::string type) {
@@ -360,7 +360,7 @@ namespace PapyrusMetadata {
 
     std::vector<int> FindAllActionsForActors(RE::StaticFunctionTag*, std::string id, std::vector<int> positions, std::vector<std::string> types) {
         StringUtil::toLower(&types);
-        return findActions(id, [positions, types](Graph::Action action) { return VectorUtil::contains(positions, action.roles.actor) && action.isType(types); });
+        return findActions(id, [positions, types](Graph::Action::Action action) { return VectorUtil::contains(positions, action.roles.actor) && action.isType(types); });
     }
 
     std::vector<int> FindAllActionsForActorsCSV(RE::StaticFunctionTag* sft, std::string id, std::string positions, std::string types) {
@@ -371,12 +371,12 @@ namespace PapyrusMetadata {
 #pragma region actions_by_target
     int FindActionForTarget(RE::StaticFunctionTag*, std::string id, int position, std::string type) {
         StringUtil::toLower(&type);
-        return findAction(id, [position, type](Graph::Action action) { return action.roles.target == position && action.isType(type); });
+        return findAction(id, [position, type](Graph::Action::Action action) { return action.roles.target == position && action.isType(type); });
     }
 
     int FindAnyActionForTarget(RE::StaticFunctionTag*, std::string id, int position, std::vector<std::string> types) {
         StringUtil::toLower(&types);
-        return findAction(id, [position, types](Graph::Action action) { return action.roles.target == position && action.isType(types); });
+        return findAction(id, [position, types](Graph::Action::Action action) { return action.roles.target == position && action.isType(types); });
     }
 
     int FindAnyActionForTargetCSV(RE::StaticFunctionTag* sft, std::string id, int position, std::string types) {
@@ -385,12 +385,12 @@ namespace PapyrusMetadata {
 
     std::vector<int> FindActionsForTarget(RE::StaticFunctionTag*, std::string id, int position, std::string type) {
         StringUtil::toLower(&type);
-        return findActions(id, [position, type](Graph::Action action) { return action.roles.target == position && action.isType(type); });
+        return findActions(id, [position, type](Graph::Action::Action action) { return action.roles.target == position && action.isType(type); });
     }
 
     std::vector<int> FindAllActionsForTarget(RE::StaticFunctionTag*, std::string id, int position, std::vector<std::string> types) {
         StringUtil::toLower(&types);
-        return findActions(id, [position, types](Graph::Action action) { return action.roles.target == position && action.isType(types); });
+        return findActions(id, [position, types](Graph::Action::Action action) { return action.roles.target == position && action.isType(types); });
     }
 
     std::vector<int> FindAllActionsForTargetCSV(RE::StaticFunctionTag* sft, std::string id, int position, std::string types) {
@@ -399,7 +399,7 @@ namespace PapyrusMetadata {
 
     int FindActionForTargets(RE::StaticFunctionTag*, std::string id, std::vector<int> positions, std::string type) {
         StringUtil::toLower(&type);
-        return findAction(id, [positions, type](Graph::Action action) { return VectorUtil::contains(positions, action.roles.target) && action.isType(type); });
+        return findAction(id, [positions, type](Graph::Action::Action action) { return VectorUtil::contains(positions, action.roles.target) && action.isType(type); });
     }
 
     int FindActionForTargetsCSV(RE::StaticFunctionTag* sft, std::string id, std::string positions, std::string type) {
@@ -408,7 +408,7 @@ namespace PapyrusMetadata {
 
     int FindAnyActionForTargets(RE::StaticFunctionTag*, std::string id, std::vector<int> positions, std::vector<std::string> types) {
         StringUtil::toLower(&types);
-        return findAction(id, [positions, types](Graph::Action action) { return VectorUtil::contains(positions, action.roles.target) && action.isType(types); });
+        return findAction(id, [positions, types](Graph::Action::Action action) { return VectorUtil::contains(positions, action.roles.target) && action.isType(types); });
     }
 
     int FindAnyActionForTargetsCSV(RE::StaticFunctionTag* sft, std::string id, std::string positions, std::string types) {
@@ -417,7 +417,7 @@ namespace PapyrusMetadata {
 
     std::vector<int> FindActionsForTargets(RE::StaticFunctionTag*, std::string id, std::vector<int> positions, std::string type) {
         StringUtil::toLower(&type);
-        return findActions(id, [positions, type](Graph::Action action) { return VectorUtil::contains(positions, action.roles.target) && action.isType(type); });
+        return findActions(id, [positions, type](Graph::Action::Action action) { return VectorUtil::contains(positions, action.roles.target) && action.isType(type); });
     }
 
     std::vector<int> FindActionsForTargetsCSV(RE::StaticFunctionTag* sft, std::string id, std::string positions, std::string type) {
@@ -426,7 +426,7 @@ namespace PapyrusMetadata {
 
     std::vector<int> FindAllActionsForTargets(RE::StaticFunctionTag*, std::string id, std::vector<int> positions, std::vector<std::string> types) {
         StringUtil::toLower(&types);
-        return findActions(id, [positions, types](Graph::Action action) { return VectorUtil::contains(positions, action.roles.target) && action.isType(types); });
+        return findActions(id, [positions, types](Graph::Action::Action action) { return VectorUtil::contains(positions, action.roles.target) && action.isType(types); });
     }
 
     std::vector<int> FindAllActionsForTargetsCSV(RE::StaticFunctionTag* sft, std::string id, std::string positions, std::string types) {
@@ -437,12 +437,12 @@ namespace PapyrusMetadata {
 #pragma region actions_by_performer
     int FindActionForPerformer(RE::StaticFunctionTag*, std::string id, int position, std::string type) {
         StringUtil::toLower(&type);
-        return findAction(id, [position, type](Graph::Action action) { return action.roles.performer == position && action.isType(type); });
+        return findAction(id, [position, type](Graph::Action::Action action) { return action.roles.performer == position && action.isType(type); });
     }
 
     int FindAnyActionForPerformer(RE::StaticFunctionTag*, std::string id, int position, std::vector<std::string> types) {
         StringUtil::toLower(&types);
-        return findAction(id, [position, types](Graph::Action action) { return action.roles.performer == position && action.isType(types); });
+        return findAction(id, [position, types](Graph::Action::Action action) { return action.roles.performer == position && action.isType(types); });
     }
 
     int FindAnyActionForPerformerCSV(RE::StaticFunctionTag* sft, std::string id, int position, std::string types) {
@@ -451,12 +451,12 @@ namespace PapyrusMetadata {
 
     std::vector<int> FindActionsForPerformer(RE::StaticFunctionTag*, std::string id, int position, std::string type) {
         StringUtil::toLower(&type);
-        return findActions(id, [position, type](Graph::Action action) { return action.roles.performer == position && action.isType(type); });
+        return findActions(id, [position, type](Graph::Action::Action action) { return action.roles.performer == position && action.isType(type); });
     }
 
     std::vector<int> FindAllActionsForPerformer(RE::StaticFunctionTag*, std::string id, int position, std::vector<std::string> types) {
         StringUtil::toLower(&types);
-        return findActions(id, [position, types](Graph::Action action) { return action.roles.performer == position && action.isType(types); });
+        return findActions(id, [position, types](Graph::Action::Action action) { return action.roles.performer == position && action.isType(types); });
     }
 
     std::vector<int> FindAllActionsForPerformerCSV(RE::StaticFunctionTag* sft, std::string id, int position, std::string types) {
@@ -465,7 +465,7 @@ namespace PapyrusMetadata {
 
     int FindActionForPerformers(RE::StaticFunctionTag*, std::string id, std::vector<int> positions, std::string type) {
         StringUtil::toLower(&type);
-        return findAction(id, [positions, type](Graph::Action action) { return VectorUtil::contains(positions, action.roles.performer) && action.isType(type); });
+        return findAction(id, [positions, type](Graph::Action::Action action) { return VectorUtil::contains(positions, action.roles.performer) && action.isType(type); });
     }
 
     int FindActionForPerformersCSV(RE::StaticFunctionTag* sft, std::string id, std::string positions, std::string type) {
@@ -474,7 +474,7 @@ namespace PapyrusMetadata {
 
     int FindAnyActionForPerformers(RE::StaticFunctionTag*, std::string id, std::vector<int> positions, std::vector<std::string> types) {
         StringUtil::toLower(&types);
-        return findAction(id, [positions, types](Graph::Action action) { return VectorUtil::contains(positions, action.roles.performer) && action.isType(types); });
+        return findAction(id, [positions, types](Graph::Action::Action action) { return VectorUtil::contains(positions, action.roles.performer) && action.isType(types); });
     }
 
     int FindAnyActionForPerformersCSV(RE::StaticFunctionTag* sft, std::string id, std::string positions, std::string types) {
@@ -483,7 +483,7 @@ namespace PapyrusMetadata {
 
     std::vector<int> FindActionsForPerformers(RE::StaticFunctionTag*, std::string id, std::vector<int> positions, std::string type) {
         StringUtil::toLower(&type);
-        return findActions(id, [positions, type](Graph::Action action) { return VectorUtil::contains(positions, action.roles.performer) && action.isType(type); });
+        return findActions(id, [positions, type](Graph::Action::Action action) { return VectorUtil::contains(positions, action.roles.performer) && action.isType(type); });
     }
 
     std::vector<int> FindActionsForPerformersCSV(RE::StaticFunctionTag* sft, std::string id, std::string positions, std::string type) {
@@ -492,7 +492,7 @@ namespace PapyrusMetadata {
 
     std::vector<int> FindAllActionsForPerformers(RE::StaticFunctionTag*, std::string id, std::vector<int> positions, std::vector<std::string> types) {
         StringUtil::toLower(&types);
-        return findActions(id, [positions, types](Graph::Action action) { return VectorUtil::contains(positions, action.roles.performer) && action.isType(types); });
+        return findActions(id, [positions, types](Graph::Action::Action action) { return VectorUtil::contains(positions, action.roles.performer) && action.isType(types); });
     }
 
     std::vector<int> FindAllActionsForPerformersCSV(RE::StaticFunctionTag* sft, std::string id, std::string positions, std::string types) {
@@ -503,12 +503,12 @@ namespace PapyrusMetadata {
 #pragma region actions_by_actor_and_target
     int FindActionForActorAndTarget(RE::StaticFunctionTag*, std::string id, int actorPosition, int targetPosition, std::string type) {
         StringUtil::toLower(&type);
-        return findAction(id, [actorPosition, targetPosition, type](Graph::Action action) { return action.roles.actor == actorPosition && action.roles.target == targetPosition && action.isType(type); });
+        return findAction(id, [actorPosition, targetPosition, type](Graph::Action::Action action) { return action.roles.actor == actorPosition && action.roles.target == targetPosition && action.isType(type); });
     }
 
     int FindAnyActionForActorAndTarget(RE::StaticFunctionTag*, std::string id, int actorPosition, int targetPosition, std::vector<std::string> types) {
         StringUtil::toLower(&types);
-        return findAction(id, [actorPosition, targetPosition, types](Graph::Action action) { return action.roles.actor == actorPosition && action.roles.target == targetPosition && action.isType(types); });
+        return findAction(id, [actorPosition, targetPosition, types](Graph::Action::Action action) { return action.roles.actor == actorPosition && action.roles.target == targetPosition && action.isType(types); });
     }
 
     int FindAnyActionForActorAndTargetCSV(RE::StaticFunctionTag* sft, std::string id, int actorPosition, int targetPosition, std::string types) {
@@ -517,12 +517,12 @@ namespace PapyrusMetadata {
 
     std::vector<int> FindActionsForActorAndTarget(RE::StaticFunctionTag*, std::string id, int actorPosition, int targetPosition, std::string type) {
         StringUtil::toLower(&type);
-        return findActions(id, [actorPosition, targetPosition, type](Graph::Action action) { return action.roles.actor == actorPosition && action.roles.target == targetPosition && action.isType(type); });
+        return findActions(id, [actorPosition, targetPosition, type](Graph::Action::Action action) { return action.roles.actor == actorPosition && action.roles.target == targetPosition && action.isType(type); });
     }
 
     std::vector<int> FindAllActionsForActorAndTarget(RE::StaticFunctionTag*, std::string id, int actorPosition, int targetPosition, std::vector<std::string> types) {
         StringUtil::toLower(&types);
-        return findActions(id, [actorPosition, targetPosition, types](Graph::Action action) { return action.roles.actor == actorPosition && action.roles.target == targetPosition && action.isType(types); });
+        return findActions(id, [actorPosition, targetPosition, types](Graph::Action::Action action) { return action.roles.actor == actorPosition && action.roles.target == targetPosition && action.isType(types); });
     }
 
     std::vector<int> FindAllActionsForActorAndTargetCSV(RE::StaticFunctionTag* sft, std::string id, int actorPosition, int targetPosition, std::string types) {
@@ -531,7 +531,7 @@ namespace PapyrusMetadata {
 
     int FindActionForActorsAndTargets(RE::StaticFunctionTag*, std::string id, std::vector<int> actorPositions, std::vector<int> targetPositions, std::string type) {
         StringUtil::toLower(&type);
-        return findAction(id, [actorPositions, targetPositions, type](Graph::Action action) { return VectorUtil::contains(actorPositions, action.roles.actor) && VectorUtil::contains(targetPositions, action.roles.target) && action.isType(type); });
+        return findAction(id, [actorPositions, targetPositions, type](Graph::Action::Action action) { return VectorUtil::contains(actorPositions, action.roles.actor) && VectorUtil::contains(targetPositions, action.roles.target) && action.isType(type); });
     }
 
     int FindActionForActorsAndTargetsCSV(RE::StaticFunctionTag* sft, std::string id, std::string actorPositions, std::string targetPositions, std::string type) {
@@ -540,7 +540,7 @@ namespace PapyrusMetadata {
 
     int FindAnyActionForActorsAndTargets(RE::StaticFunctionTag*, std::string id, std::vector<int> actorPositions, std::vector<int> targetPositions, std::vector<std::string> types) {
         StringUtil::toLower(&types);
-        return findAction(id, [actorPositions, targetPositions, types](Graph::Action action) { return VectorUtil::contains(actorPositions, action.roles.actor) && VectorUtil::contains(targetPositions, action.roles.target) && action.isType(types); });
+        return findAction(id, [actorPositions, targetPositions, types](Graph::Action::Action action) { return VectorUtil::contains(actorPositions, action.roles.actor) && VectorUtil::contains(targetPositions, action.roles.target) && action.isType(types); });
     }
 
     int FindAnyActionForActorsAndTargetsCSV(RE::StaticFunctionTag* sft, std::string id, std::string actorPositions, std::string targetPositions, std::string types) {
@@ -549,7 +549,7 @@ namespace PapyrusMetadata {
 
     std::vector<int> FindActionsForActorsAndTargets(RE::StaticFunctionTag*, std::string id, std::vector<int> actorPositions, std::vector<int> targetPositions, std::string type) {
         StringUtil::toLower(&type);
-        return findActions(id, [actorPositions, targetPositions, type](Graph::Action action) { return VectorUtil::contains(actorPositions, action.roles.actor) && VectorUtil::contains(targetPositions, action.roles.target) && action.isType(type); });
+        return findActions(id, [actorPositions, targetPositions, type](Graph::Action::Action action) { return VectorUtil::contains(actorPositions, action.roles.actor) && VectorUtil::contains(targetPositions, action.roles.target) && action.isType(type); });
     }
 
     std::vector<int> FindActionsForActorsAndTargetsCSV(RE::StaticFunctionTag* sft, std::string id, std::string actorPositions, std::string targetPositions, std::string type) {
@@ -558,7 +558,7 @@ namespace PapyrusMetadata {
 
     std::vector<int> FindAllActionsForActorsAndTargets(RE::StaticFunctionTag*, std::string id, std::vector<int> actorPositions, std::vector<int> targetPositions, std::vector<std::string> types) {
         StringUtil::toLower(&types);
-        return findActions(id, [actorPositions, targetPositions, types](Graph::Action action) { return VectorUtil::contains(actorPositions, action.roles.actor) && VectorUtil::contains(targetPositions, action.roles.target) && action.isType(types); });
+        return findActions(id, [actorPositions, targetPositions, types](Graph::Action::Action action) { return VectorUtil::contains(actorPositions, action.roles.actor) && VectorUtil::contains(targetPositions, action.roles.target) && action.isType(types); });
     }
 
     std::vector<int> FindAllActionsForActorsAndTargetsCSV(RE::StaticFunctionTag* sft, std::string id, std::string actorPositions, std::string targetPositions, std::string types) {
@@ -569,12 +569,12 @@ namespace PapyrusMetadata {
 #pragma region actions_by_mate
     int FindActionForMate(RE::StaticFunctionTag*, std::string id, int position, std::string type) {
         StringUtil::toLower(&type);
-        return findAction(id, [position, type](Graph::Action action) { return (action.roles.actor == position || action.roles.target == position) && action.isType(type); });
+        return findAction(id, [position, type](Graph::Action::Action action) { return (action.roles.actor == position || action.roles.target == position) && action.isType(type); });
     }
 
     int FindAnyActionForMate(RE::StaticFunctionTag*, std::string id, int position, std::vector<std::string> types) {
         StringUtil::toLower(&types);
-        return findAction(id, [position, types](Graph::Action action) { return (action.roles.actor == position || action.roles.target == position) && action.isType(types); });
+        return findAction(id, [position, types](Graph::Action::Action action) { return (action.roles.actor == position || action.roles.target == position) && action.isType(types); });
     }
 
     int FindAnyActionForMateCSV(RE::StaticFunctionTag* sft, std::string id, int position, std::string types) {
@@ -583,12 +583,12 @@ namespace PapyrusMetadata {
 
     std::vector<int> FindActionsForMate(RE::StaticFunctionTag*, std::string id, int position, std::string type) {
         StringUtil::toLower(&type);
-        return findActions(id, [position, type](Graph::Action action) { return (action.roles.actor == position || action.roles.target == position) && action.isType(type); });
+        return findActions(id, [position, type](Graph::Action::Action action) { return (action.roles.actor == position || action.roles.target == position) && action.isType(type); });
     }
 
     std::vector<int> FindAllActionsForMate(RE::StaticFunctionTag*, std::string id, int position, std::vector<std::string> types) {
         StringUtil::toLower(&types);
-        return findActions(id, [position, types](Graph::Action action) { return (action.roles.actor == position || action.roles.target == position) && action.isType(types); });
+        return findActions(id, [position, types](Graph::Action::Action action) { return (action.roles.actor == position || action.roles.target == position) && action.isType(types); });
     }
 
     std::vector<int> FindAllActionsForMateCSV(RE::StaticFunctionTag* sft, std::string id, int position, std::string types) {
@@ -597,7 +597,7 @@ namespace PapyrusMetadata {
 
     int FindActionForMatesAny(RE::StaticFunctionTag*, std::string id, std::vector<int> positions, std::string type) {
         StringUtil::toLower(&type);
-        return findAction(id, [positions, type](Graph::Action action) { return VectorUtil::containsAny(positions, {action.roles.actor, action.roles.target}) && action.isType(type); });
+        return findAction(id, [positions, type](Graph::Action::Action action) { return VectorUtil::containsAny(positions, {action.roles.actor, action.roles.target}) && action.isType(type); });
     }
 
     int FindActionForMatesAnyCSV(RE::StaticFunctionTag* sft, std::string id, std::string positions, std::string type) {
@@ -606,7 +606,7 @@ namespace PapyrusMetadata {
 
     int FindAnyActionForMatesAny(RE::StaticFunctionTag*, std::string id, std::vector<int> positions, std::vector<std::string> types) {
         StringUtil::toLower(&types);
-        return findAction(id, [positions, types](Graph::Action action) { return VectorUtil::containsAny(positions, {action.roles.actor, action.roles.target}) && action.isType(types); });
+        return findAction(id, [positions, types](Graph::Action::Action action) { return VectorUtil::containsAny(positions, {action.roles.actor, action.roles.target}) && action.isType(types); });
     }
 
     int FindAnyActionForMatesAnyCSV(RE::StaticFunctionTag* sft, std::string id, std::string positions, std::string types) {
@@ -615,7 +615,7 @@ namespace PapyrusMetadata {
 
     std::vector<int> FindActionsForMatesAny(RE::StaticFunctionTag*, std::string id, std::vector<int> positions, std::string type) {
         StringUtil::toLower(&type);
-        return findActions(id, [positions, type](Graph::Action action) { return VectorUtil::containsAny(positions, {action.roles.actor, action.roles.target}) && action.isType(type); });
+        return findActions(id, [positions, type](Graph::Action::Action action) { return VectorUtil::containsAny(positions, {action.roles.actor, action.roles.target}) && action.isType(type); });
     }
 
     std::vector<int> FindActionsForMatesAnyCSV(RE::StaticFunctionTag* sft, std::string id, std::string positions, std::string type) {
@@ -624,7 +624,7 @@ namespace PapyrusMetadata {
 
     std::vector<int> FindAllActionsForMatesAny(RE::StaticFunctionTag*, std::string id, std::vector<int> positions, std::vector<std::string> types) {
         StringUtil::toLower(&types);
-        return findActions(id, [positions, types](Graph::Action action) { return VectorUtil::containsAny(positions, {action.roles.actor, action.roles.target}) && action.isType(types); });
+        return findActions(id, [positions, types](Graph::Action::Action action) { return VectorUtil::containsAny(positions, {action.roles.actor, action.roles.target}) && action.isType(types); });
     }
 
     std::vector<int> FindAllActionsForMatesAnyCSV(RE::StaticFunctionTag* sft, std::string id, std::string positions, std::string types) {
@@ -633,7 +633,7 @@ namespace PapyrusMetadata {
 
     int FindActionForMatesAll(RE::StaticFunctionTag*, std::string id, std::vector<int> positions, std::string type) {
         StringUtil::toLower(&type);
-        return findAction(id, [positions, type](Graph::Action action) { return VectorUtil::containsAll(positions, {action.roles.actor, action.roles.target}) && action.isType(type); });
+        return findAction(id, [positions, type](Graph::Action::Action action) { return VectorUtil::containsAll(positions, {action.roles.actor, action.roles.target}) && action.isType(type); });
     }
 
     int FindActionForMatesAllCSV(RE::StaticFunctionTag* sft, std::string id, std::string positions, std::string type) {
@@ -642,7 +642,7 @@ namespace PapyrusMetadata {
 
     int FindAnyActionForMatesAll(RE::StaticFunctionTag*, std::string id, std::vector<int> positions, std::vector<std::string> types) {
         StringUtil::toLower(&types);
-        return findAction(id, [positions, types](Graph::Action action) { return VectorUtil::containsAll(positions, {action.roles.actor, action.roles.target}) && action.isType(types); });
+        return findAction(id, [positions, types](Graph::Action::Action action) { return VectorUtil::containsAll(positions, {action.roles.actor, action.roles.target}) && action.isType(types); });
     }
 
     int FindAnyActionForMatesAllCSV(RE::StaticFunctionTag* sft, std::string id, std::string positions, std::string types) {
@@ -651,7 +651,7 @@ namespace PapyrusMetadata {
 
     std::vector<int> FindActionsForMatesAll(RE::StaticFunctionTag*, std::string id, std::vector<int> positions, std::string type) {
         StringUtil::toLower(&type);
-        return findActions(id, [positions, type](Graph::Action action) { return VectorUtil::containsAll(positions, {action.roles.actor, action.roles.target}) && action.isType(type); });
+        return findActions(id, [positions, type](Graph::Action::Action action) { return VectorUtil::containsAll(positions, {action.roles.actor, action.roles.target}) && action.isType(type); });
     }
 
     std::vector<int> FindActionsForMatesAllCSV(RE::StaticFunctionTag* sft, std::string id, std::string positions, std::string type) {
@@ -660,7 +660,7 @@ namespace PapyrusMetadata {
 
     std::vector<int> FindAllActionsForMatesAll(RE::StaticFunctionTag*, std::string id, std::vector<int> positions, std::vector<std::string> types) {
         StringUtil::toLower(&types);
-        return findActions(id, [positions, types](Graph::Action action) { return VectorUtil::containsAll(positions, {action.roles.actor, action.roles.target}) && action.isType(types); });
+        return findActions(id, [positions, types](Graph::Action::Action action) { return VectorUtil::containsAll(positions, {action.roles.actor, action.roles.target}) && action.isType(types); });
     }
 
     std::vector<int> FindAllActionsForMatesAllCSV(RE::StaticFunctionTag* sft, std::string id, std::string positions, std::string types) {
@@ -671,12 +671,12 @@ namespace PapyrusMetadata {
 #pragma region actions_by_participant
     int FindActionForParticipant(RE::StaticFunctionTag*, std::string id, int position, std::string type) {
         StringUtil::toLower(&type);
-        return findAction(id, [position, type](Graph::Action action) { return (action.roles.actor == position || action.roles.target == position || action.roles.performer == position) && action.isType(type); });
+        return findAction(id, [position, type](Graph::Action::Action action) { return (action.roles.actor == position || action.roles.target == position || action.roles.performer == position) && action.isType(type); });
     }
 
     int FindAnyActionForParticipant(RE::StaticFunctionTag*, std::string id, int position, std::vector<std::string> types) {
         StringUtil::toLower(&types);
-        return findAction(id, [position, types](Graph::Action action) { return (action.roles.actor == position || action.roles.target == position || action.roles.performer == position) && action.isType(types); });
+        return findAction(id, [position, types](Graph::Action::Action action) { return (action.roles.actor == position || action.roles.target == position || action.roles.performer == position) && action.isType(types); });
     }
 
     int FindAnyActionForParticipantCSV(RE::StaticFunctionTag* sft, std::string id, int position, std::string types) {
@@ -685,12 +685,12 @@ namespace PapyrusMetadata {
 
     std::vector<int> FindActionsForParticipant(RE::StaticFunctionTag*, std::string id, int position, std::string type) {
         StringUtil::toLower(&type);
-        return findActions(id, [position, type](Graph::Action action) { return (action.roles.actor == position || action.roles.target == position || action.roles.performer == position) && action.isType(type); });
+        return findActions(id, [position, type](Graph::Action::Action action) { return (action.roles.actor == position || action.roles.target == position || action.roles.performer == position) && action.isType(type); });
     }
 
     std::vector<int> FindAllActionsForParticipant(RE::StaticFunctionTag*, std::string id, int position, std::vector<std::string> types) {
         StringUtil::toLower(&types);
-        return findActions(id, [position, types](Graph::Action action) { return (action.roles.actor == position || action.roles.target == position || action.roles.performer == position) && action.isType(types); });
+        return findActions(id, [position, types](Graph::Action::Action action) { return (action.roles.actor == position || action.roles.target == position || action.roles.performer == position) && action.isType(types); });
     }
 
     std::vector<int> FindAllActionsForParticipantCSV(RE::StaticFunctionTag* sft, std::string id, int position, std::string types) {
@@ -699,7 +699,7 @@ namespace PapyrusMetadata {
 
     int FindActionForParticipantsAny(RE::StaticFunctionTag*, std::string id, std::vector<int> positions, std::string type) {
         StringUtil::toLower(&type);
-        return findAction(id, [positions, type](Graph::Action action) { return VectorUtil::containsAny(positions, {action.roles.actor, action.roles.target, action.roles.performer}) && action.isType(type); });
+        return findAction(id, [positions, type](Graph::Action::Action action) { return VectorUtil::containsAny(positions, {action.roles.actor, action.roles.target, action.roles.performer}) && action.isType(type); });
     }
 
     int FindActionForParticipantsAnyCSV(RE::StaticFunctionTag* sft, std::string id, std::string positions, std::string type) {
@@ -708,7 +708,7 @@ namespace PapyrusMetadata {
 
     int FindAnyActionForParticipantsAny(RE::StaticFunctionTag*, std::string id, std::vector<int> positions, std::vector<std::string> types) {
         StringUtil::toLower(&types);
-        return findAction(id, [positions, types](Graph::Action action) { return VectorUtil::containsAny(positions, {action.roles.actor, action.roles.target, action.roles.performer}) && action.isType(types); });
+        return findAction(id, [positions, types](Graph::Action::Action action) { return VectorUtil::containsAny(positions, {action.roles.actor, action.roles.target, action.roles.performer}) && action.isType(types); });
     }
 
     int FindAnyActionForParticipantsAnyCSV(RE::StaticFunctionTag* sft, std::string id, std::string positions, std::string types) {
@@ -717,7 +717,7 @@ namespace PapyrusMetadata {
 
     std::vector<int> FindActionsForParticipantsAny(RE::StaticFunctionTag*, std::string id, std::vector<int> positions, std::string type) {
         StringUtil::toLower(&type);
-        return findActions(id, [positions, type](Graph::Action action) { return VectorUtil::containsAny(positions, {action.roles.actor, action.roles.target, action.roles.performer}) && action.isType(type); });
+        return findActions(id, [positions, type](Graph::Action::Action action) { return VectorUtil::containsAny(positions, {action.roles.actor, action.roles.target, action.roles.performer}) && action.isType(type); });
     }
 
     std::vector<int> FindActionsForParticipantsAnyCSV(RE::StaticFunctionTag* sft, std::string id, std::string positions, std::string type) {
@@ -726,7 +726,7 @@ namespace PapyrusMetadata {
 
     std::vector<int> FindAllActionsForParticipantsAny(RE::StaticFunctionTag*, std::string id, std::vector<int> positions, std::vector<std::string> types) {
         StringUtil::toLower(&types);
-        return findActions(id, [positions, types](Graph::Action action) { return VectorUtil::containsAny(positions, {action.roles.actor, action.roles.target, action.roles.performer}) && action.isType(types); });
+        return findActions(id, [positions, types](Graph::Action::Action action) { return VectorUtil::containsAny(positions, {action.roles.actor, action.roles.target, action.roles.performer}) && action.isType(types); });
     }
 
     std::vector<int> FindAllActionsForParticipantsAnyCSV(RE::StaticFunctionTag* sft, std::string id, std::string positions, std::string types) {
@@ -735,7 +735,7 @@ namespace PapyrusMetadata {
 
     int FindActionForParticipantsAll(RE::StaticFunctionTag*, std::string id, std::vector<int> positions, std::string type) {
         StringUtil::toLower(&type);
-        return findAction(id, [positions, type](Graph::Action action) { return VectorUtil::containsAll(positions, {action.roles.actor, action.roles.target, action.roles.performer}) && action.isType(type); });
+        return findAction(id, [positions, type](Graph::Action::Action action) { return VectorUtil::containsAll(positions, {action.roles.actor, action.roles.target, action.roles.performer}) && action.isType(type); });
     }
 
     int FindActionForParticipantsAllCSV(RE::StaticFunctionTag* sft, std::string id, std::string positions, std::string type) {
@@ -744,7 +744,7 @@ namespace PapyrusMetadata {
 
     int FindAnyActionForParticipantsAll(RE::StaticFunctionTag*, std::string id, std::vector<int> positions, std::vector<std::string> types) {
         StringUtil::toLower(&types);
-        return findAction(id, [positions, types](Graph::Action action) { return VectorUtil::containsAll(positions, {action.roles.actor, action.roles.target, action.roles.performer}) && action.isType(types); });
+        return findAction(id, [positions, types](Graph::Action::Action action) { return VectorUtil::containsAll(positions, {action.roles.actor, action.roles.target, action.roles.performer}) && action.isType(types); });
     }
 
     int FindAnyActionForParticipantsAllCSV(RE::StaticFunctionTag* sft, std::string id, std::string positions, std::string types) {
@@ -753,7 +753,7 @@ namespace PapyrusMetadata {
 
     std::vector<int> FindActionsForParticipantsAll(RE::StaticFunctionTag*, std::string id, std::vector<int> positions, std::string type) {
         StringUtil::toLower(&type);
-        return findActions(id, [positions, type](Graph::Action action) { return VectorUtil::containsAll(positions, {action.roles.actor, action.roles.target, action.roles.performer}) && action.isType(type); });
+        return findActions(id, [positions, type](Graph::Action::Action action) { return VectorUtil::containsAll(positions, {action.roles.actor, action.roles.target, action.roles.performer}) && action.isType(type); });
     }
 
     std::vector<int> FindActionsForParticipantsAllCSV(RE::StaticFunctionTag* sft, std::string id, std::string positions, std::string type) {
@@ -762,7 +762,7 @@ namespace PapyrusMetadata {
 
     std::vector<int> FindAllActionsForParticipantsAll(RE::StaticFunctionTag*, std::string id, std::vector<int> positions, std::vector<std::string> types) {
         StringUtil::toLower(&types);
-        return findActions(id, [positions, types](Graph::Action action) { return VectorUtil::containsAll(positions, {action.roles.actor, action.roles.target, action.roles.performer}) && action.isType(types); });
+        return findActions(id, [positions, types](Graph::Action::Action action) { return VectorUtil::containsAll(positions, {action.roles.actor, action.roles.target, action.roles.performer}) && action.isType(types); });
     }
 
     std::vector<int> FindAllActionsForParticipantsAllCSV(RE::StaticFunctionTag* sft, std::string id, std::string positions, std::string types) {
@@ -772,68 +772,68 @@ namespace PapyrusMetadata {
 
 #pragma region action_superload
     int FindActionSuperloadCSVv2(RE::StaticFunctionTag*, std::string id, std::string actorPositions, std::string targetPositions, std::string performerPositions, std::string matePositionsAny, std::string matePositionsAll, std::string participantPositionsAny, std::string participantPositionsAll, std::string types, std::string anyActionTag, std::string allActionTags, std::string actionTagWhitelist, std::string actionTagBlacklist, std::string anyCustomIntRecord, std::string allCustomIntRecords, std::string anyCustomFloatRecord, std::string allCustomFloatRecords, std::string anyCustomStringRecord, std::string allCustomStringRecords, std::string anyCustomIntListRecord, std::string allCustomIntListRecords, std::string anyCustomFloatListRecord, std::string allCustomFloatListRecords, std::string anyCustomStringListRecord, std::string allCustomStringListRecords) {
-        std::vector<std::function<bool(Graph::Action)>> conditions;
+        std::vector<std::function<bool(Graph::Action::Action)>> conditions;
         
 
         if (!actorPositions.empty()) {
             std::vector<int> actorPos = VectorUtil::stoiv(actorPositions);
-            conditions.push_back([actorPos](Graph::Action action){return VectorUtil::contains(actorPos, action.roles.actor);});
+            conditions.push_back([actorPos](Graph::Action::Action action){return VectorUtil::contains(actorPos, action.roles.actor);});
         }
 
         if (!targetPositions.empty()) {
             std::vector<int> targetPos = VectorUtil::stoiv(targetPositions);
-            conditions.push_back([targetPos](Graph::Action action){return VectorUtil::contains(targetPos, action.roles.target);});
+            conditions.push_back([targetPos](Graph::Action::Action action){return VectorUtil::contains(targetPos, action.roles.target);});
         }
 
         if (!performerPositions.empty()) {
             std::vector<int> performerPos = VectorUtil::stoiv(performerPositions);
-            conditions.push_back([performerPos](Graph::Action action){return VectorUtil::contains(performerPos, action.roles.performer);});
+            conditions.push_back([performerPos](Graph::Action::Action action){return VectorUtil::contains(performerPos, action.roles.performer);});
         }
 
         if (!matePositionsAny.empty()) {
             std::vector<int> matePosAny = VectorUtil::stoiv(matePositionsAny);
-            conditions.push_back([matePosAny](Graph::Action action){return VectorUtil::containsAny(matePosAny, {action.roles.actor, action.roles.target});});
+            conditions.push_back([matePosAny](Graph::Action::Action action){return VectorUtil::containsAny(matePosAny, {action.roles.actor, action.roles.target});});
         }
 
         if (!matePositionsAll.empty()) {
             std::vector<int> matePosAll = VectorUtil::stoiv(matePositionsAll);
-            conditions.push_back([matePosAll](Graph::Action action){return VectorUtil::containsAll(matePosAll, {action.roles.actor, action.roles.target});});
+            conditions.push_back([matePosAll](Graph::Action::Action action){return VectorUtil::containsAll(matePosAll, {action.roles.actor, action.roles.target});});
         }
 
         if (!participantPositionsAny.empty()) {
             std::vector<int> participantPosAny = VectorUtil::stoiv(participantPositionsAny);
-            conditions.push_back([participantPosAny](Graph::Action action){return VectorUtil::containsAny(participantPosAny, {action.roles.actor, action.roles.target, action.roles.performer});});
+            conditions.push_back([participantPosAny](Graph::Action::Action action){return VectorUtil::containsAny(participantPosAny, {action.roles.actor, action.roles.target, action.roles.performer});});
         }
 
         if (!participantPositionsAll.empty()) {
             std::vector<int> participantPosAll = VectorUtil::stoiv(participantPositionsAll);
-            conditions.push_back([participantPosAll](Graph::Action action){return VectorUtil::containsAll(participantPosAll, {action.roles.actor, action.roles.target, action.roles.performer});});
+            conditions.push_back([participantPosAll](Graph::Action::Action action){return VectorUtil::containsAll(participantPosAll, {action.roles.actor, action.roles.target, action.roles.performer});});
         }
 
         if (!types.empty()) {
             std::vector<std::string> typesVector = StringUtil::toTagVector(types);
-            conditions.push_back([typesVector](Graph::Action action){return action.isType(typesVector);});
+            conditions.push_back([typesVector](Graph::Action::Action action){return action.isType(typesVector);});
         }
 
 
         if (!anyActionTag.empty()) {
             std::vector<std::string> AnyActionTagVector = StringUtil::toTagVector(anyActionTag);
-            conditions.push_back([AnyActionTagVector](Graph::Action action){return VectorUtil::containsAny(action.attributes->tags, AnyActionTagVector);});
+            conditions.push_back([AnyActionTagVector](Graph::Action::Action action){return VectorUtil::containsAny(action.attributes->tags, AnyActionTagVector);});
         }
 
         if (!allActionTags.empty()) {
             std::vector<std::string> AllActionTagsVector = StringUtil::toTagVector(allActionTags);
-            conditions.push_back([AllActionTagsVector](Graph::Action action){return VectorUtil::containsAll(action.attributes->tags, AllActionTagsVector);});
+            conditions.push_back([AllActionTagsVector](Graph::Action::Action action){return VectorUtil::containsAll(action.attributes->tags, AllActionTagsVector);});
         }
 
         if (!actionTagWhitelist.empty()) {
             std::vector<std::string> actionTagWhitelistVector = StringUtil::toTagVector(actionTagWhitelist);
-            conditions.push_back([actionTagWhitelistVector](Graph::Action action){return VectorUtil::containsAll(actionTagWhitelistVector, action.attributes->tags);});
+            conditions.push_back([actionTagWhitelistVector](Graph::Action::Action action){return VectorUtil::containsAll(actionTagWhitelistVector, action.attributes->tags);});
         }
 
         if (!actionTagBlacklist.empty()) {
             std::vector<std::string> actionTagBlacklistVector = StringUtil::toTagVector(actionTagBlacklist);
-            conditions.push_back([actionTagBlacklistVector](Graph::Action action){return !VectorUtil::containsAny(actionTagBlacklistVector, action.attributes->tags);});
+            conditions.push_back([actionTagBlacklistVector](Graph::Action::Action action){return !VectorUtil::containsAny(actionTagBlacklistVector, action.attributes->tags);});
         }
 
 
@@ -842,20 +842,20 @@ namespace PapyrusMetadata {
 
             std::vector<std::string> actorKeys = anyCustomIntRecordMatrix[0];
             if (actorKeys.size() > 0) {
-                conditions.push_back([actorKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.actor.ints, actorKeys);});
+                conditions.push_back([actorKeys](Graph::Action::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.actor.ints, actorKeys);});
             }
 
             if (anyCustomIntRecordMatrix.size() > 1) {
                 std::vector<std::string> targetKeys = anyCustomIntRecordMatrix[1];
                 if (targetKeys.size() > 0) {
-                    conditions.push_back([targetKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.target.ints, targetKeys);});
+                    conditions.push_back([targetKeys](Graph::Action::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.target.ints, targetKeys);});
                 }
             }
 
             if (anyCustomIntRecordMatrix.size() > 2) {
                 std::vector<std::string> performerKeys = anyCustomIntRecordMatrix[2];
                 if (performerKeys.size() > 0) {
-                    conditions.push_back([performerKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.performer.ints, performerKeys);});
+                    conditions.push_back([performerKeys](Graph::Action::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.performer.ints, performerKeys);});
                 }
             }
         }
@@ -865,20 +865,20 @@ namespace PapyrusMetadata {
 
             std::vector<std::string> actorKeys = allCustomIntRecordsMatrix[0];
             if (actorKeys.size() > 0) {
-                conditions.push_back([actorKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.actor.ints, actorKeys);});
+                conditions.push_back([actorKeys](Graph::Action::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.actor.ints, actorKeys);});
             }
 
             if (allCustomIntRecordsMatrix.size() > 1) {
                 std::vector<std::string> targetKeys = allCustomIntRecordsMatrix[1];
                 if (targetKeys.size() > 0) {
-                    conditions.push_back([targetKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.target.ints, targetKeys);});
+                    conditions.push_back([targetKeys](Graph::Action::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.target.ints, targetKeys);});
                 }
             }
 
             if (allCustomIntRecordsMatrix.size() > 2) {
                 std::vector<std::string> performerKeys = allCustomIntRecordsMatrix[2];
                 if (performerKeys.size() > 0) {
-                    conditions.push_back([performerKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.performer.ints, performerKeys);});
+                    conditions.push_back([performerKeys](Graph::Action::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.performer.ints, performerKeys);});
                 }
             }
         }
@@ -888,20 +888,20 @@ namespace PapyrusMetadata {
 
             std::vector<std::string> actorKeys = anyCustomFloatRecordMatrix[0];
             if (actorKeys.size() > 0) {
-                conditions.push_back([actorKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.actor.floats, actorKeys);});
+                conditions.push_back([actorKeys](Graph::Action::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.actor.floats, actorKeys);});
             }
 
             if (anyCustomFloatRecordMatrix.size() > 1) {
                 std::vector<std::string> targetKeys = anyCustomFloatRecordMatrix[1];
                 if (targetKeys.size() > 0) {
-                    conditions.push_back([targetKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.target.floats, targetKeys);});
+                    conditions.push_back([targetKeys](Graph::Action::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.target.floats, targetKeys);});
                 }
             }
 
             if (anyCustomFloatRecordMatrix.size() > 2) {
                 std::vector<std::string> performerKeys = anyCustomFloatRecordMatrix[2];
                 if (performerKeys.size() > 0) {
-                    conditions.push_back([performerKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.performer.floats, performerKeys);});
+                    conditions.push_back([performerKeys](Graph::Action::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.performer.floats, performerKeys);});
                 }
             }
         }
@@ -911,20 +911,20 @@ namespace PapyrusMetadata {
 
             std::vector<std::string> actorKeys = allCustomFloatRecordsMatrix[0];
             if (actorKeys.size() > 0) {
-                conditions.push_back([actorKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.actor.floats, actorKeys);});
+                conditions.push_back([actorKeys](Graph::Action::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.actor.floats, actorKeys);});
             }
 
             if (allCustomFloatRecordsMatrix.size() > 1) {
                 std::vector<std::string> targetKeys = allCustomFloatRecordsMatrix[1];
                 if (targetKeys.size() > 0) {
-                    conditions.push_back([targetKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.target.floats, targetKeys);});
+                    conditions.push_back([targetKeys](Graph::Action::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.target.floats, targetKeys);});
                 }
             }
 
             if (allCustomFloatRecordsMatrix.size() > 2) {
                 std::vector<std::string> performerKeys = allCustomFloatRecordsMatrix[2];
                 if (performerKeys.size() > 0) {
-                    conditions.push_back([performerKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.performer.floats, performerKeys);});
+                    conditions.push_back([performerKeys](Graph::Action::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.performer.floats, performerKeys);});
                 }
             }
         }
@@ -934,20 +934,20 @@ namespace PapyrusMetadata {
 
             std::vector<std::string> actorKeys = anyCustomStringRecordMatrix[0];
             if (actorKeys.size() > 0) {
-                conditions.push_back([actorKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.actor.strings, actorKeys);});
+                conditions.push_back([actorKeys](Graph::Action::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.actor.strings, actorKeys);});
             }
 
             if (anyCustomStringRecordMatrix.size() > 1) {
                 std::vector<std::string> targetKeys = anyCustomStringRecordMatrix[1];
                 if (targetKeys.size() > 0) {
-                    conditions.push_back([targetKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.target.strings, targetKeys);});
+                    conditions.push_back([targetKeys](Graph::Action::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.target.strings, targetKeys);});
                 }
             }
 
             if (anyCustomStringRecordMatrix.size() > 2) {
                 std::vector<std::string> performerKeys = anyCustomStringRecordMatrix[2];
                 if (performerKeys.size() > 0) {
-                    conditions.push_back([performerKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.performer.strings, performerKeys);});
+                    conditions.push_back([performerKeys](Graph::Action::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.performer.strings, performerKeys);});
                 }
             }
         }
@@ -957,20 +957,20 @@ namespace PapyrusMetadata {
 
             std::vector<std::string> actorKeys = allCustomStringRecordsMatrix[0];
             if (actorKeys.size() > 0) {
-                conditions.push_back([actorKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.actor.strings, actorKeys);});
+                conditions.push_back([actorKeys](Graph::Action::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.actor.strings, actorKeys);});
             }
 
             if (allCustomStringRecordsMatrix.size() > 1) {
                 std::vector<std::string> targetKeys = allCustomStringRecordsMatrix[1];
                 if (targetKeys.size() > 0) {
-                    conditions.push_back([targetKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.target.strings, targetKeys);});
+                    conditions.push_back([targetKeys](Graph::Action::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.target.strings, targetKeys);});
                 }
             }
 
             if (allCustomStringRecordsMatrix.size() > 2) {
                 std::vector<std::string> performerKeys = allCustomStringRecordsMatrix[2];
                 if (performerKeys.size() > 0) {
-                    conditions.push_back([performerKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.performer.strings, performerKeys);});
+                    conditions.push_back([performerKeys](Graph::Action::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.performer.strings, performerKeys);});
                 }
             }
         }
@@ -980,20 +980,20 @@ namespace PapyrusMetadata {
 
             std::vector<std::string> actorKeys = anyCustomIntListRecordMatrix[0];
             if (actorKeys.size() > 0) {
-                conditions.push_back([actorKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.actor.intLists, actorKeys);});
+                conditions.push_back([actorKeys](Graph::Action::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.actor.intLists, actorKeys);});
             }
 
             if (anyCustomIntListRecordMatrix.size() > 1) {
                 std::vector<std::string> targetKeys = anyCustomIntListRecordMatrix[1];
                 if (targetKeys.size() > 0) {
-                    conditions.push_back([targetKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.target.intLists, targetKeys);});
+                    conditions.push_back([targetKeys](Graph::Action::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.target.intLists, targetKeys);});
                 }
             }
 
             if (anyCustomIntListRecordMatrix.size() > 2) {
                 std::vector<std::string> performerKeys = anyCustomIntListRecordMatrix[2];
                 if (performerKeys.size() > 0) {
-                    conditions.push_back([performerKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.performer.intLists, performerKeys);});
+                    conditions.push_back([performerKeys](Graph::Action::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.performer.intLists, performerKeys);});
                 }
             }
         }
@@ -1003,20 +1003,20 @@ namespace PapyrusMetadata {
 
             std::vector<std::string> actorKeys = allCustomIntListRecordsMatrix[0];
             if (actorKeys.size() > 0) {
-                conditions.push_back([actorKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.actor.intLists, actorKeys);});
+                conditions.push_back([actorKeys](Graph::Action::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.actor.intLists, actorKeys);});
             }
 
             if (allCustomIntListRecordsMatrix.size() > 1) {
                 std::vector<std::string> targetKeys = allCustomIntListRecordsMatrix[1];
                 if (targetKeys.size() > 0) {
-                    conditions.push_back([targetKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.target.intLists, targetKeys);});
+                    conditions.push_back([targetKeys](Graph::Action::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.target.intLists, targetKeys);});
                 }
             }
 
             if (allCustomIntListRecordsMatrix.size() > 2) {
                 std::vector<std::string> performerKeys = allCustomIntListRecordsMatrix[2];
                 if (performerKeys.size() > 0) {
-                    conditions.push_back([performerKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.performer.intLists, performerKeys);});
+                    conditions.push_back([performerKeys](Graph::Action::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.performer.intLists, performerKeys);});
                 }
             }
         }
@@ -1026,20 +1026,20 @@ namespace PapyrusMetadata {
 
             std::vector<std::string> actorKeys = anyCustomFloatListRecordMatrix[0];
             if (actorKeys.size() > 0) {
-                conditions.push_back([actorKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.actor.floatLists, actorKeys);});
+                conditions.push_back([actorKeys](Graph::Action::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.actor.floatLists, actorKeys);});
             }
 
             if (anyCustomFloatListRecordMatrix.size() > 1) {
                 std::vector<std::string> targetKeys = anyCustomFloatListRecordMatrix[1];
                 if (targetKeys.size() > 0) {
-                    conditions.push_back([targetKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.target.floatLists, targetKeys);});
+                    conditions.push_back([targetKeys](Graph::Action::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.target.floatLists, targetKeys);});
                 }
             }
 
             if (anyCustomFloatListRecordMatrix.size() > 2) {
                 std::vector<std::string> performerKeys = anyCustomFloatListRecordMatrix[2];
                 if (performerKeys.size() > 0) {
-                    conditions.push_back([performerKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.performer.floatLists, performerKeys);});
+                    conditions.push_back([performerKeys](Graph::Action::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.performer.floatLists, performerKeys);});
                 }
             }
         }
@@ -1049,20 +1049,20 @@ namespace PapyrusMetadata {
 
             std::vector<std::string> actorKeys = allCustomFloatListRecordsMatrix[0];
             if (actorKeys.size() > 0) {
-                conditions.push_back([actorKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.actor.floatLists, actorKeys);});
+                conditions.push_back([actorKeys](Graph::Action::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.actor.floatLists, actorKeys);});
             }
 
             if (allCustomFloatListRecordsMatrix.size() > 1) {
                 std::vector<std::string> targetKeys = allCustomFloatListRecordsMatrix[1];
                 if (targetKeys.size() > 0) {
-                    conditions.push_back([targetKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.target.floatLists, targetKeys);});
+                    conditions.push_back([targetKeys](Graph::Action::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.target.floatLists, targetKeys);});
                 }
             }
 
             if (allCustomFloatListRecordsMatrix.size() > 2) {
                 std::vector<std::string> performerKeys = allCustomFloatListRecordsMatrix[2];
                 if (performerKeys.size() > 0) {
-                    conditions.push_back([performerKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.performer.floatLists, performerKeys);});
+                    conditions.push_back([performerKeys](Graph::Action::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.performer.floatLists, performerKeys);});
                 }
             }
         }
@@ -1072,20 +1072,20 @@ namespace PapyrusMetadata {
 
             std::vector<std::string> actorKeys = anyCustomStringListRecordMatrix[0];
             if (actorKeys.size() > 0) {
-                conditions.push_back([actorKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.actor.stringLists, actorKeys);});
+                conditions.push_back([actorKeys](Graph::Action::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.actor.stringLists, actorKeys);});
             }
 
             if (anyCustomStringListRecordMatrix.size() > 1) {
                 std::vector<std::string> targetKeys = anyCustomStringListRecordMatrix[1];
                 if (targetKeys.size() > 0) {
-                    conditions.push_back([targetKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.target.stringLists, targetKeys);});
+                    conditions.push_back([targetKeys](Graph::Action::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.target.stringLists, targetKeys);});
                 }
             }
 
             if (anyCustomStringListRecordMatrix.size() > 2) {
                 std::vector<std::string> performerKeys = anyCustomStringListRecordMatrix[2];
                 if (performerKeys.size() > 0) {
-                    conditions.push_back([performerKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.performer.stringLists, performerKeys);});
+                    conditions.push_back([performerKeys](Graph::Action::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.performer.stringLists, performerKeys);});
                 }
             }
         }
@@ -1095,91 +1095,91 @@ namespace PapyrusMetadata {
 
             std::vector<std::string> actorKeys = allCustomStringListRecordsMatrix[0];
             if (actorKeys.size() > 0) {
-                conditions.push_back([actorKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.actor.stringLists, actorKeys);});
+                conditions.push_back([actorKeys](Graph::Action::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.actor.stringLists, actorKeys);});
             }
 
             if (allCustomStringListRecordsMatrix.size() > 1) {
                 std::vector<std::string> targetKeys = allCustomStringListRecordsMatrix[1];
                 if (targetKeys.size() > 0) {
-                    conditions.push_back([targetKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.target.stringLists, targetKeys);});
+                    conditions.push_back([targetKeys](Graph::Action::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.target.stringLists, targetKeys);});
                 }
             }
 
             if (allCustomStringListRecordsMatrix.size() > 2) {
                 std::vector<std::string> performerKeys = allCustomStringListRecordsMatrix[2];
                 if (performerKeys.size() > 0) {
-                    conditions.push_back([performerKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.performer.stringLists, performerKeys);});
+                    conditions.push_back([performerKeys](Graph::Action::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.performer.stringLists, performerKeys);});
                 }
             }
         }
 
 
-        return findAction(id, [&conditions](Graph::Action action) {return checkConditions(conditions, action);});
+        return findAction(id, [&conditions](Graph::Action::Action action) {return checkConditions(conditions, action);});
     }
 
     std::vector<int> FindActionsSuperloadCSVv2(RE::StaticFunctionTag*, std::string id, std::string actorPositions, std::string targetPositions, std::string performerPositions, std::string matePositionsAny, std::string matePositionsAll, std::string participantPositionsAny, std::string participantPositionsAll, std::string types, std::string anyActionTag, std::string allActionTags, std::string actionTagWhitelist, std::string actionTagBlacklist, std::string anyCustomIntRecord, std::string allCustomIntRecords, std::string anyCustomFloatRecord, std::string allCustomFloatRecords, std::string anyCustomStringRecord, std::string allCustomStringRecords, std::string anyCustomIntListRecord, std::string allCustomIntListRecords, std::string anyCustomFloatListRecord, std::string allCustomFloatListRecords, std::string anyCustomStringListRecord, std::string allCustomStringListRecords) {
-        std::vector<std::function<bool(Graph::Action)>> conditions;
+        std::vector<std::function<bool(Graph::Action::Action)>> conditions;
         
 
         if (!actorPositions.empty()) {
             std::vector<int> actorPos = VectorUtil::stoiv(actorPositions);
-            conditions.push_back([actorPos](Graph::Action action){return VectorUtil::contains(actorPos, action.roles.actor);});
+            conditions.push_back([actorPos](Graph::Action::Action action){return VectorUtil::contains(actorPos, action.roles.actor);});
         }
 
         if (!targetPositions.empty()) {
             std::vector<int> targetPos = VectorUtil::stoiv(targetPositions);
-            conditions.push_back([targetPos](Graph::Action action){return VectorUtil::contains(targetPos, action.roles.target);});
+            conditions.push_back([targetPos](Graph::Action::Action action){return VectorUtil::contains(targetPos, action.roles.target);});
         }
 
         if (!performerPositions.empty()) {
             std::vector<int> performerPos = VectorUtil::stoiv(performerPositions);
-            conditions.push_back([performerPos](Graph::Action action){return VectorUtil::contains(performerPos, action.roles.performer);});
+            conditions.push_back([performerPos](Graph::Action::Action action){return VectorUtil::contains(performerPos, action.roles.performer);});
         }
 
         if (!matePositionsAny.empty()) {
             std::vector<int> matePosAny = VectorUtil::stoiv(matePositionsAny);
-            conditions.push_back([matePosAny](Graph::Action action){return VectorUtil::containsAny(matePosAny, {action.roles.actor, action.roles.target});});
+            conditions.push_back([matePosAny](Graph::Action::Action action){return VectorUtil::containsAny(matePosAny, {action.roles.actor, action.roles.target});});
         }
 
         if (!matePositionsAll.empty()) {
             std::vector<int> matePosAll = VectorUtil::stoiv(matePositionsAll);
-            conditions.push_back([matePosAll](Graph::Action action){return VectorUtil::containsAll(matePosAll, {action.roles.actor, action.roles.target});});
+            conditions.push_back([matePosAll](Graph::Action::Action action){return VectorUtil::containsAll(matePosAll, {action.roles.actor, action.roles.target});});
         }
 
         if (!participantPositionsAny.empty()) {
             std::vector<int> participantPosAny = VectorUtil::stoiv(participantPositionsAny);
-            conditions.push_back([participantPosAny](Graph::Action action){return VectorUtil::containsAny(participantPosAny, {action.roles.actor, action.roles.target, action.roles.performer});});
+            conditions.push_back([participantPosAny](Graph::Action::Action action){return VectorUtil::containsAny(participantPosAny, {action.roles.actor, action.roles.target, action.roles.performer});});
         }
 
         if (!participantPositionsAll.empty()) {
             std::vector<int> participantPosAll = VectorUtil::stoiv(participantPositionsAll);
-            conditions.push_back([participantPosAll](Graph::Action action){return VectorUtil::containsAll(participantPosAll, {action.roles.actor, action.roles.target, action.roles.performer});});
+            conditions.push_back([participantPosAll](Graph::Action::Action action){return VectorUtil::containsAll(participantPosAll, {action.roles.actor, action.roles.target, action.roles.performer});});
         }
 
         if (!types.empty()) {
             std::vector<std::string> typeVector = StringUtil::toTagVector(types);
-            conditions.push_back([typeVector](Graph::Action action){return action.isType(typeVector);});
+            conditions.push_back([typeVector](Graph::Action::Action action){return action.isType(typeVector);});
         }
 
 
         if (!anyActionTag.empty()) {
             std::vector<std::string> AnyActionTagVector = StringUtil::toTagVector(anyActionTag);
-            conditions.push_back([AnyActionTagVector](Graph::Action action){return VectorUtil::containsAny(action.attributes->tags, AnyActionTagVector);});
+            conditions.push_back([AnyActionTagVector](Graph::Action::Action action){return VectorUtil::containsAny(action.attributes->tags, AnyActionTagVector);});
         }
 
         if (!allActionTags.empty()) {
             std::vector<std::string> AllActionTagsVector = StringUtil::toTagVector(allActionTags);
-            conditions.push_back([AllActionTagsVector](Graph::Action action){return VectorUtil::containsAll(action.attributes->tags, AllActionTagsVector);});
+            conditions.push_back([AllActionTagsVector](Graph::Action::Action action){return VectorUtil::containsAll(action.attributes->tags, AllActionTagsVector);});
         }
 
         if (!actionTagWhitelist.empty()) {
             std::vector<std::string> actionTagWhitelistVector = StringUtil::toTagVector(actionTagWhitelist);
-            conditions.push_back([actionTagWhitelistVector](Graph::Action action){return VectorUtil::containsAll(actionTagWhitelistVector, action.attributes->tags);});
+            conditions.push_back([actionTagWhitelistVector](Graph::Action::Action action){return VectorUtil::containsAll(actionTagWhitelistVector, action.attributes->tags);});
         }
 
         if (!actionTagBlacklist.empty()) {
             std::vector<std::string> actionTagBlacklistVector = StringUtil::toTagVector(actionTagBlacklist);
-            conditions.push_back([actionTagBlacklistVector](Graph::Action action){return !VectorUtil::containsAny(actionTagBlacklistVector, action.attributes->tags);});
+            conditions.push_back([actionTagBlacklistVector](Graph::Action::Action action){return !VectorUtil::containsAny(actionTagBlacklistVector, action.attributes->tags);});
         }
 
 
@@ -1188,20 +1188,20 @@ namespace PapyrusMetadata {
 
             std::vector<std::string> actorKeys = anyCustomIntRecordMatrix[0];
             if (actorKeys.size() > 0) {
-                conditions.push_back([actorKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.actor.ints, actorKeys);});
+                conditions.push_back([actorKeys](Graph::Action::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.actor.ints, actorKeys);});
             }
 
             if (anyCustomIntRecordMatrix.size() > 1) {
                 std::vector<std::string> targetKeys = anyCustomIntRecordMatrix[1];
                 if (targetKeys.size() > 0) {
-                    conditions.push_back([targetKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.target.ints, targetKeys);});
+                    conditions.push_back([targetKeys](Graph::Action::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.target.ints, targetKeys);});
                 }
             }
 
             if (anyCustomIntRecordMatrix.size() > 2) {
                 std::vector<std::string> performerKeys = anyCustomIntRecordMatrix[2];
                 if (performerKeys.size() > 0) {
-                    conditions.push_back([performerKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.performer.ints, performerKeys);});
+                    conditions.push_back([performerKeys](Graph::Action::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.performer.ints, performerKeys);});
                 }
             }
         }
@@ -1211,20 +1211,20 @@ namespace PapyrusMetadata {
 
             std::vector<std::string> actorKeys = allCustomIntRecordsMatrix[0];
             if (actorKeys.size() > 0) {
-                conditions.push_back([actorKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.actor.ints, actorKeys);});
+                conditions.push_back([actorKeys](Graph::Action::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.actor.ints, actorKeys);});
             }
 
             if (allCustomIntRecordsMatrix.size() > 1) {
                 std::vector<std::string> targetKeys = allCustomIntRecordsMatrix[1];
                 if (targetKeys.size() > 0) {
-                    conditions.push_back([targetKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.target.ints, targetKeys);});
+                    conditions.push_back([targetKeys](Graph::Action::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.target.ints, targetKeys);});
                 }
             }
 
             if (allCustomIntRecordsMatrix.size() > 2) {
                 std::vector<std::string> performerKeys = allCustomIntRecordsMatrix[2];
                 if (performerKeys.size() > 0) {
-                    conditions.push_back([performerKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.performer.ints, performerKeys);});
+                    conditions.push_back([performerKeys](Graph::Action::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.performer.ints, performerKeys);});
                 }
             }
         }
@@ -1234,20 +1234,20 @@ namespace PapyrusMetadata {
 
             std::vector<std::string> actorKeys = anyCustomFloatRecordMatrix[0];
             if (actorKeys.size() > 0) {
-                conditions.push_back([actorKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.actor.floats, actorKeys);});
+                conditions.push_back([actorKeys](Graph::Action::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.actor.floats, actorKeys);});
             }
 
             if (anyCustomFloatRecordMatrix.size() > 1) {
                 std::vector<std::string> targetKeys = anyCustomFloatRecordMatrix[1];
                 if (targetKeys.size() > 0) {
-                    conditions.push_back([targetKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.target.floats, targetKeys);});
+                    conditions.push_back([targetKeys](Graph::Action::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.target.floats, targetKeys);});
                 }
             }
 
             if (anyCustomFloatRecordMatrix.size() > 2) {
                 std::vector<std::string> performerKeys = anyCustomFloatRecordMatrix[2];
                 if (performerKeys.size() > 0) {
-                    conditions.push_back([performerKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.performer.floats, performerKeys);});
+                    conditions.push_back([performerKeys](Graph::Action::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.performer.floats, performerKeys);});
                 }
             }
         }
@@ -1257,20 +1257,20 @@ namespace PapyrusMetadata {
 
             std::vector<std::string> actorKeys = allCustomFloatRecordsMatrix[0];
             if (actorKeys.size() > 0) {
-                conditions.push_back([actorKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.actor.floats, actorKeys);});
+                conditions.push_back([actorKeys](Graph::Action::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.actor.floats, actorKeys);});
             }
 
             if (allCustomFloatRecordsMatrix.size() > 1) {
                 std::vector<std::string> targetKeys = allCustomFloatRecordsMatrix[1];
                 if (targetKeys.size() > 0) {
-                    conditions.push_back([targetKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.target.floats, targetKeys);});
+                    conditions.push_back([targetKeys](Graph::Action::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.target.floats, targetKeys);});
                 }
             }
 
             if (allCustomFloatRecordsMatrix.size() > 2) {
                 std::vector<std::string> performerKeys = allCustomFloatRecordsMatrix[2];
                 if (performerKeys.size() > 0) {
-                    conditions.push_back([performerKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.performer.floats, performerKeys);});
+                    conditions.push_back([performerKeys](Graph::Action::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.performer.floats, performerKeys);});
                 }
             }
         }
@@ -1280,20 +1280,20 @@ namespace PapyrusMetadata {
 
             std::vector<std::string> actorKeys = anyCustomStringRecordMatrix[0];
             if (actorKeys.size() > 0) {
-                conditions.push_back([actorKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.actor.strings, actorKeys);});
+                conditions.push_back([actorKeys](Graph::Action::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.actor.strings, actorKeys);});
             }
 
             if (anyCustomStringRecordMatrix.size() > 1) {
                 std::vector<std::string> targetKeys = anyCustomStringRecordMatrix[1];
                 if (targetKeys.size() > 0) {
-                    conditions.push_back([targetKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.target.strings, targetKeys);});
+                    conditions.push_back([targetKeys](Graph::Action::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.target.strings, targetKeys);});
                 }
             }
 
             if (anyCustomStringRecordMatrix.size() > 2) {
                 std::vector<std::string> performerKeys = anyCustomStringRecordMatrix[2];
                 if (performerKeys.size() > 0) {
-                    conditions.push_back([performerKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.performer.strings, performerKeys);});
+                    conditions.push_back([performerKeys](Graph::Action::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.performer.strings, performerKeys);});
                 }
             }
         }
@@ -1303,20 +1303,20 @@ namespace PapyrusMetadata {
 
             std::vector<std::string> actorKeys = allCustomStringRecordsMatrix[0];
             if (actorKeys.size() > 0) {
-                conditions.push_back([actorKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.actor.strings, actorKeys);});
+                conditions.push_back([actorKeys](Graph::Action::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.actor.strings, actorKeys);});
             }
 
             if (allCustomStringRecordsMatrix.size() > 1) {
                 std::vector<std::string> targetKeys = allCustomStringRecordsMatrix[1];
                 if (targetKeys.size() > 0) {
-                    conditions.push_back([targetKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.target.strings, targetKeys);});
+                    conditions.push_back([targetKeys](Graph::Action::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.target.strings, targetKeys);});
                 }
             }
 
             if (allCustomStringRecordsMatrix.size() > 2) {
                 std::vector<std::string> performerKeys = allCustomStringRecordsMatrix[2];
                 if (performerKeys.size() > 0) {
-                    conditions.push_back([performerKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.performer.strings, performerKeys);});
+                    conditions.push_back([performerKeys](Graph::Action::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.performer.strings, performerKeys);});
                 }
             }
         }
@@ -1326,20 +1326,20 @@ namespace PapyrusMetadata {
 
             std::vector<std::string> actorKeys = anyCustomIntListRecordMatrix[0];
             if (actorKeys.size() > 0) {
-                conditions.push_back([actorKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.actor.intLists, actorKeys);});
+                conditions.push_back([actorKeys](Graph::Action::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.actor.intLists, actorKeys);});
             }
 
             if (anyCustomIntListRecordMatrix.size() > 1) {
                 std::vector<std::string> targetKeys = anyCustomIntListRecordMatrix[1];
                 if (targetKeys.size() > 0) {
-                    conditions.push_back([targetKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.target.intLists, targetKeys);});
+                    conditions.push_back([targetKeys](Graph::Action::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.target.intLists, targetKeys);});
                 }
             }
 
             if (anyCustomIntListRecordMatrix.size() > 2) {
                 std::vector<std::string> performerKeys = anyCustomIntListRecordMatrix[2];
                 if (performerKeys.size() > 0) {
-                    conditions.push_back([performerKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.performer.intLists, performerKeys);});
+                    conditions.push_back([performerKeys](Graph::Action::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.performer.intLists, performerKeys);});
                 }
             }
         }
@@ -1349,20 +1349,20 @@ namespace PapyrusMetadata {
 
             std::vector<std::string> actorKeys = allCustomIntListRecordsMatrix[0];
             if (actorKeys.size() > 0) {
-                conditions.push_back([actorKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.actor.intLists, actorKeys);});
+                conditions.push_back([actorKeys](Graph::Action::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.actor.intLists, actorKeys);});
             }
 
             if (allCustomIntListRecordsMatrix.size() > 1) {
                 std::vector<std::string> targetKeys = allCustomIntListRecordsMatrix[1];
                 if (targetKeys.size() > 0) {
-                    conditions.push_back([targetKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.target.intLists, targetKeys);});
+                    conditions.push_back([targetKeys](Graph::Action::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.target.intLists, targetKeys);});
                 }
             }
 
             if (allCustomIntListRecordsMatrix.size() > 2) {
                 std::vector<std::string> performerKeys = allCustomIntListRecordsMatrix[2];
                 if (performerKeys.size() > 0) {
-                    conditions.push_back([performerKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.performer.intLists, performerKeys);});
+                    conditions.push_back([performerKeys](Graph::Action::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.performer.intLists, performerKeys);});
                 }
             }
         }
@@ -1372,20 +1372,20 @@ namespace PapyrusMetadata {
 
             std::vector<std::string> actorKeys = anyCustomFloatListRecordMatrix[0];
             if (actorKeys.size() > 0) {
-                conditions.push_back([actorKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.actor.floatLists, actorKeys);});
+                conditions.push_back([actorKeys](Graph::Action::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.actor.floatLists, actorKeys);});
             }
 
             if (anyCustomFloatListRecordMatrix.size() > 1) {
                 std::vector<std::string> targetKeys = anyCustomFloatListRecordMatrix[1];
                 if (targetKeys.size() > 0) {
-                    conditions.push_back([targetKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.target.floatLists, targetKeys);});
+                    conditions.push_back([targetKeys](Graph::Action::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.target.floatLists, targetKeys);});
                 }
             }
 
             if (anyCustomFloatListRecordMatrix.size() > 2) {
                 std::vector<std::string> performerKeys = anyCustomFloatListRecordMatrix[2];
                 if (performerKeys.size() > 0) {
-                    conditions.push_back([performerKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.performer.floatLists, performerKeys);});
+                    conditions.push_back([performerKeys](Graph::Action::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.performer.floatLists, performerKeys);});
                 }
             }
         }
@@ -1395,20 +1395,20 @@ namespace PapyrusMetadata {
 
             std::vector<std::string> actorKeys = allCustomFloatListRecordsMatrix[0];
             if (actorKeys.size() > 0) {
-                conditions.push_back([actorKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.actor.floatLists, actorKeys);});
+                conditions.push_back([actorKeys](Graph::Action::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.actor.floatLists, actorKeys);});
             }
 
             if (allCustomFloatListRecordsMatrix.size() > 1) {
                 std::vector<std::string> targetKeys = allCustomFloatListRecordsMatrix[1];
                 if (targetKeys.size() > 0) {
-                    conditions.push_back([targetKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.target.floatLists, targetKeys);});
+                    conditions.push_back([targetKeys](Graph::Action::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.target.floatLists, targetKeys);});
                 }
             }
 
             if (allCustomFloatListRecordsMatrix.size() > 2) {
                 std::vector<std::string> performerKeys = allCustomFloatListRecordsMatrix[2];
                 if (performerKeys.size() > 0) {
-                    conditions.push_back([performerKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.performer.floatLists, performerKeys);});
+                    conditions.push_back([performerKeys](Graph::Action::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.performer.floatLists, performerKeys);});
                 }
             }
         }
@@ -1418,20 +1418,20 @@ namespace PapyrusMetadata {
 
             std::vector<std::string> actorKeys = anyCustomStringListRecordMatrix[0];
             if (actorKeys.size() > 0) {
-                conditions.push_back([actorKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.actor.stringLists, actorKeys);});
+                conditions.push_back([actorKeys](Graph::Action::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.actor.stringLists, actorKeys);});
             }
 
             if (anyCustomStringListRecordMatrix.size() > 1) {
                 std::vector<std::string> targetKeys = anyCustomStringListRecordMatrix[1];
                 if (targetKeys.size() > 0) {
-                    conditions.push_back([targetKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.target.stringLists, targetKeys);});
+                    conditions.push_back([targetKeys](Graph::Action::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.target.stringLists, targetKeys);});
                 }
             }
 
             if (anyCustomStringListRecordMatrix.size() > 2) {
                 std::vector<std::string> performerKeys = anyCustomStringListRecordMatrix[2];
                 if (performerKeys.size() > 0) {
-                    conditions.push_back([performerKeys](Graph::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.performer.stringLists, performerKeys);});
+                    conditions.push_back([performerKeys](Graph::Action::Action action) { return MapUtil::containsAnyKey(action.attributes->roles.performer.stringLists, performerKeys);});
                 }
             }
         }
@@ -1441,26 +1441,26 @@ namespace PapyrusMetadata {
 
             std::vector<std::string> actorKeys = allCustomStringListRecordsMatrix[0];
             if (actorKeys.size() > 0) {
-                conditions.push_back([actorKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.actor.stringLists, actorKeys);});
+                conditions.push_back([actorKeys](Graph::Action::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.actor.stringLists, actorKeys);});
             }
 
             if (allCustomStringListRecordsMatrix.size() > 1) {
                 std::vector<std::string> targetKeys = allCustomStringListRecordsMatrix[1];
                 if (targetKeys.size() > 0) {
-                    conditions.push_back([targetKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.target.stringLists, targetKeys);});
+                    conditions.push_back([targetKeys](Graph::Action::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.target.stringLists, targetKeys);});
                 }
             }
 
             if (allCustomStringListRecordsMatrix.size() > 2) {
                 std::vector<std::string> performerKeys = allCustomStringListRecordsMatrix[2];
                 if (performerKeys.size() > 0) {
-                    conditions.push_back([performerKeys](Graph::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.performer.stringLists, performerKeys);});
+                    conditions.push_back([performerKeys](Graph::Action::Action action) { return MapUtil::containsAllKeys(action.attributes->roles.performer.stringLists, performerKeys);});
                 }
             }
         }
 
 
-        return findActions(id, [&conditions](Graph::Action action) {return checkConditions(conditions, action);});
+        return findActions(id, [&conditions](Graph::Action::Action action) {return checkConditions(conditions, action);});
     }
 #pragma endregion
 #pragma endregion
@@ -1556,7 +1556,7 @@ namespace PapyrusMetadata {
     std::vector<std::string> GetAllActionsTags(RE::StaticFunctionTag*, std::string id) {
         std::set<std::string> tags;
         if (auto node = Graph::GraphTable::getNodeById(id)) {
-            for (Graph::Action action : node->actions) {
+            for (Graph::Action::Action action : node->actions) {
                 for (std::string tag : action.attributes->tags) {
                     tags.insert(tag);
                 }
@@ -1578,7 +1578,7 @@ namespace PapyrusMetadata {
     bool HasActionTagOnAny(RE::StaticFunctionTag*, std::string id, std::string tag) {
         StringUtil::toLower(&tag);
         if (auto node = Graph::GraphTable::getNodeById(id)) {
-            for (Graph::Action action: node->actions) {
+            for (Graph::Action::Action action: node->actions) {
                 if (VectorUtil::contains(action.attributes->tags, tag)) {
                     return true;
                 }
@@ -1604,7 +1604,7 @@ namespace PapyrusMetadata {
     bool HasAnyActionTagOnAny(RE::StaticFunctionTag*, std::string id, std::vector<std::string> tags) {
         StringUtil::toLower(&tags);
         if (auto node = Graph::GraphTable::getNodeById(id)) {
-            for (Graph::Action action : node->actions) {
+            for (Graph::Action::Action action : node->actions) {
                 if (VectorUtil::containsAny(action.attributes->tags, tags)) {
                     return true;
                 }
@@ -1634,7 +1634,7 @@ namespace PapyrusMetadata {
     bool HasAllActionTagsOnAny(RE::StaticFunctionTag*, std::string id, std::vector<std::string> tags) {
         StringUtil::toLower(&tags);
         if (auto node = Graph::GraphTable::getNodeById(id)) {
-            for (Graph::Action action : node->actions) {
+            for (Graph::Action::Action action : node->actions) {
                 if (VectorUtil::containsAll(action.attributes->tags, tags)) {
                     return true;
                 }
@@ -1650,7 +1650,7 @@ namespace PapyrusMetadata {
     bool HasAllActionTagsOverAll(RE::StaticFunctionTag*, std::string id, std::vector<std::string> tags) {
         StringUtil::toLower(&tags);
         if (auto node = Graph::GraphTable::getNodeById(id)) {
-            for (Graph::Action action : node->actions) {
+            for (Graph::Action::Action action : node->actions) {
                 std::erase_if(tags, [action](std::string tag) {return VectorUtil::contains(action.attributes->tags, tag);});
                 if (tags.empty()) {
                     return true;
@@ -1684,7 +1684,7 @@ namespace PapyrusMetadata {
         std::set<std::string> ret;
 
         if (auto node = Graph::GraphTable::getNodeById(id)) {
-            for (Graph::Action action : node->actions) {
+            for (Graph::Action::Action action : node->actions) {
                 for (auto& tag : action.attributes->tags) {
                     if (VectorUtil::contains(tags, tag)) {
                         ret.insert(tag);
@@ -2671,7 +2671,7 @@ namespace PapyrusMetadata {
 
         StringUtil::toLower(&record);
         if (auto node = Graph::GraphTable::getNodeById(id)) {
-            for (Graph::Action action : node->actions) {
+            for (Graph::Action::Action action : node->actions) {
                 if (action.roles.actor == position) {
                     auto it = action.attributes->roles.actor.ints.find(record);
                     if (it != action.attributes->roles.actor.ints.end()) {
@@ -2707,7 +2707,7 @@ namespace PapyrusMetadata {
 
         StringUtil::toLower(&record);
         if (auto node = Graph::GraphTable::getNodeById(id)) {
-            for (Graph::Action action : node->actions) {
+            for (Graph::Action::Action action : node->actions) {
                 if (action.roles.actor == position) {
                     auto it = action.attributes->roles.actor.ints.find(record);
                     if (it != action.attributes->roles.actor.ints.end()) {
@@ -2743,7 +2743,7 @@ namespace PapyrusMetadata {
 
         StringUtil::toLower(&record);
         if (auto node = Graph::GraphTable::getNodeById(id)) {
-            for (Graph::Action action : node->actions) {
+            for (Graph::Action::Action action : node->actions) {
                 if (action.roles.actor == position) {
                     auto it = action.attributes->roles.actor.ints.find(record);
                     if (it != action.attributes->roles.actor.ints.end()) {
@@ -2773,7 +2773,7 @@ namespace PapyrusMetadata {
 
         StringUtil::toLower(&record);
         if (auto node = Graph::GraphTable::getNodeById(id)) {
-            for (Graph::Action action : node->actions) {
+            for (Graph::Action::Action action : node->actions) {
                 if (action.roles.actor == position) {
                     auto it = action.attributes->roles.actor.ints.find(record);
                     if (it != action.attributes->roles.actor.ints.end()) {
@@ -2804,7 +2804,7 @@ namespace PapyrusMetadata {
 
         StringUtil::toLower(&record);
         if (auto node = Graph::GraphTable::getNodeById(id)) {
-            for (Graph::Action action : node->actions) {
+            for (Graph::Action::Action action : node->actions) {
                 if (action.roles.actor == position) {
                     auto it = action.attributes->roles.actor.floats.find(record);
                     if (it != action.attributes->roles.actor.floats.end()) {
@@ -2840,7 +2840,7 @@ namespace PapyrusMetadata {
 
         StringUtil::toLower(&record);
         if (auto node = Graph::GraphTable::getNodeById(id)) {
-            for (Graph::Action action : node->actions) {
+            for (Graph::Action::Action action : node->actions) {
                 if (action.roles.actor == position) {
                     auto it = action.attributes->roles.actor.floats.find(record);
                     if (it != action.attributes->roles.actor.floats.end()) {
@@ -2876,7 +2876,7 @@ namespace PapyrusMetadata {
 
         StringUtil::toLower(&record);
         if (auto node = Graph::GraphTable::getNodeById(id)) {
-            for (Graph::Action action : node->actions) {
+            for (Graph::Action::Action action : node->actions) {
                 if (action.roles.actor == position) {
                     auto it = action.attributes->roles.actor.floats.find(record);
                     if (it != action.attributes->roles.actor.floats.end()) {
@@ -2906,7 +2906,7 @@ namespace PapyrusMetadata {
 
         StringUtil::toLower(&record);
         if (auto node = Graph::GraphTable::getNodeById(id)) {
-            for (Graph::Action action : node->actions) {
+            for (Graph::Action::Action action : node->actions) {
                 if (action.roles.actor == position) {
                     auto it = action.attributes->roles.actor.floats.find(record);
                     if (it != action.attributes->roles.actor.floats.end()) {

@@ -24,7 +24,8 @@
 			"info": "OStimGrindingPenisActorFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE64"
-		}
+		},
+		"toySlot": "genital"
 	},
 	"target":{
 		"info": "the one with the penis",
@@ -46,7 +47,8 @@
 			"info": "OStimGrindingPenisTargetFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE65"
-		}
+		},
+		"toySlot": "genital"
 	},
 	"performer":{
 		"faction":{

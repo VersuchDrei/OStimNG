@@ -57,8 +57,12 @@ namespace Events {
             return RE::BSEventNotifyControl::kContinue;
         }
 
-        if (RE::UI::GetSingleton()->IsMenuOpen("Dialogue Menu") || RE::UI::GetSingleton()->IsMenuOpen("Crafting Menu")) {
+        if (!RE::UI::GetSingleton()->IsCursorHiddenWhenTopmost()) {
             return RE::BSEventNotifyControl::kContinue;
+        }
+
+        if (RE::UI::GetSingleton()->IsMenuOpen("Dialogue Menu") || RE::UI::GetSingleton()->IsMenuOpen("Crafting Menu")) {
+            //return RE::BSEventNotifyControl::kContinue;
         }
 
         for (RE::InputEvent* iEvent = *a_events; iEvent; iEvent = iEvent->next) {

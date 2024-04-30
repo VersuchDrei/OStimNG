@@ -2,7 +2,7 @@ to apply annotations to an animation use hkanno: https://www.nexusmods.com/skyri
 hkanno tutorial by Distar: https://www.youtube.com/watch?v=VFwW9dVUZiE
 
 annotations don't work with FNIS, if you want to use them you have to create a Nemesis patch
-Nemesis patch tool: https://github.com/VersuchDrei/OStimBillyyThreesomePack/releases/tag/1.0
+Nemesis patch tool: https://github.com/VersuchDrei/AnimlistTransitionTool/releases/tag/1.1
 
 OStim registers a bunch of annotations in its Nemesis patch, some of them take parameters in the payload, others are just a simple annotation
 list of annotations that OStim is reacting to:
@@ -89,3 +89,8 @@ examples: OStimBendSoS.2 - causes the schlongs angle to increase by 2, if it is 
 --- OStimResetSoS ---
 resets the schlong angle to the value defined in the scene file (see scenes README)
 syntax: OStimResetSoS
+
+--- OStimPeak ---
+triggers a peak, requires "peaksAnnotated": true for the action in the scene .json
+syntax: OStimPeak.[action]
+example: OStimPeak.0 - triggers a peak for the first action in the scene .json

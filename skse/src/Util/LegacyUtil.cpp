@@ -270,7 +270,7 @@ namespace LegacyUtil {
                         continue;
                     }
 
-                    Graph::Action actionObj = {};
+                    Graph::Action::Action actionObj = {};
 
                     std::string typeStr = type.as_string();
                     StringUtil::toLower(&typeStr);
@@ -302,86 +302,86 @@ namespace LegacyUtil {
         // auto generate data for legacy packs
         if (isOldFormat) {
             auto anim_class = cls_path.filename().string();
-            Graph::Action* actionObj = nullptr;
-            Graph::Action* actionObj2 = nullptr;
+            Graph::Action::Action* actionObj = nullptr;
+            Graph::Action::Action* actionObj2 = nullptr;
             if (anim_class == "Sx") {
-                actionObj = new Graph::Action();
+                actionObj = new Graph::Action::Action();
                 actionObj->type = "vaginalsex";
                 actionObj->roles.actor = 0;
                 actionObj->roles.target = 1;
             } else if (anim_class == "An") {
-                actionObj = new Graph::Action();
+                actionObj = new Graph::Action::Action();
                 actionObj->type = "analsex";
                 actionObj->roles.actor = 0;
                 actionObj->roles.target = 1;
             } else if (anim_class == "BJ" || anim_class == "HhBJ" || anim_class == "PJ" || anim_class == "HhPJ") {
-                actionObj = new Graph::Action();
+                actionObj = new Graph::Action::Action();
                 actionObj->type = "blowjob";
                 actionObj->roles.actor = 1;
                 actionObj->roles.target = 0;
             } else if (anim_class == "VJ") {
-                actionObj = new Graph::Action();
+                actionObj = new Graph::Action::Action();
                 actionObj->type = "cunnilingus";
                 actionObj->roles.actor = 0;
                 actionObj->roles.target = 1;
             } else if (anim_class == "HJ" || anim_class == "ApHJ") {
-                actionObj = new Graph::Action();
+                actionObj = new Graph::Action::Action();
                 actionObj->type = "handjob";
                 actionObj->roles.actor = 1;
                 actionObj->roles.target = 0;
             } else if (anim_class == "Cr") {
-                actionObj = new Graph::Action();
+                actionObj = new Graph::Action::Action();
                 actionObj->type = "rubbingclitoris";
                 actionObj->roles.actor = 0;
                 actionObj->roles.target = 1;
             } else if (anim_class == "Pf1" || anim_class == "Pf2") {
-                actionObj = new Graph::Action();
+                actionObj = new Graph::Action::Action();
                 actionObj->type = "vaginalfingering";
                 actionObj->roles.actor = 0;
                 actionObj->roles.target = 1;
             } else if (anim_class == "BoJ") {
-                actionObj = new Graph::Action();
+                actionObj = new Graph::Action::Action();
                 actionObj->type = "boobjob";
                 actionObj->roles.actor = 1;
                 actionObj->roles.target = 0;
-                actionObj = new Graph::Action();
+                actionObj = new Graph::Action::Action();
                 actionObj->type = "footjob";
                 actionObj->roles.actor = 1;
                 actionObj->roles.target = 0;
             } else if (anim_class == "BoF") {
-                actionObj = new Graph::Action();
+                actionObj = new Graph::Action::Action();
                 actionObj->type = "suckingnipples";
                 actionObj->roles.actor = 0;
                 actionObj->roles.target = 1;
             } else if (anim_class == "Po") {
-                actionObj = new Graph::Action();
+                actionObj = new Graph::Action::Action();
                 actionObj->type = "masturbation";
                 actionObj->roles.actor = 0;
                 actionObj->roles.target = 0;
             } else if (anim_class == "DHJ") {
-                actionObj = new Graph::Action();
+                actionObj = new Graph::Action::Action();
                 actionObj->type = "handjob";
                 actionObj->roles.actor = 1;
                 actionObj->roles.target = 0;
-                actionObj2 = new Graph::Action();
+                actionObj2 = new Graph::Action::Action();
                 actionObj2->type = "handjob";
                 actionObj2->roles.actor = 1;
                 actionObj2->roles.target = 2;
             } else if (anim_class == "VBJ") {
-                actionObj = new Graph::Action();
+                actionObj = new Graph::Action::Action();
                 actionObj->type = "blowjob";
                 actionObj->roles.actor = 1;
                 actionObj->roles.target = 0;
-                actionObj2 = new Graph::Action();
+                actionObj2 = new Graph::Action::Action();
                 actionObj2->type = "cunnilingus";
                 actionObj2->roles.actor = 0;
                 actionObj2->roles.target = 1;
             } else if (anim_class == "VHJ") {
-                actionObj = new Graph::Action();
+                actionObj = new Graph::Action::Action();
                 actionObj->type = "handjob";
                 actionObj->roles.actor = 1;
                 actionObj->roles.target = 0;
-                actionObj2 = new Graph::Action();
+                actionObj2 = new Graph::Action::Action();
                 actionObj2->type = "cunnilingus";
                 actionObj2->roles.actor = 0;
                 actionObj2->roles.target = 1;
@@ -478,7 +478,7 @@ namespace LegacyUtil {
 
         if (node->findAction("vaginalsex") != -1) return "OStim/sexual/vaginalsex_mf";
         if (node->findAction("analsex") != -1) return "OStim/sexual/analsex_mf";
-        if (node->findAction([&](Graph::Action action) { return action.type == "blowjob" && action.roles.target == action.roles.performer; }) != -1) return "OStim/sexual/facefuck_mf";
+        if (node->findAction([&](Graph::Action::Action action) { return action.type == "blowjob" && action.roles.target == action.roles.performer; }) != -1) return "OStim/sexual/facefuck_mf";
         if (node->findAction("blowjob") != -1) return "OStim/sexual/blowjob_mf";
         if (node->findAction("cunnilingus") != -1) return "OStim/sexual/cunnilingus_mf";
         if (node->findAction("boobjob") != -1) return "OStim/sexual/boobjob_mf";

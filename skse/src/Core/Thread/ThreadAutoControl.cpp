@@ -1,6 +1,7 @@
 #include "Core/Thread.h"
 
 #include "Graph/GraphTable.h"
+#include "MCM/MCMTable.h"
 #include "Util/Constants.h"
 #include "Util/VectorUtil.h"
 
@@ -25,8 +26,8 @@ namespace OStim {
         return true;
     }
 
-    bool forAnyAction(Graph::Node* node, std::function<bool(Graph::Action&)> condition) {
-        for (Graph::Action& action : node->actions) {
+    bool forAnyAction(Graph::Node* node, std::function<bool(Graph::Action::Action&)> condition) {
+        for (Graph::Action::Action& action : node->actions) {
             if (condition(action)) {
                 return true;
             }
@@ -65,7 +66,7 @@ namespace OStim {
         conditions.push_back([&](Graph::Node* node) { return node->findAnyAction({"analsex", "tribbing", "vaginalsex"}) == -1; });
         addFurniture(conditions, furnitureType);
         conditions.push_back([&](Graph::Node* node) {
-            return forAnyAction(node, [&](Graph::Action& action) {
+            return forAnyAction(node, [&](Graph::Action::Action& action) {
                 return VectorUtil::contains(action.attributes->tags, std::string("sexual"));
             });
         });

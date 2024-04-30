@@ -4,6 +4,7 @@
 
 #include "GameAPI/GameCamera.h"
 #include "Graph/GraphTable.h"
+#include "MCM/MCMTable.h"
 #include "UI/UIState.h"
 #include "Util/Constants.h"
 #include "Util/VectorUtil.h"

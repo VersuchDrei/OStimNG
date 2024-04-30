@@ -45,7 +45,7 @@ namespace Graph {
     }
     
     void Node::mergeNodeIntoActors() {
-        for (Action action : actions) {
+        for (Action::Action action : actions) {
             action.roles.forEach([this, &action](Graph::Role role, int index) {
                 if (index < actors.size()) {
                     actors[index].merge(*action.attributes->roles.get(role));
@@ -168,7 +168,7 @@ namespace Graph {
         return false;
     }
 
-    int Node::findAction(std::function<bool(Action)> condition) {
+    int Node::findAction(std::function<bool(Action::Action)> condition) {
         size_t size = actions.size();
         for (int i = 0; i < size; i++) {
             if (condition(actions[i])) {
@@ -178,7 +178,7 @@ namespace Graph {
         return -1;
     }
 
-    std::vector<int> Node::findActions(std::function<bool(Action)> condition) {
+    std::vector<int> Node::findActions(std::function<bool(Action::Action)> condition) {
         std::vector<int> ret;
         size_t size = actions.size();
         for (int i = 0; i < size; i++) {
@@ -199,40 +199,40 @@ namespace Graph {
     }
 
     int Node::findAction(std::string type) {
-        return findAction([type](Action action) { return action.isType(type); });
+        return findAction([type](Action::Action action) { return action.isType(type); });
     }
 
     int Node::findAnyAction(std::vector<std::string> types) {
-        return findAction([types](Action action) { return action.isType(types); });
+        return findAction([types](Action::Action action) { return action.isType(types); });
     }
 
     int Node::findActionForActor(int position, std::string type) {
-        return findAction([position, type](Action action) {return action.roles.actor == position && action.isType(type);});
+        return findAction([position, type](Action::Action action) {return action.roles.actor == position && action.isType(type);});
     }
 
     int Node::findAnyActionForActor(int position, std::vector<std::string> types) {
-        return findAction([position, types](Action action) {return action.roles.actor == position && action.isType(types);});
+        return findAction([position, types](Action::Action action) {return action.roles.actor == position && action.isType(types);});
     }
 
     int Node::findActionForTarget(int position, std::string type) {
-        return findAction([position, type](Action action) {return action.roles.target == position && action.isType(type);});
+        return findAction([position, type](Action::Action action) {return action.roles.target == position && action.isType(type);});
     }
 
     int Node::findAnyActionForTarget(int position, std::vector<std::string> types) {
-        return findAction([position, types](Action action) {return action.roles.target == position && action.isType(types);});
+        return findAction([position, types](Action::Action action) {return action.roles.target == position && action.isType(types);});
     }
 
     int Node::findActionForActorAndTarget(int actorPosition, int targetPosition, std::string type) {
-        return findAction([actorPosition, targetPosition, type](Action action) {return action.roles.actor == actorPosition && action.roles.target == targetPosition && action.isType(type);});
+        return findAction([actorPosition, targetPosition, type](Action::Action action) {return action.roles.actor == actorPosition && action.roles.target == targetPosition && action.isType(type);});
     }
 
     int Node::findAnyActionForActorAndTarget(int actorPosition, int targetPosition, std::vector<std::string> types) {
-        return findAction([actorPosition, targetPosition, types](Action action) {return action.roles.actor == actorPosition && action.roles.target == targetPosition && action.isType(types);});
+        return findAction([actorPosition, targetPosition, types](Action::Action action) {return action.roles.actor == actorPosition && action.roles.target == targetPosition && action.isType(types);});
     }
 
 
     int Node::getPrimaryPartner(int position) {
-        for (Action& action : actions) {
+        for (Action::Action& action : actions) {
             if (action.roles.actor == position) {
                 return action.roles.target;
             }
@@ -295,7 +295,7 @@ namespace Graph {
             }
         }
 
-        for (Action action : actions) {
+        for (Action::Action action : actions) {
             action.roles.forEach([position, &expression, &action](Graph::Role role, int index) {
                 if (expression) {
                     return;

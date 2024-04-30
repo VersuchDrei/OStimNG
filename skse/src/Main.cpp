@@ -10,6 +10,8 @@
 #include "InterfaceSpec/PluginInterface.h"
 #include "Messaging/IMessages.h"
 #include "Papyrus/Papyrus.h"
+#include "PluginInterface/InterfaceExchangeMessage.h"
+#include "PluginInterfaceImplementation/InterfaceMapImpl.h"
 #include "Serial/Manager.h"
 #include "UI/UIState.h"
 #include "Util/RNGUtil.h"
@@ -48,6 +50,10 @@ namespace {
                 OSAInterfaceExchangeMessage* exchangeMessage = (OSAInterfaceExchangeMessage*)a_msg->data;
                 exchangeMessage->interfaceMap = InterfaceMap::GetSingleton();
             } break;
+            case OStim::InterfaceExchangeMessage::kMessage_ExchangeInterface: {
+                OStim::InterfaceExchangeMessage* message = (OStim::InterfaceExchangeMessage*)a_msg->data;
+                message->interfaceMap = Interface::InterfaceMapImpl::GetSingleton();
+            }
         }
     }
 
@@ -57,11 +63,6 @@ namespace {
                 RE::ScriptEventSourceHolder::GetSingleton()->AddEventSink<RE::TESLoadGameEvent>(Events::EventListener::GetSingleton());
                 SKSE::GetNiNodeUpdateEventSource()->AddEventSink(Events::EventListener::GetSingleton());
                 SKSE::GetCrosshairRefEventSource()->AddEventSink(Events::EventListener::GetSingleton());
-
-                auto message = SKSE::GetMessagingInterface();
-                if (message) {
-                    message->RegisterListener(nullptr, UnspecificedSenderMessageHandler);
-                }
 
                 Core::postLoad();
             } break;
@@ -103,14 +104,15 @@ SKSEPluginLoad(const LoadInterface* skse) {
 
     Init(skse);
 
-    Core::init();
-
     InterfaceMap::GetSingleton()->AddInterface("Messaging", Messaging::MessagingRegistry::GetSingleton());
     InterfaceMap::GetSingleton()->AddInterface("Threads", Interfaces::ThreadInterface::GetSingleton());
 
     auto message = SKSE::GetMessagingInterface();
     if (!message->RegisterListener(MessageHandler)) {
         return false;
+    }
+    if (!message->RegisterListener(nullptr, UnspecificedSenderMessageHandler)) {
+        logger::warn("Plugin Interface wasn't initialized.");
     }
 
     Papyrus::Bind();
@@ -126,7 +128,8 @@ SKSEPluginLoad(const LoadInterface* skse) {
 
     UI::RegisterMenus();
 
-    RNGUtil::setup();
+    Core::init();
+    
     log::info("{} has finished loading.", plugin->GetName());
     return true;
 }

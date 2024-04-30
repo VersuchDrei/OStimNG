@@ -17,7 +17,8 @@
 			"info": "OStimGrindingObjectActorFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE62"
-		}
+		},
+		"toySlot": "genital"
 	},
 	"performer":{
 		"faction":{

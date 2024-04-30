@@ -1,5 +1,6 @@
 #include "Graph/GraphTable.h"
 
+#include "SexToys/ToyTable.h"
 #include "Util/JsonFileLoader.h"
 #include "Util/JsonUtil.h"
 #include "Util/MapUtil.h"
@@ -110,18 +111,25 @@ namespace Graph {
             }
         }
 
+        JsonUtil::loadLowerStringList(json, actor.toySlots, "toySlots", filename, "toy slot", false);
+        Toys::ToyTable::addToySlots(actor.toySlots);
+
         return actor;
     };
 
     void GraphTable::SetupActions() {
         Util::JsonFileLoader::LoadFilesInFolder(
             ACTION_FILE_PATH, [&](std::string path, std::string filename, json json) {
+                std::string type = filename;
+                StringUtil::toLower(&type);
                 if (json.contains("aliases")) {
                     if (json["aliases"].is_array()) {
                         int index = 0;
                         for (auto& alias : json["aliases"]) {
                             if (alias.is_string()) {
-                                actionAliases[alias] = filename;
+                                std::string key = alias;
+                                StringUtil::toLower(&key);
+                                actionAliases[key] = type;
                             } else {
                                 logger::warn("alias {} of action '{}' is not a string", index, filename);
                             }
@@ -133,8 +141,7 @@ namespace Graph {
                 }
 
                 Graph::ActionAttributes attr;
-                attr.type = filename;
-                StringUtil::toLower(&attr.type);
+                attr.type = type;
 
                 attr.roles.forEach([&path, &filename, &json](Role role, ActionActor& actor) {
                     std::string key = *RoleMapAPI::KEYS.get(role);
@@ -142,6 +149,10 @@ namespace Graph {
                         actor = parseActionActor(path, filename, json[key]);
                     }
                 });
+
+                if (json.contains("peak")) {
+                    attr.peakType = Action::Peak::PeakType::fromJson(filename, json["peak"]);
+                }
 
                 if (json.contains("sounds")) {
                     for (auto& sound : json["sounds"]) {
@@ -169,6 +180,7 @@ namespace Graph {
     }
 
     std::string GraphTable::getActionAlias(std::string type) {
+        StringUtil::toLower(&type);
         if (auto it = actionAliases.find(type); it != actionAliases.end()) {
             return it->second;
         }

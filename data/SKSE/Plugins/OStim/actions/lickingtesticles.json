@@ -1,8 +1,10 @@
 {
 	"aliases":[
+		"lickingscrotum",
+		"lickingtesticle",
+		"lickscrotum",
 		"licktesticle",
-		"licktesticles",
-		"lickingtesticle"
+		"licktesticles"
 	],
 	"actor":{
 		"info": "the one with the mouth",
@@ -60,7 +62,8 @@
 				"mod": "OStim.esp",
 				"formid": "0xEA8"
 			}
-		]
+		],
+		"toySlot": "scrotum"
 	},
 	"performer":{
 		"floats":{

@@ -55,7 +55,8 @@
 			"info": "OStimGropingTesticlesTargetFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE6F"
-		}
+		},
+		"toySlot": "scrotum"
 	},
 	"performer":{
 		"floats":{

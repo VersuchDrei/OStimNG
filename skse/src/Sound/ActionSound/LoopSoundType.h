@@ -8,7 +8,7 @@ namespace Sound {
         inline LoopSoundType(SoundTypeParams params, int delay)
             : SoundType(params), delay{delay} {};
 
-        virtual SoundPlayer* create(OStim::ThreadActor* actor, OStim::ThreadActor* target);
+        virtual SoundPlayer* create(int actionIndex, OStim::ThreadActor* actor, OStim::ThreadActor* target);
 
     private:
         int delay;
