@@ -1,6 +1,21 @@
 #include "ToyTable.h"
 
+#include "ToyThread.h"
+
+#include "Core/ThreadManager.h"
+
 namespace Toys {
+    ToyTable::ToyTable() {
+        OStim::ThreadManager::GetSingleton()->registerThreadStartListener([this](OStim::Thread* thread) {
+            if (thread->isPlayerThread()) {
+                reloadToys();
+            }
+        });
+
+        reloadToys();
+    }
+
+
     void ToyTable::addToySlots(std::vector<std::string>& slots) {
         for (std::string slot : slots) {
             toySlots.insert(slot);
@@ -9,20 +24,28 @@ namespace Toys {
 
 
     void ToyTable::reloadToys() {
+        std::unique_lock reloadLock(_reloadLock);
         if (isReloading) {
             return;
         }
 
         isReloading = true;
         toys.clear();
-        std::vector<OStim::SexToyReloadListener*> listeners = reloadListeners;
-        std::thread([listeners]() {
-            for (OStim::SexToyReloadListener* listener : listeners) {
+        std::thread([this]() {
+            for (OStim::SexToyReloadListener* listener : reloadListeners) {
                 listener->reloadToys();
             }
             isReloading = false;
-            // TODO inform thread
+            OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->getPlayerThread();
+            if (thread) {
+                new ToyThread(thread);
+            }
         }).detach();
+    }
+
+    void ToyTable::addToy(OStim::SexToy* toy) {
+        toys.push_back({toy});
+        logger::info("registered toy '{}'", toy->getName());
     }
 
     ToyWrapper* ToyTable::getToy(std::string id) {

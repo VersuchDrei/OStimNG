@@ -3,7 +3,7 @@
 #include "SexToy.h"
 #include "SexToyReloadListener.h"
 
-#include "PluginInterface/PluginInterface.h"
+#include "../PluginInterface.h"
 
 namespace OStim{
     class SexToyInterface : public PluginInterface {

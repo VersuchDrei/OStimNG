@@ -35,6 +35,6 @@ namespace Interface {
     }
 
     void InterfaceMapImpl::setupInterfaces() {
-        addInterface(OStim::SexToyInterface::NAME, SexToyInterfaceImpl::GetSingleton());
+        addInterface(OStim::SexToyInterface::NAME, SexToyInterfaceImpl::getSingleton());
     }
 }

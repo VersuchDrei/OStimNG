@@ -7,14 +7,15 @@ namespace Toys {
         : toy{toy},
           id{std::string(toy->getID())},
           name{std::string(toy->getName())},
-          settings{ToyTable::getSettings()->getToySettings(id)} {
+          settings{ToyTable::getSingleton()->getSettings()->getToySettings(id)} {
     }
 
 
     void ToyWrapper::turnOn() {
         if (users <= 0) {
             if (settings->enabled) {
-                toy->turnOn();
+                OStim::SexToy* toy = this->toy;
+                std::thread([toy]() { toy->turnOn(); }).detach();
             }
             if (users < 0) {
                 // hard stopped before, so need to unflag it
@@ -39,12 +40,23 @@ namespace Toys {
         users--;
         if (users == 0 || overwrite) {
             if (settings->enabled) {
-                toy->turnOff();
+                OStim::SexToy* toy = this->toy;
+                std::thread([toy]() { toy->turnOff(); }).detach();
             }
             if (users > 0) {
                 // flag toy as hard stopped
                 users *= -1;
             }
         }
+    }
+
+    void ToyWrapper::update(float baseline, float peak, uint16_t peakInterval) {
+        OStim::SexToy* toy = this->toy;
+        std::thread([toy, baseline, peak, peakInterval]() { toy->update(baseline, peak, peakInterval); }).detach();
+    }
+
+    void ToyWrapper::stop() {
+        OStim::SexToy* toy = this->toy;
+        std::thread([toy]() { toy->stop(); }).detach();
     }
 }

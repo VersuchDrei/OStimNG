@@ -15,7 +15,7 @@ namespace Threading {
             void handlePeakAnnotation(actionIndex index);
 
         private:
-            OStim::Thread* thread;
+            OStim::Thread* thread = nullptr;
 
             void sendPeak(actionIndex action);
 

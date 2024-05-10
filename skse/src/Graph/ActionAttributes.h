@@ -11,7 +11,7 @@ namespace Graph {
     public:
         std::string type;
         RoleMap<ActionActor> roles;
-        Action::Peak::PeakType* peakType;
+        Action::Peak::PeakType* peakType = nullptr;
         std::vector<Sound::SoundType*> sounds;
         std::vector<std::string> tags;
 

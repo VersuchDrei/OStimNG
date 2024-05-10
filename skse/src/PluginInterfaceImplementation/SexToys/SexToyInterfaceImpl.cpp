@@ -8,10 +8,10 @@ namespace Interface {
     }
 
     void SexToyInterfaceImpl::registerReloadListener(OStim::SexToyReloadListener* listener) {
-        Toys::ToyTable::addReloadListener(listener);
+        Toys::ToyTable::getSingleton()->addReloadListener(listener);
     }
 
     void SexToyInterfaceImpl::addToy(OStim::SexToy* toy) {
-        Toys::ToyTable::addToy(toy);
+        Toys::ToyTable::getSingleton()->addToy(toy);
     }
 }

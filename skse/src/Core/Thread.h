@@ -76,7 +76,7 @@ namespace OStim {
 
         inline bool isPlayerThread() { return playerThread; }
 
-        inline Threading::Thread::NodeHandler* getNodeHandler() { return &nodeHandler; }
+        inline Threading::Thread::NodeHandler* getNodeHandler() { return nodeHandler; }
     
         virtual RE::BSEventNotifyControl ProcessEvent(const RE::BSAnimationGraphEvent* a_event, RE::BSTEventSource<RE::BSAnimationGraphEvent>* a_eventSource) override;
 
@@ -105,7 +105,7 @@ namespace OStim {
         int stopTimer = 0;
         bool isStopping = false;
 
-        Threading::Thread::NodeHandler nodeHandler;
+        Threading::Thread::NodeHandler* nodeHandler = nullptr;
 
         std::vector<Sound::SoundPlayer*> soundPlayers;
 

@@ -20,7 +20,7 @@ namespace Core {
     void init() { 
         RNGUtil::setup();
 
-        Interface::InterfaceMapImpl::GetSingleton()->setupInterfaces();
+        Interface::InterfaceMapImpl::getSingleton()->setupInterfaces();
     }
 
     void postLoad() {
@@ -29,7 +29,7 @@ namespace Core {
     }
 
     void postpostLoad() {
-        Toys::ToyTable::reloadToys();
+        Toys::ToyTable::getSingleton();
     }
 
     void dataLoaded() {

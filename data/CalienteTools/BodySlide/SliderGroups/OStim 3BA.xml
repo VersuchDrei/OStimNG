@@ -8,6 +8,10 @@
         <Member name="OStim Calyps Strap-On 3BA"/>
         <Member name="OStim Calyps Strap-On Simple 3BA"/>
     </Group>
+    <Group name="CBBE">
+        <Member name="OStim Calyps Strap-On 3BA"/>
+        <Member name="OStim Calyps Strap-On Simple 3BA"/>
+    </Group>
     <Group name="OStim 3BA">
         <Member name="OStim Calyps Strap-On 3BA"/>
         <Member name="OStim Calyps Strap-On Simple 3BA"/>

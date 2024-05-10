@@ -89,6 +89,11 @@
 			"maxInterval":700
 		}	
 	],
+	"peak":{
+		"type":"bonedistance",
+		"actorBone":"NPC Genitals01 [Gen01]",
+		"targetBone":"NPC Anus Deep1"
+	},
 	"tags":[
 		"sexual"
 	]

@@ -11,7 +11,7 @@ namespace Util {
         Singleton& operator=(Singleton&&) = delete;
         ~Singleton() = default;
 
-        static T* GetSingleton() noexcept {
+        static T* getSingleton() noexcept {
             static T singleton;
             return std::addressof(singleton);
         }

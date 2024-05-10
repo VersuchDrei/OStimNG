@@ -28,7 +28,9 @@
 #include "Util.h"
 
 namespace OStim {
-    Thread::Thread(int threadID, ThreadStartParams params) : m_threadId{threadID}, furniture{params.furniture}, nodeHandler{{this}} {
+    Thread::Thread(int threadID, ThreadStartParams params) : m_threadId{threadID}, furniture{params.furniture} {
+        nodeHandler = new Threading::Thread::NodeHandler(this);
+
         for (GameAPI::GameActor actor : params.actors) {
             playerThread |= actor.isPlayer();
         }
@@ -762,7 +764,7 @@ namespace OStim {
         } else if (tag == "OStimResetSoS") {
             GetActor(actor)->offsetSoSBend(0);
         } else if (tag == "OStimPeak") {
-            nodeHandler.handlePeakAnnotation(std::stoi(a_event->payload.c_str()));
+            nodeHandler->handlePeakAnnotation(std::stoi(a_event->payload.c_str()));
         }
 
         return RE::BSEventNotifyControl::kContinue;

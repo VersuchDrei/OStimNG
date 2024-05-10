@@ -38,5 +38,13 @@ namespace OStim {
         std::vector<ThreadId> threadStopQueue;
 
         void stopThreadNoLock(ThreadId threadID);
+
+#pragma region events
+    public:
+        inline void registerThreadStartListener(std::function<void(Thread*)> listener) { threadStartListeners.push_back(listener); }
+
+    private:
+        std::vector<std::function<void(Thread*)>> threadStartListeners;
+#pragma endregion
     };
 }  // namespace OStim

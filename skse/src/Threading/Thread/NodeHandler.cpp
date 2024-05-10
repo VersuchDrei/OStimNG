@@ -10,6 +10,7 @@ namespace Threading {
             thread->registerPeakListener([this](actionIndex action) { peak(action); });
             thread->registerNodeChangedListener([this]() { nodeChanged(); });
             thread->registerSpeedChangedListener([this]() { speedChanged(); });
+            thread->registerThreadEndListener([this]() { threadEnd(); });
         }
 
         void NodeHandler::handlePeakAnnotation(actionIndex index) {
@@ -65,6 +66,7 @@ namespace Threading {
 
         void NodeHandler::threadEnd() {
             EventUtil::invokeListeners(threadEndListeners);
+            delete this;
         }
     }
 }

@@ -3,6 +3,7 @@
 
 #include "GameAPI/Game.h"
 #include "Util/Constants.h"
+#include "Util/EventUtil.h"
 #include "Util/VectorUtil.h"
 
 namespace OStim {
@@ -67,6 +68,9 @@ namespace OStim {
         } else if (!params.startingNodes.empty()) {
             thread->playSequence(params.startingNodes, false, false);
         }
+
+        EventUtil::invokeListeners(threadStartListeners, thread);
+
         return threadID;
     }
 

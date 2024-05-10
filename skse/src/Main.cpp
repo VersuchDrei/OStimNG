@@ -50,9 +50,9 @@ namespace {
                 OSAInterfaceExchangeMessage* exchangeMessage = (OSAInterfaceExchangeMessage*)a_msg->data;
                 exchangeMessage->interfaceMap = InterfaceMap::GetSingleton();
             } break;
-            case OStim::InterfaceExchangeMessage::kMessage_ExchangeInterface: {
+            case OStim::InterfaceExchangeMessage::MESSAGE_TYPE: {
                 OStim::InterfaceExchangeMessage* message = (OStim::InterfaceExchangeMessage*)a_msg->data;
-                message->interfaceMap = Interface::InterfaceMapImpl::GetSingleton();
+                message->interfaceMap = Interface::InterfaceMapImpl::getSingleton();
             }
         }
     }

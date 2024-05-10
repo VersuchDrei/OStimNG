@@ -4,29 +4,34 @@
 #include "ToyWrapper.h"
 
 #include "PluginInterface/SexToys/SexToyReloadListener.h"
+#include "Util/Singleton.h"
 
 namespace Toys {
-    class ToyTable {
+    class ToyTable : public Util::Singleton<ToyTable> {
     public:
-        inline static void addReloadListener(OStim::SexToyReloadListener* listener) { reloadListeners.push_back(listener); }
+        ToyTable();
 
-        static void addToySlots(std::vector<std::string>& slots);
-        inline static std::set<std::string> getToySlots() { return toySlots; }
+        inline void addReloadListener(OStim::SexToyReloadListener* listener) { reloadListeners.push_back(listener); }
 
-        static void reloadToys();
-        inline static void addToy(OStim::SexToy* toy) { toys.push_back({toy}); }
-        inline static std::vector<ToyWrapper>* getToys() { return &toys; }
-        static ToyWrapper* getToy(std::string id);
+        void addToySlots(std::vector<std::string>& slots);
+        inline std::set<std::string> getToySlots() { return toySlots; }
 
-        inline static Settings::Settings* getSettings() { return &settings; }
+        void reloadToys();
+        void addToy(OStim::SexToy* toy);
+        inline std::vector<ToyWrapper>* getToys() { return &toys; }
+        ToyWrapper* getToy(std::string id);
+
+        inline Settings::Settings* getSettings() { return &settings; }
 
     private:
-        inline static bool isReloading = false;
-        inline static std::vector<OStim::SexToyReloadListener*> reloadListeners;
+        std::mutex _reloadLock;
 
-        inline static std::set<std::string> toySlots;
-        inline static std::vector<ToyWrapper> toys;
+        bool isReloading = false;
+        std::vector<OStim::SexToyReloadListener*> reloadListeners;
 
-        inline static Settings::Settings settings;
+        std::set<std::string> toySlots;
+        std::vector<ToyWrapper> toys;
+
+        Settings::Settings settings;
     };
 }

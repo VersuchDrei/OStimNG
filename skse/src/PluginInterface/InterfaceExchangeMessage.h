@@ -5,7 +5,7 @@
 namespace OStim {
     struct InterfaceExchangeMessage {
         enum : uint32_t {
-            kMessage_ExchangeInterface = 'OST'
+            MESSAGE_TYPE = 'OST'
         };
 
         InterfaceMap* interfaceMap = NULL;

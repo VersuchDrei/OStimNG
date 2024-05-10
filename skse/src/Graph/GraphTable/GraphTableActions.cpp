@@ -111,8 +111,8 @@ namespace Graph {
             }
         }
 
-        JsonUtil::loadLowerStringList(json, actor.toySlots, "toySlots", filename, "toy slot", false);
-        Toys::ToyTable::addToySlots(actor.toySlots);
+        JsonUtil::loadLowerStringList(json, actor.toySlots, "toySlot", filename, "toy slot", false);
+        Toys::ToyTable::getSingleton()->addToySlots(actor.toySlots);
 
         return actor;
     };

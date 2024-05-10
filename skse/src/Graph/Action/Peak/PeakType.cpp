@@ -10,8 +10,18 @@ namespace Graph {
     namespace Action {
         namespace Peak {
             PeakType* PeakType::fromJson(std::string filename, json json) {
+                if (!json.is_object()) {
+                    logger::warn("property 'peak' of action {} is malformed", filename);
+                    return nullptr;
+                }
+
                 if (!json.contains("type")) {
                     logger::warn("action {} does not have field 'peak.type' defined", filename);
+                    return nullptr;
+                }
+
+                if (!json["type"].is_string()) {
+                    logger::warn("property 'peak.type' of action {} is not a string", filename);
                 }
 
                 PeakTypeParams params;

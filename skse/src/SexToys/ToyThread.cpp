@@ -32,18 +32,24 @@ namespace Toys {
         groups.clear();
 
         
-        std::vector<ToyWrapper>* toys = ToyTable::getToys();
+        std::vector<ToyWrapper>* toys = ToyTable::getSingleton()->getToys();
         std::set<ToyWrapper*> toysInUse;
 
         for (auto& toy : *toys) {
             if (!toy.getSettings()->enabled) {
+                logger::info("toy disabled: {}", toy.getName());
                 toysInUse.insert(&toy);
+            } else {
+                logger::info("toy enabled: {}", toy.getName());
             }
         }
 
         OStim::Thread* thread = this->thread;
         for (Graph::Action::Action& action : thread->getCurrentNode()->actions) {
+            logger::info("looking at action {} '{}'", action.index, action.attributes->type);
+
             if (toysInUse.size() == toys->size()) {
+                logger::info("all toys in use");
                 break;
             }
 
@@ -53,7 +59,10 @@ namespace Toys {
                 for (std::string slot : actionActor->toySlots) {
                     OStim::ThreadActor* actor = thread->GetActor(*action.roles.get(role));
                     for (ToyWrapper& toy : *toys) {
+                        logger::info("checking toy '{}' for slot '{}'", toy.getName(), slot);
+
                         if (toysInUse.contains(&toy)) {
+                            logger::info("toy already in use");
                             continue;
                         }
 
@@ -61,6 +70,7 @@ namespace Toys {
                         Settings::SlotSettings* slotSettings = settings->getSlotSettings(slot);
 
                         if (!slotSettings->enabled) {
+                            logger::info("slot is disabled");
                             continue;
                         }
 
@@ -100,6 +110,8 @@ namespace Toys {
                         if (doToy) {
                             toysInUse.insert(&toy);
                             slotToys.push_back({actor, slot, &toy});
+                        } else {
+                            logger::info("toy not synced");
                         }
                     }
                 }
