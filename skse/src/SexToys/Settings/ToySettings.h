@@ -13,6 +13,13 @@ namespace Toys {
             std::unordered_map<std::string, SlotSettings> slotSettings;
 
             SlotSettings* getSlotSettings(std::string slot);
+            SlotSettings* getSlotSettingsUnsafe(std::string slot);
+
+            void serialize(GameAPI::GameSerializationInterface serial);
+            void deserialize(GameAPI::GameSerializationInterface serial);
+
+            json toJson();
+            void loadJson(json& json);
         };
     }
 }

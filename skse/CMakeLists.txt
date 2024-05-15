@@ -98,6 +98,7 @@ set(sources
     src/PluginInterfaceImplementation/InterfaceMapImpl.cpp
 	src/Serial/Manager.cpp
     src/SexToys/Settings/Settings.cpp
+    src/SexToys/Settings/SlotSettings.cpp
     src/SexToys/Settings/ToySettings.cpp
     src/SexToys/ToyGroup.cpp
     src/SexToys/ToyHandler.cpp

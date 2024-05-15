@@ -50,6 +50,7 @@ namespace Threading {
             peakListeners.clear();
             speedChangedListeners.clear();
             nodeChangedListeners.clear();
+            threadEndListeners.clear();
 
             for (Graph::Action::Action& action : thread->getCurrentNode()->actions) {
                 if (action.attributes->peakType && action.doPeaks && !action.peaksAnnotated) {

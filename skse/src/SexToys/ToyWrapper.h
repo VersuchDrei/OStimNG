@@ -17,7 +17,7 @@ namespace Toys {
         void turnOff(bool overwrite);
         inline void turnOff() { turnOff(false); }
 
-        void update(float baseline, float peak, uint16_t peakInterval);
+        void update(float baseline, float peak, int16_t peakInterval);
         void stop();
 
         inline Settings::ToySettings* getSettings() { return settings; }

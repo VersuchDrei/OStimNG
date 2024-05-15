@@ -61,6 +61,13 @@ namespace Toys {
         }
     }
 
+    void ToyGroup::speedChanged() {
+        nextPeakIndex = peakIntervals.size();
+        for (uint16_t& peakInterval : peakIntervals) {
+            peakInterval = 0;
+        }
+    }
+
     void ToyGroup::stop() {
         for (ToyHandler& toy: toys) {
             toy.stop();

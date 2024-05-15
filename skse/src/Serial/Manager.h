@@ -7,6 +7,7 @@ namespace Serialization {
     inline const auto undressingMaskRecord = _byteswap_ulong('UDRM');
     inline const auto oldThreadsRecord = _byteswap_ulong('OLTH');
     inline const auto actorDataRecord = _byteswap_ulong('ACDT');
+    inline const auto toySettingsRecord = _byteswap_ulong('TOYS');
 
     inline uint32_t deserializationErrors = 0;
 

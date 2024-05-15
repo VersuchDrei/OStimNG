@@ -1,6 +1,7 @@
 #include "MCMTable.h"
 
 #include "Serial/Manager.h"
+#include "SexToys/ToyTable.h"
 #include "Util/CompatibilityTable.h"
 #include "Util.h"
 
@@ -70,6 +71,7 @@ namespace MCM {
         json["SetUndressingSlotMask"] = undressingMask;
 
         Serialization::exportSettings(json);
+        Toys::ToyTable::getSingleton()->getSettings()->writeJson(json);
 
         const auto settings_path = util::settings_path();
         std::ofstream file(*settings_path);
@@ -102,5 +104,6 @@ namespace MCM {
         }
 
         Serialization::importSettings(json);
+        Toys::ToyTable::getSingleton()->getSettings()->loadJson(json);
     }
 }

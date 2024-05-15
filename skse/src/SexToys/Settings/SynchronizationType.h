@@ -2,7 +2,7 @@
 
 namespace Toys {
     namespace Settings {
-        enum SynchronizationType {
+        enum SynchronizationType : uint8_t {
             PLAYER,
             MALE,
             FEMALE,

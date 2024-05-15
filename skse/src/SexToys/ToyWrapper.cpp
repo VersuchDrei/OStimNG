@@ -50,7 +50,7 @@ namespace Toys {
         }
     }
 
-    void ToyWrapper::update(float baseline, float peak, uint16_t peakInterval) {
+    void ToyWrapper::update(float baseline, float peak, int16_t peakInterval) {
         OStim::SexToy* toy = this->toy;
         std::thread([toy, baseline, peak, peakInterval]() { toy->update(baseline, peak, peakInterval); }).detach();
     }

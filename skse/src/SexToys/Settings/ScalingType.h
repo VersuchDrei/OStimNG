@@ -2,7 +2,7 @@
 
 namespace Toys {
     namespace Settings {
-        enum ScalingType {
+        enum ScalingType : uint8_t {
             NONE,
             STIMULATION_RATE,
             STIMULATION_VALUE,

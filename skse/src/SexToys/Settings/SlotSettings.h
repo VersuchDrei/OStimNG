@@ -3,6 +3,8 @@
 #include "ScalingType.h"
 #include "SynchronizationType.h"
 
+#include "GameAPI/GameSerializationInterface.h"
+
 namespace Toys {
     namespace Settings {
         struct SlotSettings {
@@ -17,6 +19,12 @@ namespace Toys {
             bool doPeaks = true;
             float minPeak = 0.6f;
             float maxPeak = 1.0f;
+
+            void serialize(GameAPI::GameSerializationInterface serial);
+            void deserialize(GameAPI::GameSerializationInterface serial);
+
+            json toJson();
+            void loadJson(json& json);
         };
     }
 }

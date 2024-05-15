@@ -37,7 +37,7 @@ namespace OStim {
          * @param peak: value between 0.0f and 1.0f for the strength of the toy for peaks, this value is properly filled even if peaks are disabled
          * @param peakInterval: amount of miliseconds between peaks, if peaks are disabled value will be -1, value is estimated based on previous peak timings
          */
-        virtual void update(float baseline, float peak, uint16_t peakInterval) = 0;
+        virtual void update(float baseline, float peak, int16_t peakInterval) = 0;
 
         /**
          * called when the actor climaxes or other events are send

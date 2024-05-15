@@ -13,6 +13,7 @@ namespace Toys {
 
         void loop();
         void peak();
+        void speedChanged();
         void stop();
 
     private:

@@ -5,6 +5,7 @@
 #include "Core/ThreadManager.h"
 #include "Game/Locker.h"
 #include "MCM/MCMTable.h"
+#include "SexToys/ToyTable.h"
 #include "Util/Globals.h"
 #include "Util/MathUtil.h"
 
@@ -131,6 +132,7 @@ namespace Serialization {
         std::unique_lock lock(_lock);
         logger::info("serializing data");
 
+
         if (!serial->OpenRecord(undressingMaskRecord, 0)) {
             logger::error("Unable to open record to write cosave data.");
             return;
@@ -138,6 +140,7 @@ namespace Serialization {
 
         uint32_t undressingMask = MCM::MCMTable::getUndressingMask();
         serial->WriteRecordData(&undressingMask, sizeof(undressingMask));
+
 
         if (!serial->OpenRecord(oldThreadsRecord, 0)) {
             logger::error("Unable to open record to write cosave data.");
@@ -151,6 +154,7 @@ namespace Serialization {
             oldThread.serialize(serial);
         }
 
+
         if (!serial->OpenRecord(actorDataRecord, ACTOR_DATA_VERSION)) {
             logger::error("Unable to open record to write cosave data.");
             return;
@@ -162,6 +166,14 @@ namespace Serialization {
             serial->WriteRecordData(&id, sizeof(id));
             data.serialize(serial);
         }
+
+
+        if (!serial->OpenRecord(toySettingsRecord, 0)) {
+            logger::error("Unable to open record to write cosave data.");
+            return;
+        }
+
+        Toys::ToyTable::getSingleton()->getSettings()->serialize(serial);
     }
 
     void Load(SKSE::SerializationInterface* serial) {
@@ -186,7 +198,7 @@ namespace Serialization {
                 for (int i = 0; i < size; i++) {
                     OldThread::deserialize(serial, oldThreads, deserializationErrors);
                 }
-            } else if (type == actorDataRecord){
+            } else if (type == actorDataRecord) {
                 size_t size;
                 serial->ReadRecordData(&size, sizeof(size));
                 for (int i = 0; i < size; i++) {
@@ -203,6 +215,8 @@ namespace Serialization {
                         logger::warn("cannot resolve actor id {:x}, missing mod?", oldID);
                     }
                 }
+            } else if (type == toySettingsRecord) {
+                Toys::ToyTable::getSingleton()->getSettings()->deserialize(serial);
             } else {
                 logger::warn("Unknown record type in cosave.");
             }
@@ -216,6 +230,7 @@ namespace Serialization {
         OStim::ThreadManager::GetSingleton()->UntrackAllThreads();
         Util::Globals::resetSaveGameValues();
         MCM::MCMTable::resetValues();
+        Toys::ToyTable::getSingleton()->getSettings()->reset();
     }
 
     void exportSettings(json& json) {

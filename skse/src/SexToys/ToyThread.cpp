@@ -6,6 +6,7 @@ namespace Toys {
     ToyThread::ToyThread(OStim::Thread* thread) : thread{thread} {
         thread->registerLoopListener([this]() { loop(); });
         thread->registerPeakListener([this](actionIndex action) { peak(action); });
+        thread->registerSpeedChangedListener([this]() { speedChanged(); });
         thread->registerNodeChangedListener([this]() { nodeChanged(); });
         thread->registerThreadEndListener([this]() { threadEnd(); });
     }
@@ -24,6 +25,12 @@ namespace Toys {
         }
     }
 
+    void ToyThread::speedChanged() {
+        for (ToyGroup& group : groups) {
+            group.speedChanged();
+        }
+    }
+
     void ToyThread::nodeChanged() {
         for (ToyGroup& group : groups) {
             group.stop();
@@ -37,32 +44,25 @@ namespace Toys {
 
         for (auto& toy : *toys) {
             if (!toy.getSettings()->enabled) {
-                logger::info("toy disabled: {}", toy.getName());
                 toysInUse.insert(&toy);
-            } else {
-                logger::info("toy enabled: {}", toy.getName());
             }
         }
 
+        Settings::SynchronizationType globalSyncType = ToyTable::getSingleton()->getSettings()->synchronizationType;
+
         OStim::Thread* thread = this->thread;
         for (Graph::Action::Action& action : thread->getCurrentNode()->actions) {
-            logger::info("looking at action {} '{}'", action.index, action.attributes->type);
-
             if (toysInUse.size() == toys->size()) {
-                logger::info("all toys in use");
                 break;
             }
 
             std::vector<std::tuple<OStim::ThreadActor*, std::string, ToyWrapper*>> slotToys;
-            action.roles.forEach([&slotToys, &thread, &action, &toys, &toysInUse](Graph::Role role, int index) {
+            action.roles.forEach([globalSyncType, &slotToys, &thread, &action, &toys, &toysInUse](Graph::Role role, int index) {
                 Graph::ActionActor* actionActor = action.attributes->roles.get(role);
                 for (std::string slot : actionActor->toySlots) {
                     OStim::ThreadActor* actor = thread->GetActor(*action.roles.get(role));
                     for (ToyWrapper& toy : *toys) {
-                        logger::info("checking toy '{}' for slot '{}'", toy.getName(), slot);
-
                         if (toysInUse.contains(&toy)) {
-                            logger::info("toy already in use");
                             continue;
                         }
 
@@ -70,13 +70,15 @@ namespace Toys {
                         Settings::SlotSettings* slotSettings = settings->getSlotSettings(slot);
 
                         if (!slotSettings->enabled) {
-                            logger::info("slot is disabled");
                             continue;
                         }
 
-                        Settings::SynchronizationType syncType = settings->synchronizationType;
+                        Settings::SynchronizationType syncType = globalSyncType;
                         if (syncType == Settings::SynchronizationType::INDIVIDUAL_SYNCHRONIZATION) {
-                            syncType = settings->getSlotSettings(slot)->synchronizationType;
+                            syncType = settings->synchronizationType;
+                            if (syncType == Settings::SynchronizationType::INDIVIDUAL_SYNCHRONIZATION) {
+                                syncType = settings->getSlotSettings(slot)->synchronizationType;
+                            }
                         }
 
                         bool doToy = false;
@@ -110,8 +112,6 @@ namespace Toys {
                         if (doToy) {
                             toysInUse.insert(&toy);
                             slotToys.push_back({actor, slot, &toy});
-                        } else {
-                            logger::info("toy not synced");
                         }
                     }
                 }

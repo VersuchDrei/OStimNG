@@ -16,6 +16,7 @@ namespace Toys {
 
         void loop();
         void peak(actionIndex action);
+        void speedChanged();
         void nodeChanged();
         void threadEnd();
     };
