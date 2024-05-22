@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Graph/Action/Action.h"
+
 namespace OStim {
     class Thread;
 }

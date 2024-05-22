@@ -1,5 +1,6 @@
 #include "ToyTable.h"
 
+#include "Settings/Settings.h"
 #include "ToyThread.h"
 
 #include "Core/ThreadManager.h"
@@ -36,6 +37,11 @@ namespace Toys {
                 listener->reloadToys();
             }
             isReloading = false;
+
+            if (!Settings::Settings::getSingleton()->getToySettings(Settings::ToySettings::GLOBAL_KEY)->getSlotSettings(Settings::SlotSettings::GLOBAL_KEY)->enabled) {
+                return;
+            }
+
             OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->getPlayerThread();
             if (thread) {
                 new ToyThread(thread);

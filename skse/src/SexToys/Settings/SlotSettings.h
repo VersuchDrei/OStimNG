@@ -1,27 +1,23 @@
 #pragma once
 
-#include "ScalingType.h"
-#include "SynchronizationType.h"
-
-#include "GameAPI/GameSerializationInterface.h"
+#include "ClimaxSettings.h"
+#include "ScalingSettings.h"
+#include "SynchronizationSettings.h"
 
 namespace Toys {
     namespace Settings {
         struct SlotSettings {
         public:
-            bool enabled = true;
-            SynchronizationType synchronizationType = SynchronizationType::PLAYER;
-            ScalingType scalingType = ScalingType::STIMULATION_VALUE;
-            float minScale = 0.0f;
-            float maxScale = 100.0f;
-            float minMagnitude = 0.1f;
-            float maxMagnitude = 0.5f;
-            bool doPeaks = true;
-            float minPeak = 0.6f;
-            float maxPeak = 1.0f;
+            inline static std::string GLOBAL_KEY = "all";
+            static constexpr bool enabledDefault = true;
 
-            void serialize(GameAPI::GameSerializationInterface serial);
-            void deserialize(GameAPI::GameSerializationInterface serial);
+            bool enabled = enabledDefault;
+            SynchronizationSettings synchronizationSettings;
+            ScalingSettings scalingSettings;
+            ClimaxSettings climaxSettings;
+
+            void serialize(Serialization::SerializationInfo& info);
+            void deserialize(Serialization::DeserializationInfo& info);
 
             json toJson();
             void loadJson(json& json);

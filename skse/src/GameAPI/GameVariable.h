@@ -3,10 +3,10 @@
 #include "GameRecord.h"
 
 namespace GameAPI {
-    struct GameGlobalVariable : public GameRecord<RE::TESGlobal>{
+    struct GameVariable : public GameRecord<RE::TESGlobal>{
     public:
-        inline GameGlobalVariable() {}
-        inline GameGlobalVariable(RE::TESGlobal* global) { form = global; }
+        inline GameVariable() {}
+        inline GameVariable(RE::TESGlobal* global) { form = global; }
 
         inline float getValue() {
             return form->value;

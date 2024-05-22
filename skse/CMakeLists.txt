@@ -97,8 +97,36 @@ set(sources
     src/PluginInterfaceImplementation/SexToys/SexToyInterfaceImpl.cpp
     src/PluginInterfaceImplementation/InterfaceMapImpl.cpp
 	src/Serial/Manager.cpp
+    src/Settings/Implementation/BaseTypes/BaseSetting.cpp
+    src/Settings/Implementation/BaseTypes/DropDownSetting.cpp
+    src/Settings/Implementation/BaseTypes/MinMaxSliderSetting.cpp
+    src/Settings/Implementation/BaseTypes/SliderSetting.cpp
+    src/Settings/Implementation/BaseTypes/ToggleSetting.cpp
+    src/Settings/Implementation/GameVariable/GameVariableDropDownSetting.cpp
+    src/Settings/Implementation/GameVariable/GameVariableSliderSetting.cpp
+    src/Settings/Implementation/GameVariable/GameVariableToggleSetting.cpp
+    src/Settings/Implementation/Lambda/AdvancedLambdaDropDownSetting.cpp
+    src/Settings/Implementation/Lambda/SimpleLambdaDropDownSetting.cpp
+    src/Settings/Implementation/Plugin/PluginSetting.cpp
+    src/Settings/Implementation/Plugin/PluginSettingGroup.cpp
+    src/Settings/Implementation/Plugin/PluginSettingPage.cpp
+    src/Settings/Implementation/Pointer/PointerMinMaxSliderSetting.cpp
+    src/Settings/Implementation/Pointer/PointerProviderMinMaxSliderSetting.cpp
+    src/Settings/Implementation/Pointer/PointerProviderSliderSetting.cpp
+    src/Settings/Implementation/Pointer/PointerProviderToggleSetting.cpp
+    src/Settings/Implementation/Pointer/PointerSliderSetting.cpp
+    src/Settings/Implementation/Pointer/PointerToggleSetting.cpp
+    src/Settings/Implementation/SimpleSettingGroup.cpp
+    src/Settings/Implementation/SimpleSettingPage.cpp
+    src/Settings/SettingTable.cpp
+    src/SexToys/Menu/ToySettingMenu.cpp
+    src/SexToys/Settings/ClimaxSettings.cpp
+    src/SexToys/Settings/ScalingSettings.cpp
+    src/SexToys/Settings/ScalingType.cpp
     src/SexToys/Settings/Settings.cpp
     src/SexToys/Settings/SlotSettings.cpp
+    src/SexToys/Settings/SynchronizationSettings.cpp
+    src/SexToys/Settings/SynchronizationType.cpp
     src/SexToys/Settings/ToySettings.cpp
     src/SexToys/ToyGroup.cpp
     src/SexToys/ToyHandler.cpp

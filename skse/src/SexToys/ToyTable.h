@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Settings/Settings.h"
 #include "ToyWrapper.h"
 
 #include "PluginInterface/SexToys/SexToyReloadListener.h"
@@ -21,8 +20,6 @@ namespace Toys {
         inline std::vector<ToyWrapper>* getToys() { return &toys; }
         ToyWrapper* getToy(std::string id);
 
-        inline Settings::Settings* getSettings() { return &settings; }
-
     private:
         std::mutex _reloadLock;
 
@@ -31,7 +28,5 @@ namespace Toys {
 
         std::set<std::string> toySlots;
         std::vector<ToyWrapper> toys;
-
-        Settings::Settings settings;
     };
 }

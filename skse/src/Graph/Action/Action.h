@@ -4,6 +4,8 @@
 
 #include "GameAPI/GameFaction.h"
 
+using actionIndex = uint8_t;
+
 namespace Graph {
     namespace Action {
         struct Action {

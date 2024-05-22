@@ -6,20 +6,19 @@ namespace Toys {
     namespace Settings {
         struct ToySettings {
         public:
-            bool enabled = true;
-            SynchronizationType synchronizationType = SynchronizationType::PLAYER;
-            bool climax = true;
-            float climaxMagnitude = 1.0f;
-            std::unordered_map<std::string, SlotSettings> slotSettings;
+            inline static std::string GLOBAL_KEY = "all";
 
             SlotSettings* getSlotSettings(std::string slot);
             SlotSettings* getSlotSettingsUnsafe(std::string slot);
 
-            void serialize(GameAPI::GameSerializationInterface serial);
-            void deserialize(GameAPI::GameSerializationInterface serial);
+            void serialize(Serialization::SerializationInfo& info);
+            void deserialize(Serialization::DeserializationInfo& info);
 
             json toJson();
             void loadJson(json& json);
+
+        private:
+            std::unordered_map<std::string, SlotSettings> slotSettings;
         };
     }
 }

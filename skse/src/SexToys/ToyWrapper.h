@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Settings/ToySettings.h"
-
 #include "PluginInterface/SexToys/SexToy.h"
 
 namespace Toys {
@@ -20,15 +18,11 @@ namespace Toys {
         void update(float baseline, float peak, int16_t peakInterval);
         void stop();
 
-        inline Settings::ToySettings* getSettings() { return settings; }
-
     private:
         OStim::SexToy* toy;
         std::string id;
         std::string name;
 
         int8_t users = 0; // need signed version as negative numbers resemble a hard stop
-
-        Settings::ToySettings* settings;
     };
 }

@@ -15,41 +15,26 @@ namespace Toys {
         }
 
 
-        void ToySettings::serialize(GameAPI::GameSerializationInterface serial) {
-            serial.write<bool>(enabled);
-            serial.write<SynchronizationType>(synchronizationType);
-            serial.write<bool>(climax);
-            serial.write<float>(climaxMagnitude);
-
-            serial.write<size_t>(slotSettings.size());
+        void ToySettings::serialize(Serialization::SerializationInfo& info) {
+            info.serial.write<size_t>(slotSettings.size());
             for (auto& [slot, settings] : slotSettings) {
-                SerializationUtil::writeString(serial, slot);
-                settings.serialize(serial);
+                SerializationUtil::writeString(info.serial, slot);
+                settings.serialize(info);
             }
         }
 
-        void ToySettings::deserialize(GameAPI::GameSerializationInterface serial) {
-            enabled = serial.read<bool>();
-            synchronizationType = serial.read<SynchronizationType>();
-            climax = serial.read<bool>();
-            climaxMagnitude = serial.read<float>();
-
+        void ToySettings::deserialize(Serialization::DeserializationInfo& info) {
             slotSettings.clear();
-            for (size_t size = serial.read<size_t>(); size > 0; size--) {
-                std::string slot = SerializationUtil::readString(serial);
+            for (size_t size = info.serial.read<size_t>(); size > 0; size--) {
+                std::string slot = SerializationUtil::readString(info.serial);
                 SlotSettings settings;
-                settings.deserialize(serial);
+                settings.deserialize(info);
                 slotSettings.emplace(slot, settings);
             }
         }
 
         json ToySettings::toJson() {
             json json = json::object();
-
-            json["enabled"] = enabled;
-            json["synchronizationType"] = static_cast<int>(synchronizationType);
-            json["climax"] = climax;
-            json["climaxMagnitude"] = climaxMagnitude;
 
             json["slotSettings"] = json::object();
             for (auto& [slot, setting] : slotSettings) {
@@ -65,11 +50,6 @@ namespace Toys {
             }
 
             std::string objectName = "export";
-
-            JsonUtil::loadBool(json, enabled, "enabled", objectName, "setting", false);
-            JsonUtil::consumeInt(json, [this](int value) { synchronizationType = static_cast<SynchronizationType>(value); }, "synchronizationType", objectName, "setting", false);
-            JsonUtil::loadBool(json, climax, "climax", objectName, "setting", false);
-            JsonUtil::loadFloat(json, climaxMagnitude, "climaxMagnitude", objectName, "setting", false);
 
             slotSettings.clear();
             if (json.contains("slotSettings") && json["slotSettings"].is_object()) {

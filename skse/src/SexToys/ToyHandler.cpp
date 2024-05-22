@@ -1,16 +1,36 @@
 #include "ToyHandler.h"
 
+#include "Settings/Settings.h"
+
 #include "Core/Thread.h"
 #include "Util/Constants.h"
 
 namespace Toys {
-    ToyHandler::ToyHandler(OStim::ThreadActor* actor, std::string slot, ToyWrapper* toy)
-        : actor{actor},
-          settings{toy->getSettings()->getSlotSettings(slot)},
-          toy{toy},
-          updateInterval{toy->getUpdateInterval()} {
+    Settings::SlotSettings* getSlotSettings(std::string slot, ToyWrapper* toy) {
+        Settings::ToySettings* settings = Settings::Settings::getSingleton()->getToySettings(Settings::ToySettings::GLOBAL_KEY);
+        Settings::SlotSettings* slotSettings = settings->getSlotSettings(Settings::SlotSettings::GLOBAL_KEY);
+        if (slotSettings->scalingSettings.scalingType != Settings::ScalingType::INDIVIDUAL_SCALING) {
+            return slotSettings;
+        }
 
+        slotSettings = settings->getSlotSettings(slot);
+        if (slotSettings->scalingSettings.scalingType != Settings::ScalingType::INDIVIDUAL_SCALING) {
+            return slotSettings;
+        }
+
+        std::string id = toy->getID();
+        settings = Settings::Settings::getSingleton()->getToySettings(id);
+        slotSettings = settings->getSlotSettings(Settings::SlotSettings::GLOBAL_KEY);
+        if (slotSettings->scalingSettings.scalingType != Settings::ScalingType::INDIVIDUAL_SCALING) {
+            return slotSettings;
+        }
+
+        return settings->getSlotSettings(slot);
     }
+
+
+    ToyHandler::ToyHandler(OStim::ThreadActor* actor, std::string slot, ToyWrapper* toy)
+        : actor{actor}, toy{toy}, settings{getSlotSettings(slot, toy)}, updateInterval{toy->getUpdateInterval()} {}
 
     void ToyHandler::loop() {
         updateCooldown -= Constants::LOOP_TIME_MILLISECONDS;
@@ -27,7 +47,7 @@ namespace Toys {
         float peak = 0.0f;
 
         float currentValue = 0.0f;
-        switch (settings->scalingType) {
+        switch (settings->scalingSettings.scalingType) {
         case Settings::ScalingType::STIMULATION_RATE:
             currentValue = actor->getBaseExcitementInc() * (1 + actor->getThread()->getRelativeSpeed());
             break;
@@ -38,23 +58,23 @@ namespace Toys {
             currentValue = actor->getThread()->getRelativeSpeed();
             break;
         default:
-            currentValue = settings->maxScale;
+            currentValue = settings->scalingSettings.maxScale;
             break;
         }
 
-        if (currentValue <= settings->minScale) {
-            baseline = settings->minMagnitude;
-            peak = settings->doPeaks ? settings->minPeak : -1.0f;
-        } else if (currentValue >= settings->maxScale) {
-            baseline = settings->maxMagnitude;
-            peak = settings->doPeaks ? settings->maxPeak : -1.0f;
+        if (currentValue <= settings->scalingSettings.minScale) {
+            baseline = settings->scalingSettings.minMagnitude;
+            peak = settings->scalingSettings.doPeaks ? settings->scalingSettings.minPeak : -1.0f;
+        } else if (currentValue >= settings->scalingSettings.maxScale) {
+            baseline = settings->scalingSettings.maxMagnitude;
+            peak = settings->scalingSettings.doPeaks ? settings->scalingSettings.maxPeak : -1.0f;
         } else {
-            float scale = (currentValue - settings->minScale) / (settings->maxScale - settings->minScale);
-            baseline = settings->minMagnitude + (settings->maxMagnitude - settings->minMagnitude) * scale;
-            peak = settings->doPeaks ? settings->minPeak + (settings->maxPeak - settings->minPeak) * scale : -1.0f;
+            float scale = (currentValue - settings->scalingSettings.minScale) / (settings->scalingSettings.maxScale - settings->scalingSettings.minScale);
+            baseline = settings->scalingSettings.minMagnitude + (settings->scalingSettings.maxMagnitude - settings->scalingSettings.minMagnitude) * scale;
+            peak = settings->scalingSettings.doPeaks ? settings->scalingSettings.minPeak + (settings->scalingSettings.maxPeak - settings->scalingSettings.minPeak) * scale : -1.0f;
         }
 
-        toy->update(baseline, peak, settings->doPeaks ? peakInterval : -1);
+        toy->update(baseline, peak, settings->scalingSettings.doPeaks ? peakInterval : -1);
     }
 
     void ToyHandler::stop() {

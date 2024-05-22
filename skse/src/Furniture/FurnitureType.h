@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameAPI/GameGlobalVariable.h"
+#include "GameAPI/GameVariable.h"
 #include "GameAPI/GameObject.h"
 
 namespace Furniture {
@@ -19,9 +19,9 @@ namespace Furniture {
         float offsetZ = 0.0f;
         float rotation = 0.0f;
         float multiplyScale = 1.0f;
-        GameAPI::GameGlobalVariable offsetXGlobal;
-        GameAPI::GameGlobalVariable offsetYGlobal;
-        GameAPI::GameGlobalVariable offsetZGlobal;
+        GameAPI::GameVariable offsetXGlobal;
+        GameAPI::GameVariable offsetYGlobal;
+        GameAPI::GameVariable offsetZGlobal;
 
         FurnitureType* supertype = nullptr;
         bool listIndividually = false;

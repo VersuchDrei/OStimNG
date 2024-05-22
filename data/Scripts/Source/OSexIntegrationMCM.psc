@@ -5,10 +5,8 @@ int UndressingSlotMask
 
 string[] RoleKeys
 
-; actor role settings
-
-; ai control settings
-Int SetControlToggle
+string[] SynchronizationTypes
+string[] ScalingTypes
 
 OsexIntegrationMain Property Main Auto
 
@@ -41,7 +39,7 @@ Function Init()
 EndFunction
 
 int Function GetVersion()
-	Return 10
+	Return 11
 EndFunction
 
 Event OnVersionUpdate(int version)
@@ -49,7 +47,7 @@ Event OnVersionUpdate(int version)
 EndEvent
 
 Function SetupPages()
-	Pages = new string[14]
+	Pages = new string[15]
 	Pages[0] = "$ostim_page_general"
 	Pages[1] = "$ostim_page_controls"
 	Pages[2] = "$ostim_page_auto_control"
@@ -62,13 +60,27 @@ Function SetupPages()
 	Pages[9] = "$ostim_page_sound"
 	Pages[10] = "$ostim_page_alignment"
 	Pages[11] = "$ostim_page_actors"
-	Pages[12] = "$ostim_page_debug"
-	Pages[13] = "$ostim_page_about"
+	Pages[12] = "$ostim_page_toys"
+	Pages[13] = "$ostim_page_debug"
+	Pages[14] = "$ostim_page_about"
 
 	RoleKeys = new string[3]
 	RoleKeys[0] = "actor"
 	RoleKeys[1] = "target"
 	RoleKeys[2] = "performer"
+
+	SynchronizationTypes = new string[5]
+	SynchronizationTypes[0] = "player"
+	SynchronizationTypes[1] = "male"
+	SynchronizationTypes[2] = "female"
+	SynchronizationTypes[3] = "scene"
+	SynchronizationTypes[4] = "individual"
+
+	ScalingTypes = new string[4]
+	ScalingTypes[0] = "none"
+	ScalingTypes[1] = "stimulation rate"
+	ScalingTypes[2] = "stimulation value"
+	ScalingTypes[3] = "speed"
 EndFunction
 
 Event OnConfigRegister()
@@ -79,6 +91,7 @@ Event OnConfigOpen()
 	CurrentActor = PlayerRef
 	CurrentActorID = 0x7
 	CurrentEquipObjectType = "light"
+	ResetToys = true
 EndEvent
 
 Event OnConfigClose()
@@ -125,6 +138,8 @@ Event OnPageReset(String Page)
 		DrawAlignmentPage()
 	ElseIf Page == "$ostim_page_actors"
 		DrawActorsPage()
+	ElseIf Page == "$ostim_page_toys"
+		DrawToysPage()
 	ElseIf Page == "$ostim_page_debug"
 		DrawDebugPage()
 	ElseIf (Page == "$ostim_page_about")
@@ -3039,6 +3054,59 @@ Function OnOptionDefaultActors(int Option)
 		CurrentEvent = Events[0]
 		SetMenuOptionValue(Option, CurrentEvent)
 	EndIf
+EndFunction
+
+
+; ████████╗ ██████╗ ██╗   ██╗███████╗
+; ╚══██╔══╝██╔═══██╗╚██╗ ██╔╝██╔════╝
+;    ██║   ██║   ██║ ╚████╔╝ ███████╗
+;    ██║   ██║   ██║  ╚██╔╝  ╚════██║
+;    ██║   ╚██████╔╝   ██║   ███████║
+;    ╚═╝    ╚═════╝    ╚═╝   ╚══════╝
+
+bool ResetToys = true
+
+string[] ToySlots
+string CurrentToySlot
+string[] ToyPairs
+int CurrentToy
+
+int OID_SynchronizationType = -1
+
+int OID_SelectToy = -1
+int OID_EnableToy = -1
+int OID_ToySynchronizationType = -1
+int OID_ToyClimax = -1
+int OID_ToyClimaxMagnitude = -1
+
+int OID_SelectSlot = -1
+int OID_SlotSynchronizationType = -1
+int OID_SlotScalingType = -1
+int OID_SlotMinScale = -1
+int OID_SlotMaxScale = -1
+int OID_SlotMinMagnitude = -1
+int OID_SlotMaxMagnitude = -1
+int OID_SlotDoPeaks = -1
+int OID_SlotMinPeak = -1
+int OID_SlotMaxPeak = -1
+
+Function DrawToysPage()
+	If ResetToys
+		ToySlots = OToys.GetToySlots()
+		CurrentToySlot = ToySlots[0]
+		ToyPairs = OToys.GetToys()
+		CurrentToy = 0
+		ResetToys = false
+	EndIf
+	
+
+	If ToyPairs.Length == 0
+		AddColoredHeader("No toys connected")
+		Return
+	EndIf
+
+	OID_SynchronizationType = AddMenuOption("$ostim_synchronization_type", SynchronizationTypes[OToys.GetSynchronizationType()])
+
 EndFunction
 
 

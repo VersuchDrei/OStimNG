@@ -2,6 +2,8 @@
 
 #include "ToyWrapper.h"
 
+#include "Settings/SlotSettings.h"
+
 #include "Core/ThreadActor.h"
 
 namespace Toys {

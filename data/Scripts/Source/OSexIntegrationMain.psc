@@ -1689,7 +1689,7 @@ Bool Function ActorHasFacelight(Actor Act)
 	If (BBLS_FaceLightFaction && Act.GetFactionRank(BBLS_FaceLightFaction) >= 0)
 		return true
 	EndIf
-
+	
 	If (Vayne && Act.GetActorBase() == Vayne)
 		; Vayne's facelight can be turned on or off in her MCM menu
 		; The below GlobalVariable tells us if Vayne's facelight is currently on or off

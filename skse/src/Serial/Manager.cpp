@@ -5,7 +5,7 @@
 #include "Core/ThreadManager.h"
 #include "Game/Locker.h"
 #include "MCM/MCMTable.h"
-#include "SexToys/ToyTable.h"
+#include "SexToys/Settings/Settings.h"
 #include "Util/Globals.h"
 #include "Util/MathUtil.h"
 
@@ -173,7 +173,8 @@ namespace Serialization {
             return;
         }
 
-        Toys::ToyTable::getSingleton()->getSettings()->serialize(serial);
+        Serialization::SerializationInfo info{serial};
+        Toys::Settings::Settings::getSingleton()->serialize(info);
     }
 
     void Load(SKSE::SerializationInterface* serial) {
@@ -216,7 +217,8 @@ namespace Serialization {
                     }
                 }
             } else if (type == toySettingsRecord) {
-                Toys::ToyTable::getSingleton()->getSettings()->deserialize(serial);
+                Serialization::DeserializationInfo info{serial, version};
+                Toys::Settings::Settings::getSingleton()->deserialize(info);
             } else {
                 logger::warn("Unknown record type in cosave.");
             }
@@ -230,7 +232,8 @@ namespace Serialization {
         OStim::ThreadManager::GetSingleton()->UntrackAllThreads();
         Util::Globals::resetSaveGameValues();
         MCM::MCMTable::resetValues();
-        Toys::ToyTable::getSingleton()->getSettings()->reset();
+        Serialization::ResetInfo info;
+        Toys::Settings::Settings::getSingleton()->reset(info);
     }
 
     void exportSettings(json& json) {
