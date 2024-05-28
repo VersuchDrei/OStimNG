@@ -46,6 +46,11 @@ namespace Toys {
         OStim::SexToy* toy = this->toy;
         std::thread([toy, baseline, peak, peakInterval]() { toy->update(baseline, peak, peakInterval); }).detach();
     }
+    
+    void ToyWrapper::peak(float magnitude, float duration) {
+        OStim::SexToy* toy = this->toy;
+        std::thread([toy, magnitude, duration]() { toy->peak(magnitude, duration); }).detach();
+    }
 
     void ToyWrapper::stop() {
         OStim::SexToy* toy = this->toy;

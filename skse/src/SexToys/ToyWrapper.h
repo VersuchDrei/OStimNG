@@ -16,6 +16,7 @@ namespace Toys {
         inline void turnOff() { turnOff(false); }
 
         void update(float baseline, float peak, int16_t peakInterval);
+        void peak(float magnitude, float duration);
         void stop();
 
     private:

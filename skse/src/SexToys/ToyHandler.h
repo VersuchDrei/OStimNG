@@ -11,12 +11,17 @@ namespace Toys {
     public:
         ToyHandler(OStim::ThreadActor* actor, std::string slot, ToyWrapper* toy);
 
+        inline bool isActor(OStim::ThreadActor* actor) { return this->actor == actor; }
+        inline bool isSlot(std::string slot) { return this->slot == slot; }
+
         void loop();
         void update(uint16_t peakInterval);
+        void climax();
         void stop();
 
     private:
         OStim::ThreadActor* actor;
+        std::string slot;
         Settings::SlotSettings* settings;
         ToyWrapper* toy;
         uint16_t updateInterval;

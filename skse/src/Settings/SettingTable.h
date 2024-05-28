@@ -7,13 +7,12 @@
 namespace Settings {
     class SettingTable : public Util::Singleton<SettingTable> {
     public:
+        SettingTable();
+
+        void menuOpenend();
         inline void addPage(SettingPage* page) { pages.push_back(page); }
-
         inline size_t getPageCount() { return pages.size(); }
-
         SettingPage* getPage(int index);
-
-        Setting* getSetting(int pageIndex, int settingIndex);
 
     private:
         std::vector<SettingPage*> pages;

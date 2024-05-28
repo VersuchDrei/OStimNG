@@ -31,12 +31,20 @@ namespace Settings {
             virtual float getMaxValue();
             virtual bool setValue(float value);
 
-            // menu options
+            // drop down options
             virtual dropDownIndex getDefaultIndex();
             virtual dropDownIndex getCurrentIndex();
             virtual std::string getCurrentOption();
             virtual std::vector<std::string> getOptions();
             virtual bool setIndex(dropDownIndex index);
+
+            // text input options
+            virtual std::string getDefaultText();
+            virtual std::string getCurrentText();
+            virtual bool setText(std::string text);
+
+            // button options
+            virtual bool click();
 
         private:
             OStim::Setting* setting;

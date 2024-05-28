@@ -14,8 +14,8 @@ namespace Toys {
     namespace Menu {
         ToySettingMenu::ToySettingMenu() {
             std::vector<::Settings::Setting*> toySettings;
-            toySettings.push_back(new ::Settings::LambdaSettings::AdvancedLambdaDropDownSetting({"$ostim_select_toy", "$ostim_tooltip_select_toy", true}, 0, [&](){ return toy;}, [&](dropDownIndex index){ selectToy(index); }, [&](){ return toys.size(); },[&](dropDownIndex index){ return toys[index].name; }));
-            toySettings.push_back(new ::Settings::LambdaSettings::AdvancedLambdaDropDownSetting({"$ostim_select_slot", "$ostim_tooltip_select_slot", true}, 0, [&](){ return slot;}, [&](dropDownIndex index){ selectSlot(index); }, [&](){ return slots.size(); },[&](dropDownIndex index){ return slots[index]; }));
+            toySettings.push_back(new ::Settings::LambdaSettings::AdvancedLambdaDropDownSetting({"$ostim_select_toy", "$ostim_tooltip_select_toy", true}, 0, [&](){ return static_cast<dropDownIndex>(toy); }, [&](dropDownIndex index){ selectToy(index); }, [&](){ return static_cast<dropDownIndex>(toys.size()); },[&](dropDownIndex index){ return toys[index].name; }));
+            toySettings.push_back(new ::Settings::LambdaSettings::AdvancedLambdaDropDownSetting({"$ostim_select_slot", "$ostim_tooltip_select_slot", true}, 0, [&](){ return static_cast<dropDownIndex>(slot); }, [&](dropDownIndex index){ selectSlot(index); }, [&](){ return static_cast<dropDownIndex>(slots.size()); },[&](dropDownIndex index){ return slots[index]; }));
             toySettings.push_back(new ::Settings::PointerSettings::PointerProviderToggleSetting({"$ostim_toy_slot_enable", "$ostim_tooltip_toy_slot_enable"}, {Settings::SlotSettings::enabledDefault}, [&]() { return &slotSettings->enabled; }));
             toySettingGroups.push_back(new ::Settings::SimpleSettingGroup("$ostim_header_toys", getDisplayOrder(), toySettings));
 
@@ -41,9 +41,6 @@ namespace Toys {
         }
 
         void ToySettingMenu::onMenuOpened() {
-            selectToy(defaultToy);
-            selectSlot(defaultSlot);
-
             toys.clear();
             toys.push_back({"all", "all"});
             for (ToyWrapper& toy : *ToyTable::getSingleton()->getToys()) {
@@ -57,6 +54,9 @@ namespace Toys {
                 slots.push_back(slot);
             }
             std::sort(slots.begin(), slots.end(), [](std::string a, std::string b) { return b != "all" && (a == "all" || a < b); });
+
+            selectToy(defaultToy);
+            selectSlot(defaultSlot);
         }
 
         std::string ToySettingMenu::getName() {

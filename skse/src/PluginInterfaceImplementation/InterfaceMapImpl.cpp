@@ -1,5 +1,6 @@
 #include "InterfaceMapImpl.h"
 
+#include "Settings/SettingInterfaceImpl.h"
 #include "SexToys/SexToyInterfaceImpl.h"
 
 namespace Interface {
@@ -35,6 +36,7 @@ namespace Interface {
     }
 
     void InterfaceMapImpl::setupInterfaces() {
+        addInterface(OStim::SettingInterface::NAME, SettingInterfaceImpl::getSingleton());
         addInterface(OStim::SexToyInterface::NAME, SexToyInterfaceImpl::getSingleton());
     }
 }

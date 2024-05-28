@@ -105,3 +105,24 @@ EndFunction
 Function ShowBars() Global
 	OUtils.GetOStim().ShowBars()
 EndFunction
+
+int Function UIExtMessageBox(string Caption, string[] Options) Global
+	Debug.Notification(Caption)
+
+	UIListMenu ListMenu = uiextensions.GetMenu("UIListMenu") As UIListMenu
+
+	ListMenu.ResetMenu()
+
+	ListMenu.SetPropertyStringA("appendEntries", Options)
+
+	ListMenu.OpenMenu()
+	int Index = ListMenu.GetResultInt()
+
+	Return Index
+EndFunction
+
+string Function UIExtTextInput() Global
+	UITextEntryMenu Menu = UIExtensions.GetMenu("UITextEntryMenu") As UITextEntryMenu
+	Menu.OpenMenu()
+	Return Menu.GetResultString()
+EndFunction

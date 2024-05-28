@@ -10,6 +10,7 @@ namespace Threading {
             thread->registerPeakListener([this](actionIndex action) { peak(action); });
             thread->registerNodeChangedListener([this]() { nodeChanged(); });
             thread->registerSpeedChangedListener([this]() { speedChanged(); });
+            thread->registerClimaxListener([this](OStim::ThreadActor* actor) { climax(actor); });
             thread->registerThreadEndListener([this]() { threadEnd(); });
         }
 
@@ -50,6 +51,7 @@ namespace Threading {
             peakListeners.clear();
             speedChangedListeners.clear();
             nodeChangedListeners.clear();
+            climaxListeners.clear();
             threadEndListeners.clear();
 
             for (Graph::Action::Action& action : thread->getCurrentNode()->actions) {
@@ -63,6 +65,10 @@ namespace Threading {
                     }
                 }
             }
+        }
+
+        void NodeHandler::climax(OStim::ThreadActor* actor) {
+            EventUtil::invokeListeners(climaxListeners, actor);
         }
 
         void NodeHandler::threadEnd() {

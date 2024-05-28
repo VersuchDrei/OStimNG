@@ -34,6 +34,18 @@ namespace GameAPI {
             option = LocaleManager::GetSingleton()->GetLocalization(option);
         }
 
+        RE::TESDataHandler* handler = RE::TESDataHandler::GetSingleton();
+        if (handler->GetLoadedModIndex("UIExtensions.esp")) {
+            const auto skyrimVM = RE::SkyrimVM::GetSingleton();
+            auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+            if (vm) {
+                RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> scriptCallback(new UIExtMsgBoxCallbackFunctor(callback));
+                auto args = RE::MakeFunctionArguments(std::move(content), std::move(options));
+                vm->DispatchStaticCall("OSKSE", "UIExtMessageBox", args, scriptCallback);
+            }
+            return;
+        }
+
         auto* messagebox = RE::MessageDataFactoryManager::GetSingleton()->GetCreator<RE::MessageBoxData>(RE::InterfaceStrings::GetSingleton()->messageBoxData)->Create();
         messagebox->callback = RE::make_smart<MessageBoxCallback>(callback);
         messagebox->bodyText = content;

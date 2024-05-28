@@ -85,16 +85,34 @@ namespace Settings {
         }
 
         std::vector<std::string> PluginSetting::getOptions() {
-            std::vector<const char*> cOptions = setting->getOptions();
-            std::vector<std::string> options;
-            for (const char* cOption : cOptions) {
-                options.push_back(std::string(cOption));
+            uint32_t count = setting->getOptionCount();
+            std::vector<std::string> options(count);
+            for (int i = 0; i < count; i++) {
+                options.push_back(std::string(setting->getOption(i)));
             }
             return options;
         }
 
         bool PluginSetting::setIndex(dropDownIndex index) {
             return setting->setIndex(index);
+        }
+
+
+        std::string PluginSetting::getDefaultText() {
+            return std::string(setting->getDefaultText());
+        }
+
+        std::string PluginSetting::getCurrentText() {
+            return std::string(setting->getCurrentText());
+        }
+
+        bool PluginSetting::setText(std::string text) {
+            return setting->setText(text.c_str());
+        }
+
+
+        bool PluginSetting::click() {
+            return setting->click();
         }
     }
 }

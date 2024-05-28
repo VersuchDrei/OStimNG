@@ -16,7 +16,6 @@
 #include "UI/UIState.h"
 #include "Util/RNGUtil.h"
 
-using namespace RE::BSScript;
 using namespace SKSE;
 using namespace SKSE::log;
 using namespace SKSE::stl;

@@ -33,6 +33,12 @@ namespace Settings {
             virtual std::vector<std::string> getOptions();
             virtual bool setIndex(dropDownIndex index);
 
+            virtual std::string getDefaultText();
+            virtual std::string getCurrentText();
+            virtual bool setText(std::string text);
+
+            virtual bool click();
+
         protected:
             inline bool shouldRedraw() { return alwaysRedraw; }
 

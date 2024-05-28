@@ -39,7 +39,7 @@ Function Init()
 EndFunction
 
 int Function GetVersion()
-	Return 11
+	Return 12
 EndFunction
 
 Event OnVersionUpdate(int version)
@@ -47,7 +47,7 @@ Event OnVersionUpdate(int version)
 EndEvent
 
 Function SetupPages()
-	Pages = new string[15]
+	Pages = new string[16]
 	Pages[0] = "$ostim_page_general"
 	Pages[1] = "$ostim_page_controls"
 	Pages[2] = "$ostim_page_auto_control"
@@ -63,6 +63,7 @@ Function SetupPages()
 	Pages[12] = "$ostim_page_toys"
 	Pages[13] = "$ostim_page_debug"
 	Pages[14] = "$ostim_page_about"
+	Pages[15] = "$ostim_page_addons"
 
 	RoleKeys = new string[3]
 	RoleKeys[0] = "actor"
@@ -91,7 +92,8 @@ Event OnConfigOpen()
 	CurrentActor = PlayerRef
 	CurrentActorID = 0x7
 	CurrentEquipObjectType = "light"
-	ResetToys = true
+
+	OSettings.MenuOpened()
 EndEvent
 
 Event OnConfigClose()
@@ -139,7 +141,7 @@ Event OnPageReset(String Page)
 	ElseIf Page == "$ostim_page_actors"
 		DrawActorsPage()
 	ElseIf Page == "$ostim_page_toys"
-		DrawToysPage()
+		DrawPage(OSettings.GetSettingPageCount() - 2)
 	ElseIf Page == "$ostim_page_debug"
 		DrawDebugPage()
 	ElseIf (Page == "$ostim_page_about")
@@ -169,11 +171,15 @@ Event OnPageReset(String Page)
 		AddColoredHeader("$ostim_links")
 		AddTextOption("https://discord.gg/ostimofficial", "")
 		AddTextOption("https://github.com/VersuchDrei/OStimNG", "")
+	ElseIf Page == "$ostim_page_addons"
+		DrawPage(OSettings.GetSettingPageCount() - 1)
 	EndIf
 EndEvent
 
 Event OnOptionHighlight(int Option)
-	If currPage == "$ostim_page_excitement"
+	If currPage == "$ostim_page_toys" || currPage == "$ostim_page_addons"
+		OnOptionHighlightRefactored(Option)
+	ElseIf currPage == "$ostim_page_excitement"
 		OnOptionHighlightExcitement(Option)
 	ElseIf currPage == "$ostim_page_undress"
 		OnSlotMouseOver(Option)
@@ -187,7 +193,9 @@ Event OnOptionHighlight(int Option)
 EndEvent
 
 Event OnOptionSelect(int Option)
-	if currPage == "$ostim_page_undress"
+	If currPage == "$ostim_page_toys" || currPage == "$ostim_page_addons"
+		OnOptionSelectRefactored(Option)
+	Elseif currPage == "$ostim_page_undress"
 		OnSlotSelect(Option)
 	ElseIf currPage == "$ostim_page_sound"
 		OnOptionSelectSound(Option)
@@ -199,7 +207,9 @@ Event OnOptionSelect(int Option)
 EndEvent
 
 Event OnOptionSliderOpen(int Option)
-	If currPage == "$ostim_page_excitement"
+	If currPage == "$ostim_page_toys" || currPage == "$ostim_page_addons"
+		OnOptionSliderOpenRefactored(Option)
+	ElseIf currPage == "$ostim_page_excitement"
 		OnOptionSliderOpenExcitement(Option)
 	ElseIf currPage == "$ostim_page_actors"
 		OnOptionSliderOpenActors(Option)
@@ -207,7 +217,9 @@ Event OnOptionSliderOpen(int Option)
 EndEvent
 
 Event OnOptionSliderAccept(int Option, float Value)
-	If currPage == "$ostim_page_excitement"
+	If currPage == "$ostim_page_toys" || currPage == "$ostim_page_addons"
+		OnOptionSliderAcceptRefactored(Option, Value)
+	ElseIf currPage == "$ostim_page_excitement"
 		OnOptionSliderAcceptExcitement(Option, Value)
 	ElseIf currPage == "$ostim_page_actors"
 		OnOptionSliderAcceptActors(Option, Value)
@@ -215,7 +227,9 @@ Event OnOptionSliderAccept(int Option, float Value)
 EndEvent
 
 Event OnOptionMenuOpen(int Option)
-	If currPage == "$ostim_page_sound"
+	If currPage == "$ostim_page_toys" || currPage == "$ostim_page_addons"
+		OnOptionMenuOpenRefactored(Option)
+	ElseIf currPage == "$ostim_page_sound"
 		OnOptionMenuOpenSound(Option)
 	ElseIf currPage == "$ostim_page_actors"
 		OnOptionMenuOpenActors(Option)
@@ -223,7 +237,9 @@ Event OnOptionMenuOpen(int Option)
 EndEvent
 
 Event OnOptionMenuAccept(int Option, int Index)
-	If currPage == "$ostim_page_sound"
+	If currPage == "$ostim_page_toys" || currPage == "$ostim_page_addons"
+		OnOptionMenuAcceptRefactored(Option, Index)
+	ElseIf currPage == "$ostim_page_sound"
 		OnOptionMenuAcceptSound(Option, Index)
 	ElseIf currPage == "$ostim_page_actors"
 		OnOptionMenuAcceptActors(Option, Index)
@@ -231,7 +247,9 @@ Event OnOptionMenuAccept(int Option, int Index)
 EndEvent
 
 Event OnOptionDefault(int Option)
-	If currPage == "$ostim_page_sound"
+	If currPage == "$ostim_page_toys" || currPage == "$ostim_page_addons"
+		OnOptionDefaultRefactored(Option)
+	ElseIf currPage == "$ostim_page_sound"
 		OnOptionDefaultSound(Option)
 	ElseIf currPage == "$ostim_page_actors"
 		OnOptionDefaultActors(Option)
@@ -3057,59 +3075,6 @@ Function OnOptionDefaultActors(int Option)
 EndFunction
 
 
-; ████████╗ ██████╗ ██╗   ██╗███████╗
-; ╚══██╔══╝██╔═══██╗╚██╗ ██╔╝██╔════╝
-;    ██║   ██║   ██║ ╚████╔╝ ███████╗
-;    ██║   ██║   ██║  ╚██╔╝  ╚════██║
-;    ██║   ╚██████╔╝   ██║   ███████║
-;    ╚═╝    ╚═════╝    ╚═╝   ╚══════╝
-
-bool ResetToys = true
-
-string[] ToySlots
-string CurrentToySlot
-string[] ToyPairs
-int CurrentToy
-
-int OID_SynchronizationType = -1
-
-int OID_SelectToy = -1
-int OID_EnableToy = -1
-int OID_ToySynchronizationType = -1
-int OID_ToyClimax = -1
-int OID_ToyClimaxMagnitude = -1
-
-int OID_SelectSlot = -1
-int OID_SlotSynchronizationType = -1
-int OID_SlotScalingType = -1
-int OID_SlotMinScale = -1
-int OID_SlotMaxScale = -1
-int OID_SlotMinMagnitude = -1
-int OID_SlotMaxMagnitude = -1
-int OID_SlotDoPeaks = -1
-int OID_SlotMinPeak = -1
-int OID_SlotMaxPeak = -1
-
-Function DrawToysPage()
-	If ResetToys
-		ToySlots = OToys.GetToySlots()
-		CurrentToySlot = ToySlots[0]
-		ToyPairs = OToys.GetToys()
-		CurrentToy = 0
-		ResetToys = false
-	EndIf
-	
-
-	If ToyPairs.Length == 0
-		AddColoredHeader("No toys connected")
-		Return
-	EndIf
-
-	OID_SynchronizationType = AddMenuOption("$ostim_synchronization_type", SynchronizationTypes[OToys.GetSynchronizationType()])
-
-EndFunction
-
-
 ; ██████╗ ███████╗██████╗ ██╗   ██╗ ██████╗ 
 ; ██╔══██╗██╔════╝██╔══██╗██║   ██║██╔════╝ 
 ; ██║  ██║█████╗  ██████╔╝██║   ██║██║  ███╗
@@ -3214,4 +3179,219 @@ EndFunction
 Function SetVoiceSetToDefault(int Option, int FormID)
 	OData.SetVoiceSet(FormID, 0)
 	SetMenuOptionValue(Option, "default")
+EndFunction
+
+
+; ██████╗ ███████╗███████╗ █████╗  ██████╗████████╗ ██████╗ ██████╗ ███████╗██████╗ 
+; ██╔══██╗██╔════╝██╔════╝██╔══██╗██╔════╝╚══██╔══╝██╔═══██╗██╔══██╗██╔════╝██╔══██╗
+; ██████╔╝█████╗  █████╗  ███████║██║        ██║   ██║   ██║██████╔╝█████╗  ██║  ██║
+; ██╔══██╗██╔══╝  ██╔══╝  ██╔══██║██║        ██║   ██║   ██║██╔══██╗██╔══╝  ██║  ██║
+; ██║  ██║███████╗██║     ██║  ██║╚██████╗   ██║   ╚██████╔╝██║  ██║███████╗██████╔╝
+; ╚═╝  ╚═╝╚══════╝╚═╝     ╚═╝  ╚═╝ ╚═════╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═════╝
+
+int SETTING_TYPE_TOGGLE = 0
+int SETTING_TYPE_SLIDER = 1
+int SETTING_TYPE_DROP_DOWN = 2
+int SETTING_TYPE_TEXT_INPUT = 3
+int SETTING_TYPE_BUTTON = 4
+
+int DrawnPage = -1
+
+int[] Settings
+int[] SettingIndices
+int[] SettingGroups
+
+Function DrawPage(int Page)
+	DrawnPage = Page
+
+	DrawPageTopToBottom(Page)
+EndFunction
+
+Function DrawPageTopToBottom(int Page)
+	SetCursorFillMode(TOP_TO_BOTTOM)
+
+	int GroupCount = OSettings.GetSettingGroupCount(Page)
+	int Middle = (GroupCount + 1) / 2
+	int Group = GroupCount
+
+	int TotalSettingCount = 0
+	int TotalSettingIndex = 0
+
+	While Group
+		Group -= 1
+		TotalSettingCount += OSettings.GetSettingCount(Page, Group)
+	EndWhile
+
+	Settings = OIntUtil.CreateArray(TotalSettingCount, -1)
+	SettingIndices = OIntUtil.CreateArray(TotalSettingCount, -1)
+	SettingGroups = OIntUtil.CreateArray(TotalSettingCount, -1)
+
+	int CurrentIndex = 0
+
+	Group = 0
+	While Group < GroupCount
+		If Group == Middle
+			CurrentIndex = 1
+		EndIf
+
+		AddColoredHeader(OSettings.GetSettingGroupName(Page, Group))
+
+		int SettingCount = OSettings.GetSettingCount(Page, Group)
+		int Setting = 0
+
+		While Setting < SettingCount
+			SettingIndices[TotalSettingIndex] = Setting
+			SettingGroups[TotalSettingIndex] = Group
+
+			int SettingType = OSettings.GetSettingType(Page, Group, Setting)
+			string SettingName = OSettings.GetSettingName(Page, Group, Setting)
+
+			int SettingFlags = OPTION_FLAG_NONE
+			If !OSettings.IsSettingEnabled(Page, Group, Setting)
+				SettingFlags = OPTION_FLAG_DISABLED
+			EndIf
+
+			int SettingID = -1
+			If SettingType == SETTING_TYPE_TOGGLE
+				SettingID = AddToggleOption(SettingName, OSettings.IsSettingActivated(Page, Group, Setting), SettingFlags)
+			ElseIf SettingType == SETTING_TYPE_SLIDER
+				SettingID = AddSliderOption(SettingName, OSettings.GetCurrentSettingValue(Page, Group, Setting), "{2}", SettingFlags)
+			ElseIf SettingType == SETTING_TYPE_DROP_DOWN
+				SettingID = AddMenuOption(SettingName, OSettings.GetCurrentSettingOption(Page, Group, Setting), SettingFlags)
+			ElseIf SettingType == SETTING_TYPE_TEXT_INPUT
+				SettingID = AddInputOption(SettingName, OSettings.GetCurrentSettingText(Page, Group, Setting))
+			ElseIf SettingType == SETTING_TYPE_BUTTON
+				SettingID = AddTextOption(SettingName, "")
+			EndIf
+			Settings[TotalSettingIndex] = SettingID
+
+			Setting += 1
+			TotalSettingIndex += 1
+		EndWhile
+
+		AddEmptyOption()
+
+		Group += 1
+	EndWhile
+EndFunction
+
+Function OnOptionHighlightRefactored(int Option)
+	int Setting = Settings.Find(Option)
+	SetInfoText(OSettings.GetSettingTooltip(DrawnPage, SettingGroups[Setting], SettingIndices[Setting]))
+EndFunction
+
+Function OnOptionSelectRefactored(int Option)
+	int SettingID = Settings.Find(Option)
+	int Group = SettingGroups[SettingID]
+	int Setting = SettingIndices[SettingID]
+
+	int SettingType = OSettings.GetSettingType(DrawnPage, Group, Setting)
+
+	If SettingType == SETTING_TYPE_TOGGLE
+		If OSettings.ToggleSetting(DrawnPage, Group, Setting)
+			ForcePageReset()
+		Else
+			SetToggleOptionValue(Option, OSettings.IsSettingActivated(DrawnPage, Group, Setting))
+		EndIf
+	ElseIf SettingType == SETTING_TYPE_BUTTON
+		If OSettings.ClickSetting(DrawnPage, Group, Setting)
+			ForcePageReset()
+		EndIf
+	EndIf	
+EndFunction
+
+Function OnOptionSliderOpenRefactored(int Option)
+	int SettingID = Settings.Find(Option)
+	int Group = SettingGroups[SettingID]
+	int Setting = SettingIndices[SettingID]
+
+	SetSliderDialogStartValue(OSettings.GetCurrentSettingValue(DrawnPage, Group, Setting))
+	SetSliderDialogDefaultValue(OSettings.GetDefaultSettingValue(DrawnPage, Group, Setting))
+	SetSliderDialogRange(OSettings.GetMinSettingValue(DrawnPage, Group, Setting), OSettings.GetMaxSettingValue(DrawnPage, Group, Setting))
+	SetSliderDialogInterval(OSettings.GetSettingValueStep(DrawnPage, Group, Setting))
+EndFunction
+
+Function OnOptionSliderAcceptRefactored(int Option, float Value)
+	int SettingID = Settings.Find(Option)
+	int Group = SettingGroups[SettingID]
+	int Setting = SettingIndices[SettingID]
+
+	If OSettings.SetSettingValue(DrawnPage, Group, Setting, Value)
+		ForcePageReset()
+	Else
+		SetSliderOptionValue(Option, Value, "{2}")
+	EndIf
+EndFunction
+
+Function OnOptionMenuOpenRefactored(int Option)
+	int SettingID = Settings.Find(Option)
+	int Group = SettingGroups[SettingID]
+	int Setting = SettingIndices[SettingID]
+
+	SetMenuDialogStartIndex(OSettings.GetCurrentSettingIndex(DrawnPage, Group, Setting))
+	SetMenuDialogDefaultIndex(OSettings.GetDefaultSettingIndex(DrawnPage, Group, Setting))
+	SetMenuDialogOptions(OSettings.GetSettingOptions(DrawnPage, Group, Setting))
+EndFunction
+
+Function OnOptionMenuAcceptRefactored(int Option, int Index)
+	int SettingID = Settings.Find(Option)
+	int Group = SettingGroups[SettingID]
+	int Setting = SettingIndices[SettingID]
+
+	If OSettings.SetSettingIndex(DrawnPage, Group, Setting, Index)
+		ForcePageReset()
+	Else
+		SetMenuOptionValue(Option, OSettings.GetCurrentSettingOption(DrawnPage, Group, Setting))
+	EndIf
+EndFunction
+
+Event OnOptionInputAccept(int Option, string Text)
+	int SettingID = Settings.Find(Option)
+	int Group = SettingGroups[SettingID]
+	int Setting = SettingIndices[SettingID]
+
+	If OSettings.SetSettingText(DrawnPage, Group, Setting, Text)
+		ForcePageReset()
+	Else
+		SetInputOptionValue(Option, Text)
+	EndIf
+EndEvent
+
+Function OnOptionDefaultRefactored(int Option)
+	int SettingID = Settings.Find(Option)
+	int Group = SettingGroups[SettingID]
+	int Setting = SettingIndices[SettingID]
+	int SettingType = OSettings.GetSettingType(DrawnPage, Group, Setting)
+
+	If SettingType == SETTING_TYPE_TOGGLE
+		bool IsActivated = OSettings.IsSettingActivated(DrawnPage, Group, Setting)
+		If IsActivated != OSettings.IsSettingActivatedByDefault(DrawnPage, Group, Setting)
+			If OSettings.ToggleSetting(DrawnPage, Group, Setting)
+				ForcePageReset()
+			Else
+				SetToggleOptionValue(Option, !IsActivated)
+			EndIf
+		EndIf
+	ElseIf SettingType == SETTING_TYPE_SLIDER
+		float DefaultValue = OSettings.GetDefaultSettingValue(DrawnPage, Group, Setting)
+		If OSettings.SetSettingValue(DrawnPage, Group, Setting, DefaultValue)
+			ForcePageReset()
+		Else
+			SetSliderOptionValue(Option, DefaultValue, "{2}")
+		EndIf
+	ElseIf SettingType == SETTING_TYPE_DROP_DOWN
+		int DefaultIndex = OSettings.GetDefaultSettingIndex(DrawnPage, Group, Setting)
+		If OSettings.SetSettingIndex(DrawnPage, Group, Setting, DefaultIndex)
+			ForcePageReset()
+		Else
+			SetMenuOptionValue(Option, OSettings.GetCurrentSettingOption(DrawnPage, Group, Setting))
+		EndIf
+	ElseIf SettingType == SETTING_TYPE_TEXT_INPUT
+		string DefaultText = OSettings.GetDefaultSettingText(DrawnPage, Group, Setting)
+		If OSettings.SetSettingText(DrawnPage, Group, Setting, DefaultText)
+			ForcePageReset()
+		Else
+			SetTextOptionValue(Option, DefaultText)
+		EndIf
+	EndIf
 EndFunction

@@ -26,11 +26,20 @@ namespace OStim {
         virtual float getMaxValue() = 0;
         virtual bool setValue(float value) = 0;
 
-        // menu options
+        // drop down options
         virtual uint32_t getDefaultIndex() = 0;
         virtual uint32_t getCurrentIndex() = 0;
         virtual const char* getCurrentOption() = 0;
-        virtual std::vector<const char*> getOptions() = 0;
+        virtual uint32_t getOptionCount() = 0;
+        virtual const char* getOption(uint32_t index) = 0;
         virtual bool setIndex(uint32_t index) = 0;
+
+        // text input options
+        virtual const char* getDefaultText() = 0;
+        virtual const char* getCurrentText() = 0;
+        virtual bool setText(const char* text) = 0;
+
+        // button options
+        virtual bool click() = 0;
     };
 }

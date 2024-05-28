@@ -28,11 +28,19 @@ namespace Settings {
         virtual float getMaxValue() = 0;
         virtual bool setValue(float value) = 0;
 
-        // menu options
+        // drop down options
         virtual dropDownIndex getDefaultIndex() = 0;
         virtual dropDownIndex getCurrentIndex() = 0;
         virtual std::string getCurrentOption() = 0;
         virtual std::vector<std::string> getOptions() = 0;
         virtual bool setIndex(dropDownIndex index) = 0;
+
+        // text input options
+        virtual std::string getDefaultText() = 0;
+        virtual std::string getCurrentText() = 0;
+        virtual bool setText(std::string text) = 0;
+
+        // button options
+        virtual bool click() = 0;
     };
 }  // namespace OStim

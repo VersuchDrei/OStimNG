@@ -6,6 +6,7 @@
 #include "MCM/MCMTable.h"
 #include "Util/APITable.h"
 #include "Util/CameraUtil.h"
+#include "Util/EventUtil.h"
 
 namespace OStim {
     void ThreadActor::loopClimax() {
@@ -94,6 +95,8 @@ namespace OStim {
                 GameAPI::Game::shakeController(0.5, 0.5, 0.7);
             }
         }
+
+        EventUtil::invokeListeners(climaxListeners);
 
         GameAPI::GameEvents::sendOrgasmEvent(thread->m_threadId, thread->getCurrentNode()->scene_id, index, actor);
 

@@ -8,16 +8,16 @@
 
 namespace Toys {
     namespace Menu {
-        class ToySettingMenu : public ::Settings::SettingPage {
+        class ToySettingMenu : public ::Settings::SettingPage, public Util::Singleton<ToySettingMenu> {
         public:
             ToySettingMenu();
 
-            virtual void onMenuOpened();
-            virtual std::string getName();
-            virtual ::Settings::SettingDisplayOrder getDisplayOrder();
+            virtual void onMenuOpened() override;
+            virtual std::string getName() override;
+            virtual ::Settings::SettingDisplayOrder getDisplayOrder() override;
 
-            virtual settingGroupIndex getGroupCount();
-            virtual ::Settings::SettingGroup* getGroup(settingGroupIndex index);
+            virtual settingGroupIndex getGroupCount() override;
+            virtual ::Settings::SettingGroup* getGroup(settingGroupIndex index) override;
 
         private:
             inline static int defaultToy = 0;

@@ -13,11 +13,13 @@
 #include "Papyrus/PapyrusEvent.h"
 #include "Papyrus/PapyrusFace.h"
 #include "Papyrus/PapyrusFurniture.h"
+#include "Papyrus/PapyrusIntUtil.h"
 #include "Papyrus/PapyrusLibrary.h"
 #include "Papyrus/PapyrusMetadata.h"
 #include "Papyrus/PapyrusObject.h"
 #include "Papyrus/PapyrusScenes.h"
 #include "Papyrus/PapyrusSequence.h"
+#include "Papyrus/PapyrusSettings.h"
 #include "Papyrus/PapyrusThread.h"
 #include "Papyrus/PapyrusThreadActor.h"
 #include "Papyrus/PapyrusThreadBuilder.h"
@@ -41,10 +43,12 @@ namespace Papyrus {
             papyrus->Register(PapyrusData::Bind);
             papyrus->Register(PapyrusEvent::Bind);
             papyrus->Register(PapyrusFurniture::Bind);
+            papyrus->Register(PapyrusIntUtil::Bind);
             papyrus->Register(PapyrusLibrary::Bind);
             papyrus->Register(PapyrusMetadata::Bind);
             papyrus->Register(PapyrusScenes::Bind);
             papyrus->Register(PapyrusSequence::Bind);
+            papyrus->Register(PapyrusSettings::Bind);
             papyrus->Register(PapyrusThread::Bind);
             papyrus->Register(PapyrusThreadActor::Bind);
             papyrus->Register(PapyrusThreadBuilder::Bind);

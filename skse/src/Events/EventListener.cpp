@@ -9,6 +9,7 @@
 #include "GameLogic/GameTable.h"
 #include "MCM/MCMTable.h"
 #include "Serial/Manager.h"
+#include "SexToys/ToyTable.h"
 #include "UI/Align/AlignMenu.h"
 #include "UI/UIState.h"
 #include "Util/Globals.h"
@@ -59,10 +60,6 @@ namespace Events {
 
         if (!RE::UI::GetSingleton()->IsCursorHiddenWhenTopmost()) {
             return RE::BSEventNotifyControl::kContinue;
-        }
-
-        if (RE::UI::GetSingleton()->IsMenuOpen("Dialogue Menu") || RE::UI::GetSingleton()->IsMenuOpen("Crafting Menu")) {
-            //return RE::BSEventNotifyControl::kContinue;
         }
 
         for (RE::InputEvent* iEvent = *a_events; iEvent; iEvent = iEvent->next) {
@@ -199,5 +196,7 @@ namespace Events {
                 "OStim Standalone: Your english localization files appear to be modified. This will cause upwards compatibility issues. If you are a translator create a new file ending with _<YOURLANGAUGE> instead of modifying the english one.",
                 {"Ok"}, [](unsigned int result) {});
         }
+
+        Toys::ToyTable::getSingleton();
     }
 }

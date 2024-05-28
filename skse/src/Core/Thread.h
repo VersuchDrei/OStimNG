@@ -158,6 +158,7 @@ namespace OStim {
         inline void registerPeakListener(std::function<void(actionIndex)> listener) { peakListeners.push_back(listener); }
         inline void registerNodeChangedListener(std::function<void()> listener) { nodeChangedListeners.push_back(listener); }
         inline void registerSpeedChangedListener(std::function<void()> listener) { speedChangedListeners.push_back(listener); }
+        inline void registerClimaxListener(std::function<void(ThreadActor*)> listener) { climaxListeners.push_back(listener); }
         inline void registerThreadEndListener(std::function<void()> listener) { threadEndListeners.push_back(listener); }
 
         void sendPeak(actionIndex peak);
@@ -167,6 +168,7 @@ namespace OStim {
         std::vector<std::function<void(actionIndex)>> peakListeners;
         std::vector<std::function<void()>> nodeChangedListeners;
         std::vector<std::function<void()>> speedChangedListeners;
+        std::vector<std::function<void(ThreadActor*)>> climaxListeners;
         std::vector<std::function<void()>> threadEndListeners;
 #pragma endregion
 

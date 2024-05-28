@@ -29,6 +29,30 @@ namespace GameAPI {
             std::function<void(unsigned int)> callback;
         };
 
+        class UIExtMsgBoxCallbackFunctor : public RE::BSScript::IStackCallbackFunctor {
+        public:
+            UIExtMsgBoxCallbackFunctor(std::function<void(unsigned int)> callback) : callback{callback} {}
+
+            virtual inline void operator()(RE::BSScript::Variable a_result) override {
+                if (a_result.IsNoneObject()) {
+                    logger::info("result is none");
+                } else if (a_result.IsInt()) {
+                    int index = a_result.GetSInt();
+                    if (index < 0) {
+                        index = 0;
+                    }
+                    callback(static_cast<unsigned int>(index));
+                } else {
+                    logger::info("result is not an int");
+                }
+            }
+
+            virtual inline void SetObject(const RE::BSTSmartPointer<RE::BSScript::Object>& a_object){};
+
+        private:
+            std::function<void(unsigned int)> callback;
+        };
+
         inline static void ShakeController(bool leftMotor, float strength, float duration) {
             using func_t = decltype(ShakeController);
             REL::Relocation<func_t> func{RELOCATION_ID(67220, 68528)};

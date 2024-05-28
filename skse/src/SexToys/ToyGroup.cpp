@@ -68,6 +68,14 @@ namespace Toys {
         }
     }
 
+    void ToyGroup::climax(OStim::ThreadActor* actor) {
+        for (ToyHandler& toy : toys) {
+            if (toy.isActor(actor)) {
+                toy.climax();
+            }
+        }
+    }
+
     void ToyGroup::stop() {
         for (ToyHandler& toy: toys) {
             toy.stop();

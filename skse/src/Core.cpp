@@ -7,7 +7,6 @@
 #include "MCM/MCMTable.h"
 #include "PluginInterfaceImplementation/InterfaceMapImpl.h"
 #include "Util/Integrity.h"
-#include "SexToys/ToyTable.h"
 #include "Sound/SoundTable.h"
 #include "Trait/TraitTable.h"
 #include "Util/APITable.h"
@@ -29,7 +28,7 @@ namespace Core {
     }
 
     void postpostLoad() {
-        Toys::ToyTable::getSingleton();
+        
     }
 
     void dataLoaded() {

@@ -10,6 +10,8 @@ namespace Toys {
         thread->registerSpeedChangedListener([this]() { speedChanged(); });
         thread->registerNodeChangedListener([this]() { nodeChanged(); });
         thread->registerThreadEndListener([this]() { threadEnd(); });
+
+        nodeChanged();
     }
 
     void ToyThread::loop() {
@@ -60,10 +62,10 @@ namespace Toys {
             }
 
             std::vector<std::tuple<OStim::ThreadActor*, std::string, ToyWrapper*>> slotToys;
-            action.roles.forEach([globalSettings, globalSlotSettings, &slotToys, &thread, &action, &toys, &toysInUse](Graph::Role role, int index) {
+            action.roles.forEach([&globalSettings, &globalSlotSettings, &slotToys, &thread, &action, &toys, &toysInUse](Graph::Role role, int index) {
                 Graph::ActionActor* actionActor = action.attributes->roles.get(role);
                 for (std::string slot : actionActor->toySlots) {
-                    OStim::ThreadActor* actor = thread->GetActor(*action.roles.get(role));
+                    OStim::ThreadActor* actor = thread->GetActor(index);
                     for (ToyWrapper& toy : *toys) {
                         if (toysInUse.contains(&toy)) {
                             continue;
@@ -102,7 +104,8 @@ namespace Toys {
                                     }
                                 }
                             } break;
-                            case Settings::SynchronizationType::SCENE: {
+                            case Settings::SynchronizationType::SCENE:
+                            case Settings::SynchronizationType::INDIVIDUAL_SYNCHRONIZATION: {
                                 doToy = true;
                             } break;
                         }

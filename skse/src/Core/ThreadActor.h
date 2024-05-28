@@ -200,6 +200,14 @@ namespace OStim {
         void loopEquipObjects();
 #pragma endregion
 
+#pragma region events
+    public:
+        inline void registerClimaxListener(std::function<void()> listener) { climaxListeners.push_back(listener); }
+
+    private:
+        std::vector<std::function<void()>> climaxListeners;
+#pragma endregion
+
 #pragma region excitement
     public:
         inline float getExcitement() { return excitement; }

@@ -14,6 +14,7 @@ namespace Toys {
         void loop();
         void peak();
         void speedChanged();
+        void climax(OStim::ThreadActor* actor);
         void stop();
 
     private:

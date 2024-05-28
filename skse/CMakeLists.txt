@@ -94,8 +94,10 @@ set(sources
 	src/PCH.h
 	src/Papyrus/Papyrus.cpp
 	src/Papyrus/Script.h
+    src/PluginInterfaceImplementation/Settings/SettingInterfaceImpl.cpp
     src/PluginInterfaceImplementation/SexToys/SexToyInterfaceImpl.cpp
     src/PluginInterfaceImplementation/InterfaceMapImpl.cpp
+	src/ScriptAPI/SettingsScript.cpp
 	src/Serial/Manager.cpp
     src/Settings/Implementation/BaseTypes/BaseSetting.cpp
     src/Settings/Implementation/BaseTypes/DropDownSetting.cpp
@@ -118,6 +120,7 @@ set(sources
     src/Settings/Implementation/Pointer/PointerToggleSetting.cpp
     src/Settings/Implementation/SimpleSettingGroup.cpp
     src/Settings/Implementation/SimpleSettingPage.cpp
+    src/Settings/AddonPage.cpp
     src/Settings/SettingTable.cpp
     src/SexToys/Menu/ToySettingMenu.cpp
     src/SexToys/Settings/ClimaxSettings.cpp

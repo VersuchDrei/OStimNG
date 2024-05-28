@@ -4,7 +4,7 @@ namespace OStim {
     class SexToyReloadListener {
     public:
         /**
-         * gets called once on post post load and again every time the player thread starts
+         * gets called once on save load and again every time the player thread starts
          * all previously registered toys will be wiped right before this gets called
          * so always register all your toys whenever this gets called
          * note: OStim does not delete the old ones from memory, that is your resposibility

@@ -335,6 +335,7 @@ namespace OStim {
         m_actors.insert(std::make_pair(index, ThreadActor(this, index, actor)));
         ThreadActor* threadActor = GetActor(index);
         threadActor->initContinue();
+        threadActor->registerClimaxListener([this, threadActor]() { EventUtil::invokeListeners(climaxListeners, threadActor); });
         logger::info("aligning actor");
         alignActor(threadActor, {});
     }

@@ -30,7 +30,11 @@ namespace Toys {
 
 
     ToyHandler::ToyHandler(OStim::ThreadActor* actor, std::string slot, ToyWrapper* toy)
-        : actor{actor}, toy{toy}, settings{getSlotSettings(slot, toy)}, updateInterval{toy->getUpdateInterval()} {}
+        : actor{actor},
+          slot {slot},
+          toy{toy},
+          settings{getSlotSettings(slot, toy)},
+          updateInterval{toy->getUpdateInterval()} {}
 
     void ToyHandler::loop() {
         updateCooldown -= Constants::LOOP_TIME_MILLISECONDS;
@@ -75,6 +79,17 @@ namespace Toys {
         }
 
         toy->update(baseline, peak, settings->scalingSettings.doPeaks ? peakInterval : -1);
+    }
+
+    void ToyHandler::climax() {
+        if (!settings->climaxSettings.doClimax) {
+            return;
+        }
+
+        updateCooldown = 1000;
+
+        
+        toy->peak(settings->climaxSettings.climaxMagnitude, 1);
     }
 
     void ToyHandler::stop() {

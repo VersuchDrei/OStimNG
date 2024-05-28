@@ -6,7 +6,7 @@ namespace Settings {
             : name{params.name},
               tooltip{params.tooltip},
               type{type},
-              enabled{enabled},
+              enabled{params.enabled},
               alwaysRedraw{params.alwaysRedraw},
               defaultValue{defaultValue} {}
 
@@ -30,6 +30,7 @@ namespace Settings {
             return enabled();
         }
 
+
         bool BaseSetting::isActivatedByDefault() {
             return defaultValue != 0.0f;
         }
@@ -41,6 +42,7 @@ namespace Settings {
         bool BaseSetting::toggle() {
             return false;
         }
+
 
         float BaseSetting::getDefaultValue() {
             return defaultValue;
@@ -66,6 +68,7 @@ namespace Settings {
             return false;
         }
 
+
         dropDownIndex BaseSetting::getDefaultIndex() {
             return static_cast<uint32_t>(defaultValue);
         }
@@ -83,6 +86,24 @@ namespace Settings {
         }
 
         bool BaseSetting::setIndex(dropDownIndex index) {
+            return false;
+        }
+
+
+        std::string BaseSetting::getDefaultText() {
+            return "";
+        }
+
+        std::string BaseSetting::getCurrentText() {
+            return "";
+        }
+
+        bool BaseSetting::setText(std::string text) {
+            return false;
+        }
+
+
+        bool BaseSetting::click() {
             return false;
         }
     }

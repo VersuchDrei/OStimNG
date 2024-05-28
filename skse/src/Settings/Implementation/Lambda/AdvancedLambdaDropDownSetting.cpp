@@ -28,6 +28,7 @@ namespace Settings {
 
         bool AdvancedLambdaDropDownSetting::setIndex(dropDownIndex index) {
             valueSetter(index);
+            return shouldRedraw();
         }
     }
 }
