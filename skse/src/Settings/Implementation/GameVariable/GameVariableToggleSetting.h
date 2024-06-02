@@ -12,6 +12,10 @@ namespace Settings {
 
             virtual bool isActivated();
             virtual bool toggle();
+
+            virtual float getCurrentValue();
+            virtual bool setValue(float value);
+
         private:
             GameAPI::GameVariable variable;
         };

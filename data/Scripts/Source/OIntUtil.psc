@@ -1,7 +1,7 @@
 ;/* OIntUtil
 * * collection of utility functions related to integers
 * *
-* * required API Version: 7.3.1 (0x07030100)
+* * required API Version: 7.3.1 (0x07030010)
 */;
 ScriptName OIntUtil
 

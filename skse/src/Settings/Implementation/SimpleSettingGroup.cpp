@@ -4,6 +4,13 @@ namespace Settings {
     SimpleSettingGroup::SimpleSettingGroup(std::string name, SettingDisplayOrder displayOrder, std::vector<Setting*> settings)
         : name{name}, displayOrder{displayOrder}, settings{settings} {}
 
+    SimpleSettingGroup::~SimpleSettingGroup() {
+        for (Setting* setting : settings) {
+            delete setting;
+        }
+    }
+
+
     bool SimpleSettingGroup::isDisposable() {
         return false;
     }

@@ -6,6 +6,7 @@ namespace Settings {
     class SimpleSettingGroup : public SettingGroup {
     public:
         SimpleSettingGroup(std::string name, SettingDisplayOrder displayOrder, std::vector<Setting*> settings);
+        ~SimpleSettingGroup();
 
         virtual bool isDisposable();
 

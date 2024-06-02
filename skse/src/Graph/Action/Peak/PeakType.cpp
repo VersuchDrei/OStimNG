@@ -22,6 +22,7 @@ namespace Graph {
 
                 if (!json["type"].is_string()) {
                     logger::warn("property 'peak.type' of action {} is not a string", filename);
+                    return nullptr;
                 }
 
                 PeakTypeParams params;

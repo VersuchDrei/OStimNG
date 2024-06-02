@@ -52,9 +52,6 @@ namespace OStim {
         if (MCM::MCMTable::removeWeaponsAtStart()) {
             removeWeapons();
         }
-        if (thread->isFlagged(ThreadFlag::UNDRESS) || MCM::MCMTable::undressAtStart()) {
-            undress();
-        }
 
         for (std::string object : ActorProperties::ActorPropertyTable::getEquipObjects(actor)) {
             equipObject(object);
@@ -67,6 +64,10 @@ namespace OStim {
         // we're creating a ThreadActor object and then copying it, which will delete the original
         // since we need the object in the callback functor though we need to do it after creating the copy
         // hence the initContinue function
+
+        if (thread->isFlagged(ThreadFlag::UNDRESS) || MCM::MCMTable::undressAtStart()) {
+            undress();
+        }
 
         // TODO properly use GameActor
         const auto skyrimVM = RE::SkyrimVM::GetSingleton();

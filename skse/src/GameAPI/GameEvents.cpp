@@ -54,7 +54,7 @@ namespace GameAPI {
 
         void sendOStimEvent(int threadID, std::string type, Graph::RoleMap<GameActor> actors) {
             // legacy mod event
-            if (threadID == 0) {
+            if (threadID == 0 && type == "spank") {
                 GameUtil::sendModEvent(actors.target.form, "ostim_spank", "", 0);
             }
 

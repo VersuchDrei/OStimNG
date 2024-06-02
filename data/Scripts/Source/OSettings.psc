@@ -2,7 +2,7 @@
 * * internal script, not meant for external use
 * * don't use any of this unless you know exactly what you are doing
 * *
-* * required API Version: 7.3.1 (0x07030100)
+* * required API Version: 7.3.1 (0x07030010)
 */;
 ScriptName OSettings
 

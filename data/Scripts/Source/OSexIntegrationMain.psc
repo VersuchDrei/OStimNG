@@ -2091,7 +2091,7 @@ Function OnLoadGame()
 	int PluginVersion = SKSE.GetPluginVersion("OStim")
 	If PluginVersion == 0
 		Debug.MessageBox("OStim Standalone: The OStim.dll isn't loaded. Make sure to run the game through SKSE.")
-	ElseIf PluginVersion != 0x07030003
+	ElseIf PluginVersion != 0x07030010
 		Debug.MessageBox("OStim Standalone: Your OStim.dll or OSexIntegraionMain.pex is being overwritten with an old version. OStim and its addons will NOT work properly. Please don't report any other bugs while this issue persists.")
 	EndIf
 
@@ -2138,6 +2138,8 @@ Function OnLoadGame()
 		OData.ImportSettings()
 		Console("Loaded Ostim settings.")
 	EndIf
+
+	(Game.GetFormFromFile(0xE3E, "OStim.esp") As OSexIntegrationMCM).SetupPages()
 EndFunction
 
 

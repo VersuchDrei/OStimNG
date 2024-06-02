@@ -7,6 +7,13 @@ namespace ActorProperties {
     const char* ACTOR_PROPERTY_FILE_PATH{"Data/SKSE/Plugins/OStim/actor properties"};
 
     void ActorPropertyTable::setup() {
+        actorTypes.clear();
+        actorExpressions.clear();
+        actorMutes.clear();
+        actorMuffles.clear();
+        actorRequirements.clear();
+        equipObjects.clear();
+
         Util::JsonFileLoader::LoadFilesInFolder(ACTOR_PROPERTY_FILE_PATH, [&](std::string path, std::string filename, json json) {
             GameAPI::GameCondition condition;
             JsonUtil::loadGameRecord(json, condition, "condition", filename, "actor property", path, true);

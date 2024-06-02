@@ -59,7 +59,6 @@ namespace {
     void MessageHandler(SKSE::MessagingInterface::Message* a_msg) {        
         switch (a_msg->type) {
             case SKSE::MessagingInterface::kPostLoad: {
-                RE::ScriptEventSourceHolder::GetSingleton()->AddEventSink<RE::TESLoadGameEvent>(Events::EventListener::GetSingleton());
                 SKSE::GetNiNodeUpdateEventSource()->AddEventSink(Events::EventListener::GetSingleton());
                 SKSE::GetCrosshairRefEventSource()->AddEventSink(Events::EventListener::GetSingleton());
 
@@ -82,12 +81,15 @@ namespace {
                 Core::dataLoaded();
                 SKSE::GetTaskInterface()->AddTask([]() { Core::postDataLoaded(); });
             } break;
-            case SKSE::MessagingInterface::kPreLoadGame: {
-                //UI::PostRegisterMenus();
+            case SKSE::MessagingInterface::kPostLoadGame: {
+                Events::EventListener::handleGameLoad();
+                Core::newSession();
+                Core::sessionStarted();
             } break;
             case SKSE::MessagingInterface::kNewGame: {
                 Events::EventListener::handleGameLoad();
-                //UI::PostRegisterMenus();
+                Core::sessionLoaded();
+                Core::sessionStarted();
             } break;
 
         }

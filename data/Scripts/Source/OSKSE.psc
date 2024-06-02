@@ -113,7 +113,12 @@ int Function UIExtMessageBox(string Caption, string[] Options) Global
 
 	ListMenu.ResetMenu()
 
-	ListMenu.SetPropertyStringA("appendEntries", Options)
+	int i = 0
+	While i < Options.Length
+		ListMenu.AddEntryItem(Options[i])
+		i += 1
+	EndWhile
+	;ListMenu.SetPropertyStringA("appendEntries", Options)
 
 	ListMenu.OpenMenu()
 	int Index = ListMenu.GetResultInt()

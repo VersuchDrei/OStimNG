@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Events/EventListener.h"
 #include "Game/LocaleManager.h"
 #include "Graph/GraphTable.h"
 #include "MCM/MCMTable.h"
@@ -10,6 +11,7 @@
 
 namespace PapyrusData {
 	using VM = RE::BSScript::IVirtualMachine;
+
 
 	uint32_t GetUndressingSlotMask(RE::StaticFunctionTag*) {
 		return MCM::MCMTable::getUndressingMask();

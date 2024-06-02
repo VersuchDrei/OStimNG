@@ -17,16 +17,6 @@
 #include "Util.h"
 
 namespace Events {
-    RE::BSEventNotifyControl EventListener::ProcessEvent(const RE::TESLoadGameEvent* a_event, RE::BSTEventSource<RE::TESLoadGameEvent>* a_eventSource) {
-        logger::info("game loaded");
-
-        Serialization::closeOldThreads();
-
-        handleGameLoad();
-
-        return RE::BSEventNotifyControl::kContinue;
-    }
-
     RE::BSEventNotifyControl EventListener::ProcessEvent(const SKSE::NiNodeUpdateEvent* a_event, RE::BSTEventSource<SKSE::NiNodeUpdateEvent>* a_eventSource) {
         if (a_event->reference->Is(RE::Actor::FORMTYPE)) {
             RE::Actor* actor = a_event->reference->As<RE::Actor>();
@@ -174,8 +164,6 @@ namespace Events {
 
     
     void EventListener::handleGameLoad() {
-        OStim::ThreadBuilder::reset();
-
         const auto skyrimVM = RE::SkyrimVM::GetSingleton();
         auto vm = skyrimVM ? skyrimVM->impl : nullptr;
         if (vm) {
@@ -184,19 +172,5 @@ namespace Events {
             auto args = RE::MakeFunctionArguments();
             vm->DispatchStaticCall("OUndress", "UsePapyrusUndressing", args, callback);
         }
-
-        if (!Util::Globals::isSceneIntegrityVerified()) {
-            GameAPI::Game::showMessageBox(
-                "OStim Standalone: Scene integrity could not be verified. OStim and its addons might not work properly. Please don't report any other bugs while this issue persists.",
-                {"Ok"}, [](unsigned int result) {});
-        }
-
-        if (!Util::Globals::isTranslationIntegrityVerified()) {
-            GameAPI::Game::showMessageBox(
-                "OStim Standalone: Your english localization files appear to be modified. This will cause upwards compatibility issues. If you are a translator create a new file ending with _<YOURLANGAUGE> instead of modifying the english one.",
-                {"Ok"}, [](unsigned int result) {});
-        }
-
-        Toys::ToyTable::getSingleton();
     }
 }

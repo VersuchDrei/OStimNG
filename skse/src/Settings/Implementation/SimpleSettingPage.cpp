@@ -4,6 +4,13 @@ namespace Settings {
     SimpleSettingPage::SimpleSettingPage(std::string name, SettingDisplayOrder displayOrder, std::vector<SettingGroup*> groups)
         : name{name}, displayOrder{displayOrder}, groups{groups} {}
 
+    SimpleSettingPage::~SimpleSettingPage() {
+        for (SettingGroup* group : groups) {
+            delete group;
+        }
+    }
+
+
     void SimpleSettingPage::onMenuOpened() {}
 
     std::string SimpleSettingPage::getName() {

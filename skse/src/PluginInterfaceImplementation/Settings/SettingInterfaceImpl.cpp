@@ -14,7 +14,7 @@ namespace Interface {
             return;
         }
 
-        Settings::AddonPage::getSingleton()->addGroup(new Settings::PluginSettings::PluginSettingGroup(group, false));
+        Settings::AddonPage::getSingleton()->addSkseGroup(new Settings::PluginSettings::PluginSettingGroup(group, false));
     }
 
     void SettingInterfaceImpl::addPage(OStim::SettingPage* page) {

@@ -10,6 +10,9 @@ namespace Settings {
         public:
             GameVariableDropDownSetting(BaseTypes::CommonSettingParams params, BaseTypes::DropDownSettingParams dropDownParams, GameAPI::GameVariable variable);
 
+            virtual float getCurrentValue();
+            virtual bool setValue(float value);
+
             virtual dropDownIndex getCurrentIndex();
             virtual bool setIndex(dropDownIndex index);
 

@@ -18,6 +18,7 @@ namespace OStim {
 
         /**
         * adds a new page to the configuration menu
+        * !! this is not yet implemented !!
         */
         virtual void addPage(SettingPage* page) = 0;
     };

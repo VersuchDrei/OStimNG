@@ -13,7 +13,7 @@ namespace JsonUtil {
                 logger::warn("property '{}' of {} {} isn't a string", propertyName, objectType, objectName);
             }
         } else if (warnIfNotExists) {
-            logger::warn("{} doesn't have property '{}' defined", objectName, propertyName);
+            logger::warn("{} {} doesn't have property '{}' defined", objectType, objectName, propertyName);
         }
     }
 
@@ -26,7 +26,7 @@ namespace JsonUtil {
                 logger::warn("property '{}' of {} {} isn't a string", propertyName, objectType, objectName);
             }
         } else if (warnIfNotExists) {
-            logger::warn("{} doesn't have property '{}' defined", objectName, propertyName);
+            logger::warn("{} {} doesn't have property '{}' defined", objectType, objectName, propertyName);
         }
     }
 
@@ -38,7 +38,7 @@ namespace JsonUtil {
                 logger::warn("property '{}' of {} {} isn't a string", propertyName, objectType, objectName);
             }
         } else if (warnIfNotExists) {
-            logger::warn("{} doesn't have property '{}' defined", objectName, propertyName);
+            logger::warn("{} {} doesn't have property '{}' defined", objectType, objectName, propertyName);
         }
     }
     
@@ -50,7 +50,7 @@ namespace JsonUtil {
                 logger::warn("property '{}' of {} {} isn't a number", propertyName, objectType, objectName);
             }
         } else if (warnIfNotExists) {
-            logger::warn("{} doesn't have property '{}' defined", objectName, propertyName);
+            logger::warn("{} {} doesn't have property '{}' defined", objectType, objectName, propertyName);
         }
     }
     
@@ -62,7 +62,7 @@ namespace JsonUtil {
                 logger::warn("property '{}' of {} {} isn't an integer", propertyName, objectType, objectName);
             }
         } else if (warnIfNotExists) {
-            logger::warn("{} doesn't have property '{}' defined", objectName, propertyName);
+            logger::warn("{} {} doesn't have property '{}' defined", objectType, objectName, propertyName);
         }
     }
     
@@ -74,7 +74,7 @@ namespace JsonUtil {
                 logger::warn("property '{}' of {} {} isn't a boolean", propertyName, objectType, objectName);
             }
         } else if (warnIfNotExists) {
-            logger::warn("{} doesn't have property '{}' defined", objectName, propertyName);
+            logger::warn("{} {} doesn't have property '{}' defined", objectType, objectName, propertyName);
         }
     }
 
@@ -97,7 +97,7 @@ namespace JsonUtil {
                 logger::warn("property '{}' of {} {} isn't a list", propertyName, objectType, objectName);
             }
         } else if (warnIfNotExists) {
-            logger::warn("{} doesn't have property '{}' defined", objectName, propertyName);
+            logger::warn("{} {} doesn't have property '{}' defined", objectType, objectName, propertyName);
         }
     }
 
@@ -123,7 +123,7 @@ namespace JsonUtil {
                 logger::warn("property '{}' of {} {} isn't a list", propertyName, objectType, objectName);
             }
         } else if (warnIfNotExists) {
-            logger::warn("{} doesn't have property '{}' defined", objectName, propertyName);
+            logger::warn("{} {} doesn't have property '{}' defined", objectType, objectName, propertyName);
         }
     }
 
@@ -145,7 +145,7 @@ namespace JsonUtil {
                 logger::warn("property '{}' of {} {} isn't a list", propertyName, objectType, objectName);
             }
         } else if (warnIfNotExists) {
-            logger::warn("{} doesn't have property '{}' defined", objectName, propertyName);
+            logger::warn("{} {} doesn't have property '{}' defined", objectType, objectName, propertyName);
         }
     }
 
@@ -167,7 +167,7 @@ namespace JsonUtil {
                 logger::warn("property '{}' of {} {} isn't a list", propertyName, objectType, objectName);
             }
         } else if (warnIfNotExists) {
-            logger::warn("{} doesn't have property '{}' defined", objectName, propertyName);
+            logger::warn("{} {} doesn't have property '{}' defined", objectType, objectName, propertyName);
         }
     }
 
@@ -189,7 +189,7 @@ namespace JsonUtil {
                 logger::warn("property '{}' of {} {} isn't a list", propertyName, objectType, objectName);
             }
         } else if (warnIfNotExists) {
-            logger::warn("{} doesn't have property '{}' defined", objectName, propertyName);
+            logger::warn("{} {} doesn't have property '{}' defined", objectType, objectName, propertyName);
         }
     }
 
@@ -211,7 +211,7 @@ namespace JsonUtil {
                 logger::warn("property '{}' of {} {} isn't a list", propertyName, objectType, objectName);
             }
         } else if (warnIfNotExists) {
-            logger::warn("{} doesn't have property '{}' defined", objectName, propertyName);
+            logger::warn("{} {} doesn't have property '{}' defined", objectType, objectName, propertyName);
         }
     }
 
@@ -224,7 +224,7 @@ namespace JsonUtil {
                 logger::warn("property '{}' of {} {} isn't a string", propertyName, objectType, objectName);
             }
         } else if (warnIfNotExists) {
-            logger::warn("{} doesn't have property '{}' defined", objectName, propertyName);
+            logger::warn("{} {} doesn't have property '{}' defined", objectType, objectName, propertyName);
         }
     }
 
@@ -238,7 +238,7 @@ namespace JsonUtil {
                 logger::warn("property '{}' of {} {} isn't a string", propertyName, objectType, objectName);
             }
         } else if (warnIfNotExists) {
-            logger::warn("{} doesn't have property '{}' defined", objectName, propertyName);
+            logger::warn("{} {} doesn't have property '{}' defined", objectType, objectName, propertyName);
         }
     }
 
@@ -250,7 +250,7 @@ namespace JsonUtil {
                 logger::warn("property '{}' of {} {} isn't a string", propertyName, objectType, objectName);
             }
         } else if (warnIfNotExists) {
-            logger::warn("{} doesn't have property '{}' defined", objectName, propertyName);
+            logger::warn("{} {} doesn't have property '{}' defined", objectType, objectName, propertyName);
         }
     }
     
@@ -262,7 +262,7 @@ namespace JsonUtil {
                 logger::warn("property '{}' of {} {} isn't a number", propertyName, objectType, objectName);
             }
         } else if (warnIfNotExists) {
-            logger::warn("{} doesn't have property '{}' defined", objectName, propertyName);
+            logger::warn("{} {} doesn't have property '{}' defined", objectType, objectName, propertyName);
         }
     }
     
@@ -274,7 +274,7 @@ namespace JsonUtil {
                 logger::warn("property '{}' of {} {} isn't an integer", propertyName, objectType, objectName);
             }
         } else if (warnIfNotExists) {
-            logger::warn("{} doesn't have property '{}' defined", objectName, propertyName);
+            logger::warn("{} {} doesn't have property '{}' defined", objectType, objectName, propertyName);
         }
     }
     
@@ -286,7 +286,7 @@ namespace JsonUtil {
                 logger::warn("property '{}' of {} {} isn't a boolean", propertyName, objectType, objectName);
             }
         } else if (warnIfNotExists) {
-            logger::warn("{} doesn't have property '{}' defined", objectName, propertyName);
+            logger::warn("{} {} doesn't have property '{}' defined", objectType, objectName, propertyName);
         }
     }
 
@@ -309,7 +309,7 @@ namespace JsonUtil {
                 logger::warn("property '{}' of {} {} isn't a list", propertyName, objectType, objectName);
             }
         } else if (warnIfNotExists) {
-            logger::warn("{} doesn't have property '{}' defined", objectName, propertyName);
+            logger::warn("{} {} doesn't have property '{}' defined", objectType, objectName, propertyName);
         }
     }
 
@@ -335,7 +335,7 @@ namespace JsonUtil {
                 logger::warn("property '{}' of {} {} isn't a list", propertyName, objectType, objectName);
             }
         } else if (warnIfNotExists) {
-            logger::warn("{} doesn't have property '{}' defined", objectName, propertyName);
+            logger::warn("{} {} doesn't have property '{}' defined", objectType, objectName, propertyName);
         }
     }
 
@@ -357,7 +357,7 @@ namespace JsonUtil {
                 logger::warn("property '{}' of {} {} isn't a list", propertyName, objectType, objectName);
             }
         } else if (warnIfNotExists) {
-            logger::warn("{} doesn't have property '{}' defined", objectName, propertyName);
+            logger::warn("{} {} doesn't have property '{}' defined", objectType, objectName, propertyName);
         }
     }
 
@@ -379,7 +379,7 @@ namespace JsonUtil {
                 logger::warn("property '{}' of {} {} isn't a list", propertyName, objectType, objectName);
             }
         } else if (warnIfNotExists) {
-            logger::warn("{} doesn't have property '{}' defined", objectName, propertyName);
+            logger::warn("{} {} doesn't have property '{}' defined", objectType, objectName, propertyName);
         }
     }
 
@@ -401,7 +401,7 @@ namespace JsonUtil {
                 logger::warn("property '{}' of {} {} isn't a list", propertyName, objectType, objectName);
             }
         } else if (warnIfNotExists) {
-            logger::warn("{} doesn't have property '{}' defined", objectName, propertyName);
+            logger::warn("{} {} doesn't have property '{}' defined", objectType, objectName, propertyName);
         }
     }
 
@@ -423,7 +423,7 @@ namespace JsonUtil {
                 logger::warn("property '{}' of {} {} isn't a list", propertyName, objectType, objectName);
             }
         } else if (warnIfNotExists) {
-            logger::warn("{} doesn't have property '{}' defined", objectName, propertyName);
+            logger::warn("{} {} doesn't have property '{}' defined", objectType, objectName, propertyName);
         }
     }
 
@@ -446,7 +446,7 @@ namespace JsonUtil {
                 logger::warn("property '{}' of {} {} is malformed", propertyName, objectType, objectName);
             }
         } else if (warnIfNotExists) {
-            logger::warn("{} doesn't have property '{}' defined", objectName, propertyName);
+            logger::warn("{} {} doesn't have property '{}' defined", objectType, objectName, propertyName);
         }
     }
 
@@ -470,7 +470,7 @@ namespace JsonUtil {
                 logger::warn("property '{}' of {} {} is malformed", propertyName, objectType, objectName);
             }
         } else if (warnIfNotExists) {
-            logger::warn("{} doesn't have property '{}' defined", objectName, propertyName);
+            logger::warn("{} {} doesn't have property '{}' defined", objectType, objectName, propertyName);
         }
     }
 
@@ -492,7 +492,7 @@ namespace JsonUtil {
                 logger::warn("property '{}' of {} {} is malformed", propertyName, objectType, objectName);
             }
         } else if (warnIfNotExists) {
-            logger::warn("{} doesn't have property '{}' defined", objectName, propertyName);
+            logger::warn("{} {} doesn't have property '{}' defined", objectType, objectName, propertyName);
         }
     }
 
@@ -514,7 +514,7 @@ namespace JsonUtil {
                 logger::warn("property '{}' of {} {} is malformed", propertyName, objectType, objectName);
             }
         } else if (warnIfNotExists) {
-            logger::warn("{} doesn't have property '{}' defined", objectName, propertyName);
+            logger::warn("{} {} doesn't have property '{}' defined", objectType, objectName, propertyName);
         }
     }
 
@@ -536,7 +536,7 @@ namespace JsonUtil {
                 logger::warn("property '{}' of {} {} is malformed", propertyName, objectType, objectName);
             }
         } else if (warnIfNotExists) {
-            logger::warn("{} doesn't have property '{}' defined", objectName, propertyName);
+            logger::warn("{} {} doesn't have property '{}' defined", objectType, objectName, propertyName);
         }
     }
 
@@ -558,7 +558,7 @@ namespace JsonUtil {
                 logger::warn("property '{}' of {} {} is malformed", propertyName, objectType, objectName);
             }
         } else if (warnIfNotExists) {
-            logger::warn("{} doesn't have property '{}' defined", objectName, propertyName);
+            logger::warn("{} {} doesn't have property '{}' defined", objectType, objectName, propertyName);
         }
     }
 }

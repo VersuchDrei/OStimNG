@@ -26,6 +26,10 @@ namespace ActorProperties {
             return fallback;
 		}
 
+		void clear() {
+			properties.clear();
+		}
+
 	private:
         std::vector<ActorProperty<T>> properties;
 	};

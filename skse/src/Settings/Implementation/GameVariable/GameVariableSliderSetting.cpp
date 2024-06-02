@@ -6,6 +6,7 @@ namespace Settings {
             : BaseTypes::SliderSetting(params, sliderParams),
               variable{variable} {}
 
+
         float GameVariableSliderSetting::getCurrentValue() {
             return variable.getValue();
         }

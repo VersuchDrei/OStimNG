@@ -6,6 +6,7 @@ namespace Settings {
             : BaseTypes::ToggleSetting(params, toggleParams),
               variable{variable} {}
 
+
         bool GameVariableToggleSetting::isActivated() {
             return variable.getValue() != 0.0f;
         }
@@ -17,6 +18,16 @@ namespace Settings {
                 variable.setValue(0.0f);
             }
 
+            return shouldRedraw();
+        }
+        
+
+        float GameVariableToggleSetting::getCurrentValue() {
+            return variable.getValue();
+        }
+
+        bool GameVariableToggleSetting::setValue(float value) {
+            variable.setValue(value);
             return shouldRedraw();
         }
     }

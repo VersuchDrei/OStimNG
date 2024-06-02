@@ -6,6 +6,7 @@ namespace Settings {
     class SimpleSettingPage : public SettingPage {
     public:
         SimpleSettingPage(std::string name, SettingDisplayOrder displayOrder, std::vector<SettingGroup*> groups);
+        ~SimpleSettingPage();
 
         virtual void onMenuOpened();
         virtual std::string getName();

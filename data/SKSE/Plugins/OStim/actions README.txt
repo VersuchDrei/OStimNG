@@ -17,6 +17,7 @@ action fields:
 "target" (object): a collection of attributes for the action target (see actor fields)
 "performer" (object): a collection of attributes for the action performer (see actor fields)
 "sounds" (list<object>): a list of sounds to play during this action (see sound fields)
+"peak" (object): definition for how peaks are calculated (see peak fields)
 "tags" (list<string>): a list of tags for this action, commonly used are "oral", playful", "seductive", "sensual" and "sexual"
 	these can be used by addons to filter actions
 
@@ -80,6 +81,21 @@ sound types:
 	the sound will be played on a loop
 "delay" (int): the time in milliseconds before a new sound is played
 	this timer starts after the previous sound is done playing, not when it starts playing
+
+peak fields:
+"type" (string): the type of peak calculation, depending on type additional fields may be required (see peak types)
+
+peak types:
+
+"bonedistance":
+	peaks will be triggered whenever the given bones are clostest to each other
+"actorBone" (string/list<string>): the bone / list of bones of the actor to check the distance against
+"targetBone" (string/list<string>): the bone / list of bones of the target to check the distance against
+"inverse" (bool): if true the peak will be triggered when the bones are furthest apart rather than closest together (default: false)
+
+"loop":
+	peaks will be played on a timer (divided by the animations display speed)
+"interval" (int): the amount of miliseconds between two peaks
 
 
 F.A.Q.

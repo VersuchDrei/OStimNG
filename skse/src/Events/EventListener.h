@@ -7,12 +7,10 @@
 
 namespace Events {
     class EventListener final : public OStim::ISingleton<EventListener>,
-                                public RE::BSTEventSink<RE::TESLoadGameEvent>,
                                 public RE::BSTEventSink<SKSE::NiNodeUpdateEvent>, 
                                 public RE::BSTEventSink<SKSE::CrosshairRefEvent>,
                                 public RE::BSTEventSink<RE::InputEvent*> {
     public:
-        virtual RE::BSEventNotifyControl ProcessEvent(const RE::TESLoadGameEvent* a_event, RE::BSTEventSource<RE::TESLoadGameEvent>* a_eventSource) override;
         virtual RE::BSEventNotifyControl ProcessEvent(const SKSE::NiNodeUpdateEvent* a_event, RE::BSTEventSource<SKSE::NiNodeUpdateEvent>* a_eventSource) override;
         virtual RE::BSEventNotifyControl ProcessEvent(const SKSE::CrosshairRefEvent* a_event, RE::BSTEventSource<SKSE::CrosshairRefEvent>* a_eventSource) override;
         virtual RE::BSEventNotifyControl ProcessEvent(RE::InputEvent* const* a_events, RE::BSTEventSource<RE::InputEvent*>* a_eventSource) override;

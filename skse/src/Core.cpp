@@ -2,11 +2,16 @@
 
 #include "ActorProperties/ActorPropertyTable.h"
 #include "Alignment/Alignments.h"
+#include "Core/ThreadStarter/ThreadBuilder.h"
 #include "Furniture/FurnitureTable.h"
+#include "GameAPI/Game.h"
 #include "Graph/GraphTable.h"
 #include "MCM/MCMTable.h"
 #include "PluginInterfaceImplementation/InterfaceMapImpl.h"
 #include "Util/Integrity.h"
+#include "Serial/Manager.h"
+#include "Settings/AddonPage.h"
+#include "SexToys/ToyTable.h"
 #include "Sound/SoundTable.h"
 #include "Trait/TraitTable.h"
 #include "Util/APITable.h"
@@ -28,7 +33,7 @@ namespace Core {
     }
 
     void postpostLoad() {
-        
+        Toys::ToyTable::getSingleton();
     }
 
     void dataLoaded() {
@@ -50,9 +55,35 @@ namespace Core {
         MCM::MCMTable::setupForms();
         Graph::GraphTable::setupEvents();
         Graph::GraphTable::setupOptions();
+
+        Settings::AddonPage::getSingleton()->loadJsonAddons();
     }
 
     void postDataLoaded() { }
+
+
+    void newSession() {
+        // TODO import settings
+    }
+
+    void sessionLoaded() {
+        Serialization::closeOldThreads();
+        // TODO import settings
+    }
+
+    void sessionStarted() {
+        OStim::ThreadBuilder::reset();
+        
+
+        if (!Util::Globals::isSceneIntegrityVerified()) {
+            GameAPI::Game::showMessageBox("OStim Standalone: Scene integrity could not be verified. OStim and its addons might not work properly. Please don't report any other bugs while this issue persists.", {"Ok"}, [](unsigned int result) {});
+        }
+
+        if (!Util::Globals::isTranslationIntegrityVerified()) {
+            GameAPI::Game::showMessageBox("OStim Standalone: Your english localization files appear to be modified. This will cause upwards compatibility issues. If you are a translator create a new file ending with _<YOURLANGAUGE> instead of modifying the english one.", {"Ok"}, [](unsigned int result) {});
+        }
+    }
+
 
     void save(GameAPI::GameSerializationInterface serial) { }
 

@@ -7,7 +7,9 @@
 namespace Settings {
     class AddonPage : public SettingPage, public Util::Singleton<AddonPage> {
     public:
-        inline void addGroup(SettingGroup* group) { groups.push_back(group); }
+        inline void addSkseGroup(SettingGroup* group) { skseGroups.push_back(group); }
+
+        void loadJsonAddons();
 
         virtual void onMenuOpened();
         virtual std::string getName();
@@ -16,7 +18,11 @@ namespace Settings {
         virtual settingGroupIndex getGroupCount();
         virtual SettingGroup* getGroup(settingGroupIndex index);
 
+        void writeJson(json& json);
+        void readJson(json& json);
+
     private:
-        std::vector<SettingGroup*> groups;
+        std::vector<SettingGroup*> skseGroups;
+        std::vector<SettingGroup*> jsonGroups;
     };
 }
