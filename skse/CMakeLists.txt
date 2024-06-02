@@ -97,6 +97,7 @@ set(sources
     src/PluginInterfaceImplementation/Settings/SettingInterfaceImpl.cpp
     src/PluginInterfaceImplementation/SexToys/SexToyInterfaceImpl.cpp
     src/PluginInterfaceImplementation/InterfaceMapImpl.cpp
+	src/ScriptAPI/JsonScript.cpp
 	src/ScriptAPI/SettingsScript.cpp
 	src/Serial/Manager.cpp
     src/Settings/Implementation/BaseTypes/BaseSetting.cpp

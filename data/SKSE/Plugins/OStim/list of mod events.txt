@@ -41,7 +41,13 @@ gets fired when the main thread ends
 
 RegisterForModEvent("ostim_end", "OStimEnd")
 
-Event OStimEnd(string EventName, string StrArg, float NumArg, Form Sender)
+;/*
+* * @param: Json, a json containing thread information (requires API version 7.3.1 (0x07030010))
+*/;
+Event OStimEnd(string EventName, string Json, float NumArg, Form Sender)
+	; the following code only works with API version 7.3.1 or higher
+	Actor[] Actors = OJSON.GetActors(Json)
+	string SceneID = OJSON.GetScene(Json)
 EndEvent
 
 ------------------------------------
@@ -124,7 +130,11 @@ gets fired when a thread ends
 RegisterForModEvent("ostim_thread_end", "OStimThreadEnd")
 
 ;/*
+* * @param: Json, a json containing thread information (requires API version 7.3.1 (0x07030010))
 * * @param: ThreadID, the id of the thread that ended
 */;
-Event OStimThreadEnd(string EventName, string StrArg, float ThreadID, Form Sender)
+Event OStimThreadEnd(string EventName, string Json, float ThreadID, Form Sender)
+	; the following code only works with API version 7.3.1 or higher
+	Actor[] Actors = OJSON.GetActors(Json)
+	string SceneID = OJSON.GetScene(Json)
 EndEvent

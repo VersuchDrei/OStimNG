@@ -14,6 +14,7 @@
 #include "Papyrus/PapyrusFace.h"
 #include "Papyrus/PapyrusFurniture.h"
 #include "Papyrus/PapyrusIntUtil.h"
+#include "Papyrus/PapyrusJson.h"
 #include "Papyrus/PapyrusLibrary.h"
 #include "Papyrus/PapyrusMetadata.h"
 #include "Papyrus/PapyrusObject.h"
@@ -44,6 +45,7 @@ namespace Papyrus {
             papyrus->Register(PapyrusEvent::Bind);
             papyrus->Register(PapyrusFurniture::Bind);
             papyrus->Register(PapyrusIntUtil::Bind);
+            papyrus->Register(PapyrusJson::Bind);
             papyrus->Register(PapyrusLibrary::Bind);
             papyrus->Register(PapyrusMetadata::Bind);
             papyrus->Register(PapyrusScenes::Bind);

@@ -34,12 +34,21 @@ namespace GameAPI {
         }
 
         void sendEndEvent(int threadID, std::string sceneID, std::vector<GameActor> actors) {
+            json json = json::object();
+            json["scene"] = sceneID;
+            json["actors"] = json::array();
+            for (GameAPI::GameActor actor : actors) {
+                json["actors"].push_back(actor.toJson());
+            }
+
+            std::string jsonString = json.dump();
+
             // legacy mod event
             if (threadID == 0) {
-                GameUtil::sendModEvent(GameLogic::GameTable::getMainQuest(), "ostim_end", "", -1);
+                GameUtil::sendModEvent(GameLogic::GameTable::getMainQuest(), "ostim_end", jsonString, -1);
                 GameUtil::sendModEvent(GameLogic::GameTable::getMainQuest(), "ostim_totalend", "", 0);
             }
-            GameUtil::sendModEvent(GameLogic::GameTable::getMainQuest(), "ostim_thread_end", "", threadID);
+            GameUtil::sendModEvent(GameLogic::GameTable::getMainQuest(), "ostim_thread_end", jsonString, threadID);
         }
 
 

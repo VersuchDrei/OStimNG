@@ -45,6 +45,18 @@ namespace GameAPI {
             }
         }
 
+        json toJson() {
+            json json = json::object();
+            if (!form) {
+                return json;
+            }
+
+            json["mod"] = form->GetFile(0)->GetFilename();
+            json["formid"] = form->GetFormID() & (form->GetFile(0)->IsLight() ? 0xFFF : 0xFFFFFF);
+
+            return json;
+        }
+
         inline void loadFile(std::string mod, uint32_t formID) {form = RE::TESDataHandler::GetSingleton()->LookupForm<T>(formID, mod); }
 
         void loadSerial(GameSerializationInterface serial) {
