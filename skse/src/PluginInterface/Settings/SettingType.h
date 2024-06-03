@@ -5,7 +5,8 @@ namespace OStim {
         TOGGLE = 0,
         SLIDER = 1,
         DROP_DOWN = 2,
-        TEXT_INPUT = 3, // will need UIExtensions until we implement our own text box
-        BUTTON = 4
+        TEXT_INPUT = 3,
+        KEY_MAP = 4,
+        BUTTON = 5
     };
 }

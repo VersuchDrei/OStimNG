@@ -186,6 +186,19 @@ namespace ScriptAPI {
         }
 
 
+        int getDefaultSettingKey(int page, int group, int setting) {
+            return getSettingProperty<int>(page, group, setting, 0, [](::Settings::Setting* setting) { return setting->getDefaultKey(); });
+        }
+
+        int getCurrentSettingKey(int page, int group, int setting) {
+            return getSettingProperty<int>(page, group, setting, 0, [](::Settings::Setting* setting) { return setting->getCurrentKey(); });
+        }
+
+        bool setSettingKey(int page, int group, int setting, int key) {
+            return getSettingProperty<bool>(page, group, setting, false, [key](::Settings::Setting* setting) { return setting->setKey(key); });
+        }
+
+
         bool clickSetting(int page, int group, int setting) {
             return getSettingProperty<bool>(page, group, setting, false, [](::Settings::Setting* setting) { return setting->click(); });
         }

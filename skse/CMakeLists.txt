@@ -66,6 +66,7 @@ set(sources
     src/GameAPI/GameFaction.cpp
     src/GameAPI/GameObject.cpp
     src/GameAPI/GamePosition.cpp
+    src/GameAPI/GameRecordIdentifier.cpp
     src/GameAPI/GameSex.cpp
     src/GameAPI/GameSound.cpp
     src/GameAPI/GameUtil.cpp
@@ -102,10 +103,12 @@ set(sources
 	src/Serial/Manager.cpp
     src/Settings/Implementation/BaseTypes/BaseSetting.cpp
     src/Settings/Implementation/BaseTypes/DropDownSetting.cpp
+    src/Settings/Implementation/BaseTypes/KeyMapSetting.cpp
     src/Settings/Implementation/BaseTypes/MinMaxSliderSetting.cpp
     src/Settings/Implementation/BaseTypes/SliderSetting.cpp
     src/Settings/Implementation/BaseTypes/ToggleSetting.cpp
     src/Settings/Implementation/GameVariable/GameVariableDropDownSetting.cpp
+    src/Settings/Implementation/GameVariable/GameVariableKeyMapSetting.cpp
     src/Settings/Implementation/GameVariable/GameVariableSliderSetting.cpp
     src/Settings/Implementation/GameVariable/GameVariableToggleSetting.cpp
     src/Settings/Implementation/Lambda/AdvancedLambdaDropDownSetting.cpp

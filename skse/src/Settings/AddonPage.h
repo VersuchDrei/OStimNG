@@ -2,6 +2,7 @@
 
 #include "Model/SettingPage.h"
 
+#include "GameAPI/GameVariable.h"
 #include "Util/Singleton.h"
 
 namespace Settings {
@@ -24,5 +25,6 @@ namespace Settings {
     private:
         std::vector<SettingGroup*> skseGroups;
         std::vector<SettingGroup*> jsonGroups;
+        std::vector<GameAPI::GameVariable> jsonVariables;
     };
 }

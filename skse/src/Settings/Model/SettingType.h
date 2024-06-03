@@ -6,6 +6,7 @@ namespace Settings {
         SLIDER = 1,
         DROP_DOWN = 2,
         TEXT_INPUT = 3,
-        BUTTON = 4
+        KEY_MAP = 4,
+        BUTTON = 5
     };
 }

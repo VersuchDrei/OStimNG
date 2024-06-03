@@ -103,6 +103,19 @@ namespace Settings {
         }
 
 
+        keyMap BaseSetting::getDefaultKey() {
+            return static_cast<keyMap>(defaultValue);
+        }
+
+        keyMap BaseSetting::getCurrentKey() {
+            return 0;
+        }
+
+        bool BaseSetting::setKey(keyMap key) {
+            return false;
+        }
+
+
         bool BaseSetting::click() {
             return false;
         }

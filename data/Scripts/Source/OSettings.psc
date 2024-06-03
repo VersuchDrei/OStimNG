@@ -43,4 +43,8 @@ string Function GetDefaultSettingText(int Page, int Group, int Setting) Global N
 string Function GetCurrentSettingText(int Page, int Group, int Setting) Global Native
 bool Function SetSettingText(int Page, int Group, int Setting, string Text) Global Native
 
+int Function GetDefaultSettingKey(int Page, int Group, int Setting) Global Native
+int Function GetCurrentSettingKey(int Page, int Group, int Setting) Global Native
+bool Function SetSettingKey(int Page, int Group, int Setting, int KeyCode) Global Native
+
 bool Function ClickSetting(int Page, int Group, int Setting) Global Native

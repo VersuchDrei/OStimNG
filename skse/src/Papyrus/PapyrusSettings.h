@@ -130,6 +130,19 @@ namespace PapyrusSettings {
     }
 
 
+    int GetDefaultSettingKey(RE::StaticFunctionTag*, int page, int group, int setting) {
+        return ScriptAPI::Settings::getDefaultSettingKey(page, group, setting);
+    }
+
+    int GetCurrentSettingKey(RE::StaticFunctionTag*, int page, int group, int setting) {
+        return ScriptAPI::Settings::getCurrentSettingKey(page, group, setting);
+    }
+
+    bool SetSettingKey(RE::StaticFunctionTag*, int page, int group, int setting, int key) {
+        return ScriptAPI::Settings::setSettingKey(page, group, setting, key);
+    }
+
+
     bool ClickSetting(RE::StaticFunctionTag*, int page, int group, int setting) {
         return ScriptAPI::Settings::clickSetting(page, group, setting);
     }
@@ -174,6 +187,10 @@ namespace PapyrusSettings {
         BIND(GetDefaultSettingText);
         BIND(GetCurrentSettingText);
         BIND(SetSettingText);
+
+        BIND(GetDefaultSettingKey);
+        BIND(GetCurrentSettingKey);
+        BIND(SetSettingKey);
 
         BIND(ClickSetting);
 

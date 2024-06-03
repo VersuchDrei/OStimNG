@@ -111,6 +111,19 @@ namespace Settings {
         }
 
 
+        keyMap PluginSetting::getDefaultKey() {
+            return setting->getDefaultKey();
+        }
+
+        keyMap PluginSetting::getCurrentKey() {
+            return setting->getCurrentKey();
+        }
+
+        bool PluginSetting::setKey(keyMap key) {
+            return setting->setKey(key);
+        }
+
+
         bool PluginSetting::click() {
             return setting->click();
         }

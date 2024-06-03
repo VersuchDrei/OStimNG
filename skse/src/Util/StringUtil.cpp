@@ -3,6 +3,25 @@
 #include "Util.h"
 
 namespace StringUtil {
+    bool isNumber(std::string& text) {
+        return !text.empty() && std::find_if(text.begin(), text.end(), [](unsigned char c) { return !std::isdigit(c); }) == text.end();
+    }
+
+    std::vector<std::string> split(std::string string, char delimiter) {
+        std::vector<std::string> tokens;
+        size_t start = 0, end = 0;
+
+        while ((end = string.find(delimiter, start)) != std::string::npos) {
+            tokens.push_back(string.substr(start, end - start));
+
+            start = end + 1;
+        }
+
+        if (string.substr(start) != "") tokens.push_back(string.substr(start));
+
+        return tokens;
+    }
+
     void toLower(std::string* string) {
         std::transform(string->begin(), string->end(), string->begin(), ::tolower);
     }

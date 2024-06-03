@@ -114,9 +114,7 @@ Event OnPageReset(String Page)
 		SetInfoText(" ")
 	EndIf
 
-	If (Page == "$ostim_page_configuration")
-		AddTextOptionST("OID_BootstrapMCM", "$ostim_bootstrap_mcm", "")
-	ElseIf Page == "$ostim_page_general"
+	If Page == "$ostim_page_general"
 		DrawGeneralPage()
 	ElseIf Page == "$ostim_page_controls"
 		DrawControlsPage()
@@ -366,21 +364,16 @@ Function DrawGeneralPage()
 	AddToggleOptionST("OID_OnlyLightInDark", "$ostim_dark_light", Main.LowLightLevelLightsOnly)
 
 	SetCursorPosition(1)
-	AddColoredHeader("$ostim_header_system")
-	SetCursorPosition(3)
-	AddTextOptionST("OID_BootstrapMCM", "$ostim_bootstrap_mcm", "")
-
-	SetCursorPosition(7)
 	AddColoredHeader("$ostim_header_save_load")
-	SetCursorPosition(9)
+	SetCursorPosition(3)
 	AddTextOptionST("OID_ExportSettings", "$ostim_export", "$ostim_done")
-	SetCursorPosition(11)
+	SetCursorPosition(5)
 	AddTextOptionST("OID_ImportSettings", "$ostim_import", "$ostim_done")
-	SetCursorPosition(13)
+	SetCursorPosition(7)
 	AddToggleOptionST("OID_AutoExportSettings", "$ostim_auto_export", Main.AutoExportSettings)
-	SetCursorPosition(15)
+	SetCursorPosition(9)
 	AddToggleOptionST("OID_AutoImportSettings", "$ostim_auto_import", Main.AutoImportSettings)
-	SetCursorPosition(17)
+	SetCursorPosition(11)
 	AddTextOptionST("OID_ResetSettings", "$ostim_import_default", "$ostim_done")
 EndFunction
 
@@ -510,18 +503,6 @@ State OID_OnlyLightInDark
 	Event OnSelectST()
 		Main.LowLightLevelLightsOnly = !Main.LowLightLevelLightsOnly
 		SetToggleOptionValueST(Main.LowLightLevelLightsOnly)
-	EndEvent
-EndState
-
-
-State OID_BootstrapMCM
-	Event OnHighlightST()
-		SetInfoText("$ostim_tooltip_bootstrap_mcm")
-	EndEvent
-
-	Event OnSelectST()
-		SetupPages()
-		ShowMessage("$ostim_message_bootstrap_mcm", false)
 	EndEvent
 EndState
 
@@ -3193,7 +3174,8 @@ int SETTING_TYPE_TOGGLE = 0
 int SETTING_TYPE_SLIDER = 1
 int SETTING_TYPE_DROP_DOWN = 2
 int SETTING_TYPE_TEXT_INPUT = 3
-int SETTING_TYPE_BUTTON = 4
+int SETTING_TYPE_KEY_MAP = 4
+int SETTING_TYPE_BUTTON = 5
 
 int DrawnPage = -1
 
@@ -3226,12 +3208,10 @@ Function DrawPageTopToBottom(int Page)
 	SettingIndices = OIntUtil.CreateArray(TotalSettingCount, -1)
 	SettingGroups = OIntUtil.CreateArray(TotalSettingCount, -1)
 
-	int CurrentIndex = 0
-
 	Group = 0
 	While Group < GroupCount
 		If Group == Middle
-			CurrentIndex = 1
+			SetCursorPosition(1)
 		EndIf
 
 		AddColoredHeader(OSettings.GetSettingGroupName(Page, Group))
@@ -3259,7 +3239,9 @@ Function DrawPageTopToBottom(int Page)
 			ElseIf SettingType == SETTING_TYPE_DROP_DOWN
 				SettingID = AddMenuOption(SettingName, OSettings.GetCurrentSettingOption(Page, Group, Setting), SettingFlags)
 			ElseIf SettingType == SETTING_TYPE_TEXT_INPUT
-				SettingID = AddInputOption(SettingName, OSettings.GetCurrentSettingText(Page, Group, Setting))
+				SettingID = AddInputOption(SettingName, OSettings.GetCurrentSettingText(Page, Group, Setting), SettingFlags)
+			ElseIf SettingType == SETTING_TYPE_KEY_MAP
+				SettingID = AddKeyMapOption(SettingName, OSettings.GetCurrentSettingKey(Page, Group, Setting), SettingFlags)
 			ElseIf SettingType == SETTING_TYPE_BUTTON
 				SettingID = AddTextOption(SettingName, "")
 			EndIf
@@ -3357,6 +3339,18 @@ Event OnOptionInputAccept(int Option, string Text)
 	EndIf
 EndEvent
 
+Event OnOptionKeyMapChange(int Option, int KeyCode, string ConflictControl, string ConflictName)
+	int SettingID = Settings.Find(Option)
+	int Group = SettingGroups[SettingID]
+	int Setting = SettingIndices[SettingID]
+
+	If OSettings.SetSettingKey(DrawnPage, Group, Setting, KeyCode)
+		ForcePageReset()
+	Else
+		SetKeyMapOptionValue(Option, KeyCode)
+	EndIf
+EndEvent
+
 Function OnOptionDefaultRefactored(int Option)
 	int SettingID = Settings.Find(Option)
 	int Group = SettingGroups[SettingID]
@@ -3392,6 +3386,13 @@ Function OnOptionDefaultRefactored(int Option)
 			ForcePageReset()
 		Else
 			SetTextOptionValue(Option, DefaultText)
+		EndIf
+	ElseIf SettingType == SETTING_TYPE_KEY_MAP
+		int DefaultKey = OSettings.GetDefaultSettingKey(DrawnPage, Group, Setting)
+		If OSettings.SetSettingKey(Drawnpage, Group, Setting, DefaultKey)
+			ForcePageReset()
+		Else
+			SetKeyMapOptionValue(Option, DefaultKey)
 		EndIf
 	EndIf
 EndFunction

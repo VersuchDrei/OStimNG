@@ -42,3 +42,8 @@ setting types:
 	the global variable will be set to the index of the selected option
 "defaultIndex" (int): the index of the default value
 "options" (list<string>): the list of options
+
+"keymap":
+	keep in mind that you still have to register to the key in your script
+	and you will not be notified about changes in this setting, so this only works for temporary hotkeys
+"defaultKey" (int): the default value of the setting (default: 0)

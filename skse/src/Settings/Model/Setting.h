@@ -4,6 +4,7 @@
 
 using settingIndex = uint32_t;
 using dropDownIndex = uint32_t;
+using keyMap = uint32_t;
 
 namespace Settings {
     class Setting {
@@ -39,6 +40,11 @@ namespace Settings {
         virtual std::string getDefaultText() = 0;
         virtual std::string getCurrentText() = 0;
         virtual bool setText(std::string text) = 0;
+
+        // key map option
+        virtual keyMap getDefaultKey() = 0;
+        virtual keyMap getCurrentKey() = 0;
+        virtual bool setKey(keyMap key) = 0;
 
         // button options
         virtual bool click() = 0;

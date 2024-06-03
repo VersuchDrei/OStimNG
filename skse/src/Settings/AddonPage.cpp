@@ -1,12 +1,14 @@
 #include "AddonPage.h"
 
 #include "Implementation/GameVariable/GameVariableDropDownSetting.h"
+#include "Implementation/GameVariable/GameVariableKeyMapSetting.h"
 #include "Implementation/GameVariable/GameVariableSliderSetting.h"
 #include "Implementation/GameVariable/GameVariableToggleSetting.h"
 #include "Implementation/SimpleSettingGroup.h"
 
 #include "Util/JsonFileLoader.h"
 #include "Util/JsonUtil.h"
+#include "Util/StringUtil.h"
 
 namespace Settings {
     const char* SETTINGS_FILE_PATH{"Data/SKSE/Plugins/OStim/settings"};
@@ -16,6 +18,8 @@ namespace Settings {
             delete group;
         }
         jsonGroups.clear();
+
+        jsonVariables.clear();
 
         Util::JsonFileLoader::LoadFilesInFolder(SETTINGS_FILE_PATH, [&](std::string path, std::string filename, json json) {
             std::string groupName;
@@ -56,6 +60,7 @@ namespace Settings {
                 if (type.empty()) {
                     continue;
                 }
+                StringUtil::toLower(&type);
 
                 BaseTypes::CommonSettingParams params;
 
@@ -69,6 +74,7 @@ namespace Settings {
                 if (!variable) {
                     continue;
                 }
+                jsonVariables.push_back(variable);
                 
                 JsonUtil::loadString(jsonSetting, params.tooltip, "tooltip", filename, objectType, false);
 
@@ -85,7 +91,8 @@ namespace Settings {
                     settings.push_back(new GameVariableSettings::GameVariableSliderSetting(params, sliderParams, variable));
                 } else if (type == "dropdown") {
                     BaseTypes::DropDownSettingParams dropDownParams;
-                    JsonUtil::loadStringList(jsonSetting, dropDownParams.options, "options", filename, objectType, true);
+                    JsonUtil::loadStringList(jsonSetting, dropDownParams.options, "options", filename, objectType,
+                                             true);
                     if (dropDownParams.options.empty()) {
                         continue;
                     }
@@ -93,10 +100,17 @@ namespace Settings {
                     int defaultIndex = 0;
                     JsonUtil::loadInt(jsonSetting, defaultIndex, "defaultIndex", filename, objectType, false);
                     dropDownParams.defaultIndex = defaultIndex;
-                    settings.push_back(new GameVariableSettings::GameVariableDropDownSetting(params, dropDownParams, variable));
+                    settings.push_back(
+                        new GameVariableSettings::GameVariableDropDownSetting(params, dropDownParams, variable));
+                } else if (type == "keymap"){
+                    BaseTypes::KeyMapSettingParams keyMapParams;
+                    int defaultKey = 0;
+                    JsonUtil::loadInt(jsonSetting, defaultKey, "defaultKalue", filename, objectType, false);
+                    keyMapParams.defaultKey = defaultKey;
+                    settings.push_back(new GameVariableSettings::GameVariableKeyMapSetting(params, keyMapParams, variable));
+                } else {
+                    logger::warn("setting {} of setting file {} has unknown type", index, filename, type);
                 }
-
-                logger::warn("setting {} of setting file {} has unknown type", index, filename, type);
             }
 
             jsonGroups.push_back(new SimpleSettingGroup(groupName, SettingDisplayOrder::TOP_TO_BOTTOM, settings));
@@ -141,30 +155,8 @@ namespace Settings {
     void AddonPage::writeJson(json& json) {
         nlohmann::json addons = json::object();
 
-        for (SettingGroup* group : jsonGroups) {
-            nlohmann::json jsonGroup = json::object();
-
-            int count = group->getSettingCount();
-            for (int i = 0; i < count; i++) {
-                Setting* setting = group->getSetting(i);
-                if (!setting) {
-                    continue;
-                }
-
-                switch (setting->getType()) {
-                    case SettingType::TOGGLE: {
-                        jsonGroup[setting->getName()] = setting->isActivated();
-                    } break;
-                    case SettingType::SLIDER: {
-                        jsonGroup[setting->getName()] = setting->getCurrentValue();
-                    } break;
-                    case SettingType::DROP_DOWN: {
-                        jsonGroup[setting->getName()] = setting->getCurrentIndex();
-                    } break;
-                }
-            }
-
-            addons[group->getName()] = jsonGroup;
+        for (GameAPI::GameVariable variable : jsonVariables) {
+            json[variable.getIdentifier().toString()] = variable.getValue();
         }
 
         json["addons"] = addons;
@@ -180,49 +172,18 @@ namespace Settings {
             return;
         }
 
-        for (SettingGroup* group : jsonGroups) {
-            std::string groupName = group->getName();
-            if (!addons.contains(groupName)) {
+        for (GameAPI::GameVariable variable : jsonVariables) {
+            std::string id = variable.getIdentifier().toString();
+            if (!addons.contains(id)) {
                 continue;
             }
 
-            nlohmann::json jsonGroup = addons[groupName];
-            if (!jsonGroup.is_object()) {
-                continue;
+            nlohmann::json value = addons[id];
+            if (!value.is_number_float()) {
+                return;
             }
 
-            int count = group->getSettingCount();
-            for (int i = 0; i < count; i++) {
-                Setting* setting = group->getSetting(i);
-                if (!setting) {
-                    continue;
-                }
-
-                std::string settingName = setting->getName();
-                if (!jsonGroup.contains(settingName)) {
-                    continue;
-                }
-
-                nlohmann::json jsonSetting = jsonGroup[settingName];
-
-                switch (setting->getType()) {
-                    case SettingType::TOGGLE: {
-                        if (jsonSetting.is_boolean() && setting->isActivated() != static_cast<bool>(jsonSetting)) {
-                            setting->toggle();
-                        }
-                    } break;
-                    case SettingType::SLIDER: {
-                        if (jsonSetting.is_number_float()) {
-                            setting->setValue(jsonSetting);
-                        }
-                    } break;
-                    case SettingType::DROP_DOWN: {
-                        if (jsonSetting.is_number_integer()) {
-                            setting->setIndex(jsonSetting);
-                        }
-                    } break;
-                }
-            }
+            variable.setValue(value);
         }
     }
 }

@@ -39,6 +39,10 @@ namespace ScriptAPI {
         std::string getCurrentSettingText(int page, int group, int setting);
         bool setSettingText(int page, int group, int setting, std::string text);
 
+        int getDefaultSettingKey(int page, int group, int setting);
+        int getCurrentSettingKey(int page, int group, int setting);
+        bool setSettingKey(int page, int group, int setting, int key);
+
         bool clickSetting(int page, int group, int Setting);
     }
 }

@@ -39,6 +39,11 @@ namespace OStim {
         virtual const char* getCurrentText() = 0;
         virtual bool setText(const char* text) = 0;
 
+        // key map option
+        virtual uint32_t getDefaultKey() = 0;
+        virtual uint32_t getCurrentKey() = 0;
+        virtual bool setKey(uint32_t key) = 0;
+
         // button options
         virtual bool click() = 0;
     };

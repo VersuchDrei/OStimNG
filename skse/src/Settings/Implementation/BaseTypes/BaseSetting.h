@@ -9,35 +9,39 @@ namespace Settings {
         public:
             BaseSetting(CommonSettingParams params, SettingType type, float defaultValue);
 
-            virtual bool isDisposable();
+            virtual bool isDisposable() override;
 
-            virtual std::string getName();
-            virtual std::string getTooltip();
-            virtual SettingType getType();
-            virtual bool isEnabled();
+            virtual std::string getName() override;
+            virtual std::string getTooltip() override;
+            virtual SettingType getType() override;
+            virtual bool isEnabled() override;
 
-            virtual bool isActivatedByDefault();
-            virtual bool isActivated();
-            virtual bool toggle();
+            virtual bool isActivatedByDefault() override;
+            virtual bool isActivated() override;
+            virtual bool toggle() override;
 
-            virtual float getDefaultValue();
-            virtual float getCurrentValue();
-            virtual float getValueStep();
-            virtual float getMinValue();
-            virtual float getMaxValue();
-            virtual bool setValue(float value);
+            virtual float getDefaultValue() override;
+            virtual float getCurrentValue() override;
+            virtual float getValueStep() override;
+            virtual float getMinValue() override;
+            virtual float getMaxValue() override;
+            virtual bool setValue(float value) override;
 
-            virtual dropDownIndex getDefaultIndex();
-            virtual dropDownIndex getCurrentIndex();
-            virtual std::string getCurrentOption();
-            virtual std::vector<std::string> getOptions();
-            virtual bool setIndex(dropDownIndex index);
+            virtual dropDownIndex getDefaultIndex() override;
+            virtual dropDownIndex getCurrentIndex() override;
+            virtual std::string getCurrentOption() override;
+            virtual std::vector<std::string> getOptions() override;
+            virtual bool setIndex(dropDownIndex index) override;
 
-            virtual std::string getDefaultText();
-            virtual std::string getCurrentText();
-            virtual bool setText(std::string text);
+            virtual std::string getDefaultText() override;
+            virtual std::string getCurrentText() override;
+            virtual bool setText(std::string text) override;
 
-            virtual bool click();
+            virtual keyMap getDefaultKey() override;
+            virtual keyMap getCurrentKey() override;
+            virtual bool setKey(keyMap key) override;
+
+            virtual bool click() override;
 
         protected:
             inline bool shouldRedraw() { return alwaysRedraw; }

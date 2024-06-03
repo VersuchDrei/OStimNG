@@ -18,7 +18,7 @@ namespace Settings {
 
 
         dropDownIndex GameVariableDropDownSetting::getCurrentIndex() {
-            return static_cast<int>(variable.getValue());
+            return static_cast<dropDownIndex>(variable.getValue());
         }
 
         bool GameVariableDropDownSetting::setIndex(dropDownIndex index) {

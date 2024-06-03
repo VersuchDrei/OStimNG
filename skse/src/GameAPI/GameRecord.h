@@ -1,5 +1,6 @@
 #pragma once
 
+#include "GameRecordIdentifier.h"
 #include "GameSerializationInterface.h"
 
 namespace GameAPI {
@@ -11,6 +12,21 @@ namespace GameAPI {
         inline operator bool() const { return form; }
         inline bool operator==(const GameRecord<T> other) { return form == other.form; }
         inline bool operator!=(const GameRecord<T> other) { return form != other.form; }
+
+        void loadIdentifier(GameRecordIdentifier& identifier) {
+            loadFile(identifier.mod, identifier.formID);
+        }
+
+        GameRecordIdentifier getIdentifier() {
+            if (!form) {
+                return {};
+            }
+
+            GameRecordIdentifier identifier;
+            identifier.mod = form->GetFile(0)->GetFilename();
+            identifier.formID = form->GetFormID() & (form->GetFile(0)->IsLight() ? 0xFFF : 0xFFFFFF);
+            return identifier;
+        }
 
         void loadJson(std::string& path, json json) {
             if (!json.is_object()) {
@@ -57,7 +73,9 @@ namespace GameAPI {
             return json;
         }
 
-        inline void loadFile(std::string mod, uint32_t formID) {form = RE::TESDataHandler::GetSingleton()->LookupForm<T>(formID, mod); }
+        void loadFile(std::string mod, uint32_t formID) {
+            form = RE::TESDataHandler::GetSingleton()->LookupForm<T>(formID, mod);
+        }
 
         void loadSerial(GameSerializationInterface serial) {
             RE::FormID oldFormID;
