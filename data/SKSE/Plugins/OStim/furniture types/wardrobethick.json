@@ -1,12 +1,14 @@
 {
 	"priority": 10,
-	"name": "$ostim_furniture_shelf",
+	"supertype": "wardrobe",
+	"offsetY": -43,
+	"rotation": 3.14159,
 	"conditions":[
 		{
 			"type": "formlist",
 			"formlist":{
 				"mod": "OStim.esp",
-				"formid": "0xDA0"
+				"formid": "0xEE7"
 			}
 		}
 	]

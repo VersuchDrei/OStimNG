@@ -143,7 +143,7 @@ namespace Sound {
     std::vector<std::string> SoundTable::getVoiceSetPairs() {
         std::vector<std::string> ret;
         ret.push_back("0");
-        ret.push_back("default");
+        ret.push_back("$ostim_generic_default");
 
         std::vector<std::pair<std::string, RE::FormID>> voices;
 
@@ -170,7 +170,7 @@ namespace Sound {
 
         if (voiceID == 0) {
             // for voice sets 0 is default male, but for serialization it is just default
-            return "default";
+            return "$ostim_generic_default";
         }
 
         auto iter = voiceSets.find(voiceID);
@@ -178,7 +178,7 @@ namespace Sound {
             return iter->second.name;
         }
 
-        return "default";
+        return "$ostim_generic_default";
     }
 
     void SoundTable::setVoiceSet(RE::FormID formID, std::string voice) {

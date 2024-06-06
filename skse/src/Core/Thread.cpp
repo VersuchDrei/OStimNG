@@ -37,7 +37,6 @@ namespace OStim {
 
         threadFlags = params.threadFlags;
 
-        // --- setting up the vehicle --- //
         this->center = furniture ? furniture.getPosition() : (playerThread ? GameAPI::GameActor::getPlayer().getPosition() : params.actors.front().getPosition());
 
         if (furniture) {

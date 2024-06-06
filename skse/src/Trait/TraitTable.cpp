@@ -323,10 +323,10 @@ namespace Trait {
         std::vector<std::string> ret;
         if (defaultEquipObjects.contains(type) || formID > 1) {
             ret.push_back("default");
-            ret.push_back("default");
+            ret.push_back("$ostim_generic_default");
         }
         ret.push_back("random");
-        ret.push_back("random");
+        ret.push_back("$ostim_generic_random");
 
         std::vector<std::pair<std::string, EquipObject*>> objects;
 
@@ -352,16 +352,16 @@ namespace Trait {
     std::string TraitTable::getEquipObjectName(RE::FormID formID, std::string type) {
         std::string id = Serialization::getEquipObject(formID, type);
         if (id == "") {
-            return defaultEquipObjects.contains(type) || formID > 1 ? "default" : "random";
+            return defaultEquipObjects.contains(type) || formID > 1 ? "$ostim_generic_default" : "$ostim_generic_random";
         } else if (id == "default") {
-            return "default";
+            return "$ostim_generic_default";
         } else if (id == "random") {
-            return "random";
+            return "$ostim_generic_random";
         }
 
         auto iter = equipObjects.find(type);
         if (iter == equipObjects.end()) {
-            return "-invalid-";
+            return "$ostim_generic_invalid";
         }
 
         auto iter2 = iter->second.find(id);
@@ -369,7 +369,7 @@ namespace Trait {
             return iter2->second->name;
         }
 
-        return "-invalid-";
+        return "$ostim_generic_invalid";
     }
 
     void TraitTable::setEquipObjectID(RE::FormID formID, std::string type, std::string id) {
