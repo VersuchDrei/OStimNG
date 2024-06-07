@@ -156,18 +156,18 @@ namespace Settings {
         nlohmann::json addons = json::object();
 
         for (GameAPI::GameVariable variable : jsonVariables) {
-            json[variable.getIdentifier().toString()] = variable.getValue();
+            addons[variable.getIdentifier().toString()] = variable.getValue();
         }
 
-        json["addons"] = addons;
+        json["jsonAddons"] = addons;
     }
 
     void AddonPage::readJson(json& json) {
-        if (!json.contains("addons")) {
+        if (!json.contains("jsonAddons")) {
             return;
         }
 
-        nlohmann::json& addons = json["addons"];
+        nlohmann::json& addons = json["jsonAddons"];
         if (!addons.is_object()) {
             return;
         }

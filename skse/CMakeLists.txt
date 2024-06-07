@@ -101,6 +101,8 @@ set(sources
 	src/ScriptAPI/JsonScript.cpp
 	src/ScriptAPI/SettingsScript.cpp
 	src/Serial/Manager.cpp
+    src/Settings/ExportImport/ExportInstance.cpp
+    src/Settings/ExportImport/ImportInstance.cpp
     src/Settings/Implementation/BaseTypes/BaseSetting.cpp
     src/Settings/Implementation/BaseTypes/DropDownSetting.cpp
     src/Settings/Implementation/BaseTypes/KeyMapSetting.cpp

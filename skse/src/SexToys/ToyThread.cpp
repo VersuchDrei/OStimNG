@@ -62,7 +62,7 @@ namespace Toys {
             }
 
             std::vector<std::tuple<OStim::ThreadActor*, std::string, ToyWrapper*>> slotToys;
-            action.roles.forEach([&globalSettings, &globalSlotSettings, &slotToys, &thread, &action, &toys, &toysInUse](Graph::Role role, int index) {
+            action.roles.forEach([globalSettings, globalSlotSettings, &slotToys, &thread, &action, &toys, &toysInUse](Graph::Role role, int index) {
                 Graph::ActionActor* actionActor = action.attributes->roles.get(role);
                 for (std::string slot : actionActor->toySlots) {
                     OStim::ThreadActor* actor = thread->GetActor(index);
@@ -75,7 +75,7 @@ namespace Toys {
                         Settings::ToySettings* settings = Settings::Settings::getSingleton()->getToySettings(id);
                         Settings::SlotSettings* slotSettings = settings->getSlotSettings(slot);
 
-                        if (!slotSettings->enabled) {
+                        if (!slotSettings->enabled || !globalSettings->getSlotSettings(slot)->enabled) {
                             continue;
                         }
 
