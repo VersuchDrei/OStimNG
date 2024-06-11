@@ -66,7 +66,7 @@ class SearchBar extends MovieClip
 	    private function scrollUp():Void {
         if (scrollPosition > 0) {
             scrollPosition--;
-            AssignData(dataArray); // Make sure dataArray is defined
+            AssignData(dataArray);
     }
     }
 
