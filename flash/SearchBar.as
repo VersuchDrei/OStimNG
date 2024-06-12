@@ -4,6 +4,7 @@ import gfx.ui.InputDetails;
 import Shared.GlobalFunc;
 import gfx.ui.NavigationCode;
 import gfx.managers.FocusHandler;
+import gfx.events.EventDispatcher;
 
 class SearchBar extends MovieClip
 {
@@ -24,10 +25,127 @@ class SearchBar extends MovieClip
 	var menuGutter = 22;
 
 	var _isOpen = false;
+	var scrollPosition:Number = 0;
+	var visibleItems:Array = [];
+	var maxScrollPosition:Number;
 
 	var fields = new Array();
 	var PrevFocus:MovieClip;
 	var _inputtingText:Boolean = false;
+	var fakeButton:MovieClip;
+	var widthTweenTime:Number = 0.25;
+	var heightTweenTime:Number = 0.25;
+
+	{
+		public function SearchBar()
+    {
+        super();
+        init();
+    }
+		private function init():Void 
+    {
+		bg._width = 0;
+		bg._height = 0;
+		UpdateSize(minHeight,355);
+		        mouseWheelListener = new Object();
+        mouseWheelListener.onMouseWheel = Delegate.create(this, onMouseWheel);
+        Mouse.addListener(mouseWheelListener);
+
+		// For Testing
+		//AssignData(generateTestData(5));
+	}
+	
+	    private function onMouseWheel(delta:Number):Void 
+	{
+        if (delta > 0) {
+            scrollUp();
+    } else if (delta < 0) {
+            scrollDown();
+    }
+    }
+	    private function scrollUp():Void {
+        if (scrollPosition > 0) {
+            scrollPosition--;
+            AssignData(dataArray);
+    }
+    }
+
+		private function scrollDown():Void {
+    if (scrollPosition < maxScrollPosition) {
+        scrollPosition++;
+        AssignData(dataArray);
+    }
+	}
+
+	public function AssignData(data:Array)
+	{
+    if (!data || data.length === 0) {
+        return;
+    }
+    
+    visibleItems = [];
+    
+    var totalHeight:Number = minHeight + topGutter + ((optionGutter + lineHeight) * data.length);
+    var maxVisibleItems:Number = Math.floor((bg._height - topGutter) / (optionGutter + lineHeight));
+    
+    totalHeight = Math.max(totalHeight, minHeight);
+    maxScrollPosition = data.length - maxVisibleItems;
+    
+    scrollPosition = Math.max(0, Math.min(scrollPosition, maxScrollPosition));
+    
+    visibleItems = data.slice(scrollPosition, scrollPosition + maxVisibleItems);
+    UpdateDisplay();
+}
+private function UpdateDisplay()void
+{
+    for (var i:Number = 0; i < visibleItems.length; i++)
+    {
+        if (fields[i])
+        {
+            fields[i]._visible = true;
+            fields[i].init(i, visibleItems[i]);
+        }
+    }
+}
+
+private function debounce(func:Function, delay:Number):Function {
+    var timer:Number;
+    return function() {
+        clearTimeout(timer);
+        var context = this, args = arguments;
+        timer = setTimeout(function() {
+            func.apply(context, args);
+        }, delay);
+    };
+}
+
+	public function UpdateSize(newHeight:Number, newWidth:Number)
+	{
+		TweenLite.to(bg,widthTweenTime,{_width:newWidth + (menuGutter * 2), _x:(newWidth + (menuGutter * 2)) / 2});
+		TweenLite.to(divider,0.5,{_width:newWidth, _x:menuGutter});
+		TweenLite.to(bg,heightTweenTime,{delay:widthTweenTime, _height:newHeight, _y:0 - (newHeight / 2)});
+	}
+    }
+    public function removeMouseWheelListener():Void {
+        if (mouseWheelListener != null) {
+            Mouse.removeListener(mouseWheelListener);
+            mouseWheelListener = null;
+    }
+    }
+    public function onDestroy():Void {
+        removeMouseWheelListener();
+    }
+	}
+
+	var fields = new Array();
+	var PrevFocus:MovieClip;
+	var _inputtingText:Boolean = false;
+	function set inputtingText(val:Boolean)
+	{
+		_inputtingText = val;
+		doSetInputtingText(val);
+	}
+
 	function set inputtingText(val:Boolean)
 	{
 		_inputtingText = val;
@@ -44,44 +162,19 @@ class SearchBar extends MovieClip
 
 	public function SearchBar()
 	{
-		super();
-		// constructor code
-		bg._width = 0;
-		bg._height = 0;
-		UpdateSize(minHeight,355);
-
-		// For Testing
-		//AssignData(generateTestData(5));
-	}
-	
-	//Update size based on the size of the contents. Width outer gutters
-	public function UpdateSize(newHeight:Number, newWidth:Number)
-	{
-		TweenLite.to(bg,widthTweenTime,{_width:newWidth + (menuGutter * 2), _x:(newWidth + (menuGutter * 2)) / 2});
-		TweenLite.to(divider,0.5,{_width:newWidth, _x:menuGutter});
-		TweenLite.to(bg,heightTweenTime,{delay:widthTweenTime, _height:newHeight, _y:0 - (newHeight / 2)});
-	}
-
 	public function HandleKeyboardInput(input:Number)
 	{
-		// 0 = up, 1 = down, 2 = left, 3 = right, 4 = select, 5 = escape;
-		switch (input)
-		{
-			case 0 :
-				{
-					if (!inputtingText)
-					{
-						if (CurrentlySelectedIdx + 1 > fields.length - 1)
-						{
-							CurrentlySelectedIdx = fields.length - 1;
-							UpdateHighlight();
-						}
-						else
-						{
-							CurrentlySelectedIdx++;
-							UpdateHighlight();
-						}
-					}
+    switch (input)
+    {
+        case 0:
+            debounce(scrollUp(), 100)();
+            break;
+        case 1:
+            debounce(scrollDown(), 100)();
+            break;
+   	}
+	}
+
 					return true;
 				};
 				break;
@@ -145,10 +238,8 @@ class SearchBar extends MovieClip
 			{
 				ClearAndHide();
 				return true;
-			}
-		}
 	}
-
+	}
 	function onMouseDown()
 	{
 		if (Mouse.getTopMostEntity() == textInput.textField)
