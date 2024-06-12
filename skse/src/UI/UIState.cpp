@@ -19,27 +19,9 @@ namespace UI {
         case MenuType::kSearchMenu: {
             UI::Search::SearchMenu::GetMenu()->Handle(control);
         }break;
-	}
- 	switch (control) {
-            case Controls::????: { // Replace "????" with the proper input aka up/down/left/right/yes/????
-                ToggleUIVisibility();
-            } break;
         }
     }
 
-    void UIState::ToggleUIVisibility(MenuType menu) {
-
-	if (activeMenu == MenuType::kSceneMenu) {
-            UI::Scene::SceneMenu::GetMenu()->Hide();
-            UI::Align::AlignMenu::GetMenu()->Hide();
-            UI::Search::SearchMenu::GetMenu()->Hide();
-        } else {
-            UI::Scene::SceneMenu::GetMenu()->Show();
-            UI::Align::AlignMenu::GetMenu()->Show();
-            UI::Search::SearchMenu::GetMenu()->Show();
-        }
-    }
-   }
     void UIState::SwitchActiveMenu(MenuType menu) {
         activeMenu = menu;
         
