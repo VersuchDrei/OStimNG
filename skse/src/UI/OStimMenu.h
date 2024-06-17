@@ -7,6 +7,7 @@ namespace UI {
 	public:
 		OStimMenu(std::string menuName);
 		static void Register(std::string menuName, RE::UI::Create_t* createFn);
+        inline bool isOpen() { return _isOpen; }
 		void Show();
 		void Hide();
 		void Update() {

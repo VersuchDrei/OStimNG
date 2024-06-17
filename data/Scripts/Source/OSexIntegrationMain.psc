@@ -323,6 +323,16 @@ int Property AlignmentKey
 	EndFunction
 EndProperty
 
+GlobalVariable Property OStimKeyHideUI Auto
+int Property HideUIKey
+	int Function Get()
+		Return OStimKeyHideUI.value As int
+	EndFunction
+	Function Set(int Value)
+		OStimKeyHideUI.value = Value
+	EndFunction
+EndProperty
+
 
 GlobalVariable Property OStimUseRumble Auto
 Bool Property UseRumble
@@ -2091,7 +2101,7 @@ Function OnLoadGame()
 	int PluginVersion = SKSE.GetPluginVersion("OStim")
 	If PluginVersion == 0
 		Debug.MessageBox("OStim Standalone: The OStim.dll isn't loaded. Make sure to run the game through SKSE.")
-	ElseIf PluginVersion != 0x07030010
+	ElseIf PluginVersion != 0x07030011
 		Debug.MessageBox("OStim Standalone: Your OStim.dll or OSexIntegraionMain.pex is being overwritten with an old version. OStim and its addons will NOT work properly. Please don't report any other bugs while this issue persists.")
 	EndIf
 

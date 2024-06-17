@@ -32,6 +32,7 @@ namespace MCM {
         inline static int keyPullOut() { return settings[0xDEA].asInt(); }
         inline static int keyAutoMode() { return settings[0xDEB].asInt(); }
         inline static int keyFreeCam() { return settings[0xDEC].asInt(); }
+        inline static int keyHideUI() { return settings[0xEE9].asInt(); }
 
         static bool useRumble();
 
@@ -179,6 +180,7 @@ namespace MCM {
             {0xE41, {37, "keySearch"}},
             {0xDE2, {38, "keyAlignment"}},
             {0xDEC, {181, "SetFreeCamToggleKey"}},
+            {0xEE9, {55, "keyHideUI"}},
 
             {0xE11, {1, "SetUseRumble"}},
 

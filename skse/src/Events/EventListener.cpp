@@ -156,6 +156,8 @@ namespace Events {
                 UI::UIState::GetSingleton()->ToggleActiveMenu(UI::kAlignMenu);
             } else if (keyCode == MCM::MCMTable::keySearch()) {
                 UI::UIState::GetSingleton()->ToggleActiveMenu(UI::kSearchMenu);
+            } else if (keyCode == MCM::MCMTable::keyHideUI()) {
+                UI::UIState::GetSingleton()->HandleControl(UI::Controls::KEY_HIDE);
             }
         }
 

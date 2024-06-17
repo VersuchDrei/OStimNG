@@ -70,6 +70,13 @@ namespace UI::Scene {
             case Yes: {
                 SendControl(4);
             } break;
+            case KEY_HIDE: {
+                if (_isOpen) {
+                    Hide();
+                } else {
+                    Show();
+                }
+            }
         }
     }
 

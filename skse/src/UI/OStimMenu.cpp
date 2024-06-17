@@ -43,6 +43,10 @@ namespace UI {
     }
 
     void OStimMenu::Show() {
+        if (_isOpen) {
+            return;
+        }
+
         auto msgQ = RE::UIMessageQueue::GetSingleton();
         if (msgQ) {
             msgQ->AddMessage(menuName, RE::UI_MESSAGE_TYPE::kShow, nullptr);
@@ -51,6 +55,10 @@ namespace UI {
     }
 
     void OStimMenu::Hide() {
+        if (!_isOpen) {
+            return;
+        }
+
         auto msgQ = RE::UIMessageQueue::GetSingleton();
         if (msgQ) {
             msgQ->AddMessage(menuName, RE::UI_MESSAGE_TYPE::kHide, nullptr);

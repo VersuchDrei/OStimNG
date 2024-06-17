@@ -587,8 +587,10 @@ Function DrawControlsPage()
 	AddKeyMapOptionST("OID_KeySearchMenu", "$ostim_key_search_menu", Main.SearchKey)
 	SetCursorPosition(16)
 	AddKeyMapOptionST("OID_KeyAlignmentMenu", "$ostim_key_alignment_menu", Main.AlignmentKey)
-
 	SetCursorPosition(18)
+	AddKeyMapOptionST("OID_KeyHideUI", "$ostim_key_hide_ui", Main.HideUIKey)
+
+	SetCursorPosition(20)
 	int UseRumbleFlags = OPTION_FLAG_NONE
 	If !Game.UsingGamepad()
 		UseRumbleFlags = OPTION_FLAG_DISABLED
@@ -700,6 +702,17 @@ State OID_KeyAlignmentMenu
 
 	Event OnKeyMapChangeST(int KeyCode, string ConflictControl, string ConflictName)
 		Main.AlignmentKey = KeyCode
+		SetKeyMapOptionValueST(KeyCode)
+	EndEvent
+EndState
+
+State OID_KeyHideUI
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_key_hide_ui")
+	EndEvent
+
+	Event OnKeyMapChangeST(int KeyCode, string ConflictControl, string ConflictName)
+		Main.HideUIKey = KeyCode
 		SetKeyMapOptionValueST(KeyCode)
 	EndEvent
 EndState
