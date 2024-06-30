@@ -4,7 +4,7 @@ namespace Settings {
     namespace BaseTypes {
         DropDownSetting::DropDownSetting(CommonSettingParams params, DropDownSettingParams dropDownParams)
             : BaseSetting(params, SettingType::DROP_DOWN, dropDownParams.defaultIndex),
-              options{options} {}
+              options{dropDownParams.options} {}
 
         std::string DropDownSetting::getCurrentOption() {
             int currentIndex = getCurrentIndex();
