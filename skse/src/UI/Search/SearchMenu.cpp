@@ -139,6 +139,7 @@ namespace UI::Search {
     }
 
     void SearchMenu::AssignData(std::vector<SearchItem>& data) {
+        std::sort(data.begin(), data.end(), [](SearchItem& a, SearchItem& b) { return a.label > b.label; });
 
         QueueUITask([this, data]() {
             Locker locker(_lock);
