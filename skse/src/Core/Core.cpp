@@ -8,7 +8,7 @@
 #include "Util/ActorUtil.h"
 #include "Util/APITable.h"
 
-namespace OStim {
+namespace Threading {
     void freeActor(GameAPI::GameActor actor, bool byGameLoad) {
         if (byGameLoad) {
             if (!MCM::MCMTable::isScalingDisabled()) {

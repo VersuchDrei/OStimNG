@@ -3,15 +3,15 @@
 #include "GameAPI/GameActor.h"
 #include "Trait/EquipObject.h"
 
-namespace OStim {
+namespace Threading {
     struct EquipObjectHandler {
     public:
         GameAPI::GameActor actor;
         Trait::EquipObject* object;
-        RE::TESObjectARMO* equipped = nullptr;
+        GameAPI::GameArmor equipped;
         int variantDuration = 0;
         std::string variant = "";
-        std::set<RE::TESObjectARMO*> toRemove;
+        std::set<GameAPI::GameArmor> toRemove;
 
         void equip(GameAPI::GameActor actor);
         void unequip(GameAPI::GameActor actor);

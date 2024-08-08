@@ -20,7 +20,7 @@ namespace Events {
     RE::BSEventNotifyControl EventListener::ProcessEvent(const SKSE::NiNodeUpdateEvent* a_event, RE::BSTEventSource<SKSE::NiNodeUpdateEvent>* a_eventSource) {
         if (a_event->reference->Is(RE::Actor::FORMTYPE)) {
             RE::Actor* actor = a_event->reference->As<RE::Actor>();
-            OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+            Threading::ThreadActor* threadActor = Threading::ThreadManager::GetSingleton()->findActor(actor);
             if (threadActor) {
                 threadActor->handleNiNodeUpdate();
             }
@@ -77,21 +77,26 @@ namespace Events {
             }
 
             if (keyCode == MCM::MCMTable::keySceneStart()) {
-                if (OStim::ThreadManager::GetSingleton()->playerThreadRunning()) {
-                    continue;
-                }
-
-                if (bEvent->IsDown()) {
-                    GameAPI::GameActor player = GameAPI::GameActor::getPlayer();
-                    GameAPI::GameActor target = GameAPI::Game::getCrosshairActor();
-                    if (target) {
-                        OStim::ThreadStartParams params = {.actors = {player, target}};
-                        OStim::startThread(params);
+                if (Threading::ThreadManager::GetSingleton()->playerThreadRunning()) {
+                    if (bEvent->IsDown()) {
+                        Threading::Thread* playerThread = Threading::ThreadManager::GetSingleton()->getPlayerThread();
+                        Furniture::selectFurniture(playerThread->getActorCount(), playerThread->getCenter(), MCM::MCMTable::furnitureSearchDistance(), 96.0f, true, [playerThread](GameAPI::GameObject furniture) {
+                            playerThread->changeFurniture(furniture, nullptr);
+                        });
                     }
-                } else if (bEvent->IsUp() && bEvent->HeldDuration() >= 2.0) {
-                    if (!OStim::ThreadManager::GetSingleton()->playerThreadRunning()) {
-                        OStim::ThreadStartParams params = {.actors = {GameAPI::GameActor::getPlayer()}};
-                        OStim::startThread(params);
+                } else {
+                    if (bEvent->IsDown()) {
+                        GameAPI::GameActor player = GameAPI::GameActor::getPlayer();
+                        GameAPI::GameActor target = GameAPI::Game::getCrosshairActor();
+                        if (target) {
+                            Threading::ThreadStartParams params = {.actors = {player, target}};
+                            Threading::startThread(params);
+                        }
+                    } else if (bEvent->IsUp() && bEvent->HeldDuration() >= 2.0) {
+                        if (!Threading::ThreadManager::GetSingleton()->playerThreadRunning()) {
+                            Threading::ThreadStartParams params = {.actors = {GameAPI::GameActor::getPlayer()}};
+                            Threading::startThread(params);
+                        }
                     }
                 }
             }
@@ -100,7 +105,7 @@ namespace Events {
                 continue;
             }
 
-            if (!OStim::ThreadManager::GetSingleton()->playerThreadRunning()) {
+            if (!Threading::ThreadManager::GetSingleton()->playerThreadRunning()) {
                 continue;
             }
 
@@ -126,23 +131,23 @@ namespace Events {
             } else if (keyCode == MCM::MCMTable::keyToggle()) {
                 UI::UIState::GetSingleton()->HandleControl(UI::Controls::Toggle);
             } else if (keyCode == MCM::MCMTable::keyEnd()) {
-                OStim::ThreadManager::GetSingleton()->getPlayerThread()->stopFaded();
+                Threading::ThreadManager::GetSingleton()->getPlayerThread()->stopFaded();
             } else if (keyCode == MCM::MCMTable::keySpeedUp()) {
-                if (OStim::ThreadManager::GetSingleton()->getPlayerThread()->increaseSpeed()) {
+                if (Threading::ThreadManager::GetSingleton()->getPlayerThread()->increaseSpeed()) {
                     UI::Scene::SceneMenu::GetMenu()->SpeedUp();
                 }
             } else if (keyCode == MCM::MCMTable::keySpeedDown()) {
-                if (OStim::ThreadManager::GetSingleton()->getPlayerThread()->decreaseSpeed()) {
+                if (Threading::ThreadManager::GetSingleton()->getPlayerThread()->decreaseSpeed()) {
                     UI::Scene::SceneMenu::GetMenu()->SpeedDown();
                 }
             } else if (keyCode == MCM::MCMTable::keyPullOut()){
                 if (UI::UIState::GetSingleton()->GetActiveMenu() == UI::MenuType::kSceneMenu) {
-                    OStim::ThreadManager::GetSingleton()->getPlayerThread()->pullOut();
+                    Threading::ThreadManager::GetSingleton()->getPlayerThread()->pullOut();
                 } else {
                     UI::UIState::GetSingleton()->HandleControl(UI::Controls::No);
                 }
             } else if (keyCode == MCM::MCMTable::keyAutoMode()){
-                OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->getPlayerThread();
+                Threading::Thread* thread = Threading::ThreadManager::GetSingleton()->getPlayerThread();
                 if (thread) {
                     if (thread->isInAutoMode()) {
                         thread->stopAutoMode();

@@ -53,7 +53,7 @@ namespace UI::Scene{
 		kHandled
 	};
 
-	class SceneOptions : public OStim::ISingleton<SceneOptions> {
+	class SceneOptions : public Threading::ISingleton<SceneOptions> {
 	public:
 		HandleResult Handle(int i);
 		void ExecuteOption(MenuOption& option);

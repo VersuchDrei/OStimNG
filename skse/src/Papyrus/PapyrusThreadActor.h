@@ -2,6 +2,7 @@
 
 #include "Core/Core.h"
 #include "Core/ThreadManager.h"
+#include "ScriptAPI/ActorScript.h"
 #include "Trait/TraitTable.h"
 #include "Util/StringUtil.h"
 
@@ -9,7 +10,7 @@ namespace PapyrusThreadActor {
     using VM = RE::BSScript::IVirtualMachine;
 
     float GetExcitement(RE::StaticFunctionTag*, RE::Actor* actor) {
-        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        Threading::ThreadActor* threadActor = Threading::ThreadManager::GetSingleton()->findActor(actor);
         if (threadActor) {
             return threadActor->getExcitement();
         }
@@ -24,21 +25,21 @@ namespace PapyrusThreadActor {
             excitement = 100;
         }
 
-        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        Threading::ThreadActor* threadActor = Threading::ThreadManager::GetSingleton()->findActor(actor);
         if (threadActor) {
             threadActor->setExcitement(excitement);
         }
     }
 
     void ModifyExcitement(RE::StaticFunctionTag*, RE::Actor* actor, float excitement, bool respectMultiplier) {
-        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        Threading::ThreadActor* threadActor = Threading::ThreadManager::GetSingleton()->findActor(actor);
         if (threadActor) {
             threadActor->addExcitement(excitement, respectMultiplier);
         }
     }
 
     float GetExcitementMultiplier(RE::StaticFunctionTag*, RE::Actor* actor) {
-        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        Threading::ThreadActor* threadActor = Threading::ThreadManager::GetSingleton()->findActor(actor);
         if (threadActor) {
             return threadActor->getExcitementMultiplier();
         }
@@ -46,7 +47,7 @@ namespace PapyrusThreadActor {
     }
 
     void SetExcitementMultiplier(RE::StaticFunctionTag*, RE::Actor* actor, float multiplier) {
-        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        Threading::ThreadActor* threadActor = Threading::ThreadManager::GetSingleton()->findActor(actor);
         if (threadActor) {
             return threadActor->setExcitementMultiplier(multiplier);
         }
@@ -54,21 +55,21 @@ namespace PapyrusThreadActor {
 
 
     void StallClimax(RE::StaticFunctionTag*, RE::Actor* actor) {
-        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        Threading::ThreadActor* threadActor = Threading::ThreadManager::GetSingleton()->findActor(actor);
         if (threadActor) {
             threadActor->setStallClimax(true);
         }
     }
 
     void PermitClimax(RE::StaticFunctionTag*, RE::Actor* actor) {
-        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        Threading::ThreadActor* threadActor = Threading::ThreadManager::GetSingleton()->findActor(actor);
         if (threadActor) {
             threadActor->setStallClimax(false);
         }
     }
 
     bool IsClimaxStalled(RE::StaticFunctionTag*, RE::Actor* actor, bool checkThread) {
-        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        Threading::ThreadActor* threadActor = Threading::ThreadManager::GetSingleton()->findActor(actor);
         if (threadActor) {
             if (threadActor->getStallClimax()) {
                 return true;
@@ -80,14 +81,14 @@ namespace PapyrusThreadActor {
     }
 
     void Climax(RE::StaticFunctionTag*, RE::Actor* actor, bool ignoreStall) {
-        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        Threading::ThreadActor* threadActor = Threading::ThreadManager::GetSingleton()->findActor(actor);
         if (threadActor) {
             threadActor->orgasm(ignoreStall);
         }
     }
 
     int GetTimesClimaxed(RE::StaticFunctionTag*, RE::Actor* actor) {
-        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        Threading::ThreadActor* threadActor = Threading::ThreadManager::GetSingleton()->findActor(actor);
         if (threadActor) {
             return threadActor->getTimexClimaxed();
         }
@@ -109,7 +110,7 @@ namespace PapyrusThreadActor {
 
         Trait::FacialExpression* eventExpression = VectorUtil::randomElement(expressions);
 
-        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        Threading::ThreadActor* threadActor = Threading::ThreadManager::GetSingleton()->findActor(actor);
         if (threadActor) {
             threadActor->setEventExpression(eventExpression);
         }
@@ -118,14 +119,14 @@ namespace PapyrusThreadActor {
     }
     
     void ClearExpression(RE::StaticFunctionTag*, RE::Actor* actor) {
-        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        Threading::ThreadActor* threadActor = Threading::ThreadManager::GetSingleton()->findActor(actor);
         if (threadActor) {
             threadActor->clearEventExpression();
         }
     }
 
     bool HasExpressionOverride(RE::StaticFunctionTag*, RE::Actor* actor) {
-        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        Threading::ThreadActor* threadActor = Threading::ThreadManager::GetSingleton()->findActor(actor);
         if (threadActor) {
             return threadActor->hasExpressionOverride();
         }
@@ -134,21 +135,21 @@ namespace PapyrusThreadActor {
 
 
     void Mute(RE::StaticFunctionTag*, RE::Actor* actor) {
-        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        Threading::ThreadActor* threadActor = Threading::ThreadManager::GetSingleton()->findActor(actor);
         if (threadActor) {
             threadActor->mute();
         }
     }
 
     void Unmute(RE::StaticFunctionTag*, RE::Actor* actor) {
-        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        Threading::ThreadActor* threadActor = Threading::ThreadManager::GetSingleton()->findActor(actor);
         if (threadActor) {
             threadActor->mute();
         }
     }
 
     bool IsMuted(RE::StaticFunctionTag*, RE::Actor* actor) {
-        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        Threading::ThreadActor* threadActor = Threading::ThreadManager::GetSingleton()->findActor(actor);
         if (threadActor) {
             return threadActor->isMuted();
         }
@@ -157,49 +158,49 @@ namespace PapyrusThreadActor {
 
 
     void Undress(RE::StaticFunctionTag*, RE::Actor* actor) {
-        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        Threading::ThreadActor* threadActor = Threading::ThreadManager::GetSingleton()->findActor(actor);
         if (threadActor) {
             threadActor->undress();
         }
     }
 
     void Redress(RE::StaticFunctionTag*, RE::Actor* actor) {
-        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        Threading::ThreadActor* threadActor = Threading::ThreadManager::GetSingleton()->findActor(actor);
         if (threadActor) {
             threadActor->redress();
         }
     }
 
     void UndressPartial(RE::StaticFunctionTag*, RE::Actor* actor, int mask) {
-        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        Threading::ThreadActor* threadActor = Threading::ThreadManager::GetSingleton()->findActor(actor);
         if (threadActor) {
             threadActor->undressPartial(mask);
         }
     }
 
     void RedressPartial(RE::StaticFunctionTag*, RE::Actor* actor, int mask) {
-        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        Threading::ThreadActor* threadActor = Threading::ThreadManager::GetSingleton()->findActor(actor);
         if (threadActor) {
             threadActor->redressPartial(mask);
         }
     }
 
     void RemoveWeapons(RE::StaticFunctionTag*, RE::Actor* actor) {
-        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        Threading::ThreadActor* threadActor = Threading::ThreadManager::GetSingleton()->findActor(actor);
         if (threadActor) {
             threadActor->removeWeapons();
         }
     }
 
     void AddWeapons(RE::StaticFunctionTag*, RE::Actor* actor) {
-        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        Threading::ThreadActor* threadActor = Threading::ThreadManager::GetSingleton()->findActor(actor);
         if (threadActor) {
             threadActor->addWeapons();
         }
     }
 
     bool EquipObject(RE::StaticFunctionTag*, RE::Actor* actor, std::string type) {
-        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        Threading::ThreadActor* threadActor = Threading::ThreadManager::GetSingleton()->findActor(actor);
         if (threadActor) {
             return threadActor->equipObject(type);
         }
@@ -208,14 +209,14 @@ namespace PapyrusThreadActor {
     }
 
     void UnequipObject(RE::StaticFunctionTag*, RE::Actor* actor, std::string type) {
-        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        Threading::ThreadActor* threadActor = Threading::ThreadManager::GetSingleton()->findActor(actor);
         if (threadActor) {
             threadActor->unequipObject(type);
         }
     }
 
     bool IsObjectEquipped(RE::StaticFunctionTag*, RE::Actor* actor, std::string type) {
-        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        Threading::ThreadActor* threadActor = Threading::ThreadManager::GetSingleton()->findActor(actor);
         if (threadActor) {
             return threadActor->isObjectEquipped(type);
         }
@@ -224,7 +225,7 @@ namespace PapyrusThreadActor {
     }
 
     bool SetObjectVariant(RE::StaticFunctionTag*, RE::Actor* actor, std::string type, std::string variant, float duration) {
-        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        Threading::ThreadActor* threadActor = Threading::ThreadManager::GetSingleton()->findActor(actor);
         if (threadActor) {
             return threadActor->setObjectVariant(type, variant, duration * 1000);
         }
@@ -233,7 +234,7 @@ namespace PapyrusThreadActor {
     }
 
     void UnsetObjectVariant(RE::StaticFunctionTag*, RE::Actor* actor, std::string type) {
-        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        Threading::ThreadActor* threadActor = Threading::ThreadManager::GetSingleton()->findActor(actor);
         if (threadActor) {
             threadActor->unsetObjectVariant(type);
         }
@@ -241,7 +242,7 @@ namespace PapyrusThreadActor {
 
     
     bool AutoTransition(RE::StaticFunctionTag*, RE::Actor* actor, std::string type) {
-        OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+        Threading::ThreadActor* threadActor = Threading::ThreadManager::GetSingleton()->findActor(actor);
         if (threadActor) {
             return threadActor->getThread()->autoTransition(threadActor->getThread()->getActorPosition(actor), type);
         }
@@ -249,18 +250,55 @@ namespace PapyrusThreadActor {
     }
 
 
+    bool HasMetadata(RE::StaticFunctionTag*, RE::Actor* actor, std::string metadata) {
+        return ScriptAPI::Actor::hasMetadata(actor, metadata);
+    }
+
+    void AddMetadata(RE::StaticFunctionTag*, RE::Actor* actor, std::string metadata) {
+        ScriptAPI::Actor::addMetadata(actor, metadata);
+    }
+
+    std::vector<std::string> GetMetadata(RE::StaticFunctionTag*, RE::Actor* actor) {
+        return ScriptAPI::Actor::getMetadata(actor);
+    }
+
+    bool HasMetaFloat(RE::StaticFunctionTag*, RE::Actor* actor, std::string metaID) {
+        return ScriptAPI::Actor::hasMetaFloat(actor, metaID);
+    }
+
+    float GetMetaFloat(RE::StaticFunctionTag*, RE::Actor* actor, std::string metaID) {
+        return ScriptAPI::Actor::getMetaFloat(actor, metaID);
+    }
+
+    void SetMetaFloat(RE::StaticFunctionTag*, RE::Actor* actor, std::string metaID, float value) {
+        ScriptAPI::Actor::setMetaFloat(actor, metaID, value);
+    }
+
+    bool HasMetaString(RE::StaticFunctionTag*, RE::Actor* actor, std::string metaID) {
+        return ScriptAPI::Actor::hasMetaString(actor, metaID);
+    }
+
+    std::string GetMetaString(RE::StaticFunctionTag*, RE::Actor* actor, std::string metaID) {
+        return ScriptAPI::Actor::getMetaString(actor, metaID);
+    }
+
+    void SetMetaString(RE::StaticFunctionTag*, RE::Actor* actor, std::string metaID, std::string value) {
+        ScriptAPI::Actor::setMetaString(actor, metaID, value);
+    }
+
+
     bool IsInOStim(RE::StaticFunctionTag*, RE::Actor* actor) {
-        return OStim::ThreadManager::GetSingleton()->findActor(actor);
+        return Threading::ThreadManager::GetSingleton()->findActor(actor);
     }
 
     int GetSceneID(RE::StaticFunctionTag*, RE::Actor* actor) {
-        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->findThread(actor);
+        Threading::Thread* thread = Threading::ThreadManager::GetSingleton()->findThread(actor);
         return thread ? thread->m_threadId : -1;
     }
 
     bool VerifyActors(RE::StaticFunctionTag*, std::vector<RE::Actor*> actors) {
         for (RE::Actor* actor : actors) {
-            if (!OStim::isEligible(actor)) {
+            if (!Threading::isEligible(actor)) {
                 return false;
             }
         }
@@ -304,6 +342,16 @@ namespace PapyrusThreadActor {
         BIND(UnsetObjectVariant);
 
         BIND(AutoTransition);
+
+        BIND(HasMetadata);
+        BIND(AddMetadata);
+        BIND(GetMetadata);
+        BIND(HasMetaFloat);
+        BIND(GetMetaFloat);
+        BIND(SetMetaFloat);
+        BIND(HasMetaString);
+        BIND(GetMetaString);
+        BIND(SetMetaString);
 
         BIND(IsInOStim);
         BIND(GetSceneID);

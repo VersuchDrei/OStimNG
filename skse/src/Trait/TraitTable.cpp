@@ -92,18 +92,18 @@ namespace Trait {
                 return;
             }
 
-            RE::TESObjectARMO* item = JsonUtil::getForm<RE::TESObjectARMO>(path, json);
-            if (!item) {
+            EquipObject* object = new EquipObject();
+            object->item.loadJson(path, json);
+            if (!object->item) {
                 return;
             }
 
-            EquipObject* object = new EquipObject();
             JsonUtil::loadTranslatedString(json, object->name, "name", id, "equip object", true);
-            object->item = item;
 
             if (json.contains("variants")) {
                 for (auto& [key, val] : json["variants"].items()) {
-                    RE::TESObjectARMO* variant = JsonUtil::getForm<RE::TESObjectARMO>(path, val);
+                    GameAPI::GameArmor variant;
+                    variant.loadJson(path, val);
                     if (variant) {
                         object->variants.emplace(key, variant);
                     }

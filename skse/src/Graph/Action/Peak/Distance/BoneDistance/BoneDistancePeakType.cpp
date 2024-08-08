@@ -11,7 +11,7 @@ namespace Graph {
 
             }
 
-            Threading::Thread::Peak::PeakHandler* BoneDistancePeakType::create(Threading::Thread::Peak::PeakHandlerParams params, GameAPI::GameActor actor, GameAPI::GameActor target) {
+            Threading::Threads::Peak::PeakHandler* BoneDistancePeakType::create(Threading::Threads::Peak::PeakHandlerParams params, GameAPI::GameActor actor, GameAPI::GameActor target) {
                 std::vector<GameAPI::GameActorBone> actorBonePointers;
                 for (std::string& bone : actorBones) {
                     GameAPI::GameActorBone bonePointer = actor.getBone(bone);
@@ -37,10 +37,10 @@ namespace Graph {
                 }
 
                 if (actorBonePointers.size() == 1 && targetBonePointers.size() == 1) {
-                    return new Threading::Thread::Peak::SingleBoneDistancePeakHandler(params, {inverse},{actorBonePointers[0], targetBonePointers[0]});
+                    return new Threading::Threads::Peak::SingleBoneDistancePeakHandler(params, {inverse},{actorBonePointers[0], targetBonePointers[0]});
                 }
 
-                return new Threading::Thread::Peak::MultiBoneDistancePeakHandler(params, {inverse},{actorBonePointers, targetBonePointers});
+                return new Threading::Threads::Peak::MultiBoneDistancePeakHandler(params, {inverse},{actorBonePointers, targetBonePointers});
             }
         }
     }

@@ -9,9 +9,9 @@
 namespace Toys {
     class ToyHandler {
     public:
-        ToyHandler(OStim::ThreadActor* actor, std::string slot, ToyWrapper* toy);
+        ToyHandler(Threading::ThreadActor* actor, std::string slot, ToyWrapper* toy);
 
-        inline bool isActor(OStim::ThreadActor* actor) { return this->actor == actor; }
+        inline bool isActor(Threading::ThreadActor* actor) { return this->actor == actor; }
         inline bool isSlot(std::string slot) { return this->slot == slot; }
 
         void loop();
@@ -20,7 +20,7 @@ namespace Toys {
         void stop();
 
     private:
-        OStim::ThreadActor* actor;
+        Threading::ThreadActor* actor;
         std::string slot;
         Settings::SlotSettings* settings;
         ToyWrapper* toy;

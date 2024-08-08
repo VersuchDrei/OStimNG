@@ -22,7 +22,7 @@
 #include "Util/ObjectRefUtil.h"
 #include "Util/RNGUtil.h"
 
-namespace OStim {
+namespace Threading {
     ThreadActor::ThreadActor(Thread* thread, int index, GameAPI::GameActor actor) : thread{thread}, index{index}, actor{actor} {
         scaleBefore = actor.getScale();
         positionBefore = actor.getPosition();
@@ -105,23 +105,20 @@ namespace OStim {
             return;
         }
 
-        auto inventory = actor.form->GetInventory();
-        for (const auto& [obj, data] : inventory) {
-            auto& [count, entry] = data;
-
-            if (!entry->IsWorn() || !obj->IsArmor() || !FormUtil::canUndress(obj)) {
+        std::vector<GameAPI::GameArmor> equippedItems = actor.getEquippedItems();
+        for (GameAPI::GameArmor item : equippedItems) {
+            // TODO GameArmor
+            if (!FormUtil::canUndress(item.form)) {
                 continue;
             }
-            
-            auto armor = obj->As<RE::TESObjectARMO>();
-            if (!MCM::MCMTable::undressWigs() && FormUtil::isWig(actor.form, armor)) {
+            // TODO GameArmor
+            if (!MCM::MCMTable::undressWigs() && FormUtil::isWig(actor.form, item.form)) {
                 continue;
             }
 
-            undressedMask |= static_cast<uint32_t>(armor->GetSlotMask());
-
-            undressedItems.push_back(armor);
-            ActorUtil::unequipItem(actor.form, obj);
+            undressedMask.add(item.getSlotMask());
+            undressedItems.push_back(item);
+            actor.unequip(item);
         }
 
         actor.update3D();
@@ -129,7 +126,7 @@ namespace OStim {
         undressed = true;
     }
 
-    void ThreadActor::undressPartial(uint32_t mask) {
+    void ThreadActor::undressPartial(GameAPI::GameSlotMask mask) {
         if ((thread->getThreadFlags() & ThreadFlag::NO_UNDRESSING) == ThreadFlag::NO_UNDRESSING) {
             return;
         }
@@ -139,41 +136,45 @@ namespace OStim {
             const auto skyrimVM = RE::SkyrimVM::GetSingleton();
             auto vm = skyrimVM ? skyrimVM->impl : nullptr;
             if (vm) {
+                int32_t intMask = mask.mask;
                 RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback(new PapyrusUndressCallbackFunctor(this, false));
-                auto args = RE::MakeFunctionArguments(std::move(thread->m_threadId), std::move(actor.form), std::move(mask));
+                auto args = RE::MakeFunctionArguments(std::move(thread->m_threadId), std::move(actor.form), std::move(intMask));
                 vm->DispatchStaticCall("OUndress", "UndressPartial", args, callback);
             }
             return;
         }
 
-        uint32_t filteredMask = (~undressedMask) & mask;
-        if (filteredMask == 0) {
+        GameAPI::GameSlotMask filteredMask = mask.filter(undressedMask);
+        if (filteredMask.isEmpty()) {
             return;
         }
 
-        auto inventory = actor.form->GetInventory();
-        for (const auto& [obj, data] : inventory) {
-            auto& [count, entry] = data;
-            if (!entry->IsWorn() || !obj->IsArmor() || !FormUtil::canUndress(obj)) {
+        std::vector<GameAPI::GameArmor> equippedItems = actor.getEquippedItems();
+        for (GameAPI::GameArmor item : equippedItems) {
+            // TODO GameArmor
+            if (!FormUtil::canUndress(item.form)) {
+                continue;
+            }
+            // TODO GameArmor
+            if (!MCM::MCMTable::undressWigs() && FormUtil::isWig(actor.form, item.form)) {
                 continue;
             }
 
-            auto armor = obj->As<RE::TESObjectARMO>();
-            uint32_t armorMask = static_cast<uint32_t>(armor->GetSlotMask());
-            if ((filteredMask & armorMask) == 0 || FormUtil::isWig(actor.form, armor)) {
+            GameAPI::GameSlotMask itemMask = item.getSlotMask();
+            if (!filteredMask.overlaps(itemMask)) {
                 continue;
             }
 
-            undressedMask |= armorMask;
-            undressedItems.push_back(armor);
-            ActorUtil::unequipItem(actor.form, obj);
+            undressedMask.add(itemMask);
+            undressedItems.push_back(item);
+            actor.unequip(item);
         }
 
         actor.update3D();
 
         // some slots might not have any items equipped in them
         // so to not check them over and over again we add those to the undressedMask
-        undressedMask |= mask;
+        undressedMask.add(mask);
     }
 
     void ThreadActor::removeWeapons() {
@@ -181,21 +182,8 @@ namespace OStim {
             return;
         }
 
-        // TODO properly use GameActor
-        rightHand = actor.form->GetEquippedObject(false);
-        leftHand = actor.form->GetEquippedObject(true);
-        ammo = actor.form->GetCurrentAmmo();
-
-        if (rightHand) {
-            ActorUtil::unequipItem(actor.form, rightHand);
-        }
-        if (leftHand) {
-            ActorUtil::unequipItem(actor.form, leftHand);
-        }
-        if (ammo) {
-            ActorUtil::unequipItem(actor.form, ammo);
-        }
-
+        weaponry = actor.getWeaponry();
+        actor.unequipWeaponry();
         weaponsRemoved = true;
     }
 
@@ -205,62 +193,68 @@ namespace OStim {
             const auto skyrimVM = RE::SkyrimVM::GetSingleton();
             auto vm = skyrimVM ? skyrimVM->impl : nullptr;
             if (vm) {
+                std::vector<RE::TESObjectARMO*> armors;
+                for (GameAPI::GameArmor item : undressedItems) {
+                    armors.push_back(item.form);
+                }
                 RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback(new PapyrusUndressCallbackFunctor(this, true));
-                auto args = RE::MakeFunctionArguments(std::move(thread->m_threadId), std::move(actor.form), std::move(undressedItems));
+                auto args = RE::MakeFunctionArguments(std::move(thread->m_threadId), std::move(actor.form), std::move(armors));
                 vm->DispatchStaticCall("OUndress", "Redress", args, callback);
             }
             return;
         }
 
-        if (undressedMask == 0) {
+        if (undressedMask.isEmpty()) {
             return;
         }
 
-        for (auto& armor : undressedItems) {
-            ActorUtil::equipItemEx(actor.form, armor);
+        for (GameAPI::GameArmor item : undressedItems) {
+            actor.equip(item);
         }
         undressedItems.clear();
-        undressedMask = 0;
+        undressedMask.clear();
 
         undressed = false;
     }
 
-    void ThreadActor::redressPartial(uint32_t mask) {
+    void ThreadActor::redressPartial(GameAPI::GameSlotMask mask) {
         // TODO properly use GameActor
         if (Util::Globals::usePapyrusUndressing()) {
             const auto skyrimVM = RE::SkyrimVM::GetSingleton();
             auto vm = skyrimVM ? skyrimVM->impl : nullptr;
             if (vm) {
+                int32_t intMask = mask.mask;
+                std::vector<RE::TESObjectARMO*> armors;
+                for (GameAPI::GameArmor item : undressedItems) {
+                    armors.push_back(item.form);
+                }
                 RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback(new PapyrusUndressCallbackFunctor(this, true));
-                auto args = RE::MakeFunctionArguments(std::move(thread->m_threadId), std::move(actor.form), std::move(undressedItems), std::move(mask));
+                auto args = RE::MakeFunctionArguments(std::move(thread->m_threadId), std::move(actor.form), std::move(armors), std::move(intMask));
                 vm->DispatchStaticCall("OUndress", "RedressPartial", args, callback);
             }
             return;
         }
 
-        uint32_t filteredMask = undressedMask & mask;
-        if (filteredMask == 0) {
+        GameAPI::GameSlotMask filteredMask = undressedMask.intersect(mask);
+        if (filteredMask.isEmpty()) {
             return;
         }
 
-        std::vector<RE::TESObjectARMO*>::iterator it = undressedItems.begin();
+        std::vector<GameAPI::GameArmor>::iterator it = undressedItems.begin();
         while (it != undressedItems.end()) {
-            RE::TESObjectARMO* armor = *it;
-            uint32_t armorMask = static_cast<uint32_t>(armor->GetSlotMask());
-            if ((armorMask & filteredMask) == 0) {
+            GameAPI::GameArmor item = *it;
+            GameAPI::GameSlotMask itemMask = item.getSlotMask();
+            if (!itemMask.overlaps(filteredMask)) {
                 ++it;
             } else {
-                undressedMask &= ~armorMask;
-                ActorUtil::equipItemEx(actor.form, armor);
-
+                undressedMask.filter(itemMask);
+                actor.equip(item);
                 undressedItems.erase(it);
             }
         }
 
-        if ((undressedMask & filteredMask) != filteredMask) {
-            undressed = false;
-        }
-        undressedMask &= ~mask;
+        undressed = false;
+        undressedMask.filter(mask);
     }
 
     void ThreadActor::addWeapons() {
@@ -268,17 +262,7 @@ namespace OStim {
             return;
         }
 
-        // TODO properly use GameActor
-        if (rightHand) {
-            ActorUtil::equipItemEx(actor.form, rightHand, 1);
-        }
-        if (leftHand) {
-            ActorUtil::equipItemEx(actor.form, leftHand, 2);
-        }
-        if (ammo) {
-            ActorUtil::equipItemEx(actor.form, ammo);
-        }
-
+        actor.equipWeaponry(weaponry);
         weaponsRemoved = false;
     }
 
@@ -450,8 +434,12 @@ namespace OStim {
             auto vm = skyrimVM ? skyrimVM->impl : nullptr;
             if (vm) {
                 RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-                std::vector<RE::TESForm*> weapons = {rightHand, leftHand, ammo};
-                auto args = RE::MakeFunctionArguments(std::move(actor.form), std::move(female), std::move(undressedItems), std::move(weapons));
+                std::vector<RE::TESForm*> weapons = {weaponry.rightHand, weaponry.leftHand, weaponry.ammo};
+                std::vector<RE::TESObjectARMO*> armors;
+                for (GameAPI::GameArmor item : undressedItems) {
+                    armors.push_back(item.form);
+                }
+                auto args = RE::MakeFunctionArguments(std::move(actor.form), std::move(female), std::move(armors), std::move(weapons));
                 vm->DispatchStaticCall("OUndress", "AnimateRedress", args, callback);
             }
         } else {
@@ -461,8 +449,12 @@ namespace OStim {
                 const auto skyrimVM = RE::SkyrimVM::GetSingleton();
                 auto vm = skyrimVM ? skyrimVM->impl : nullptr;
                 if (vm) {
+                    std::vector<RE::TESObjectARMO*> armors;
+                    for (GameAPI::GameArmor item : undressedItems) {
+                        armors.push_back(item.form);
+                    }
                     RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-                    auto args = RE::MakeFunctionArguments(std::move(thread->m_threadId), std::move(actor.form), std::move(undressedItems));
+                    auto args = RE::MakeFunctionArguments(std::move(thread->m_threadId), std::move(actor.form), std::move(armors));
                     vm->DispatchStaticCall("OUndress", "Redress", args, callback);
                 }
             } else {
@@ -521,8 +513,8 @@ namespace OStim {
         }
     }
 
-    void ThreadActor::papyrusUndressCallback(std::vector<RE::TESObjectARMO*> items) {
-        for (RE::TESObjectARMO* item : items) {
+    void ThreadActor::papyrusUndressCallback(std::vector<GameAPI::GameArmor> items) {
+        for (GameAPI::GameArmor item : items) {
             if (VectorUtil::contains(undressedItems, item)) {
                 continue;
             }
@@ -531,8 +523,8 @@ namespace OStim {
         }
     }
 
-    void ThreadActor::papyrusRedressCallback(std::vector<RE::TESObjectARMO*> items) {
-        std::erase_if(undressedItems, [items](RE::TESObjectARMO* item){return VectorUtil::contains(items, item);});
+    void ThreadActor::papyrusRedressCallback(std::vector<GameAPI::GameArmor> items) {
+        std::erase_if(undressedItems, [items](GameAPI::GameArmor item) { return VectorUtil::contains(items, item); });
     }
 
     void ThreadActor::GetRmHeightCallbackFunctor::setRmHeight(float height) {
@@ -555,7 +547,7 @@ namespace OStim {
         oldThreadActor.actor = actor.form;
 
         for (auto& [type, object] : equipObjects) {
-            for (RE::TESObjectARMO* item : object.toRemove) {
+            for (GameAPI::GameArmor item : object.toRemove) {
                 oldThreadActor.equipObjects.push_back(item);
             }
         }

@@ -208,7 +208,7 @@ namespace PapyrusActor {
 
     void SetFaceLight(RE::StaticFunctionTag*, std::string stateVal, RE::Actor* actor, std::string light) {
         if (actor != nullptr) {
-            OStim::ThreadActor* threadActor = OStim::ThreadManager::GetSingleton()->findActor(actor);
+            Threading::ThreadActor* threadActor = Threading::ThreadManager::GetSingleton()->findActor(actor);
             if (light == "") {
                 if (threadActor->isObjectEquipped("light")) {
                     threadActor->unequipObject("light");

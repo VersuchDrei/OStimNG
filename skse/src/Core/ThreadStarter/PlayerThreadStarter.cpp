@@ -10,7 +10,7 @@
 #include "Util/ActorUtil.h"
 #include "Util/CompatibilityTable.h"
 
-namespace OStim {
+namespace Threading {
     std::vector<std::string> positions{"Dom", "Sub", "Third", "Fourth", "Fifth", "Sixth", "Seventh", "Eigth", "Ninth"};
 
     void startPlayerThread(ThreadStartParams params) {
@@ -50,42 +50,22 @@ namespace OStim {
                                 handleActorSorting(params);
                             }
                         });
-                        return;
                     } else {
                         addFurniture(params, bed);
-                        return;
                     }
                 }
             } else {
-                std::vector<std::pair<Furniture::FurnitureType*, GameAPI::GameObject>> furniture = Furniture::findFurniture(params.actors.size(), params.actors[0].form, MCM::MCMTable::furnitureSearchDistance(), 96.0f);
-                if (MCM::MCMTable::selectFurniture()) {
-                    std::vector<std::string> options = {"$ostim_message_none"};
-                    std::vector<GameAPI::GameObject> objects;
-                    int max = std::min(static_cast<int>(furniture.size()), GameAPI::Game::getMessageBoxOptionLimit() - 1);
-                    for (int i = 0; i < furniture.size(); i++) {
-                        options.push_back(furniture[i].first->name);
-                        objects.push_back(furniture[i].second);
+                Furniture::selectFurniture(params.actors.size(), params.actors[0].getPosition(), MCM::MCMTable::furnitureSearchDistance(), 96.0f, false, [params](GameAPI::GameObject furniture) {
+                    if (furniture) {
+                        addFurniture(params, furniture);
+                    } else {
+                        handleActorAdding(params);                       
                     }
-                    if (!objects.empty()) {
-                        GameAPI::Game::showMessageBox("$ostim_message_select_furniture", options, [params, objects](unsigned int result) {
-                            if (result == 0) {
-                                handleActorAdding(params);
-                            } else if (result > objects.size()){
-                                return;
-                            } else {
-                                addFurniture(params, objects[result - 1]);
-                            }
-                        });
-                        return;
-                    }
-                } else {
-                    if (!furniture.empty()) {
-                        addFurniture(params, furniture.front().second);
-                    }
-                }
+                });
             }
+        } else {
+            handleActorAdding(params);
         }
-        handleActorAdding(params);
     }
 
     void addFurniture(ThreadStartParams params, GameAPI::GameObject furniture) {
@@ -114,7 +94,7 @@ namespace OStim {
         }
 
         std::vector<GameAPI::GameActor> actors = GameAPI::GameActor::getPlayer().getNearbyActors(2000, [&params](GameAPI::GameActor actor){
-            return !VectorUtil::contains(params.actors, actor) && OStim::isEligible(actor);    
+            return !VectorUtil::contains(params.actors, actor) && Threading::isEligible(actor);    
         });
 
         if (actors.empty()) {

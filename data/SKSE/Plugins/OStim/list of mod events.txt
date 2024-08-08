@@ -56,7 +56,7 @@ EndEvent
 these events fire on the main and sub threads
 
 --- ostim_thread_start ---
-gets fired when the main thread starts
+gets fired when any thread starts
 
 RegisterForModEvent("ostim_thread_start", "OStimThreadStart")
 

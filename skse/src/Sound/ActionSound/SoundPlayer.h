@@ -24,8 +24,8 @@ namespace Sound {
         GameAPI::GameSound sound;
         bool muteWithActor;
         bool muteWithTarget;
-        OStim::ThreadActor* actor;
-        OStim::ThreadActor* target;
+        Threading::ThreadActor* actor;
+        Threading::ThreadActor* target;
 
         void play();
     };

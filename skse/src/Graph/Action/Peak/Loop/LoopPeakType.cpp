@@ -10,8 +10,8 @@ namespace Graph {
 
             }
 
-            Threading::Thread::Peak::PeakHandler* LoopPeakType::create(Threading::Thread::Peak::PeakHandlerParams params, GameAPI::GameActor actor, GameAPI::GameActor target) {
-                return new Threading::Thread::Peak::LoopPeakHandler(params, {interval, scaleWithSpeed});
+            Threading::Threads::Peak::PeakHandler* LoopPeakType::create(Threading::Threads::Peak::PeakHandlerParams params, GameAPI::GameActor actor, GameAPI::GameActor target) {
+                return new Threading::Threads::Peak::LoopPeakHandler(params, {interval, scaleWithSpeed});
             }
         }
     }

@@ -13,7 +13,7 @@ namespace Graph {
 
                 inline PeakType(PeakTypeParams params) {}
 
-                virtual Threading::Thread::Peak::PeakHandler* create(Threading::Thread::Peak::PeakHandlerParams params, GameAPI::GameActor actor, GameAPI::GameActor target) = 0;
+                virtual Threading::Threads::Peak::PeakHandler* create(Threading::Threads::Peak::PeakHandlerParams params, GameAPI::GameActor actor, GameAPI::GameActor target) = 0;
             };
         }
     }

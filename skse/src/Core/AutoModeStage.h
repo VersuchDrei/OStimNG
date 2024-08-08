@@ -1,6 +1,6 @@
 #pragma once
 
-namespace OStim {
+namespace Threading {
     enum AutoModeStage {
         NONE,
         FOREPLAY,

@@ -2,7 +2,7 @@
 
 #include "MCM/MCMTable.h"
 
-namespace OStim {
+namespace Threading {
     void ThreadActor::playAnimation(Graph::Speed& speed) {
         if (!graphActor) {
             return;

@@ -59,6 +59,15 @@ Function Stop(int ThreadID) Global Native
 */;
 int Function GetThreadCount() Global Native
 
+;/* GetAllThreadIDs
+* * returns a list of all currently running thread IDs
+* *
+* * required API version: 7.4 (0x07040000)
+* *
+* * @return: an array containing the thread IDs of all threads
+*/;
+int[] Function GetAllThreadIDs() Global Native
+
 
 ; ███╗   ██╗ █████╗ ██╗   ██╗██╗ ██████╗  █████╗ ████████╗██╗ ██████╗ ███╗   ██╗
 ; ████╗  ██║██╔══██╗██║   ██║██║██╔════╝ ██╔══██╗╚══██╔══╝██║██╔═══██╗████╗  ██║
@@ -239,6 +248,17 @@ ObjectReference Function GetFurniture(int ThreadID) Global Native
 */;
 string Function GetFurnitureType(int ThreadID) Global Native
 
+;/* ChangeFurniture
+* * moves the scene to a new furniture object
+* *
+* * required API version: 7.3.2 (0x07030020)
+* *
+* * @param: ThreadID, the id of the thread
+* * @param: FurnitureRef, the new furniture
+* * @param: SceneID, the scene to play on the new furniture, if none is given a starting animation will be chosen randomly
+*/;
+Function ChangeFurniture(int ThreadID, ObjectReference FurnitureRef, string SceneID = "") Global Native
+
 
 ;  █████╗ ██╗   ██╗████████╗ ██████╗     ███╗   ███╗ ██████╗ ██████╗ ███████╗
 ; ██╔══██╗██║   ██║╚══██╔══╝██╔═══██╗    ████╗ ████║██╔═══██╗██╔══██╗██╔════╝
@@ -280,14 +300,6 @@ Function StopAutoMode(int ThreadID) Global Native
 ; ██║ ╚═╝ ██║███████╗   ██║   ██║  ██║██████╔╝██║  ██║   ██║   ██║  ██║
 ; ╚═╝     ╚═╝╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝
 
-;/* AddMetadata
-* * adds metadata to the thread
-* *
-* * @param: ThreadID, the id of the thread
-* * @param: Metadata, the metadata to add
-*/;
-Function AddMetadata(int ThreadID, string Metadata) Global Native
-
 ;/* HasMetadata
 * * checks if the thread has a specific metadata
 * *
@@ -298,6 +310,14 @@ Function AddMetadata(int ThreadID, string Metadata) Global Native
 */;
 bool Function HasMetadata(int ThreadID, string Metadata) Global Native
 
+;/* AddMetadata
+* * adds metadata to the thread
+* *
+* * @param: ThreadID, the id of the thread
+* * @param: Metadata, the metadata to add
+*/;
+Function AddMetadata(int ThreadID, string Metadata) Global Native
+
 ;/* GetMetadata
 * * returns a list of all metadata of the thread
 * *
@@ -306,6 +326,78 @@ bool Function HasMetadata(int ThreadID, string Metadata) Global Native
 * * @return: the list of metadata
 */;
 string[] Function GetMetadata(int ThreadID) Global Native
+
+
+;/* HasMetaFloat
+* * checks if the thread has a float value for the key
+* *
+* * required API version: 7.3.2 (0x07030020)
+* *
+* * @param: ThreadID, the id of the thread
+* * @param: MetaID, the id of the float value
+* *
+* * @return: true if the thread has a float for that key set, otherwise false
+*/;
+Function HasMetaFloat(int ThreadID, string MetaID) Global Native
+
+;/* GetMetaFloat
+* * returns the threads float value for the key
+* *
+* * required API version: 7.3.2 (0x07030020)
+* *
+* * @param: ThreadID, the id of the thread
+* * @param: MetaID, the id of the float value
+* *
+* * @return: the float value for the given key, or 0 if none is set
+*/;
+float Function GetMetaFloat(int ThreadID, string MetaID) Global Native
+
+;/* SetMetaFloat
+* * sets the threads float value for the key
+* *
+* * required API version: 7.3.2 (0x07030020)
+* *
+* * @param: ThreadID, the id of the thread
+* * @param: MetaID, the id of the float value
+* * @param: Value, the float value to set
+*/;
+Function SetMetaFloat(int ThreadID, string MetaID, float Value) Global Native
+
+
+;/* HasMetaString
+* * checks if the thread has a string value for the key
+* *
+* * required API version: 7.3.2 (0x07030020)
+* *
+* * @param: ThreadID, the id of the thread
+* * @param: MetaID, the id of the string value
+* *
+* * @return: true if the thread has a string for that key set, otherwise false
+*/;
+Function HasMetaString(int ThreadID, string MetaID) Global Native
+
+;/* GetMetaString
+* * returns the threads string value for the key
+* *
+* * required API version: 7.3.2 (0x07030020)
+* *
+* * @param: ThreadID, the id of the thread
+* * @param: MetaID, the id of the string value
+* *
+* * @return: the string value for the given key, or "" if none is set
+*/;
+string Function GetMetaString(int ThreadID, string MetaID) Global Native
+
+;/* SetMetaString
+* * sets the threads string value for the key
+* *
+* * required API version: 7.3.2 (0x07030020)
+* *
+* * @param: ThreadID, the id of the thread
+* * @param: MetaID, the id of the string value
+* * @param: Value, the string value to set
+*/;
+Function SetMetaString(int ThreadID, string MetaID, string Value) Global Native
 
 
 ; ███████╗██╗   ██╗███████╗███╗   ██╗████████╗███████╗

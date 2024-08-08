@@ -4,7 +4,7 @@
 
 #include "Util/IDMap.h"
 
-namespace OStim {
+namespace Threading {
     class ThreadBuilder {
     public:
         inline static int add(ThreadStartParams params) { return paramMap.put(params); }

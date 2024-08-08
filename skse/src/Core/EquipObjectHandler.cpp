@@ -4,7 +4,7 @@
 #include "Util/Constants.h"
 #include "Util/ObjectRefUtil.h"
 
-namespace OStim {
+namespace Threading {
     void EquipObjectHandler::equip(GameAPI::GameActor actor) {
         if (equipped) {
             return;
@@ -61,17 +61,15 @@ namespace OStim {
     }
 
     void EquipObjectHandler::removeItems(GameAPI::GameActor actor) {
-        for (RE::TESObjectARMO* item : toRemove) {
-            // TODO properly use GameActor
-            ObjectRefUtil::removeItem(actor.form, item, 1, true, nullptr);
+        for (GameAPI::GameArmor item : toRemove) {
+            actor.removeItem(item.toItem(), 1);
         }
     }
 
     void EquipObjectHandler::equipInner(GameAPI::GameActor actor) {
         equipped = !variant.empty() ? object->variants[variant] : object->item;
 
-        // TODO properly use GameActor
-        ActorUtil::equipItem(actor.form, equipped);
+        actor.equip(equipped);
         // if we remove an item mid scene the NPC will redress
         // so we have to store all the equipped items to remove them at scene end
         toRemove.insert(equipped);
@@ -87,11 +85,8 @@ namespace OStim {
     }
 
     void EquipObjectHandler::unequipInner(GameAPI::GameActor actor) {
-        // TODO properly use GameActor
-        ActorUtil::unequipItem(actor.form, equipped);
-
-        equipped = nullptr;
-
+        actor.unequip(equipped);
+        equipped.clear();
         actor.update3D();
     }
 }

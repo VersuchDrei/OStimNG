@@ -72,7 +72,7 @@ namespace Core {
     }
 
     void sessionStarted() {
-        OStim::ThreadBuilder::reset();
+        Threading::ThreadBuilder::reset();
         
 
         if (!Util::Globals::isSceneIntegrityVerified()) {

@@ -29,7 +29,7 @@ namespace Toys {
     }
 
 
-    ToyHandler::ToyHandler(OStim::ThreadActor* actor, std::string slot, ToyWrapper* toy)
+    ToyHandler::ToyHandler(Threading::ThreadActor* actor, std::string slot, ToyWrapper* toy)
         : actor{actor},
           slot {slot},
           toy{toy},

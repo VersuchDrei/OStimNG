@@ -27,9 +27,9 @@
 #include "Util/StringUtil.h"
 #include "Util.h"
 
-namespace OStim {
+namespace Threading {
     Thread::Thread(int threadID, ThreadStartParams params) : m_threadId{threadID}, furniture{params.furniture} {
-        nodeHandler = new Threading::Thread::NodeHandler(this);
+        nodeHandler = new Threading::Threads::NodeHandler(this);
 
         for (GameAPI::GameActor actor : params.actors) {
             playerThread |= actor.isPlayer();
@@ -43,6 +43,7 @@ namespace OStim {
             furnitureType = Furniture::FurnitureTable::getFurnitureType(furniture, false);
             furnitureOwner = furniture.getOwner();
             furniture.disableUse();
+            furniture.setPrivate();
 
             Furniture::FurnitureOffset offset = Furniture::getOffset(furniture);
             float angle = furniture.getRotation();
@@ -122,7 +123,7 @@ namespace OStim {
         }
     }
 
-    void Thread::initContinue() {
+    void Thread::initContinue(ThreadStartParams params) {
         // this stuff needs to happen after the thread has been put into the map in thread manager
         for (auto& [index, actor] : m_actors) {
             actor.getActor().updateAI();
@@ -146,6 +147,12 @@ namespace OStim {
         }
 
         GameAPI::GameEvents::sendStartEvent(m_threadId);
+
+        if (params.startingNodes.size() == 1) {
+            ChangeNode(params.startingNodes.front().node);
+        } else if (!params.startingNodes.empty()) {
+            playSequence(params.startingNodes, false, false);
+        }
     }
 
     void Thread::rebuildAlignmentKey() {
@@ -788,5 +795,78 @@ namespace OStim {
 
     void Thread::sendPeak(actionIndex action) {
         EventUtil::invokeListeners(peakListeners, action);
+    }
+
+
+    void Thread::changeFurniture(GameAPI::GameObject furniture, Graph::Node* node) {
+        if (playerThread && MCM::MCMTable::useFades()) {
+            std::thread fadeThread = std::thread([furniture, node] {
+                GameAPI::GameCamera::fadeToBlack(1);
+                std::this_thread::sleep_for(std::chrono::milliseconds(700));
+                Thread* thread = ThreadManager::GetSingleton()->getPlayerThread();
+                if (thread) {
+                    thread->changeFurnitureInner(furniture, node);
+                }
+                std::this_thread::sleep_for(std::chrono::milliseconds(550));
+                GameAPI::GameCamera::fadeFromBlack(1);
+            });
+            fadeThread.detach();
+        } else {
+            changeFurnitureInner(furniture, node);
+        }
+    }
+
+    void Thread::changeFurnitureInner(GameAPI::GameObject furniture, Graph::Node* node) {
+        if (!furniture || this->furniture == furniture) {
+            return;
+        }
+
+        if (playerThread) {
+            GameAPI::GameCamera::endSceneMode(MCM::MCMTable::firstPersonAfterScene());
+        }
+
+        if (this->furniture) {
+            this->furniture.enableUse();
+            this->furniture.setOwner(furnitureOwner);
+            if (MCM::MCMTable::resetClutter()) {
+                // TODO properly use GameObject
+                Furniture::resetClutter(this->furniture.form, MCM::MCMTable::resetClutterRadius() * 100);
+            }
+        }
+
+
+        center = furniture.getPosition();
+        this->furniture = furniture;
+        furnitureType = Furniture::FurnitureTable::getFurnitureType(furniture, false);
+        furnitureOwner = furniture.getOwner();
+        furniture.disableUse();
+        furniture.setPrivate();
+
+        Furniture::FurnitureOffset offset = Furniture::getOffset(furniture);
+        float angle = furniture.getRotation();
+        float sin = std::sin(angle);
+        float cos = std::cos(angle);
+        center.r += offset.rotation;
+        center.x += cos * offset.x + sin * offset.y;
+        center.y += -sin * offset.x + cos * offset.y;
+        center.z += offset.z;
+        furnitureScaleMult = offset.scale;
+
+
+        if (!node) {
+            std::string nodeTag = MCM::MCMTable::useIntroScenes() ? "intro" : "idle";
+            std::string furnitureTypeID = furnitureType->getListType()->id;
+            if (furnitureTypeID == "bed") {
+                node = Graph::GraphTable::getRandomNode(furnitureType, getActorConditions(), [&nodeTag](Graph::Node* node) { return node->hasNodeTag(nodeTag) && !node->hasActorTagOnAny("standing"); });
+            } else {
+                node = Graph::GraphTable::getRandomNode(furnitureType, getActorConditions(), [&nodeTag](Graph::Node* node) { return node->hasNodeTag(nodeTag); });
+            }
+        }
+
+        ChangeNode(node);
+
+        if (playerThread) {
+            GameAPI::GameCamera::startSceneMode(MCM::MCMTable::useFreeCam());
+        }
     }
 }  // namespace OStim

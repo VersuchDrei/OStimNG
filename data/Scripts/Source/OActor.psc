@@ -307,6 +307,119 @@ Function UnsetObjectVariant(Actor Act, string Type) Global Native
 bool Function AutoTransition(Actor Act, string Type) Global Native
 
 
+; ███╗   ███╗███████╗████████╗ █████╗ ██████╗  █████╗ ████████╗ █████╗ 
+; ████╗ ████║██╔════╝╚══██╔══╝██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗
+; ██╔████╔██║█████╗     ██║   ███████║██║  ██║███████║   ██║   ███████║
+; ██║╚██╔╝██║██╔══╝     ██║   ██╔══██║██║  ██║██╔══██║   ██║   ██╔══██║
+; ██║ ╚═╝ ██║███████╗   ██║   ██║  ██║██████╔╝██║  ██║   ██║   ██║  ██║
+; ╚═╝     ╚═╝╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝
+
+;/* HasMetadata
+* * checks if the actor has a specific metadata
+* *
+* * required API version: 7.3.2 (0x07030020)
+* *
+* * @param: Act, the actor
+* * @param: Metadata, the metadata to check for
+* *
+* * @return: true if the thread has the metadata, otherwise false
+*/;
+bool Function HasMetadata(Actor Act, string Metadata) Global Native
+
+;/* AddMetadata
+* * adds metadata to the actor
+* *
+* * required API version: 7.3.2 (0x07030020)
+* *
+* * @param: Act, the actor
+* * @param: Metadata, the metadata to add
+*/;
+Function AddMetadata(Actor Act, string Metadata) Global Native
+
+;/* GetMetadata
+* * returns a list of all metadata of the actor
+* *
+* * required API version: 7.3.2 (0x07030020)
+* *
+* * @param: Act, the actor
+* *
+* * @return: the list of metadata
+*/;
+string[] Function GetMetadata(Actor Act) Global Native
+
+
+;/* HasMetaFloat
+* * checks if the actor has a float value for the key
+* *
+* * required API version: 7.3.2 (0x07030020)
+* *
+* * @param: Act, the actor
+* * @param: MetaID, the id of the float value
+* *
+* * @return: true if the thread has a float for that key set, otherwise false
+*/;
+Function HasMetaFloat(Actor Act, string MetaID) Global Native
+
+;/* GetMetaFloat
+* * returns the actors float value for the key
+* *
+* * required API version: 7.3.2 (0x07030020)
+* *
+* * @param: Act, the actor
+* * @param: MetaID, the id of the float value
+* *
+* * @return: the float value for the given key, or 0 if none is set
+*/;
+float Function GetMetaFloat(Actor Act, string MetaID) Global Native
+
+;/* SetMetaFloat
+* * sets the actors float value for the key
+* *
+* * required API version: 7.3.2 (0x07030020)
+* *
+* * @param: Act, the actor
+* * @param: MetaID, the id of the float value
+* * @param: Value, the float value to set
+*/;
+Function SetMetaFloat(Actor Act, string MetaID, float Value) Global Native
+
+
+;/* HasMetaString
+* * checks if the actor has a string value for the key
+* *
+* * required API version: 7.3.2 (0x07030020)
+* *
+* * @param: Act, the actor
+* * @param: MetaID, the id of the string value
+* *
+* * @return: true if the thread has a string for that key set, otherwise false
+*/;
+Function HasMetaString(Actor Act, string MetaID) Global Native
+
+;/* GetMetaString
+* * returns the actors string value for the key
+* *
+* * required API version: 7.3.2 (0x07030020)
+* *
+* * @param: Act, the actor
+* * @param: MetaID, the id of the string value
+* *
+* * @return: the string value for the given key, or "" if none is set
+*/;
+string Function GetMetaString(Actor Act, string MetaID) Global Native
+
+;/* SetMetaString
+* * sets the actors string value for the key
+* *
+* * required API version: 7.3.2 (0x07030020)
+* *
+* * @param: Act, the actor
+* * @param: MetaID, the id of the string value
+* * @param: Value, the string value to set
+*/;
+Function SetMetaString(Actor Act, string MetaID, string Value) Global Native
+
+
 ; ██╗   ██╗████████╗██╗██╗     ██╗████████╗██╗   ██╗
 ; ██║   ██║╚══██╔══╝██║██║     ██║╚══██╔══╝╚██╗ ██╔╝
 ; ██║   ██║   ██║   ██║██║     ██║   ██║    ╚████╔╝

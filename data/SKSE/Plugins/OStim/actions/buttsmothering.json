@@ -1,0 +1,57 @@
+{
+	"aliases":[
+		"bootysmothering"
+	],
+	"actor":{
+		"info": "the one with the butt",
+		"stimulation":0.1,
+		"maxStimulation":50,
+		"moan": true,
+		"talk":true,
+		"requirements":[
+			"breast"
+		],
+		"strippingSlots":[
+			32,
+			49,
+			52,
+			53,
+			54
+		],
+		"faction":{
+			"info": "OStimButtSmotheringActorFaction",
+			"mod": "OStim.esp",
+			"formid": "0xEEA"
+		}
+	},
+	"target":{
+		"info": "the one with the head",
+		"stimulation":0.3,
+		"maxStimulation": 75,
+		"moan":true,
+		"strippingSlots":[
+			30,
+			31,
+			44,
+			55
+		],
+		"faction":{
+			"info": "OStimButtSmotheringTargetFaction",
+			"mod": "OStim.esp",
+			"formid": "0xEEB"
+		}
+	},
+	"performer":{
+		"faction":{
+			"info": "OStimButtSmotheringPerformerFaction",
+			"mod": "OStim.esp",
+			"formid": "0xEEC"
+		},
+		"floats":{
+			"stamina":0.3
+		}
+	},
+	"tags":[
+		"sensual"
+	]
+}

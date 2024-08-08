@@ -4,7 +4,7 @@
 #include "../PeakHandler.h"
 
 namespace Threading {
-    namespace Thread {
+    namespace Threads {
         namespace Peak {
             class LoopPeakHandler : public PeakHandler {
             public:

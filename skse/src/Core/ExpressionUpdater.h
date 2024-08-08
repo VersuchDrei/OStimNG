@@ -1,6 +1,6 @@
 #pragma once
 
-namespace OStim {
+namespace Threading {
     struct ExpressionUpdater {
         int delay;
         int current;

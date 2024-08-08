@@ -19,7 +19,7 @@ public:
 class InterfaceMap
 	: public IInterfaceMap
 	, public std::unordered_map<const char*, IPluginInterface*>,
-	public OStim::ISingleton<InterfaceMap>
+	public Threading::ISingleton<InterfaceMap>
 {
 public:
 	virtual IPluginInterface* QueryInterface(const char* name) override;

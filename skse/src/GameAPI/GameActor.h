@@ -2,12 +2,14 @@
 
 #include "GameActorBone.h"
 #include "GameActorValue.h"
+#include "GameArmor.h"
 #include "GameKeyword.h"
 #include "GamePosition.h"
 #include "GameRace.h"
 #include "GameRecord.h"
 #include "GameSex.h"
 #include "GameVoice.h"
+#include "GameWeaponry.h"
 
 namespace GameAPI {
     struct GameActor : public GameRecord<RE::Actor> {
@@ -61,9 +63,21 @@ namespace GameAPI {
 
         int getRelationshipRank(GameActor other) const;
         inline bool isInCombat() const { return form->IsInCombat(); }
-        void sheatheWeapon() const;
         inline bool isDead() const { return form->IsDead(); }
         inline bool isInSameCell(GameActor other) const {return form->parentCell == other.form->parentCell;}
+
+        inline void addItem(GameItem item, int count) const { form->GetContainer()->AddObjectToContainer(item.form, count, nullptr); }
+        inline void removeItem(GameItem item, int count) const { form->GetContainer()->RemoveObjectFromContainer(item.form, count); }
+
+        inline bool isEquipped(GameArmor armor) const { return IsEquipped(nullptr, 0, form, armor.form); }
+        std::vector<GameAPI::GameArmor> getEquippedItems() const;
+        inline void equip(GameArmor armor) const { equipItemEx(armor.form, 0, false, false); }
+        inline void unequip(GameArmor armor) const { UnequipItem(nullptr, 0, form, armor.form, false, true); }
+
+        void sheatheWeaponry() const;
+        GameWeaponry getWeaponry() const;
+        void unequipWeaponry() const;
+        void equipWeaponry(GameWeaponry weaponry) const;
 
         inline GameActorBone getBone(std::string bone) const { return form->GetNodeByName(bone); }
 
@@ -75,10 +89,30 @@ namespace GameAPI {
         std::vector<GameActor> getNearbyActors(float radius, std::function<bool(GameActor)> condition) const;
 
     private:
+        void equipItemEx(RE::TESForm* item, int slotId, bool preventUnequip, bool equipSound) const;
+
+        inline static bool IsEquipped(RE::BSScript::IVirtualMachine* vm, RE::VMStackID stackID, RE::Actor* actor, RE::TESForm* akItem) {
+            using func_t = decltype(IsEquipped);
+            REL::Relocation<func_t> func{RELOCATION_ID(53895, 54707)};
+            return func(vm, stackID, actor, akItem);
+        }
+
         inline static bool IsInDialogueWithPlayer(RE::BSScript::IVirtualMachine* vm, RE::VMStackID stackID, RE::TESObjectREFR* object) {
             using func_t = decltype(IsInDialogueWithPlayer);
             REL::Relocation<func_t> func{RELOCATION_ID(55663, 56194)};
             return func(vm, stackID, object);
+        }
+        
+        inline static void EquipItem(RE::BSScript::IVirtualMachine* vm, RE::VMStackID stackID, RE::Actor* actor, RE::TESForm* akItem, bool abPreventRemoval, bool abSilent) {
+            using func_t = decltype(EquipItem);
+            REL::Relocation<func_t> func{RELOCATION_ID(53861, 54661)};
+            func(vm, stackID, actor, akItem, abPreventRemoval, abSilent);
+        }
+
+        inline static void UnequipItem(RE::BSScript::IVirtualMachine* vm, RE::VMStackID stackID, RE::Actor* actor, RE::TESForm* akItem, bool abPreventEquip, bool abSilent) {
+            using func_t = decltype(UnequipItem);
+            REL::Relocation<func_t> func{RELOCATION_ID(53950, 54774)};
+            func(vm, stackID, actor, akItem, abPreventEquip, abSilent);
         }
 
         inline static void SetAngle(RE::BSScript::IVirtualMachine* vm, RE::VMStackID stackID, RE::TESObjectREFR* object, float afAngleX, float afAngleY, float afAngleZ) {

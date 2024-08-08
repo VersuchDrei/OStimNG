@@ -34,6 +34,7 @@ namespace GameAPI {
         inline void setOwner(GameOwnership owner) const { SetOwnerForm(&form->extraList, owner.form); }
         inline void setPrivate() const { setOwner(GameLogic::GameTable::getOStimEmptyFaction()); }
 
+        inline float getSquaredDistance(GamePosition position) { return form->GetPosition().GetSquaredDistance({position.x, position.y, position.z}); }
         inline float getSquaredDistance(GameObject other) const { return form->GetPosition().GetSquaredDistance(other.form->GetPosition()); }
         inline std::string getParentCellID() const { return form->GetParentCell()->GetFormEditorID(); }
     private:

@@ -3,13 +3,14 @@
 #include "Core/ThreadStarter/ThreadStarter.h"
 #include "Core/ThreadManager.h"
 #include "Graph/GraphTable.h"
+#include "ScriptAPI/ThreadScript.h"
 #include "Util/StringUtil.h"
 
 namespace PapyrusThread {
     using VM = RE::BSScript::IVirtualMachine;
 
     int QuickStart(RE::StaticFunctionTag*, std::vector<RE::Actor*> actors, std::string startingAnimation, RE::TESObjectREFR* furniture) {
-        OStim::ThreadStartParams params;
+        Threading::ThreadStartParams params;
         params.actors = GameAPI::GameActor::convertVector(actors);
         Graph::Node* node = Graph::GraphTable::getNodeById(startingAnimation);
         if (node) {
@@ -17,28 +18,32 @@ namespace PapyrusThread {
         }
         params.furniture = furniture;
 
-        return OStim::startThread(params);
+        return Threading::startThread(params);
     }
 
 
     bool IsRunning(RE::StaticFunctionTag*, int threadID) {
-        return OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        return Threading::ThreadManager::GetSingleton()->GetThread(threadID);
     }
 
     void Stop(RE::StaticFunctionTag*, int threadID) {
-        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        Threading::Thread* thread = Threading::ThreadManager::GetSingleton()->GetThread(threadID);
         if (thread) {
             thread->stopFaded();
         }
     }
 
     int GetThreadCount(RE::StaticFunctionTag*) {
-        return OStim::ThreadManager::GetSingleton()->getThreadCount();
+        return Threading::ThreadManager::GetSingleton()->getThreadCount();
+    }
+    
+    std::vector<int> GetAllThreadIDs(RE::StaticFunctionTag*) {
+        return ScriptAPI::Thread::getAllThreadIDs();
     }
 
 
     std::string GetScene(RE::StaticFunctionTag*, int threadID) {
-        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        Threading::Thread* thread = Threading::ThreadManager::GetSingleton()->GetThread(threadID);
         if (thread) {
             Graph::Node* node = thread->getCurrentNode();
             if (node) {
@@ -49,7 +54,7 @@ namespace PapyrusThread {
     }
 
     void NavigateTo(RE::StaticFunctionTag*, int threadID, std::string sceneID) {
-        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        Threading::Thread* thread = Threading::ThreadManager::GetSingleton()->GetThread(threadID);
         Graph::Node* node = Graph::GraphTable::getNodeById(sceneID);
         if (thread && node) {
             thread->navigateTo(node);
@@ -57,7 +62,7 @@ namespace PapyrusThread {
     }
 
     void WarpTo(RE::StaticFunctionTag*, int threadID, std::string sceneID, bool useFades) {
-        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        Threading::Thread* thread = Threading::ThreadManager::GetSingleton()->GetThread(threadID);
         Graph::Node* node = Graph::GraphTable::getNodeById(sceneID);
         if (thread && node) {
             thread->warpTo(node, useFades);
@@ -65,7 +70,7 @@ namespace PapyrusThread {
     }
 
     bool AutoTransition(RE::StaticFunctionTag*, int threadID, std::string type) {
-        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        Threading::Thread* thread = Threading::ThreadManager::GetSingleton()->GetThread(threadID);
         if (thread) {
             return thread->autoTransition(type);
         }
@@ -73,7 +78,7 @@ namespace PapyrusThread {
     }
 
     bool AutoTransitionForActor(RE::StaticFunctionTag*, int threadID, int index, std::string type) {
-        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        Threading::Thread* thread = Threading::ThreadManager::GetSingleton()->GetThread(threadID);
         if (thread) {
             return thread->autoTransition(index, type);
         }
@@ -81,7 +86,7 @@ namespace PapyrusThread {
     }
 
     int GetSpeed(RE::StaticFunctionTag*, int threadID) {
-        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        Threading::Thread* thread = Threading::ThreadManager::GetSingleton()->GetThread(threadID);
         if (thread) {
             return thread->getCurrentSpeed();
         }
@@ -89,14 +94,14 @@ namespace PapyrusThread {
     }
 
     void SetSpeed(RE::StaticFunctionTag*, int threadID, int speed) {
-        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        Threading::Thread* thread = Threading::ThreadManager::GetSingleton()->GetThread(threadID);
         if (thread) {
             thread->SetSpeed(speed);
         }
     }
 
     void PlaySequence(RE::StaticFunctionTag*, int threadID, std::string sequence, bool navigateTo, bool useFades) {
-        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        Threading::Thread* thread = Threading::ThreadManager::GetSingleton()->GetThread(threadID);
         if (!thread) {
             return;
         }
@@ -111,7 +116,7 @@ namespace PapyrusThread {
 
 
     std::vector<RE::Actor*> GetActors(RE::StaticFunctionTag*, int threadID) {
-        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        Threading::Thread* thread = Threading::ThreadManager::GetSingleton()->GetThread(threadID);
         if (thread) {
             std::vector<RE::Actor*> actors = std::vector<RE::Actor*>(thread->getActors().size());
             for (auto& [index, actor] : thread->getActors()) {
@@ -123,9 +128,9 @@ namespace PapyrusThread {
     }
 
     RE::Actor* GetActor(RE::StaticFunctionTag*, int threadID, int index) {
-        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        Threading::Thread* thread = Threading::ThreadManager::GetSingleton()->GetThread(threadID);
         if (thread) {
-            OStim::ThreadActor* actor = thread->GetActor(index);
+            Threading::ThreadActor* actor = thread->GetActor(index);
             if (actor) {
                 return actor->getActor().form;
             }
@@ -134,7 +139,7 @@ namespace PapyrusThread {
     }
 
     int GetActorPosition(RE::StaticFunctionTag*, int threadID, RE::Actor* actor) {
-        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        Threading::Thread* thread = Threading::ThreadManager::GetSingleton()->GetThread(threadID);
         if (thread) {
             return thread->getActorPosition(actor);
         }
@@ -143,14 +148,14 @@ namespace PapyrusThread {
 
 
     void StallClimax(RE::StaticFunctionTag*, int threadID) {
-        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        Threading::Thread* thread = Threading::ThreadManager::GetSingleton()->GetThread(threadID);
         if (thread) {
             thread->setStallClimax(true);
         }
     }
 
     void PermitClimax(RE::StaticFunctionTag*, int threadID, bool permitActors) {
-        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        Threading::Thread* thread = Threading::ThreadManager::GetSingleton()->GetThread(threadID);
         if (thread) {
             thread->setStallClimax(false);
             if (permitActors) {
@@ -162,7 +167,7 @@ namespace PapyrusThread {
     }
 
     bool IsClimaxStalled(RE::StaticFunctionTag*, int threadID) {
-        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        Threading::Thread* thread = Threading::ThreadManager::GetSingleton()->GetThread(threadID);
         if (thread) {
             return thread->getStallClimax();
         }
@@ -171,7 +176,7 @@ namespace PapyrusThread {
 
 
     RE::TESObjectREFR* GetFurniture(RE::StaticFunctionTag*, int threadID) {
-        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        Threading::Thread* thread = Threading::ThreadManager::GetSingleton()->GetThread(threadID);
         if (thread) {
             return thread->getFurniture().form;
         }
@@ -179,16 +184,20 @@ namespace PapyrusThread {
     }
 
     std::string GetFurnitureType(RE::StaticFunctionTag*, int threadID) {
-        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        Threading::Thread* thread = Threading::ThreadManager::GetSingleton()->GetThread(threadID);
         if (thread) {
             return thread->getFurnitureType()->getListType()->id;
         }
         return "";
     }
 
+    void ChangeFurniture(RE::StaticFunctionTag*, int threadID, RE::TESObjectREFR* furniture, std::string sceneID) {
+        ScriptAPI::Thread::changeFurniture(threadID, furniture, sceneID);
+    }
+
 
     bool IsInAutoMode(RE::StaticFunctionTag*, int threadID) {
-        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        Threading::Thread* thread = Threading::ThreadManager::GetSingleton()->GetThread(threadID);
         if (thread) {
             return thread->isInAutoMode();
         }
@@ -196,46 +205,59 @@ namespace PapyrusThread {
     }
 
     void StartAutoMode(RE::StaticFunctionTag*, int threadID) {
-        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        Threading::Thread* thread = Threading::ThreadManager::GetSingleton()->GetThread(threadID);
         if (thread) {
             thread->startAutoMode();
         }
     }
 
     void StopAutoMode(RE::StaticFunctionTag*, int threadID) {
-        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        Threading::Thread* thread = Threading::ThreadManager::GetSingleton()->GetThread(threadID);
         if (thread) {
             thread->stopAutoMode();
         }
     }
-
-
-    void AddMetadata(RE::StaticFunctionTag*, int threadID, std::string metadata) {
-        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
-        if (thread) {
-            thread->addMetadata(metadata);
-        }
-    }
+    
 
     bool HasMetadata(RE::StaticFunctionTag*, int threadID, std::string metadata) {
-        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
-        if (thread) {
-            return thread->hasMetadata(metadata);
-        }
-        return false;
+        return ScriptAPI::Thread::hasMetadata(threadID, metadata);
+    }
+
+    void AddMetadata(RE::StaticFunctionTag*, int threadID, std::string metadata) {
+        ScriptAPI::Thread::addMetadata(threadID, metadata);
     }
 
     std::vector<std::string> GetMetadata(RE::StaticFunctionTag*, int threadID) {
-        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
-        if (thread) {
-            return thread->getMetadata();
-        }
-        return {};
+        return ScriptAPI::Thread::getMetadata(threadID);
+    }
+
+    bool HasMetaFloat(RE::StaticFunctionTag*, int threadID, std::string metaID) {
+        return ScriptAPI::Thread::hasMetaFloat(threadID, metaID);
+    }
+
+    float GetMetaFloat(RE::StaticFunctionTag*, int threadID, std::string metaID) {
+        return ScriptAPI::Thread::getMetaFloat(threadID, metaID);
+    }
+
+    void SetMetaFloat(RE::StaticFunctionTag*, int threadID, std::string metaID, float value) {
+        ScriptAPI::Thread::setMetaFloat(threadID, metaID, value);
+    }
+
+    bool HasMetaString(RE::StaticFunctionTag*, int threadID, std::string metaID) {
+        return ScriptAPI::Thread::hasMetaString(threadID, metaID);
+    }
+
+    std::string GetMetaString(RE::StaticFunctionTag*, int threadID, std::string metaID) {
+        return ScriptAPI::Thread::getMetaString(threadID, metaID);
+    }
+
+    void SetMetaString(RE::StaticFunctionTag*, int threadID, std::string metaID, std::string value) {
+        ScriptAPI::Thread::setMetaString(threadID, metaID, value);
     }
 
 
     void CallEvent(RE::StaticFunctionTag*, int threadID, std::string eventName, int actor, int target, int performer) {
-        OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+        Threading::Thread* thread = Threading::ThreadManager::GetSingleton()->GetThread(threadID);
         if (thread) {
             int size = thread->getActors().size(); // need to convert to unsigned int before comparing or shit goes sideways
             if (actor < 0 || actor >= size || target >= size || performer >= size) {
@@ -281,14 +303,21 @@ namespace PapyrusThread {
 
         BIND(GetFurniture);
         BIND(GetFurnitureType);
+        BIND(ChangeFurniture);
 
         BIND(IsInAutoMode);
         BIND(StartAutoMode);
         BIND(StopAutoMode);
 
-        BIND(AddMetadata);
         BIND(HasMetadata);
+        BIND(AddMetadata);
         BIND(GetMetadata);
+        BIND(HasMetaFloat);
+        BIND(GetMetaFloat);
+        BIND(SetMetaFloat);
+        BIND(HasMetaString);
+        BIND(GetMetaString);
+        BIND(SetMetaString);
 
         BIND(CallEvent);
 

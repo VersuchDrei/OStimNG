@@ -7,7 +7,7 @@
 #include "Util/StringUtil.h"
 #include "Util/VectorUtil.h"
 
-namespace OStim {
+namespace Threading {
     void ThreadActor::loopExpression() {
         if (overwriteExpressionCooldown > 0) {
             overwriteExpressionCooldown -= Constants::LOOP_TIME_MILLISECONDS;

@@ -4,7 +4,7 @@
 #include "SingleBoneDistancePeakHandlerParams.h"
 
 namespace Threading {
-    namespace Thread {
+    namespace Threads {
         namespace Peak {
             class SingleBoneDistancePeakHandler : public DistancePeakHandler {
             public:

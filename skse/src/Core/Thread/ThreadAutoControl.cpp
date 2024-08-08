@@ -5,7 +5,7 @@
 #include "Util/Constants.h"
 #include "Util/VectorUtil.h"
 
-namespace OStim {
+namespace Threading {
 
 #pragma region util
     bool forAnyActor(Graph::Node* node, std::function<bool(Graph::GraphActor&)> condition) {

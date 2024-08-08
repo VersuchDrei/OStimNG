@@ -3,7 +3,7 @@
 #include "GameAPI/GameSound.h"
 
 // this is required because C++ can't do circular references in header files
-namespace OStim {
+namespace Threading {
     class ThreadActor;
 }
 
@@ -13,7 +13,7 @@ namespace Sound {
         GameAPI::GameSound sound;
         bool muteWithActor = false;
         bool muteWithTarget = false;
-        OStim::ThreadActor* actor = nullptr;
-        OStim::ThreadActor* target = nullptr;
+        Threading::ThreadActor* actor = nullptr;
+        Threading::ThreadActor* target = nullptr;
     };
 }

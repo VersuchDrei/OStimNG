@@ -18,7 +18,7 @@ namespace Sound {
 
         inline SoundType(SoundTypeParams params) : sound{params.sound}, muteWithActor{params.muteWithActor}, muteWithTarget{params.muteWithTarget}, playerThreadOnly{params.playerThreadOnly} {}
 
-        virtual SoundPlayer* create(int actionIndex, OStim::ThreadActor* actor, OStim::ThreadActor* target) = 0;
+        virtual SoundPlayer* create(int actionIndex, Threading::ThreadActor* actor, Threading::ThreadActor* target) = 0;
 
         inline bool playPlayerThreadOnly() { return playerThreadOnly; }
 

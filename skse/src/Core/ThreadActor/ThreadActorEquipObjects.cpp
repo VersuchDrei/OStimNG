@@ -3,7 +3,7 @@
 #include "Trait/TraitTable.h"
 #include "Util/StringUtil.h"
 
-namespace OStim {
+namespace Threading {
     void ThreadActor::loopEquipObjects() {
         for (auto& [type, object] : equipObjects) {
             if (object.variantDuration > 0) {

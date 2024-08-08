@@ -6,7 +6,7 @@
 
 namespace UI {
     void UIState::HandleControl(Controls control) {
-        if (!OStim::ThreadManager::GetSingleton()->AnySceneRunning()) {
+        if (!Threading::ThreadManager::GetSingleton()->AnySceneRunning()) {
             return;
         }
         switch (activeMenu) {
@@ -55,7 +55,7 @@ namespace UI {
         }
     }
 
-    void UIState::SetThread(OStim::Thread* thread) {
+    void UIState::SetThread(Threading::Thread* thread) {
         currentThread = thread;
         currentNode = thread->getCurrentNode();
         UI::Align::AlignMenu::GetMenu()->ThreadChanged();
@@ -63,7 +63,7 @@ namespace UI {
         UI::Scene::SceneMenu::GetMenu()->UpdateMenuData();
     }
 
-    void UIState::NodeChanged(OStim::Thread* thread, Graph::Node* node) {
+    void UIState::NodeChanged(Threading::Thread* thread, Graph::Node* node) {
         if (!thread || !node) return;
         if (currentThread != thread) return;
         
@@ -75,14 +75,14 @@ namespace UI {
         });        
     }
 
-    void UIState::SpeedChanged(OStim::Thread* thread, int speed) {
+    void UIState::SpeedChanged(Threading::Thread* thread, int speed) {
         if (!thread) return;
         if (currentThread != thread) return;
 
         UI::Scene::SceneMenu::GetMenu()->UpdateSpeed();
     }
 
-    void UIState::HandleThreadRemoved(OStim::Thread* thread) {
+    void UIState::HandleThreadRemoved(Threading::Thread* thread) {
         if (currentThread == thread) {
             currentThread = nullptr;
         }

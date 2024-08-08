@@ -37,5 +37,5 @@ public:
 
 class IThreadInterface : public IPluginInterface {
 public:
-	virtual OStim::Thread* GetThread(int64_t threadId) = 0;
+    virtual Threading::Thread* GetThread(int64_t threadId) = 0;
 };

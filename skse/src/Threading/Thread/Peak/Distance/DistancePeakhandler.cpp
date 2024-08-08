@@ -3,7 +3,7 @@
 #include "Util/Constants.h"
 
 namespace Threading {
-    namespace Thread {
+    namespace Threads {
         namespace Peak {
             DistancePeakHandler::DistancePeakHandler(PeakHandlerParams params, DistancePeakHandlerParams distanceParams)
                 : PeakHandler(params), inverse{ distanceParams.inverse } {

@@ -3,7 +3,7 @@
 #include "Threading/Thread/NodeHandler.h"
 
 namespace Threading {
-    namespace Thread {
+    namespace Threads {
         namespace Peak {
             PeakHandler::PeakHandler(PeakHandlerParams params) : peakListener{params.peakListener} {
                 params.nodeHandler->registerLoopListener([this]() { loop(); });

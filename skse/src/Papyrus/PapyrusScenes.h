@@ -6,17 +6,17 @@ namespace PapyrusScenes {
     using VM = RE::BSScript::IVirtualMachine;
 
     void AddActor(RE::StaticFunctionTag*, int64_t a_threadId, RE::Actor* a_actor) {
-        auto tm = OStim::ThreadManager::GetSingleton();
+        auto tm = Threading::ThreadManager::GetSingleton();
         tm->GetThread(a_threadId)->AddActor(a_actor);
     }
 
     void RemoveActor(RE::StaticFunctionTag*, int64_t a_threadId) {
-        auto tm = OStim::ThreadManager::GetSingleton();
+        auto tm = Threading::ThreadManager::GetSingleton();
         tm->GetThread(a_threadId)->RemoveActor();
     }
 
-    OStim::ThreadActor* GetActor(int64_t a_threadId, RE::Actor* a_actor) {
-        auto thread = OStim::ThreadManager::GetSingleton()->GetThread(a_threadId);
+    Threading::ThreadActor* GetActor(int64_t a_threadId, RE::Actor* a_actor) {
+        auto thread = Threading::ThreadManager::GetSingleton()->GetThread(a_threadId);
         if (thread) {
             auto actor = thread->GetActor(a_actor);
             if (actor) {

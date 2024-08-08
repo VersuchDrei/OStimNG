@@ -7,13 +7,13 @@
 #include "MCM/MCMTable.h"
 #include "Util/ActorUtil.h"
 
-namespace OStim {
+namespace Threading {
     int startNPCThread(ThreadStartParams& params) {
         if (!params.noFurniture && !params.furniture && MCM::MCMTable::useFurniture()) {
             if (!params.startingNodes.empty()) {
                 params.furniture = Furniture::findFurniture(Furniture::FurnitureTable::getFurnitureType("bed"), params.actors[0].form, MCM::MCMTable::furnitureSearchDistance(), 96.0f);
             } else {
-                std::vector<std::pair<Furniture::FurnitureType*, GameAPI::GameObject>> furniture = Furniture::findFurniture(params.actors.size(), params.actors[0].form, MCM::MCMTable::furnitureSearchDistance(), 96.0f);
+                std::vector<std::pair<Furniture::FurnitureType*, GameAPI::GameObject>> furniture = Furniture::findFurniture(params.actors.size(), params.actors[0].getPosition(), MCM::MCMTable::furnitureSearchDistance(), 96.0f);
                 if (!furniture.empty()) {
                     params.furniture = furniture.front().second;
                 }

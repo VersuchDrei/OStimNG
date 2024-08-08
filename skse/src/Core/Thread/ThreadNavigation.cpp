@@ -9,7 +9,7 @@
 #include "Util/Constants.h"
 #include "Util/VectorUtil.h"
 
-namespace OStim {
+namespace Threading {
 
 #pragma region util
     // TODO: move this to a ThreadUtil file?

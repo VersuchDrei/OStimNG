@@ -1,6 +1,6 @@
 #pragma once
 
-namespace OStim {
+namespace Threading {
     template <class T>
     class ISingleton {
     public:

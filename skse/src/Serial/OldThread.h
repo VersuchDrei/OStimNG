@@ -14,8 +14,7 @@ namespace Serialization {
     enum DeserializationError {
         VEHICLE = 1 << 0,
         FURNITURE = 1 << 1,
-        ACTOR = 1 << 2,
-        EQUIPOBJECT = 1 << 3
+        ACTOR = 1 << 2
     };
 
     struct OldThreadActor {
@@ -30,23 +29,10 @@ namespace Serialization {
             size_t size;
             serial->ReadRecordData(&size, sizeof(size));
             for (int i = 0; i < size; i++) {
-                serial->ReadRecordData(&oldID, sizeof(oldID));
-                if (serial->ResolveFormID(oldID, newID)) {
-                    RE::TESForm* form = RE::TESForm::LookupByID(newID);
-                    if (form) {
-                        if (form->Is(RE::TESObjectARMO::FORMTYPE)) {
-                            threadActor.equipObjects.push_back(form->As<RE::TESObjectARMO>());
-                        } else {
-                            logger::warn("not an equip object id: {}", newID);
-                            errors |= DeserializationError::EQUIPOBJECT;
-                        }
-                    } else {
-                        logger::warn("cannot find equip object with id: {}", newID);
-                        errors |= DeserializationError::EQUIPOBJECT;
-                    }
-                } else {
-                    logger::warn("cannot resolve equip object id {:x}, missing mod?", oldID);
-                    errors |= DeserializationError::EQUIPOBJECT;
+                GameAPI::GameArmor equipObject;
+                equipObject.loadSerial(serial);
+                if (equipObject) {
+                    threadActor.equipObjects.push_back(equipObject);
                 }
             }
 
@@ -64,8 +50,8 @@ namespace Serialization {
             }
         }
 
-        GameAPI::GameActor actor = nullptr;
-        std::vector<RE::TESObjectARMO*> equipObjects;
+        GameAPI::GameActor actor;
+        std::vector<GameAPI::GameArmor> equipObjects;
         std::vector<GameAPI::GameFaction> factions;
 
         inline void serialize(SKSE::SerializationInterface* serial) {
@@ -74,9 +60,8 @@ namespace Serialization {
 
             size_t size = equipObjects.size();
             serial->WriteRecordData(&size, sizeof(size));
-            for (RE::TESObjectARMO* equipObject : equipObjects) {
-                RE::FormID objectID = equipObject->GetFormID();
-                serial->WriteRecordData(&objectID, sizeof(objectID));
+            for (GameAPI::GameArmor equipObject : equipObjects) {
+                equipObject.writeSerial(serial);
             }
 
             size = factions.size();
@@ -88,10 +73,10 @@ namespace Serialization {
         }
 
         inline void free() {
-            OStim::freeActor(actor, true);
-            for (RE::TESObjectARMO* equipObject : equipObjects) {
-                ActorUtil::unequipItem(actor.form, equipObject);
-                ObjectRefUtil::removeItem(actor.form, equipObject);
+            Threading::freeActor(actor, true);
+            for (GameAPI::GameArmor equipObject : equipObjects) {
+                actor.unequip(equipObject);
+                actor.removeItem(equipObject.toItem(), 1);
             }
             if (!equipObjects.empty()) {
                 actor.update3D();

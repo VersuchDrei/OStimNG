@@ -27,7 +27,7 @@ namespace UI {
     }
 
     enum MenuType { kSceneMenu, kAlignMenu, kSearchMenu };
-    class UIState : public OStim::ISingleton<UIState> {
+    class UIState : public Threading::ISingleton<UIState> {
     public:
         void HandleControl(Controls control);
         void CloseActiveMenu();
@@ -36,13 +36,13 @@ namespace UI {
         inline MenuType GetActiveMenu() { return activeMenu; }
         inline void setGlpyh(int glyph) { this->glyph = glyph; }
         void loop();
-        void SetThread(OStim::Thread* thread);
-        void NodeChanged(OStim::Thread* thread, Graph::Node* node);
-        void SpeedChanged(OStim::Thread* thread, int speed);
-        void HandleThreadRemoved(OStim::Thread* thread);
+        void SetThread(Threading::Thread* thread);
+        void NodeChanged(Threading::Thread* thread, Graph::Node* node);
+        void SpeedChanged(Threading::Thread* thread, int speed);
+        void HandleThreadRemoved(Threading::Thread* thread);
 
 
-        OStim::Thread* currentThread;
+        Threading::Thread* currentThread;
         Graph::Node* currentNode;
     private:
         // TODO remove this again when we no longer need OSA

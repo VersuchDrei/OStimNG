@@ -22,7 +22,7 @@ namespace Graph {
         return true;
     }
 
-    std::string Navigation::getDescription(OStim::Thread* thread) {
+    std::string Navigation::getDescription(Threading::Thread* thread) {
         if (description.find('{') == std::string::npos) {
             return description;
         }

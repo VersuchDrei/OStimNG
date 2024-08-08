@@ -46,7 +46,7 @@ namespace GameLogic {
 	struct PackageStart {
     public:
         static RE::TESPackage* thunk(RE::ExtraDataList* pthis, RE::Actor* actor) {
-            if (!actor->IsPlayerRef() && OStim::ThreadManager::GetSingleton()->findActor(actor)) {
+            if (!actor->IsPlayerRef() && Threading::ThreadManager::GetSingleton()->findActor(actor)) {
                 // I don't know if anything else of importance happens in the orig function, so we just call it to make sure
                 PackageStartOrig(pthis, actor);
                 return Util::LookupTable::OStimScenePackage;

@@ -9,7 +9,7 @@
 #include "Util/IDGenerator.h"
 #include <shared_mutex>
 
-namespace OStim {    
+namespace Threading {    
     class ThreadManager final : public ISingleton<ThreadManager> {
     public:
         ThreadManager();
@@ -21,6 +21,7 @@ namespace OStim {
         bool AnySceneRunning();
         bool playerThreadRunning();
         inline int getThreadCount() { return m_threadMap.size(); }
+        std::vector<int> getAllThreadIDs();
 
 
         Thread* findThread(GameAPI::GameActor actor);

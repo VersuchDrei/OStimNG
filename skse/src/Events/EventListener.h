@@ -6,7 +6,7 @@
 #include "Util/LookupTable.h"
 
 namespace Events {
-    class EventListener final : public OStim::ISingleton<EventListener>,
+    class EventListener final : public Threading::ISingleton<EventListener>,
                                 public RE::BSTEventSink<SKSE::NiNodeUpdateEvent>, 
                                 public RE::BSTEventSink<SKSE::CrosshairRefEvent>,
                                 public RE::BSTEventSink<RE::InputEvent*> {

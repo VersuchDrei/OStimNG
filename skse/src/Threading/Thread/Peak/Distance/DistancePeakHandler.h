@@ -4,7 +4,7 @@
 #include "DistancePeakHandlerParams.h"
 
 namespace Threading {
-    namespace Thread {
+    namespace Threads {
         namespace Peak {
             class DistancePeakHandler : public PeakHandler {
             public:

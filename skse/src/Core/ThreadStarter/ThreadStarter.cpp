@@ -9,7 +9,7 @@
 #include "GameAPI/Game.h"
 #include "Util/VectorUtil.h"
 
-namespace OStim {
+namespace Threading {
     int startThread(ThreadStartParams& params) {
         if (params.actors.empty()) {
             return -1;

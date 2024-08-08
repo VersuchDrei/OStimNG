@@ -7,7 +7,7 @@
 
 namespace Toys {
     ToyTable::ToyTable() {
-        OStim::ThreadManager::GetSingleton()->registerThreadStartListener([this](OStim::Thread* thread) {
+        Threading::ThreadManager::GetSingleton()->registerThreadStartListener([this](Threading::Thread* thread) {
             if (thread->isPlayerThread()) {
                 reloadToys();
             }
@@ -42,7 +42,7 @@ namespace Toys {
                 return;
             }
 
-            OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->getPlayerThread();
+            Threading::Thread* thread = Threading::ThreadManager::GetSingleton()->getPlayerThread();
             if (thread) {
                 new ToyThread(thread);
             }

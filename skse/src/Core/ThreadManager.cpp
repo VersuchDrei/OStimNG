@@ -6,8 +6,7 @@
 #include "Util/EventUtil.h"
 #include "Util/VectorUtil.h"
 
-namespace OStim {
-
+namespace Threading {
     ThreadManager::ThreadManager() {
         m_excitementThread = std::thread([&]() {
             auto sleepTime = std::chrono::milliseconds(Constants::LOOP_TIME_MILLISECONDS);
@@ -62,13 +61,8 @@ namespace OStim {
 
         Thread* thread = new Thread(threadID, params);
         m_threadMap.insert(std::make_pair(threadID, thread));
-        thread->initContinue();
-        if (params.startingNodes.size() == 1) {
-            thread->ChangeNode(params.startingNodes.front().node);
-        } else if (!params.startingNodes.empty()) {
-            thread->playSequence(params.startingNodes, false, false);
-        }
-
+        thread->initContinue(params);
+        
         EventUtil::invokeListeners(threadStartListeners, thread);
 
         return threadID;
@@ -178,5 +172,14 @@ namespace OStim {
         } else {
             logger::info("no thread found with id {}", threadID);
         }
+    }
+    
+
+    std::vector<int> ThreadManager::getAllThreadIDs() {
+        std::vector<int> ids;
+        for (auto& [id, thread] : m_threadMap) {
+            ids.push_back(id);
+        }
+        return ids;
     }
 }  // namespace OStim

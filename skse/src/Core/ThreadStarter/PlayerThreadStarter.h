@@ -2,7 +2,7 @@
 
 #include "ThreadStartParams.h"
 
-namespace OStim {
+namespace Threading {
     void startPlayerThread(ThreadStartParams params);
 
     bool getInDialogue(std::vector<GameAPI::GameActor> actors);

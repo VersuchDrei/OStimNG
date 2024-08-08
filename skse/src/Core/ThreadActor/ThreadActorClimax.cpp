@@ -8,7 +8,7 @@
 #include "Util/CameraUtil.h"
 #include "Util/EventUtil.h"
 
-namespace OStim {
+namespace Threading {
     void ThreadActor::loopClimax() {
         if (awaitingOrgasm) {
             if (!stallClimax && !thread->getStallClimax()) {

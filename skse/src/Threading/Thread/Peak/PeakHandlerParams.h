@@ -1,7 +1,7 @@
 #pragma once
 
 namespace Threading {
-    namespace Thread {
+    namespace Threads {
         class NodeHandler;
 
         namespace Peak {

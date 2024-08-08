@@ -9,14 +9,14 @@
 
 namespace Trait {
     ActorCondition ActorCondition::create(GameAPI::GameActor actor) {
-        return create(actor, OStim::ThreadManager::GetSingleton()->findActor(actor));
+        return create(actor, Threading::ThreadManager::GetSingleton()->findActor(actor));
     }
 
-    ActorCondition ActorCondition::create(OStim::ThreadActor* actor) {
+    ActorCondition ActorCondition::create(Threading::ThreadActor* actor) {
         return create(actor->getActor(), actor);
     }
 
-    ActorCondition ActorCondition::create(GameAPI::GameActor actor, OStim::ThreadActor* threadActor) {
+    ActorCondition ActorCondition::create(GameAPI::GameActor actor, Threading::ThreadActor* threadActor) {
         ActorCondition condition;
 
         if (!threadActor && actor) {

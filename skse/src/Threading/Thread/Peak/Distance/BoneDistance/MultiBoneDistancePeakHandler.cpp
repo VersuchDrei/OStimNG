@@ -1,7 +1,7 @@
 #include "MultiBoneDistancePeakHandler.h"
 
 namespace Threading {
-    namespace Thread {
+    namespace Threads {
         namespace Peak {
             MultiBoneDistancePeakHandler::MultiBoneDistancePeakHandler(PeakHandlerParams params, DistancePeakHandlerParams distanceParams, MultiBoneDistancePeakHandlerParams multiParams)
                 : DistancePeakHandler(params, distanceParams), actorBones{ multiParams.actorBones }, targetBones{ multiParams.targetBones } {

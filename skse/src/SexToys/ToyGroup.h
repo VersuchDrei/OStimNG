@@ -7,14 +7,14 @@
 namespace Toys {
     class ToyGroup {
     public:
-        ToyGroup(Graph::Action::Action* action, std::vector<std::tuple<OStim::ThreadActor*, std::string, ToyWrapper*>>& toys);
+        ToyGroup(Graph::Action::Action* action, std::vector<std::tuple<Threading::ThreadActor*, std::string, ToyWrapper*>>& toys);
 
         inline bool isAction(actionIndex action) { return this->action->index == action; }
 
         void loop();
         void peak();
         void speedChanged();
-        void climax(OStim::ThreadActor* actor);
+        void climax(Threading::ThreadActor* actor);
         void stop();
 
     private:

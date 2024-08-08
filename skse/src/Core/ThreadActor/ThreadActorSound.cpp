@@ -7,7 +7,7 @@
 #include "Util/Constants.h"
 #include "Util/RNGUtil.h"
 
-namespace OStim {
+namespace Threading {
     void ThreadActor::loopSound() {
         if (soundGracePeriod > 0) {
             soundGracePeriod -= Constants::LOOP_TIME_MILLISECONDS;

@@ -8,12 +8,12 @@
 namespace Toys {
     class ToyThread {
     public:
-        ToyThread(OStim::Thread* thread);
+        ToyThread(Threading::Thread* thread);
 
     private:
         static Settings::SynchronizationType getSynchronizationType(std::string& slot, Settings::ToySettings* globalSettings, Settings::SlotSettings* globalSlotSettings, Settings::ToySettings* toySettings);
 
-        OStim::Thread* thread;
+        Threading::Thread* thread;
         std::vector<ToyGroup> groups;
 
         void loop();

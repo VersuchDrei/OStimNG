@@ -7,7 +7,7 @@
 #include "GameAPI/GameActor.h"
 
 namespace Sound {
-    SoundPlayer* BoneDistanceSoundType::create(int actionIndex, OStim::ThreadActor* taActor, OStim::ThreadActor* taTarget) {
+    SoundPlayer* BoneDistanceSoundType::create(int actionIndex, Threading::ThreadActor* taActor, Threading::ThreadActor* taTarget) {
         GameAPI::GameActor actor(taActor->getActor());
         GameAPI::GameActor target(taTarget->getActor());
 

@@ -2,6 +2,6 @@
 
 #include "ThreadStartParams.h"
 
-namespace OStim {
+namespace Threading {
     int startThread(ThreadStartParams& params);
 }

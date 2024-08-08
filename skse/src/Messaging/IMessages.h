@@ -17,7 +17,7 @@ namespace Messaging {
 
 	class MessagingRegistry final:
 		public IMessagingRegistry,
-		public OStim::ISingleton<MessagingRegistry>
+		public Threading::ISingleton<MessagingRegistry>
 	{
 	public: // IPluginInterface (from IMessagingRegistry)
 		virtual UINT32 GetVersion() override { return 0; };

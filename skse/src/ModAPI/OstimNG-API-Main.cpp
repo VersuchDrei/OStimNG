@@ -17,7 +17,7 @@ namespace OstimNG_API
             }
 
             if (actorList.size() < 1) return Result::Invalid; 
-             OStim::ThreadStartParams params;
+             Threading::ThreadStartParams params;
 
              params.actors = GameAPI::GameActor::convertVector(actorList);
              Graph::Node* node = Graph::GraphTable::getNodeById(startingAnimation);
@@ -26,7 +26,7 @@ namespace OstimNG_API
              }
              params.furniture = furniture;
              
-              *threadID = OStim::startThread(params); 
+              *threadID = Threading::startThread(params); 
 
              if (*threadID == -1) return APIResult::Failed; 
              SKSE::log::info("Scene API: Scene started by plugin {}", pluginName);
@@ -36,7 +36,7 @@ namespace OstimNG_API
                                                    Actor* sub, uint32_t* threadID) noexcept {
 
             if (!dom || !sub) return APIResult::Invalid;  
-             OStim::ThreadStartParams params;
+             Threading::ThreadStartParams params;
 
              params.actors = GameAPI::GameActor::convertVector({ dom, sub});
              Graph::Node* node = Graph::GraphTable::getNodeById(startingAnimation);
@@ -45,7 +45,7 @@ namespace OstimNG_API
              }
              params.furniture = furniture;
              
-              *threadID = OStim::startThread(params); 
+              *threadID = Threading::startThread(params); 
 
              if (*threadID == -1) return APIResult::Failed; 
              SKSE::log::info("Scene API: Couple Scene started by plugin {}", pluginName);
@@ -56,7 +56,7 @@ namespace OstimNG_API
                                                       uint32_t* threadID) noexcept {
 
             if (!firstActor || !secondActor || !thirdActor) return APIResult::Invalid;  
-             OStim::ThreadStartParams params;
+             Threading::ThreadStartParams params;
              params.actors = GameAPI::GameActor::convertVector({ firstActor, secondActor, thirdActor});
              Graph::Node* node = Graph::GraphTable::getNodeById(startingAnimation);
              if (node) {
@@ -64,7 +64,7 @@ namespace OstimNG_API
              }
              params.furniture = furniture;
              
-              *threadID = OStim::startThread(params); 
+              *threadID = Threading::startThread(params); 
 
              if (*threadID == -1) return APIResult::Failed; 
              SKSE::log::info("Scene API: Threesome Scene started by plugin {}", pluginName);
@@ -75,7 +75,7 @@ namespace OstimNG_API
                                                      Actor* fourthActor, uint32_t* threadID) noexcept {
                                                         
              if (!firstActor || !secondActor || !thirdActor || !fourthActor) return APIResult::Invalid;
-             OStim::ThreadStartParams params;
+             Threading::ThreadStartParams params;
              params.actors = GameAPI::GameActor::convertVector({firstActor, secondActor, thirdActor, fourthActor});
              Graph::Node* node = Graph::GraphTable::getNodeById(startingAnimation);
              if (node) {
@@ -83,28 +83,28 @@ namespace OstimNG_API
              }
              params.furniture = furniture;
 
-             *threadID = OStim::startThread(params);
+             *threadID = Threading::startThread(params);
 
              if (*threadID == -1) return APIResult::Failed;
              SKSE::log::info("Scene API: Foursome Scene started by plugin {}", pluginName);
              return APIResult::OK;
         }
         APIResult SceneInterface::StopScene(const char* pluginName, uint32_t threadID) noexcept {
-             OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+             Threading::Thread* thread = Threading::ThreadManager::GetSingleton()->GetThread(threadID);
              if (!thread) return APIResult::Invalid;
 
              thread->stopFaded();
              return Result::OK;
             }
         APIResult SceneInterface::SetAutoMode(const char* pluginName, uint32_t threadID, bool autoMode) noexcept {
-            OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+             Threading::Thread* thread = Threading::ThreadManager::GetSingleton()->GetThread(threadID);
              if (!thread) return Result::Invalid;
 
              autoMode ? thread->startAutoMode() : thread->stopAutoMode();
              return Result::OK; 
         }
         APIResult SceneInterface::TryGetAutoMode(const char* pluginName, uint32_t threadID, bool* autoMode) noexcept {
-            OStim::Thread* thread = OStim::ThreadManager::GetSingleton()->GetThread(threadID);
+             Threading::Thread* thread = Threading::ThreadManager::GetSingleton()->GetThread(threadID);
             if (!thread) return Result::Invalid;
 
             *autoMode = thread->isInAutoMode(); 

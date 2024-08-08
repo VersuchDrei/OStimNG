@@ -1,6 +1,6 @@
 #include "Core/Thread.h"
 
-namespace OStim {
+namespace Threading {
     bool Thread::isAnyActorTalking() {
         for (auto& [index, actor] : m_actors) {
             if (actor.getActor().isTalking()) {

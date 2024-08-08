@@ -10,7 +10,7 @@ namespace Graph {
             public:
                 LoopPeakType(PeakTypeParams params, LoopPeakTypeParams loopParams);
 
-                virtual Threading::Thread::Peak::PeakHandler* create(Threading::Thread::Peak::PeakHandlerParams params, GameAPI::GameActor actor, GameAPI::GameActor target);
+                virtual Threading::Threads::Peak::PeakHandler* create(Threading::Threads::Peak::PeakHandlerParams params, GameAPI::GameActor actor, GameAPI::GameActor target);
 
             private:
                 int interval;

@@ -5,7 +5,7 @@
 #include "Util/Constants.h"
 
 namespace Threading {
-    namespace Thread {
+    namespace Threads {
         namespace Peak {
             LoopPeakHandler::LoopPeakHandler(PeakHandlerParams params, LoopPeakHandlerParams loopParams)
                 : PeakHandler(params), interval{loopParams.interval}, nodeHandler{params.nodeHandler} {

@@ -13,20 +13,20 @@ namespace PapyrusThreadBuilder {
     int Create(RE::StaticFunctionTag*, std::vector<RE::Actor*> actors) {
         std::vector<GameAPI::GameActor> gameActors;
         for (RE::Actor* actor : actors) {
-            if (!OStim::isEligible(actor)) {
+            if (!Threading::isEligible(actor)) {
                 return -1;
             }
             gameActors.push_back(actor);
         }
 
-        OStim::ThreadStartParams params;
+        Threading::ThreadStartParams params;
         params.actors = gameActors;
 
-        return OStim::ThreadBuilder::add(params);
+        return Threading::ThreadBuilder::add(params);
     }
 
     void SetDominantActors(RE::StaticFunctionTag*, int builderID, std::vector<RE::Actor*> actors) {
-        OStim::ThreadStartParams* params = OStim::ThreadBuilder::get(builderID);
+        Threading::ThreadStartParams* params = Threading::ThreadBuilder::get(builderID);
         if (!params) {
             return;
         }
@@ -35,7 +35,7 @@ namespace PapyrusThreadBuilder {
     }
 
     void SetFurniture(RE::StaticFunctionTag*, int builderID, RE::TESObjectREFR* furniture) {
-        OStim::ThreadStartParams* params = OStim::ThreadBuilder::get(builderID);
+        Threading::ThreadStartParams* params = Threading::ThreadBuilder::get(builderID);
         if (!params) {
             return;
         }
@@ -44,7 +44,7 @@ namespace PapyrusThreadBuilder {
     }
 
     void SetDuration(RE::StaticFunctionTag*, int builderID, float duration) {
-        OStim::ThreadStartParams* params = OStim::ThreadBuilder::get(builderID);
+        Threading::ThreadStartParams* params = Threading::ThreadBuilder::get(builderID);
         if (!params) {
             return;
         }
@@ -53,7 +53,7 @@ namespace PapyrusThreadBuilder {
     }
 
     void SetStartingAnimation(RE::StaticFunctionTag*, int builderID, std::string animation) {
-        OStim::ThreadStartParams* params = OStim::ThreadBuilder::get(builderID);
+        Threading::ThreadStartParams* params = Threading::ThreadBuilder::get(builderID);
         if (!params) {
             return;
         }
@@ -68,7 +68,7 @@ namespace PapyrusThreadBuilder {
     }
 
     void AddStartingAnimation(RE::StaticFunctionTag*, int builderID, std::string animation, float duration, bool navigateTo) {
-        OStim::ThreadStartParams* params = OStim::ThreadBuilder::get(builderID);
+        Threading::ThreadStartParams* params = Threading::ThreadBuilder::get(builderID);
         if (!params) {
             return;
         }
@@ -99,7 +99,7 @@ namespace PapyrusThreadBuilder {
     }
 
     void SetStartingSequence(RE::StaticFunctionTag*, int builderID, std::string sequence) {
-        OStim::ThreadStartParams* params = OStim::ThreadBuilder::get(builderID);
+        Threading::ThreadStartParams* params = Threading::ThreadBuilder::get(builderID);
         if (!params) {
             return;
         }
@@ -117,7 +117,7 @@ namespace PapyrusThreadBuilder {
     }
 
     void ConcatStartingSequence(RE::StaticFunctionTag*, int builderID, std::string sequence, bool navigateTo) {
-        OStim::ThreadStartParams* params = OStim::ThreadBuilder::get(builderID);
+        Threading::ThreadStartParams* params = Threading::ThreadBuilder::get(builderID);
         if (!params) {
             return;
         }
@@ -144,7 +144,7 @@ namespace PapyrusThreadBuilder {
     }
 
     void EndAfterSequence(RE::StaticFunctionTag*, int builderID) {
-        OStim::ThreadStartParams* params = OStim::ThreadBuilder::get(builderID);
+        Threading::ThreadStartParams* params = Threading::ThreadBuilder::get(builderID);
         if (!params) {
             return;
         }
@@ -153,43 +153,43 @@ namespace PapyrusThreadBuilder {
     }
 
     void UndressActors(RE::StaticFunctionTag*, int builderID) {
-        OStim::ThreadStartParams* params = OStim::ThreadBuilder::get(builderID);
+        Threading::ThreadStartParams* params = Threading::ThreadBuilder::get(builderID);
         if (!params) {
             return;
         }
 
-        params->threadFlags |= OStim::ThreadFlag::UNDRESS;
+        params->threadFlags |= Threading::ThreadFlag::UNDRESS;
     }
 
     void NoAutoMode(RE::StaticFunctionTag*, int builderID) {
-        OStim::ThreadStartParams* params = OStim::ThreadBuilder::get(builderID);
+        Threading::ThreadStartParams* params = Threading::ThreadBuilder::get(builderID);
         if (!params) {
             return;
         }
 
-        params->threadFlags |= OStim::ThreadFlag::NO_AUTO_MODE;
+        params->threadFlags |= Threading::ThreadFlag::NO_AUTO_MODE;
     }
 
     void NoPlayerControl(RE::StaticFunctionTag*, int builderID) {
-        OStim::ThreadStartParams* params = OStim::ThreadBuilder::get(builderID);
+        Threading::ThreadStartParams* params = Threading::ThreadBuilder::get(builderID);
         if (!params) {
             return;
         }
 
-        params->threadFlags |= OStim::ThreadFlag::NO_PLAYER_CONTROL;
+        params->threadFlags |= Threading::ThreadFlag::NO_PLAYER_CONTROL;
     }
 
     void NoUndressing(RE::StaticFunctionTag*, int builderID) {
-        OStim::ThreadStartParams* params = OStim::ThreadBuilder::get(builderID);
+        Threading::ThreadStartParams* params = Threading::ThreadBuilder::get(builderID);
         if (!params) {
             return;
         }
 
-        params->threadFlags |= OStim::ThreadFlag::NO_UNDRESSING;
+        params->threadFlags |= Threading::ThreadFlag::NO_UNDRESSING;
     }
 
     void NoFurniture(RE::StaticFunctionTag*, int builderID) {
-        OStim::ThreadStartParams* params = OStim::ThreadBuilder::get(builderID);
+        Threading::ThreadStartParams* params = Threading::ThreadBuilder::get(builderID);
         if (!params) {
             return;
         }
@@ -198,7 +198,7 @@ namespace PapyrusThreadBuilder {
     }
 
     void SetMetadata(RE::StaticFunctionTag*, int builderID, std::vector<std::string> metadata) {
-        OStim::ThreadStartParams* params = OStim::ThreadBuilder::get(builderID);
+        Threading::ThreadStartParams* params = Threading::ThreadBuilder::get(builderID);
         if (!params) {
             return;
         }
@@ -208,7 +208,7 @@ namespace PapyrusThreadBuilder {
     }
 
     void SetMetadataCSV(RE::StaticFunctionTag*, int builderID, std::string metadata) {
-        OStim::ThreadStartParams* params = OStim::ThreadBuilder::get(builderID);
+        Threading::ThreadStartParams* params = Threading::ThreadBuilder::get(builderID);
         if (!params) {
             return;
         }
@@ -220,18 +220,18 @@ namespace PapyrusThreadBuilder {
 
 
     int Start(RE::StaticFunctionTag*, int builderID) {
-        OStim::ThreadStartParams* paramsPtr = OStim::ThreadBuilder::get(builderID);
+        Threading::ThreadStartParams* paramsPtr = Threading::ThreadBuilder::get(builderID);
         if (!paramsPtr) {
             return -1;
         }
 
-        OStim::ThreadStartParams params = *paramsPtr;
-        OStim::ThreadBuilder::remove(builderID);
-        return OStim::startThread(params);
+        Threading::ThreadStartParams params = *paramsPtr;
+        Threading::ThreadBuilder::remove(builderID);
+        return Threading::startThread(params);
     }
 
     void Cancel(RE::StaticFunctionTag*, int builderID) {
-        OStim::ThreadBuilder::remove(builderID);
+        Threading::ThreadBuilder::remove(builderID);
     }
 
 

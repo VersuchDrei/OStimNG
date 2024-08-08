@@ -147,7 +147,7 @@ namespace Serialization {
             return;
         }
 
-        std::vector<OldThread> oldThreads = OStim::ThreadManager::GetSingleton()->serialize();
+        std::vector<OldThread> oldThreads = Threading::ThreadManager::GetSingleton()->serialize();
         size_t size = oldThreads.size();
         serial->WriteRecordData(&size, sizeof(size));
         for (OldThread oldThread : oldThreads) {
@@ -229,7 +229,7 @@ namespace Serialization {
         std::unique_lock lock(_lock);
         auto locker = Locker::GetSingleton();
         locker->Revert(serial);
-        OStim::ThreadManager::GetSingleton()->UntrackAllThreads();
+        Threading::ThreadManager::GetSingleton()->UntrackAllThreads();
         Util::Globals::resetSaveGameValues();
         MCM::MCMTable::resetValues();
         Serialization::ResetInfo info;

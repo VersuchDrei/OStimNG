@@ -9,9 +9,10 @@
 #include "Graph/Node.h"
 #include "Serial/OldThread.h"
 #include "Sound/VoiceSet.h"
+#include "Threading/Metadata.h"
 #include "Trait/EquipObject.h"
 
-namespace OStim {
+namespace Threading {
     class Thread;
 
 	class ThreadActor {
@@ -20,6 +21,7 @@ namespace OStim {
         void initContinue();
 
         int index;
+        Threading::Metadata metadata;
 
 		inline GameAPI::GameActor& getActor() { return actor; }
 
@@ -28,10 +30,10 @@ namespace OStim {
         Alignment::ActorKey getAlignmentKey();
 
         void undress();
-        void undressPartial(uint32_t mask);
+        void undressPartial(GameAPI::GameSlotMask mask);
         void removeWeapons();
         void redress();
-        void redressPartial(uint32_t mask);
+        void redressPartial(GameAPI::GameSlotMask mask);
         void addWeapons();
 
         void changeNode(Graph::GraphActor* graphActor, std::vector<Trait::FacialExpression*>* nodeExpressions, std::vector<Trait::FacialExpression*>* overrideExpressions);
@@ -87,7 +89,7 @@ namespace OStim {
                     logger::info("result is none array");
                 } else if (a_result.IsObjectArray()) {
                     auto items = a_result.GetArray().get();
-                    std::vector<RE::TESObjectARMO*> armors;
+                    std::vector<GameAPI::GameArmor> armors;
                     for (int i = 0; i < items->size(); i++) {
                         RE::BSScript::Variable item = items->operator[](i);
                         if (item.IsObject()) {
@@ -131,12 +133,10 @@ namespace OStim {
         int sosOffset = 0;
 
         bool undressed = false;
-        uint32_t undressedMask = 0;
-        std::vector<RE::TESObjectARMO*> undressedItems;
+        GameAPI::GameSlotMask undressedMask;
+        std::vector<GameAPI::GameArmor> undressedItems;
         bool weaponsRemoved = false;
-        RE::TESForm* rightHand = nullptr;
-        RE::TESForm* leftHand = nullptr;
-        RE::TESAmmo* ammo = nullptr;
+        GameAPI::GameWeaponry weaponry;
 
         float rmHeight = 1;
         float heelOffset = 0;
@@ -146,8 +146,8 @@ namespace OStim {
         void applyHeelOffset(bool remove);
         void updateHeelOffset();
 
-        void papyrusUndressCallback(std::vector<RE::TESObjectARMO*> items);
-        void papyrusRedressCallback(std::vector<RE::TESObjectARMO*> items);
+        void papyrusUndressCallback(std::vector<GameAPI::GameArmor> items);
+        void papyrusRedressCallback(std::vector<GameAPI::GameArmor> items);
 
 #pragma region animation
     public:

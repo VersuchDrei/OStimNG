@@ -29,7 +29,7 @@ namespace GameAPI {
     void GameActor::lock() const {
         if (form->IsPlayerRef()) {
             if (form->AsActorState()->IsWeaponDrawn()) {
-                sheatheWeapon();
+                sheatheWeaponry();
             }
 
             RE::PlayerCharacter::GetSingleton()->SetAIDriven(true);
@@ -151,13 +151,64 @@ namespace GameAPI {
         return 4 - RE::BGSRelationship::GetRelationship(form->GetActorBase(), other.form->GetActorBase())->level.underlying();
     }
 
-    void GameActor::sheatheWeapon() const {
+
+    std::vector<GameAPI::GameArmor> GameActor::getEquippedItems() const {
+        std::vector<GameAPI::GameArmor> armors;
+        RE::TESObjectREFR::InventoryItemMap inventory = form->GetInventory();
+        for (const auto& [obj, data] : inventory) {
+            if (data.second->IsWorn() && obj->IsArmor()) {
+                armors.push_back({obj->As<RE::TESObjectARMO>()});
+            }
+        }
+        return armors;
+    }
+
+
+    void GameActor::sheatheWeaponry() const {
         const auto factory = RE::IFormFactory::GetConcreteFormFactoryByType<RE::Script>();
         const auto script = factory ? factory->Create() : nullptr;
         if (script) {
             script->SetCommand("rae WeaponSheathe"sv);
             GameUtil::CompileAndRun(script, form);
             delete script;
+        }
+    }
+
+    GameWeaponry GameActor::getWeaponry() const {
+        GameWeaponry weaponry;
+
+        weaponry.rightHand = form->GetEquippedObject(false);
+        weaponry.leftHand = form->GetEquippedObject(true);
+        weaponry.ammo = form->GetCurrentAmmo();
+
+        return weaponry;
+    }
+
+    void GameActor::unequipWeaponry() const {
+        RE::TESForm* rightHand = form->GetEquippedObject(false);
+        RE::TESForm* leftHand = form->GetEquippedObject(true);
+        RE::TESAmmo* ammo = form->GetCurrentAmmo();
+
+        if (rightHand) {
+            UnequipItem(nullptr, 0, form, rightHand, false, false);
+        }
+        if (leftHand) {
+            UnequipItem(nullptr, 0, form, leftHand, false, false);
+        }
+        if (ammo) {
+            UnequipItem(nullptr, 0, form, ammo, false, false);
+        }
+    }
+
+    void GameActor::equipWeaponry(GameWeaponry weaponry) const {
+        if (weaponry.rightHand) {
+            equipItemEx(weaponry.rightHand, 1, false, false);
+        }
+        if (weaponry.leftHand) {
+            equipItemEx(weaponry.leftHand, 2, false, false);
+        }
+        if (weaponry.ammo) {
+            equipItemEx(weaponry.ammo, 0, false, false);
         }
     }
 
@@ -186,5 +237,17 @@ namespace GameAPI {
         });
 
         return actors;
+    }
+
+
+    void GameActor::equipItemEx(RE::TESForm* item, int slotId, bool preventUnequip, bool equipSound) const {
+        const auto skyrimVM = RE::SkyrimVM::GetSingleton();
+        auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+        if (vm) {
+            RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
+            auto handle = skyrimVM->handlePolicy.GetHandleForObject(static_cast<RE::VMTypeID>(form->FORMTYPE), form);
+            auto args = RE::MakeFunctionArguments(std::move(item), std::move(slotId), std::move(preventUnequip), std::move(equipSound));
+            vm->DispatchMethodCall2(handle, "Actor", "EquipItemEx", args, callback);
+        }
     }
 }

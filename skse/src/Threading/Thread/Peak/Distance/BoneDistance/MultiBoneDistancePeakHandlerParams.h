@@ -3,7 +3,7 @@
 #include "GameAPI/GameActorBone.h"
 
 namespace Threading {
-    namespace Thread {
+    namespace Threads {
         namespace Peak {
             struct MultiBoneDistancePeakHandlerParams {
                 std::vector<GameAPI::GameActorBone> actorBones;

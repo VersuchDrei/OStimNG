@@ -1,7 +1,7 @@
 #pragma once
 
 namespace Threading {
-    namespace Thread {
+    namespace Threads {
         namespace Peak {
             struct LoopPeakHandlerParams {
                 int interval = 1000;

@@ -7,7 +7,7 @@ message("Using toolchain file ${CMAKE_TOOLCHAIN_FILE}.")
 ########################################################################################################################
 project(
         OStim
-        VERSION 7.3.1.1
+        VERSION 7.3.2.1
         DESCRIPTION ""
         LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 23)
@@ -60,6 +60,7 @@ set(sources
 	src/Game/Locker.h
     src/GameAPI/Game.cpp
     src/GameAPI/GameActor.cpp
+    src/GameAPI/GameArmor.cpp
     src/GameAPI/GameCamera.cpp
     src/GameAPI/GameDialogue.cpp
     src/GameAPI/GameEvents.cpp
@@ -68,6 +69,7 @@ set(sources
     src/GameAPI/GamePosition.cpp
     src/GameAPI/GameRecordIdentifier.cpp
     src/GameAPI/GameSex.cpp
+    src/GameAPI/GameSlotMask.cpp
     src/GameAPI/GameSound.cpp
     src/GameAPI/GameUtil.cpp
     src/GameLogic/GameHooks.cpp
@@ -98,8 +100,10 @@ set(sources
     src/PluginInterfaceImplementation/Settings/SettingInterfaceImpl.cpp
     src/PluginInterfaceImplementation/SexToys/SexToyInterfaceImpl.cpp
     src/PluginInterfaceImplementation/InterfaceMapImpl.cpp
+	src/ScriptAPI/ActorScript.cpp
 	src/ScriptAPI/JsonScript.cpp
 	src/ScriptAPI/SettingsScript.cpp
+	src/ScriptAPI/ThreadScript.cpp
 	src/Serial/Manager.cpp
     src/Settings/ExportImport/ExportInstance.cpp
     src/Settings/ExportImport/ImportInstance.cpp

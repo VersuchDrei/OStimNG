@@ -3,7 +3,7 @@
 #include "GameAPI/GameActor.h"
 #include "GameAPI/GameSex.h"
 
-namespace OStim {
+namespace Threading {
     class ThreadActor;
 }
 
@@ -11,7 +11,7 @@ namespace Trait {
     struct ActorCondition {
     public:
         static ActorCondition create(GameAPI::GameActor actor);
-        static ActorCondition create(OStim::ThreadActor* actor);
+        static ActorCondition create(Threading::ThreadActor* actor);
         static std::vector<ActorCondition> create(std::vector<GameAPI::GameActor> actors);
 
         std::string type = "npc";
@@ -21,6 +21,6 @@ namespace Trait {
         bool fulfills(ActorCondition conditions);
 
     private:
-        static ActorCondition create(GameAPI::GameActor actor, OStim::ThreadActor* threadActor);
+        static ActorCondition create(GameAPI::GameActor actor, Threading::ThreadActor* threadActor);
     };
 }

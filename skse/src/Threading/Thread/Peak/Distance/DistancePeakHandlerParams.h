@@ -1,7 +1,7 @@
 #pragma once
 
 namespace Threading {
-    namespace Thread {
+    namespace Threads {
         namespace Peak {
             struct DistancePeakHandlerParams {
                 bool inverse = false;

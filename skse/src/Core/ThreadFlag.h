@@ -1,6 +1,6 @@
 #pragma once
 
-namespace OStim {
+namespace Threading {
     using ThreadFlags = uint32_t;
 
     enum ThreadFlag {

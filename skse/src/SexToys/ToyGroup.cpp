@@ -1,7 +1,7 @@
 #include "ToyGroup.h"
 
 namespace Toys {
-    ToyGroup::ToyGroup(Graph::Action::Action* action, std::vector<std::tuple<OStim::ThreadActor*, std::string, ToyWrapper*>>& toys)
+    ToyGroup::ToyGroup(Graph::Action::Action* action, std::vector<std::tuple<Threading::ThreadActor*, std::string, ToyWrapper*>>& toys)
         : action{action}, hasPeaks{action->doPeaks && (action->peaksAnnotated || action->attributes->peakType)} {
         for (auto& [actor, slot, toy] : toys) {
             this->toys.push_back({actor, slot, toy});
@@ -68,7 +68,7 @@ namespace Toys {
         }
     }
 
-    void ToyGroup::climax(OStim::ThreadActor* actor) {
+    void ToyGroup::climax(Threading::ThreadActor* actor) {
         for (ToyHandler& toy : toys) {
             if (toy.isActor(actor)) {
                 toy.climax();

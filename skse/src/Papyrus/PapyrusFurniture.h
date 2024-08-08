@@ -11,7 +11,7 @@ namespace PapyrusFurniture {
     }
 
     std::vector<RE::TESObjectREFR*> FindFurniture(RE::StaticFunctionTag*, int actorCount, RE::TESObjectREFR* centerRef, float radius, float sameFloor) {
-        std::vector<std::pair<Furniture::FurnitureType*, GameAPI::GameObject>> furniture = Furniture::findFurniture(actorCount, centerRef, radius, sameFloor);
+        std::vector<std::pair<Furniture::FurnitureType*, GameAPI::GameObject>> furniture = Furniture::findFurniture(actorCount, {centerRef->GetPosition(), 0}, radius, sameFloor);
         std::vector<RE::TESObjectREFR*> ret;
         for (auto& [type, object] : furniture) {
             ret.push_back(object.form);

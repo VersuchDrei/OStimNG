@@ -4,7 +4,7 @@
 #include "ToyTable.h"
 
 namespace Toys {
-    ToyThread::ToyThread(OStim::Thread* thread) : thread{thread} {
+    ToyThread::ToyThread(Threading::Thread* thread) : thread{thread} {
         thread->registerLoopListener([this]() { loop(); });
         thread->registerPeakListener([this](actionIndex action) { peak(action); });
         thread->registerSpeedChangedListener([this]() { speedChanged(); });
@@ -55,17 +55,17 @@ namespace Toys {
         Settings::ToySettings* globalSettings = Settings::Settings::getSingleton()->getToySettings(Settings::ToySettings::GLOBAL_KEY);
         Settings::SlotSettings* globalSlotSettings = globalSettings->getSlotSettings(Settings::SlotSettings::GLOBAL_KEY);
 
-        OStim::Thread* thread = this->thread;
+        Threading::Thread* thread = this->thread;
         for (Graph::Action::Action& action : thread->getCurrentNode()->actions) {
             if (toysInUse.size() == toys->size()) {
                 break;
             }
 
-            std::vector<std::tuple<OStim::ThreadActor*, std::string, ToyWrapper*>> slotToys;
+            std::vector<std::tuple<Threading::ThreadActor*, std::string, ToyWrapper*>> slotToys;
             action.roles.forEach([globalSettings, globalSlotSettings, &slotToys, &thread, &action, &toys, &toysInUse](Graph::Role role, int index) {
                 Graph::ActionActor* actionActor = action.attributes->roles.get(role);
                 for (std::string slot : actionActor->toySlots) {
-                    OStim::ThreadActor* actor = thread->GetActor(index);
+                    Threading::ThreadActor* actor = thread->GetActor(index);
                     for (ToyWrapper& toy : *toys) {
                         if (toysInUse.contains(&toy)) {
                             continue;

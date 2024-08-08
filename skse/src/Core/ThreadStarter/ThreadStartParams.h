@@ -7,7 +7,7 @@
 #include "Graph/Node.h"
 #include "Graph/Sequence.h"
 
-namespace OStim {
+namespace Threading {
     struct ThreadStartParams {
         std::vector<GameAPI::GameActor> actors;
         std::vector<GameAPI::GameActor> dominantActors;

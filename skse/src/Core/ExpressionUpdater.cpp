@@ -1,6 +1,6 @@
 #include "ExpressionUpdater.h"
 
-namespace OStim {
+namespace Threading {
     int ExpressionUpdater::step() {
         if (current < goal) {
             current += speed;

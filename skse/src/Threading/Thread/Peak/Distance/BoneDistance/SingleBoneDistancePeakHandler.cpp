@@ -1,7 +1,7 @@
 #include "SingleBoneDistancePeakHandler.h"
 
 namespace Threading {
-    namespace Thread {
+    namespace Threads {
         namespace Peak {
             SingleBoneDistancePeakHandler::SingleBoneDistancePeakHandler(PeakHandlerParams params, DistancePeakHandlerParams distanceParams, SingleBoneDistancePeakHandlerParams singleParams)
                 : DistancePeakHandler(params, distanceParams), actorBone{ singleParams.actorBone }, targetBone{ singleParams.targetBone } {

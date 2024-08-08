@@ -6,7 +6,7 @@
 #include "Util/APITable.h"
 #include "Util/Constants.h"
 
-namespace OStim {
+namespace Threading {
     void ThreadActor::setExcitement(float value) {
         excitement = value;
         Util::APITable::getExcitementFaction().setRank(actor, (int)excitement);

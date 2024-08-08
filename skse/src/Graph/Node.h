@@ -7,7 +7,7 @@
 
 #include "Furniture/Furniture.h"
 
-namespace OStim {
+namespace Threading {
     struct Thread;
 }
 
@@ -29,7 +29,7 @@ namespace Graph {
         bool isTransition = false;
 
         bool fulfilledBy(std::vector<Trait::ActorCondition> conditions);
-        std::string getDescription(OStim::Thread* thread);
+        std::string getDescription(Threading::Thread* thread);
     };
 
     struct Node {

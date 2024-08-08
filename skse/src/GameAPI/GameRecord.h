@@ -13,6 +13,8 @@ namespace GameAPI {
         inline bool operator==(const GameRecord<T> other) { return form == other.form; }
         inline bool operator!=(const GameRecord<T> other) { return form != other.form; }
 
+        inline void clear() { form = nullptr; }
+
         void loadIdentifier(GameRecordIdentifier& identifier) {
             loadFile(identifier.mod, identifier.formID);
         }

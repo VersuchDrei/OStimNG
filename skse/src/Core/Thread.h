@@ -14,19 +14,22 @@
 #include "GameAPI/GameActor.h"
 #include "Graph/Node.h"
 #include "Serial/OldThread.h"
+#include "Threading/Metadata.h"
 #include "Util/VectorUtil.h"
 
-namespace OStim {
+namespace Threading {
     using ThreadId = int64_t;
     class Thread : public RE::BSTEventSink<RE::BSAnimationGraphEvent>{
     public:
         ThreadId m_threadId;
 
+        Threading::Metadata metadata;
+
         Thread(int threadID, ThreadStartParams params);
 
         ~Thread();
 
-        void initContinue();
+        void initContinue(ThreadStartParams params);
 
         inline ThreadFlags getThreadFlags() { return threadFlags; }
         inline bool isFlagged(ThreadFlag flag) { return (threadFlags & flag) == flag; }
@@ -75,8 +78,9 @@ namespace OStim {
         void close();
 
         inline bool isPlayerThread() { return playerThread; }
+        inline GameAPI::GamePosition getCenter() { return center; }
 
-        inline Threading::Thread::NodeHandler* getNodeHandler() { return nodeHandler; }
+        inline Threading::Threads::NodeHandler* getNodeHandler() { return nodeHandler; }
     
         virtual RE::BSEventNotifyControl ProcessEvent(const RE::BSAnimationGraphEvent* a_event, RE::BSTEventSource<RE::BSAnimationGraphEvent>* a_eventSource) override;
 
@@ -105,7 +109,7 @@ namespace OStim {
         int stopTimer = 0;
         bool isStopping = false;
 
-        Threading::Thread::NodeHandler* nodeHandler = nullptr;
+        Threading::Threads::NodeHandler* nodeHandler = nullptr;
 
         std::vector<Sound::SoundPlayer*> soundPlayers;
 
@@ -177,23 +181,15 @@ namespace OStim {
         inline GameAPI::GameObject getFurniture() { return furniture; }
         inline Furniture::FurnitureType* getFurnitureType() { return furnitureType; }
 
+        void changeFurniture(GameAPI::GameObject furniture, Graph::Node* node);
+
     private:
         GameAPI::GameObject furniture;
         Furniture::FurnitureType* furnitureType = nullptr;
         GameAPI::GameOwnership furnitureOwner = nullptr;
         float furnitureScaleMult = 1.0f;
-#pragma endregion
 
-#pragma region metadata
-    public:
-        inline void addMetadata(std::string metadata) {
-            if (!hasMetadata(metadata)) this->metadata.push_back(metadata);
-        }
-        inline bool hasMetadata(std::string metadata) { return VectorUtil::contains(this->metadata, metadata); }
-        inline std::vector<std::string> getMetadata() { return metadata; }
-
-    private:
-        std::vector<std::string> metadata;
+        void changeFurnitureInner(GameAPI::GameObject furniture, Graph::Node* node);
 #pragma endregion
 
 #pragma region navigation
