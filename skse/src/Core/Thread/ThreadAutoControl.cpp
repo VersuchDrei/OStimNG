@@ -40,13 +40,13 @@ namespace Threading {
         if (furnitureTypeID == "none") {
             conditions.push_back([&](Graph::Node* node) {
                 return forAnyActor(node, [&](Graph::GraphActor& actor) {
-                    return VectorUtil::contains(actor.tags, std::string("standing"));
+                    return actor.hasTag("standing");
                 });
             });
         } else if (furnitureTypeID == "bed") {
             conditions.push_back([&](Graph::Node* node) {
                 return forAllActors(node, [&](Graph::GraphActor& actor) {
-                    return !VectorUtil::contains(actor.tags, std::string("standing"));
+                    return !actor.hasTag("standing");
                 });
             });
         }
@@ -67,7 +67,7 @@ namespace Threading {
         addFurniture(conditions, furnitureType);
         conditions.push_back([&](Graph::Node* node) {
             return forAnyAction(node, [&](Graph::Action::Action& action) {
-                return VectorUtil::contains(action.attributes->tags, std::string("sexual"));
+                return action.attributes->hasTag("sexual");
             });
         });
 

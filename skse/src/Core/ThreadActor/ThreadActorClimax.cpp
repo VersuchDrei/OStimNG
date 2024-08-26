@@ -98,7 +98,7 @@ namespace Threading {
 
         EventUtil::invokeListeners(climaxListeners);
 
-        GameAPI::GameEvents::sendOrgasmEvent(thread->m_threadId, thread->getCurrentNode()->scene_id, index, actor);
+        GameAPI::GameEvents::sendOrgasmEvent(thread->m_threadId, thread->getCurrentNodeInternal()->scene_id, index, actor);
 
         // todo give other actor excitement when in vaginalsex
 

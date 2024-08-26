@@ -32,5 +32,14 @@ namespace Graph {
             }
             return false;
         }
-    }  // namespace Action
+
+
+        OStim::ActionType* Action::getType(){
+            return attributes;
+        }
+
+        int32_t Action::getActor(OStim::Role role) {
+            return *roles.get(static_cast<Role>(role));
+        }
+    }
 }

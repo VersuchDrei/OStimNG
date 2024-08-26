@@ -15,7 +15,7 @@ namespace Threading {
         }
 
         void NodeHandler::handlePeakAnnotation(actionIndex index) {
-            for (Graph::Action::Action& action : thread->getCurrentNode()->actions) {
+            for (Graph::Action::Action& action : thread->getCurrentNodeInternal()->actions) {
                 if (action.index == index) {
                     if (!action.doPeaks || !action.peaksAnnotated) {
                         return;
@@ -54,7 +54,7 @@ namespace Threading {
             climaxListeners.clear();
             threadEndListeners.clear();
 
-            for (Graph::Action::Action& action : thread->getCurrentNode()->actions) {
+            for (Graph::Action::Action& action : thread->getCurrentNodeInternal()->actions) {
                 if (action.attributes->peakType && action.doPeaks && !action.peaksAnnotated) {
                     actionIndex index = action.index;
                     Peak::PeakHandlerParams params{this, [this, index]() { sendPeak(index); }};

@@ -145,16 +145,19 @@ namespace PapyrusMetadata {
 #pragma region tags
 #pragma region scene_tags
     std::vector<std::string> GetSceneTags(RE::StaticFunctionTag*, std::string id) {
+        std::vector<std::string> ret;
         if (auto node = Graph::GraphTable::getNodeById(id)) {
-            return node->tags;
+            for (Graph::NodeTag& tag : node->tags) {
+                ret.push_back(tag.tag);
+            }
         }
-        return std::vector<std::string>();
+        return ret;
     }
 
     bool HasSceneTag(RE::StaticFunctionTag*, std::string id, std::string tag) {
         StringUtil::toLower(&tag);
         if (auto node = Graph::GraphTable::getNodeById(id)) {
-            return VectorUtil::contains(node->tags, tag);
+            return node->hasTag(tag);
         }
         return false;
     }
@@ -162,7 +165,7 @@ namespace PapyrusMetadata {
     bool HasAnySceneTag(RE::StaticFunctionTag*, std::string id, std::vector<std::string> tags) {
         StringUtil::toLower(&tags);
         if (auto node = Graph::GraphTable::getNodeById(id)) {
-            return VectorUtil::containsAny(node->tags, tags);
+            return node->hasAnyTag(tags);
         }
         return false;
     }
@@ -174,7 +177,7 @@ namespace PapyrusMetadata {
     bool HasAllSceneTags(RE::StaticFunctionTag*, std::string id, std::vector<std::string> tags) {
         StringUtil::toLower(&tags);
         if (auto node = Graph::GraphTable::getNodeById(id)) {
-            return VectorUtil::containsAll(node->tags, tags);
+            return node->hasAllTags(tags);
         }
         return false;
     }
@@ -185,11 +188,16 @@ namespace PapyrusMetadata {
 
     std::vector<std::string> GetSceneTagOverlap(RE::StaticFunctionTag*, std::string id, std::vector<std::string> tags) {
         StringUtil::toLower(&tags);
+        std::set<std::string> ret;
         if (auto node = Graph::GraphTable::getNodeById(id)) {
-            return VectorUtil::getOverlap(node->tags, tags);
+            for (Graph::NodeTag& tag : node->tags) {
+                if (VectorUtil::contains(tags, tag.tag)) {
+                    ret.insert(tag.tag);
+                }
+            }
         }
 
-        return {};
+        return VectorUtil::toVector(ret);
     }
 
     std::vector<std::string> GetSceneTagOverlapCSV(RE::StaticFunctionTag* sft, std::string id, std::string tags) {
@@ -199,12 +207,15 @@ namespace PapyrusMetadata {
 
 #pragma region actor_tags
     std::vector<std::string> GetActorTags(RE::StaticFunctionTag*, std::string id, int position) {
+        std::vector<std::string> tags;
         if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (node->actors.size() > position) {
-                return node->actors[position].tags;
+                for (Graph::GraphActorTag& tag : node->actors[position].tags) {
+                    tags.push_back(tag.tag);
+                }
             }
         }
-        return std::vector<std::string>();
+        return tags;
     }
 
     bool HasActorTag(RE::StaticFunctionTag*, std::string id, int position, std::string tag) {
@@ -221,7 +232,7 @@ namespace PapyrusMetadata {
         StringUtil::toLower(&tags);
         if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (node->actors.size() > position) {
-                return VectorUtil::containsAny(node->actors[position].tags, tags);
+                return node->actors[position].hasAnyTag(tags);
             }
         }
         return false;
@@ -235,7 +246,7 @@ namespace PapyrusMetadata {
         StringUtil::toLower(&tags);
         if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (node->actors.size() > position) {
-                return VectorUtil::containsAll(node->actors[position].tags, tags);
+                return node->actors[position].hasAllTags(tags);
             }
         }
         return false;
@@ -247,14 +258,19 @@ namespace PapyrusMetadata {
 
     std::vector<std::string> GetActorTagOverlap(RE::StaticFunctionTag*, std::string id, int position, std::vector<std::string> tags) {
         StringUtil::toLower(&tags);
+        std::set<std::string> ret;
         if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (node->actors.size() > position) {
-                return VectorUtil::getOverlap(node->actors[position].tags, tags);
+                for (Graph::GraphActorTag& tag : node->actors[position].tags) {
+                    if (VectorUtil::contains(tags, tag.tag)) {
+                        ret.insert(tag.tag);
+                    }
+                }
             }
             
         }
 
-        return {};
+        return VectorUtil::toVector(ret);
     }
 
     std::vector<std::string> GetActorTagOverlapCSV(RE::StaticFunctionTag* sft, std::string id, int position, std::string tags) {
@@ -818,22 +834,22 @@ namespace PapyrusMetadata {
 
         if (!anyActionTag.empty()) {
             std::vector<std::string> AnyActionTagVector = StringUtil::toTagVector(anyActionTag);
-            conditions.push_back([AnyActionTagVector](Graph::Action::Action action){return VectorUtil::containsAny(action.attributes->tags, AnyActionTagVector);});
+            conditions.push_back([AnyActionTagVector](Graph::Action::Action action){return action.attributes->hasAnyTag(AnyActionTagVector);});
         }
 
         if (!allActionTags.empty()) {
             std::vector<std::string> AllActionTagsVector = StringUtil::toTagVector(allActionTags);
-            conditions.push_back([AllActionTagsVector](Graph::Action::Action action){return VectorUtil::containsAll(action.attributes->tags, AllActionTagsVector);});
+            conditions.push_back([AllActionTagsVector](Graph::Action::Action action){return action.attributes->hasAllTags(AllActionTagsVector);});
         }
 
         if (!actionTagWhitelist.empty()) {
             std::vector<std::string> actionTagWhitelistVector = StringUtil::toTagVector(actionTagWhitelist);
-            conditions.push_back([actionTagWhitelistVector](Graph::Action::Action action){return VectorUtil::containsAll(actionTagWhitelistVector, action.attributes->tags);});
+            conditions.push_back([actionTagWhitelistVector](Graph::Action::Action action){return action.attributes->hasOnlyTags(actionTagWhitelistVector);});
         }
 
         if (!actionTagBlacklist.empty()) {
             std::vector<std::string> actionTagBlacklistVector = StringUtil::toTagVector(actionTagBlacklist);
-            conditions.push_back([actionTagBlacklistVector](Graph::Action::Action action){return !VectorUtil::containsAny(actionTagBlacklistVector, action.attributes->tags);});
+            conditions.push_back([actionTagBlacklistVector](Graph::Action::Action action){return !action.attributes->hasAnyTag(actionTagBlacklistVector);});
         }
 
 
@@ -1164,22 +1180,23 @@ namespace PapyrusMetadata {
 
         if (!anyActionTag.empty()) {
             std::vector<std::string> AnyActionTagVector = StringUtil::toTagVector(anyActionTag);
-            conditions.push_back([AnyActionTagVector](Graph::Action::Action action){return VectorUtil::containsAny(action.attributes->tags, AnyActionTagVector);});
+            conditions.push_back([AnyActionTagVector](Graph::Action::Action action){return action.attributes->hasAnyTag(AnyActionTagVector);});
         }
 
         if (!allActionTags.empty()) {
             std::vector<std::string> AllActionTagsVector = StringUtil::toTagVector(allActionTags);
-            conditions.push_back([AllActionTagsVector](Graph::Action::Action action){return VectorUtil::containsAll(action.attributes->tags, AllActionTagsVector);});
+            conditions.push_back([AllActionTagsVector](Graph::Action::Action action){return action.attributes->hasAllTags(AllActionTagsVector);});
         }
 
         if (!actionTagWhitelist.empty()) {
             std::vector<std::string> actionTagWhitelistVector = StringUtil::toTagVector(actionTagWhitelist);
-            conditions.push_back([actionTagWhitelistVector](Graph::Action::Action action){return VectorUtil::containsAll(actionTagWhitelistVector, action.attributes->tags);});
+            conditions.push_back([actionTagWhitelistVector](Graph::Action::Action action) {return action.attributes->hasOnlyTags(actionTagWhitelistVector);
+            });
         }
 
         if (!actionTagBlacklist.empty()) {
             std::vector<std::string> actionTagBlacklistVector = StringUtil::toTagVector(actionTagBlacklist);
-            conditions.push_back([actionTagBlacklistVector](Graph::Action::Action action){return !VectorUtil::containsAny(actionTagBlacklistVector, action.attributes->tags);});
+            conditions.push_back([actionTagBlacklistVector](Graph::Action::Action action){return !action.attributes->hasAnyTag(actionTagBlacklistVector);});
         }
 
 
@@ -1547,7 +1564,11 @@ namespace PapyrusMetadata {
     std::vector<std::string> GetActionTags(RE::StaticFunctionTag*, std::string id, int index) {
         if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return node->actions[index].attributes->tags;
+                std::vector<std::string> tags;
+                for (Graph::Action::ActionTag& tag : node->actions[index].attributes->tags) {
+                    tags.push_back(tag.tag);
+                }
+                return tags;
             }
         }
         return {};
@@ -1557,8 +1578,8 @@ namespace PapyrusMetadata {
         std::set<std::string> tags;
         if (auto node = Graph::GraphTable::getNodeById(id)) {
             for (Graph::Action::Action action : node->actions) {
-                for (std::string tag : action.attributes->tags) {
-                    tags.insert(tag);
+                for (Graph::Action::ActionTag& tag : action.attributes->tags) {
+                    tags.insert(tag.tag);
                 }
             }
         }
@@ -1569,7 +1590,7 @@ namespace PapyrusMetadata {
         StringUtil::toLower(&tag);
         if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::contains(node->actions[index].attributes->tags, tag);
+                return node->actions[index].attributes->hasTag(tag);
             }
         }
         return false;
@@ -1579,7 +1600,7 @@ namespace PapyrusMetadata {
         StringUtil::toLower(&tag);
         if (auto node = Graph::GraphTable::getNodeById(id)) {
             for (Graph::Action::Action action: node->actions) {
-                if (VectorUtil::contains(action.attributes->tags, tag)) {
+                if (action.attributes->hasTag(tag)) {
                     return true;
                 }
             }
@@ -1591,7 +1612,7 @@ namespace PapyrusMetadata {
         StringUtil::toLower(&tags);
         if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::containsAny(node->actions[index].attributes->tags, tags);
+                return node->actions[index].attributes->hasAnyTag(tags);
             }
         }
         return false;
@@ -1605,7 +1626,7 @@ namespace PapyrusMetadata {
         StringUtil::toLower(&tags);
         if (auto node = Graph::GraphTable::getNodeById(id)) {
             for (Graph::Action::Action action : node->actions) {
-                if (VectorUtil::containsAny(action.attributes->tags, tags)) {
+                if (action.attributes->hasAnyTag(tags)) {
                     return true;
                 }
             }
@@ -1621,7 +1642,7 @@ namespace PapyrusMetadata {
         StringUtil::toLower(&tags);
         if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::containsAll(node->actions[index].attributes->tags, tags);
+                return node->actions[index].attributes->hasAllTags(tags);
             }
         }
         return false;
@@ -1635,7 +1656,7 @@ namespace PapyrusMetadata {
         StringUtil::toLower(&tags);
         if (auto node = Graph::GraphTable::getNodeById(id)) {
             for (Graph::Action::Action action : node->actions) {
-                if (VectorUtil::containsAll(action.attributes->tags, tags)) {
+                if (action.attributes->hasAllTags(tags)) {
                     return true;
                 }
             }
@@ -1651,7 +1672,7 @@ namespace PapyrusMetadata {
         StringUtil::toLower(&tags);
         if (auto node = Graph::GraphTable::getNodeById(id)) {
             for (Graph::Action::Action action : node->actions) {
-                std::erase_if(tags, [action](std::string tag) {return VectorUtil::contains(action.attributes->tags, tag);});
+                std::erase_if(tags, [action](std::string tag) {return action.attributes->hasTag(tag);});
                 if (tags.empty()) {
                     return true;
                 }
@@ -1666,13 +1687,18 @@ namespace PapyrusMetadata {
 
     std::vector<std::string> GetActionTagOverlap(RE::StaticFunctionTag*, std::string id, int index, std::vector<std::string> tags) {
         StringUtil::toLower(&tags);
+        std::set<std::string> ret;
         if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (index < node->actions.size()) {
-                return VectorUtil::getOverlap(node->actions[index].attributes->tags, tags);
+                for (Graph::Action::ActionTag& tag : node->actions[index].attributes->tags) {
+                    if (VectorUtil::contains(tags, tag.tag)) {
+                        ret.insert(tag.tag);
+                    }
+                }
             }
         }
 
-        return {};
+        return VectorUtil::toVector(ret);
     }
 
     std::vector<std::string> GetActionTagOverlapCSV(RE::StaticFunctionTag* sft, std::string id, int index, std::string tags) {
@@ -1683,11 +1709,11 @@ namespace PapyrusMetadata {
         StringUtil::toLower(&tags);
         std::set<std::string> ret;
 
-        if (auto node = Graph::GraphTable::getNodeById(id)) {
+        if (Graph::Node* node = Graph::GraphTable::getNodeById(id)) {
             for (Graph::Action::Action action : node->actions) {
-                for (auto& tag : action.attributes->tags) {
-                    if (VectorUtil::contains(tags, tag)) {
-                        ret.insert(tag);
+                for (Graph::Action::ActionTag& tag : action.attributes->tags) {
+                    if (VectorUtil::contains(tags, tag.tag)) {
+                        ret.insert(tag.tag);
                     }
                 }
             }

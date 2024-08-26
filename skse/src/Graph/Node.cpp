@@ -37,11 +37,13 @@ namespace Graph {
 
 
     void Node::tryAddTag(std::string tag) {
-        if (VectorUtil::contains(tags, tag)) {
+        if (hasTag(tag)) {
             return;
         }
 
-        tags.push_back(tag);
+        NodeTag nodeTag;
+        nodeTag.tag = tag;
+        tags.push_back(nodeTag);
     }
     
     void Node::mergeNodeIntoActors() {
@@ -127,41 +129,37 @@ namespace Graph {
     }
 
 
-    bool Node::hasNodeTag(std::string tag) {
-        return VectorUtil::contains(tags, tag);
-    }
-
     bool Node::hasActorTag(int position, std::string tag) {
         if (position < 0 || position >= actors.size()) {
             return false;
         }
-        return VectorUtil::contains(actors[position].tags, tag);
+        return actors[position].hasTag(tag);
     }
 
     bool Node::hasAnyActorTag(int position, std::vector<std::string> tags) {
         if (position < 0 || position >= actors.size()) {
             return false;
         }
-        return VectorUtil::containsAny(actors[position].tags, tags);
+        return actors[position].hasAnyTag(tags);
     }
 
     bool Node::hasAllActorTags(int position, std::vector<std::string> tags) {
         if (position < 0 || position >= actors.size()) {
             return false;
         }
-        return VectorUtil::containsAll(actors[position].tags, tags);
+        return actors[position].hasAllTags(tags);
     }
 
     bool Node::hasOnlyListedActorTags(int position, std::vector<std::string> tags) {
         if (position < 0 || position >= actors.size()) {
             return true;
         }
-        return VectorUtil::containsAll(tags, actors[position].tags);
+        return actors[position].hasOnlyTags(tags);
     }
 
     bool Node::hasActorTagOnAny(std::string tag) {
         for (GraphActor& actor : actors) {
-            if (VectorUtil::contains(actor.tags, tag)) {
+            if (actor.hasTag(tag)) {
                 return true;
             }
         }
@@ -314,5 +312,124 @@ namespace Graph {
         }
 
         return nullptr;
+    }
+
+
+    bool Node::hasTag(std::string tag) {
+        StringUtil::toLower(&tag);
+        for (NodeTag& actionTag : tags) {
+            if (actionTag.tag == tag) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool Node::hasAnyTag(std::vector<std::string> tags) {
+        for (std::string& tag : tags) {
+            if (hasTag(tag)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool Node::hasAllTags(std::vector<std::string> tags) {
+        for (std::string& tag : tags) {
+            if (!hasTag(tag)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    bool Node::hasOnlyTags(std::vector<std::string> tags) {
+        for (NodeTag& nodeTag : this->tags) {
+            if (!VectorUtil::contains(tags, nodeTag.tag)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    const char* Node::getNodeID() {
+        return lowercase_id.c_str();
+    }
+
+    uint32_t Node::getActorCount() {
+        return actors.size();
+    }
+
+    OStim::NodeActor* Node::getActor(uint32_t index) {
+        if (index >= actors.size()) {
+            return nullptr;
+        }
+
+        return &actors[index];
+    }
+
+    void Node::forEachActor(OStim::NodeActorVisitor* visitor) {
+        for (GraphActor& actor : actors) {
+            if (!visitor->visit(&actor)) {
+                break;
+            }
+        }
+    }
+    
+
+    bool Node::hasTag(const char* tag) {
+        return hasTag(std::string(tag));
+    }
+
+    uint32_t Node::getTagCount() {
+        return tags.size();
+    }
+
+    OStim::NodeTag* Node::getTag(uint32_t index) {
+        if (index < 0 || index >= tags.size()) {
+            return nullptr;
+        }
+
+        return &tags[index];
+    }
+
+    void Node::forEachTag(OStim::NodeTagVisitor* visitor) {
+        for (NodeTag& tag : tags) {
+            if (!visitor->visit(&tag)) {
+                break;
+            }
+        }
+    }
+
+    bool Node::hasAction(const char* action) {
+        std::string strAction = action;
+        StringUtil::toLower(&strAction);
+        for (Action::Action& actionObj : actions) {
+            if (actionObj.attributes->type == strAction) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    uint32_t Node::getActionCount() {
+        return actions.size();
+    }
+
+    OStim::Action* Node::getAction(uint32_t index) {
+        if (index >= actions.size()) {
+            return nullptr;
+        }
+
+        return &actions[index];
+    }
+
+    void Node::forEachAction(OStim::ActionVisitor* visitor) {
+        for (Action::Action& action : actions) {
+            if (!visitor->visit(&action)) {
+                break;
+            }
+        }
     }
 }

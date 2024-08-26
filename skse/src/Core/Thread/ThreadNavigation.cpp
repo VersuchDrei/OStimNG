@@ -36,13 +36,13 @@ namespace Threading {
         if (furnitureTypeID == "none") {
             conditions.push_back([&](Graph::Node* node) {
                 return forAnyActor2(node, [&](Graph::GraphActor& actor) {
-                    return VectorUtil::contains(actor.tags, std::string("standing"));
+                    return actor.hasTag("standing");
                 });
             });
         } else if (furnitureTypeID == "bed") {
             conditions.push_back([&](Graph::Node* node) {
                 return forAllActors2(node, [&](Graph::GraphActor& actor) {
-                    return !VectorUtil::contains(actor.tags, std::string("standing"));
+                    return !actor.hasTag("standing");
                 });
             });
         }

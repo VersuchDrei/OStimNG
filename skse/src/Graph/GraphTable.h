@@ -16,11 +16,11 @@ namespace Graph{
         static void SetupActions();
         static std::vector<std::string> getActions();
         static std::string getActionAlias(std::string type);
-        static ActionAttributes* GetActionAttributesByType(std::string type);
+        static Action::ActionAttributes* GetActionAttributesByType(std::string type);
 
     private:
         inline static std::unordered_map<std::string, std::string> actionAliases;
-        inline static std::unordered_map<std::string, ActionAttributes> actions;
+        inline static std::unordered_map<std::string, Action::ActionAttributes> actions;
 #pragma endregion
 
 #pragma region events

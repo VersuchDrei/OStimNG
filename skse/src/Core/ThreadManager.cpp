@@ -61,6 +61,12 @@ namespace Threading {
 
         Thread* thread = new Thread(threadID, params);
         m_threadMap.insert(std::make_pair(threadID, thread));
+
+        thread->registerSpeedChangedListener([this, thread]() { EventUtil::invokeListeners(speedChangedListeners, thread); });
+        thread->registerNodeChangedListener([this, thread]() { EventUtil::invokeListeners(nodeChangedListeners, thread); });
+        thread->registerClimaxListener([this, thread](ThreadActor* actor) { EventUtil::invokeListeners(climaxListeners, thread, actor); });
+        thread->registerThreadEndListener([this, thread]() { EventUtil::invokeListeners(threadEndListeners, thread); });
+
         thread->initContinue(params);
         
         EventUtil::invokeListeners(threadStartListeners, thread);

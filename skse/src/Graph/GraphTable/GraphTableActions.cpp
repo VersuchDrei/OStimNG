@@ -9,8 +9,8 @@
 namespace Graph {
     const char* ACTION_FILE_PATH{"Data/SKSE/Plugins/OStim/actions"};
 
-    ActionActor parseActionActor(std::string path, std::string filename, json& json) {
-        ActionActor actor;
+    Action::ActionActor parseActionActor(std::string path, std::string filename, json& json) {
+        Action::ActionActor actor;
 
         JsonUtil::loadFloat(json, actor.stimulation, "stimulation", filename, "action", false);
         JsonUtil::loadFloat(json, actor.maxStimulation, "maxStimulation", filename, "action", false);
@@ -140,10 +140,10 @@ namespace Graph {
                     }
                 }
 
-                Graph::ActionAttributes attr;
+                Graph::Action::ActionAttributes attr;
                 attr.type = type;
 
-                attr.roles.forEach([&path, &filename, &json](Role role, ActionActor& actor) {
+                attr.roles.forEach([&path, &filename, &json](Role role, Action::ActionActor& actor) {
                     std::string key = *RoleMapAPI::KEYS.get(role);
                     if (json.contains(key)) {
                         actor = parseActionActor(path, filename, json[key]);
@@ -167,7 +167,9 @@ namespace Graph {
                     for (auto& tag : json["tags"]) {
                         std::string tagStr = tag.get<std::string>();
                         StringUtil::toLower(&tagStr);
-                        attr.tags.push_back(tagStr);
+                        Graph::Action::ActionTag tagObj;
+                        tagObj.tag = tagStr;
+                        attr.tags.push_back(tagObj);
                     }
                 }
 
@@ -188,7 +190,7 @@ namespace Graph {
         return type;
     }
 
-    ActionAttributes* GraphTable::GetActionAttributesByType(std::string type) {
+    Action::ActionAttributes* GraphTable::GetActionAttributesByType(std::string type) {
         if (auto it = actions.find(type); it != actions.end()) {
             return &it->second;
         } else {

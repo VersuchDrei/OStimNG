@@ -1,14 +1,17 @@
 #pragma once
 
+#include "GraphActorTag.h"
+
 #include "Action/Action.h"
 
 #include "GameAPI/GamePosition.h"
 #include "GameAPI/GameSex.h"
+#include "PluginInterface/Graph/NodeActor.h"
 #include "Trait/Condition.h"
 #include "Trait/FacialExpression.h"
 
 namespace Graph {
-    struct GraphActor {
+    struct GraphActor : public OStim::NodeActor {
     public:
         int sosBend = 0;
         float scale = 1.0;
@@ -25,10 +28,20 @@ namespace Graph {
         GameAPI::GamePosition offset;
         std::vector<GameAPI::GameFaction> factions;
         std::unordered_map<int, Trait::FaceModifier> eyeballModifierOverride;
-        std::vector<std::string> tags;
+        std::vector<GraphActorTag> tags;
         Trait::ActorCondition condition;
         std::unordered_map<std::string, std::string> autoTransitions;
 
-        void merge(ActionActor& action);
+        void merge(Action::ActionActor& action);
+
+        bool hasTag(std::string tag);
+        bool hasAnyTag(std::vector<std::string> tags);
+        bool hasAllTags(std::vector<std::string> tags);
+        bool hasOnlyTags(std::vector<std::string> tags);
+
+        virtual bool hasTag(const char* tag) override;
+        virtual uint32_t getTagCount() override;
+        virtual OStim::NodeActorTag* getTag(uint32_t index) override;
+        virtual void forEachTag(OStim::NodeActorTagVisitor* visitor) override;
     };
 }

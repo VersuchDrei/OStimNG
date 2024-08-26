@@ -1,14 +1,13 @@
 #pragma once
 
 #include "ActionType.h"
+#include "Role.h"
 
 namespace OStim {
     class Action {
     public:
         virtual ActionType* getType() = 0;
 
-        virtual uint32_t getActor() = 0;
-        virtual uint32_t getTarget() = 0;
-        virtual uint32_t getPerformer() = 0;
+        virtual int32_t getActor(Role role) = 0;
     };
 }

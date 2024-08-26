@@ -799,6 +799,10 @@ namespace Threading {
 
 
     void Thread::changeFurniture(GameAPI::GameObject furniture, Graph::Node* node) {
+        if (!furniture || this->furniture == furniture) {
+            return;
+        }
+ 
         if (playerThread && MCM::MCMTable::useFades()) {
             std::thread fadeThread = std::thread([furniture, node] {
                 GameAPI::GameCamera::fadeToBlack(1);
@@ -817,10 +821,6 @@ namespace Threading {
     }
 
     void Thread::changeFurnitureInner(GameAPI::GameObject furniture, Graph::Node* node) {
-        if (!furniture || this->furniture == furniture) {
-            return;
-        }
-
         if (playerThread) {
             GameAPI::GameCamera::endSceneMode(MCM::MCMTable::firstPersonAfterScene());
         }
@@ -857,9 +857,9 @@ namespace Threading {
             std::string nodeTag = MCM::MCMTable::useIntroScenes() ? "intro" : "idle";
             std::string furnitureTypeID = furnitureType->getListType()->id;
             if (furnitureTypeID == "bed") {
-                node = Graph::GraphTable::getRandomNode(furnitureType, getActorConditions(), [&nodeTag](Graph::Node* node) { return node->hasNodeTag(nodeTag) && !node->hasActorTagOnAny("standing"); });
+                node = Graph::GraphTable::getRandomNode(furnitureType, getActorConditions(), [&nodeTag](Graph::Node* node) { return node->hasTag(nodeTag) && !node->hasActorTagOnAny("standing"); });
             } else {
-                node = Graph::GraphTable::getRandomNode(furnitureType, getActorConditions(), [&nodeTag](Graph::Node* node) { return node->hasNodeTag(nodeTag); });
+                node = Graph::GraphTable::getRandomNode(furnitureType, getActorConditions(), [&nodeTag](Graph::Node* node) { return node->hasTag(nodeTag); });
             }
         }
 
@@ -869,4 +869,37 @@ namespace Threading {
             GameAPI::GameCamera::startSceneMode(MCM::MCMTable::useFreeCam());
         }
     }
-}  // namespace OStim
+
+
+    int32_t Thread::getThreadID() {
+        return m_threadId;
+    }
+
+    bool Thread::isPlayerThread() {
+        return playerThread;
+    }
+
+    uint32_t Thread::getActorCount() {
+        return m_actors.size();
+    }
+
+    OStim::ThreadActor* Thread::getActor(uint32_t position) {
+        auto iter = m_actors.find(position);
+        if (iter != m_actors.end()) {
+            return &iter->second;
+        }
+        return nullptr;
+    }
+
+    void Thread::forEachThreadActor(OStim::ThreadActorVisitor* visitor) {
+        for (auto& [position, actor] : m_actors) {
+            if (!visitor->visit(&actor)) {
+                break;
+            }
+        }
+    }
+
+    OStim::Node* Thread::getCurrentNode() {
+        return m_currentNode;
+    }
+}

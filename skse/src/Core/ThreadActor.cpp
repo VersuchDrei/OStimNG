@@ -306,7 +306,7 @@ namespace Threading {
             }
         }
 
-        int partnerIndex = thread->getCurrentNode()->getPrimaryPartner(index);
+        int partnerIndex = thread->getCurrentNodeInternal()->getPrimaryPartner(index);
         ThreadActor* partner = thread->GetActor(partnerIndex);
         if (partner) {
             primaryPartner = partner->actor;
@@ -555,5 +555,9 @@ namespace Threading {
         oldThreadActor.factions = graphActor->factions;
 
         return oldThreadActor;
+    }
+
+    void* ThreadActor::getGameActor() {
+        return actor.toABIPointer();
     }
 }

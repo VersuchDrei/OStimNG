@@ -2,6 +2,7 @@
 
 #include "Settings/SettingInterfaceImpl.h"
 #include "SexToys/SexToyInterfaceImpl.h"
+#include "Threading/ThreadInterfaceImpl.h"
 
 namespace Interface {
     OStim::PluginInterface* InterfaceMapImpl::queryInterface(const char* name) {
@@ -38,5 +39,6 @@ namespace Interface {
     void InterfaceMapImpl::setupInterfaces() {
         addInterface(OStim::SettingInterface::NAME, SettingInterfaceImpl::getSingleton());
         addInterface(OStim::SexToyInterface::NAME, SexToyInterfaceImpl::getSingleton());
+        addInterface(OStim::ThreadInterface::NAME, ThreadInterfaceImpl::getSingleton());
     }
 }

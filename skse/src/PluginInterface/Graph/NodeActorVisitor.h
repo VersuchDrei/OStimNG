@@ -7,4 +7,4 @@ namespace OStim {
     public:
         virtual bool visit(NodeActor* action) = 0;
     };
-}  // namespace OStim
+}

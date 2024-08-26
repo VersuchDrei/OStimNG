@@ -15,6 +15,8 @@ namespace GameAPI {
 
         inline void clear() { form = nullptr; }
 
+        inline void* toABIPointer() { return form; }
+
         void loadIdentifier(GameRecordIdentifier& identifier) {
             loadFile(identifier.mod, identifier.formID);
         }

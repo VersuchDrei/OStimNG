@@ -45,7 +45,7 @@ namespace PapyrusThread {
     std::string GetScene(RE::StaticFunctionTag*, int threadID) {
         Threading::Thread* thread = Threading::ThreadManager::GetSingleton()->GetThread(threadID);
         if (thread) {
-            Graph::Node* node = thread->getCurrentNode();
+            Graph::Node* node = thread->getCurrentNodeInternal();
             if (node) {
                 return node->scene_id;
             }

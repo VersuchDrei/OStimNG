@@ -78,7 +78,7 @@ namespace Threading {
     }
 
     void ThreadActor::recalculateLoopExcitement() {
-        float speedMod = 1.0 + static_cast<float>(speed) / static_cast<float>(thread->getCurrentNode()->speeds.size());
+        float speedMod = 1.0 + static_cast<float>(speed) / static_cast<float>(thread->getCurrentNodeInternal()->speeds.size());
         setLoopExcitementInc(baseExcitementInc * excitementMultiplier * speedMod * Constants::LOOP_TIME_SECONDS);
     }
 }

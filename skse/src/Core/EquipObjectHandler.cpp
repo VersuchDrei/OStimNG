@@ -68,7 +68,10 @@ namespace Threading {
 
     void EquipObjectHandler::equipInner(GameAPI::GameActor actor) {
         equipped = !variant.empty() ? object->variants[variant] : object->item;
-
+        
+        if (actor.getItemCount(equipped.toItem()) == 0) {
+            actor.addItem(equipped.toItem(), 1);
+        }
         actor.equip(equipped);
         // if we remove an item mid scene the NPC will redress
         // so we have to store all the equipped items to remove them at scene end

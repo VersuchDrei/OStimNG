@@ -10,7 +10,7 @@
 namespace OStim {
     class Node {
     public:
-        virtual const char* getNodeID() = 0;
+        virtual const char* getNodeID() = 0; // this will always be fully lowercase
 
         virtual uint32_t getActorCount() = 0;
         virtual NodeActor* getActor(uint32_t index) = 0;
@@ -23,7 +23,7 @@ namespace OStim {
 
         virtual bool hasAction(const char* action) = 0;
         virtual uint32_t getActionCount() = 0;
-        virtual Action* getAction() = 0;
+        virtual Action* getAction(uint32_t index) = 0;
         virtual void forEachAction(ActionVisitor* visitor) = 0;
     };
 }

@@ -80,7 +80,7 @@ namespace PapyrusData {
             return stimulation;
 		}
 
-        Graph::ActionAttributes* attributes = Graph::GraphTable::GetActionAttributesByType(action);
+        Graph::Action::ActionAttributes* attributes = Graph::GraphTable::GetActionAttributesByType(action);
         if (!attributes) {
             return 0.0f;
 		}
@@ -98,7 +98,7 @@ namespace PapyrusData {
             return stimulation;
         }
 
-        Graph::ActionAttributes* attributes = Graph::GraphTable::GetActionAttributesByType(action);
+        Graph::Action::ActionAttributes* attributes = Graph::GraphTable::GetActionAttributesByType(action);
         if (!attributes) {
             return 0.0f;
         }

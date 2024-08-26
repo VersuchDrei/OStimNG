@@ -139,7 +139,7 @@ namespace LegacyUtil {
                 if (auto tags = metadata.attribute("tags")) {
                     for (std::string tag : StringUtil::toTagVector(tags.as_string())) {
                         if (tag != "intro") {
-                            node->tags.push_back(tag);
+                            node->tryAddTag(tag);
                         }
                     }
                 }
@@ -160,7 +160,9 @@ namespace LegacyUtil {
             }
 
             for (int i = 0; i < actorCount; i++) {
-                node->actors.push_back({.animationIndex = i});
+                Graph::GraphActor graphActor;
+                graphActor.animationIndex = i;
+                node->actors.push_back(graphActor);
             }
             node->actors[0].scale = 1.03;
 
@@ -229,14 +231,16 @@ namespace LegacyUtil {
 
                             if (auto tags = actor.attribute("tags")) {
                                 for (std::string tag : StringUtil::toTagVector(tags.as_string())) {
-                                    node->actors[pos].tags.push_back(tag);
+                                    Graph::GraphActorTag actorTag;
+                                    actorTag.tag = tag;
+                                    node->actors[pos].tags.push_back(actorTag);
                                 }
-                                if (VectorUtil::contains(node->actors[pos].tags, std::string("openmouth"))) {
+                                if (node->actors[pos].hasTag("openmouth")) {
                                     node->actors[pos].expressionOverride = "openmouth";
-                                } else if (VectorUtil::contains(node->actors[pos].tags, std::string("licking"))) {
+                                } else if (node->actors[pos].hasTag("licking")) {
                                     node->actors[pos].expressionOverride = "tongue";
                                 }
-                                if (VectorUtil::contains(node->actors[pos].tags, std::string("nostrip"))) {
+                                if (node->actors[pos].hasTag("nostrip")) {
                                     node->actors[pos].noStrip = true;
                                 }
                             }
@@ -244,7 +248,7 @@ namespace LegacyUtil {
                             if (auto feetOnGround = actor.attribute("feetOnGround")) {
                                 node->actors[pos].feetOnGround = feetOnGround.as_bool();
                             } else {
-                                node->actors[pos].feetOnGround = VectorUtil::containsAny(node->actors[pos].tags, {"standing", "squatting"});
+                                node->actors[pos].feetOnGround = node->actors[pos].hasAnyTag({"standing", "squatting"});
                             }
 
                             for (auto& autotransition : actor.children("autotransition")) {
@@ -470,11 +474,11 @@ namespace LegacyUtil {
             return "logo";
         }
 
-        if (node->hasNodeTag("missionary")) return "OStim/sexual/missionary_mf";
-        if (node->hasNodeTag("cowgirl")) return "OStim/sexual/cowgirl_mf";
-        if (node->hasNodeTag("reversecowgirl")) return "OStim/sexual/reversecowgirl_mf";
-        if (node->hasNodeTag("doggystyle")) return "OStim/sexual/doggystyle_mf";
-        if (node->hasNodeTag("sixtynine")) return "OStim/sexual/sixtynine_mf";
+        if (node->hasTag("missionary")) return "OStim/sexual/missionary_mf";
+        if (node->hasTag("cowgirl")) return "OStim/sexual/cowgirl_mf";
+        if (node->hasTag("reversecowgirl")) return "OStim/sexual/reversecowgirl_mf";
+        if (node->hasTag("doggystyle")) return "OStim/sexual/doggystyle_mf";
+        if (node->hasTag("sixtynine")) return "OStim/sexual/sixtynine_mf";
 
         if (node->findAction("vaginalsex") != -1) return "OStim/sexual/vaginalsex_mf";
         if (node->findAction("analsex") != -1) return "OStim/sexual/analsex_mf";

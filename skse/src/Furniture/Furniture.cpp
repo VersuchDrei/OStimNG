@@ -133,29 +133,33 @@ namespace Furniture {
 
     void selectFurniture(int actorCount, GameAPI::GamePosition center, float radius, float sameFloor, bool alwaysAsk, std::function<void(GameAPI::GameObject)> consumer) {
         std::vector<std::pair<Furniture::FurnitureType*, GameAPI::GameObject>> furniture = Furniture::findFurniture(actorCount, center, radius, sameFloor);
-                if (alwaysAsk || MCM::MCMTable::selectFurniture()) {
-                    std::vector<std::string> options = {"$ostim_message_none"};
-                    std::vector<GameAPI::GameObject> objects;
-                    int max = std::min(static_cast<int>(furniture.size()), GameAPI::Game::getMessageBoxOptionLimit() - 1);
-                    for (int i = 0; i < furniture.size(); i++) {
-                        options.push_back(furniture[i].first->name);
-                        objects.push_back(furniture[i].second);
-                    }
-                    if (!objects.empty()) {
-                        GameAPI::Game::showMessageBox("$ostim_message_select_furniture", options, [objects, consumer](unsigned int result) {
-                            if (result == 0 || result > objects.size()) {
-                                consumer({});
-                            } else {
-                                consumer(objects[result - 1]);
-                            }
-                        });
-                        return;
-                    }
+
+        if (furniture.empty()) {
+            consumer({});
+            return;
+        }
+
+        if (alwaysAsk || MCM::MCMTable::selectFurniture()) {
+            std::vector<std::string> options = {"$ostim_message_none"};
+            std::vector<GameAPI::GameObject> objects;
+            int max = std::min(static_cast<int>(furniture.size()), GameAPI::Game::getMessageBoxOptionLimit() - 1);
+            for (int i = 0; i < furniture.size(); i++) {
+                options.push_back(furniture[i].first->name);
+                objects.push_back(furniture[i].second);
+            }
+
+            GameAPI::Game::showMessageBox("$ostim_message_select_furniture", options, [objects, consumer](unsigned int result) {
+                if (result == 0 || result > objects.size()) {
+                    consumer({});
                 } else {
-                    if (!furniture.empty()) {
-                        consumer(furniture.front().second);
-                    }
+                    consumer(objects[result - 1]);
                 }
+            });
+        } else {
+            if (!furniture.empty()) {
+                consumer(furniture.front().second);
+            }
+        }
     }
 
     void Furniture::resetClutter(RE::TESObjectREFR* centerRef, float radius) {

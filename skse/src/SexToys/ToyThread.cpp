@@ -56,14 +56,14 @@ namespace Toys {
         Settings::SlotSettings* globalSlotSettings = globalSettings->getSlotSettings(Settings::SlotSettings::GLOBAL_KEY);
 
         Threading::Thread* thread = this->thread;
-        for (Graph::Action::Action& action : thread->getCurrentNode()->actions) {
+        for (Graph::Action::Action& action : thread->getCurrentNodeInternal()->actions) {
             if (toysInUse.size() == toys->size()) {
                 break;
             }
 
             std::vector<std::tuple<Threading::ThreadActor*, std::string, ToyWrapper*>> slotToys;
             action.roles.forEach([globalSettings, globalSlotSettings, &slotToys, &thread, &action, &toys, &toysInUse](Graph::Role role, int index) {
-                Graph::ActionActor* actionActor = action.attributes->roles.get(role);
+                Graph::Action::ActionActor* actionActor = action.attributes->roles.get(role);
                 for (std::string slot : actionActor->toySlots) {
                     Threading::ThreadActor* actor = thread->GetActor(index);
                     for (ToyWrapper& toy : *toys) {

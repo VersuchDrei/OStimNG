@@ -270,7 +270,7 @@ namespace Graph {
                         if (jsonTag.is_string()) {
                             std::string tag = jsonTag;
                             StringUtil::toLower(&tag);
-                            node->tags.push_back(tag);
+                            node->tryAddTag(tag);
                         } else {
                             logger::warn("tag {} of scene {} isn't a string", index, node->scene_id);
                         }
@@ -375,8 +375,14 @@ namespace Graph {
                             }
 
                             JsonUtil::consumeLowerStringList(jsonActor, [&actor](std::string requirement){actor.condition.requirements.insert(requirement);}, "requirements", node->scene_id, objectType, false);
-                            JsonUtil::loadLowerStringList(jsonActor, actor.tags, "tags", node->scene_id, objectType, false);
-                            actor.feetOnGround = VectorUtil::containsAny(actor.tags, {"standing", "squatting"});
+                            std::vector<std::string> tags;
+                            JsonUtil::loadLowerStringList(jsonActor, tags, "tags", node->scene_id, objectType, false);
+                            for (std::string tag : tags) {
+                                GraphActorTag actorTag;
+                                actorTag.tag = tag;
+                                actor.tags.push_back(actorTag);
+                            }
+                            actor.feetOnGround = actor.hasAnyTag({"standing", "squatting"});
                             JsonUtil::loadBool(jsonActor, actor.feetOnGround, "feetOnGround", node->scene_id, objectType, false);
                             JsonUtil::consumeLowerStringMap(jsonActor, [&actor](std::string id, std::string transition){actor.autoTransitions[id] = transition;}, true, "autoTransitions", node->scene_id, objectType, false);
                         } else {

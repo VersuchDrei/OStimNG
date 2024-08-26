@@ -57,7 +57,7 @@ namespace UI {
 
     void UIState::SetThread(Threading::Thread* thread) {
         currentThread = thread;
-        currentNode = thread->getCurrentNode();
+        currentNode = thread->getCurrentNodeInternal();
         UI::Align::AlignMenu::GetMenu()->ThreadChanged();
         UI::Scene::SceneMenu::GetMenu()->BuildOptionsData();
         UI::Scene::SceneMenu::GetMenu()->UpdateMenuData();

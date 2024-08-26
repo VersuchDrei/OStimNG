@@ -7,7 +7,7 @@ message("Using toolchain file ${CMAKE_TOOLCHAIN_FILE}.")
 ########################################################################################################################
 project(
         OStim
-        VERSION 7.3.2.1
+        VERSION 7.3.3.0
         DESCRIPTION ""
         LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 23)
@@ -78,6 +78,8 @@ set(sources
     src/Graph/Action/Peak/Loop/LoopPeakType.cpp
     src/Graph/Action/Peak/PeakType.cpp
     src/Graph/Action/Action.cpp
+    src/Graph/Action/ActionAttributes.cpp
+    src/Graph/Action/ActionTag.cpp
     src/Graph/GraphTable/GraphTableActions.cpp
     src/Graph/GraphTable/GraphTableEvents.cpp
     src/Graph/GraphTable/GraphTableNodes.cpp
@@ -85,10 +87,11 @@ set(sources
     src/Graph/GraphTable/GraphTableSetupNodes.cpp
     src/Graph/GraphTable/GraphTableSetupOptions.cpp
     src/Graph/Node/NodeNavigation.cpp
-    src/Graph/ActionAttributes.cpp
     src/Graph/Event.cpp
     src/Graph/GraphActor.cpp
+    src/Graph/GraphActorTag.cpp
     src/Graph/Node.cpp
+    src/Graph/NodeTag.cpp
     src/Graph/Sequence.cpp
     src/InterfaceSpec/PluginInterface.cpp
     src/MCM/MCMSetting.cpp
@@ -99,6 +102,7 @@ set(sources
 	src/Papyrus/Script.h
     src/PluginInterfaceImplementation/Settings/SettingInterfaceImpl.cpp
     src/PluginInterfaceImplementation/SexToys/SexToyInterfaceImpl.cpp
+    src/PluginInterfaceImplementation/Threading/ThreadInterfaceImpl.cpp
     src/PluginInterfaceImplementation/InterfaceMapImpl.cpp
 	src/ScriptAPI/ActorScript.cpp
 	src/ScriptAPI/JsonScript.cpp

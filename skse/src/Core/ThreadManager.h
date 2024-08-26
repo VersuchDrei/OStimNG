@@ -43,9 +43,17 @@ namespace Threading {
 #pragma region events
     public:
         inline void registerThreadStartListener(std::function<void(Thread*)> listener) { threadStartListeners.push_back(listener); }
+        inline void registerSpeedChangedListener(std::function<void(Thread*)> listener) { speedChangedListeners.push_back(listener); }
+        inline void registerNodeChangedListener(std::function<void(Thread*)> listener) { nodeChangedListeners.push_back(listener); }
+        inline void registerClimaxListener(std::function<void(Thread*, ThreadActor*)> listener) { climaxListeners.push_back(listener); }
+        inline void registerThreadEndListener(std::function<void(Thread*)> listener) { threadEndListeners.push_back(listener); }
 
     private:
         std::vector<std::function<void(Thread*)>> threadStartListeners;
+        std::vector<std::function<void(Thread*)>> speedChangedListeners;
+        std::vector<std::function<void(Thread*)>> nodeChangedListeners;
+        std::vector<std::function<void(Thread*, ThreadActor*)>> climaxListeners;
+        std::vector<std::function<void(Thread*)>> threadEndListeners;
 #pragma endregion
     };
 }  // namespace OStim

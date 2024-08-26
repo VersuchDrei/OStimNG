@@ -28,7 +28,7 @@ namespace Threading {
             }
 
             void LoopPeakHandler::speedChanged() {
-                scale = nodeHandler->getThread()->getCurrentNode()->speeds[nodeHandler->getThread()->getCurrentSpeed()].displaySpeed;
+                scale = nodeHandler->getThread()->getCurrentNodeInternal()->speeds[nodeHandler->getThread()->getCurrentSpeed()].displaySpeed;
             }
         }
     }

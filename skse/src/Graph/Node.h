@@ -2,10 +2,12 @@
 
 #include "Action/Action.h"
 #include "GraphActor.h"
+#include "NodeTag.h"
 #include "RawNavigation.h"
 #include "SequenceEntry.h"
 
 #include "Furniture/Furniture.h"
+#include "PluginInterface/Graph/Node.h"
 
 namespace Threading {
     struct Thread;
@@ -32,7 +34,7 @@ namespace Graph {
         std::string getDescription(Threading::Thread* thread);
     };
 
-    struct Node {
+    struct Node : public OStim::Node {
     public:
         std::string scene_id;
         std::string lowercase_id;
@@ -47,7 +49,7 @@ namespace Graph {
         bool noRandomSelection = false;
         Furniture::FurnitureType* furnitureType = nullptr;
         std::unordered_map<std::string, std::string> autoTransitions;
-        std::vector<std::string> tags;
+        std::vector<NodeTag> tags;
         std::vector<GraphActor> actors;
         std::vector<Action::Action> actions;
         std::vector<Navigation> navigations;
@@ -57,6 +59,11 @@ namespace Graph {
 
         void tryAddTag(std::string tag);
         void mergeNodeIntoActors();
+
+        bool hasTag(std::string tag);
+        bool hasAnyTag(std::vector<std::string> tags);
+        bool hasAllTags(std::vector<std::string> tags);
+        bool hasOnlyTags(std::vector<std::string> tags);
 
         bool fulfilledBy(std::vector<Trait::ActorCondition> conditions);
         bool hasSameActorTpyes(Node* other);
@@ -72,7 +79,6 @@ namespace Graph {
         std::string getAutoTransitionForNode(std::string type);
         std::string getAutoTransitionForActor(int position, std::string type);
 
-        bool hasNodeTag(std::string tag);
         bool hasActorTag(int position, std::string tag);
         bool hasAnyActorTag(int position, std::vector<std::string> tags);
         bool hasAllActorTags(int position, std::vector<std::string> tags);
@@ -97,6 +103,24 @@ namespace Graph {
     public:
         Node* getRandomNodeInRange(int distance, std::vector<Trait::ActorCondition> actorConditions, std::function<bool(Node*)> nodeCondition);
         std::vector<SequenceEntry> getRoute(int distance, std::vector<Trait::ActorCondition> actorConditions, Node* destination);
+#pragma endregion
+
+#pragma region abi
+        virtual const char* getNodeID() override;
+
+        virtual uint32_t getActorCount() override;
+        virtual OStim::NodeActor* getActor(uint32_t index) override;
+        virtual void forEachActor(OStim::NodeActorVisitor* visitor) override;
+
+        virtual bool hasTag(const char* tag) override;
+        virtual uint32_t getTagCount() override;
+        virtual OStim::NodeTag* getTag(uint32_t index) override;
+        virtual void forEachTag(OStim::NodeTagVisitor* visitor) override;
+
+        virtual bool hasAction(const char* action) override;
+        virtual uint32_t getActionCount() override;
+        virtual OStim::Action* getAction(uint32_t index) override;
+        virtual void forEachAction(OStim::ActionVisitor* visitor) override;
 #pragma endregion
     };
 }

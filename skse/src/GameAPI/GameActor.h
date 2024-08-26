@@ -66,6 +66,7 @@ namespace GameAPI {
         inline bool isDead() const { return form->IsDead(); }
         inline bool isInSameCell(GameActor other) const {return form->parentCell == other.form->parentCell;}
 
+        inline int getItemCount(GameItem item) const { return GetItemCount(nullptr, 0, form, item.form); }
         inline void addItem(GameItem item, int count) const { form->GetContainer()->AddObjectToContainer(item.form, count, nullptr); }
         inline void removeItem(GameItem item, int count) const { form->GetContainer()->RemoveObjectFromContainer(item.form, count); }
 
@@ -155,6 +156,12 @@ namespace GameAPI {
             using func_t = decltype(TranslateTo);
             REL::Relocation<func_t> func{RELOCATION_ID(55706, 56237)};
             func(vm, stackID, object, afX, afY, afZ, afAngleX, afAngleY, afAngleZ, afSpeed, afMaxRotationSpeed);
+        }
+
+        inline static int GetItemCount(RE::BSScript::IVirtualMachine* vm, RE::VMStackID stackID, RE::TESObjectREFR* object, RE::TESForm* akItem) {
+            using func_t = decltype(GetItemCount);
+            REL::Relocation<func_t> func{RELOCATION_ID(55644, 56173)};
+            return func(vm, stackID, object, akItem);
         }
 
         inline static double GetLightLevel(RE::Actor* actor) {

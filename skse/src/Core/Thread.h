@@ -13,13 +13,14 @@
 #include "Alignment/ThreadKey.h"
 #include "GameAPI/GameActor.h"
 #include "Graph/Node.h"
+#include "PluginInterface/Threading/Thread.h"
 #include "Serial/OldThread.h"
 #include "Threading/Metadata.h"
 #include "Util/VectorUtil.h"
 
 namespace Threading {
     using ThreadId = int64_t;
-    class Thread : public RE::BSTEventSink<RE::BSAnimationGraphEvent>{
+    class Thread : public OStim::Thread, public RE::BSTEventSink<RE::BSAnimationGraphEvent>{
     public:
         ThreadId m_threadId;
 
@@ -34,7 +35,7 @@ namespace Threading {
         inline ThreadFlags getThreadFlags() { return threadFlags; }
         inline bool isFlagged(ThreadFlag flag) { return (threadFlags & flag) == flag; }
 
-        inline Graph::Node* getCurrentNode() { return m_currentNode; }
+        inline Graph::Node* getCurrentNodeInternal() { return m_currentNode; }
         inline int getCurrentSpeed() { return m_currentNodeSpeed; }
 
         std::string getAlignmentKey();
@@ -46,8 +47,6 @@ namespace Threading {
         void Navigate(std::string sceneId);
 
         void ChangeNode(Graph::Node* a_node);
-
-        int getActorCount() { return m_actors.size(); }
 
         void AddActor(RE::Actor* a_actor);
         void RemoveActor();
@@ -77,7 +76,6 @@ namespace Threading {
         void stopFaded();
         void close();
 
-        inline bool isPlayerThread() { return playerThread; }
         inline GameAPI::GamePosition getCenter() { return center; }
 
         inline Threading::Threads::NodeHandler* getNodeHandler() { return nodeHandler; }
@@ -220,6 +218,20 @@ namespace Threading {
 
     private:
         bool playingClimaxSound = false;
+#pragma endregion
+
+
+#pragma region abi
+    public:
+        virtual int32_t getThreadID() override;
+
+        virtual bool isPlayerThread() override;
+
+        virtual uint32_t getActorCount() override;
+        virtual OStim::ThreadActor* getActor(uint32_t position) override;
+        virtual void forEachThreadActor(OStim::ThreadActorVisitor* visitor) override;
+
+        virtual OStim::Node* getCurrentNode() override;
 #pragma endregion
     };
 

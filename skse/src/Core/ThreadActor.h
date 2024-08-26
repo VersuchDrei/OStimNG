@@ -7,6 +7,7 @@
 #include "GameAPI/GameActor.h"
 #include "Graph/Event.h"
 #include "Graph/Node.h"
+#include "PluginInterface/Threading/ThreadActor.h"
 #include "Serial/OldThread.h"
 #include "Sound/VoiceSet.h"
 #include "Threading/Metadata.h"
@@ -15,7 +16,7 @@
 namespace Threading {
     class Thread;
 
-	class ThreadActor {
+	class ThreadActor : public OStim::ThreadActor {
 	public:
         ThreadActor(Thread* thread, int index, GameAPI::GameActor actor);
         void initContinue();
@@ -313,6 +314,11 @@ namespace Threading {
         void playClimaxSound();
 
         inline bool isMakingSound() { return lastMoan && lastMoan->isPlaying() || actor.isTalking(); }
+#pragma endregion
+
+#pragma region abi
+    public:
+        virtual void* getGameActor() override;
 #pragma endregion
 	};	
 }
