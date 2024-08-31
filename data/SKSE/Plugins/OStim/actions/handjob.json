@@ -52,20 +52,22 @@
 	},
 	"sounds":[
 		{
-			"type":"bonedistance",
+			"type":"peak",
 			"sound":{
 				"mod":"OStim.esp",
 				"formid":"0xEA5"
-			},
-			"actorBone":[
-				"CME R Finger20 [RF20]",
-				"CME L Finger20 [LF20]"
-			],
-			"targetBone":"NPC Genitals01 [Gen01]",
-			"maxInterval":700,
-			"inverse": true
+			}
 		}	
 	],
+	"peak":{
+		"type":"bonedistance",
+		"actorBone":[
+			"CME R Finger20 [RF20]",
+			"CME L Finger20 [LF20]"
+		],
+		"targetBone":"NPC Genitals01 [Gen01]",
+		"inverse": true
+	},
 	"tags":[
 		"sexual"
 	]

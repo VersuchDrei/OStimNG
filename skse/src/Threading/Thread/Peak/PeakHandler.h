@@ -8,6 +8,7 @@ namespace Threading {
             class PeakHandler {
             public:
                 PeakHandler(PeakHandlerParams params);
+                virtual ~PeakHandler();
 
             protected:
                 virtual void loop() = 0;
@@ -19,5 +20,8 @@ namespace Threading {
                 inline void nodeChanged() { delete this; }
                 inline void threadEnd() { delete this; }
             };
+
+            inline PeakHandler::~PeakHandler() {}
         }  // namespace Peak
-    }}
+    }
+}

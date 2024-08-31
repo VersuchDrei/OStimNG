@@ -7,6 +7,7 @@ namespace Sound {
     public:
         inline BoneDistanceSoundPlayer(SoundPlayerParams params, bool inverse, int minInterval, int maxInterval)
             : SoundPlayer(params), inverse{inverse}, minInterval{minInterval}, maxInterval{maxInterval} {}
+        virtual ~BoneDistanceSoundPlayer();
 
         virtual void loop();
 
@@ -30,4 +31,6 @@ namespace Sound {
         void calculateThreshold();
         void trigger();
     };
+
+    inline BoneDistanceSoundPlayer::~BoneDistanceSoundPlayer() {}
 }

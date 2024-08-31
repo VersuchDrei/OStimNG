@@ -46,5 +46,10 @@ namespace OStim {
 
         // button options
         virtual bool click() = 0;
+
+
+        virtual ~Setting() = 0;
     };
+
+    inline Setting::~Setting() {}
 }

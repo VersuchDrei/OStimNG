@@ -12,6 +12,8 @@ namespace Sound {
               muteWithTarget{params.muteWithTarget},
               actor{params.actor},
               target{params.target} {};
+
+        virtual ~SoundPlayer();
         
         inline int getActionIndex() { return actionIndex; }
         inline bool hasActionIndex(int index) { return actionIndex == index; }
@@ -29,4 +31,6 @@ namespace Sound {
 
         void play();
     };
+
+    inline SoundPlayer::~SoundPlayer() {}
 }

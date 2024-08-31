@@ -79,14 +79,11 @@
 	},
 	"sounds":[
 		{
-			"type":"bonedistance",
+			"type":"peak",
 			"sound":{
 				"mod":"OStim.esp",
 				"formid":"0xE14"
-			},
-			"actorBone":"NPC Genitals01 [Gen01]",
-			"targetBone":"VaginaDeep1",
-			"maxInterval":700
+			}
 		}	
 	],
 	"peak":{

@@ -154,8 +154,10 @@ set(sources
 	src/Sound/ActionSound/BoneDistanceSoundType.cpp
 	src/Sound/ActionSound/LoopSoundPlayer.cpp
 	src/Sound/ActionSound/LoopSoundType.cpp
-	src/Sound/ActionSound/SingleBoneDistanceSoundPlayer.cpp
 	src/Sound/ActionSound/MultiBoneDistanceSoundPlayer.cpp
+	src/Sound/ActionSound/PeakSoundPlayer.cpp
+	src/Sound/ActionSound/PeakSoundType.cpp
+	src/Sound/ActionSound/SingleBoneDistanceSoundPlayer.cpp
 	src/Sound/ActionSound/SoundPlayer.cpp
 	src/Sound/ActionSound/SoundType.cpp
 	src/Sound/SoundTable.cpp

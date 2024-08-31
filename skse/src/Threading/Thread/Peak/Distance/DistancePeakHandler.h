@@ -9,6 +9,7 @@ namespace Threading {
             class DistancePeakHandler : public PeakHandler {
             public:
                 DistancePeakHandler(PeakHandlerParams params, DistancePeakHandlerParams distanceParams);
+                virtual ~DistancePeakHandler();
 
             protected:
                 virtual void loop();
@@ -27,6 +28,8 @@ namespace Threading {
 
                 void calculateThresholds();
             };
+
+            inline DistancePeakHandler::~DistancePeakHandler() {}
         }
     }
 }

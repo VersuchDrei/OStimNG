@@ -338,7 +338,7 @@ namespace Threading {
         bendSchlong();
     }
 
-    void ThreadActor::offsetSoSBend(int soSOffset) {
+    void ThreadActor::offsetSoSBend(int sosOffset) {
         this->sosOffset = sosOffset;
         bendSchlong();
     }

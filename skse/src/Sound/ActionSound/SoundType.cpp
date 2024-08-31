@@ -2,6 +2,7 @@
 
 #include "BoneDistanceSoundType.h"
 #include "LoopSoundType.h"
+#include "PeakSoundType.h"
 
 namespace Sound {
     SoundType* SoundType::fromJson(std::string path, json json) {
@@ -34,7 +35,9 @@ namespace Sound {
         }
 
         std::string type = json["type"];
-        if (type == "bonedistance") {
+        if (type == "peak") {
+            return new PeakSoundType(params);
+        } else if (type == "bonedistance") {
             if (!json.contains("actorBone")) {
                 logger::warn("file {} does not have field 'sound.actorBone' defined", path);
                 return nullptr;

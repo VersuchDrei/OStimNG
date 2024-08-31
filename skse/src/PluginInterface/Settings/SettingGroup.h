@@ -13,5 +13,10 @@ namespace OStim {
 
         virtual uint32_t getSettingCount() = 0;
         virtual Setting* getSetting(uint32_t index) = 0;
+
+
+        virtual ~SettingGroup() = 0;
     };
+
+    inline SettingGroup::~SettingGroup() {}
 }
