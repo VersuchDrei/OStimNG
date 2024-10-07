@@ -73,7 +73,8 @@ namespace util {
         }
 
         fs::path path = knownPath.get();
-        if (REL::Module::get().version().patch() == 659) {
+        REL::Version::value_type patch = REL::Module::get().version().patch();
+        if (patch == 659 || patch == 1179) {
             path /= "My Games/Skyrim Special Edition GOG"sv;
         } else {
             path /= "My Games/Skyrim Special Edition"sv;

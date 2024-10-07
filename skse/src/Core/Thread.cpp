@@ -59,7 +59,6 @@ namespace Threading {
         }
 
         for (int i = 0; i < params.actors.size(); i++) {
-            // TODO GameActor
             addActorInner(i, params.actors[i].form);
         }
 

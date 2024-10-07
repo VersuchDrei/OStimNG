@@ -9,4 +9,4 @@ prone
 reversecowgirl
 sixtynine
 spitroast
-transition  --- this automaticall gets added if the scene is a transition
+transition  --- this automatically gets added if the scene is a transition

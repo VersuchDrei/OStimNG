@@ -83,7 +83,7 @@ namespace GameAPI {
             } else {
                 json["mod"] = file->GetFilename();
             }
-            json["formid"] = form->GetFormID() & ((file && file->IsLight()) ? 0xFFF : 0xFFFFFF);
+            json["formid"] = std::format("{:x}", form->GetFormID() & ((file && file->IsLight()) ? 0xFFF : 0xFFFFFF));
 
             return json;
         }

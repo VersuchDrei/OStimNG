@@ -533,8 +533,10 @@ namespace Threading {
         }
 
         threadActor->rmHeight = height;
-        float currentScale = threadActor->actor.getScale();
-        threadActor->actor.setScale(currentScale / height);
+        if (!MCM::MCMTable::isScalingDisabled()) {
+            float currentScale = threadActor->actor.getScale();
+            threadActor->actor.setScale(currentScale / height);
+        }
 
         if (MCM::MCMTable::groupAlignmentByHeight()) {
             threadActor->thread->alignActors();
