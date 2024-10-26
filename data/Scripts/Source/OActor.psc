@@ -351,14 +351,14 @@ string[] Function GetMetadata(Actor Act) Global Native
 ;/* HasMetaFloat
 * * checks if the actor has a float value for the key
 * *
-* * required API version: 7.3.2 (0x07030020)
+* * required API version: 7.3.3a (0x07030031)
 * *
 * * @param: Act, the actor
 * * @param: MetaID, the id of the float value
 * *
 * * @return: true if the thread has a float for that key set, otherwise false
 */;
-Function HasMetaFloat(Actor Act, string MetaID) Global Native
+bool Function HasMetaFloat(Actor Act, string MetaID) Global Native
 
 ;/* GetMetaFloat
 * * returns the actors float value for the key
@@ -387,14 +387,14 @@ Function SetMetaFloat(Actor Act, string MetaID, float Value) Global Native
 ;/* HasMetaString
 * * checks if the actor has a string value for the key
 * *
-* * required API version: 7.3.2 (0x07030020)
+* * required API version: 7.3.3a (0x07030031)
 * *
 * * @param: Act, the actor
 * * @param: MetaID, the id of the string value
 * *
 * * @return: true if the thread has a string for that key set, otherwise false
 */;
-Function HasMetaString(Actor Act, string MetaID) Global Native
+bool Function HasMetaString(Actor Act, string MetaID) Global Native
 
 ;/* GetMetaString
 * * returns the actors string value for the key

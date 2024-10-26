@@ -12,6 +12,7 @@ namespace GameAPI {
         for (RE::Actor* actor : actors) {
             ret.push_back(actor);
         }
+        
         return ret;
     }
 
@@ -42,7 +43,7 @@ namespace GameAPI {
                 stopMovement(form);
             }
         }
-
+        form->GetFile();
         RE::Actor* actor = form;
         SKSE::GetTaskInterface()->AddTask([actor]() {
             actor->SetGraphVariableBool("bHumanoidFootIKDisable", true);

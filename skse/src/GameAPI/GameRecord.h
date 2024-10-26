@@ -27,14 +27,14 @@ namespace GameAPI {
             }
 
             GameRecordIdentifier identifier;
-            RE::TESFile* file = form->GetFile(0);
+            RE::TESFile* file = form->GetFile();
             if (!file) {
                 // for whatever reason the player ref (0x14) doesn't have a file, so we have to account for that
                 identifier.mod = "Skyrim.esm";
             } else {
                 identifier.mod = file->GetFilename();
             }
-            identifier.formID = form->GetFormID() & (form->GetFile()->IsLight() ? 0xFFF : 0xFFFFFF);
+            identifier.formID = form->GetFormID() & ((form->GetFile() && form->GetFile()->IsLight()) ? 0xFFF : 0xFFFFFF);
             return identifier;
         }
 
@@ -77,7 +77,7 @@ namespace GameAPI {
                 return json;
             }
 
-            RE::TESFile* file = form->GetFile(0);
+            RE::TESFile* file = form->GetFile();
             if (!file) {
                 json["mod"] = "Skyrim.esm";
             } else {

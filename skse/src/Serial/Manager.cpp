@@ -245,7 +245,7 @@ namespace Serialization {
 
             RE::TESForm* form = RE::TESForm::LookupByID(formID);
             if (form) {
-                json["actorData"][stringID]["file"] = form->GetFile(0)->GetFilename();
+                json["actorData"][stringID]["file"] = form->GetFile()->GetFilename();
             }
 
             if (!data.equipObjects.empty()) {
@@ -259,7 +259,7 @@ namespace Serialization {
                 RE::TESForm* voice = RE::TESForm::LookupByID(data.voiceSet);
                 if (voice) {
                     json["actorData"][stringID]["voice"] = json::object();
-                    json["actorData"][stringID]["voice"]["mod"] = voice->GetFile(0)->GetFilename();
+                    json["actorData"][stringID]["voice"]["mod"] = voice->GetFile()->GetFilename();
                     json["actorData"][stringID]["voice"]["formid"] = std::to_string(data.voiceSet & 0x00FFFFFF);
                 }
             }

@@ -53,6 +53,8 @@ namespace Threading {
                     } else {
                         addFurniture(params, bed);
                     }
+                } else {
+                    handleActorAdding(params);
                 }
             } else {
                 Furniture::selectFurniture(params.actors.size(), params.actors[0].getPosition(), MCM::MCMTable::furnitureSearchDistance(), 96.0f, false, [params](GameAPI::GameObject furniture) {
