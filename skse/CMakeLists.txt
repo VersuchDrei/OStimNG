@@ -7,7 +7,7 @@ message("Using toolchain file ${CMAKE_TOOLCHAIN_FILE}.")
 ########################################################################################################################
 project(
         OStim
-        VERSION 7.3.3.0
+        VERSION 7.3.3.2
         DESCRIPTION ""
         LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 23)
