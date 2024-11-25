@@ -592,9 +592,9 @@ namespace Threading {
         }
 
         Graph::RoleMap<GameAPI::GameActor> gameRoles;
-        gameRoles.forEach([&roles](Graph::Role role, GameAPI::GameActor actor) {
-            actor = (*roles.get(role))->getActor();
-        });
+        gameRoles.actor = roles.actor->getActor();
+        gameRoles.target = roles.target->getActor();
+        gameRoles.performer = roles.performer->getActor();
 
         GameAPI::GameEvents::sendOStimEvent(m_threadId, graphEvent->id, gameRoles);
     }

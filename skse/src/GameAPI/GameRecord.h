@@ -27,14 +27,25 @@ namespace GameAPI {
             }
 
             GameRecordIdentifier identifier;
-            RE::TESFile* file = form->GetFile();
+            identifier.formID = form->formID & 0xFFFFFF;
+            uint8_t fullIndex = form->formID >> 24;
+            
+            const RE::TESFile* file;
+            if (fullIndex == 0xFE) {
+                uint16_t lightIndex = identifier.formID >> 12;
+                file = RE::TESDataHandler::GetSingleton()->LookupLoadedLightModByIndex(lightIndex);
+                identifier.formID &= 0xFFF;
+            } else {
+                file = RE::TESDataHandler::GetSingleton()->LookupLoadedModByIndex(fullIndex);
+            }
+
             if (!file) {
-                // for whatever reason the player ref (0x14) doesn't have a file, so we have to account for that
-                identifier.mod = "Skyrim.esm";
+                // generated records.. not sure what to do here
+                identifier.mod = "";
             } else {
                 identifier.mod = file->GetFilename();
             }
-            identifier.formID = form->GetFormID() & ((form->GetFile() && form->GetFile()->IsLight()) ? 0xFFF : 0xFFFFFF);
+
             return identifier;
         }
 
@@ -77,13 +88,9 @@ namespace GameAPI {
                 return json;
             }
 
-            RE::TESFile* file = form->GetFile();
-            if (!file) {
-                json["mod"] = "Skyrim.esm";
-            } else {
-                json["mod"] = file->GetFilename();
-            }
-            json["formid"] = std::format("{:x}", form->GetFormID() & ((file && file->IsLight()) ? 0xFFF : 0xFFFFFF));
+            GameRecordIdentifier identifier = getIdentifier();
+            json["mod"] = identifier.mod;
+            json["formid"] = std::format("{:x}", identifier.formID);
 
             return json;
         }

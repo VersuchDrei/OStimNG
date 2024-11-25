@@ -118,7 +118,7 @@ RegisterForModEvent("ostim_event", "OStimEvent")
 * * @param: EventTarget, the target of the event
 * * @param: EventPerformer, the performer of the event
 */;
-Event OStimEvent(int ThreadID, string Type, Form EventActor, Form EventTarget, FormEventPerformer)
+Event OStimEvent(int ThreadID, string Type, Form EventActor, Form EventTarget, Form EventPerformer)
 	Actor Act = EventActor as Actor
 	Actor Target = EventTarget as Actor
 	Actor Performer = EventPerformer as Actor

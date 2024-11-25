@@ -141,7 +141,7 @@ Actor[] Function Sort(Actor[] Actors, Actor[] DominantActors, int PlayerIndex = 
 */;
 Actor[] Function SelectIndexAndSort(Actor[] Actors, Actor[] DominantActors) Global
 	OSexIntegrationMain OStim = OUtils.GetOStim()
-
+	
 	bool SelectRole = false
 	If Actors.Length >= 3
 		SelectRole = OStim.PlayerSelectRoleThreesome

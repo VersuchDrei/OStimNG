@@ -245,7 +245,9 @@ namespace Serialization {
 
             RE::TESForm* form = RE::TESForm::LookupByID(formID);
             if (form) {
-                json["actorData"][stringID]["file"] = form->GetFile()->GetFilename();
+                GameAPI::GameRecord<RE::TESForm> wrapper;
+                wrapper.form = form;
+                json["actorData"][stringID]["file"] = wrapper.getIdentifier().mod;
             }
 
             if (!data.equipObjects.empty()) {
@@ -258,8 +260,10 @@ namespace Serialization {
             if (data.voiceSet != 0) {
                 RE::TESForm* voice = RE::TESForm::LookupByID(data.voiceSet);
                 if (voice) {
+                    GameAPI::GameRecord<RE::TESForm> wrapper;
+                    wrapper.form = form;
                     json["actorData"][stringID]["voice"] = json::object();
-                    json["actorData"][stringID]["voice"]["mod"] = voice->GetFile()->GetFilename();
+                    json["actorData"][stringID]["voice"]["mod"] = wrapper.getIdentifier().mod;
                     json["actorData"][stringID]["voice"]["formid"] = std::to_string(data.voiceSet & 0x00FFFFFF);
                 }
             }

@@ -43,7 +43,7 @@ namespace GameAPI {
                 stopMovement(form);
             }
         }
-        form->GetFile();
+        
         RE::Actor* actor = form;
         SKSE::GetTaskInterface()->AddTask([actor]() {
             actor->SetGraphVariableBool("bHumanoidFootIKDisable", true);
