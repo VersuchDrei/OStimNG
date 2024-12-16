@@ -4,6 +4,8 @@
 
 #include <openssl/md5.h>
 
+#include "Util/StringUtil.h"
+
 namespace Integrity {
     bool verifySceneIntegrity() {
         std::vector<std::string> files;
@@ -12,8 +14,9 @@ namespace Integrity {
                 continue;
             }
 
-            auto pathStr = file.path().string();
-            if (pathStr.starts_with("Data\\SKSE\\Plugins\\OStim\\scenes\\OStim") && pathStr.ends_with(".json")) {
+            std::string pathStr = file.path().string();
+            StringUtil::toLower(pathStr);
+            if (pathStr.starts_with("data\\skse\\plugins\\ostim\\scenes\\ostim") && pathStr.ends_with(".json")) {
                 files.push_back(pathStr);
             }
         }

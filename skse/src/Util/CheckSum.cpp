@@ -2,11 +2,14 @@
 
 #include <openssl/md5.h>
 
+#include "Util/StringUtil.h"
+
 namespace CheckSum {
     std::string createCheckSum(std::string path) {
         unsigned char result[MD5_DIGEST_LENGTH];
 
         std::string fileName = path.substr(path.find_last_of("\\") + 1);
+        StringUtil::toLower(fileName);
 
         std::ifstream ifs;
         ifs.open(path, std::ios::binary | std::ios::in);

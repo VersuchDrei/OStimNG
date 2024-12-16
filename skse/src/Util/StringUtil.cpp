@@ -22,6 +22,10 @@ namespace StringUtil {
         return tokens;
     }
 
+    void toLower(std::string& string) {
+        std::transform(string.begin(), string.end(), string.begin(), ::tolower);
+    }
+
     void toLower(std::string* string) {
         std::transform(string->begin(), string->end(), string->begin(), ::tolower);
     }
