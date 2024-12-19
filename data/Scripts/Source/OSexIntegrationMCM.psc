@@ -2974,7 +2974,7 @@ EndFunction
 
 Function OnOptionMenuOpenActors(int Option)
 	If Option == OID_SelectActor
-		Actors = OActorUtil.GetActorsInRange(PlayerRef, 1000, true, true, Main.OStimNPCCondition)
+		Actors = OActorUtil.GetActorsInRangeV2(PlayerRef, 1000, true, true, true, None)
 		SetMenuDialogOptions(OActorUtil.ActorsToNames(Actors))
 		SetMenuDialogStartIndex(Actors.Find(CurrentActor))
 		SetMenuDialogDefaultIndex(Actors.Find(PlayerRef))

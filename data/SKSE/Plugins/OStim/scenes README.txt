@@ -79,7 +79,7 @@ speed fields:
 "displaySpeed" (float): the speed value to display in game
 
 actor fields:
-"type" (string): the type of the actor (see actor types README) (default: npc)
+"type" (string): the type of the actor (see actor properties README) (default: npc)
 "intendedSex" (string): the intended sex of this actor (default: any)
 	possible values are "male" and "female"
 	this can be used to limit navigation to this scene by sex without any action in it requiring it

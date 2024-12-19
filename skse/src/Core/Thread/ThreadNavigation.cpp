@@ -116,7 +116,7 @@ namespace Threading {
         }
     }
 
-    void Thread::navigateTo(Graph::Node* node) {
+    void Thread::navigateTo(Graph::Node* node, int duration) {
         if (!m_currentNode) {
             return;
         }
@@ -136,6 +136,26 @@ namespace Threading {
             }
             nodeQueueCooldown = nodes.front().duration;
             ChangeNode(nodes.front().node);
+        }
+    }
+
+    void Thread::queueNavigation(Graph::Node* node, int duration) {
+        if (nodeQueue.empty()) {
+            navigateTo(node, duration);
+            return;
+        }
+
+        if (nodeQueue.back().node == node) {
+            nodeQueue.back().duration += duration;
+            return;
+        }
+
+        std::vector<Graph::SequenceEntry> nodes = m_currentNode->getRoute(MCM::MCMTable::navigationDistanceMax(), getActorConditions(), node);
+        if (!nodes.empty()) {
+            nodes.back().duration = duration;
+            for (int i = 1; i < nodes.size(); i++) {
+                nodeQueue.push(nodes[i]);
+            }
         }
     }
 

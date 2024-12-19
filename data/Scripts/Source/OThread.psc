@@ -62,7 +62,7 @@ int Function GetThreadCount() Global Native
 ;/* GetAllThreadIDs
 * * returns a list of all currently running thread IDs
 * *
-* * required API version: 7.4 (0x07040000)
+* * required API version: 7.3.4 (0x07030040)
 * *
 * * @return: an array containing the thread IDs of all threads
 */;
@@ -86,12 +86,27 @@ int[] Function GetAllThreadIDs() Global Native
 string Function GetScene(int ThreadID) Global Native
 
 ;/* NavigateTo
-* * tries to naviate the thread to a new scene, if it's not possible warps it there
+* * tries to naviate the thread to a new scene
+* * cancels any currently running navigations
+* * if navigation is not possible instead warps there
 * *
 * * @param: ThreadID, the id of the thread
 * * @param: SceneID, the id of the scene to naviate to
 */;
 Function NavigateTo(int ThreadID, string SceneID) Global Native
+
+;/* QueueNavigation
+* * tries to navigate the thread to a new scene after the currently running navigation is done
+* * if navigation is not possible this function fails
+* * if no navigation is currently running this function behaves identical to NavigateTo
+* *
+* * required API version: 7.3.4 (0x07030040)
+* *
+* * @param: ThreadID, the id of the thread
+* * @param: SceneID, the id of the scene to navigate to
+* * @param: Duration, the duration to remain in the scene before doing further queued navigations
+*/;
+Function QueueNavigation(int ThreadID, string SceneID, float Duration) Global Native
 
 ;/* WarpTo
 * * warps the thread to a new scene

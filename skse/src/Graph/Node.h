@@ -101,6 +101,7 @@ namespace Graph {
 
 #pragma region navigation
     public:
+        std::vector<Node*> getNodesInRange(int distance, std::vector<Trait::ActorCondition> actorConditions, std::function<bool(Node*)> nodeCondition);
         Node* getRandomNodeInRange(int distance, std::vector<Trait::ActorCondition> actorConditions, std::function<bool(Node*)> nodeCondition);
         std::vector<SequenceEntry> getRoute(int distance, std::vector<Trait::ActorCondition> actorConditions, Node* destination);
 #pragma endregion

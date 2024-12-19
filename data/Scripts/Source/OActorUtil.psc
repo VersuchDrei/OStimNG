@@ -164,18 +164,19 @@ EndFunction
 ;/* GetActorsInRange
 * * gets all actors in range around the center
 * *
-* * required API version: 7.3 (0x07030000)
+* * required API version: 7.3.4 (0x07030040)
 * *
 * * @param: Center, the center to base the search on
 * * @param: Range, the range of the search in Skyrim units (100 units are approx. 1 meter)
 * * @param: IncludeCenter, if false the center will not be included in the list
 * * @param: IncludePlayer, if false the player will not be included in the list
+* * @param: OStimActorsOnly, if true only actors that qualify for OStim scenes will be included in the list
 * * @param: Condition, if set only actors who fulfill the condition functions of the perk will be included
 * * 	actors do not have to have the perk for this, just fulfill it's condition functions
 * *
 * * @return: an array of all actors in range (and fulfilling the condition, if one is given)
 */;
-Actor[] Function GetActorsInRange(ObjectReference Center, float Range, bool IncludeCenter = false, bool IncludePlayer = true, Perk Condition = None) Global Native
+Actor[] Function GetActorsInRangeV2(ObjectReference Center, float Range, bool IncludeCenter = false, bool IncludePlayer = true, bool OStimActorsOnly = false, Perk Condition = None) Global Native
 
 ;/* ActorsToNames
 * * converts an array of actors to an array of their names
@@ -187,3 +188,16 @@ Actor[] Function GetActorsInRange(ObjectReference Center, float Range, bool Incl
 * * @return: a string array containing all the actor names
 */;
 string[] Function ActorsToNames(Actor[] Actors) Global Native
+
+
+; ██████╗ ███████╗██████╗ ██████╗ ███████╗ ██████╗ █████╗ ████████╗███████╗██████╗ 
+; ██╔══██╗██╔════╝██╔══██╗██╔══██╗██╔════╝██╔════╝██╔══██╗╚══██╔══╝██╔════╝██╔══██╗
+; ██║  ██║█████╗  ██████╔╝██████╔╝█████╗  ██║     ███████║   ██║   █████╗  ██║  ██║
+; ██║  ██║██╔══╝  ██╔═══╝ ██╔══██╗██╔══╝  ██║     ██╔══██║   ██║   ██╔══╝  ██║  ██║
+; ██████╔╝███████╗██║     ██║  ██║███████╗╚██████╗██║  ██║   ██║   ███████╗██████╔╝
+; ╚═════╝ ╚══════╝╚═╝     ╚═╝  ╚═╝╚══════╝ ╚═════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═════╝
+
+; required API version: 7.3.0 (0x07030000)
+Actor[] Function GetActorsInRange(ObjectReference Center, float Range, bool IncludeCenter = false, bool IncludePlayer = true, Perk Condition = None) Global
+	Return GetActorsInRangeV2(Center, Range, IncludeCenter, IncludePlayer, false, Condition)
+EndFunction

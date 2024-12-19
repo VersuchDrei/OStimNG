@@ -22,6 +22,7 @@ namespace ActorProperties {
             }
 
             JsonUtil::consumeLowerString(json, [condition](std::string type) {actorTypes.add({condition, type});}, "type", filename, "actor property", false);
+            JsonUtil::consumeString(json, [condition](std::string sex) {actorSexes.add({condition, GameAPI::GameSexAPI::fromString(sex)});}, "sex", filename, "actor property", false);
             JsonUtil::consumeLowerString(json, [condition](std::string expression) {actorExpressions.add({condition, expression});}, "expression", filename, "actor property", false);
             JsonUtil::consumeBool(json, [condition](bool mute) {actorMutes.add({condition, mute});}, "mute", filename, "actor property", false);
             JsonUtil::consumeBool(json, [condition](bool muffle) {actorMuffles.add({condition, muffle});}, "muffle", filename, "actor property", false);

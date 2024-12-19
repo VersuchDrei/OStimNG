@@ -196,7 +196,9 @@ namespace Threading {
         bool autoTransition(std::string type);
         bool autoTransition(int index, std::string type);
         void warpTo(Graph::Node* node, bool useFades);
-        void navigateTo(Graph::Node* node);
+        inline void navigateTo(Graph::Node* node) { navigateTo(node, node->animationLengthMs); }
+        void navigateTo(Graph::Node* node, int duration);
+        void queueNavigation(Graph::Node* node, int duration);
         void playSequence(Graph::Sequence* sequence, bool navigateTo, bool useFades);
         void playSequence(std::vector<Graph::SequenceEntry> nodes, bool navigateTo, bool useFades);
         bool pullOut();

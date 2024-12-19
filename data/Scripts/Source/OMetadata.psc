@@ -74,17 +74,6 @@ int Function GetActorCount(string Id) Global Native
 */;
 string Function GetAnimationId(string Id, int Index) Global Native
 
-;/* GetAutoTransitionForActor
-* * returns the auto transition of the respective type for the scene actor
-* *
-* * @param: Id, the id of the scene
-* * @param: Position, the index of the actor in the scene
-* * @param: Type, the type of the transition
-* *
-* * @return: the scene id of the transition destination, or "" if it does not have one
-*/;
-string Function GetAutoTransitionForActor(string Id, int Position, string Type) Global Native
-
 ;/* HasRequirement
 * * checks if the scene actor requires the requirement
 * *
@@ -149,6 +138,49 @@ bool Function HasAllRequirements(string Id, int Position, string[] Requirements)
 * * @return: true if the scene actor requires all of the requirements, otherwise false
 */;
 bool Function HasAllRequirementsCSV(string Id, int Position, string Requirements) Global Native
+
+
+; ███╗   ██╗ █████╗ ██╗   ██╗██╗ ██████╗  █████╗ ████████╗██╗ ██████╗ ███╗   ██╗
+; ████╗  ██║██╔══██╗██║   ██║██║██╔════╝ ██╔══██╗╚══██╔══╝██║██╔═══██╗████╗  ██║
+; ██╔██╗ ██║███████║██║   ██║██║██║  ███╗███████║   ██║   ██║██║   ██║██╔██╗ ██║
+; ██║╚██╗██║██╔══██║╚██╗ ██╔╝██║██║   ██║██╔══██║   ██║   ██║██║   ██║██║╚██╗██║
+; ██║ ╚████║██║  ██║ ╚████╔╝ ██║╚██████╔╝██║  ██║   ██║   ██║╚██████╔╝██║ ╚████║
+; ╚═╝  ╚═══╝╚═╝  ╚═╝  ╚═══╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝
+
+;/* GetAutoTransitionForActor
+* * returns the auto transition of the respective type for the scene actor
+* *
+* * @param: Id, the id of the scene
+* * @param: Position, the index of the actor in the scene
+* * @param: Type, the type of the transition
+* *
+* * @return: the scene id of the transition destination, or "" if it does not have one
+*/;
+string Function GetAutoTransitionForActor(string Id, int Position, string Type) Global Native
+
+;/* GetNodesInRange
+* * returns a list of nodes in navigation range of the given node
+* *
+* * required API version: 7.3.4 (0x07030040)
+* *
+* * @param: Id, the id of the scene
+* * @param: Actors, the actors to check scene requirements against
+* * @param: Distance, the distance to search in, if 0 will use MCM setting
+* *
+* * @return: an array of qualifying nodes
+*/;
+string[] Function GetNodesInRange(string Id, Actor[] Actors, int Distance = 0) Global Native
+
+;/* NodesToNames
+* * turns a list of node ids into a list of their display names
+* *
+* * required API version: 7.3.4 (0x07030040)
+* *
+* * @param: Ids, the ids of the scenes
+* *
+* * @param: the names of the scenes
+*/;
+string[] Function NodesToNames(string[] Ids) Global Native
 
 
 ; ████████╗ █████╗  ██████╗ ███████╗

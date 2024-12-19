@@ -1,5 +1,6 @@
 #include "CompatibilityTable.h"
 
+#include "ActorProperties/ActorPropertyTable.h"
 #include "MCM/MCMTable.h"
 
 namespace Compatibility {
@@ -61,6 +62,11 @@ namespace Compatibility {
     }
 
     bool CompatibilityTable::hasSchlong(GameAPI::GameActor actor) {
+        GameAPI::GameSex propertySex = ActorProperties::ActorPropertyTable::getActorSex(actor);
+        if (propertySex != GameAPI::GameSex::AGENDER) {
+            return propertySex == GameAPI::GameSex::MALE;
+        }
+
         if (MCM::MCMTable::useSoSSex()) {
             if (!SOS_SchlongifiedFaction.contains(actor)) {
                 return false;

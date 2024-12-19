@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ActorProperties/ActorPropertyTable.h"
 #include "GameAPI/GameCondition.h"
 #include "GameAPI/GameUtil.h"
 #include "Util/ActorUtil.h"
@@ -79,16 +80,28 @@ namespace PapyrusActorUtil {
         return ret;
     }
 
-    std::vector<RE::Actor*> GetActorsInRange(RE::StaticFunctionTag*, RE::TESObjectREFR* center, float range, bool includeCenter, bool includePlayer, RE::BGSPerk* condition) {
+    std::vector<RE::Actor*> GetActorsInRangeV2(RE::StaticFunctionTag*, RE::TESObjectREFR* center, float range, bool includeCenter, bool includePlayer, bool ostimActorsOnly, RE::BGSPerk* condition) {
         std::vector<RE::Actor*> actors;
 
-        GameAPI::GameUtil::ForEachReferenceInRange(center, range, [&actors, center, includeCenter, includePlayer, condition](RE::TESObjectREFR& ref) {
+        GameAPI::GameUtil::ForEachReferenceInRange(center, range, [&actors, center, includeCenter, includePlayer, ostimActorsOnly, condition](RE::TESObjectREFR& ref) {
             if (!ref.Is(RE::Actor::FORMTYPE)) {
                 return RE::BSContainer::ForEachResult::kContinue;
             }
 
             RE::Actor* actor = ref.As<RE::Actor>();
-            if (!includeCenter && actor == center || !includePlayer && actor->IsPlayerRef() || condition && !condition->perkConditions.IsTrue(actor, actor)) {
+            if (!includeCenter && actor == center) {
+                return RE::BSContainer::ForEachResult::kContinue;
+            }
+
+            if (!includePlayer && actor->IsPlayerRef()) {
+                return RE::BSContainer::ForEachResult::kContinue;
+            }
+
+            if (condition && !condition->perkConditions.IsTrue(actor, actor)) {
+                return RE::BSContainer::ForEachResult::kContinue;
+            }
+
+            if (ostimActorsOnly && ActorProperties::ActorPropertyTable::getActorType(actor) == "") {
                 return RE::BSContainer::ForEachResult::kContinue;
             }
 
@@ -124,7 +137,7 @@ namespace PapyrusActorUtil {
         BIND(ToArray);
 
         BIND(Sort);
-        BIND(GetActorsInRange);
+        BIND(GetActorsInRangeV2);
         BIND(ActorsToNames);
 
         return true;

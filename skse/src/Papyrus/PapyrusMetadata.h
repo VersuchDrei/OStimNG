@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Graph/GraphTable.h"
+#include "ScriptAPI/MetadataScript.h"
 #include "Util/MapUtil.h"
 #include "Util/StringUtil.h"
 #include "Util/VectorUtil.h"
@@ -88,13 +89,6 @@ namespace PapyrusMetadata {
         return "";
     }
 
-    std::string GetAutoTransitionForActor(RE::StaticFunctionTag*, std::string id, int position, std::string type) {
-        if (auto node = Graph::GraphTable::getNodeById(id)) {
-            return node->getAutoTransitionForActor(position, type);
-        }
-        return "";
-    }
-
     bool HasRequirement(RE::StaticFunctionTag*, std::string id, int position, std::string requirement) {
         if (auto node = Graph::GraphTable::getNodeById(id)) {
             if (position >= 0 && node->actors.size() > position) {
@@ -139,6 +133,23 @@ namespace PapyrusMetadata {
 
     bool HasAllRequirementsCSV(RE::StaticFunctionTag* sft, std::string id, int position, std::string requirements) {
         return HasAllRequirements(sft, id, position, StringUtil::toTagVector(requirements));
+    }
+#pragma endregion
+
+#pragma region navigation
+    std::string GetAutoTransitionForActor(RE::StaticFunctionTag*, std::string id, int position, std::string type) {
+        if (auto node = Graph::GraphTable::getNodeById(id)) {
+            return node->getAutoTransitionForActor(position, type);
+        }
+        return "";
+    }
+
+    std::vector<std::string> GetNodesInRange(RE::StaticFunctionTag*, std::string id, std::vector<RE::Actor*> actors, int distance) {
+        return ScriptAPI::Metadata::getNodesInRange(id, GameAPI::GameActor::convertVector(actors), distance);
+    }
+
+    std::vector<std::string> NodesToNames(RE::StaticFunctionTag*, std::vector<std::string> ids) {
+        return ScriptAPI::Metadata::nodesToNames(ids);
     }
 #pragma endregion
 
@@ -2969,12 +2980,15 @@ namespace PapyrusMetadata {
         BIND(GetMaxSpeed);
         BIND(GetActorCount);
         BIND(GetAnimationId);
-        BIND(GetAutoTransitionForActor);
         BIND(HasRequirement);
         BIND(HasAnyRequirement);
         BIND(HasAnyRequirementCSV);
         BIND(HasAllRequirements);
         BIND(HasAllRequirementsCSV);
+
+        BIND(GetAutoTransitionForActor);
+        BIND(GetNodesInRange);
+        BIND(NodesToNames);
 
         BIND(GetSceneTags);
         BIND(HasSceneTag);

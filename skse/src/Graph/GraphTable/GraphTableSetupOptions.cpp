@@ -170,7 +170,6 @@ namespace Graph {
                     }
                     else {
                         if (auto parent = findParent(heirarchy[i], &rootNode.subNodes); parent != nullptr) {
-                            logger::info("found parent");
                             parent->subNodes.push_back(*heirarchy[i]);
                             parent->subNodes[parent->subNodes.size() - 1].parent = parent;
                         }

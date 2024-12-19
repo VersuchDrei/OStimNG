@@ -10,6 +10,7 @@ namespace ActorProperties {
         static void setup();
 
         inline static std::string getActorType(GameAPI::GameActor actor) { return actorTypes.get(actor, ""); }
+        inline static GameAPI::GameSex getActorSex(GameAPI::GameActor actor) { return actorSexes.get(actor, GameAPI::GameSex::AGENDER); }
         inline static std::string getActorExpression(GameAPI::GameActor actor) {
             return actorExpressions.get(actor, "");
         }
@@ -20,6 +21,7 @@ namespace ActorProperties {
 
     private:
         inline static ActorPropertyList<std::string> actorTypes;
+        inline static ActorPropertyList<GameAPI::GameSex> actorSexes;
         inline static ActorPropertyList<std::string> actorExpressions;
         inline static ActorPropertyList<bool> actorMutes;
         inline static ActorPropertyList<bool> actorMuffles;

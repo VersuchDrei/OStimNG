@@ -3,8 +3,7 @@
 #include "Util/VectorUtil.h"
 
 namespace Graph {
-
-    Node* Node::getRandomNodeInRange(int distance, std::vector<Trait::ActorCondition> actorConditions, std::function<bool(Node*)> nodeCondition) {
+    std::vector<Node*> Node::getNodesInRange(int distance, std::vector<Trait::ActorCondition> actorConditions, std::function<bool(Node*)> nodeCondition) {
         std::vector<Node*> nodes;
         std::vector<Node*> lastLevel = {this};
         std::vector<Node*> nextLevel;
@@ -27,6 +26,12 @@ namespace Graph {
             lastLevel = nextLevel;
             nextLevel.clear();
         }
+
+        return nodes;
+    }
+
+    Node* Node::getRandomNodeInRange(int distance, std::vector<Trait::ActorCondition> actorConditions, std::function<bool(Node*)> nodeCondition) {
+        std::vector<Node*> nodes = getNodesInRange(distance, actorConditions, nodeCondition);
 
         std::shuffle(std::begin(nodes), std::end(nodes), RNGUtil::RNG);
 

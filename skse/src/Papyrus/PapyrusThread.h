@@ -61,6 +61,14 @@ namespace PapyrusThread {
         }
     }
 
+    void QueueNavigation(RE::StaticFunctionTag*, int threadID, std::string sceneID, float duration) {
+        Threading::Thread* thread = Threading::ThreadManager::GetSingleton()->GetThread(threadID);
+        Graph::Node* node = Graph::GraphTable::getNodeById(sceneID);
+        if (thread && node) {
+            thread->queueNavigation(node, (int) duration * 1000);
+        }
+    }
+
     void WarpTo(RE::StaticFunctionTag*, int threadID, std::string sceneID, bool useFades) {
         Threading::Thread* thread = Threading::ThreadManager::GetSingleton()->GetThread(threadID);
         Graph::Node* node = Graph::GraphTable::getNodeById(sceneID);
