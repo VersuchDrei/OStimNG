@@ -52,6 +52,13 @@ namespace PapyrusMetadata {
     // *********************************************************
 
 #pragma region general
+    std::string GetName(RE::StaticFunctionTag*, std::string id) {
+        return ScriptAPI::Metadata::getName(id); }
+
+    std::vector<std::string> ScenesToNames(RE::StaticFunctionTag*, std::vector<std::string> ids) {
+        return ScriptAPI::Metadata::nodesToNames(ids);
+    }
+
     bool IsTransition(RE::StaticFunctionTag*, std::string id) {
         if (auto node = Graph::GraphTable::getNodeById(id)) {
             return node->isTransition;
@@ -142,14 +149,6 @@ namespace PapyrusMetadata {
             return node->getAutoTransitionForActor(position, type);
         }
         return "";
-    }
-
-    std::vector<std::string> GetNodesInRange(RE::StaticFunctionTag*, std::string id, std::vector<RE::Actor*> actors, int distance) {
-        return ScriptAPI::Metadata::getNodesInRange(id, GameAPI::GameActor::convertVector(actors), distance);
-    }
-
-    std::vector<std::string> NodesToNames(RE::StaticFunctionTag*, std::vector<std::string> ids) {
-        return ScriptAPI::Metadata::nodesToNames(ids);
     }
 #pragma endregion
 
@@ -2975,6 +2974,8 @@ namespace PapyrusMetadata {
 	bool Bind(VM* a_vm) {
         const auto obj = "OMetadata"sv;
 
+        BIND(GetName);
+        BIND(ScenesToNames);
         BIND(IsTransition);
         BIND(GetDefaultSpeed);
         BIND(GetMaxSpeed);
@@ -2987,8 +2988,6 @@ namespace PapyrusMetadata {
         BIND(HasAllRequirementsCSV);
 
         BIND(GetAutoTransitionForActor);
-        BIND(GetNodesInRange);
-        BIND(NodesToNames);
 
         BIND(GetSceneTags);
         BIND(HasSceneTag);

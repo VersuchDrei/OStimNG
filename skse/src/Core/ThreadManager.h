@@ -25,6 +25,7 @@ namespace Threading {
 
 
         Thread* findThread(GameAPI::GameActor actor);
+        Thread* findThread(GameAPI::GameObject furniture);
 
         ThreadActor* findActor(GameAPI::GameActor actor);
 

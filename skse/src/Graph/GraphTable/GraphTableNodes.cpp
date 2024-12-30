@@ -119,6 +119,16 @@ namespace Graph {
         }
     }
 
+    std::vector<Node*> GraphTable::getNodes() {
+        std::vector<Node*> nodes;
+
+        for (std::unordered_map<std::string, Node*>::iterator it = GraphTable::nodes.begin(); it != GraphTable::nodes.end(); it++) {
+            nodes.push_back(it->second);
+        }
+
+        return nodes;
+    }
+
     Node* GraphTable::getNodeById(std::string id) {
         StringUtil::toLower(&id);
         auto iter = nodes.find(id);

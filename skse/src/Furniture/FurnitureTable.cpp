@@ -1,5 +1,6 @@
 #include "FurnitureTable.h"
 
+#include "Core/ThreadManager.h"
 #include "GameAPI/GameList.h"
 #include "Util/JsonFileLoader.h"
 #include "Util/JsonUtil.h"
@@ -204,8 +205,18 @@ namespace Furniture {
     }
 
     FurnitureType* FurnitureTable::getFurnitureType(GameAPI::GameObject object, bool inUseCheck) {
-        if (!object || object.isDisabled() || object.isDeleted() || (inUseCheck && object.isInUse())) {
+        if (!object || object.isDisabled() || object.isDeleted()) {
             return &furnitureTypes["none"];
+        }
+
+        if (inUseCheck) {
+            if (object.isInUse()) {
+                return &furnitureTypes["none"];
+            }
+
+            if (Threading::ThreadManager::GetSingleton()->findThread(object)) {
+                return &furnitureTypes["none"];
+            }
         }
 
         FurnitureType* currentType = nullptr;

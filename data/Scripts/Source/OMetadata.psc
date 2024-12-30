@@ -26,6 +26,28 @@ ScriptName OMetadata
 ; ╚██████╔╝███████╗██║ ╚████║███████╗██║  ██║██║  ██║███████╗
 ;  ╚═════╝ ╚══════╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝
 
+;/* GetName
+* * gets the name of the scene
+* *
+* * required API version: 7.3.4a (0x07030041)
+* *
+* * @param: Id, the id of the scene
+* *
+* * @return: the name of the scene
+*/;
+string Function GetName(string Id) Global Native
+
+;/* ScenesToNames
+* * turns a list of scene ids into a list of their display names
+* *
+* * required API version: 7.3.4a (0x07030041)
+* *
+* * @param: Ids, the ids of the scenes
+* *
+* * @return: the names of the scenes
+*/;
+string[] Function ScenesToNames(string[] Ids) Global Native
+
 ;/* IsTransition
 * * checks if the scene is a transition
 * *
@@ -157,30 +179,6 @@ bool Function HasAllRequirementsCSV(string Id, int Position, string Requirements
 * * @return: the scene id of the transition destination, or "" if it does not have one
 */;
 string Function GetAutoTransitionForActor(string Id, int Position, string Type) Global Native
-
-;/* GetNodesInRange
-* * returns a list of nodes in navigation range of the given node
-* *
-* * required API version: 7.3.4 (0x07030040)
-* *
-* * @param: Id, the id of the scene
-* * @param: Actors, the actors to check scene requirements against
-* * @param: Distance, the distance to search in, if 0 will use MCM setting
-* *
-* * @return: an array of qualifying nodes
-*/;
-string[] Function GetNodesInRange(string Id, Actor[] Actors, int Distance = 0) Global Native
-
-;/* NodesToNames
-* * turns a list of node ids into a list of their display names
-* *
-* * required API version: 7.3.4 (0x07030040)
-* *
-* * @param: Ids, the ids of the scenes
-* *
-* * @param: the names of the scenes
-*/;
-string[] Function NodesToNames(string[] Ids) Global Native
 
 
 ; ████████╗ █████╗  ██████╗ ███████╗

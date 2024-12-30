@@ -292,7 +292,7 @@ namespace PapyrusThreadActor {
     }
 
     int GetSceneID(RE::StaticFunctionTag*, RE::Actor* actor) {
-        Threading::Thread* thread = Threading::ThreadManager::GetSingleton()->findThread(actor);
+        Threading::Thread* thread = Threading::ThreadManager::GetSingleton()->findThread((GameAPI::GameActor)actor);
         return thread ? thread->m_threadId : -1;
     }
 

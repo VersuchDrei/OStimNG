@@ -38,6 +38,7 @@ namespace Graph{
         static void setupNodes();
         static void addNode(Node* node);
         static void addNavigations(std::vector<RawNavigation> navigations);
+        static std::vector<Node*> getNodes();
         static Node* getNodeById(std::string id);
         static void searchNodesByName(std::string& name, std::vector<Node*>& results);
         static Node* getNodeByAnimation(std::string anim);

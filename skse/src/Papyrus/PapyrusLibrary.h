@@ -2,6 +2,7 @@
 
 #include "Furniture/FurnitureTable.h"
 #include "Graph/GraphTable.h"
+#include "ScriptAPI/LibraryScript.h"
 #include "Trait/Condition.h"
 #include "Util/StringUtil.h"
 #include "Util/VectorUtil.h"
@@ -126,6 +127,14 @@ namespace PapyrusLibrary {
     // *********************************************************
     // start of papyrus bound functions
     // *********************************************************
+
+    std::vector<std::string> GetAllScenes(RE::StaticFunctionTag*) {
+        return ScriptAPI::Library::getAllNodes();
+    }
+
+    std::vector<std::string> GetScenesInRange(RE::StaticFunctionTag*, std::string id, std::vector<RE::Actor*> actors, int distance) {
+        return ScriptAPI::Library::getNodesInRange(id, GameAPI::GameActor::convertVector(actors), distance);
+    }
 
     std::string GetRandomScene(RE::StaticFunctionTag*, std::vector<RE::Actor*> actors) {
         return randomScene(actors, [](Graph::Node* node) { return true; });
@@ -728,6 +737,9 @@ namespace PapyrusLibrary {
 
     bool Bind(VM* a_vm) {
         const auto obj = "OLibrary"sv;
+
+        BIND(GetAllScenes);
+        BIND(GetScenesInRange);
 
         BIND(GetRandomScene);
         BIND(GetRandomFurnitureScene);

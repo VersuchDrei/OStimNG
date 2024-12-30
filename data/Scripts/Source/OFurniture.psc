@@ -15,6 +15,18 @@ ScriptName OFurniture
 */;
 string Function GetFurnitureType(ObjectReference FurnitureRef) Global Native
 
+;/* IsChildOf
+* * checks if the furniture type is a child of the other type
+* *
+* * * * required API version: 7.3.4a (0x07030041)
+* *
+* * @param: SuperType, the parent type
+* * @param: SubType, the child type
+* *
+* * @return: true if the subtype is a child of the supertype, otherwise false
+*/;
+bool Function IsChildOf(string SuperType, string SubType) Global Native
+
 ;/* FindFurniture
 * * returns the closest object reference of each furniture that that is not occupied or reserved
 * * the return array is sorted by distance to the center, so the first element in the array is the closest object to the CenterRef, etc.
@@ -51,6 +63,17 @@ ObjectReference Function FindFurnitureOfType(string Type, ObjectReference Center
 */;
 float[] Function GetOffset(ObjectReference FurnitureRef) Global Native
 
+;/* GetSceneID
+* * gets the scene ID of the scene involding the furniture
+* *
+* * required API version: 7.3.4a (0x07030041)
+* *
+* * @param: FurnitureRef, the furniture to get the scene ID for
+* *
+* * @return: the scene ID, -1 if the furniture is not involved in a scene
+*/;
+int Function GetSceneID(ObjectReference FurnitureRef) Global Native
+
 ;/* ResetClutter
 * * resets all clutter in an area
 * *
@@ -58,3 +81,5 @@ float[] Function GetOffset(ObjectReference FurnitureRef) Global Native
 * * @param: Radius, the radius of the area of clutter to reset
 */;
 Function ResetClutter(ObjectReference CenterRef, float Radius) Global Native
+
+

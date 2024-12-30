@@ -19,6 +19,28 @@
 */;
 ScriptName OLibrary
 
+;/* GetAllScenes
+* *	returns the list of all scenes
+* * this has most likely several hundred entries for most end users
+* * so looping through the entire array will probably cause script lag
+* *
+* * @return: an array containing all scene ids
+*/;
+string[] Function GetAllScenes() Global Native
+
+;/* GetScenesInRange
+* * returns a list of scenes in navigation range of the given scene
+* *
+* * required API version: 7.3.4a (0x07030041)
+* *
+* * @param: Id, the id of the scene
+* * @param: Actors, the actors to check scene requirements against
+* * @param: Distance, the distance to search in, if 0 will use MCM setting
+* *
+* * @return: an array of qualifying scenes
+*/;
+string[] Function GetScenesInRange(string Id, Actor[] Actors, int Distance = 0) Global Native
+
 ; ██████╗  █████╗ ███╗   ██╗██████╗  ██████╗ ███╗   ███╗    ███████╗ ██████╗███████╗███╗   ██╗███████╗███████╗
 ; ██╔══██╗██╔══██╗████╗  ██║██╔══██╗██╔═══██╗████╗ ████║    ██╔════╝██╔════╝██╔════╝████╗  ██║██╔════╝██╔════╝
 ; ██████╔╝███████║██╔██╗ ██║██║  ██║██║   ██║██╔████╔██║    ███████╗██║     █████╗  ██╔██╗ ██║█████╗  ███████╗

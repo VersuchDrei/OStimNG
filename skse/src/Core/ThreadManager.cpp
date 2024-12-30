@@ -136,6 +136,17 @@ namespace Threading {
         return nullptr;
     }
 
+    Thread* ThreadManager::findThread(GameAPI::GameObject furniture) {
+        std::shared_lock<std::shared_mutex> lock(m_threadMapMtx);
+        for (auto& [id, thread] : m_threadMap) {
+            if (thread->getFurniture() == furniture) {
+                return thread;
+            }
+        }
+
+        return nullptr;
+    }
+
     ThreadActor* ThreadManager::findActor(GameAPI::GameActor actor) {
         std::shared_lock<std::shared_mutex> lock(m_threadMapMtx);
         for (auto&[id, thread] : m_threadMap) {
