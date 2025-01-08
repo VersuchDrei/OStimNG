@@ -294,6 +294,7 @@ namespace PapyrusThread {
 
         BIND(GetScene);
         BIND(NavigateTo);
+        BIND(QueueNavigation);
         BIND(WarpTo);
         BIND(AutoTransition);
         BIND(AutoTransitionForActor);

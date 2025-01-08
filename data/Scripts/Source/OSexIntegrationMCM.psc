@@ -42,7 +42,7 @@ int Function GetVersion()
 	Return 12
 EndFunction
 
-Event OnVersionUpdate(int version)
+Event OnVersionUpdate(int Version)
 	SetupPages()
 EndEvent
 

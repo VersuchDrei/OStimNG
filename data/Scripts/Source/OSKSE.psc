@@ -1,4 +1,4 @@
-;/* OFurniture
+;/* OSKSE
 * * bunch of functions supposed to be called from the SKSE plugin
 * * meant for internal use and not to be called by addons
 * * some of these are still save to call, however others are not

@@ -100,7 +100,7 @@ Function NavigateTo(int ThreadID, string SceneID) Global Native
 * * if navigation is not possible this function fails
 * * if no navigation is currently running this function behaves identical to NavigateTo
 * *
-* * required API version: 7.3.4 (0x07030040)
+* * required API version: 7.3.4b (0x07030042)
 * *
 * * @param: ThreadID, the id of the thread
 * * @param: SceneID, the id of the scene to navigate to
@@ -346,14 +346,14 @@ string[] Function GetMetadata(int ThreadID) Global Native
 ;/* HasMetaFloat
 * * checks if the thread has a float value for the key
 * *
-* * required API version: 7.3.2 (0x07030020)
+* * required API version: 7.3.4b (0x07030042)
 * *
 * * @param: ThreadID, the id of the thread
 * * @param: MetaID, the id of the float value
 * *
 * * @return: true if the thread has a float for that key set, otherwise false
 */;
-Function HasMetaFloat(int ThreadID, string MetaID) Global Native
+bool Function HasMetaFloat(int ThreadID, string MetaID) Global Native
 
 ;/* GetMetaFloat
 * * returns the threads float value for the key
@@ -382,14 +382,14 @@ Function SetMetaFloat(int ThreadID, string MetaID, float Value) Global Native
 ;/* HasMetaString
 * * checks if the thread has a string value for the key
 * *
-* * required API version: 7.3.2 (0x07030020)
+* * required API version: 7.3.4b (0x07030042)
 * *
 * * @param: ThreadID, the id of the thread
 * * @param: MetaID, the id of the string value
 * *
 * * @return: true if the thread has a string for that key set, otherwise false
 */;
-Function HasMetaString(int ThreadID, string MetaID) Global Native
+bool Function HasMetaString(int ThreadID, string MetaID) Global Native
 
 ;/* GetMetaString
 * * returns the threads string value for the key

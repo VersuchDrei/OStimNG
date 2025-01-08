@@ -124,38 +124,44 @@ namespace Threading {
         clearNodeQueue();
 
         if (m_currentNode == node) {
+            nodeQueueCooldown = duration;
             return;
         }
 
         std::vector<Graph::SequenceEntry> nodes = m_currentNode->getRoute(MCM::MCMTable::navigationDistanceMax(), getActorConditions(), node);
         if (nodes.empty()) {
             warpTo(node, MCM::MCMTable::useAutoModeFades());
+            nodeQueueCooldown = duration + 1000;
         } else {
             for (int i = 1; i < nodes.size(); i++) {
                 nodeQueue.push(nodes[i]);
             }
+            nodes.back().duration = duration;
             nodeQueueCooldown = nodes.front().duration;
             ChangeNode(nodes.front().node);
         }
     }
 
     void Thread::queueNavigation(Graph::Node* node, int duration) {
-        if (nodeQueue.empty()) {
+        if (!inSequence) {
             navigateTo(node, duration);
+            inSequence = true;
             return;
         }
 
-        if (nodeQueue.back().node == node) {
+        if (!nodeQueue.empty() && nodeQueue.back().node == node) {
             nodeQueue.back().duration += duration;
             return;
         }
 
-        std::vector<Graph::SequenceEntry> nodes = m_currentNode->getRoute(MCM::MCMTable::navigationDistanceMax(), getActorConditions(), node);
+        std::vector<Graph::SequenceEntry> nodes = (nodeQueue.empty() ? m_currentNode : nodeQueue.back().node)->getRoute(MCM::MCMTable::navigationDistanceMax(), getActorConditions(), node);
         if (!nodes.empty()) {
             nodes.back().duration = duration;
-            for (int i = 1; i < nodes.size(); i++) {
-                nodeQueue.push(nodes[i]);
+            for (Graph::SequenceEntry& entry : nodes) {
+                nodeQueue.push(entry);
             }
+        } else {
+            logger::info("couldn't find route from {} to {}", m_currentNode->scene_id, node->scene_id);
         }
     }
 
@@ -301,9 +307,21 @@ namespace Threading {
     }
 
     void Thread::clearNodeQueue() {
+        if (nodeQueueCooldown == 0) {
+            return;
+        }
+
         nodeQueueCooldown = 0;
         while (!nodeQueue.empty()) {
             nodeQueue.pop();
+        }
+
+        if (inSequence) {
+            if (endAfterSequence) {
+                stop();
+            } else {
+                inSequence = false;
+            }
         }
     }
 

@@ -1,5 +1,6 @@
 #include "MetadataScript.h"
 
+#include "Game/LocaleManager.h"
 #include "Graph/GraphTable.h"
 
 namespace ScriptAPI {

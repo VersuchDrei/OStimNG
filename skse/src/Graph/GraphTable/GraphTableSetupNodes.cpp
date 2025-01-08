@@ -27,6 +27,7 @@ namespace Graph {
                 }
             } else {
                 node->lowercase_name = node->scene_name = LocaleManager::GetSingleton()->GetLocalization("$" + node->scene_id);
+                StringUtil::toLower(&node->lowercase_name);
             }
 
             if (json.contains("modpack")) {
