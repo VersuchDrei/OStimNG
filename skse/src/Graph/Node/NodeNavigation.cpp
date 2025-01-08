@@ -65,7 +65,7 @@ namespace Graph {
 
                     if (navigation.nodes.back() == destination) {
                         std::vector<SequenceEntry> sequence;
-                        for (Node* node : navigation.nodes) {
+                        for (Node* node : newRoute) {
                             sequence.push_back({node->isTransition ? node->animationLengthMs : 500, node});
                         }
                         return sequence;

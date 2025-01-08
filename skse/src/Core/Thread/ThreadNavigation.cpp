@@ -160,8 +160,6 @@ namespace Threading {
             for (Graph::SequenceEntry& entry : nodes) {
                 nodeQueue.push(entry);
             }
-        } else {
-            logger::info("couldn't find route from {} to {}", m_currentNode->scene_id, node->scene_id);
         }
     }
 
