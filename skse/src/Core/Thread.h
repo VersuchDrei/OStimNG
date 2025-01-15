@@ -196,6 +196,7 @@ namespace Threading {
         bool autoTransition(std::string type);
         bool autoTransition(int index, std::string type);
         void warpTo(Graph::Node* node, bool useFades);
+        void queueWarp(Graph::Node* node, int duration);
         inline void navigateTo(Graph::Node* node) { navigateTo(node, 0); }
         void navigateTo(Graph::Node* node, int duration);
         void queueNavigation(Graph::Node* node, int duration);

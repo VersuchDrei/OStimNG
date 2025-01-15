@@ -247,7 +247,7 @@ namespace Serialization {
             if (form) {
                 GameAPI::GameRecord<RE::TESForm> wrapper;
                 wrapper.form = form;
-                json["actorData"][stringID]["file"] = wrapper.getIdentifier().mod;
+                json["actorData"][stringID]["file"] = wrapper.getMod();
             }
 
             if (!data.equipObjects.empty()) {
@@ -262,9 +262,7 @@ namespace Serialization {
                 if (voice) {
                     GameAPI::GameRecord<RE::TESForm> wrapper;
                     wrapper.form = form;
-                    json["actorData"][stringID]["voice"] = json::object();
-                    json["actorData"][stringID]["voice"]["mod"] = wrapper.getIdentifier().mod;
-                    json["actorData"][stringID]["voice"]["formid"] = std::to_string(data.voiceSet & 0x00FFFFFF);
+                    json["actorData"][stringID]["voice"] = wrapper.toJson();
                 }
             }
 

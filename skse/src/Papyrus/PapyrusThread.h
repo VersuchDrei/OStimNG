@@ -77,6 +77,14 @@ namespace PapyrusThread {
         }
     }
 
+    void QueueWarp(RE::StaticFunctionTag*, int threadID, std::string sceneID, float duration) {
+        Threading::Thread* thread = Threading::ThreadManager::GetSingleton()->GetThread(threadID);
+        Graph::Node* node = Graph::GraphTable::getNodeById(sceneID);
+        if (thread && node) {
+            thread->queueWarp(node, (int)duration * 1000);
+        }
+    }
+
     bool AutoTransition(RE::StaticFunctionTag*, int threadID, std::string type) {
         Threading::Thread* thread = Threading::ThreadManager::GetSingleton()->GetThread(threadID);
         if (thread) {
@@ -296,6 +304,7 @@ namespace PapyrusThread {
         BIND(NavigateTo);
         BIND(QueueNavigation);
         BIND(WarpTo);
+        BIND(QueueWarp);
         BIND(AutoTransition);
         BIND(AutoTransitionForActor);
         BIND(GetSpeed);

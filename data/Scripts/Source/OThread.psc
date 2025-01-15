@@ -97,7 +97,7 @@ Function NavigateTo(int ThreadID, string SceneID) Global Native
 
 ;/* QueueNavigation
 * * tries to navigate the thread to a new scene after the currently running navigation is done
-* * if navigation is not possible this function fails
+* * if navigation is not possible it will instead queue a warp to the new scene
 * * if no navigation is currently running this function behaves identical to NavigateTo
 * *
 * * required API version: 7.3.4b (0x07030042)
@@ -110,12 +110,25 @@ Function QueueNavigation(int ThreadID, string SceneID, float Duration) Global Na
 
 ;/* WarpTo
 * * warps the thread to a new scene
+* * cancels any currently running navigations
 * *
 * * @param: ThreadID, the id of the thread
 * * @param: SceneID, the id of the scene to warp to
 * * @param: UseFades, if set to true the game will fade out before the scene change and back in afterwards
 */;
 Function WarpTo(int ThreadID, string SceneID, bool UseFades = False) Global Native
+
+;/* QueueWarp
+* * warps the thread to a new scene after the currently running navigation is done
+* * if no navigation is currently running this function behaves identical to WarpTo
+* *
+* * required API version: 7.3.4c (0x07030043)
+* *
+* * @param ThreadID, the id of the thread
+* * @param: SceneID, the id of the scene to warp to
+* * @param: Duration, the duration to remain in the scene before doing further queued navigations
+*/;
+Function QueueWarp(int ThreadID, string SceneID, float Duration) Global Native
 
 ;/* AutoTransition
 * * plays the auto transition for the thread

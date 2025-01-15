@@ -7,6 +7,7 @@
 #include "Serial/Manager.h"
 #include "Sound/SoundTable.h"
 #include "Trait/TraitTable.h"
+#include "Util/MathUtil.h"
 #include "Util/StringUtil.h"
 
 namespace PapyrusData {
@@ -58,11 +59,11 @@ namespace PapyrusData {
 	}
 
 	std::string GetVoiceSetName(RE::StaticFunctionTag*, int formID) {
-        return Sound::SoundTable::getVoiceSetName(formID);
+        return Sound::SoundTable::getVoiceSetName(GameAPI::GameRecordIdentifier(MathUtil::intToUint(formID)));
 	}
 
 	void SetVoiceSet(RE::StaticFunctionTag*, int formID, std::string voice) {
-        Sound::SoundTable::setVoiceSet(formID, voice);
+        Sound::SoundTable::setVoiceSet(GameAPI::GameRecordIdentifier(MathUtil::intToUint(formID)), voice);
 	}
 #pragma endregion
 
