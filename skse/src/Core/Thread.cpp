@@ -630,19 +630,6 @@ namespace Threading {
     void Thread::close() {
         logger::info("closing thread {}", m_threadId);
 
-        for (auto& actorIt : m_actors) {
-            actorIt.second.free();
-        }
-
-        if (furniture) {
-            furniture.enableUse();
-            furniture.setOwner(furnitureOwner);
-            if (MCM::MCMTable::resetClutter()) {
-                // TODO properly use GameObject
-                Furniture::resetClutter(furniture.form, MCM::MCMTable::resetClutterRadius() * 100);
-            }
-        }
-
         if (playerThread) {
             UI::EndControlledScene();
             GameAPI::GameCamera::endSceneMode(MCM::MCMTable::firstPersonAfterScene());
@@ -659,6 +646,20 @@ namespace Threading {
                 GameAPI::Game::setTimeScale(timeScaleBefore);
             }
         }
+
+        for (auto& actorIt : m_actors) {
+            actorIt.second.free();
+        }
+
+        if (furniture) {
+            furniture.enableUse();
+            furniture.setOwner(furnitureOwner);
+            if (MCM::MCMTable::resetClutter()) {
+                // TODO properly use GameObject
+                Furniture::resetClutter(furniture.form, MCM::MCMTable::resetClutterRadius() * 100);
+            }
+        }
+
         logger::info("closed thread {}", m_threadId);
 
         EventUtil::invokeListeners(threadEndListeners);

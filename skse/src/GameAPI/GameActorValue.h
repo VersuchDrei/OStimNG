@@ -11,8 +11,8 @@ namespace GameAPI {
         inline GameActorValue(RE::ActorValue actorValue) : actorValue{actorValue} {}
 
         inline operator bool() const { return actorValue != RE::ActorValue::kNone; }
-        inline bool operator==(const GameActorValue other) { return actorValue == other.actorValue; }
-        inline bool operator!=(const GameActorValue other) { return actorValue != other.actorValue; }
+        inline bool operator==(const GameActorValue other) const { return actorValue == other.actorValue; }
+        inline bool operator!=(const GameActorValue other) const { return actorValue != other.actorValue; }
     };
 
     namespace GameActorValues {

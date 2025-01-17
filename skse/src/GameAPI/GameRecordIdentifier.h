@@ -8,8 +8,9 @@ namespace GameAPI {
         RE::FormID formID = 0;
 
         inline operator bool() const { return formID; }
-        inline bool operator==(const GameRecordIdentifier other) { return formID == other.formID; }
-        inline bool operator!=(const GameRecordIdentifier other) { return formID != other.formID; }
+        inline bool operator==(const GameRecordIdentifier other) const { return formID == other.formID; }
+        inline bool operator!=(const GameRecordIdentifier other) const { return formID != other.formID; }
+        inline auto operator<=>(const GameRecordIdentifier& other) const { return formID <=> other.formID; }
 
         std::string toString();
 

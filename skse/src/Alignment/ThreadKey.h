@@ -8,7 +8,7 @@ namespace Alignment {
 
         std::string toString();
 
-        inline bool operator==(ThreadKey other) {
+        inline bool operator==(ThreadKey other) const {
             if (keys.size() != other.keys.size()) {
                 return false;
             }
@@ -22,7 +22,7 @@ namespace Alignment {
             return true;
         }
 
-        inline bool operator!=(ThreadKey other) {
+        inline bool operator!=(ThreadKey other) const {
             if (keys.size() != other.keys.size()) {
                 return true;
             }

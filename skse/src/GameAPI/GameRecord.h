@@ -10,8 +10,8 @@ namespace GameAPI {
         T* form = nullptr;
 
         inline operator bool() const { return form; }
-        inline bool operator==(const GameRecord<T> other) { return form == other.form; }
-        inline bool operator!=(const GameRecord<T> other) { return form != other.form; }
+        inline bool operator==(const GameRecord<T> other) const { return form == other.form; }
+        inline bool operator!=(const GameRecord<T> other) const { return form != other.form; }
 
         inline void clear() { form = nullptr; }
 

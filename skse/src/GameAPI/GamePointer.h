@@ -7,7 +7,7 @@ namespace GameAPI {
         T* object = nullptr;
 
         inline operator bool() const { return object; }
-        inline bool operator==(const GamePointer<T> other) { return object == other.object; }
-        inline bool operator!=(const GamePointer<T> other) { return object != other.object; }
+        inline bool operator==(const GamePointer<T> other) const { return object == other.object; }
+        inline bool operator!=(const GamePointer<T> other) const { return object != other.object; }
     };
 }

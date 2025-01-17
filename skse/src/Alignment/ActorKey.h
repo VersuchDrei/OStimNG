@@ -14,11 +14,11 @@ namespace Alignment {
             return GameAPI::GameSexAPI::toIcon(sex) + std::to_string(height) + "x" + std::to_string(heels);
         }
 
-        inline bool operator==(const ActorKey other) {
+        inline bool operator==(const ActorKey other) const {
             return sex == other.sex && height == other.height && heels == other.heels;
         }
 
-        inline bool operator!=(const ActorKey other) {
+        inline bool operator!=(const ActorKey other) const {
             return sex != other.sex || height != other.height || heels != other.heels;
         }
     };

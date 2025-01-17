@@ -9,6 +9,7 @@ namespace Sound {
     public:
         static void setup();
 
+        static VoiceSet* getVoiceSet(GameAPI::GameRecordIdentifier recordID);
         static VoiceSet getVoiceSet(GameAPI::GameActor actor);
 
         static std::vector<std::string> getVoiceSetPairs();
@@ -16,6 +17,7 @@ namespace Sound {
         static void setVoiceSet(GameAPI::GameRecordIdentifier recordID, std::string voice);
 
     private:
+        inline static std::unordered_map<GameAPI::GameRecordIdentifier, GameAPI::GameRecordIdentifier> aliases;
         inline static std::unordered_map<GameAPI::GameRecordIdentifier, VoiceSet> voiceSets;
 
         static void loadSoundSets(json& json, std::vector<SoundSet>& soundSets, std::string propertyName, std::string defaultExpression, std::string expressionPropertyName, std::string& fileName, std::string& filePath);

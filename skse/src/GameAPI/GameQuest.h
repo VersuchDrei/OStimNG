@@ -12,8 +12,8 @@ namespace GameAPI {
         GameQuest(RE::TESQuest* quest) : quest{quest} {}
 
         inline operator bool() const { return quest; }
-        inline bool operator==(const GameQuest other) { return quest == other.quest; }
-        inline bool operator!=(const GameQuest other) { return quest != other.quest; }
+        inline bool operator==(const GameQuest other) const { return quest == other.quest; }
+        inline bool operator!=(const GameQuest other) const { return quest != other.quest; }
 
         inline bool isCompleted() {
             return quest->IsCompleted();
