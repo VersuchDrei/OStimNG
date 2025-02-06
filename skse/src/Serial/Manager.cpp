@@ -58,8 +58,8 @@ namespace Serialization {
     }
 
 
-    float getActionStimulation(Graph::Role role, RE::FormID formID, std::string action) {
-        auto iter = actorData.find(formID);
+    float getActionStimulation(Graph::Role role, GameAPI::GameRecordIdentifier formID, std::string action) {
+        auto iter = actorData.find(formID.formID);
         if (iter != actorData.end()) {
             std::unordered_map<std::string, float>* stimulations = iter->second.actionStimulations.get(role);
             auto iter2 = stimulations->find(action);
@@ -75,8 +75,8 @@ namespace Serialization {
         actorData.insert({formID, {}}).first->second.actionStimulations.get(role)->emplace(action, stimulation).first->second = stimulation;
     }
 
-    float getActionMaxStimulation(Graph::Role role, RE::FormID formID, std::string action) {
-        auto iter = actorData.find(formID);
+    float getActionMaxStimulation(Graph::Role role, GameAPI::GameRecordIdentifier formID, std::string action) {
+        auto iter = actorData.find(formID.formID);
         if (iter != actorData.end()) {
             std::unordered_map<std::string, float>* maxStimulations = iter->second.actionMaxStimulations.get(role);
             auto iter2 = maxStimulations->find(action);
@@ -175,6 +175,8 @@ namespace Serialization {
 
         Serialization::SerializationInfo info{serial};
         Toys::Settings::Settings::getSingleton()->serialize(info);
+
+        logger::info("done serializing data");
     }
 
     void Load(SKSE::SerializationInterface* serial) {
@@ -191,15 +193,18 @@ namespace Serialization {
             if (type == undressingMaskRecord) {
                 uint32_t undressingMask;
                 serial->ReadRecordData(&undressingMask, sizeof(undressingMask));
+                logger::info("reading undressing mask: {:x}", undressingMask);
                 MCM::MCMTable::setUndressingMask(undressingMask);
             } else if (type == oldThreadsRecord) {
                 size_t size;
                 serial->ReadRecordData(&size, sizeof(size));
+                logger::info("closing old threads: {}", size);
                 deserializationErrors = 0;
                 for (int i = 0; i < size; i++) {
                     OldThread::deserialize(serial, oldThreads, deserializationErrors);
                 }
             } else if (type == actorDataRecord) {
+                logger::info("reading actor data");
                 size_t size;
                 serial->ReadRecordData(&size, sizeof(size));
                 for (int i = 0; i < size; i++) {
@@ -211,18 +216,22 @@ namespace Serialization {
                     ActorData data = ActorData::deserialize(serial, version);
 
                     if (valid) {
+                        logger::info("reading data for actor: {:x}", newID);
                         actorData.emplace(newID, data);
                     } else {
                         logger::warn("cannot resolve actor id {:x}, missing mod?", oldID);
                     }
                 }
             } else if (type == toySettingsRecord) {
+                logger::info("reading toy settings");
                 Serialization::DeserializationInfo info{serial, version};
                 Toys::Settings::Settings::getSingleton()->deserialize(info);
             } else {
                 logger::warn("Unknown record type in cosave.");
             }
         }
+
+        logger::info("done deserializing data");
     }
 
     void Revert(SKSE::SerializationInterface* serial) {

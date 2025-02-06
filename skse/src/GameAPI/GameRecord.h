@@ -87,7 +87,7 @@ namespace GameAPI {
         void loadFile(std::string mod, uint32_t formID) {
             //If mod not specified, indicates likely a runtime generated form. 
             if (mod.empty()) {
-                form = RE::TESForm::LookupByID<T>(formID |= 0xFF000000);
+                form = RE::TESForm::LookupByID<T>(formID | (0xFF >> 24));
             } else {
                 form = RE::TESDataHandler::GetSingleton()->LookupForm<T>(formID, mod);
             }

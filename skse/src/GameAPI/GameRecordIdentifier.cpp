@@ -53,7 +53,9 @@ namespace GameAPI {
 
         RE::FormID formID = std::stoi((std::string)json["formid"], nullptr, 16);
         std::string modname = json["mod"];
-        if (const RE::TESFile* mod = RE::TESDataHandler::GetSingleton()->LookupLoadedModByName(modname)) {
+        if (modname.empty()) {
+            formID += 0xFF << 24;
+        } else if (const RE::TESFile* mod = RE::TESDataHandler::GetSingleton()->LookupLoadedModByName(modname)) {
             formID += mod->GetCompileIndex() << 24;
         } else if (const RE::TESFile* mod = RE::TESDataHandler::GetSingleton()->LookupLoadedLightModByName(modname)) {
             formID += mod->GetPartialIndex() << 12;

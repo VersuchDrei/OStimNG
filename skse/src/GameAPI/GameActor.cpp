@@ -75,7 +75,16 @@ namespace GameAPI {
             actor->SetGraphVariableBool("bHeadTrackSpine", true);
             actor->SetGraphVariableBool("bHeadTracking", true);
             actor->SetGraphVariableBool("tdmHeadtrackingBehavior", true);
-            actor->NotifyAnimationGraph("IdleForceDefaultState");
+            if (actor->HasKeyword(GameLogic::GameTable::getNPCKeyword())) {
+                actor->NotifyAnimationGraph("IdleForceDefaultState");
+            } else {
+                actor->NotifyAnimationGraph("Reset");
+                actor->NotifyAnimationGraph("ReturnToDefault");
+                actor->NotifyAnimationGraph("FNISDefault");
+                actor->NotifyAnimationGraph("IdleReturnToDefault");
+                actor->NotifyAnimationGraph("ForceFurnExit");
+                actor->NotifyAnimationGraph("ReturnDefaultState");
+            }
         });
     }
 

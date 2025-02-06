@@ -4,7 +4,7 @@
 
 namespace GameAPI {
     struct GameRecordIdentifier {
-
+    public:
         RE::FormID formID = 0;
 
         inline operator bool() const { return formID; }

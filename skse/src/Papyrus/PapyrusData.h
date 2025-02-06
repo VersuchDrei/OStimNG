@@ -76,7 +76,7 @@ namespace PapyrusData {
     }
 
 	float GetActionStimulation(RE::StaticFunctionTag*, int role, int formID, std::string action) {
-        float stimulation = Serialization::getActionStimulation(static_cast<Graph::Role>(role), formID, action);
+        float stimulation = Serialization::getActionStimulation(static_cast<Graph::Role>(role), GameAPI::GameRecordIdentifier{MathUtil::intToUint(formID)}, action);
         if (!std::isnan(stimulation)) {
             return stimulation;
 		}
@@ -94,7 +94,7 @@ namespace PapyrusData {
     }
 
     float GetActionMaxStimulation(RE::StaticFunctionTag*, int role, int formID, std::string action) {
-        float stimulation = Serialization::getActionMaxStimulation(static_cast<Graph::Role>(role), formID, action);
+        float stimulation = Serialization::getActionMaxStimulation(static_cast<Graph::Role>(role), GameAPI::GameRecordIdentifier{MathUtil::intToUint(formID)}, action);
         if (!std::isnan(stimulation)) {
             return stimulation;
         }
