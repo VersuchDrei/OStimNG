@@ -108,6 +108,7 @@ set(sources
 	src/ScriptAPI/JsonScript.cpp
 	src/ScriptAPI/LibraryScript.cpp
 	src/ScriptAPI/MetadataScript.cpp
+	src/ScriptAPI/PlayerThreadScript.cpp
 	src/ScriptAPI/SettingsScript.cpp
 	src/ScriptAPI/ThreadScript.cpp
 	src/Serial/Manager.cpp

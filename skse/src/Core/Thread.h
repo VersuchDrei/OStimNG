@@ -34,6 +34,8 @@ namespace Threading {
 
         inline ThreadFlags getThreadFlags() { return threadFlags; }
         inline bool isFlagged(ThreadFlag flag) { return (threadFlags & flag) == flag; }
+        inline void flag(ThreadFlag flag) { threadFlags |= flag; }
+        inline void unflag(ThreadFlag flag) { threadFlags &= ~flag; }
 
         inline Graph::Node* getCurrentNodeInternal() { return m_currentNode; }
         inline int getCurrentSpeed() { return m_currentNodeSpeed; }

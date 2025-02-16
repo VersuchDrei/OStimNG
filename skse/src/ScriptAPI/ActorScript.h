@@ -4,6 +4,8 @@
 
 namespace ScriptAPI {
     namespace Actor {
+        void setExpressionsEnabled(GameAPI::GameActor actor, bool enabled, bool allowOverride);
+
         bool hasMetadata(GameAPI::GameActor actor, std::string metadata);
         void addMetadata(GameAPI::GameActor actor, std::string metadata);
         std::vector<std::string> getMetadata(GameAPI::GameActor actor);

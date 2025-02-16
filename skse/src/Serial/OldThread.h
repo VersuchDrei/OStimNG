@@ -145,7 +145,7 @@ namespace Serialization {
                 gameActors.push_back(actor.actor);
             }
 
-            GameAPI::GameEvents::sendEndEvent(threadID, "", gameActors);
+            GameAPI::GameEvents::sendEndEvent(threadID, nullptr, gameActors);
         }
     };
 }

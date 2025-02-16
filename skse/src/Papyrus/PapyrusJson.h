@@ -17,11 +17,16 @@ namespace PapyrusJson {
         return ScriptAPI::Json::getScene(json);
     }
 
+    std::vector<std::string> GetMetadata(RE::StaticFunctionTag*, std::string json) {
+        return ScriptAPI::Json::getMetadata(json);
+    }
+
     bool Bind(VM* a_vm) {
         const auto obj = "OJSON"sv;
 
         BIND(GetActors);
         BIND(GetScene);
+        BIND(GetMetadata);
 
         return true;
     }

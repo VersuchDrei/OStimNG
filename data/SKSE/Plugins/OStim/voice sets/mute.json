@@ -1,0 +1,6 @@
+{
+	"target":{
+		"mod":"OStim.esp",
+		"formid": "0xEED"
+	}
+}

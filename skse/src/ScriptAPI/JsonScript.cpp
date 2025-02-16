@@ -47,5 +47,16 @@ namespace ScriptAPI {
             JsonUtil::loadString(realJson, scene, "scene", objectName, objectType, false);
             return scene;
         }
+
+        std::vector<std::string> getMetadata(std::string json) {
+            nlohmann::json realJson = nlohmann::json::parse(json, nullptr, false);
+            if (realJson.is_discarded()) {
+                return {};
+            }
+
+            std::vector<std::string> metadata;
+            JsonUtil::loadStringList(realJson, metadata, "metadata", objectName, objectType, false);
+            return metadata;
+        }
     }
 }

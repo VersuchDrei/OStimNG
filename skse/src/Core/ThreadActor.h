@@ -2,6 +2,7 @@
 
 #include "EquipObjectHandler.h"
 #include "ExpressionUpdater.h"
+#include "ThreadActorFlag.h"
 
 #include "Alignment/ActorKey.h"
 #include "GameAPI/GameActor.h"
@@ -20,6 +21,11 @@ namespace Threading {
 	public:
         ThreadActor(Thread* thread, int index, GameAPI::GameActor actor);
         void initContinue();
+
+        inline ThreadActorFlags getFlags() { return actorFlags; }
+        inline bool isFlagged(ThreadActorFlag flag) { return (actorFlags & flag) == flag; }
+        inline void flag(ThreadActorFlag flag) { actorFlags |= flag; }
+        inline void unflag(ThreadActorFlag flag) { actorFlags &= ~flag; }
 
         int index;
         Threading::Metadata metadata;
@@ -115,6 +121,7 @@ namespace Threading {
             bool isRedress;
         };
 
+        ThreadActorFlags actorFlags = 0;
 
         Thread* thread;
 		GameAPI::GameActor actor;
@@ -268,7 +275,7 @@ namespace Threading {
         void updateUnderlyingExpression();
         void updateOverrideExpression();
         void wakeExpressions(int mask);
-        void applyExpression(Trait::GenderExpression* expression, int mask, int updateSpeed);
+        void applyExpression(Trait::GenderExpression* expression, int mask, int updateSpeed, bool isOverride);
         void checkForEyeballOverride();
         void applyEyeballOverride();
 #pragma endregion

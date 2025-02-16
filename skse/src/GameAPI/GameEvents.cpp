@@ -2,6 +2,7 @@
 
 #include "GameUtil.h"
 
+#include "Core/Thread.h"
 #include "GameLogic/GameTable.h"
 
 namespace GameAPI {
@@ -33,12 +34,18 @@ namespace GameAPI {
             GameUtil::sendModEvent(GameLogic::GameTable::getMainQuest(), "ostim_thread_speedchanged", std::to_string(speed), threadID);
         }
 
-        void sendEndEvent(int threadID, std::string sceneID, std::vector<GameActor> actors) {
+        void sendEndEvent(int threadID, Threading::Thread* thread, std::vector<GameActor> actors) {
             json json = json::object();
-            json["scene"] = sceneID;
+            json["scene"] = thread ? thread->getCurrentNode()->getNodeID() : "";
             json["actors"] = json::array();
             for (GameAPI::GameActor actor : actors) {
                 json["actors"].push_back(actor.toJson());
+            }
+            json["metadata"] = json::array();
+            if (thread) {
+                for (std::string metadata : thread->metadata.getMetadata()) {
+                    json["metadata"].push_back(metadata);
+                }
             }
 
             std::string jsonString = json.dump();

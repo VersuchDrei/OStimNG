@@ -664,7 +664,7 @@ namespace Threading {
 
         EventUtil::invokeListeners(threadEndListeners);
 
-        GameAPI::GameEvents::sendEndEvent(m_threadId, m_currentNode->scene_id, getGameActors());
+        GameAPI::GameEvents::sendEndEvent(m_threadId, this, getGameActors());
     }
 
     void Thread::addActorSink(RE::Actor* a_actor) {

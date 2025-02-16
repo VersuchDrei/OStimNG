@@ -20,3 +20,14 @@ Actor[] Function GetActors(string Json) Global Native
 * * @return: the scene id
 */;
 string Function GetScene(string Json) Global Native
+
+;/* GetMetadata
+* * gets the metadata that was attached to the thread
+* *
+* * @required API version: 7.3.4d (0x07030044)
+* *
+* * @param: Json, the json string
+* *
+* * @return: an array containing all the metadata
+*/;
+string[] Function GetMetadata(string Json) Global Native

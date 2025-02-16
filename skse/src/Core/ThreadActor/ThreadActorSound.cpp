@@ -137,7 +137,7 @@ namespace Threading {
                         setEventExpression(set->expression);
                     }
                     // reset mouth so lipsync doesn't look weird
-                    applyExpression(&Trait::TraitTable::fallbackExpression.female, Trait::ExpressionType::PHONEME, 5);
+                    applyExpression(&Trait::TraitTable::fallbackExpression.female, Trait::ExpressionType::PHONEME, 5, false);
                     if (voiceSet.voice && voiceSet.voice != actor.getVoice()) {
                         set->dialogue.sayAs(actor, partner, voiceSet.voice);
                     } else {

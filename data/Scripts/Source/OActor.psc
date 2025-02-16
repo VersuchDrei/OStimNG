@@ -115,6 +115,17 @@ int Function GetTimesClimaxed(Actor Act) Global Native
 ; ███████╗██╔╝ ██╗██║     ██║  ██║███████╗███████║███████║██║╚██████╔╝██║ ╚████║███████║
 ; ╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝
 
+;/* SetExpressionsEnabled
+* * enables or disabled expressions for the given actor
+* *
+* * required API version: 7.3.4d (0x07030044)
+* *
+* * @param: Act, the actor to enable/disable expressions for
+* * @param: Enabled, whether expressions should be enabled or disabled
+* * @param: AllowOverride, whether or not override expressions should still work (only relevant when disabling expressions)
+*/;
+Function SetExpressionsEnabled(Actor Act, bool Enabled, bool AllowOverride = true) Global Native
+
 ;/* PlayExpression
 * * plays the facial expression event on the actor
 * * this does not automatically reset the face again, for that you need to call ClearExpression

@@ -110,7 +110,7 @@ namespace Threading {
             if (overrideExpression) {
                 mask &= ~overrideExpression->typeMask;
             }
-            applyExpression(underlyingExpression, mask, 1);
+            applyExpression(underlyingExpression, mask, 1, false);
         }
         underlyingExpressionCooldown = RNGUtil::uniformInt(MCM::MCMTable::getExpressionDurationMin(), MCM::MCMTable::getExpressionDurationMax());
     }
@@ -124,7 +124,7 @@ namespace Threading {
         if (expressions) {
             overrideExpression = VectorUtil::randomElement(expressions)->getGenderExpression(female);
             mask &= ~overrideExpression->typeMask;
-            applyExpression(overrideExpression, overrideExpression->typeMask, 5);
+            applyExpression(overrideExpression, overrideExpression->typeMask, 5, true);
             overwriteExpressionCooldown = RNGUtil::uniformInt(MCM::MCMTable::getExpressionDurationMin(), MCM::MCMTable::getExpressionDurationMax());
         } else {
             overrideExpression = nullptr;
@@ -151,10 +151,10 @@ namespace Threading {
         }
         eventExpression = expression->getGenderExpression(female);
         if (overrideExpression) {
-            applyExpression(eventExpression, eventExpression->typeMask & ~overrideExpression->typeMask, 3);
+            applyExpression(eventExpression, eventExpression->typeMask & ~overrideExpression->typeMask, 3, false);
             mask &= ~eventExpression->typeMask & ~overrideExpression->typeMask;
         } else {
-            applyExpression(eventExpression, eventExpression->typeMask, 3);
+            applyExpression(eventExpression, eventExpression->typeMask, 3, false);
             mask &= ~eventExpression->typeMask;
         }
         
@@ -214,7 +214,7 @@ namespace Threading {
         }
 
         if (eventExpression) {
-            applyExpression(eventExpression, mask & eventExpression->typeMask, 3);
+            applyExpression(eventExpression, mask & eventExpression->typeMask, 3, false);
             mask &= ~eventExpression->typeMask;
         }
 
@@ -225,12 +225,16 @@ namespace Threading {
         }
 
         if (underlyingExpression) {
-            applyExpression(underlyingExpression, mask, 1);
+            applyExpression(underlyingExpression, mask, 1, false);
         }
     }
 
-    void ThreadActor::applyExpression(Trait::GenderExpression* expression, int mask, int updateSpeed) {
+    void ThreadActor::applyExpression(Trait::GenderExpression* expression, int mask, int updateSpeed, bool isOverride) {
         if (MCM::MCMTable::noFacialExpressions()) {
+            return;
+        }
+
+        if (isOverride ? isFlagged(ThreadActorFlag::NO_OVERRIDE_EXPRESSION) : isFlagged(ThreadActorFlag::NO_UNDERLYING_EXPRESSION)) {
             return;
         }
 

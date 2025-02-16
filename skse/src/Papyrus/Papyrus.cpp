@@ -18,6 +18,7 @@
 #include "Papyrus/PapyrusLibrary.h"
 #include "Papyrus/PapyrusMetadata.h"
 #include "Papyrus/PapyrusObject.h"
+#include "Papyrus/PapyrusPlayerThread.h"
 #include "Papyrus/PapyrusScenes.h"
 #include "Papyrus/PapyrusSequence.h"
 #include "Papyrus/PapyrusSettings.h"
@@ -48,6 +49,7 @@ namespace Papyrus {
             papyrus->Register(PapyrusJson::Bind);
             papyrus->Register(PapyrusLibrary::Bind);
             papyrus->Register(PapyrusMetadata::Bind);
+            papyrus->Register(PapyrusPlayerThread::Bind);
             papyrus->Register(PapyrusScenes::Bind);
             papyrus->Register(PapyrusSequence::Bind);
             papyrus->Register(PapyrusSettings::Bind);
