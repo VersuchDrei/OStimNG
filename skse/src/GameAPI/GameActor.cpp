@@ -66,10 +66,11 @@ namespace GameAPI {
             }
         }
 
-        StopTranslation(nullptr, 0, form);
 
         RE::Actor* actor = form;
         SKSE::GetTaskInterface()->AddTask([actor]() {
+            StopTranslation(nullptr, 0, actor);
+
             actor->SetGraphVariableFloat("OStimSpeed", 1.0);
             actor->SetGraphVariableBool("bHumanoidFootIKDisable", false);
             actor->SetGraphVariableBool("bHeadTrackSpine", true);
@@ -152,9 +153,11 @@ namespace GameAPI {
     }
 
     void GameActor::lockAtPosition(float x, float y, float z, float r) const {
-        StopTranslation(nullptr, 0, form);
-        setRotation(r);
-        TranslateTo(nullptr, 0, form, x, y, z, 0, 0, MathUtil::toDegrees(r) + 1, 1000000, 0.0001);
+        SKSE::GetTaskInterface()->AddTask([this, x, y, z, r] { 
+            StopTranslation(nullptr, 0, form);
+            setRotation(r);
+            TranslateTo(nullptr, 0, form, x, y, z, 0, 0, MathUtil::toDegrees(r) + 1, 1000000, 0.0001);
+        });
     }
 
     int GameActor::getRelationshipRank(GameActor other) const {

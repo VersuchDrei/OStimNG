@@ -36,7 +36,7 @@ namespace Threading {
 
         awaitingOrgasm = false;
 
-        if (thread->autoTransition(index, "climax")) {
+        if (MCM::MCMTable::useAutoClimaxAnimations() && thread->autoTransition(index, "climax")) {
             awaitingClimax = true;
             setTimeUntilClimax(0.0f);
         } else {

@@ -35,7 +35,7 @@ setting types:
 "defaultValue" (float): the default value of the setting (default: 0)
 "valueStep": (float): the magnitude in which the slider increments/decrements
 "minValue": (float): the minimum value of the slider (default: 0)
-"maxvalue": (float): the maximum value of the slider (default: 0)
+"maxValue": (float): the maximum value of the slider (default: 0)
 
 "dropdown":
 	the equivalent of what is called a "Menu Setting" by SkyUI
