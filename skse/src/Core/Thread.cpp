@@ -36,6 +36,9 @@ namespace Threading {
         }
 
         threadFlags = params.threadFlags;
+        for (std::string data : params.metadata) {
+            metadata.addMetadata(data);
+        }
 
         this->center = furniture ? furniture.getPosition() : (playerThread ? GameAPI::GameActor::getPlayer().getPosition() : params.actors.front().getPosition());
 
