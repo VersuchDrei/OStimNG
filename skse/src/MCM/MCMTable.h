@@ -24,9 +24,10 @@ namespace MCM {
         inline static int keyYes() { return settings[0xE2C].asInt(); }
         inline static int keyEnd() { return settings[0xE2D].asInt(); }
         inline static int keyToggle() { return settings[0xE2E].asInt(); }
-        static int keySearch() { return settings[0xE41].asInt(); }
-        static int keyAlignment() { return settings[0xDE2].asInt(); }
-        static int keySceneStart() { return settings[0xDE7].asInt(); }
+        inline static int keySearch() { return settings[0xE41].asInt(); }
+        inline static int keyAlignment() { return settings[0xDE2].asInt(); }
+        inline static int keySceneStart() { return settings[0xDE7].asInt(); }
+        inline static int keyNpcSceneStart() { return settings[0xEEE].asInt(); }
         inline static int keySpeedUp() { return settings[0xDE8].asInt(); }
         inline static int keySpeedDown() { return settings[0xDE9].asInt(); }
         inline static int keyPullOut() { return settings[0xDEA].asInt(); }
@@ -173,6 +174,7 @@ namespace MCM {
             {0xE2D, {83, "SetOsaEndKey"}},
             {0xE2E, {73, "SetOsaTogKey"}},
             {0xDE7, {200, "SetKeyMap"}},  // scene start
+            {0xEEE, {0, "keyNpcSceneStart"}},  // scene start
             {0xDE8, {78, "SetKeyUp"}},    // speed up
             {0xDE9, {74, "SetKeyDown"}},  // speed down
             {0xDEA, {79, "SetPullOut"}},

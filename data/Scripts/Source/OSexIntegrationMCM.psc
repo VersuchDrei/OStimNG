@@ -574,23 +574,25 @@ Function DrawControlsPage()
 	SetCursorPosition(2)
 	AddKeyMapOptionST("OID_KeyMain", "$ostim_main_key", Main.KeyMap)
 	SetCursorPosition(4)
-	AddKeyMapOptionST("OID_KeySpeedUp", "$ostim_speed_up_key", Main.SpeedUpKey)
+	AddKeyMapOptionST("OID_KeyNPCStart", "$ostim_npc_start_key", Main.KeyNPCStart)
 	SetCursorPosition(6)
-	AddKeyMapOptionST("OID_KeySpeedDown", "$ostim_speed_down_key", Main.SpeedDownKey)
+	AddKeyMapOptionST("OID_KeySpeedUp", "$ostim_speed_up_key", Main.SpeedUpKey)
 	SetCursorPosition(8)
-	AddKeyMapOptionST("OID_KeyPullOut", "$ostim_pullout_key", Main.PullOutKey)
+	AddKeyMapOptionST("OID_KeySpeedDown", "$ostim_speed_down_key", Main.SpeedDownKey)
 	SetCursorPosition(10)
-	AddKeyMapOptionST("OID_KeyControlToggle", "$ostim_control_toggle_key", Main.ControlToggleKey)
+	AddKeyMapOptionST("OID_KeyPullOut", "$ostim_pullout_key", Main.PullOutKey)
 	SetCursorPosition(12)
-	AddKeyMapOptionST("OID_KeyFreeCamToggle", "$ostim_tfc_key", Main.FreecamKey)
+	AddKeyMapOptionST("OID_KeyControlToggle", "$ostim_control_toggle_key", Main.ControlToggleKey)
 	SetCursorPosition(14)
-	AddKeyMapOptionST("OID_KeySearchMenu", "$ostim_key_search_menu", Main.SearchKey)
+	AddKeyMapOptionST("OID_KeyFreeCamToggle", "$ostim_tfc_key", Main.FreecamKey)
 	SetCursorPosition(16)
-	AddKeyMapOptionST("OID_KeyAlignmentMenu", "$ostim_key_alignment_menu", Main.AlignmentKey)
+	AddKeyMapOptionST("OID_KeySearchMenu", "$ostim_key_search_menu", Main.SearchKey)
 	SetCursorPosition(18)
+	AddKeyMapOptionST("OID_KeyAlignmentMenu", "$ostim_key_alignment_menu", Main.AlignmentKey)
+	SetCursorPosition(20)
 	AddKeyMapOptionST("OID_KeyHideUI", "$ostim_key_hide_ui", Main.HideUIKey)
 
-	SetCursorPosition(20)
+	SetCursorPosition(22)
 	int UseRumbleFlags = OPTION_FLAG_NONE
 	If !Game.UsingGamepad()
 		UseRumbleFlags = OPTION_FLAG_DISABLED
@@ -625,6 +627,17 @@ State OID_KeyMain
 
 	Event OnKeyMapChangeST(int KeyCode, string ConflictControl, string ConflictName)
 		Main.KeyMap = KeyCode
+		SetKeyMapOptionValueST(KeyCode)
+	EndEvent
+EndState
+
+State OID_KeyNPCStart
+	Event OnHighlightST()
+		SetInfoText("$ostim_tooltip_npc_start_key")
+	EndEvent
+
+	Event OnKeyMapChangeST(int KeyCode, string ConflictControl, string ConflictName)
+		Main.KeyNPCStart = KeyCode
 		SetKeyMapOptionValueST(KeyCode)
 	EndEvent
 EndState

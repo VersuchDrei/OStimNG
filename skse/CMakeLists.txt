@@ -43,6 +43,7 @@ set(sources
     src/Core/ThreadActor/ThreadActorExcitement.cpp
     src/Core/ThreadActor/ThreadActorExpression.cpp
     src/Core/ThreadActor/ThreadActorSound.cpp
+    src/Core/ThreadStarter/DebugNPCThreadStarter.cpp
     src/Core/ThreadStarter/NPCThreadStarter.cpp
     src/Core/ThreadStarter/PlayerThreadStarter.cpp
     src/Core/ThreadStarter/ThreadStarter.cpp

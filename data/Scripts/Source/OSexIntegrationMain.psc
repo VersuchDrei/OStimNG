@@ -253,6 +253,20 @@ int Property KeyMap
 	EndFunction
 EndProperty
 
+GlobalVariable Property OStimKeyNPCStart Auto
+int Property KeyNPCStart
+	int Function Get()
+		Return OStimKeyNPCStart.value As int
+	EndFunction
+	Function Set(int Value)
+		UnregisterForKey(OStimKeyNPCStart.value As int)
+		OStimKeyNPCStart.value = Value
+		If Value != 1
+			RegisterForKey(Value)
+		EndIf
+	EndFunction
+EndProperty
+
 GlobalVariable Property OStimKeySpeedUp Auto
 Int Property SpeedUpKey
 	int Function Get()
