@@ -101,8 +101,6 @@ namespace GameAPI {
             std::string(info->parentTopic->GetFormEditorID()).substr(0, topicCharacters) + "_" +
             std::format("{:08x}", info->formID & (mod->IsLight() ? 0xFFF : 0xFFFFFF)) + "_1.fuz";
 
-        logger::info("path is: {}", path);
-
         
         SKSE::GetTaskInterface()->AddTask([actor, path] {
             actor->PauseCurrentDialogue();
@@ -118,6 +116,5 @@ namespace GameAPI {
                 delete script;
             }
         });
-        
     }
 }

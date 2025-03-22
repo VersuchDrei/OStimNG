@@ -110,6 +110,12 @@ namespace PapyrusActorUtil {
             return RE::BSContainer::ForEachResult::kContinue;
         });
 
+        RE::NiPoint3 center2 = center->GetPosition();
+        std::sort(actors.begin(), actors.end(), [&](RE::Actor* actorA, RE::Actor* actorB) {
+            return actorA->GetPosition().GetSquaredDistance(center2) <
+                   actorB->GetPosition().GetSquaredDistance(center2);
+        });
+
         return actors;
     }
 

@@ -98,18 +98,22 @@ namespace Events {
                         Threading::startThread(params);
                     }
                 }
+                continue;
             } else if (keyCode == MCM::MCMTable::keyNpcSceneStart()) {
-                if (Threading::ThreadManager::GetSingleton()->playerThreadRunning()) {
-                    continue;
-                }
+                if (bEvent->IsDown()) {
+                    if (Threading::ThreadManager::GetSingleton()->playerThreadRunning()) {
+                        continue;
+                    }
 
-                GameAPI::GameActor target = GameAPI::Game::getCrosshairActor();
-                if (!target) {
-                    continue;
-                }
+                    GameAPI::GameActor target = GameAPI::Game::getCrosshairActor();
+                    if (!target) {
+                        continue;
+                    }
 
-                Threading::ThreadStartParams params = {.actors = {target}};
-                Threading::startDebugNPCThread(params);
+                    Threading::ThreadStartParams params = {.actors = {target}};
+                    Threading::startDebugNPCThread(params);
+                }
+                continue;
             }
 
             if (!bEvent->IsDown()) {

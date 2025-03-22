@@ -4,7 +4,6 @@
 
 namespace GameAPI {
     std::string GameRecordIdentifier::toString() {
-        
         uint8_t fullIndex = formID >> 24;
         RE::FormID formID = this->formID & 0xFFFFFF;
 
@@ -20,9 +19,9 @@ namespace GameAPI {
         std::string ret;
 
         if (!file) {
-            ret = file->GetFilename();
-        } else {
             ret = "";
+        } else {
+            ret = file->GetFilename();
         }
 
         ret += "|" + std::format("{:x}", formID);

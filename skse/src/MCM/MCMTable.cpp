@@ -73,16 +73,22 @@ namespace MCM {
         Serialization::exportSettings(json);
         Settings::SettingTable::getSingleton()->writeJson(json);
 
+        auto ostimPath = util::ostim_path();
+        std::filesystem::create_directory(*ostimPath);
+
         const auto settings_path = util::settings_path();
         std::ofstream file(*settings_path);
         file << std::setw(2) << json << std::endl;
     }
 
     void MCMTable::importSettings() {
-        const auto settings_path = util::settings_path();
+        auto settings_path = util::settings_path();
         if (!fs::exists(*settings_path)) {
-            logger::warn("settings file doesn't exist or no access");
-            return;
+            settings_path = util::settings_path_legacy();
+            if (!fs::exists(*settings_path)) {
+                logger::warn("settings file doesn't exist or no access");
+                return;
+            }
         }
 
         std::ifstream ifs(*settings_path);

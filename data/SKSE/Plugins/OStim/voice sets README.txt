@@ -16,6 +16,7 @@ voice set:
 	$ the content of this field will be checked against translation files in data/Interface/translations
 "target" (object): the target for this voice set, can be either an actor base or a voice type (see form)
 	There are two exceptions, which are the form ids 0 and 1 for the default voice set for males and females, respectively
+"aliases" (list<object>): a list of additional targets to be handled by this voice set (see form)
 "voice" (object): the voice type with which dialogue of this voice set will be spoken
 	if none is provided it will be derived from the target form (which should be good enough for 99% of cases)
 	you most likely won't need to provide this, it is only for necessary in rare edge cases

@@ -10,20 +10,19 @@
 
 namespace Threading {
     void startDebugNPCThread(ThreadStartParams params) {
-        handleActorAdding(params);
+        handleActorAddingDebug(params);
     }
 
     namespace {
-        void handleActorAdding(ThreadStartParams params) {
+        void handleActorAddingDebug(ThreadStartParams params) {
             if (!Graph::GraphTable::hasNodes(Furniture::FurnitureTable::getFurnitureType(params.furniture, false), params.actors.size() + 1)) {
                 startThread(params);
                 return;
             }
 
-            std::vector<GameAPI::GameActor> actors =
-                GameAPI::GameActor::getPlayer().getNearbyActors(2000, [&params](GameAPI::GameActor actor) {
-                    return !VectorUtil::contains(params.actors, actor) && Threading::isEligible(actor);
-                });
+            std::vector<GameAPI::GameActor> actors = GameAPI::GameActor::getPlayer().getNearbyActors(2000, [&params](GameAPI::GameActor actor) {
+                return !VectorUtil::contains(params.actors, actor) && Threading::isEligible(actor);
+            });
 
             if (actors.empty()) {
                 startThread(params);
@@ -40,7 +39,7 @@ namespace Threading {
 
             GameAPI::Game::showMessageBox("$ostim_message_add_actor", options, [params, actors](unsigned int result) {
                 if (result > 0 && result <= actors.size()) {
-                    addActor(params, actors[result - 1]);
+                    addActorDebug(params, actors[result - 1]);
                 } else {
                     ThreadStartParams nonConParams = params;
                     startThread(nonConParams);
@@ -48,9 +47,9 @@ namespace Threading {
             });
         }
 
-        void addActor(ThreadStartParams params, GameAPI::GameActor actor) {
+        void addActorDebug(ThreadStartParams params, GameAPI::GameActor actor) {
             params.actors.push_back(actor);
-            handleActorAdding(params);
+            handleActorAddingDebug(params);
         }
     }
 }

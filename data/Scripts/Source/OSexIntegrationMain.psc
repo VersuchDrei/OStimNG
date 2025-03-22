@@ -259,11 +259,7 @@ int Property KeyNPCStart
 		Return OStimKeyNPCStart.value As int
 	EndFunction
 	Function Set(int Value)
-		UnregisterForKey(OStimKeyNPCStart.value As int)
 		OStimKeyNPCStart.value = Value
-		If Value != 1
-			RegisterForKey(Value)
-		EndIf
 	EndFunction
 EndProperty
 

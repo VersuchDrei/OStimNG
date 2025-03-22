@@ -7,8 +7,8 @@ namespace stl {
 namespace util {
     std::optional<fs::path> documents_path();
     std::optional<fs::path> ostim_path();
-    std::optional<fs::path> database_path();
     std::optional<fs::path> settings_path();
+    std::optional<fs::path> settings_path_legacy();
     std::optional<fs::path> alignment_path();
     std::optional<fs::path> ui_settings_path();
 

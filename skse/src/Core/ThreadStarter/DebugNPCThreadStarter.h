@@ -6,7 +6,7 @@ namespace Threading {
     void startDebugNPCThread(ThreadStartParams params);
 
     namespace {
-        void handleActorAdding(ThreadStartParams params);
-        void addActor(ThreadStartParams params, GameAPI::GameActor actor);
+        void handleActorAddingDebug(ThreadStartParams params);
+        void addActorDebug(ThreadStartParams params, GameAPI::GameActor actor);
     }
 }
