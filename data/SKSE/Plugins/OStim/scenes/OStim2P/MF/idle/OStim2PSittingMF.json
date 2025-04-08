@@ -19,6 +19,11 @@
 			"icon": "OStim/symbols/gender_mm"
 		},
 		{
+			"destination": "OStim2PSittingMaleInMF",
+			"description": "$ostim_nav_approach_t{1}",
+			"icon": "OStim/symbols/next"
+		},
+		{
 			"destination": "OStim2PStandingApartMF",
 			"description": "$ostim_nav_stand_up",
 			"icon": "OStim/positional/standup_m"
@@ -27,16 +32,6 @@
 			"destination": "OStim2PDoggyIdleMF",
 			"description": "$ostim_nav_all_fours_a{1}",
 			"icon": "OStim/positional/allfours_alt_f"
-		},
-		{
-			"destination": "OStim2PLyingOnTopMF",
-			"description": "$ostim_nav_lie_on_t{1}",
-			"icon": "OStim/positional/lyingback_f"
-		},
-		{
-			"destination": "OStim2PBothLyingMF",
-			"description": "$ostim_nav_lie_down",
-			"icon": "OStim/positional/lyingback_m"
 		},
 		{
 			"destination": "OStimDoubleBedLeft2PBothSittingMF",

@@ -27,6 +27,7 @@
 #include "Papyrus/PapyrusThreadBuilder.h"
 #include "Papyrus/PapyrusUndress.h"
 #include "Papyrus/PapyrusUtil.h"
+#include "Papyrus/PapyrusUtility.h"
 #undef BIND
 
 namespace Papyrus {
@@ -57,6 +58,7 @@ namespace Papyrus {
             papyrus->Register(PapyrusThreadActor::Bind);
             papyrus->Register(PapyrusThreadBuilder::Bind);
             papyrus->Register(PapyrusUndress::Bind);
+            papyrus->Register(PapyrusUtility::Bind);
         }
     }
 }  // namespace Papyrus

@@ -1,0 +1,47 @@
+{
+	"name": "$OStim2PMissionaryMF",
+	"modpack": "OStim",
+	"length": 5.0,
+	"speeds":[
+		{
+			"animation": "OStim2PMissionaryClimaxMF",
+			"displaySpeed": 1.0
+		}
+	],
+	"destination": "OStim2PMissionaryMF",
+	"actors":[
+		{
+			"intendedSex": "male",
+			"sosBend": 0,
+			"scale": 1.03,
+      		"lookUp": -25,
+			"feetOnGround": false,
+			"tags": [
+				"kneeling"
+			],
+			"autoTransitions":{
+				"climax": "OStim2PMissionaryClimaxMF"
+			}
+		},
+		{
+			"intendedSex": "female",
+      		"lookUp": -50,
+			"feetOnGround": false,
+			"tags": [
+				"lyingback"
+			]
+		}
+	],
+  	"actions": [
+  		{
+      		"type": "vaginalsex",
+      		"actor": 0,
+      		"target": 1
+    	},
+    	{
+    		"type": "holdingleg",
+    		"actor": 0,
+    		"target": 1
+    	}
+  	]
+}

@@ -1,0 +1,72 @@
+{
+	"name": "$OStim2PSittingMaleInMF",
+	"modpack": "OStim",
+	"length": 2.0,
+	"speeds":[
+		{
+			"animation": "OStim2PSittingMaleInMF"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStim2PSittingMF",
+			"description": "$ostim_nav_sit_back_a{0}",
+			"icon": "OStim/detail/grab_m_end"
+		},
+		{
+			"destination": "OStim2PStandingApartMF",
+			"description": "$ostim_nav_stand_up",
+			"icon": "OStim/positional/standup_m"
+		},
+		{
+			"destination": "OStim2PLyingOnTopMF",
+			"description": "$ostim_nav_lie_on_t{1}",
+			"icon": "OStim/detail/holdinghip_mf"
+		},
+		{
+			"destination": "OStim2PBothLyingMF",
+			"description": "$ostim_nav_lie_down",
+			"icon": "OStim/positional/lyingback_m"
+		},
+		{
+			"destination": "OStim2PMissionaryIdleMF",
+			"description": "$ostim_nav_lie_back_a{1}",
+			"icon": "OStim/positional/lyingback_f",
+			"priority": 100
+		},
+		{
+			"destination": "OStim2PDoggyIdleMF",
+			"description": "$ostim_nav_all_fours_a{1}",
+			"icon": "OStim/positional/allfours_alt_f",
+			"priority": 100
+		}
+	],
+	"tags":[
+		"idle"
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"sosBend": 7,
+			"scale": 1.03,
+			"tags": [
+				"sitting"
+			],
+			"feetOnGround": false
+		},
+		{
+			"intendedSex": "female",
+			"tags": [
+				"sitting"
+			],
+			"feetOnGround": false
+		}
+	],
+	"actions":[
+		{
+			"type": "holdingleg",
+			"actor": 0,
+			"target": 1
+		}
+	]
+}

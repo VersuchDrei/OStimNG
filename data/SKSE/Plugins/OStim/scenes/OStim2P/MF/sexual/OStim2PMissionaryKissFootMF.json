@@ -1,0 +1,77 @@
+{
+	"name": "$OStim2PMissionaryKissFootMF",
+	"modpack": "OStim",
+	"length": 2.0,
+	"speeds":[
+		{
+			"animation": "OStim2PMissionaryKissFootMF_S1",
+			"displaySpeed": 0.5
+		},
+		{
+			"animation": "OStim2PMissionaryKissFootMF_S2",
+			"displaySpeed": 1.0
+		},
+		{
+			"animation": "OStim2PMissionaryKissFootMF_S3",
+			"displaySpeed": 2.0
+		},
+		{
+			"animation": "OStim2PMissionaryKissFootMF_S4",
+			"displaySpeed": 3.0
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStim2PMissionaryIdleMF",
+			"description": "$ostim_nav_return",
+			"icon": "OStim/symbols/return",
+			"priority": -1000
+		},
+		{
+			"destination": "OStim2PMissionaryLegsUpTwoHandedMF",
+			"description": "$ostim_nav_kiss_stop_t{1}",
+			"icon": "OStim/sensual/kissing_end",
+			"priority": 0
+		}
+	],
+	"tags":[
+		"missionary"
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"sosBend": 2,
+			"scale": 1.03,
+			"lookUp": -100,
+			"feetOnGround": false,
+			"tags": [
+				"kneeling"
+			]
+		},
+		{
+			"intendedSex": "female",
+			"lookUp": -100,
+			"feetOnGround": false,
+			"tags": [
+				"lyingback"
+			]
+		}
+	],
+  	"actions": [
+  		{
+      		"type": "vaginalsex",
+      		"actor": 0,
+      		"target": 1
+    	},
+    	{
+    		"type": "kissingfoot",
+    		"actor": 0,
+    		"target": 1
+    	},
+    	{
+    		"type": "holdingleg",
+    		"actor": 0,
+    		"target": 1
+    	}
+  	]
+}

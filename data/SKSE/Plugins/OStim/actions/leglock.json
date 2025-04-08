@@ -1,0 +1,12 @@
+{
+	"info": "leglock is one sided, if they are locking on each other add two actions",
+	"aliases":[
+		"legclench"
+	],
+	"actor":{
+		"info": "the one with the legs"
+	},
+	"target":{
+		"info": "the one with the body"
+	}
+}
