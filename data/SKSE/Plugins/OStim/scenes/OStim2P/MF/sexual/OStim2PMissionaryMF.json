@@ -28,12 +28,6 @@
 			"priority": -1000
 		},
 		{
-			"destination": "OStim2PMissionaryLegsSpreadMF",
-			"description": "$ostim_nav_legs_stretch_a{1}",
-			"icon": "OStim/positional/stretchleg_f",
-			"priority": 0
-		},
-		{
 			"destination": "OStim2PMissionaryHandHoldingMF",
 			"description": "$ostim_nav_hold_hands",
 			"icon": "OStim/detail/holdinghand_mf",
@@ -46,9 +40,21 @@
 			"priority": 0
 		},
 		{
-			"destination": "OStim2PMissionaryLegsUpTwoHandedMF",
+			"destination": "OStim2PMissionaryLegsStretchedMF",
+			"description": "$ostim_nav_legs_stretch_a{1}",
+			"icon": "OStim/positional/stretchleg_f",
+			"priority": 0
+		},
+		{
+			"destination": "OStim2PMissionaryLegsUpMF",
 			"description": "$ostim_nav_hold_legs_t{1}",
 			"icon": "OStim/detail/holdingleg_mf",
+			"priority": 0
+		},
+		{
+			"destination": "OStim2PMissionaryLegsTogetherMF",
+			"description": "$ostim_nav_hold_legs_a{1}",
+			"icon": "OStim/positional/raisebutt_f",
 			"priority": 0
 		},
 		{
