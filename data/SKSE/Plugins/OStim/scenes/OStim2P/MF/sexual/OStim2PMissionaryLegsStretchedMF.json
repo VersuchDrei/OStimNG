@@ -1,22 +1,22 @@
 {
-	"name": "$OStim2PMissionaryLegsSpreadMF",
+	"name": "$OStim2PMissionaryLegsStretchedMF",
 	"modpack": "OStim",
 	"length": 2.0,
 	"speeds":[
 		{
-			"animation": "OStim2PMissionaryLegsSpreadMF_S1",
+			"animation": "OStim2PMissionaryLegsStretchedMF_S1",
 			"displaySpeed": 0.5
 		},
 		{
-			"animation": "OStim2PMissionaryLegsSpreadMF_S2",
+			"animation": "OStim2PMissionaryLegsStretchedMF_S2",
 			"displaySpeed": 1.0
 		},
 		{
-			"animation": "OStim2PMissionaryLegsSpreadMF_S3",
+			"animation": "OStim2PMissionaryLegsStretchedMF_S3",
 			"displaySpeed": 2.0
 		},
 		{
-			"animation": "OStim2PMissionaryLegsSpreadMF_S4",
+			"animation": "OStim2PMissionaryLegsStretchedMF_S4",
 			"displaySpeed": 3.0
 		}
 	],
@@ -46,9 +46,15 @@
 			"priority": 0
 		},
 		{
-			"destination": "OStim2PMissionaryLegsUpFreeHandedMF",
+			"destination": "OStim2PMissionaryLegsUpMF",
 			"description": "$ostim_nav_legs_raise_a{1}",
 			"icon": "OStim/positional/stretchleg_f",
+			"priority": 0
+		},
+		{
+			"destination": "OStim2PMissionaryLegsTogetherMF",
+			"description": "$ostim_nav_hold_legs_a{1}",
+			"icon": "OStim/positional/raisebutt_f",
 			"priority": 0
 		},
 		{
