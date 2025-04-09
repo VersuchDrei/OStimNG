@@ -1,10 +1,10 @@
 {
-	"name": "$OStim2PDoggyIdleMF",
+	"name": "$OStim2PSidewaysIdleMF",
 	"modpack": "OStim",
 	"length": 2.0,
 	"speeds":[
 		{
-			"animation": "OStim2PDoggyIdleMF"
+			"animation": "OStim2PSidewaysIdleMF"
 		}
 	],
 	"navigations":[
@@ -15,16 +15,16 @@
 			"priority": -1000
 		},
 		{
-			"destination": "OStim2PSidewaysIdleMF",
-			"description": "$ostim_nav_lie_side_a{1}",
-			"icon": "OStim/positional/lyingside_f",
+			"destination": "OStim2PMissionaryIdleMF",
+			"description": "$ostim_nav_lie_on_back_a{1}",
+			"icon": "OStim/sexual/lyingback_f",
 			"priority": 0
 		},
 		{
-			"destination": "OStim2PProneMF",
-			"description": "$ostim_nav_prone_t{1}",
-			"icon": "OStim/sexual/prone_mf",
-			"priority": 3000
+			"destination": "OStim2PDoggyIdleMF",
+			"description": "$ostim_nav_all_fours_a{1}",
+			"icon": "OStim/positional/allfours_alt_f",
+			"priority": 0
 		}
 	],
 	"tags":[
@@ -35,7 +35,6 @@
 			"intendedSex": "male",
 			"sosBend": 2,
 			"scale": 1.03,
-      		"lookUp": -50,
 			"tags": [
 				"kneeling"
 			],
@@ -43,11 +42,10 @@
 		},
 		{
 			"intendedSex": "female",
-      		"lookUp": -100,
-      		"lookLeft": 30,
+      		"lookUp": 30,
+      		"lookLeft": -80,
 			"tags": [
-				"allfours",
-				"facingaway"
+				"lyingside"
 			],
 			"feetOnGround": false
 		}

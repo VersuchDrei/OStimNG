@@ -35,6 +35,12 @@
 			"priority": 100
 		},
 		{
+			"destination": "OStim2PSidewaysIdleMF",
+			"description": "$ostim_nav_lie_side_a{1}",
+			"icon": "OStim/positional/lyingside_f",
+			"priority": 100
+		},
+		{
 			"destination": "OStim2PDoggyIdleMF",
 			"description": "$ostim_nav_all_fours_a{1}",
 			"icon": "OStim/positional/allfours_alt_f",

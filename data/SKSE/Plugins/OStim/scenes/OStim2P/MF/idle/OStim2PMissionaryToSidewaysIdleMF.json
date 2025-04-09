@@ -1,0 +1,31 @@
+{
+	"name": "$OStim2PMissionaryToSidewaysIdleMF",
+	"modpack": "OStim",
+	"length": 1.95,
+	"speeds":[
+		{
+			"animation": "OStim2PMissionaryToSidewaysIdleMF"
+		}
+	],
+	"destination": "OStim2PSidewaysIdleMF",
+	"actors":[
+		{
+			"intendedSex": "male",
+			"scale": 1.03,
+			"sosBend": 4,
+			"tags": [
+				"kneeling"
+			],
+			"feetOnGround": false
+		},
+		{
+			"intendedSex": "female",
+			"lookUp": -40,
+			"tags": [
+				"lyingback",
+				"lyingside"
+			],
+			"feetOnGround": false
+		}
+	]
+}

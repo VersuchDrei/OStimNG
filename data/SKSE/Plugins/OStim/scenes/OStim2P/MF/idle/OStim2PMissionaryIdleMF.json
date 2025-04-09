@@ -15,9 +15,15 @@
 			"priority": -1000
 		},
 		{
+			"destination": "OStim2PMissionaryToSidewaysIdleMF",
+			"description": "$ostim_nav_lie_side_a{1}",
+			"icon": "OStim/positional/lyingside_f",
+			"priority": 0
+		},
+		{
 			"destination": "OStim2PMissionaryMF",
 			"description": "$ostim_nav_missionary_t{1}",
-			"icon": "OStim/sexual/missionary_mf",
+			"icon": "OStim/sexual/vaginalsex_mf",
 			"priority": 3000
 		}
 	],

@@ -1,0 +1,71 @@
+{
+	"name": "$OStim2PProneMF",
+	"modpack": "OStim",
+	"length": 2.0,
+	"speeds":[
+		{
+			"animation": "OStim2PProneMF_S1",
+			"displaySpeed": 0.5
+		},
+		{
+			"animation": "OStim2PProneMF_S2",
+			"displaySpeed": 1.0
+		},
+		{
+			"animation": "OStim2PProneMF_S3",
+			"displaySpeed": 2.0
+		},
+		{
+			"animation": "OStim2PProneMF_S4",
+			"displaySpeed": 3.0
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStim2PDoggyIdleMF",
+			"description": "$ostim_nav_return",
+			"icon": "OStim/symbols/return",
+			"priority": -1000
+		},
+		{
+			"destination": "OStim2PProneSpreadLegsMF",
+			"description": "$ostim_nav_legs_spread_a{1}",
+			"icon": "OStim/positional/spreadlegs_f",
+			"priority": 0
+		},
+		{
+			"destination": "OStim2PProneHoldingMF",
+			"description": "$ostim_nav_hold_t{1}",
+			"icon": "OStim/sensual/spooning_mf",
+			"priority": 0
+		}
+	],
+	"tags":[
+		"prone"
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"sosBend": 5,
+			"scale": 1.03,
+			"feetOnGround": false,
+			"tags": [
+				"lyingfront"
+			]
+		},
+		{
+			"intendedSex": "female",
+			"feetOnGround": false,
+			"tags": [
+				"lyingfront"
+			]
+		}
+	],
+  	"actions": [
+  		{
+      		"type": "vaginalsex",
+      		"actor": 0,
+      		"target": 1
+    	}
+  	]
+}
