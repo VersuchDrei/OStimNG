@@ -8,6 +8,7 @@
 #include "SexToys/Settings/Settings.h"
 #include "Util/Globals.h"
 #include "Util/MathUtil.h"
+#include "Util/StringUtil.h"
 
 namespace Serialization {
     void closeOldThreads() {
@@ -59,6 +60,7 @@ namespace Serialization {
 
 
     float getActionStimulation(Graph::Role role, GameAPI::GameRecordIdentifier formID, std::string action) {
+        StringUtil::toLower(action);
         auto iter = actorData.find(formID.formID);
         if (iter != actorData.end()) {
             std::unordered_map<std::string, float>* stimulations = iter->second.actionStimulations.get(role);
@@ -72,10 +74,12 @@ namespace Serialization {
     }
 
     void setActionStimulation(Graph::Role role, RE::FormID formID, std::string action, float stimulation) {
+        StringUtil::toLower(action);
         actorData.insert({formID, {}}).first->second.actionStimulations.get(role)->emplace(action, stimulation).first->second = stimulation;
     }
 
     float getActionMaxStimulation(Graph::Role role, GameAPI::GameRecordIdentifier formID, std::string action) {
+        StringUtil::toLower(action);
         auto iter = actorData.find(formID.formID);
         if (iter != actorData.end()) {
             std::unordered_map<std::string, float>* maxStimulations = iter->second.actionMaxStimulations.get(role);
@@ -89,11 +93,13 @@ namespace Serialization {
     }
 
     void setActionMaxStimulation(Graph::Role role, RE::FormID formID, std::string action, float maxStimulation) {
+        StringUtil::toLower(action);
         actorData.insert({formID, {}}).first->second.actionMaxStimulations.get(role)->emplace(action, maxStimulation).first->second = maxStimulation;
     }
 
 
     float getEventStimulation(Graph::Role role, RE::FormID formID, std::string evt) {
+        StringUtil::toLower(evt);
         auto iter = actorData.find(formID);
         if (iter != actorData.end()) {
             std::unordered_map<std::string, float>* stimulations = iter->second.eventStimulations.get(role);
@@ -107,10 +113,12 @@ namespace Serialization {
     }
 
     void setEventStimulation(Graph::Role role, RE::FormID formID, std::string evt, float stimulation) {
+        StringUtil::toLower(evt);
         actorData.insert({formID, {}}).first->second.eventStimulations.get(role)->emplace(evt, stimulation).first->second = stimulation;
     }
 
     float getEventMaxStimulation(Graph::Role role, RE::FormID formID, std::string evt) {
+        StringUtil::toLower(evt);
         auto iter = actorData.find(formID);
         if (iter != actorData.end()) {
             std::unordered_map<std::string, float>* maxStimulations = iter->second.eventMaxStimulations.get(role);
@@ -124,6 +132,7 @@ namespace Serialization {
     }
 
     void setEventMaxStimulation(Graph::Role role, RE::FormID formID, std::string evt, float maxStimulation) {
+        StringUtil::toLower(evt);
         actorData.insert({formID, {}}).first->second.eventMaxStimulations.get(role)->emplace(evt, maxStimulation).first->second = maxStimulation;
     }
 

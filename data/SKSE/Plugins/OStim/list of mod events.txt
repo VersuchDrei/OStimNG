@@ -106,6 +106,20 @@ Event OStimActorOrgasm(string EventName, string SceneID, float ThreadID, Form Se
 	Actor OrgasmedActor = Sender as Actor
 EndEvent
 
+--- ostim_furniturechanged ---
+gets fired when the furniture changes during a thread
+
+RegisterForModEvent("ostim_furniturechanged", "OStimFurnitureChanged")
+
+;/*
+* * @param: FurnitureType, the type of the new furniture
+* * @param: ThreadID, the id of the thread that changed furniture
+* * @param: Sender, the new furniture
+*/;
+Event OStimFurnitureChanged(string EventName, string FurnitureType, float ThreadID, Form Sender)
+	ObjectReference FurnitureRef = Sender as ObjectReference
+EndEvent
+
 --- ostim_event ---
 gets fired when an event is triggered by annotations
 

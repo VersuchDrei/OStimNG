@@ -871,6 +871,8 @@ namespace Threading {
         if (playerThread) {
             GameAPI::GameCamera::startSceneMode(MCM::MCMTable::useFreeCam());
         }
+
+        GameAPI::GameEvents::sendFurnitureChangedEvent(m_threadId, this->furniture);
     }
 
 

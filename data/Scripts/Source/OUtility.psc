@@ -5,6 +5,40 @@
 */;
 ScriptName OUtility
 
+; ███████╗████████╗██████╗ ██╗███╗   ██╗ ██████╗ ███████╗
+; ██╔════╝╚══██╔══╝██╔══██╗██║████╗  ██║██╔════╝ ██╔════╝
+; ███████╗   ██║   ██████╔╝██║██╔██╗ ██║██║  ███╗███████╗
+; ╚════██║   ██║   ██╔══██╗██║██║╚██╗██║██║   ██║╚════██║
+; ███████║   ██║   ██║  ██║██║██║ ╚████║╚██████╔╝███████║
+; ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝
+
+;/* Translate
+* * loads a translation from the translation files in the Interface folder
+* *
+* * @param: Text, the id of the translation to load
+* *
+* * @return: the translation if one was found, otherwise the text itself
+*/;
+string Function Translate(string Text) Global Native
+
+
+;  █████╗ ██████╗ ██████╗  █████╗ ██╗   ██╗███████╗
+; ██╔══██╗██╔══██╗██╔══██╗██╔══██╗╚██╗ ██╔╝██╔════╝
+; ███████║██████╔╝██████╔╝███████║ ╚████╔╝ ███████╗
+; ██╔══██║██╔══██╗██╔══██╗██╔══██║  ╚██╔╝  ╚════██║
+; ██║  ██║██║  ██║██║  ██║██║  ██║   ██║   ███████║
+; ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚══════╝
+
+;/* ShuffleFormArray
+* * shuffles an array of forms, randomizing the order
+* *
+* * @param: Array, the array to shuffle
+* *
+* * @return: the shuffled array
+*/;
+Form[] Function ShuffleFormArray(Form[] Array) Global Native
+
+
 ;  ██████╗ ██╗   ██╗███████╗███████╗████████╗███████╗
 ; ██╔═══██╗██║   ██║██╔════╝██╔════╝╚══██╔══╝██╔════╝
 ; ██║   ██║██║   ██║█████╗  ███████╗   ██║   ███████╗

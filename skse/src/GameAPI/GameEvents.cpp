@@ -3,6 +3,7 @@
 #include "GameUtil.h"
 
 #include "Core/Thread.h"
+#include "Furniture/FurnitureTable.h"
 #include "GameLogic/GameTable.h"
 
 namespace GameAPI {
@@ -66,6 +67,10 @@ namespace GameAPI {
             }
 
             GameUtil::sendModEvent(actor.form, "ostim_actor_orgasm", sceneID, threadID);
+        }
+
+        void sendFurnitureChangedEvent(int threadID, GameAPI::GameObject furniture) {
+            GameUtil::sendModEvent(furniture.form, "ostim_furniturechanged", Furniture::FurnitureTable::getFurnitureType(furniture, false)->id, threadID);
         }
 
         void sendOStimEvent(int threadID, std::string type, Graph::RoleMap<GameActor> actors) {
