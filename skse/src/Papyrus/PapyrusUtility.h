@@ -21,7 +21,7 @@ namespace PapyrusUtility {
         std::vector<RE::TESQuest*> quests;
 
 		for (RE::TESQuest* quest : RE::TESDataHandler::GetSingleton()->GetFormArray<RE::TESQuest>()) {
-            if (std::find(quest->textGlobals->begin(), quest->textGlobals->end(), tag) != quest->textGlobals->end()) {
+            if (quest->textGlobals && !quest->textGlobals->empty() && std::find(quest->textGlobals->begin(), quest->textGlobals->end(), tag) != quest->textGlobals->end()) {
                 quests.push_back(quest);
 			}
 		}

@@ -105,6 +105,7 @@ set(sources
     src/PluginInterfaceImplementation/SexToys/SexToyInterfaceImpl.cpp
     src/PluginInterfaceImplementation/Threading/ThreadInterfaceImpl.cpp
     src/PluginInterfaceImplementation/InterfaceMapImpl.cpp
+	src/ScriptAPI/ActionDataScript.cpp
 	src/ScriptAPI/ActorScript.cpp
 	src/ScriptAPI/JsonScript.cpp
 	src/ScriptAPI/LibraryScript.cpp

@@ -64,6 +64,16 @@ namespace Trait {
         return ret;
     }
 
+    bool ActorCondition::fulfills(std::set<std::string>& requirements) {
+        for (const std::string& requirement : requirements) {
+            if (!this->requirements.contains(requirement)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     bool ActorCondition::fulfills(ActorCondition other) {
         if (type != other.type) {
             return false;
