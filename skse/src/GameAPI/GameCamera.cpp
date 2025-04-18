@@ -114,13 +114,15 @@ namespace GameAPI {
     }
 
     void GameCamera::toggleFlyCamInner() {
-        const auto scriptFactory = RE::IFormFactory::GetConcreteFormFactoryByType<RE::Script>();
-        const auto script = scriptFactory ? scriptFactory->Create() : nullptr;
-        if (script) {
-            script->SetCommand("tfc");
-            GameUtil::CompileAndRun(script, RE::PlayerCharacter::GetSingleton());
-            delete script;
-        }
+        SKSE::GetTaskInterface()->AddTask([] {
+            const auto scriptFactory = RE::IFormFactory::GetConcreteFormFactoryByType<RE::Script>();
+            const auto script = scriptFactory ? scriptFactory->Create() : nullptr;
+            if (script) {
+                script->SetCommand("tfc");
+                GameUtil::CompileAndRun(script, RE::PlayerCharacter::GetSingleton());
+                delete script;
+            }
+        });
     }
 
 

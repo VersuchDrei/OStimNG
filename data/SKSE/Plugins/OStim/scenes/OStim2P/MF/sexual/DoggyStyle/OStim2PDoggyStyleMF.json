@@ -1,0 +1,78 @@
+{
+	"name": "$OStim2PDoggyStyleMF",
+	"modpack": "OStim",
+	"length": 2.0,
+	"speeds":[
+		{
+			"animation": "OStim2PDoggyStyleMF_S1",
+			"displaySpeed": 0.5
+		},
+		{
+			"animation": "OStim2PDoggyStyleMF_S2",
+			"displaySpeed": 1.0
+		},
+		{
+			"animation": "OStim2PDoggyStyleMF_S3",
+			"displaySpeed": 2.0
+		},
+		{
+			"animation": "OStim2PDoggyStyleMF_S4",
+			"displaySpeed": 3.0
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStim2PDoggyIdleMF",
+			"description": "$ostim_nav_return",
+			"icon": "OStim/symbols/return",
+			"priority": -1000
+		},
+		{
+			"destination": "OStim2PDoggyStylePullHairMF",
+			"description": "$ostim_nav_pull_hair_t{1}",
+			"icon": "OStim/detail/holdinghead_mf",
+			"priority": 0
+		},
+		{
+			"destination": "OStim2PDoggyStyleLowMF",
+			"description": "$ostim_nav_get_down_a{1}",
+			"icon": "OStim/symbols/arrow_down",
+			"priority": 0
+		}
+	],
+	"tags":[
+		"doggystyle"
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"sosBend": 2,
+			"scale": 1.03,
+			"lookUp": -50,
+			"feetOnGround": false,
+			"tags": [
+				"kneeling"
+			]
+		},
+		{
+			"intendedSex": "female",
+			"feetOnGround": false,
+			"tags": [
+				"allfours",
+				"facingaway"
+			]
+		}
+	],
+  	"actions": [
+  		{
+      		"type": "vaginalsex",
+      		"actor": 0,
+      		"target": 1
+    	},
+    	{
+    		"type": "holdinghip",
+    		"actor": 0,
+    		"target": 1
+    	}
+  	]
+}
