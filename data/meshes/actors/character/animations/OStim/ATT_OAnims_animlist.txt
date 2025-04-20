@@ -64,6 +64,8 @@ b -Tn OStim2PSittingMF_0 OStim2P\MF\idle\OStim2PSittingMF_0.hkx
 b -Tn OStim2PSittingMF_1 OStim2P\MF\idle\OStim2PSittingMF_1.hkx
 b -Tn OStim2PSittingMaleInMF_0 OStim2P\MF\idle\OStim2PSittingMaleInMF_0.hkx
 b -Tn OStim2PSittingMaleInMF_1 OStim2P\MF\idle\OStim2PSittingMaleInMF_1.hkx
+b -Tn OStim2PSittingFemaleInMF_0 OStim2P\MF\idle\OStim2PSittingFemaleInMF_0.hkx
+b -Tn OStim2PSittingFemaleInMF_1 OStim2P\MF\idle\OStim2PSittingFemaleInMF_1.hkx
 b -Tn OStim2PLyingOnTopMF_0 OStim2P\MF\idle\OStim2PLyingOnTopMF_0.hkx
 b -Tn OStim2PLyingOnTopMF_1 OStim2P\MF\idle\OStim2PLyingOnTopMF_1.hkx
 b -Tn OStim2PBothLyingMF_0 OStim2P\MF\idle\OStim2PBothLyingMF_0.hkx
