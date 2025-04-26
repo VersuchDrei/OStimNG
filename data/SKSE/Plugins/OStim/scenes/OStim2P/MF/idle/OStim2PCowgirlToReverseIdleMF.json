@@ -1,0 +1,38 @@
+{
+	"name": "$OStim2PCowgirlToReverseIdleMF",
+	"modpack": "OStim",
+	"length": 1.95,
+	"speeds":[
+		{
+			"animation": "OStim2PCowgirlToReverseIdleMF"
+		}
+	],
+	"destination": "OStim2PReverseCowgirlIdleMF",
+	"actors":[
+		{
+			"intendedSex": "male",
+			"scale": 1.03,
+			"sosBend": 4,
+      		"lookUp": -25,
+			"tags": [
+				"lyingback"
+			],
+			"feetOnGround": false
+		},
+		{
+			"intendedSex": "female",
+      		"lookUp": -60,
+			"tags": [
+				"kneeling"
+			],
+			"feetOnGround": false
+		}
+	],
+	"actions":[
+		{
+			"type": "mounting",
+			"actor": 1,
+			"target": 0
+		}
+	]
+}

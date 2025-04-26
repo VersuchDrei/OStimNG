@@ -12,6 +12,11 @@
 			"destination": "OStim2PBothLyingMF",
 			"description": "$ostim_nav_lie_down_a{1}",
 			"icon": "OStim/positional/lyingback_f"
+		},
+		{
+			"destination": "OStim2PCowgirlIdleMF",
+			"description": "$ostim_nav_mount_t{0}",
+			"icon": "OStim/sexual/cowgirl_mf"
 		}
 	],
 	"tags":[

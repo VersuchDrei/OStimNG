@@ -1,0 +1,14 @@
+{
+	"info": "actor sits on target",
+	"aliases":[
+		"mount",
+		"ride",
+		"riding"
+	],
+	"actor":{
+		"info": "the one who sits on top"
+	},
+	"target":{
+		"info": "the one lies on the floor"
+	}
+}

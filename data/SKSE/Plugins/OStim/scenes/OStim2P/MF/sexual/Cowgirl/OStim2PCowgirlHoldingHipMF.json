@@ -1,0 +1,95 @@
+{
+	"name": "$OStim2PCowgirlHoldingHipMF",
+	"modpack": "OStim",
+	"length": 2.0,
+	"speeds":[
+		{
+			"animation": "OStim2PCowgirlHoldingHipMF_S1",
+			"displaySpeed": 0.5
+		},
+		{
+			"animation": "OStim2PCowgirlHoldingHipMF_S2",
+			"displaySpeed": 1.0
+		},
+		{
+			"animation": "OStim2PCowgirlHoldingHipMF_S3",
+			"displaySpeed": 2.0
+		},
+		{
+			"animation": "OStim2PCowgirlHoldingHipMF_S4",
+			"displaySpeed": 3.0
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStim2PCowgirlIdleMF",
+			"description": "$ostim_nav_return",
+			"icon": "OStim/symbols/return",
+			"priority": -1000
+		},
+		{
+			"destination": "OStim2PCowgirlMF",
+			"description": "$ostim_nav_hold_hip_stop_t{1}",
+			"icon": "OStim/detail/grab_m_end",
+			"priority": 0
+		},
+		{
+			"destination": "OStim2PCowgirlHoldingBodyMF",
+			"description": "$ostim_nav_lean_forward_a{0}",
+			"icon": "OStim/sensual/eyecontact_f",
+			"priority": 0
+		},
+		{
+			"destination": "OStim2PCowgirlHoldingBreastMF",
+			"description": "$ostim_nav_grope_breast_t{1}",
+			"icon": "OStim/detail/gropingbreast_mf",
+			"priority": 0
+		}
+	],
+	"tags":[
+		"cowgirl"
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"sosBend": 0,
+			"scale": 1.03,
+			"lookUp": 25,
+			"feetOnGround": false,
+			"tags": [
+				"lyingback"
+			]
+		},
+		{
+			"intendedSex": "female",
+			"lookUp": -80,
+			"feetOnGround": false,
+			"tags": [
+				"kneeling"
+			]
+		}
+	],
+  	"actions": [
+  		{
+      		"type": "vaginalsex",
+      		"actor": 0,
+      		"target": 1,
+      		"performer": 1
+    	},
+    	{
+    		"type": "mounting",
+    		"actor": 1,
+    		"target": 0
+    	},
+    	{
+    		"type": "holdinghip",
+    		"actor": 0,
+    		"target": 1
+    	},
+    	{
+    		"type": "holdingleg",
+    		"actor": 1,
+    		"target": 0
+    	}
+  	]
+}

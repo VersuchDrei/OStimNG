@@ -1,0 +1,60 @@
+{
+	"name": "$OStim2PCowgirlIdleMF",
+	"modpack": "OStim",
+	"length": 2.0,
+	"speeds":[
+		{
+			"animation": "OStim2PCowgirlIdleMF"
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStim2PLyingKneelingMF",
+			"description": "$ostim_nav_sit_back_a{1}",
+			"icon": "OStim/symbols/return",
+			"priority": -1000
+		},
+		{
+			"destination": "OStim2PReverseToCowgirlIdleMF",
+			"description": "$ostim_nav_turn_around_a{1}",
+			"icon": "OStim/sexual/cowgirl_mf",
+			"priority": 0
+		}
+	],
+	"tags":[
+		"idle"
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"sosBend": 9,
+			"scale": 1.03,
+      		"lookUp": -75,
+			"tags": [
+				"lyingback"
+			],
+			"feetOnGround": false
+		},
+		{
+			"intendedSex": "female",
+      		"lookUp": -50,
+			"tags": [
+				"facingaway",
+				"kneeling"
+			],
+			"feetOnGround": false
+		}
+	],
+	"actions":[
+		{
+			"type": "mounting",
+			"actor": 1,
+			"target": 0
+		},
+		{
+			"type": "holdingleg",
+			"actor": 1,
+			"target": 0
+		}
+	]
+}
