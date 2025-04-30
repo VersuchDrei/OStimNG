@@ -1,7 +1,7 @@
 ;/* OUtility
 * * collection of general utility functions
 * *
-* * requred API version: 7.3.5
+* * required API version: 7.3.5
 */;
 ScriptName OUtility
 
