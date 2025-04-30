@@ -21,7 +21,7 @@
 		{
 			"destination": "OStim2PSittingMaleInMF",
 			"description": "$ostim_nav_approach_t{1}",
-			"icon": "OStim/symbols/next"
+			"icon": "OStim/sensual/approach_fm"
 		},
 		{
 			"destination": "OStim2PStandingApartMF",

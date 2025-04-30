@@ -34,7 +34,7 @@
 			"priority": 0
 		},
 		{
-			"destination": "OStim2PProneSpreadLegsMF",
+			"destination": "OStim2PProneLegsSpreadMF",
 			"description": "$ostim_nav_hold_stop_t{1}",
 			"icon": "OStim/detail/grab_m_end",
 			"priority": 0

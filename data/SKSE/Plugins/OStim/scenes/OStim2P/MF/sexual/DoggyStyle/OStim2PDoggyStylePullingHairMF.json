@@ -28,7 +28,7 @@
 			"priority": -1000
 		},
 		{
-			"destination": "OStim2PDoggyStylePullHairMF",
+			"destination": "OStim2PDoggyStyleMF",
 			"description": "$ostim_nav_pull_hair_stop_t{1}",
 			"icon": "OStim/detail/grab_m_end",
 			"priority": 0

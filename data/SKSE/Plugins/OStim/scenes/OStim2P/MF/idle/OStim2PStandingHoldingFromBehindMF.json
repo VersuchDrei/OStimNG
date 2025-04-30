@@ -27,7 +27,7 @@
 		},
 		{
 			"destination": "OStim2PStandingGropingBreastsFromBehindMF",
-			"description": "$ostim_nav_grope_breasts_t{1}",
+			"description": "$ostim_nav_grope_breast_t{1}",
 			"icon": "OStim/detail/gropingbreast_mf",
 			"priority": 1000
 		},

@@ -28,7 +28,7 @@
 			"priority": -1000
 		},
 		{
-			"destination": "OStim2PProneHoldingSpreadLegsMF",
+			"destination": "OStim2PProneHoldingLegsSpreadMF",
 			"description": "$ostim_nav_legs_spread_a{1}",
 			"icon": "OStim/positional/spreadlegs_f",
 			"priority": 0

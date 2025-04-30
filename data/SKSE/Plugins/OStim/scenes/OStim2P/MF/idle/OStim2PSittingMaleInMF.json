@@ -19,7 +19,7 @@
 			"icon": "OStim/positional/standup_m"
 		},
 		{
-			"destination": "OStim2PSittingMaleInMF",
+			"destination": "OStim2PSittingFemaleInMF",
 			"description": "$ostim_nav_switch_positions",
 			"icon": "OStim/symbols/switch"
 		},
