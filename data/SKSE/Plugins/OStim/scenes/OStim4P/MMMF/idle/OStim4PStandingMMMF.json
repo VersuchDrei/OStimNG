@@ -9,14 +9,24 @@
 	],
 	"navigations":[
 		{
-			"destination": "OStim4PLyingMMFF",
+			"destination": "OStim4PStandingMMMM",
+			"description": "$ostim_nav_idle_mmmm",
+			"icon": "OStim/symbols/gender_m"
+		},
+		{
+			"destination": "OStim4PStandingMMFF",
 			"description": "$ostim_nav_idle_mmff",
 			"icon": "OStim/symbols/gender_mf"
 		},
 		{
-			"destination": "OStim4PLyingMFFF",
+			"destination": "OStim4PStandingMFFF",
 			"description": "$ostim_nav_idle_mfff",
 			"icon": "OStim/symbols/gender_mff"
+		},
+		{
+			"destination": "OStim4PStandingFFFF",
+			"description": "$ostim_nav_idle_ffff",
+			"icon": "OStim/symbols/gender_f"
 		},
 		{
 			"destination": "OStim4PLyingMMMF",

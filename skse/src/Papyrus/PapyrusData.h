@@ -252,7 +252,9 @@ namespace PapyrusData {
         BIND(GetActionMaxStimulation);
         BIND(SetActionMaxStimulation);
         BIND(GetActionDefaultStimulation);
+        BIND(ResetActionStimulation);
         BIND(GetActionDefaultMaxStimulation);
+        BIND(ResetActionMaxStimulation);
 
         BIND(GetEvents);
 
@@ -261,7 +263,9 @@ namespace PapyrusData {
         BIND(GetEventMaxStimulation);
         BIND(SetEventMaxStimulation);
         BIND(GetEventDefaultStimulation);
+        BIND(ResetEventStimulation);
         BIND(GetEventDefaultMaxStimulation);
+        BIND(ResetEventMaxStimulation);
 
 		BIND(ResetSettings);
         BIND(ExportSettings);

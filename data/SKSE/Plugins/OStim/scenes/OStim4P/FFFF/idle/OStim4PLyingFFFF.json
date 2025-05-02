@@ -1,5 +1,5 @@
 {
-	"name": "$OStim4PLyingMMMF",
+	"name": "$OStim4PLyingFFFF",
 	"modpack": "OStim",
 	"length": 10.0,
 	"speeds":[
@@ -9,9 +9,9 @@
 	],
 	"navigations":[
 		{
-			"destination": "OStim4PLyingMMMM",
-			"description": "$ostim_nav_idle_mmmm",
-			"icon": "OStim/symbols/gender_m"
+			"destination": "OStim4PLyingMMMF",
+			"description": "$ostim_nav_idle_mmmf",
+			"icon": "OStim/symbols/gender_mmf"
 		},
 		{
 			"destination": "OStim4PLyingMMFF",
@@ -24,12 +24,7 @@
 			"icon": "OStim/symbols/gender_mff"
 		},
 		{
-			"destination": "OStim4PLyingFFFF",
-			"description": "$ostim_nav_idle_ffff",
-			"icon": "OStim/symbols/gender_f"
-		},
-		{
-			"destination": "OStim4PStandingMMMF",
+			"destination": "OStim4PStandingFFFF",
 			"description": "$ostim_nav_stand_up",
 			"icon": "OStim/positional/standup_m"
 		}
@@ -40,7 +35,7 @@
 	],
 	"actors":[
 		{
-			"intendedSex": "male",
+			"intendedSex": "female",
 			"tags": [
 				"lyingback"
 			],
@@ -50,7 +45,7 @@
 			"lookLeft": 40
 		},
 		{
-			"intendedSex": "male",
+			"intendedSex": "female",
 			"tags": [
 				"lyingback"
 			],
@@ -60,7 +55,7 @@
 			"lookLeft": -10
 		},
 		{
-			"intendedSex": "male",
+			"intendedSex": "female",
 			"tags": [
 				"sitting"
 			],

@@ -1,5 +1,5 @@
 {
-	"name": "$OStim4PStandingMFFF",
+	"name": "$OStim4PStandingMMMF",
 	"modpack": "OStim",
 	"length": 10.0,
 	"speeds":[
@@ -8,11 +8,6 @@
 		}
 	],
 	"navigations":[
-		{
-			"destination": "OStim4PStandingMMMM",
-			"description": "$ostim_nav_idle_mmmm",
-			"icon": "OStim/symbols/gender_m"
-		},
 		{
 			"destination": "OStim4PStandingMMMF",
 			"description": "$ostim_nav_idle_mmmf",
@@ -24,12 +19,17 @@
 			"icon": "OStim/symbols/gender_mf"
 		},
 		{
+			"destination": "OStim4PStandingMFFF",
+			"description": "$ostim_nav_idle_mfff",
+			"icon": "OStim/symbols/gender_mff"
+		},
+		{
 			"destination": "OStim4PStandingFFFF",
 			"description": "$ostim_nav_idle_ffff",
 			"icon": "OStim/symbols/gender_f"
 		},
 		{
-			"destination": "OStim4PLyingMFFF",
+			"destination": "OStim4PLyingMMMF",
 			"description": "$ostim_nav_lie_down",
 			"icon": "OStim/positional/lyingback_m"
 		}
@@ -50,7 +50,7 @@
 			"lookLeft": 40
 		},
 		{
-			"intendedSex": "female",
+			"intendedSex": "male",
 			"tags": [
 				"standing"
 			],
@@ -60,7 +60,7 @@
 			"lookLeft": 10
 		},
 		{
-			"intendedSex": "female",
+			"intendedSex": "male",
 			"tags": [
 				"standing"
 			],

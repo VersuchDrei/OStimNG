@@ -1,5 +1,5 @@
 {
-	"name": "$OStim4PStandingMFFF",
+	"name": "$OStim4PStandingFFFF",
 	"modpack": "OStim",
 	"length": 10.0,
 	"speeds":[
@@ -24,12 +24,12 @@
 			"icon": "OStim/symbols/gender_mf"
 		},
 		{
-			"destination": "OStim4PStandingFFFF",
-			"description": "$ostim_nav_idle_ffff",
-			"icon": "OStim/symbols/gender_f"
+			"destination": "OStim4PStandingMFFF",
+			"description": "$ostim_nav_idle_mfff",
+			"icon": "OStim/symbols/gender_mff"
 		},
 		{
-			"destination": "OStim4PLyingMFFF",
+			"destination": "OStim4PLyingFFFF",
 			"description": "$ostim_nav_lie_down",
 			"icon": "OStim/positional/lyingback_m"
 		}
@@ -40,7 +40,7 @@
 	],
 	"actors":[
 		{
-			"intendedSex": "male",
+			"intendedSex": "female",
 			"tags": [
 				"standing"
 			],
