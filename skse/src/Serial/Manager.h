@@ -28,13 +28,17 @@ namespace Serialization {
 
     float getActionStimulation(Graph::Role role, GameAPI::GameRecordIdentifier formID, std::string action);
     void setActionStimulation(Graph::Role role, RE::FormID formID, std::string action, float stimulation);
+    void unsetActionStimulation(Graph::Role role, GameAPI::GameRecordIdentifier formID, std::string action);
     float getActionMaxStimulation(Graph::Role role, GameAPI::GameRecordIdentifier formID, std::string action);
     void setActionMaxStimulation(Graph::Role role, RE::FormID formID, std::string action, float maxStimulation);
+    void unsetActionMaxStimulation(Graph::Role role, GameAPI::GameRecordIdentifier formID, std::string action);
 
     float getEventStimulation(Graph::Role role, RE::FormID formID, std::string evt);
     void setEventStimulation(Graph::Role role, RE::FormID formID, std::string evt, float stimulation);
+    void unsetEventStimulation(Graph::Role role, GameAPI::GameRecordIdentifier formID, std::string evt);
     float getEventMaxStimulation(Graph::Role role, RE::FormID formID, std::string evt);
     void setEventMaxStimulation(Graph::Role role, RE::FormID formID, std::string evt, float maxStimulation);
+    void unsetEventMaxStimulation(Graph::Role role, GameAPI::GameRecordIdentifier formID, std::string evt);
 
     void Save(SKSE::SerializationInterface* a_intfc);
     void Load(SKSE::SerializationInterface* a_intfc);

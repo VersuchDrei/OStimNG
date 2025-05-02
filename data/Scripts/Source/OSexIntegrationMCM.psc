@@ -2920,7 +2920,7 @@ Function OnOptionSliderOpenActors(int Option)
 	int Index = OIDs_ActionStimulation.Find(Option)
 	If Index >= 0
 		SetSliderDialogStartValue(OData.GetActionStimulation(Math.Pow(2, Index) as int, CurrentActorID, CurrentAction))
-		SetSliderDialogDefaultValue(0)
+		SetSliderDialogDefaultValue(OData.GetActionDefaultStimulation(Math.Pow(2, Index) As int, CurrentAction))
 		SetSliderDialogRange(-5, 5)
 		SetSliderDialogInterval(0.05)
 		Return
@@ -2929,7 +2929,7 @@ Function OnOptionSliderOpenActors(int Option)
 	Index = OIDs_ActionMaxStimulation.Find(Option)
 	If Index >= 0
 		SetSliderDialogStartValue(OData.GetActionMaxStimulation(Math.Pow(2, Index) as int, CurrentActorID, CurrentAction))
-		SetSliderDialogDefaultValue(100)
+		SetSliderDialogDefaultValue(OData.GetActionDefaultMaxStimulation(Math.Pow(2, Index) As int, CurrentAction))
 		SetSliderDialogRange(0, 100)
 		SetSliderDialogInterval(5)
 		Return
@@ -2938,7 +2938,7 @@ Function OnOptionSliderOpenActors(int Option)
 	Index = OIDs_EventStimulation.Find(Option)
 	If Index >= 0
 		SetSliderDialogStartValue(OData.GetEventStimulation(Math.Pow(2, Index) as int, CurrentActorID, CurrentEvent))
-		SetSliderDialogDefaultValue(0)
+		SetSliderDialogDefaultValue(OData.GetEventDefaultStimulation(Math.Pow(2, Index) As int, CurrentEvent))
 		SetSliderDialogRange(-25, 25)
 		SetSliderDialogInterval(0.25)
 		Return
@@ -2947,7 +2947,7 @@ Function OnOptionSliderOpenActors(int Option)
 	Index = OIDs_EventMaxStimulation.Find(Option)
 	If Index >= 0
 		SetSliderDialogStartValue(OData.GetEventMaxStimulation(Math.Pow(2, Index) as int, CurrentActorID, CurrentEvent))
-		SetSliderDialogDefaultValue(100)
+		SetSliderDialogDefaultValue(OData.GetEventDefaultMaxStimulation(Math.Pow(2, Index) As int, CurrentEvent))
 		SetSliderDialogRange(0, 100)
 		SetSliderDialogInterval(5)
 		Return
@@ -3063,21 +3063,54 @@ Function OnOptionDefaultActors(int Option)
 	If Option == OID_SelectActor
 		CurrentActor == PlayerRef
 		ForcePageReset()
+		Return
 	ElseIf Option == OID_ActorVoice
 		SetVoiceSetToDefault(Option, CurrentActorID)
-
+		Return
 	ElseIf Option == OID_EquipObjectType
 		CurrentEquipObjectType = "light"
-		SetMenuOptionValue(Option, OData.GetEquipObjectName(CurrentActorID, CurrentEquipObjectType))
+		SetMenuOptionValue(Option, "light")
+		SetMenuOptionValue(OID_ActorEquipObject, OData.GetEquipObjectName(CurrentActorID, CurrentEquipObjectType))
+		Return
 	ElseIf Option == OID_ActorEquipObject
 		SetEquipObjectIDToDefault(Option, CurrentActorID, CurrentEquipObjectType)
-
+		Return
 	ElseIf Option == OID_SelectAction
 		CurrentAction = Actions[0]
 		SetMenuOptionValue(Option, CurrentAction)
+		Return
 	ElseIf Option == OID_SelectEvent
 		CurrentEvent = Events[0]
 		SetMenuOptionValue(Option, CurrentEvent)
+		Return
+	EndIf
+
+	int Index = OIDs_ActionStimulation.Find(Option)
+	If Index >= 0
+		OData.ResetActionStimulation(Math.Pow(2, Index) as int, CurrentActorID, CurrentAction)
+		SetSliderOptionValue(Option, OData.GetActionStimulation(Math.Pow(2, Index) as int, CurrentActorID, CurrentAction), "{2}")
+		Return
+	EndIf
+
+	Index = OIDs_ActionMaxStimulation.Find(Option)
+	If Index >= 0
+		OData.ResetActionMaxStimulation(Math.Pow(2, Index) as int, CurrentActorID, CurrentAction)
+		SetSliderOptionValue(Option, OData.GetActionMaxStimulation(Math.Pow(2, Index) as int, CurrentActorID, CurrentAction), "{2}")
+		Return
+	EndIf
+
+	Index = OIDs_EventStimulation.Find(Option)
+	If Index >= 0
+		OData.ResetEventStimulation(Math.Pow(2, Index) as int, CurrentActorID, CurrentEvent)
+		SetSliderOptionValue(Option, OData.GetEventStimulation(Math.Pow(2, Index) as int, CurrentActorID, CurrentEvent), "{2}")
+		Return
+	EndIf
+
+	Index = OIDs_EventMaxStimulation.Find(Option)
+	If Index >= 0
+		OData.ResetEventMaxStimulation(Math.Pow(2, Index) as int, CurrentActorID, CurrentEvent)
+		SetSliderOptionValue(Option, OData.GetEventMaxStimulation(Math.Pow(2, Index) as int, CurrentActorID, CurrentEvent), "{2}")
+		Return
 	EndIf
 EndFunction
 

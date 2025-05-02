@@ -30,7 +30,9 @@ namespace GameAPI {
                 // so the free cam toggle has to be slightly delayed or it will not be at the scene location
                 std::thread camThread = std::thread([&] {
                     std::this_thread::sleep_for(std::chrono::milliseconds(250));
-                    toggleFlyCamInner();
+                    SKSE::GetTaskInterface()->AddTask([] {
+                        toggleFlyCamInner();
+                    });
                 });
                 camThread.detach();
             }
@@ -53,7 +55,9 @@ namespace GameAPI {
     void GameCamera::endSceneMode(bool firstPerson) {
         RE::PlayerCamera* camera = RE::PlayerCamera::GetSingleton();
         if (camera->IsInFreeCameraMode()) {
-            toggleFlyCamInner();
+            SKSE::GetTaskInterface()->AddTask([] {
+                toggleFlyCamInner();
+            });
         } else if (GameLogic::GameTable::improvedCamSupport()) {
             if (REL::Module::get().version().patch() < 1130) {
                 RE::ControlMap::GetSingleton()->enabledControls.set(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch);
@@ -65,10 +69,9 @@ namespace GameAPI {
             }
         }
         if (firstPerson) {
-            std::thread camThread = std::thread([&] {
+            SKSE::GetTaskInterface()->AddTask([] {
                 RE::PlayerCamera::GetSingleton()->ForceFirstPerson();
             });
-            camThread.detach();
         }
 
         if (GameLogic::GameTable::improvedCamSupport()) {
@@ -84,22 +87,27 @@ namespace GameAPI {
                 camera->ForceThirdPerson();
             }
 
-            toggleFlyCamInner();
+            SKSE::GetTaskInterface()->AddTask([] {
+                toggleFlyCamInner();
+            });
             return;
         }
 
         if (camera->IsInFreeCameraMode()) {
-            toggleFlyCamInner();
-            camera->ForceFirstPerson();
-            if (REL::Module::get().version().patch() < 1130) {
-                RE::ControlMap::GetSingleton()->enabledControls.reset(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch);
-            } else {
-                // bandaid fix until CLib-NG is updated
-                auto ptr = &RE::ControlMap::GetSingleton()->enabledControls;
-                ptr += 8;
-                (*ptr).reset(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch);
-            }
-            camera->ForceThirdPerson();
+            SKSE::GetTaskInterface()->AddTask([] {
+                toggleFlyCamInner();
+                auto camera = RE::PlayerCamera::GetSingleton();
+                camera->ForceFirstPerson();
+                if (REL::Module::get().version().patch() < 1130) {
+                    RE::ControlMap::GetSingleton()->enabledControls.reset(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch);
+                } else {
+                    // bandaid fix until CLib-NG is updated
+                    auto ptr = &RE::ControlMap::GetSingleton()->enabledControls;
+                    ptr += 8;
+                    (*ptr).reset(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch);
+                }
+                camera->ForceThirdPerson();
+            });
         } else {
             if (REL::Module::get().version().patch() < 1130) {
                 RE::ControlMap::GetSingleton()->enabledControls.set(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch);
@@ -109,20 +117,20 @@ namespace GameAPI {
                 ptr += 8;
                 (*ptr).set(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch);
             }
-            toggleFlyCamInner();
+            SKSE::GetTaskInterface()->AddTask([] {
+                toggleFlyCamInner();
+            });
         }
     }
 
     void GameCamera::toggleFlyCamInner() {
-        SKSE::GetTaskInterface()->AddTask([] {
-            const auto scriptFactory = RE::IFormFactory::GetConcreteFormFactoryByType<RE::Script>();
-            const auto script = scriptFactory ? scriptFactory->Create() : nullptr;
-            if (script) {
-                script->SetCommand("tfc");
-                GameUtil::CompileAndRun(script, RE::PlayerCharacter::GetSingleton());
-                delete script;
-            }
-        });
+        const auto scriptFactory = RE::IFormFactory::GetConcreteFormFactoryByType<RE::Script>();
+        const auto script = scriptFactory ? scriptFactory->Create() : nullptr;
+        if (script) {
+            script->SetCommand("tfc");
+            GameUtil::CompileAndRun(script, RE::PlayerCharacter::GetSingleton());
+            delete script;
+        }
     }
 
 

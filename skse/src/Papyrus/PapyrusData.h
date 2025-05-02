@@ -110,6 +110,32 @@ namespace PapyrusData {
     void SetActionMaxStimulation(RE::StaticFunctionTag*, int role, int formID, std::string action, float stimulation) {
         Serialization::setActionMaxStimulation(static_cast<Graph::Role>(role), formID, action, stimulation);
     }
+
+    float GetActionDefaultStimulation(RE::StaticFunctionTag*, int role, std::string action) {
+        Graph::Action::ActionAttributes* attributes = Graph::GraphTable::GetActionAttributesByType(action);
+        if (!attributes) {
+            return 0.0f;
+        }
+
+        return attributes->roles.get(static_cast<Graph::Role>(role))->stimulation;
+    }
+
+    void ResetActionStimulation(RE::StaticFunctionTag*, int role, int formID, std::string action) {
+        Serialization::unsetActionStimulation(static_cast<Graph::Role>(role), GameAPI::GameRecordIdentifier{MathUtil::intToUint(formID)}, action);
+    }
+
+    float GetActionDefaultMaxStimulation(RE::StaticFunctionTag*, int role, std::string action) {
+        Graph::Action::ActionAttributes* attributes = Graph::GraphTable::GetActionAttributesByType(action);
+        if (!attributes) {
+            return 0.0f;
+        }
+
+        return attributes->roles.get(static_cast<Graph::Role>(role))->maxStimulation;
+    }
+
+    void ResetActionMaxStimulation(RE::StaticFunctionTag*, int role, int formID, std::string action) {
+        Serialization::unsetActionMaxStimulation(static_cast<Graph::Role>(role), GameAPI::GameRecordIdentifier{MathUtil::intToUint(formID)}, action);
+    }
 #pragma endregion
 
 #pragma region events
@@ -153,6 +179,32 @@ namespace PapyrusData {
 
     void SetEventMaxStimulation(RE::StaticFunctionTag*, int role, int formID, std::string evt, float stimulation) {
         Serialization::setEventMaxStimulation(static_cast<Graph::Role>(role), formID, evt, stimulation);
+    }
+
+    float GetEventDefaultStimulation(RE::StaticFunctionTag*, int role, std::string evt) {
+        Graph::Event* graphEvent = Graph::GraphTable::getEvent(evt);
+        if (!graphEvent) {
+            return 0.0f;
+        }
+
+        return graphEvent->roles.get(static_cast<Graph::Role>(role))->stimulation;
+    }
+
+    void ResetEventStimulation(RE::StaticFunctionTag*, int role, int formID, std::string evt) {
+        Serialization::unsetEventStimulation(static_cast<Graph::Role>(role), GameAPI::GameRecordIdentifier{MathUtil::intToUint(formID)}, evt);
+    }
+
+    float GetEventDefaultMaxStimulation(RE::StaticFunctionTag*, int role, std::string evt) {
+        Graph::Event* graphEvent = Graph::GraphTable::getEvent(evt);
+        if (!graphEvent) {
+            return 0.0f;
+        }
+
+        return graphEvent->roles.get(static_cast<Graph::Role>(role))->maxStimulation;
+    }
+
+    void ResetEventMaxStimulation(RE::StaticFunctionTag*, int role, int formID, std::string evt) {
+        Serialization::unsetEventMaxStimulation(static_cast<Graph::Role>(role), GameAPI::GameRecordIdentifier{MathUtil::intToUint(formID)}, evt);
     }
 #pragma endregion
 #pragma endregion
@@ -199,6 +251,8 @@ namespace PapyrusData {
         BIND(SetActionStimulation);
         BIND(GetActionMaxStimulation);
         BIND(SetActionMaxStimulation);
+        BIND(GetActionDefaultStimulation);
+        BIND(GetActionDefaultMaxStimulation);
 
         BIND(GetEvents);
 
@@ -206,6 +260,8 @@ namespace PapyrusData {
         BIND(SetEventStimulation);
         BIND(GetEventMaxStimulation);
         BIND(SetEventMaxStimulation);
+        BIND(GetEventDefaultStimulation);
+        BIND(GetEventDefaultMaxStimulation);
 
 		BIND(ResetSettings);
         BIND(ExportSettings);

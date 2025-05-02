@@ -35,6 +35,10 @@ float Function GetActionStimulation(int Role, int FormID, string Actn) Global Na
 Function SetActionStimulation(int Role, int FormID, string Actn, float Stimulation) Global Native
 float Function GetActionMaxStimulation(int Role, int FormID, string Actn) Global Native
 Function SetActionMaxStimulation(int Role, int FormID, string Actn, float Stimulation) Global Native
+float Function GetActionDefaultStimulation(int Role, string Actn) Global Native
+Function ResetActionStimulation(int Role, int FormID, string Actn) Global Native
+float Function GetActionDefaultMaxStimulation(int Role, string Actn) Global Native
+Function ResetActionMaxStimulation(int Role, int FormID, string Actn) Global Native
 
 string[] Function GetEvents() Global Native
 
@@ -42,6 +46,10 @@ float Function GetEventStimulation(int Role, int FormID, string Evt) Global Nati
 Function SetEventStimulation(int Role, int FormID, string Evt, float Stimulation) Global Native
 float Function GetEventMaxStimulation(int Role, int FormID, string Evt) Global Native
 Function SetEventMaxStimulation(int Role, int FormID, string Evt, float Stimulation) Global Native
+float Function GetEventDefaultStimulation(int Role, string Evt) Global Native
+Function ResetEventStimulation(int Role, int FormID, string Evt) Global Native
+float Function GetEventDefaultMaxStimulation(int Role, string Evt) Global Native
+Function ResetEventMaxStimulation(int Role, int FormID, string Evt) Global Native
 
 
 Function ResetSettings() Global Native
