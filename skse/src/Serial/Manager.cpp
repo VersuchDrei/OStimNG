@@ -398,13 +398,14 @@ namespace Serialization {
                 }
 
                 if (value.contains("voice")) {
-                    RE::FormID voiceID = std::stoi(static_cast<std::string>(value["voice"]["formid"]));
+                    RE::FormID voiceID = std::stoi(static_cast<std::string>(value["voice"]["formid"]), nullptr, 16);
                     if (const RE::TESFile* mod = dataHandler->LookupLoadedModByName(value["voice"]["mod"])) {
                         voiceID &= 0x00FFFFFF;
                         voiceID += mod->GetCompileIndex() << 24;
                     } else if (const RE::TESFile* mod = dataHandler->LookupLoadedLightModByName(value["voice"]["mod"])) {
                         voiceID &= 0x00000FFF;
                         voiceID += mod->GetPartialIndex() << 12;
+                        voiceID += 0xFE << 24;
                     }
                     data.voiceSet = voiceID;
                 }
