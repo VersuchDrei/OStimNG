@@ -35,6 +35,7 @@ namespace Threading {
     }
 
     void ThreadActor::unequipObject(std::string type) {
+        StringUtil::toLower(&type);
         auto iter = equipObjects.find(type);
         if (iter != equipObjects.end()) {
             iter->second.unequip(actor);
@@ -42,6 +43,7 @@ namespace Threading {
     }
 
     bool ThreadActor::isObjectEquipped(std::string type) {
+        StringUtil::toLower(&type);
         auto iter = equipObjects.find(type);
         if (iter != equipObjects.end()) {
             return iter->second.equipped;
@@ -50,6 +52,8 @@ namespace Threading {
     }
 
     bool ThreadActor::setObjectVariant(std::string type, std::string variant, int duration) {
+        StringUtil::toLower(&type);
+        StringUtil::toLower(&variant);
         auto iter = equipObjects.find(type);
         if (iter != equipObjects.end()) {
             return iter->second.setVariant(actor, variant, duration);
@@ -65,6 +69,7 @@ namespace Threading {
     }
 
     void ThreadActor::unsetObjectVariant(std::string type) {
+        StringUtil::toLower(&type);
         auto iter = equipObjects.find(type);
         if (iter != equipObjects.end()) {
             iter->second.unsetVariant(actor);
@@ -72,6 +77,7 @@ namespace Threading {
     }
 
     void ThreadActor::refreshObject(std::string type) {
+        StringUtil::toLower(&type);
         auto iter = equipObjects.find(type);
         if (iter == equipObjects.end()) {
             return;
