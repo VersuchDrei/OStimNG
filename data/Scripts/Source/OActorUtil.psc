@@ -108,6 +108,16 @@ Function SayAs(Actor Act, Actor Target, Topic Dialogue, VoiceType Voice) Global 
 */;
 Actor[] Function EmptyArray() Global Native
 
+;/* CreateActorArray
+* * returns an actor array of the desired size
+* *
+* * @param: Size, the size of the array
+* * @param: Filler, a default element to fill the array with
+* *
+* * @return: an actor array
+*/;
+Actor[] Function CreateArray(int Size, Actor Filler = None) Global Native
+
 ;/* ToArray
 * * creates an array out of the given actors, sorts out none entires
 * *

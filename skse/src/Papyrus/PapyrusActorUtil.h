@@ -48,6 +48,19 @@ namespace PapyrusActorUtil {
         return {};
     }
 
+    std::vector<RE::Actor*> CreateArray(RE::StaticFunctionTag*, int size, RE::Actor* filler) {
+        if (size <= 0) {
+            return std::vector<RE::Actor*>();
+        }
+
+        std::vector<RE::Actor*> actors = std::vector<RE::Actor*>(size);
+        for (int i = 0; i < size; i++) {
+            actors[i] = filler;
+        }
+
+        return actors;
+    }
+
     std::vector<RE::Actor*> ToArray(RE::StaticFunctionTag*, RE::Actor* one, RE::Actor* two, RE::Actor* three, RE::Actor* four, RE::Actor* five, RE::Actor* six, RE::Actor* seven, RE::Actor* eight, RE::Actor* nine, RE::Actor* ten) {
         std::vector<RE::Actor*> actors;
 
@@ -140,6 +153,7 @@ namespace PapyrusActorUtil {
         BIND(SayAs);
 
         BIND(EmptyArray);
+        BIND(CreateArray);
         BIND(ToArray);
 
         BIND(Sort);
