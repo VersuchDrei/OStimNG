@@ -492,22 +492,33 @@ namespace Threading {
 
         if (!actor.isPlayer() && thread->getActors().size() > 1) {
             if (voiceSet.postSceneDialogue) {
-                GameAPI::GameActor target = thread->isPlayerThread() ? GameAPI::GameActor::getPlayer() : primaryPartner;
-                if (actor == target) {
-                    for (auto& [index, threadActor] : thread->getActors()) {
-                        if (threadActor.getActor() != actor) {
-                            target = threadActor.getActor();
-                            break;
-                        }
+                bool first = true;
+                for (int i = 0; i < index; i++) {
+                    GameAPI::GameActor partner = thread->GetActor(i)->getActor();
+                    if (!partner.isPlayer() && partner.getVoice() == actor.getVoice()) {
+                        first = false;
+                        break;
                     }
                 }
 
-                const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-                auto vm = skyrimVM ? skyrimVM->impl : nullptr;
-                if (vm) {
-                    RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-                    auto args = RE::MakeFunctionArguments(std::move(actor.form), std::move(target.form), std::move(voiceSet.postSceneDialogue.form), std::move(RNGUtil::uniformFloat(1.0f, 2.0f)));
-                    vm->DispatchStaticCall("OSKSE", "SayPostDialogue", args, callback);
+                if (first) {
+                    GameAPI::GameActor target = thread->isPlayerThread() ? GameAPI::GameActor::getPlayer() : primaryPartner;
+                    if (actor == target) {
+                        for (auto& [index, threadActor] : thread->getActors()) {
+                            if (threadActor.getActor() != actor) {
+                                target = threadActor.getActor();
+                                break;
+                            }
+                        }
+                    }
+
+                    const auto skyrimVM = RE::SkyrimVM::GetSingleton();
+                    auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+                    if (vm) {
+                        RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
+                        auto args = RE::MakeFunctionArguments(std::move(actor.form), std::move(target.form), std::move(voiceSet.postSceneDialogue.form), std::move(RNGUtil::uniformFloat(1.0f, 2.0f)));
+                        vm->DispatchStaticCall("OSKSE", "SayPostDialogue", args, callback);
+                    }
                 }
             }
         }
