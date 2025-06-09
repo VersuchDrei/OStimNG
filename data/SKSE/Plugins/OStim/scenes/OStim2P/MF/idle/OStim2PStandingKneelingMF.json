@@ -25,6 +25,12 @@
 			"description": "$ostim_nav_turn_around_a{0}",
 			"icon": "OStim/positional/turnaround_m",
 			"priority": 0
+		},
+		{
+			"destination": "OStim2PKneelingBlowjobMF",
+			"description": "$ostim_nav_blowjob_t{0}",
+			"icon": "OStim/sexual/blowjob_mf",
+			"priority": 3000
 		}
 	],
 	"tags":[

@@ -21,6 +21,12 @@
 			"priority": 0
 		},
 		{
+			"destination": "OStim2PLyingCunnilingusMF",
+			"description": "$ostim_nav_cunnilingus_t{1}",
+			"icon": "OStim/sexual/cunnilingus_mf",
+			"priority": 3000
+		},
+		{
 			"destination": "OStim2PMissionaryMF",
 			"description": "$ostim_nav_missionary_t{1}",
 			"icon": "OStim/sexual/vaginalsex_mf",

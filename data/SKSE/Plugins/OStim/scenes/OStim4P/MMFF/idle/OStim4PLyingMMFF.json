@@ -19,11 +19,6 @@
 			"icon": "OStim/symbols/gender_mmf"
 		},
 		{
-			"destination": "OStim4PLyingMMFF",
-			"description": "$ostim_nav_idle_mmff",
-			"icon": "OStim/symbols/gender_mf"
-		},
-		{
 			"destination": "OStim4PLyingMFFF",
 			"description": "$ostim_nav_idle_mfff",
 			"icon": "OStim/symbols/gender_mff"

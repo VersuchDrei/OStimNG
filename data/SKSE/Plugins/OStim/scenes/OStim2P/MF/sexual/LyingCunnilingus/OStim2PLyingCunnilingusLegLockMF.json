@@ -1,0 +1,74 @@
+{
+	"name": "$OStim2LyingCunnilingusLegLockMF",
+	"modpack": "OStim",
+	"length": 2.0,
+	"speeds":[
+		{
+			"animation": "OStim2PLyingCunnilingusLegLockMF_S1",
+			"displaySpeed": 0.5
+		},
+		{
+			"animation": "OStim2PLyingCunnilingusLegLockMF_S2",
+			"displaySpeed": 1.0
+		},
+		{
+			"animation": "OStim2PLyingCunnilingusLegLockMF_S3",
+			"displaySpeed": 2.0
+		},
+		{
+			"animation": "OStim2PLyingCunnilingusLegLockMF_S4",
+			"displaySpeed": 3.0
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStim2PMIssionaryIdleMF",
+			"description": "$ostim_nav_return",
+			"icon": "OStim/symbols/return",
+			"priority": -1000
+		},
+		{
+			"destination": "OStim2PLyingCunnilingusMF",
+			"description": "$ostim_nav_lock_legs_stop_a{1}",
+			"icon": "OStim/positional/spreadlegs_f",
+			"priority": 0
+		}
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"sosBend": 2,
+			"scale": 1.03,
+      		"lookUp": 100,
+			"tags": [
+				"lyingfront"
+			],
+			"feetOnGround": false
+		},
+		{
+			"intendedSex": "female",
+      		"lookUp": -100,
+			"tags": [
+				"lyingback"
+			],
+			"feetOnGround": false
+		}
+	],
+  	"actions": [
+  		{
+      		"type": "cunnilingus",
+      		"actor": 0,
+      		"target": 1
+    	},
+    	{
+    		"type": "holdingthigh",
+    		"actor": 0,
+    		"target": 1
+    	},
+    	{
+    		"type": "leglock",
+    		"actor": 1,
+    		"target": 0
+    	}
+  	]
+}

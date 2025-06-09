@@ -1,0 +1,82 @@
+{
+	"name": "$OStim2PKneelingBlowjobHoldingHeadMF",
+	"modpack": "OStim",
+	"length": 2.0,
+	"speeds":[
+		{
+			"animation": "OStim2PKneelingBlowjobHoldingHeadMF_S1",
+			"displaySpeed": 0.5
+		},
+		{
+			"animation": "OStim2PKneelingBlowjobHoldingHeadMF_S2",
+			"displaySpeed": 1.0
+		},
+		{
+			"animation": "OStim2PKneelingBlowjobHoldingHeadMF_S3",
+			"displaySpeed": 2.0
+		},
+		{
+			"animation": "OStim2PKneelingBlowjobHoldingHeadMF_S4",
+			"displaySpeed": 3.0
+		}
+	],
+	"navigations":[
+		{
+			"destination": "OStim2PStandingKneelingMF",
+			"description": "$ostim_nav_return",
+			"icon": "OStim/symbols/return",
+			"priority": -1000
+		},
+		{
+			"destination": "OStim2PKneelingBlowjobMF",
+			"description": "$ostim_nav_hold_head_stop_t{1}",
+			"icon": "OStim/detail/grab_m_end",
+			"priority": 0
+		},
+		{
+			"destination": "OStim2PKneelingLickingPenisMF",
+			"description": "$ostim_nav_lick_penis_t{0}",
+			"icon": "OStim/sensual/licking",
+			"priority": 0
+		}
+	],
+	"actors":[
+		{
+			"intendedSex": "male",
+			"sosBend": 1,
+			"scale": 1.03,
+      		"scaleHeight": 67,
+      		"lookUp": -75,
+			"tags": [
+				"standing"
+			],
+			"feetOnGround": true
+		},
+		{
+			"intendedSex": "female",
+      		"scaleHeight": 67,
+      		"lookUp": 100,
+			"tags": [
+				"kneeling"
+			],
+			"feetOnGround": false
+		}
+	],
+  	"actions": [
+  		{
+      		"type": "blowjob",
+      		"actor": 1,
+      		"target": 0
+    	},
+    	{
+    		"type": "holdinghead",
+    		"actor": 0,
+    		"target": 1
+    	},
+    	{
+    		"type": "holdingbody",
+    		"actor": 1,
+    		"target": 0
+    	}
+  	]
+}
