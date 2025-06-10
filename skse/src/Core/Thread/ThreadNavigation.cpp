@@ -149,10 +149,10 @@ namespace Threading {
             warpTo(node, MCM::MCMTable::useAutoModeFades());
             nodeQueueCooldown = duration + 1000;
         } else {
+            nodes.back().duration = duration;
             for (int i = 1; i < nodes.size(); i++) {
                 nodeQueue.push(nodes[i]);
             }
-            nodes.back().duration = duration;
             nodeQueueCooldown = nodes.front().duration;
             ChangeNode(nodes.front().node);
         }
