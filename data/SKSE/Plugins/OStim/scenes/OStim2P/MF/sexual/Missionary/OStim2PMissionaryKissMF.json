@@ -29,7 +29,7 @@
 		},
 		{
 			"destination": "OStim2PMissionaryKissLegLockMF",
-			"description": "$ostim_nav_leglock_t{0}",
+			"description": "$ostim_nav_lock_legs_t{0}",
 			"icon": "OStim/sexual/carryingsex_mf",
 			"priority": -10
 		},

@@ -29,7 +29,7 @@
 		},
 		{
 			"destination": "OStim2PMissionaryKissMF",
-			"description": "$ostim_nav_leglock_stop_a{1}",
+			"description": "$ostim_nav_lock_legs_stop_a{1}",
 			"icon": "OStim/positional/stretchleg_f",
 			"priority": -10
 		},
