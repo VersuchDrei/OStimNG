@@ -19,11 +19,11 @@ OSexBar Property SubBar Auto
 OSexBar Property ThirdBar Auto
 ;---------
 
-Int Blue
-Int Pink
-Int Purple
-Int Gray
-Int White
+Int Blue = 0xADD8E6
+Int Pink = 0xFFB6C1
+Int Purple = 0xB19CD9
+Int Gray = 0xB0B0B0
+Int White = 0xFFFFFF
 
 bool Orgasming
 
@@ -31,12 +31,6 @@ Float LastSmackTime
 Int LastSpeed
 
 Event OnInit()
-	Blue = 0xADD8E6
-	Pink = 0xFFB6C1
-	Purple = 0xB19CD9
-	Gray = 0xB0B0B0
-	White = 0xFFFFFF
-
 	InititializeAllBars()
 
 	OnGameLoad()
