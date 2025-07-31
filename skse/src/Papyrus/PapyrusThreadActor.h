@@ -295,7 +295,7 @@ namespace PapyrusThreadActor {
         return Threading::ThreadManager::GetSingleton()->findActor(actor);
     }
 
-    int GetSceneID(RE::StaticFunctionTag*, RE::Actor* actor) {
+    int GetThreadID(RE::StaticFunctionTag*, RE::Actor* actor) {
         Threading::Thread* thread = Threading::ThreadManager::GetSingleton()->findThread((GameAPI::GameActor)actor);
         return thread ? thread->m_threadId : -1;
     }
@@ -359,7 +359,7 @@ namespace PapyrusThreadActor {
         BIND(SetMetaString);
 
         BIND(IsInOStim);
-        BIND(GetSceneID);
+        BIND(GetThreadID);
         BIND(VerifyActors);
 
         return true;
