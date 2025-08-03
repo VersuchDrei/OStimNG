@@ -12,17 +12,17 @@ If the actor is assigned a different voice in the MCM and/or is the player the f
 field summary:
 
 voice set:
-"name" ($string): the name of the voice set, if none is set the file name will be taken, this name is displayed in the MCM when selection voice sets
+"name" ($string): the name of the voice set, if none is set the file name will be taken, this name is displayed in the MCM when selecting voice sets
 	$ the content of this field will be checked against translation files in data/Interface/translations
 "target" (object): the target for this voice set, can be either an actor base or a voice type (see form)
 	There are two exceptions, which are the form ids 0 and 1 for the default voice set for males and females, respectively
 "aliases" (list<object>): a list of additional targets to be handled by this voice set (see form)
 "voice" (object): the voice type with which dialogue of this voice set will be spoken
 	if none is provided it will be derived from the target form (which should be good enough for 99% of cases)
-	you most likely won't need to provide this, it is only for necessary in rare edge cases
+	you most likely won't need to provide this, it is only necessary in rare edge cases
 "moan" (object): the sounds and dialogues to play randomly during scenes (see reaction set)
 "climax" (object): the sounds and dialogues to play when this actor climaxes (see raction set)
-"climaxCommentSelf" (object): the sounds and dialogues to play after this actor climaxed, this get's played after the climax (see reaction set)
+"climaxCommentSelf" (object): the sounds and dialogues to play after this actor climaxed, this gets played after the climax (see reaction set)
 "climaxCommentOther" (object): the sounds and dialogues to play after another actor climaxed (see reaction set)
 "eventActorReactions" (map<string, object>): a map of sounds and dialogues to play after events where this actor was the event actor (see reaction set)
 "eventTargetReactions" (map<string, object>): a map of sounds and dialogues to play after events where this actor was the event target (see reaction set)
@@ -41,6 +41,7 @@ reaction set:
 
 sound set:
 "condition" (object): the perk which condition functions evaluate if this sound can play
+	if left empty this sound set will always play
 "expression" (string): the expression set to play while playing the sound (optional) (see expressions README)
 "sound": (object): the sound descriptor to play (see form)
 "moanIntervalOverride" (float): overrides the moan interval from the players MCM (optional)
