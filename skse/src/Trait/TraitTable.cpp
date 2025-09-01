@@ -261,7 +261,7 @@ namespace Trait {
             return nullptr;
         }
 
-        std::string id = Serialization::getEquipObject(actor.getBaseFormID(), type);
+        std::string id = Serialization::getEquipObject(actor.getBaseFormID().formID, type);
         if (id == "random") {
             return MapUtil::randomValue(iter->second);
         } else if (id != "" && id != "default") {
