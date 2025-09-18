@@ -299,6 +299,7 @@ namespace PapyrusThread {
         BIND(IsRunning);
         BIND(Stop);
         BIND(GetThreadCount);
+        BIND(GetAllThreadIDs);
 
         BIND(GetScene);
         BIND(NavigateTo);

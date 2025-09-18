@@ -56,14 +56,16 @@
 			"scale": 1.03,
 			"feetOnGround": false,
 			"tags": [
-				"kneeling"
+				"kneeling",
+				"ontop"
 			]
 		},
 		{
 			"intendedSex": "female",
 			"feetOnGround": false,
 			"tags": [
-				"lyingback"
+				"lyingback",
+				"onbottom"
 			]
 		}
 	],

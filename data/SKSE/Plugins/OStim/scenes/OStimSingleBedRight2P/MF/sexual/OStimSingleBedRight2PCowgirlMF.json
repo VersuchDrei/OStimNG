@@ -43,7 +43,8 @@
 			"scale": 1.03,
       		"lookUp": 50,
 			"tags": [
-				"sitting"
+				"sitting",
+				"onbottom"
 			],
 			"feetOnGround": false
 		},
@@ -51,7 +52,8 @@
 			"intendedSex": "female",
       		"lookUp": -35,
 			"tags": [
-				"kneeling"
+				"kneeling",
+				"ontop"
 			],
 			"feetOnGround": false
 		}

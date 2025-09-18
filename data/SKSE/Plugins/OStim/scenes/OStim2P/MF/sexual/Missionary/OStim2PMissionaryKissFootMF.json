@@ -45,7 +45,8 @@
 			"lookUp": -100,
 			"feetOnGround": false,
 			"tags": [
-				"kneeling"
+				"kneeling",
+				"ontop"
 			]
 		},
 		{
@@ -53,7 +54,8 @@
 			"lookUp": -100,
 			"feetOnGround": false,
 			"tags": [
-				"lyingback"
+				"lyingback",
+				"onbottom"
 			]
 		}
 	],

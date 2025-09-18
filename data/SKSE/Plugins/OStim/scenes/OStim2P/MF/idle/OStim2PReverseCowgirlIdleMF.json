@@ -31,7 +31,8 @@
 			"scale": 1.03,
       		"lookUp": -75,
 			"tags": [
-				"lyingback"
+				"lyingback",
+				"onbottom"
 			],
 			"feetOnGround": false
 		},
@@ -40,7 +41,8 @@
       		"lookUp": -50,
 			"tags": [
 				"facingaway",
-				"kneeling"
+				"kneeling",
+				"ontop"
 			],
 			"feetOnGround": false
 		}

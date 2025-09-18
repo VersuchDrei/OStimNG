@@ -15,7 +15,8 @@
 			"sosBend": 4,
       		"lookUp": -25,
 			"tags": [
-				"lyingback"
+				"lyingback",
+				"onbottom"
 			],
 			"feetOnGround": false
 		},
@@ -23,7 +24,8 @@
 			"intendedSex": "female",
       		"lookUp": -60,
 			"tags": [
-				"kneeling"
+				"kneeling",
+				"ontop"
 			],
 			"feetOnGround": false
 		}

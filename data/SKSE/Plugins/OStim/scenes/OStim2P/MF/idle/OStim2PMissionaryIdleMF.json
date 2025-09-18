@@ -42,14 +42,16 @@
 			"sosBend": 7,
 			"scale": 1.03,
 			"tags": [
-				"kneeling"
+				"kneeling",
+				"ontop"
 			],
 			"feetOnGround": false
 		},
 		{
 			"intendedSex": "female",
 			"tags": [
-				"lyingback"
+				"lyingback",
+				"onbottom"
 			],
 			"feetOnGround": false
 		}

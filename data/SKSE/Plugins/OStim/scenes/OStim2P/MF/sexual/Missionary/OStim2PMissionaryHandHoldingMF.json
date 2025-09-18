@@ -57,7 +57,8 @@
       		"lookUp": -25,
 			"feetOnGround": false,
 			"tags": [
-				"kneeling"
+				"kneeling",
+				"ontop"
 			],
 			"autoTransitions":{
 				"climax": "OStim2PMissionaryClimaxMF"
@@ -68,7 +69,8 @@
       		"lookUp": -50,
 			"feetOnGround": false,
 			"tags": [
-				"lyingback"
+				"lyingback",
+				"onbottom"
 			]
 		}
 	],

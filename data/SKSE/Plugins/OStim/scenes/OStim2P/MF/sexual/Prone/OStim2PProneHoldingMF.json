@@ -50,14 +50,16 @@
 			"scale": 1.03,
 			"feetOnGround": false,
 			"tags": [
-				"lyingfront"
+				"lyingfront",
+				"ontop"
 			]
 		},
 		{
 			"intendedSex": "female",
 			"feetOnGround": false,
 			"tags": [
-				"lyingfront"
+				"lyingfront",
+				"onbottom"
 			]
 		}
 	],

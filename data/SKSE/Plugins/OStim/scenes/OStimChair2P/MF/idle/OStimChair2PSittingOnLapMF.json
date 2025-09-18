@@ -30,14 +30,16 @@
 			"intendedSex": "male",
 			"scale": 1.03,
 			"tags": [
-				"sitting"
+				"sitting",
+				"onbottom"
 			],
 			"feetOnGround": false
 		},
 		{
 			"intendedSex": "female",
 			"tags": [
-				"kneeling"
+				"kneeling",
+				"ontop"
 			],
 			"feetOnGround": false
 		}
