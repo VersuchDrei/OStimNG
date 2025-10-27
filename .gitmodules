@@ -1,3 +1,7 @@
 [submodule "flash/external/greensock"]
 	path = flash/external/greensock
 	url = https://github.com/greensock/GreenSock-AS2
+[submodule "skse_external/CommonLibSSE-NG"]
+	path = skse_external/CommonLibSSE-NG
+	url = https://github.com/ArranzCNL/CommonLibSSE-NG
+	branch = flatrim
