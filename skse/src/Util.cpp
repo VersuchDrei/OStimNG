@@ -152,13 +152,13 @@ namespace util {
 
     // Derived from: https://github.com/powerof3/PapyrusExtenderSSE
     void iterate_attached_cells(const RE::NiPoint3& a_origin, float a_radius,
-                                std::function<RE::BSContainer::ForEachResult(RE::TESObjectREFR&)> a_fn) {
+                                std::function<RE::BSContainer::ForEachResult(RE::TESObjectREFR*)> a_fn) {
         auto TES = RE::TES::GetSingleton();
         if (!TES) return;
 
         auto cell = TES->interiorCell;
         if (cell) {
-            cell->ForEachReferenceInRange(a_origin, a_radius, [&](RE::TESObjectREFR& ref) { return a_fn(ref); });
+            cell->ForEachReferenceInRange(a_origin, a_radius, [&](RE::TESObjectREFR* ref) { return a_fn(ref); });
             return;
         }
 
@@ -185,7 +185,7 @@ namespace util {
 
                     if (worldX < xPlus && (worldX + 4096.0) > xMinus && worldY < yPlus && (worldY + 4096.0) > yMinus) {
                         cell->ForEachReferenceInRange(a_origin, a_radius,
-                                                      [&](RE::TESObjectREFR& a_cellRef) { return a_fn(a_cellRef); });
+                                                      [&](RE::TESObjectREFR* a_cellRef) { return a_fn(a_cellRef); });
                     }
                 }
             }

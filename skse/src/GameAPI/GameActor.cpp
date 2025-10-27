@@ -228,12 +228,12 @@ namespace GameAPI {
     std::vector<GameActor> GameActor::getNearbyActors(float radius, std::function<bool(GameActor)> condition) const {
         std::vector<GameActor> actors;
 
-        GameUtil::forEachReferenceInRange(form->GetPosition(), radius, [&actors, &condition](RE::TESObjectREFR& ref) {
-            if (!ref.Is(RE::Actor::FORMTYPE)) {
+        GameUtil::forEachReferenceInRange(form->GetPosition(), radius, [&actors, &condition](RE::TESObjectREFR* ref) {
+            if (!ref->Is(RE::Actor::FORMTYPE)) {
                 return RE::BSContainer::ForEachResult::kContinue;
             }
 
-            GameActor actor = ref.As<RE::Actor>();
+            GameActor actor = ref->As<RE::Actor>();
 
             if (!condition(actor)) {
                 return RE::BSContainer::ForEachResult::kContinue;

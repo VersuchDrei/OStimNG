@@ -11,8 +11,12 @@
           "description": "Build the SKSE plugin.",
           "dependencies": [
             "articuno",
-            "commonlibsse-ng",
             "pugixml",
+            "spdlog",
+            "directxtk",
+            "rsm-binary-io",
+            "catch2",
+            "rapidcsv",
             "nlohmann-json",
             "openssl"
           ]

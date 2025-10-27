@@ -25,7 +25,6 @@
 using namespace std::literals;
 using namespace REL::literals;
 
-namespace WinAPI = SKSE::WinAPI;
 namespace logger = SKSE::log;
 namespace fs = std::filesystem;
 

@@ -38,12 +38,12 @@ namespace PapyrusObject {
 
         const auto originPos = a_centerRef->GetPosition();
         std::vector<RE::TESObjectREFR*> vec;
-        util::iterate_attached_cells(originPos, a_radius, [&](RE::TESObjectREFR& a_ref) {
-            bool isType = a_ref.GetBaseObject()->Is(RE::FormType::Furniture);
+        util::iterate_attached_cells(originPos, a_radius, [&](RE::TESObjectREFR* a_ref) {
+            bool isType = a_ref->GetBaseObject()->Is(RE::FormType::Furniture);
             if (isType) {
-                const auto refPos = a_ref.GetPosition();
+                const auto refPos = a_ref->GetPosition();
                 bool sameFloor = (a_sameFloor > 0.0) ? (std::fabs(originPos.z - refPos.z) <= a_sameFloor) : true;
-                if (sameFloor && IsBed(&a_ref)) vec.push_back(&a_ref);
+                if (sameFloor && IsBed(a_ref)) vec.push_back(a_ref);
             }
             return RE::BSContainer::ForEachResult::kContinue;
         });

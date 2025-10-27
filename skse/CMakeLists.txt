@@ -14,6 +14,27 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
 
+macro(set_from_environment VARIABLE)
+        if (NOT DEFINED ${VARIABLE} AND DEFINED ENV{${VARIABLE}})
+                set(${VARIABLE} $ENV{${VARIABLE}})
+        endif ()
+endmacro()
+
+set_from_environment(VCPKG_ROOT)
+add_compile_definitions(SKYRIM)
+set(CommonLibPath "extern/CommonLibSSE-NG")
+set(CommonLibName "CommonLibSSE")
+set(GameVersion "Skyrim")
+
+if (DEFINED CommonLibPath AND NOT ${CommonLibPath} STREQUAL "")
+        add_subdirectory(${CommonLibPath} ${CommonLibName} EXCLUDE_FROM_ALL)
+else ()
+        message(
+                FATAL_ERROR
+                "Variable ${CommonLibName}Path is not set."
+        )
+endif()
+
 include(GNUInstallDirs)
 
 configure_file(
@@ -223,13 +244,16 @@ source_group(
 ########################################################################################################################
 find_package(pugixml REQUIRED)
 find_package(nlohmann_json REQUIRED)
-find_package(CommonLibSSE CONFIG REQUIRED)
 find_package(ryml CONFIG REQUIRED)
 find_package(OpenSSL REQUIRED)
 find_path(ARTICUNO_INCLUDE_DIRS "articuno/articuno.h")
 
-add_commonlibsse_plugin(${PROJECT_NAME} SOURCES ${headers} ${sources})
-add_library("${PROJECT_NAME}::${PROJECT_NAME}" ALIAS "${PROJECT_NAME}")
+add_library(
+        ${PROJECT_NAME}
+        SHARED
+        ${headers}
+        ${sources}
+)
 
 target_include_directories(${PROJECT_NAME}
         PRIVATE
@@ -247,7 +271,10 @@ target_link_libraries(${PROJECT_NAME}
         ryml::ryml
         pugixml
         nlohmann_json::nlohmann_json
-        OpenSSL::SSL)
+        OpenSSL::SSL
+        PUBLIC
+        ${CommonLibName}::${CommonLibName}
+)
 
 target_precompile_headers(${PROJECT_NAME}
         PRIVATE

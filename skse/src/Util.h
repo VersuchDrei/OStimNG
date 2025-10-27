@@ -15,7 +15,7 @@ namespace util {
     bool within_radius(const RE::NiPoint3& a_origin, const RE::NiPoint3& a_obj, float a_radius);
 
     void iterate_attached_cells(const RE::NiPoint3& a_origin, float a_radius,
-                                std::function<RE::BSContainer::ForEachResult(RE::TESObjectREFR&)> a_fn);
+                                std::function<RE::BSContainer::ForEachResult(RE::TESObjectREFR*)> a_fn);
 
     uint32_t gamepadMaskToKeyCode(uint32_t mask);
 }  // namespace util

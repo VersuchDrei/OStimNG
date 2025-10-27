@@ -96,12 +96,12 @@ namespace PapyrusActorUtil {
     std::vector<RE::Actor*> GetActorsInRangeV2(RE::StaticFunctionTag*, RE::TESObjectREFR* center, float range, bool includeCenter, bool includePlayer, bool ostimActorsOnly, RE::BGSPerk* condition) {
         std::vector<RE::Actor*> actors;
 
-        GameAPI::GameUtil::ForEachReferenceInRange(center, range, [&actors, center, includeCenter, includePlayer, ostimActorsOnly, condition](RE::TESObjectREFR& ref) {
-            if (!ref.Is(RE::Actor::FORMTYPE)) {
+        GameAPI::GameUtil::ForEachReferenceInRange(center, range, [&actors, center, includeCenter, includePlayer, ostimActorsOnly, condition](RE::TESObjectREFR* ref) {
+            if (!ref->Is(RE::Actor::FORMTYPE)) {
                 return RE::BSContainer::ForEachResult::kContinue;
             }
 
-            RE::Actor* actor = ref.As<RE::Actor>();
+            RE::Actor* actor = ref->As<RE::Actor>();
             if (!includeCenter && actor == center) {
                 return RE::BSContainer::ForEachResult::kContinue;
             }

@@ -16,12 +16,12 @@ namespace Furniture {
         std::unordered_map<FurnitureType*, GameAPI::GameObject> furniture;
 
         RE::NiPoint3 centerPos = {center.x, center.y, center.z};
-        util::iterate_attached_cells(centerPos, radius, [&](RE::TESObjectREFR& ref) {
-            GameAPI::GameObject object = &ref;
-            auto refPos = ref.GetPosition();
+        util::iterate_attached_cells(centerPos, radius, [&](RE::TESObjectREFR* ref) {
+            GameAPI::GameObject object = ref;
+            auto refPos = ref->GetPosition();
 
-            if (sameFloor == 0.0 || std::fabs(centerPos.z - ref.GetPosition().z) <= sameFloor) {
-                FurnitureType* type = FurnitureTable::getFurnitureType(&ref, true)->getListType();
+            if (sameFloor == 0.0 || std::fabs(centerPos.z - ref->GetPosition().z) <= sameFloor) {
+                FurnitureType* type = FurnitureTable::getFurnitureType(ref, true)->getListType();
                 if (type->id == "none" || !Graph::GraphTable::hasNodes(type->getMasterType(), actorCount)) {
                     return RE::BSContainer::ForEachResult::kContinue;
                 }
@@ -62,18 +62,18 @@ namespace Furniture {
 
         auto centerPos = centerRef->GetPosition();
 
-        util::iterate_attached_cells(centerPos, radius, [&](RE::TESObjectREFR& ref) {
-            auto refPos = ref.GetPosition();
+        util::iterate_attached_cells(centerPos, radius, [&](RE::TESObjectREFR* ref) {
+            auto refPos = ref->GetPosition();
 
             if (sameFloor == 0.0 || std::fabs(centerPos.z - refPos.z) <= sameFloor) {
-                FurnitureType* refType = FurnitureTable::getFurnitureType(&ref, true);
+                FurnitureType* refType = FurnitureTable::getFurnitureType(ref, true);
                 if (!refType->isChildOf(type)) {
                     return RE::BSContainer::ForEachResult::kContinue;
                 }
 
                 // TODO GameObject
                 if (!furniture || centerPos.GetSquaredDistance(refPos) < centerPos.GetSquaredDistance(furniture.form->GetPosition())) {
-                    furniture = &ref;
+                    furniture = ref;
                 }
             }
 
@@ -163,7 +163,7 @@ namespace Furniture {
     }
 
     void Furniture::resetClutter(RE::TESObjectREFR* centerRef, float radius) {
-        GameAPI::GameUtil::ForEachReferenceInRange(centerRef, radius, [&](RE::TESObjectREFR& ref) {
+        GameAPI::GameUtil::ForEachReferenceInRange(centerRef, radius, [&](RE::TESObjectREFR* ref) {
             /*
             if (!ref.Is3DLoaded() || ref.IsDynamicForm() || ref.IsDisabled() || ref.IsMarkedForDeletion() || ref.IsDeleted() || ObjectRefUtil::getMotionType(&ref) == 4) {
                 return RE::BSContainer::ForEachResult::kContinue;

@@ -9,13 +9,13 @@ namespace GameAPI {
             modCallbackSource->SendEvent(&modEvent);
         }
 
-        void forEachReferenceInRange(const RE::NiPoint3& center, float radius, std::function<RE::BSContainer::ForEachResult(RE::TESObjectREFR&)> callback) {
+        void forEachReferenceInRange(const RE::NiPoint3& center, float radius, std::function<RE::BSContainer::ForEachResult(RE::TESObjectREFR*)> callback) {
             auto TES = RE::TES::GetSingleton();
             if (!TES) return;
 
             auto cell = TES->interiorCell;
             if (cell) {
-                cell->ForEachReferenceInRange(center, radius, [&](RE::TESObjectREFR& ref) { return callback(ref); });
+                cell->ForEachReferenceInRange(center, radius, [&](RE::TESObjectREFR* ref) { return callback(ref); });
                 return;
             }
 
@@ -42,7 +42,7 @@ namespace GameAPI {
 
                         if (worldX < xPlus && (worldX + 4096.0) > xMinus && worldY < yPlus &&
                             (worldY + 4096.0) > yMinus) {
-                            cell->ForEachReferenceInRange(center, radius, [&](RE::TESObjectREFR& a_cellRef) { return callback(a_cellRef); });
+                            cell->ForEachReferenceInRange(center, radius, [&](RE::TESObjectREFR* a_cellRef) { return callback(a_cellRef); });
                         }
                     }
                 }
@@ -54,7 +54,7 @@ namespace GameAPI {
             CompileAndRunImpl(script, &compiler, name, targetRef);
         }
 
-        void ForEachReferenceInRange(RE::TESObjectREFR* a_origin, float a_radius, std::function<RE::BSContainer::ForEachResult(RE::TESObjectREFR& a_ref)> a_callback) {
+        void ForEachReferenceInRange(RE::TESObjectREFR* a_origin, float a_radius, std::function<RE::BSContainer::ForEachResult(RE::TESObjectREFR* a_ref)> a_callback) {
             RE::TES* TES = RE::TES::GetSingleton();
             if (!TES) {
                 return;
@@ -64,7 +64,7 @@ namespace GameAPI {
                 const auto originPos = a_origin->GetPosition();
 
                 if (TES->interiorCell) {
-                    TES->interiorCell->ForEachReferenceInRange(originPos, a_radius, [&](RE::TESObjectREFR& a_ref) { return a_callback(a_ref); });
+                    TES->interiorCell->ForEachReferenceInRange(originPos, a_radius, [&](RE::TESObjectREFR* a_ref) { return a_callback(a_ref); });
                 } else {
                     if (const auto gridLength = TES->gridCells ? TES->gridCells->length : 0; gridLength > 0) {
                         const float yPlus = originPos.y + a_radius;
@@ -83,7 +83,7 @@ namespace GameAPI {
                                             worldPos.y < yPlus && (worldPos.y + 4096.0f) > yMinus) {
                                             cell->ForEachReferenceInRange(
                                                 originPos, a_radius,
-                                                [&](RE::TESObjectREFR& a_ref) { return a_callback(a_ref); });
+                                                [&](RE::TESObjectREFR* a_ref) { return a_callback(a_ref); });
                                         }
                                     }
                                 }
