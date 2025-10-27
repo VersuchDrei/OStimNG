@@ -138,12 +138,13 @@ namespace GameAPI {
     }
 
     void GameActor::setRotation(float rotation) const {
-        // set rotation Z doesn't work on NPCs
+        // SetHeading doesn't work on NPCs
         // and SetAngle causes weird stuttering on the PC
         if (form->IsPlayerRef()) {
-            form->SetRotationZ(rotation);
+            form->SetHeading(rotation);
         } else {
-            SetAngle(nullptr, 0, form, 0, 0, MathUtil::toDegrees(rotation));
+            form->SetAngle(RE::NiPoint3{0, 0, rotation});
+            //SetAngle(nullptr, 0, form, 0, 0, MathUtil::toDegrees(rotation));
         }
     }
 

@@ -77,7 +77,7 @@ namespace UI::Search {
             controlMap->AllowTextInput(true);
         } else {
             // bandaid fix until CLib-NG is updated
-            int8_t* ptr = &controlMap->textEntryCount;
+            int8_t* ptr = &controlMap->GetRuntimeData().textEntryCount;
             ptr += 8;
             if (*ptr != -1) {
                 ++(*ptr);
@@ -101,7 +101,7 @@ namespace UI::Search {
             controlMap->AllowTextInput(false);
         } else {
             // bandaid fix until CLib-NG is updated
-            int8_t* ptr = &controlMap->textEntryCount;
+            int8_t* ptr = &controlMap->GetRuntimeData().textEntryCount;
             ptr += 8;
             if (*ptr != 0) {
                 --(*ptr);

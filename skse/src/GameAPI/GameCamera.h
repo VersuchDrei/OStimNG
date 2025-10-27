@@ -6,8 +6,8 @@ namespace GameAPI {
         static void shakeCamera(float strength, float duration, bool firstPersonOnly);
         inline static void shakeCamera(float strength, float duration) { shakeCamera(strength, duration, false); }
 
-        inline static float getWorldFOV() { return RE::PlayerCamera::GetSingleton()->worldFOV; }
-        inline static void setWorldFOV(int fov) { RE::PlayerCamera::GetSingleton()->worldFOV = fov; }
+        inline static float getWorldFOV() { return RE::PlayerCamera::GetSingleton()->GetRuntimeData2().worldFOV; }
+        inline static void setWorldFOV(int fov) { RE::PlayerCamera::GetSingleton()->GetRuntimeData2().worldFOV = fov; }
 
         static void startSceneMode(bool freeCam);
         static void endSceneMode(bool firstPerson);

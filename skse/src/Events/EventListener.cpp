@@ -62,7 +62,7 @@ namespace Events {
 
             uint32_t keyCode;
             RE::INPUT_DEVICE deviceType = bEvent->GetDevice();
-            uint32_t keyMask = bEvent->idCode;
+            uint32_t keyMask = bEvent->GetIDCode();
 
             if (deviceType == RE::INPUT_DEVICE::kMouse) {
                 keyCode = 256 + keyMask;

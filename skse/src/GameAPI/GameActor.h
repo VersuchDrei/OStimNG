@@ -56,7 +56,7 @@ namespace GameAPI {
         void setPosition(GamePosition position) const;
 
         inline float getActorValue(GameActorValue actorValue) const { return form->AsActorValueOwner()->GetBaseActorValue(actorValue.actorValue); }
-        inline void damageActorValue(GameActorValue actorValue, float value) const { form->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, actorValue.actorValue, -value);}
+        inline void damageActorValue(GameActorValue actorValue, float value) const { form->AsActorValueOwner()->DamageActorValue(actorValue.actorValue, value);}
 
         inline bool hasKeyword(GameKeyword keyword) const { return form->HasKeyword(keyword.form); }
         inline bool hasKeyword(std::string keyword) const { return form->HasKeywordString(keyword); }

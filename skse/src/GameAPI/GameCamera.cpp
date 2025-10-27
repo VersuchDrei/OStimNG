@@ -39,14 +39,7 @@ namespace GameAPI {
         } else {
             if (GameLogic::GameTable::improvedCamSupport()) {
                 camera->ForceFirstPerson();
-                if (REL::Module::get().version().patch() < 1130) {
-                    RE::ControlMap::GetSingleton()->enabledControls.reset(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch);
-                } else {
-                    // bandaid fix until CLib-NG is updated
-                    auto ptr = &RE::ControlMap::GetSingleton()->enabledControls;
-                    ptr += 8;
-                    (*ptr).reset(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch);
-                }
+                RE::ControlMap::GetSingleton()->GetRuntimeData().enabledControls.reset(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch);
                 camera->ForceThirdPerson();
             }
         }
@@ -59,14 +52,7 @@ namespace GameAPI {
                 toggleFlyCamInner();
             });
         } else if (GameLogic::GameTable::improvedCamSupport()) {
-            if (REL::Module::get().version().patch() < 1130) {
-                RE::ControlMap::GetSingleton()->enabledControls.set(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch);
-            } else {
-                // bandaid fix until CLib-NG is updated
-                auto ptr = &RE::ControlMap::GetSingleton()->enabledControls;
-                ptr += 8;
-                (*ptr).set(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch);
-            }
+            RE::ControlMap::GetSingleton()->GetRuntimeData().enabledControls.set(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch);
         }
         if (firstPerson) {
             SKSE::GetTaskInterface()->AddTask([] {
@@ -98,25 +84,11 @@ namespace GameAPI {
                 toggleFlyCamInner();
                 auto camera = RE::PlayerCamera::GetSingleton();
                 camera->ForceFirstPerson();
-                if (REL::Module::get().version().patch() < 1130) {
-                    RE::ControlMap::GetSingleton()->enabledControls.reset(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch);
-                } else {
-                    // bandaid fix until CLib-NG is updated
-                    auto ptr = &RE::ControlMap::GetSingleton()->enabledControls;
-                    ptr += 8;
-                    (*ptr).reset(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch);
-                }
+                RE::ControlMap::GetSingleton()->GetRuntimeData().enabledControls.reset(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch);
                 camera->ForceThirdPerson();
             });
         } else {
-            if (REL::Module::get().version().patch() < 1130) {
-                RE::ControlMap::GetSingleton()->enabledControls.set(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch);
-            } else {
-                // bandaid fix until CLib-NG is updated
-                auto ptr = &RE::ControlMap::GetSingleton()->enabledControls;
-                ptr += 8;
-                (*ptr).set(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch);
-            }
+            RE::ControlMap::GetSingleton()->GetRuntimeData().enabledControls.set(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch);
             SKSE::GetTaskInterface()->AddTask([] {
                 toggleFlyCamInner();
             });
@@ -124,12 +96,31 @@ namespace GameAPI {
     }
 
     void GameCamera::toggleFlyCamInner() {
+        /*
         const auto scriptFactory = RE::IFormFactory::GetConcreteFormFactoryByType<RE::Script>();
         const auto script = scriptFactory ? scriptFactory->Create() : nullptr;
         if (script) {
             script->SetCommand("tfc");
             GameUtil::CompileAndRun(script, RE::PlayerCharacter::GetSingleton());
             delete script;
+        }
+        */
+
+        static RE::PlayerCamera* camera = RE::PlayerCamera::GetSingleton();
+        if (camera) {
+            camera->ToggleFreeCameraMode(false);
+
+            static RE::ControlMap* controls = RE::ControlMap::GetSingleton();
+            if (controls) {
+                RE::TESCameraState* stateA = camera->currentState.get();
+                RE::TESCameraState* stateB = camera->GetRuntimeData().cameraStates[3].get();
+                static auto context = RE::ControlMap::InputContextID::kTFCMode;
+                if (stateA == stateB) {
+                    controls->PushInputContext(context);
+                } else {
+                    controls->PopInputContext(context);
+                }
+            }
         }
     }
 

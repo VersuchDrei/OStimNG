@@ -29,7 +29,7 @@ namespace GameLogic {
     struct GetHeading {
         static float thunk(RE::Actor* pthis, void* a2) {
             // causes the SpeakSound console command to always think we're looking at the players face
-            return -1.0 + RE::PlayerCamera::GetSingleton()->yaw;
+            return -1.0 + RE::PlayerCamera::GetSingleton()->GetRuntimeData2().yaw;
         }
 
         static inline REL::Relocation<decltype(thunk)> func;

@@ -3,7 +3,7 @@
 namespace GameAPI {
     struct GameActorValue {
         inline static GameActorValue fromString(std::string actorValue) {
-            return RE::ActorValueList::GetSingleton()->LookupActorValueByName(actorValue);
+            return RE::ActorValueList::GetSingleton()->LookupActorValueByName(actorValue.c_str());
         }
 
         RE::ActorValue actorValue;

@@ -101,8 +101,8 @@ extern "C" DLLEXPORT constinit auto SKSEPlugin_Version = []() {
     v.PluginVersion(REL::Version("7.3.5.3"sv));
     v.PluginName("OStim");
     v.AuthorName("VersuchDrei");
-    v.UsesAddressLibrary(true);
-    v.HasNoStructUse(true);
+    v.UsesAddressLibrary();
+    v.UsesNoStructs();
 
     return v;
 }();
