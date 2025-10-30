@@ -56,6 +56,7 @@ set(sources
     src/Core/Singleton.h
     src/Core/Thread/ThreadAutoControl.cpp
     src/Core/Thread/ThreadClimax.cpp
+    src/Core/Thread/ThreadFurniture.cpp
     src/Core/Thread/ThreadNavigation.cpp
     src/Core/Thread/ThreadSound.cpp
     src/Core/ThreadActor/ThreadActorAnimation.cpp

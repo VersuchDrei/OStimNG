@@ -1,7 +1,8 @@
 #pragma once
 
-#include "GameAPI/GameVariable.h"
+#include "GameAPI/GameFaction.h"
 #include "GameAPI/GameObject.h"
+#include "GameAPI/GameVariable.h"
 
 namespace Furniture {
     struct FurnitureType {
@@ -10,6 +11,7 @@ namespace Furniture {
         std::string name = "";
         std::function<bool(GameAPI::GameObject)> condition = [](GameAPI::GameObject object) { return false; };
         int priority = 0;
+        std::vector<GameAPI::GameFaction> factions;
 
         bool ignoreMarkerOffsetX = false;
         bool ignoreMarkerOffsetY = false;

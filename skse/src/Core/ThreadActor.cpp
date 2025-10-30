@@ -567,6 +567,12 @@ namespace Threading {
 
         oldThreadActor.factions = graphActor->factions;
 
+        if (Furniture::FurnitureType* furnitureType = thread->getFurnitureType()) {
+            for (GameAPI::GameFaction faction : furnitureType->factions) {
+                oldThreadActor.factions.push_back(faction);
+            }
+        }
+
         return oldThreadActor;
     }
 

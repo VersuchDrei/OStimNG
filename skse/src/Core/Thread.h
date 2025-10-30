@@ -190,6 +190,8 @@ namespace Threading {
         float furnitureScaleMult = 1.0f;
 
         void changeFurnitureInner(GameAPI::GameObject furniture, Graph::Node* node);
+        void addActorsToFurnitureFactions();
+        void removeActorsFromFurnitureFactions();
 #pragma endregion
 
 #pragma region navigation

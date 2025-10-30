@@ -31,6 +31,24 @@ namespace Furniture {
             JsonUtil::loadGameRecord(json, furnitureType.offsetYGlobal, "offsetYGlobal", filename, "furniture type", path, false);
             JsonUtil::loadGameRecord(json, furnitureType.offsetZGlobal, "offsetZGlobal", filename, "furniture type", path, false);
 
+            if (json.contains("faction")) {
+                if (json["faction"].is_array()) {
+                    for (auto& jsonFaction : json["faction"]) {
+                        GameAPI::GameFaction faction;
+                        faction.loadJson(path, jsonFaction);
+                        if (faction) {
+                            furnitureType.factions.push_back(faction);
+                        }
+                    }
+                } else {
+                    GameAPI::GameFaction faction;
+                    faction.loadJson(path, json["faction"]);
+                    if (faction) {
+                        furnitureType.factions.push_back(faction);
+                    }
+                }
+            }
+
             if (json.contains("supertype")) {
                 if (json["supertype"].is_string()) {
                     std::string supertype = json["supertype"];
