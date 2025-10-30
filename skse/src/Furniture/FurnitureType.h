@@ -32,5 +32,7 @@ namespace Furniture {
         FurnitureType* getListType();
 
         bool isChildOf(FurnitureType* other);
+
+        std::vector<GameAPI::GameFaction> getFactions();
     };
 }

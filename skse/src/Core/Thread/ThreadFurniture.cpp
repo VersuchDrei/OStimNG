@@ -89,7 +89,7 @@ namespace Threading {
 
     void Thread::addActorsToFurnitureFactions() {
         for (auto& [index, actor] : m_actors) {
-            for (GameAPI::GameFaction faction : furnitureType->factions) {
+            for (GameAPI::GameFaction faction : furnitureType->getFactions()) {
                 faction.add(actor.getActor());
             }
         }
@@ -97,7 +97,7 @@ namespace Threading {
 
     void Thread::removeActorsFromFurnitureFactions() {
         for (auto& [index, actor] : m_actors) {
-            for (GameAPI::GameFaction faction : furnitureType->factions) {
+            for (GameAPI::GameFaction faction : furnitureType->getFactions()) {
                 faction.remove(actor.getActor());
             }
         }
