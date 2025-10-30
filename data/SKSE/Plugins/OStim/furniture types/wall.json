@@ -9,5 +9,10 @@
 				"formid": "0xE46"
 			}
 		}
-	]
+	],
+	"faction":{
+		"info": "OStimWallFaction",
+		"mod": "OStim.esp",
+		"formid": "0xEF1"
+	}
 }

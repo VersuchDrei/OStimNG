@@ -27,5 +27,10 @@
 			"condition": "equals",
 			"value": 1
 		}
-	]
+	],
+	"faction":{
+		"info": "OStimSeatFaction",
+		"mod": "OStim.esp",
+		"formid": "0xEF2"
+	}
 }

@@ -13,5 +13,10 @@
 				}
 			]
 		}
-	]
+	],
+	"faction":{
+		"info": "OStimBedrollFaction",
+		"mod": "OStim.esp",
+		"formid": "0xEF7"
+	}
 }

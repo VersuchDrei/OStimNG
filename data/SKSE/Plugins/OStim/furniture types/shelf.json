@@ -9,5 +9,10 @@
 				"formid": "0xDA0"
 			}
 		}
-	]
+	],
+	"faction":{
+		"info": "OStimShelfFaction",
+		"mod": "OStim.esp",
+		"formid": "0xEF3"
+	}
 }

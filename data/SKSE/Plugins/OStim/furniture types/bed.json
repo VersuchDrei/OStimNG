@@ -1,5 +1,10 @@
 {
 	"name": "$ostim_furniture_bed",
 	"supertype": "none",
-	"listIndividually": true
+	"listIndividually": true,
+	"faction":{
+		"info": "OStimBedFaction",
+		"mod": "OStim.esp",
+		"formid": "0xEEF"
+	}
 }

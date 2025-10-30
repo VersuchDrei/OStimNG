@@ -1,3 +1,8 @@
 {
-	"name": "$ostim_furniture_table"
+	"name": "$ostim_furniture_table",
+	"faction":{
+		"info": "OStimTableFaction",
+		"mod": "OStim.esp",
+		"formid": "0xEF0"
+	}
 }

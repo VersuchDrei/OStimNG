@@ -1,3 +1,8 @@
 {
-	"supertype": "wall"
+	"supertype": "wall",
+	"faction":{
+		"info": "OStimWardrobeFaction",
+		"mod": "OStim.esp",
+		"formid": "0xEF9"
+	}
 }

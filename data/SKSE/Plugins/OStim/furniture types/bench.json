@@ -31,5 +31,10 @@
 			"condition": "greater",
 			"value": 1
 		}
-	]
+	],
+	"faction":{
+		"info": "OStimBenchFaction",
+		"mod": "OStim.esp",
+		"formid": "0xEF8"
+	}
 }
