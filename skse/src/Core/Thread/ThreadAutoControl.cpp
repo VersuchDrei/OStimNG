@@ -5,7 +5,16 @@
 #include "Util/Constants.h"
 #include "Util/VectorUtil.h"
 
+#include <functional>
+#include <map>
+
 namespace Threading {
+
+    // FIX: Helper struct to track gender combination for proper scene filtering
+    struct GenderInfo {
+        bool isLesbian = false;  // All actors are female
+        bool isGay = false;      // All actors are male
+    };
 
 #pragma region util
     bool forAnyActor(Graph::Node* node, std::function<bool(Graph::GraphActor&)> condition) {
@@ -35,6 +44,33 @@ namespace Threading {
         return false;
     }
 
+    // FIX: Helper function to detect gender combination for proper scene filtering
+    // This uses the base actor sex (not ActorCondition.sex) to determine scene type
+    // because AGENDER actors can fulfill both roles but we still want to filter for lesbian/gay scenes
+    GenderInfo detectGenderCombination(std::map<int32_t, ThreadActor>& actors) {
+        GenderInfo info;
+
+        if (actors.empty()) {
+            return info;
+        }
+
+        bool allFemale = true;
+        bool allMale = true;
+
+        for (auto& [index, actor] : actors) {
+            if (actor.isFemale()) {
+                allMale = false;
+            } else {
+                allFemale = false;
+            }
+        }
+
+        info.isLesbian = allFemale;
+        info.isGay = allMale;
+
+        return info;
+    }
+
     void addFurniture(std::vector<std::function<bool(Graph::Node*)>>& conditions, Furniture::FurnitureType* furnitureType) {
         std::string furnitureTypeID = furnitureType->getListType()->id;
         if (furnitureTypeID == "none") {
@@ -61,7 +97,55 @@ namespace Threading {
         return true;
     }
 
-    Graph::Node* getRandomForeplayNode(Graph::Node* currentNode, std::vector<Trait::ActorCondition> actorConditions, Furniture::FurnitureType* furnitureType) {
+    Graph::Node* findNodeWithGenderFiltering(
+        Graph::Node* currentNode,
+        std::vector<Trait::ActorCondition> actorConditions,
+        Furniture::FurnitureType* furnitureType,
+        std::vector<std::function<bool(Graph::Node*)>>& baseConditions,
+        GenderInfo genderInfo,
+        const char* sceneTypeForLogging
+    ) {
+        Graph::Node* result = nullptr;
+
+        // Try with gender filtering first if intendedSexOnly is enabled
+        if (MCM::MCMTable::intendedSexOnly()) {
+            std::vector<std::function<bool(Graph::Node*)>> genderConditions = baseConditions;
+
+            if (genderInfo.isLesbian) {
+                genderConditions.push_back([](Graph::Node* node) { return node->hasTag("lesbian"); });
+            } else if (genderInfo.isGay) {
+                genderConditions.push_back([](Graph::Node* node) { return node->hasTag("gay"); });
+            } else {
+                // For mixed gender scenes, explicitly exclude lesbian and gay tagged scenes
+                genderConditions.push_back([](Graph::Node* node) { return !node->hasTag("lesbian") && !node->hasTag("gay"); });
+            }
+
+            // Try with gender filtering first
+            if (currentNode->hasActionTag("sexual") && MCM::MCMTable::autoModeLimitToNavigationDistance()) {
+                result = currentNode->getRandomNodeInRange(MCM::MCMTable::navigationDistanceMax(), actorConditions, [&genderConditions](Graph::Node* node) { return checkConditions(genderConditions, node); });
+            } else {
+                result = Graph::GraphTable::getRandomNode(furnitureType, actorConditions, [&genderConditions](Graph::Node* node) { return checkConditions(genderConditions, node); });
+            }
+
+            // Fallback: If no animation found with gender tags, try without gender filtering
+            if (!result) {
+                logger::warn("No gender-appropriate {} animation found, falling back to untagged animations", sceneTypeForLogging);
+            }
+        }
+
+        // If no result yet (either gender filtering disabled or fallback needed), search without gender tags
+        if (!result) {
+            if (currentNode->hasActionTag("sexual") && MCM::MCMTable::autoModeLimitToNavigationDistance()) {
+                result = currentNode->getRandomNodeInRange(MCM::MCMTable::navigationDistanceMax(), actorConditions, [&baseConditions](Graph::Node* node) { return checkConditions(baseConditions, node); });
+            } else {
+                result = Graph::GraphTable::getRandomNode(furnitureType, actorConditions, [&baseConditions](Graph::Node* node) { return checkConditions(baseConditions, node); });
+            }
+        }
+
+        return result;
+    }
+
+    Graph::Node* getRandomForeplayNode(Graph::Node* currentNode, std::vector<Trait::ActorCondition> actorConditions, Furniture::FurnitureType* furnitureType, GenderInfo genderInfo) {
         std::vector<std::function<bool(Graph::Node*)>> conditions;
         conditions.push_back([&](Graph::Node* node) { return node->findAnyAction({"analsex", "tribbing", "vaginalsex"}) == -1; });
         addFurniture(conditions, furnitureType);
@@ -71,24 +155,13 @@ namespace Threading {
             });
         });
 
-        if (currentNode->hasActionTag("sexual") && MCM::MCMTable::autoModeLimitToNavigationDistance()) {
-            return currentNode->getRandomNodeInRange(MCM::MCMTable::navigationDistanceMax(), actorConditions, [&conditions](Graph::Node* node) { return checkConditions(conditions, node); });
-        } else {
-            return Graph::GraphTable::getRandomNode(furnitureType, actorConditions, [&conditions](Graph::Node* node) { return checkConditions(conditions, node); });
-        }
+        return findNodeWithGenderFiltering(currentNode, actorConditions, furnitureType, conditions, genderInfo, "foreplay");
     }
 
-    Graph::Node* getRandomSexNode(Graph::Node* currentNode, std::vector<Trait::ActorCondition> actorConditions, Furniture::FurnitureType* furnitureType) {
+    Graph::Node* getRandomSexNode(Graph::Node* currentNode, std::vector<Trait::ActorCondition> actorConditions, Furniture::FurnitureType* furnitureType, GenderInfo genderInfo) {
         std::vector<std::function<bool(Graph::Node*)>> conditions;
-        conditions.push_back([&](Graph::Node* node) { return node->findAnyAction(std::vector<std::string>{"analsex", "tribbing", "vaginalsex"}) != -1;
-        });
         addFurniture(conditions, furnitureType);
-
-        if (currentNode->hasActionTag("sexual") && MCM::MCMTable::autoModeLimitToNavigationDistance()) {
-            return currentNode->getRandomNodeInRange(MCM::MCMTable::navigationDistanceMax(), actorConditions, [&conditions](Graph::Node* node) { return checkConditions(conditions, node); });
-        } else {
-            return Graph::GraphTable::getRandomNode(furnitureType, actorConditions, [&conditions](Graph::Node* node) { return checkConditions(conditions, node); });
-        }
+        return findNodeWithGenderFiltering(currentNode, actorConditions, furnitureType, conditions, genderInfo, "sex");
     }
 #pragma endregion
 
@@ -162,17 +235,21 @@ namespace Threading {
             std::string action = GetActor(0)->hasSchlong() ? "malemasturbation" : "femalemasturbation";
             next = Graph::GraphTable::getRandomNode(furnitureType, getActorConditions(), [&action](Graph::Node* node) { return node->findAction(action) != -1; });
         } else {
+            // FIX: Detect gender combination based on base actor sex for proper scene filtering
+            // This ensures lesbian/gay tags are applied even when actors have AGENDER conditions (e.g., futa)
+            GenderInfo genderInfo = detectGenderCombination(m_actors);
+
             if (autoModeStage == AutoModeStage::FOREPLAY) {
-                next = getRandomForeplayNode(m_currentNode, getActorConditions(), furnitureType);
+                next = getRandomForeplayNode(m_currentNode, getActorConditions(), furnitureType, genderInfo);
             } else if (autoModeStage == AutoModeStage::MAIN) {
-                next = getRandomSexNode(m_currentNode, getActorConditions(), furnitureType);
+                next = getRandomSexNode(m_currentNode, getActorConditions(), furnitureType, genderInfo);
             }
         }
 
         if (next) {
             navigateTo(next);
         }
-        
+
         startAutoModeCooldown();
     }
 
