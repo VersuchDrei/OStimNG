@@ -12,8 +12,8 @@ namespace Threading {
 
     // FIX: Helper struct to track gender combination for proper scene filtering
     struct GenderInfo {
-        bool isLesbian = false;  // All actors are female
-        bool isGay = false;      // All actors are male
+        bool isLesbian = false;
+        bool isGay = false;      
     };
 
 #pragma region util
@@ -107,7 +107,6 @@ namespace Threading {
     ) {
         Graph::Node* result = nullptr;
 
-        // Try with gender filtering first if intendedSexOnly is enabled
         if (MCM::MCMTable::intendedSexOnly()) {
             std::vector<std::function<bool(Graph::Node*)>> genderConditions = baseConditions;
 
@@ -133,7 +132,7 @@ namespace Threading {
             }
         }
 
-        // If no result yet (either gender filtering disabled or fallback needed), search without gender tags
+
         if (!result) {
             if (currentNode->hasActionTag("sexual") && MCM::MCMTable::autoModeLimitToNavigationDistance()) {
                 result = currentNode->getRandomNodeInRange(MCM::MCMTable::navigationDistanceMax(), actorConditions, [&baseConditions](Graph::Node* node) { return checkConditions(baseConditions, node); });
