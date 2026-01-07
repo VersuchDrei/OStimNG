@@ -10,7 +10,7 @@
 	"navigations":[
 		{
 			"destination": "OStim2PStandingVampireBiteMaleToDrainedFemaleMF",
-			"description": "$ostim_nav_feed_stop",
+			"description": "$ostim_nav_feed_on_stop_t{1}",
 			"icon": "OStim/sensual/kissing_end",
 			"priority": -1000
 		}

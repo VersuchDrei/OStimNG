@@ -62,6 +62,11 @@
 			"type": "holdingbody",
 			"actor": 0,
 			"target": 1
+		},
+		{
+			"type": "holdingbody",
+			"actor": 1,
+			"target": 0
 		}
 	]
 }

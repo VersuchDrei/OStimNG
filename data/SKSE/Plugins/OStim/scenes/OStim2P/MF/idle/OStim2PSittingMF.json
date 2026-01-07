@@ -34,6 +34,11 @@
 			"icon": "OStim/positional/allfours_alt_f"
 		},
 		{
+			"destination": "OStim2PCowgirlIdleMF",
+			"description": "$ostim_nav_mount_t{0}",
+			"icon": "OStim/sexual/cowgirl_mf"
+		},
+		{
 			"destination": "OStimDoubleBedLeft2PBothSittingMF",
 			"description": "$ostim_nav_sit_on_bed_left",
 			"icon": "OStim/positional/chair/sitting_f"

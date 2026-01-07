@@ -17,7 +17,7 @@
 		{
 			"destination": "OStim2PMissionaryIdleMF",
 			"description": "$ostim_nav_lie_on_back_a{1}",
-			"icon": "OStim/sexual/lyingback_f",
+			"icon": "OStim/positional/lyingback_f",
 			"priority": 0
 		},
 		{
