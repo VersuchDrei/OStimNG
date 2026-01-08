@@ -178,6 +178,13 @@ namespace Events {
                 UI::UIState::GetSingleton()->ToggleActiveMenu(UI::kSearchMenu);
             } else if (keyCode == MCM::MCMTable::keyHideUI()) {
                 UI::UIState::GetSingleton()->HandleControl(UI::Controls::KEY_HIDE);
+            } else if (keyCode == 81) { // Numpad 3 - hardcoded for actor swap. TODO add new global variable for this hotkey binding to esp plugin.
+                Threading::Thread* thread = Threading::ThreadManager::GetSingleton()->getPlayerThread();
+                if (thread) {
+                    thread->swapActorsWithUI();
+                } else {
+                    logger::warn("No player thread found for actor swap");
+                }
             }
         }
 

@@ -73,6 +73,15 @@ namespace GameAPI {
             GameUtil::sendModEvent(furniture.form, "ostim_furniturechanged", Furniture::FurnitureTable::getFurnitureType(furniture, false)->id, threadID);
         }
 
+        void sendActorsSwappedEvent(int threadID, int positionA, int positionB) {
+            json json = json::object();
+            json["positionA"] = positionA;
+            json["positionB"] = positionB;
+            std::string jsonString = json.dump();
+
+            GameUtil::sendModEvent(GameLogic::GameTable::getMainQuest(), "ostim_actors_swapped", jsonString, threadID);
+        }
+
         void sendOStimEvent(int threadID, std::string type, Graph::RoleMap<GameActor> actors) {
             // legacy mod event
             if (threadID == 0 && type == "spank") {

@@ -217,6 +217,38 @@ Actor Function GetActor(int ThreadID, int Index) Global Native
 */;
 int Function GetActorPosition(int ThreadID, Actor Act) Global Native
 
+;/* SwapActors
+* * swaps the two actors at the given positions in the thread
+* * respects sex and actor condition constraints unless unrestricted navigation is enabled
+* * may change the current scene if the swapped actors don't fit the current animation
+* *
+* * @param: ThreadID, the id of the thread
+* * @param: PositionA, the position of the first actor
+* * @param: PositionB, the position of the second actor
+* *
+* * @return: true if the swap was successful, false if the swap is not possible
+*/;
+bool Function SwapActors(int ThreadID, int PositionA, int PositionB) Global Native
+
+;/* GetSwapPartners
+* * returns the positions of actors that can be swapped with the given actor
+* * respects sex and actor condition constraints unless unrestricted navigation is enabled
+* *
+* * @param: ThreadID, the id of the thread
+* * @param: Act, the actor to get valid swap partners for
+* *
+* * @return: an array of position indices that can swap with the given actor
+*/;
+int[] Function GetSwapPartners(int ThreadID, Actor Act) Global Native
+
+;/* SwapActorsWithUI
+* * opens a UI dialog to allow the player to swap actors in the thread
+* * first selects which actor to swap, then shows valid swap partners for that actor
+* *
+* * @param: ThreadID, the id of the thread
+*/;
+Function SwapActorsWithUI(int ThreadID) Global Native
+
 
 ;  ██████╗██╗     ██╗███╗   ███╗ █████╗ ██╗  ██╗
 ; ██╔════╝██║     ██║████╗ ████║██╔══██╗╚██╗██╔╝

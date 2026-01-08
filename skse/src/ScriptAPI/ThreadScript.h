@@ -1,5 +1,6 @@
 #pragma once
 
+#include "GameAPI/GameActor.h"
 #include "GameAPI/GameObject.h"
 
 namespace ScriptAPI {
@@ -9,7 +10,10 @@ namespace ScriptAPI {
 
         void changeFurniture(int threadID, GameAPI::GameObject furniture, std::string sceneID);
 
-        
+        bool swapActors(int threadID, int positionA, int positionB);
+        std::vector<int> getSwapPartners(int threadID, GameAPI::GameActor actor);
+        void swapActorsWithUI(int threadID);
+
         bool hasMetadata(int threadID, std::string metadata);
         void addMetadata(int threadID, std::string metadata);
         std::vector<std::string> getMetadata(int threadID);

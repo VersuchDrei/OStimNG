@@ -18,6 +18,7 @@ namespace GameAPI {
 
         void sendOrgasmEvent(int threadID, std::string sceneID, int index, GameAPI::GameActor actor);
         void sendFurnitureChangedEvent(int threadID, GameAPI::GameObject furniture);
+        void sendActorsSwappedEvent(int threadID, int positionA, int positionB);
         void sendOStimEvent(int threadID, std::string type, Graph::RoleMap<GameActor> actors);
     }
 }

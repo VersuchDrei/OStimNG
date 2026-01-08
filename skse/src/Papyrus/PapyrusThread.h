@@ -211,6 +211,18 @@ namespace PapyrusThread {
         ScriptAPI::Thread::changeFurniture(threadID, furniture, sceneID);
     }
 
+    bool SwapActors(RE::StaticFunctionTag*, int threadID, int positionA, int positionB) {
+        return ScriptAPI::Thread::swapActors(threadID, positionA, positionB);
+    }
+
+    std::vector<int> GetSwapPartners(RE::StaticFunctionTag*, int threadID, RE::Actor* actor) {
+        return ScriptAPI::Thread::getSwapPartners(threadID, actor);
+    }
+
+    void SwapActorsWithUI(RE::StaticFunctionTag*, int threadID) {
+        ScriptAPI::Thread::swapActorsWithUI(threadID);
+    }
+
 
     bool IsInAutoMode(RE::StaticFunctionTag*, int threadID) {
         Threading::Thread* thread = Threading::ThreadManager::GetSingleton()->GetThread(threadID);
@@ -323,6 +335,9 @@ namespace PapyrusThread {
         BIND(GetFurniture);
         BIND(GetFurnitureType);
         BIND(ChangeFurniture);
+        BIND(SwapActors);
+        BIND(GetSwapPartners);
+        BIND(SwapActorsWithUI);
 
         BIND(IsInAutoMode);
         BIND(StartAutoMode);
