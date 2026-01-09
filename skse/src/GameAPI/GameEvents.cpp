@@ -82,20 +82,20 @@ namespace GameAPI {
             GameUtil::sendModEvent(GameLogic::GameTable::getMainQuest(), "ostim_actors_swapped", jsonString, threadID);
         }
 
-        void sendActorAddedEvent(int threadID, int position) {
+        void sendActorAddedEvent(int threadID, GameAPI::GameActor actor, int position) {
             json json = json::object();
             json["position"] = position;
             std::string jsonString = json.dump();
 
-            GameUtil::sendModEvent(GameLogic::GameTable::getMainQuest(), "ostim_actor_added", jsonString, threadID);
+            GameUtil::sendModEvent(actor.form, "ostim_actor_join", jsonString, threadID);
         }
 
-        void sendActorRemovedEvent(int threadID, int position) {
+        void sendActorRemovedEvent(int threadID, GameAPI::GameActor actor, int position) {
             json json = json::object();
             json["position"] = position;
             std::string jsonString = json.dump();
 
-            GameUtil::sendModEvent(GameLogic::GameTable::getMainQuest(), "ostim_actor_removed", jsonString, threadID);
+            GameUtil::sendModEvent(actor.form, "ostim_actor_leave", jsonString, threadID);
         }
 
         void sendOStimEvent(int threadID, std::string type, Graph::RoleMap<GameActor> actors) {
