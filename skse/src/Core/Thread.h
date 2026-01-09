@@ -188,6 +188,14 @@ namespace Threading {
         std::vector<int> getSwapPartners(GameAPI::GameActor actor);
         void swapActorsWithUI();
 
+        bool addActorToThread(RE::Actor* actor, bool useFades = true);
+        bool canAddActor(RE::Actor* actor);
+        void addActorWithUI();
+
+        bool removeActorFromThread(int position, bool useFades = true);
+        bool canRemoveActor(int position);
+        void removeActorWithUI();
+
     private:
         GameAPI::GameObject furniture;
         Furniture::FurnitureType* furnitureType = nullptr;
@@ -200,6 +208,9 @@ namespace Threading {
 
         void swapActorsInner(int positionA, int positionB);
         bool isNodeValidForSwap(Graph::Node* node, int positionA, int positionB);
+
+        void addActorToThreadInner(RE::Actor* actor);
+        void removeActorFromThreadInner(int position);
 #pragma endregion
 
 #pragma region navigation

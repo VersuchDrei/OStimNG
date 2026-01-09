@@ -14,6 +14,12 @@ namespace ScriptAPI {
         std::vector<int> getSwapPartners(int threadID, GameAPI::GameActor actor);
         void swapActorsWithUI(int threadID);
 
+        bool addActorToThread(int threadID, GameAPI::GameActor actor);
+        void addActorWithUI(int threadID);
+
+        bool removeActorFromThread(int threadID, int position);
+        void removeActorWithUI(int threadID);
+
         bool hasMetadata(int threadID, std::string metadata);
         void addMetadata(int threadID, std::string metadata);
         std::vector<std::string> getMetadata(int threadID);

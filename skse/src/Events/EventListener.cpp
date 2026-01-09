@@ -181,7 +181,7 @@ namespace Events {
             } else if (keyCode == 81) { // Numpad 3 - hardcoded for actor swap. TODO add new global variable for this hotkey binding to esp plugin.
                 Threading::Thread* thread = Threading::ThreadManager::GetSingleton()->getPlayerThread();
                 if (thread) {
-                    thread->swapActorsWithUI();
+                    thread->addActorWithUI();
                 } else {
                     logger::warn("No player thread found for actor swap");
                 }
