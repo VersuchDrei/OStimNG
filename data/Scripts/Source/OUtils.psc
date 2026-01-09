@@ -597,3 +597,15 @@ Function RestoreOffset(Actor act, float offset) Global
 	nioverride.AddNodeTransformPosition(act, false, isFemale, "NPC", "internal", offsets)
 	nioverride.UpdateNodeTransform(act, false, isFemale, "NPC")
 EndFunction
+
+Function SettingsSwapActors(string stateVal) global
+	OThread.SwapActorsWithUI(0)
+EndFunction
+
+Function SettingsAddActor(string stateVal) global
+	OThread.AddActorWithUI(0)
+EndFunction
+
+Function SettingsRemoveActor(string stateVal) global
+	OThread.RemoveActorWithUI(0)
+EndFunction

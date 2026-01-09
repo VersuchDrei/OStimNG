@@ -1,0 +1,45 @@
+{
+  "pages": [
+    {
+      "name": "ManageActors",
+      "description": "Manage Actors",
+      "icon": "OStim/symbols/search",
+      "parent": null
+    }
+  ],
+  "options": [
+    {
+      "name": "SwapActors",
+      "page": "ManageActors",
+      "states": {
+        "0": {
+          "icon": "OStim/symbols/decrease",
+          "description": "Swap two actors",
+          "function": "OUtils/SettingsSwapActors"
+        }
+      }
+    },
+    {
+      "name": "AddActor",
+      "page": "ManageActors",
+      "states": {
+        "0": {
+          "icon": "OStim/symbols/increase",
+          "description": "Add a new actor",
+          "function": "OUtils/SettingsAddActor"
+        }
+      }
+    },
+    {
+      "name": "RemoveActor",
+      "page": "ManageActors",
+      "states": {
+        "0": {
+          "icon": "OStim/symbols/decrease",
+          "description": "Remove an existing actor",
+          "function": "OUtils/SettingsRemoveActor"
+        }
+      }
+    }
+  ]
+}
