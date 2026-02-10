@@ -59,6 +59,7 @@ namespace UI::Scene{
 		void ExecuteOption(MenuOption& option);
 		void BuildMenuData(MenuData& menuData);
 		void BuildPageTree();
+		inline bool isAtRoot() const { return selectedPage == nullptr; }
 	private:
 		void BuildSubPages(MenuPage* parent, std::vector<MenuPage>& subPages, std::vector<Graph::MenuNode>& inputPages);
 		void BuildOptions(MenuPage* parent, Graph::MenuNode& page);

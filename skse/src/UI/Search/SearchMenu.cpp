@@ -52,6 +52,7 @@ namespace UI::Search {
     }
 
     void SearchMenu::Handle(UI::Controls control) {
+        using enum Controls;
         switch (control) {
             case Up: {
                 SendControl(0);
@@ -69,6 +70,9 @@ namespace UI::Search {
     }
 
     void SearchMenu::Show() {
+        if (UI::UIState::IsExternalUIEnabled()) {
+            return; // External UI (e.g., OStim Prism) is handling the UI
+        }
         OStimMenu::Show();
         ApplyPositions();
 

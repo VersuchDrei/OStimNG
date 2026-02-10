@@ -174,8 +174,10 @@ namespace Events {
                 GameAPI::GameCamera::toggleFreeCam();
             } else if (keyCode == MCM::MCMTable::keyAlignment()) {
                 UI::UIState::GetSingleton()->ToggleActiveMenu(UI::kAlignMenu);
+                UI::UIState::GetSingleton()->HandleControl(UI::Controls::AlignMenu);
             } else if (keyCode == MCM::MCMTable::keySearch()) {
                 UI::UIState::GetSingleton()->ToggleActiveMenu(UI::kSearchMenu);
+                UI::UIState::GetSingleton()->HandleControl(UI::Controls::SearchMenu);
             } else if (keyCode == MCM::MCMTable::keyHideUI()) {
                 UI::UIState::GetSingleton()->HandleControl(UI::Controls::KEY_HIDE);
             }

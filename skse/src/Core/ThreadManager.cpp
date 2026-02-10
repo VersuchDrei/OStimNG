@@ -1,5 +1,6 @@
 #include "Core/ThreadManager.h"
 #include "UI/UIState.h"
+#include "ModAPI/OstimNG-API-Thread.h"
 
 #include "GameAPI/Game.h"
 #include "Util/Constants.h"
@@ -8,6 +9,28 @@
 
 namespace Threading {
     ThreadManager::ThreadManager() {
+        // Register Thread API listeners
+        registerThreadStartListener([](Thread* thread) {
+            if (thread->isPlayerThread()) {
+                OstimNG_API::Thread::NotifyEvent(
+                    OstimNG_API::Thread::ThreadEvent::ThreadStarted, thread->m_threadId);
+            }
+        });
+
+        registerNodeChangedListener([](Thread* thread) {
+            if (thread->isPlayerThread()) {
+                OstimNG_API::Thread::NotifyEvent(
+                    OstimNG_API::Thread::ThreadEvent::NodeChanged, thread->m_threadId);
+            }
+        });
+
+        registerThreadEndListener([](Thread* thread) {
+            if (thread->isPlayerThread()) {
+                OstimNG_API::Thread::NotifyEvent(
+                    OstimNG_API::Thread::ThreadEvent::ThreadEnded, thread->m_threadId);
+            }
+        });
+
         m_excitementThread = std::thread([&]() {
             auto sleepTime = std::chrono::milliseconds(Constants::LOOP_TIME_MILLISECONDS);
 

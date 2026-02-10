@@ -41,6 +41,10 @@ namespace UI {
         void SpeedChanged(Threading::Thread* thread, int speed);
         void HandleThreadRemoved(Threading::Thread* thread);
 
+        // External UI support (e.g., OStim Prism)
+        static void SetExternalUIEnabled(bool enabled) { useExternalUI = enabled; }
+        static bool IsExternalUIEnabled() { return useExternalUI; }
+
 
         Threading::Thread* currentThread;
         Graph::Node* currentNode;
@@ -48,6 +52,7 @@ namespace UI {
         // TODO remove this again when we no longer need OSA
         int glyph = 0;
         MenuType activeMenu = MenuType::kSceneMenu;
+        inline static bool useExternalUI = false;
         const short UI_UPDATE_LOOP_TIME = 10000;
         short refreshUIPositionCooldown = UI_UPDATE_LOOP_TIME;
     };

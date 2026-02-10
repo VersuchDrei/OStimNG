@@ -3,12 +3,21 @@
 #include "UI/Scene/SceneMenu.h"
 #include "UI/Search/SearchMenu.h"
 #include "Core/ThreadManager.h"
+#include "ModAPI/OstimNG-API-Thread.h"
 
 namespace UI {
     void UIState::HandleControl(Controls control) {
         if (!Threading::ThreadManager::GetSingleton()->AnySceneRunning()) {
             return;
         }
+
+        // Notify external mods about control input via Thread API
+        auto thread = currentThread;
+        if (thread) {
+            OstimNG_API::Thread::NotifyControlInput(control, thread->m_threadId);
+        }
+        
+        // Handle control in active menu
         switch (activeMenu) {
         case MenuType::kSceneMenu: {
             UI::Scene::SceneMenu::GetMenu()->Handle(control);
