@@ -3,6 +3,7 @@
 #include "GameActor.h"
 #include "GameObject.h"
 
+#include "Graph/Event.h"
 #include "Graph/RoleMap.h"
 
 namespace Threading {
@@ -18,6 +19,6 @@ namespace GameAPI {
 
         void sendOrgasmEvent(int threadID, std::string sceneID, int index, GameAPI::GameActor actor);
         void sendFurnitureChangedEvent(int threadID, GameAPI::GameObject furniture);
-        void sendOStimEvent(int threadID, std::string type, Graph::RoleMap<GameActor> actors);
+        void sendOStimEvent(int threadID, Graph::Event* graphEvent, Graph::RoleMap<GameActor> actors);
     }
 }

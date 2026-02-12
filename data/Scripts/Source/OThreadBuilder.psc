@@ -8,6 +8,34 @@
 */;
 ScriptName OThreadBuilder
 
+;/* Example
+* * example function to show the use of the OThreadBuilder script
+*/;
+Function Example(Actor[] Actors)
+	; necessary: create builder
+	int BuilderID = OThreadBuilder.Create(Actors)
+
+	; optional: set a starting animation
+	string SceneID = OLibrary.GetRandomSceneSuperloadCSV(Actors, AnyActionType = "intercourse")
+	OThreadBuilder.SetStartingAnimation(BuilderID, SceneID)
+
+	; optional: set thread to undress actors at start
+	OThreadBuilder.UndressActors(BuilderID)
+
+	; optional: disable furniture for thread
+	OThreadBuilder.NoFurniture(BuilderID)
+
+	; optional: use any of the many other options
+	; there's too much configurability to list all of it
+	; you get the gist
+
+	; necessary: start thread
+	; optional: store thread ID if you need it
+	int ThreadID = OThreadBuilder.Start(BuilderID)
+EndFunction
+
+
+
 ;/* Create
 * * creates a a new thread builder
 * *

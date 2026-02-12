@@ -15,6 +15,12 @@
 			"priority": -1000
 		},
 		{
+			"destination": "OStim2PSittingMF",
+			"description": "$ostim_nav_sit_down",
+			"icon": "OStim/positional/leanback_f",
+			"priority": -900
+		},
+		{
 			"destination": "OStim2PCowgirlToReverseIdleMF",
 			"description": "$ostim_nav_turn_around_a{1}",
 			"icon": "OStim/sexual/reversecowgirl_alt_mf",
