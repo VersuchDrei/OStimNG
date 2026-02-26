@@ -20,6 +20,28 @@
 
 namespace Threading {
     using ThreadId = int64_t;
+
+    // State captured during thread migration to preserve context
+    struct ThreadMigrationState {
+        int currentSpeed = 0;
+        Graph::Node* currentNode = nullptr;
+        std::map<RE::FormID, float> actorExcitement;  // Key by actor FormID, not position!
+        std::map<RE::FormID, int> actorTimesClimaxed;
+        std::map<RE::FormID, int> actorTimeUntilClimax;
+        std::map<RE::FormID, bool> actorUndressed;  // Track if actor was undressed
+        std::vector<std::string> metadata;
+        bool autoMode = false;
+        AutoModeStage autoModeStage = AutoModeStage::NONE;
+        int stopTimer = 0;
+        ThreadFlags threadFlags = 0;
+        GameAPI::GameObject furniture;
+        Furniture::FurnitureType* furnitureType = nullptr;
+        GameAPI::GameOwnership furnitureOwner = nullptr;
+        // Camera state for player threads
+        float freeCamSpeedBefore = 0;
+        float worldFOVbefore = 0;
+        float timeScaleBefore = 0;
+    };
     class Thread : public OStim::Thread, public RE::BSTEventSink<RE::BSAnimationGraphEvent>{
     public:
         ThreadId m_threadId;
@@ -77,6 +99,14 @@ namespace Threading {
         void stop();
         void stopFaded();
         void close();
+        
+        // Thread migration for player add/remove
+        void setMigrating(bool migrating) { isMigrating = migrating; }
+        void setContinuingActors(const std::vector<GameAPI::GameActor>& actors);
+        void restorePlayerSettings();
+        void setThreadEndOriginator(const std::string& originator) { threadEndOriginator = originator; }
+        ThreadMigrationState captureStateForMigration();
+        void restoreStateFromMigration(const ThreadMigrationState& state);
 
         inline GameAPI::GamePosition getCenter() { return center; }
 
@@ -108,6 +138,9 @@ namespace Threading {
 
         int stopTimer = 0;
         bool isStopping = false;
+        bool isMigrating = false;  // Set during migration to skip camera/fade operations
+        std::set<RE::FormID> continuingActors;  // Actors that will continue in new thread (use freeFast)
+        std::string threadEndOriginator;  // What caused the thread to end (e.g., "add", "remove", "swap", "normal")
 
         Threading::Threads::NodeHandler* nodeHandler = nullptr;
 

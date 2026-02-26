@@ -31,6 +31,11 @@ namespace Threading {
 
         std::vector<Serialization::OldThread> serialize();
 
+        // Synchronously migrate a thread (stop old, start new with same actors/state)
+        // Used for add/remove/swap actors to ensure proper event firing for backward compatibility
+        // Returns new thread ID on success, or -1 on failure
+        int migrateThread(ThreadId oldThreadId, std::vector<GameAPI::GameActor> newActors);
+
     private:
         using ThreadMap = std::unordered_map<ThreadId, Thread*>;
         Util::IDGenerator idGenerator = Util::IDGenerator(1);
@@ -40,6 +45,7 @@ namespace Threading {
         std::vector<ThreadId> threadStopQueue;
 
         void stopThreadNoLock(ThreadId threadID);
+        int startThreadNoLock(ThreadStartParams params);
 
 #pragma region events
     public:

@@ -54,9 +54,11 @@ namespace Threading {
         void loop();
 
         void free();
+        void freeFast(); // SYNCHRONOUS cleanup: no animations, no async tasks
 
         inline bool isFemale() { return female; }
         inline bool hasSchlong() { return schlong; }
+        inline bool isUndressed() { return undressed; }
 
         inline Graph::GraphActor* getGraphActor() { return graphActor; }
 

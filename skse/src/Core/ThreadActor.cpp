@@ -524,6 +524,62 @@ namespace Threading {
         }
     }
 
+    void ThreadActor::freeFast() {
+        logger::info("freeing actor {}-{} FAST (no animations): {}", thread->m_threadId, index, actor.getName());
+
+        // Remove factions
+        if (this->graphActor) {
+            for (GameAPI::GameFaction faction : this->graphActor->factions) {
+                faction.remove(actor);
+            }
+        }
+
+        // Remove equip objects
+        for (auto& [type, object] : equipObjects) {
+            object.unequip(actor);
+            object.removeItems(actor);
+        }
+
+        // FORCE SYNCHRONOUS redressing - bypass Papyrus
+        if (!undressedMask.isEmpty()) {
+            for (GameAPI::GameArmor item : undressedItems) {
+                actor.equip(item);
+            }
+            undressedItems.clear();
+            undressedMask.clear();
+            undressed = false;
+        }
+
+        // FORCE SYNCHRONOUS weapon re-equipping
+        if (weaponsRemoved) {
+            actor.equipWeaponry(weaponry);
+            weaponsRemoved = false;
+        }
+
+        // Reset appearance
+        applyHeelOffset(false);
+        actor.setScale(scaleBefore);
+        
+        // Unlock actor
+        freeActor(actor, false);
+
+        // Reset position SYNCHRONOUSLY - no AddTask delays
+        if (MCM::MCMTable::resetPosition()) {
+            actor.setPosition(positionBefore);
+        }
+
+        // Reset face
+        auto faceData = actor.form->GetFaceGenAnimationData();
+        if (faceData) {
+            faceData->ClearExpressionOverride();
+            faceData->Reset(0.0, true, true, true, false);
+        }
+
+        // NO post-scene dialogue for fast cleanup
+
+        logger::info("freed actor {}-{} FAST: complete", thread->m_threadId, index, actor.getName());
+    }
+
     void ThreadActor::papyrusUndressCallback(std::vector<GameAPI::GameArmor> items) {
         for (GameAPI::GameArmor item : items) {
             if (VectorUtil::contains(undressedItems, item)) {

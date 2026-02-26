@@ -4,6 +4,7 @@
 #include "UI/Scene/SceneOptions.h"
 #include "UI/UIState.h"
 #include "MCM/MCMTable.h"
+#include "Util/ActorUtil.h"
 
 namespace OstimNG_API::Thread
 {
@@ -544,6 +545,74 @@ namespace OstimNG_API::Thread
         bool IsOptionsAtRoot() noexcept override
         {
             return UI::Scene::SceneOptions::GetSingleton()->isAtRoot();
+        }
+
+        // --- Actor Management Primitives ---
+
+        bool IsActorInAnyThread(uint32_t actorFormID) noexcept override
+        {
+            auto actor = RE::TESForm::LookupByID<RE::Actor>(actorFormID);
+            if (!actor) return false;
+            return Threading::ThreadManager::GetSingleton()->findThread(GameAPI::GameActor(actor)) != nullptr;
+        }
+
+        bool HasCompatibleNode(uint32_t threadID, const uint32_t* actorFormIDs, uint32_t actorCount) noexcept override
+        {
+            if (!actorFormIDs || actorCount == 0) return false;
+            auto thread = Threading::ThreadManager::GetSingleton()->GetThread(threadID);
+            if (!thread) return false;
+
+            std::vector<GameAPI::GameActor> actors;
+            for (uint32_t i = 0; i < actorCount; i++) {
+                auto actor = RE::TESForm::LookupByID<RE::Actor>(actorFormIDs[i]);
+                if (!actor) return false;
+                actors.push_back(GameAPI::GameActor(actor));
+            }
+
+            std::vector<GameAPI::GameActor> dominants;
+            ActorUtil::sort(actors, dominants, -1);
+
+            std::vector<Trait::ActorCondition> conditions;
+            for (auto& a : actors) conditions.push_back(Trait::ActorCondition::create(a.form));
+
+            auto node = Graph::GraphTable::getRandomNode(
+                thread->getFurnitureType(), conditions,
+                [](Graph::Node* n) { return !n->isTransition; });
+            return node != nullptr;
+        }
+
+        bool MigrateThread(uint32_t threadID, const uint32_t* actorFormIDs, uint32_t actorCount) noexcept override
+        {
+            if (!actorFormIDs || actorCount == 0) return false;
+            std::vector<GameAPI::GameActor> actors;
+            for (uint32_t i = 0; i < actorCount; i++) {
+                auto actor = RE::TESForm::LookupByID<RE::Actor>(actorFormIDs[i]);
+                if (!actor) return false;
+                actors.push_back(GameAPI::GameActor(actor));
+            }
+            int result = Threading::ThreadManager::GetSingleton()->migrateThread(threadID, actors);
+            return result >= 0;
+        }
+
+        bool IsUnrestrictedNavigation() noexcept override
+        {
+            return MCM::MCMTable::unrestrictedNavigation();
+        }
+
+        bool IsIntendedSexOnly() noexcept override
+        {
+            return MCM::MCMTable::intendedSexOnly();
+        }
+
+        int32_t GetActorPosition(uint32_t threadID, uint32_t actorFormID) noexcept override
+        {
+            auto thread = Threading::ThreadManager::GetSingleton()->GetThread(threadID);
+            if (!thread) return -1;
+            for (auto& [pos, actor] : thread->getActors()) {
+                if (actor.getActor().form && actor.getActor().form->GetFormID() == actorFormID)
+                    return static_cast<int32_t>(pos);
+            }
+            return -1;
         }
     };
 
