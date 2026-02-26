@@ -17,15 +17,20 @@ namespace OstimNG_API::Thread
             void* userData;
         };
         std::vector<CallbackRegistration> eventCallbacks;
-        
+
         struct ControlCallbackRegistration
         {
             ControlEventCallback callback;
             void* userData;
         };
         std::vector<ControlCallbackRegistration> controlCallbacks;
-        
+
         std::mutex callbackMutex;
+
+        // Backing storage for const char* pointers returned through the ABI.
+        // These must outlive the buffer-fill call; callers must not hold pointers across a rebuild.
+        UI::Scene::MenuData m_cachedMenuData;
+        std::vector<std::string> m_navDescCache;
 
     public:
         static ThreadInterface* GetSingleton() noexcept
@@ -151,6 +156,7 @@ namespace OstimNG_API::Thread
             }
 
             std::vector<Trait::ActorCondition> conditions = thread->getActorConditions();
+            m_navDescCache.clear();
             uint32_t count = 0;
 
             for (auto& nav : currentNode->navigations)
@@ -160,11 +166,12 @@ namespace OstimNG_API::Thread
                 if (nav.fulfilledBy(conditions) &&
                     thread->getFurnitureType()->isChildOf(nav.nodes.back()->furnitureType))
                 {
-                    buffer[count].sceneId = nav.nodes.front()->scene_id;
-                    buffer[count].destinationId = nav.nodes.back()->scene_id;
-                    buffer[count].icon = nav.icon;
-                    buffer[count].description = nav.getDescription(thread);
-                    buffer[count].border = nav.border;
+                    m_navDescCache.push_back(nav.getDescription(thread));
+                    buffer[count].sceneId = nav.nodes.front()->scene_id.c_str();
+                    buffer[count].destinationId = nav.nodes.back()->scene_id.c_str();
+                    buffer[count].icon = nav.icon.c_str();
+                    buffer[count].description = m_navDescCache.back().c_str();
+                    buffer[count].border = nav.border.c_str();
                     buffer[count].isTransition = nav.isTransition;
                     count++;
                 }
@@ -438,8 +445,8 @@ namespace OstimNG_API::Thread
                 if (!thread->getFurnitureType()->isChildOf(node->furnitureType)) continue;
                 if (node->isTransition) continue;
 
-                buffer[count].sceneId = node->scene_id;
-                buffer[count].name = node->scene_name;
+                buffer[count].sceneId = node->scene_id.c_str();
+                buffer[count].name = node->scene_name.c_str();
                 buffer[count].actorCount = node->numActors;
                 count++;
             }
@@ -454,8 +461,8 @@ namespace OstimNG_API::Thread
             auto node = Graph::GraphTable::getNodeById(sceneID);
             if (!node) return false;
 
-            outInfo->sceneId = node->scene_id;
-            outInfo->name = node->scene_name;
+            outInfo->sceneId = node->scene_id.c_str();
+            outInfo->name = node->scene_name.c_str();
             outInfo->actorCount = node->numActors;
 
             return true;
@@ -501,16 +508,16 @@ namespace OstimNG_API::Thread
         void RebuildOptionsTree() noexcept override
         {
             UI::Scene::SceneOptions::GetSingleton()->BuildPageTree();
+            UI::Scene::SceneOptions::GetSingleton()->BuildMenuData(m_cachedMenuData);
         }
 
         uint32_t GetOptionsItemCount() noexcept override
         {
-            UI::Scene::MenuData menuData;
-            UI::Scene::SceneOptions::GetSingleton()->BuildMenuData(menuData);
+            UI::Scene::SceneOptions::GetSingleton()->BuildMenuData(m_cachedMenuData);
 
             // First item is always the back/exit button, exclude it
-            return menuData.options.size() > 1
-                ? static_cast<uint32_t>(menuData.options.size() - 1)
+            return m_cachedMenuData.options.size() > 1
+                ? static_cast<uint32_t>(m_cachedMenuData.options.size() - 1)
                 : 0;
         }
 
@@ -518,18 +525,17 @@ namespace OstimNG_API::Thread
         {
             if (!buffer || bufferSize == 0) return 0;
 
-            UI::Scene::MenuData menuData;
-            UI::Scene::SceneOptions::GetSingleton()->BuildMenuData(menuData);
+            UI::Scene::SceneOptions::GetSingleton()->BuildMenuData(m_cachedMenuData);
 
-            // Include first item (back/exit button)
+            // const char* pointers into m_cachedMenuData are valid until the next BuildMenuData call
             uint32_t count = 0;
-            for (size_t i = 0; i < menuData.options.size() && count < bufferSize; i++)
+            for (size_t i = 0; i < m_cachedMenuData.options.size() && count < bufferSize; i++)
             {
-                buffer[count].id = menuData.options[i].nodeId;
-                buffer[count].title = menuData.options[i].title;
-                buffer[count].icon = menuData.options[i].imagePath;
-                buffer[count].border = menuData.options[i].border;
-                buffer[count].description = menuData.options[i].description;
+                buffer[count].id = m_cachedMenuData.options[i].nodeId.c_str();
+                buffer[count].title = m_cachedMenuData.options[i].title.c_str();
+                buffer[count].icon = m_cachedMenuData.options[i].imagePath.c_str();
+                buffer[count].border = m_cachedMenuData.options[i].border.c_str();
+                buffer[count].description = m_cachedMenuData.options[i].description.c_str();
                 count++;
             }
 

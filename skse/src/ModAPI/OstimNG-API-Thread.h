@@ -4,9 +4,15 @@
 * This is NOT specific to any particular UI implementation
 */
 #pragma once
+#include <cstdint>
 
 namespace OstimNG_API::Thread
 {
+    // All floating-point values in this API use IEEE 754 binary32.
+    // Both OStim.dll and any addon must be compiled for a platform where this holds.
+    using f32 = float;
+    static_assert(sizeof(f32) == 4, "OStimNG API: f32 must be 32-bit IEEE 754");
+
     enum class InterfaceVersion : uint8_t
     {
         V1
@@ -47,23 +53,23 @@ namespace OstimNG_API::Thread
     // Key mappings
     struct KeyData
     {
-        int keyUp;
-        int keyDown;
-        int keyLeft;
-        int keyRight;
-        int keyYes;
-        int keyEnd;
-        int keyToggle;
-        int keySearch;
-        int keyAlignment;
-        int keySceneStart;
-        int keyNpcSceneStart;
-        int keySpeedUp;
-        int keySpeedDown;
-        int keyPullOut;
-        int keyAutoMode;
-        int keyFreeCam;
-        int keyHideUI;
+        int32_t keyUp;
+        int32_t keyDown;
+        int32_t keyLeft;
+        int32_t keyRight;
+        int32_t keyYes;
+        int32_t keyEnd;
+        int32_t keyToggle;
+        int32_t keySearch;
+        int32_t keyAlignment;
+        int32_t keySceneStart;
+        int32_t keyNpcSceneStart;
+        int32_t keySpeedUp;
+        int32_t keySpeedDown;
+        int32_t keyPullOut;
+        int32_t keyAutoMode;
+        int32_t keyFreeCam;
+        int32_t keyHideUI;
     };
 
     // Event callback function type
@@ -76,50 +82,53 @@ namespace OstimNG_API::Thread
     struct ActorData
     {
         uint32_t formID;           // Actor FormID
-        float excitement;          // 0.0 to 100.0
+        f32 excitement;            // 0.0 to 100.0
         bool isFemale;
         bool hasSchlong;
-        int timesClimaxed;         // Number of times the actor has climaxed in this scene
+        int32_t timesClimaxed;     // Number of times the actor has climaxed in this scene
     };
 
     // Navigation option from current node
+    // Pointers are valid until the next call to GetNavigationOptions — copy the strings if you need to keep them.
     struct NavigationData
     {
-        std::string sceneId;
-        std::string destinationId;  // Final destination scene ID (after transitions)
-        std::string icon;
-        std::string description;
-        std::string border;         // Border color hex (e.g. "ffffff")
+        const char* sceneId;
+        const char* destinationId;  // Final destination scene ID (after transitions)
+        const char* icon;
+        const char* description;
+        const char* border;         // Border color hex (e.g. "ffffff")
         bool isTransition;          // Whether this navigation goes through a transition
     };
 
     // Actor alignment/positioning data
     struct ActorAlignmentData
     {
-        float offsetX;
-        float offsetY;
-        float offsetZ;
-        float scale;
-        float rotation;
-        float sosBend;
+        f32 offsetX;
+        f32 offsetY;
+        f32 offsetZ;
+        f32 scale;
+        f32 rotation;
+        f32 sosBend;
     };
 
     // Scene search result
+    // Pointers are valid until the search data is invalidated — copy the strings if you need to keep them.
     struct SceneSearchResult
     {
-        std::string sceneId;
-        std::string name;
+        const char* sceneId;
+        const char* name;
         uint32_t actorCount;
     };
 
     // Options menu item (sub-page or executable option on the current page)
+    // Pointers are valid until the next call to GetOptionsItemCount, GetOptionsItems, or RebuildOptionsTree — copy the strings if you need to keep them.
     struct OptionsMenuItem
     {
-        std::string id;
-        std::string title;
-        std::string icon;
-        std::string border;
-        std::string description;
+        const char* id;
+        const char* title;
+        const char* icon;
+        const char* border;
+        const char* description;
     };
 
     // Generic thread data access interface
