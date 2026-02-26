@@ -142,7 +142,8 @@ namespace UI::Scene {
 	}
 	
 	void SceneOptions::BuildMenuData(MenuData& menuData) {
-		
+		menuData.options.clear();
+
 		if (selectedPage == nullptr) {
 			menuData.options.push_back({
 				.nodeId = "-1",
