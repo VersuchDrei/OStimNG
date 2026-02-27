@@ -5,6 +5,8 @@
 #include "UI/UIState.h"
 #include "MCM/MCMTable.h"
 #include "Util/ActorUtil.h"
+#include <future>
+#include <memory>
 
 namespace OstimNG_API::Thread
 {
@@ -59,8 +61,7 @@ namespace OstimNG_API::Thread
 
         uint32_t GetPlayerThreadID() noexcept override
         {
-            auto thread = Threading::ThreadManager::GetSingleton()->getPlayerThread();
-            return thread ? thread->m_threadId : 0;
+            return 0;
         }
 
         bool IsThreadValid(uint32_t threadID) noexcept override
@@ -588,17 +589,36 @@ namespace OstimNG_API::Thread
             return node != nullptr;
         }
 
-        bool MigrateThread(uint32_t threadID, const uint32_t* actorFormIDs, uint32_t actorCount) noexcept override
+        int32_t MigrateThread(uint32_t threadID, const uint32_t* actorFormIDs, uint32_t actorCount,
+                              std::function<void(int32_t)> onComplete = nullptr,
+                              int startDelayMs = 500) noexcept override
         {
-            if (!actorFormIDs || actorCount == 0) return false;
+            if (!actorFormIDs || actorCount == 0) {
+                if (onComplete) onComplete(-1);
+                return -1;
+            }
             std::vector<GameAPI::GameActor> actors;
             for (uint32_t i = 0; i < actorCount; i++) {
                 auto actor = RE::TESForm::LookupByID<RE::Actor>(actorFormIDs[i]);
-                if (!actor) return false;
+                if (!actor) {
+                    if (onComplete) onComplete(-1);
+                    return -1;
+                }
                 actors.push_back(GameAPI::GameActor(actor));
             }
-            int result = Threading::ThreadManager::GetSingleton()->migrateThread(threadID, actors);
-            return result >= 0;
+            if (onComplete) {
+                // Async: pass callback through, return immediately
+                bool scheduled = Threading::ThreadManager::GetSingleton()->migrateThread(threadID, actors, onComplete, startDelayMs);
+                return scheduled ? 0 : -1;
+            } else {
+                // Sync: block on a promise/future to get the real new thread ID
+                auto promise = std::make_shared<std::promise<int32_t>>();
+                auto future = promise->get_future();
+                bool scheduled = Threading::ThreadManager::GetSingleton()->migrateThread(threadID, actors,
+                    [promise](int32_t id) { promise->set_value(id); }, startDelayMs);
+                if (!scheduled) return -1;
+                return future.get();  // blocks calling thread until async migration completes
+            }
         }
 
         bool IsUnrestrictedNavigation() noexcept override

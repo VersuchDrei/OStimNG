@@ -5,6 +5,7 @@
 */
 #pragma once
 #include <cstdint>
+#include <functional>
 
 namespace OstimNG_API::Thread
 {
@@ -267,8 +268,13 @@ namespace OstimNG_API::Thread
         virtual bool HasCompatibleNode(uint32_t threadID, const uint32_t* actorFormIDs, uint32_t actorCount) noexcept = 0;
 
         // Stop the old thread and start a new one with the given actor set, preserving all state.
-        // actorFormIDs: desired actors in desired order. Returns true if migration was initiated.
-        virtual bool MigrateThread(uint32_t threadID, const uint32_t* actorFormIDs, uint32_t actorCount) noexcept = 0;
+        // actorFormIDs: desired actors in desired order.
+        // - Without callback: blocks until migration completes; returns new thread ID or -1.
+        // - With callback: returns immediately (0 = scheduled, -1 = immediate failure);
+        //   callback is invoked with the new thread ID on success, or -1 on failure.
+        virtual int32_t MigrateThread(uint32_t threadID, const uint32_t* actorFormIDs, uint32_t actorCount,
+                                      std::function<void(int32_t)> onComplete = nullptr,
+                                      int startDelayMs = 500) noexcept = 0;
 
         // MCM setting: if true, skip all condition checks (sex, actor requirements, etc.)
         virtual bool IsUnrestrictedNavigation() noexcept = 0;

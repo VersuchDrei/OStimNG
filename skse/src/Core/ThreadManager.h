@@ -7,6 +7,7 @@
 #include "GameAPI/GameActor.h"
 #include "Serial/OldThread.h"
 #include "Util/IDGenerator.h"
+#include <functional>
 #include <shared_mutex>
 
 namespace Threading {    
@@ -31,10 +32,11 @@ namespace Threading {
 
         std::vector<Serialization::OldThread> serialize();
 
-        // Synchronously migrate a thread (stop old, start new with same actors/state)
-        // Used for add/remove/swap actors to ensure proper event firing for backward compatibility
-        // Returns new thread ID on success, or -1 on failure
-        int migrateThread(ThreadId oldThreadId, std::vector<GameAPI::GameActor> newActors);
+        // Asynchronously migrate a thread (stop old, start new with same state).
+        // Returns false if validation fails immediately, true if migration was scheduled.
+        // onComplete is called with the new thread ID on success, or -1 on failure.
+        bool migrateThread(ThreadId oldThreadId, std::vector<GameAPI::GameActor> newActors,
+                           std::function<void(int32_t)> onComplete = nullptr, int startDelayMs = 500);
 
     private:
         using ThreadMap = std::unordered_map<ThreadId, Thread*>;

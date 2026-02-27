@@ -227,7 +227,8 @@ namespace Threading {
         return ids;
     }
 
-    int ThreadManager::migrateThread(ThreadId oldThreadId, std::vector<GameAPI::GameActor> newActors) {
+    bool ThreadManager::migrateThread(ThreadId oldThreadId, std::vector<GameAPI::GameActor> newActors,
+                                       std::function<void(int32_t)> onComplete, int startDelayMs) {
         logger::info("migrating thread {} with {} actors - COMPLETE STOP THEN START", oldThreadId, newActors.size());
         
         ThreadMigrationState state;
@@ -245,7 +246,8 @@ namespace Threading {
             auto it = m_threadMap.find(oldThreadId);
             if (it == m_threadMap.end()) {
                 logger::error("cannot migrate: thread {} not found", oldThreadId);
-                return -1;
+                if (onComplete) onComplete(-1);
+                return false;
             }
             Thread* oldThread = it->second;
 
@@ -302,7 +304,8 @@ namespace Threading {
             
             if (!selectedStartNode) {
                 logger::error("CANNOT MIGRATE: No suitable starting node found for {} actors - ABORTING migration", newActors.size());
-                return -1;
+                if (onComplete) onComplete(-1);
+                return false;
             }
             
             logger::info("Selected starting node {} for {} actors", selectedStartNode->scene_id, newActors.size());
@@ -315,7 +318,8 @@ namespace Threading {
         auto it = m_threadMap.find(oldThreadId);
         if (it == m_threadMap.end()) {
             logger::error("thread {} was stopped during node search - ABORTING migration", oldThreadId);
-            return -1;
+            if (onComplete) onComplete(-1);
+            return false;
         }
         Thread* oldThread = it->second;
         
@@ -343,7 +347,7 @@ namespace Threading {
         
         // Fade to black before stopping
         GameAPI::GameCamera::fadeToBlack(0.5f);
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        // std::this_thread::sleep_for(std::chrono::milliseconds(500));
         
         // FULLY STOP the old thread using NORMAL close path
         // This properly:
@@ -362,35 +366,32 @@ namespace Threading {
         
         logger::info("Old thread FULLY STOPPED - all cleanup complete, all listeners cleared");
 
-        // Wait 0.5 seconds before starting new thread (async to not freeze game)
-        logger::info("Scheduling new thread start in 0.5 seconds...");
-        
         // Release lock before async operation
         lock.unlock();
-        
+
         // Create new thread start params with the selected starting node
         ThreadStartParams params;
         params.actors = newActors;
         params.furniture = state.furniture;
         params.threadFlags = state.threadFlags;
         params.metadata = state.metadata;
-        
+
         Graph::SequenceEntry entry;
         entry.node = selectedStartNode;
         params.startingNodes.push_back(entry);
 
-        // Spawn async thread to wait and then start new thread
-        std::thread delayedStart([this, params, state, oldThreadId]() {
-            std::this_thread::sleep_for(std::chrono::milliseconds(500));
-            
+        // Async: wait for old thread's scheduled tasks (undressing, etc.) to finish,
+        // then start the new thread. Calls onComplete with the new thread ID when done.
+        std::thread([this, params, state, oldThreadId, onComplete, startDelayMs]() {
+            logger::info("Waiting {} ms for old thread cleanup tasks to finish...", startDelayMs);
+            std::this_thread::sleep_for(std::chrono::milliseconds(startDelayMs));
+
             logger::info("STARTING new thread with {} actors after delay", params.actors.size());
-            
-            // Acquire lock to start thread
-            std::unique_lock<std::shared_mutex> startLock(m_threadMapMtx);
-            int newThreadId = startThreadNoLock(params);
-            
+            int newThreadId = startThread(params);  // acquires lock internally
+
             if (newThreadId < 0) {
                 logger::error("failed to start new thread after migration");
+                if (onComplete) onComplete(-1);
                 return;
             }
 
@@ -399,15 +400,15 @@ namespace Threading {
             if (newThread) {
                 newThread->restoreStateFromMigration(state);
                 logger::info("successfully migrated thread {} to thread {}", oldThreadId, newThreadId);
-                
                 GameAPI::GameCamera::fadeFromBlack(1.0f);
+                if (onComplete) onComplete(newThreadId);
             } else {
                 logger::error("failed to get new thread after migration");
+                if (onComplete) onComplete(-1);
             }
-        });
-        delayedStart.detach();
-        
+        }).detach();
+
         logger::info("Migration scheduled - returning immediately");
-        return -1;  // Return -1 since new thread ID will be assigned async
+        return true;  // migration scheduled; onComplete delivers the real thread ID
     }
 }  // namespace OStim
