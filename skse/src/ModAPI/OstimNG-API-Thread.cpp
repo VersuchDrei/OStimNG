@@ -157,6 +157,7 @@ namespace OstimNG_API::Thread
 
             std::vector<Trait::ActorCondition> conditions = thread->getActorConditions();
             m_navDescCache.clear();
+            m_navDescCache.reserve(currentNode->navigations.size());
             uint32_t count = 0;
 
             for (auto& nav : currentNode->navigations)
