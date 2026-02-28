@@ -590,25 +590,27 @@ namespace OstimNG_API::Thread
         }
 
         int32_t MigrateThread(uint32_t threadID, const uint32_t* actorFormIDs, uint32_t actorCount,
-                              std::function<void(int32_t)> onComplete = nullptr,
+                              void (*onComplete)(int32_t, void*) = nullptr,
+                              void* context = nullptr,
                               int startDelayMs = 500) noexcept override
         {
             if (!actorFormIDs || actorCount == 0) {
-                if (onComplete) onComplete(-1);
+                if (onComplete) onComplete(-1, context);
                 return -1;
             }
             std::vector<GameAPI::GameActor> actors;
             for (uint32_t i = 0; i < actorCount; i++) {
                 auto actor = RE::TESForm::LookupByID<RE::Actor>(actorFormIDs[i]);
                 if (!actor) {
-                    if (onComplete) onComplete(-1);
+                    if (onComplete) onComplete(-1, context);
                     return -1;
                 }
                 actors.push_back(GameAPI::GameActor(actor));
             }
             if (onComplete) {
-                // Async: pass callback through, return immediately
-                bool scheduled = Threading::ThreadManager::GetSingleton()->migrateThread(threadID, actors, onComplete, startDelayMs);
+                // Async: wrap raw pointer into a lambda internally (safe — doesn't cross ABI boundary)
+                bool scheduled = Threading::ThreadManager::GetSingleton()->migrateThread(threadID, actors,
+                    [onComplete, context](int32_t id) { onComplete(id, context); }, startDelayMs);
                 return scheduled ? 0 : -1;
             } else {
                 // Sync: block on a promise/future to get the real new thread ID

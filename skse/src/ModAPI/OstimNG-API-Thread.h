@@ -5,7 +5,6 @@
 */
 #pragma once
 #include <cstdint>
-#include <functional>
 
 namespace OstimNG_API::Thread
 {
@@ -273,7 +272,8 @@ namespace OstimNG_API::Thread
         // - With callback: returns immediately (0 = scheduled, -1 = immediate failure);
         //   callback is invoked with the new thread ID on success, or -1 on failure.
         virtual int32_t MigrateThread(uint32_t threadID, const uint32_t* actorFormIDs, uint32_t actorCount,
-                                      std::function<void(int32_t)> onComplete = nullptr,
+                                      void (*onComplete)(int32_t newThreadID, void* context) = nullptr,
+                                      void* context = nullptr,
                                       int startDelayMs = 500) noexcept = 0;
 
         // MCM setting: if true, skip all condition checks (sex, actor requirements, etc.)
