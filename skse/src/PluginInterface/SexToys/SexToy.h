@@ -16,7 +16,7 @@ namespace OStim {
         virtual const char* getName() = 0;
 
         /**
-         * number of miliseconds that have to pass before another call to update is made
+         * number of milliseconds that have to pass before another call to update is made
          * updates are always send when a peak happens (unless peaks are disabled)
          * if this returns 0 an update is send for every peak
          * if peaks are disabled an update is attempted every second
@@ -35,7 +35,7 @@ namespace OStim {
          *
          * @param baseline: value between 0.0f and 1.0f for the strength of the toy between peaks
          * @param peak: value between 0.0f and 1.0f for the strength of the toy for peaks, this value is properly filled even if peaks are disabled
-         * @param peakInterval: amount of miliseconds between peaks, if peaks are disabled value will be -1, value is estimated based on previous peak timings
+         * @param peakInterval: amount of milliseconds between peaks, if peaks are disabled value will be -1, value is estimated based on previous peak timings
          */
         virtual void update(float baseline, float peak, int16_t peakInterval) = 0;
 

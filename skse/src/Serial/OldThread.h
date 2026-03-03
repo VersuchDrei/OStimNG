@@ -113,7 +113,7 @@ namespace Serialization {
         }
 
         int threadID = 0;
-        GameAPI::GameObject furniture = nullptr;
+        GameAPI::GameObject furniture;
         GameAPI::GameOwnership furnitureOwner = nullptr;
         std::vector<OldThreadActor> actors;
 

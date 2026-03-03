@@ -37,7 +37,7 @@ namespace Threading {
             if (eventTimer <= 0) {
                 playSound(eventReaction, eventPartner, true);
                 eventReaction = nullptr;
-                eventPartner = nullptr;
+                eventPartner = {};
             }
 
             return;

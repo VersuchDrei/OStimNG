@@ -58,13 +58,7 @@ namespace PapyrusThreadBuilder {
             return;
         }
 
-        Graph::Node* node = Graph::GraphTable::getNodeById(animation);
-        if (!node) {
-            logger::warn("animation {} could not be found", animation);
-            return;
-        }
-
-        params->startingNodes = {{node->animationLengthMs, node}};
+        params->setStartingNode(animation);
     }
 
     void AddStartingAnimation(RE::StaticFunctionTag*, int builderID, std::string animation, float duration, bool navigateTo) {
@@ -73,29 +67,7 @@ namespace PapyrusThreadBuilder {
             return;
         }
 
-        Graph::Node* node = Graph::GraphTable::getNodeById(animation);
-        if (!node) {
-            logger::warn("animation {} could not be found", animation);
-            return;
-        }
-
-        if (navigateTo && !params->startingNodes.empty() && params->startingNodes.back().node != node) {
-            std::vector<Graph::SequenceEntry> path = params->startingNodes.back().node->getRoute(MCM::MCMTable::navigationDistanceMax(), Trait::ActorCondition::create(params->actors), node);
-            if (path.empty()) {
-                params->startingNodes.push_back({duration > 0.0f ? static_cast<int>(duration * 1000) : node->animationLengthMs, node});
-            } else {
-                for (Graph::SequenceEntry& entry : path) {
-                    params->startingNodes.push_back(entry);
-                }
-
-                if (duration > 0.0f) {
-                    params->startingNodes.back().duration = duration;
-                }
-            }
-            
-        } else {
-            params->startingNodes.push_back({duration > 0.0f ? static_cast<int>(duration * 1000) : node->animationLengthMs, node});
-        }
+        params->addStartingNode(animation, static_cast<int>(duration * 1000), navigateTo);
     }
 
     void SetStartingSequence(RE::StaticFunctionTag*, int builderID, std::string sequence) {
@@ -104,16 +76,7 @@ namespace PapyrusThreadBuilder {
             return;
         }
 
-        Graph::Sequence* sequencePtr = Graph::GraphTable::getSequenceByID(sequence);
-        if (!sequencePtr) {
-            logger::warn("sequence {} could not be found", sequence);
-            return;
-        }
-
-        params->startingNodes.clear();
-        for (Graph::SequenceEntry& entry : sequencePtr->nodes) {
-            params->startingNodes.push_back(entry);
-        }
+        params->setStartingSequence(sequence);
     }
 
     void ConcatStartingSequence(RE::StaticFunctionTag*, int builderID, std::string sequence, bool navigateTo) {
@@ -122,25 +85,7 @@ namespace PapyrusThreadBuilder {
             return;
         }
 
-        Graph::Sequence* sequencePtr = Graph::GraphTable::getSequenceByID(sequence);
-        if (!sequencePtr) {
-            logger::warn("sequence {} could not be found", sequence);
-            return;
-        }
-
-        if (navigateTo && !params->startingNodes.empty() && params->startingNodes.back().node != sequencePtr->nodes.front().node) {
-            std::vector<Graph::SequenceEntry> path = params->startingNodes.back().node->getRoute( MCM::MCMTable::navigationDistanceMax(), Trait::ActorCondition::create(params->actors), sequencePtr->nodes.front().node);
-            if (!path.empty()) {
-                for (Graph::SequenceEntry& entry : path) {
-                    params->startingNodes.push_back(entry);
-                }
-                params->startingNodes.pop_back();
-            }
-        }
-
-        for (Graph::SequenceEntry& entry : sequencePtr->nodes) {
-            params->startingNodes.push_back(entry);
-        }
+        params->concatStartingSequence(sequence, navigateTo);
     }
 
     void EndAfterSequence(RE::StaticFunctionTag*, int builderID) {

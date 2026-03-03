@@ -18,5 +18,10 @@ namespace Threading {
         bool noFurniture = false;
         ThreadFlags threadFlags = 0;
         std::vector<std::string> metadata;
+
+        void setStartingNode(std::string nodeID);
+        void addStartingNode(std::string nodeID, int duration, bool navigateTo);
+        void setStartingSequence(std::string sequenceID);
+        void concatStartingSequence(std::string sequenceID, bool navigateTo);
     };
 }

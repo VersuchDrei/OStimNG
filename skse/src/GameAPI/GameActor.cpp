@@ -149,8 +149,9 @@ namespace GameAPI {
     }
 
     void GameActor::setPosition(GamePosition position) const {
-        setRotation(position.r);
-        SetPosition(form, position.x, position.y, position.z);
+        //setRotation(position.r);
+        //SetPosition(form, position.x, position.y, position.z);
+        TranslateTo(nullptr, 0, form, position.x, position.y, position.z, 0, 0, MathUtil::toDegrees(position.r), 1000000, 1000000);
     }
 
     void GameActor::lockAtPosition(float x, float y, float z, float r) const {

@@ -13,6 +13,7 @@ namespace GameAPI {
     public:
         inline GameObject() {}
         inline GameObject(RE::TESObjectREFR* ref) { form = ref; }
+        inline GameObject(void* ref) { form = (RE::TESObjectREFR*)ref; }
 
         inline float getRotation() const { return form->GetAngleZ(); }
         inline GamePosition getPosition() const { return GamePosition(form->GetPosition(), form->GetAngleZ()); }

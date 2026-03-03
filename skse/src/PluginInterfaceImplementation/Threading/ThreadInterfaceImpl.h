@@ -15,5 +15,8 @@ namespace Interface {
         virtual void registerNodeChangedListener(OStim::ThreadEventListener* listener) override;
         virtual void registerClimaxListener(OStim::ThreadActorEventListener* listener) override;
         virtual void registerThreadStopListener(OStim::ThreadEventListener* listener) override;
+
+
+        virtual OStim::ThreadBuilder* createThreadBuilder(uint32_t actorCount, void** actors) override;
     };
 }

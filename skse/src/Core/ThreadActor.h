@@ -136,7 +136,7 @@ namespace Threading {
         bool schlong;
 
         Graph::GraphActor* graphActor = nullptr;
-        GameAPI::GameActor primaryPartner = nullptr;
+        GameAPI::GameActor primaryPartner;
         int speed = 0;
         float scaleMult = 1.0;
         int sosBend = 0;

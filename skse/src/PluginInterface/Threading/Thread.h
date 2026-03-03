@@ -8,6 +8,7 @@
 namespace OStim {
     class Thread {
     public:
+        // --- API version 1 ---
         virtual int32_t getThreadID() = 0;
 
         virtual bool isPlayerThread() = 0;

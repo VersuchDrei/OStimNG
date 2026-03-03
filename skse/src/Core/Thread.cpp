@@ -603,7 +603,7 @@ namespace Threading {
         gameRoles.target = roles.target->getActor();
         gameRoles.performer = roles.performer->getActor();
 
-        GameAPI::GameEvents::sendOStimEvent(m_threadId, graphEvent->id, gameRoles);
+        GameAPI::GameEvents::sendOStimEvent(m_threadId, graphEvent, gameRoles);
     }
 
 

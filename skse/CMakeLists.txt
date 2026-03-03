@@ -69,6 +69,7 @@ set(sources
     src/Core/ThreadStarter/NPCThreadStarter.cpp
     src/Core/ThreadStarter/PlayerThreadStarter.cpp
     src/Core/ThreadStarter/ThreadStarter.cpp
+    src/Core/ThreadStarter/ThreadStartParams.cpp
     src/Core/Thread.cpp
     src/Core/ThreadActor.cpp
     src/Core/ThreadInterface.cpp
@@ -125,6 +126,7 @@ set(sources
 	src/Papyrus/Script.h
     src/PluginInterfaceImplementation/Settings/SettingInterfaceImpl.cpp
     src/PluginInterfaceImplementation/SexToys/SexToyInterfaceImpl.cpp
+    src/PluginInterfaceImplementation/Threading/ThreadBuilderImpl.cpp
     src/PluginInterfaceImplementation/Threading/ThreadInterfaceImpl.cpp
     src/PluginInterfaceImplementation/InterfaceMapImpl.cpp
 	src/ScriptAPI/ActionDataScript.cpp
