@@ -191,7 +191,7 @@ namespace Graph {
         std::shuffle(std::begin(copy), std::end(copy), RNGUtil::RNG);
 
         for (Node* node : copy) {
-            if (!node->isTransition && !node->noRandomSelection && furnitureType->isChildOf(node->furnitureType) && node->fulfilledBy(actorConditions) && nodeCondition(node)) {
+            if (!node->isTransition && !node->noRandomSelection && furnitureType->isChildOf(node->furnitureType) && node->fulfilledBy(actorConditions) && (!nodeCondition || nodeCondition(node))) {
                 return node;
             }
         }

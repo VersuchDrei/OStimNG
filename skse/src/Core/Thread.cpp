@@ -634,28 +634,59 @@ namespace Threading {
         }
     }
 
+    void Thread::restorePlayerSettings() {
+        logger::info("Restoring player camera/UI settings");
+        UI::HideMenus();
+        GameAPI::GameCamera::endSceneMode(MCM::MCMTable::firstPersonAfterScene());
+
+        RE::INISettingCollection* ini = RE::INISettingCollection::GetSingleton();
+        RE::Setting* speed = ini->GetSetting("fFreeCameraTranslationSpeed:Camera");
+        if (speed) {
+            speed->data.f = freeCamSpeedBefore;
+        }
+
+        GameAPI::GameCamera::setWorldFOV(worldFOVbefore);
+
+        if (MCM::MCMTable::customTimeScale() > 0) {
+            GameAPI::Game::setTimeScale(timeScaleBefore);
+        }
+    }
+
+    void Thread::setContinuingActors(const std::vector<GameAPI::GameActor>& actors) {
+        continuingActors.clear();
+        for (auto& actor : actors) {
+            continuingActors.insert(actor.form->GetFormID());
+        }
+    }
+
     void Thread::close() {
         logger::info("closing thread {}", m_threadId);
 
         if (playerThread) {
+            // During migration: close UI but DON'T reset camera - new thread will reuse it
             UI::EndControlledScene();
-            GameAPI::GameCamera::endSceneMode(MCM::MCMTable::firstPersonAfterScene());
-
-            RE::INISettingCollection* ini = RE::INISettingCollection::GetSingleton();
-            RE::Setting* speed = ini->GetSetting("fFreeCameraTranslationSpeed:Camera");
-            if (speed) {
-                speed->data.f = freeCamSpeedBefore;
-            }
-
-            GameAPI::GameCamera::setWorldFOV(worldFOVbefore);
-
-            if (MCM::MCMTable::customTimeScale() > 0) {
-                GameAPI::Game::setTimeScale(timeScaleBefore);
+            if(!isMigrating) {
+                restorePlayerSettings();
             }
         }
 
+        // During migration: 
+        // - Actors NOT in continuingActors set: use free() (being removed, normal redress)
+        // - Actors IN continuingActors set: use freeFast() (continuing, synchronous)
+        // Normal close: use free() for all actors
         for (auto& actorIt : m_actors) {
-            actorIt.second.free();
+            RE::FormID actorID = actorIt.second.getActor().form->GetFormID();
+            bool actorContinuing = continuingActors.contains(actorID);
+            
+            if (isMigrating && actorContinuing) {
+                logger::info("Actor {} continuing to new thread - using freeFast()", actorIt.second.getActor().getName());
+                actorIt.second.freeFast();
+            } else {
+                if (isMigrating) {
+                    logger::info("Actor {} being removed - using free()", actorIt.second.getActor().getName());
+                }
+                actorIt.second.free();
+            }
         }
 
         if (furniture) {
@@ -673,7 +704,94 @@ namespace Threading {
 
         EventUtil::invokeListeners(threadEndListeners);
 
-        GameAPI::GameEvents::sendEndEvent(m_threadId, this, getGameActors());
+        GameAPI::GameEvents::sendEndEvent(m_threadId, this, getGameActors(), threadEndOriginator);
+    }
+
+    ThreadMigrationState Thread::captureStateForMigration() {
+        logger::info("capturing state for thread migration from thread {}", m_threadId);
+        
+        ThreadMigrationState state;
+        state.currentSpeed = m_currentNodeSpeed;
+        state.currentNode = m_currentNode;
+        state.autoMode = autoMode;
+        state.autoModeStage = autoModeStage;
+        state.stopTimer = stopTimer;
+        state.threadFlags = threadFlags;
+        state.furniture = furniture;
+        state.furnitureType = furnitureType;
+        state.furnitureOwner = furnitureOwner;
+
+        // Capture camera settings for player threads
+        if (playerThread) {
+            state.freeCamSpeedBefore = freeCamSpeedBefore;
+            state.worldFOVbefore = worldFOVbefore;
+            state.timeScaleBefore = timeScaleBefore;
+        }
+
+        // Capture metadata
+        for (const std::string& data : metadata.getMetadata()) {
+            state.metadata.push_back(data);
+        }
+
+        // Capture actor excitement and climax data by FormID (not position index!)
+        for (auto& [index, threadActor] : m_actors) {
+            GameAPI::GameActor actor = threadActor.getActor();
+            RE::FormID actorID = actor.form->GetFormID();
+            state.actorExcitement[actorID] = threadActor.getExcitement();
+            state.actorTimesClimaxed[actorID] = Util::APITable::getTimesClimaxedFaction().getRank(actor);
+            state.actorTimeUntilClimax[actorID] = Util::APITable::getTimeUntilClimaxFaction().getRank(actor);
+            state.actorUndressed[actorID] = threadActor.isUndressed();
+        }
+
+        logger::info("captured state for {} actors", m_actors.size());
+        return state;
+    }
+
+    void Thread::restoreStateFromMigration(const ThreadMigrationState& state) {
+        logger::info("restoring state to thread {} from migration", m_threadId);
+
+        // Restore metadata
+        for (const std::string& data : state.metadata) {
+            metadata.addMetadata(data);
+        }
+
+        // Restore auto mode state
+        autoMode = state.autoMode;
+        autoModeStage = state.autoModeStage;
+        stopTimer = state.stopTimer;
+
+        // Restore camera settings for player threads (to avoid race condition with constructor)
+        if (playerThread && state.freeCamSpeedBefore != 0) {
+            logger::info("restoring camera settings from migration");
+            freeCamSpeedBefore = state.freeCamSpeedBefore;
+            worldFOVbefore = state.worldFOVbefore;
+            timeScaleBefore = state.timeScaleBefore;
+            // Camera is already in scene mode from old thread, settings already applied
+        }
+
+        // Restore actor excitement and climax data by matching FormID (positions may have changed!)
+        for (auto& [index, threadActor] : m_actors) {
+            RE::FormID actorID = threadActor.getActor().form->GetFormID();
+            if (state.actorExcitement.contains(actorID)) {
+                threadActor.setExcitement(state.actorExcitement.at(actorID));
+            }
+            if (state.actorTimesClimaxed.contains(actorID)) {
+                Util::APITable::getTimesClimaxedFaction().add(threadActor.getActor(), state.actorTimesClimaxed.at(actorID));
+            }
+            if (state.actorTimeUntilClimax.contains(actorID)) {
+                Util::APITable::getTimeUntilClimaxFaction().add(threadActor.getActor(), state.actorTimeUntilClimax.at(actorID));
+            }
+            if (state.actorUndressed.contains(actorID) && state.actorUndressed.at(actorID)) {
+                logger::info("Undressing actor {} (was undressed in old thread)", threadActor.getActor().getName());
+                threadActor.undress();
+            }
+        }
+
+        // Note: Node restoration happens in migrateThread() before thread starts
+        // If actor count matched, the node was added to startingNodes in ThreadStartParams
+        // If actor count changed, thread starts without a node and user selects appropriate animation
+
+        logger::info("state restored to thread {}", m_threadId);
     }
 
     void Thread::addActorSink(RE::Actor* a_actor) {

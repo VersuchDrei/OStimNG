@@ -63,6 +63,10 @@ namespace UI::Scene {
 	}
 
 	void SceneOptions::BuildPageTree() {
+		// Clear old tree to prevent dangling pointers
+		selectedPage = nullptr;
+		rootPages.clear();
+		
 		auto& rootSubnodes = Graph::GraphTable::getRootOptionsNode().subNodes;
 		BuildSubPages(nullptr, rootPages, rootSubnodes);
 	}
@@ -138,7 +142,8 @@ namespace UI::Scene {
 	}
 	
 	void SceneOptions::BuildMenuData(MenuData& menuData) {
-		
+		menuData.options.clear();
+
 		if (selectedPage == nullptr) {
 			menuData.options.push_back({
 				.nodeId = "-1",

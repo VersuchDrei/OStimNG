@@ -16,6 +16,9 @@ namespace UI::Align {
     }
 
     void AlignMenu::Show() {
+        if (UI::UIState::IsExternalUIEnabled()) {
+            return; // External UI (e.g., OStim Prism) is handling the UI
+        }
         OStimMenu::Show();
         auto uiState = UI::UIState::GetSingleton();
         if (uiState && uiState->currentThread != nullptr) {
@@ -130,6 +133,7 @@ namespace UI::Align {
     }
 
     void AlignMenu::Handle(UI::Controls control) {
+        using enum Controls;
         switch (control) {
             case Up: {
                 ScrollSelectedField(-1);

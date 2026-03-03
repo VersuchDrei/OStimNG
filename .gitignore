@@ -32,6 +32,13 @@
 .idea/**/gradle.xml
 .idea/**/libraries
 
+### VisualStudioCode ###
+.vscode
+SkyrimSE.code-workspace
+skyrimse.ppj
+Scripts
+skse/plugins
+
 # Gradle and Maven with auto-import
 # When using Gradle or Maven with auto-import, you should exclude module files,
 # since they will be recreated, and may cause churn.  Uncomment if using
@@ -545,3 +552,8 @@ data/scripts/*.pex
 data/SKSE/Plugins/*.dll
 gfxfontlib.swf
 /data/*.zip
+prisma-src/.vite/deps_temp_cacc9dc0/package.json
+/.claude
+/.vscode
+/Scripts
+/skse/Plugins/OStim/options

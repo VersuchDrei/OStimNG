@@ -54,9 +54,11 @@ namespace Threading {
         void loop();
 
         void free();
+        void freeFast(); // SYNCHRONOUS cleanup: no animations, no async tasks
 
         inline bool isFemale() { return female; }
         inline bool hasSchlong() { return schlong; }
+        inline bool isUndressed() { return undressed; }
 
         inline Graph::GraphActor* getGraphActor() { return graphActor; }
 
@@ -173,7 +175,7 @@ namespace Threading {
         inline void setStallClimax(bool stallClimax) { this->stallClimax = stallClimax; }
         void orgasm(bool ignoreStall); // handles stalling / starts climax animation
         void climax(); // plays sounds / expressions and fires events
-        inline int getTimexClimaxed() { return timesClimaxed; }
+        inline int getTimesClimaxed() { return timesClimaxed; }
 
     private:
         bool stallClimax = false;

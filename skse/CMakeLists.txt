@@ -231,6 +231,8 @@ set(sources
         src/ModAPI/OstimNG-API-Main.h
         src/ModAPI/OstimNG-API-Scene.h 
         src/ModAPI/OstimNG-API-Scene.cpp
+        src/ModAPI/OstimNG-API-Thread.h
+        src/ModAPI/OstimNG-API-Thread.cpp
 
         ${CMAKE_CURRENT_BINARY_DIR}/version.rc)
 

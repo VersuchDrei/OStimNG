@@ -36,7 +36,7 @@ namespace GameAPI {
             GameUtil::sendModEvent(GameLogic::GameTable::getMainQuest(), "ostim_thread_speedchanged", std::to_string(speed), threadID);
         }
 
-        void sendEndEvent(int threadID, Threading::Thread* thread, std::vector<GameActor> actors) {
+        void sendEndEvent(int threadID, Threading::Thread* thread, std::vector<GameActor> actors, const std::string& originator) {
             json json = json::object();
             json["scene"] = thread ? thread->getCurrentNode()->getNodeID() : "";
             json["actors"] = json::array();
@@ -49,6 +49,7 @@ namespace GameAPI {
                     json["metadata"].push_back(metadata);
                 }
             }
+            json["originator"] = originator.empty() ? "normal" : originator;
 
             std::string jsonString = json.dump();
 

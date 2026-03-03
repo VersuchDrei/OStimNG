@@ -1,6 +1,10 @@
 #pragma once
 
+#include <ModAPI/OstimNG-API-Thread.h>
+
 namespace UI {
+    using Controls = OstimNG_API::Thread::Controls;
+
     inline static RE::GPtr<RE::IMenu> GetHud() {
         auto ui = RE::UI::GetSingleton();
         return ui->GetMenu("HUD Menu");
@@ -13,7 +17,6 @@ namespace UI {
         }
         return root;
     }
-    enum Controls { Up, Down, Left, Right, Toggle, Yes, No, Menu, KEY_HIDE };
 
     inline static std::string GetControlString(Controls a_control) {
         switch (a_control) {
