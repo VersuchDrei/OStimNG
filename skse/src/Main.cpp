@@ -98,7 +98,7 @@ namespace {
 
 extern "C" DLLEXPORT constinit auto SKSEPlugin_Version = []() {
     SKSE::PluginVersionData v;
-    v.PluginVersion(REL::Version("7.3.5.4"sv));
+    v.PluginVersion(REL::Version("7.4.0.0"sv));
     v.PluginName("OStim");
     v.AuthorName("VersuchDrei");
     v.UsesAddressLibrary();
@@ -110,7 +110,7 @@ extern "C" DLLEXPORT constinit auto SKSEPlugin_Version = []() {
 extern "C" DLLEXPORT bool SKSEAPI SKSEPlugin_Query(const SKSE::QueryInterface* a_skse, SKSE::PluginInfo* a_info) {
     a_info->infoVersion = SKSE::PluginInfo::kVersion;
     a_info->name = "OStim";
-    a_info->version = 0x07030054;
+    a_info->version = 0x07040000;
 
     return true;
 }
