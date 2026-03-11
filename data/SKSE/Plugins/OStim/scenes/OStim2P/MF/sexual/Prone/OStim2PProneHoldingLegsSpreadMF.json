@@ -4,19 +4,19 @@
 	"length": 2.0,
 	"speeds":[
 		{
-			"animation": "OStim2PProneHoldingSpreadMF_S1",
+			"animation": "OStim2PProneHoldingLegsSpreadMF_S1",
 			"displaySpeed": 0.5
 		},
 		{
-			"animation": "OStim2PProneHoldingSpreadMF_S2",
+			"animation": "OStim2PProneHoldingLegsSpreadMF_S2",
 			"displaySpeed": 1.0
 		},
 		{
-			"animation": "OStim2PProneHoldingSpreadMF_S3",
+			"animation": "OStim2PProneHoldingLegsSpreadMF_S3",
 			"displaySpeed": 2.0
 		},
 		{
-			"animation": "OStim2PProneHoldingSpreadMF_S4",
+			"animation": "OStim2PProneHoldingLegsSpreadMF_S4",
 			"displaySpeed": 3.0
 		}
 	],
