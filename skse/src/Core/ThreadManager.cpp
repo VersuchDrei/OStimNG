@@ -345,26 +345,15 @@ namespace Threading {
         // Now that we've confirmed we have a valid starting node, proceed with migration
         oldThread->setMigrating(true);
         
-        // Fade to black before stopping
-        GameAPI::GameCamera::fadeToBlack(0.5f);
-        // std::this_thread::sleep_for(std::chrono::milliseconds(500));
-        
-        // FULLY STOP the old thread using NORMAL close path
-        // This properly:
-        // - Fires all thread end events (ToyThread deletes itself, etc.)
-        // - Clears all listener registrations  
-        // - Frees all actors with freeFast() (synchronous)
-        // - Cleans up all references
-        logger::info("FULLY STOPPING old thread {} with normal close()", oldThreadId);
+        // Remove from UI and map under lock; close()/delete deferred to main thread below.
         UI::UIState::GetSingleton()->HandleThreadRemoved(oldThread);
         m_threadMap.erase(oldThreadId);
-        oldThread->close();  // Normal full cleanup - all events fire, all listeners clear
-        delete oldThread;
-        if (oldThreadId != 0) {
-            idGenerator.free(oldThreadId);
-        }
-        
-        logger::info("Old thread FULLY STOPPED - all cleanup complete, all listeners cleared");
+
+        // close() mutates the NiNode tree (via actor.unequip/facelight detach), which races
+        // with hdtSMP64's background ShadowSceneNode traversal. Must run on the main thread.
+        Thread* closingThread = oldThread;
+        bool shouldFreeId = (oldThreadId != 0);
+        ThreadId closingId = oldThreadId;
 
         // Release lock before async operation
         lock.unlock();
@@ -380,16 +369,38 @@ namespace Threading {
         entry.node = selectedStartNode;
         params.startingNodes.push_back(entry);
 
-        // Async: wait for old thread's scheduled tasks (undressing, etc.) to finish,
-        // then start the new thread on the main game thread. Calls onComplete with the new thread ID when done.
-        std::thread([this, params, state, oldThreadId, onComplete, startDelayMs]() {
+        // Static fade durations (seconds / milliseconds)
+        constexpr float FADE_OUT_DURATION = 0.5f;
+        constexpr int   FADE_OUT_MS       = 500;
+        constexpr float FADE_IN_DURATION  = 1.0f;
+
+        // Begin fade to black. The background thread sleeps for FADE_OUT_MS so that
+        // the old thread is only stopped once the screen has fully gone black.
+        GameAPI::GameCamera::fadeToBlack(FADE_OUT_DURATION);
+
+        // Step 1: wait for screen to go black (FADE_OUT_MS).
+        // Step 2: close old thread on main game thread (NiNode-safe).
+        // Step 3: wait configured timeout (startDelayMs) for cleanup tasks to finish.
+        // Step 4: start new thread on main game thread.
+        // Step 5: fade back from black.
+        std::thread([this, params, state, closingThread, closingId, shouldFreeId, onComplete, startDelayMs, FADE_IN_DURATION]() {
+            // Wait until the screen is fully black before stopping the old thread
+            std::this_thread::sleep_for(std::chrono::milliseconds(FADE_OUT_MS));
+
+            GameAPI::Game::runSynced([closingThread, closingId, shouldFreeId, this]() {
+                closingThread->close();
+                delete closingThread;
+                if (shouldFreeId) {
+                    idGenerator.free(closingId);
+                }
+                logger::info("Old thread {} FULLY STOPPED on main thread - all cleanup complete", closingId);
+            });
+
             logger::info("Waiting {} ms for old thread cleanup tasks to finish...", startDelayMs);
             std::this_thread::sleep_for(std::chrono::milliseconds(startDelayMs));
 
             logger::info("STARTING new thread with {} actors after delay", params.actors.size());
-            // startThread constructs a Thread object which manipulates actor equipment and
-            // triggers NIF/scene-graph updates - these must happen on the main game thread.
-            GameAPI::Game::runSynced([this, params, state, onComplete]() {
+            GameAPI::Game::runSynced([this, params, state, onComplete, closingId]() {
                 int newThreadId = startThread(params);  // acquires lock internally
 
                 if (newThreadId < 0) {
@@ -398,18 +409,19 @@ namespace Threading {
                     return;
                 }
 
-                // Get the new thread and restore state
                 Thread* newThread = m_threadMap[newThreadId];
                 if (newThread) {
                     newThread->restoreStateFromMigration(state);
-                    logger::info("successfully migrated thread {} to thread {}", oldThreadId, newThreadId);
-                    GameAPI::GameCamera::fadeFromBlack(1.0f);
+                    logger::info("successfully migrated thread {} to thread {}", closingId, newThreadId);
                     if (onComplete) onComplete(newThreadId);
                 } else {
                     logger::error("failed to get new thread after migration");
                     if (onComplete) onComplete(-1);
                 }
             });
+
+            // New thread is running - fade back from black
+            GameAPI::GameCamera::fadeFromBlack(FADE_IN_DURATION);
         }).detach();
 
         logger::info("Migration scheduled - returning immediately");
