@@ -381,31 +381,35 @@ namespace Threading {
         params.startingNodes.push_back(entry);
 
         // Async: wait for old thread's scheduled tasks (undressing, etc.) to finish,
-        // then start the new thread. Calls onComplete with the new thread ID when done.
+        // then start the new thread on the main game thread. Calls onComplete with the new thread ID when done.
         std::thread([this, params, state, oldThreadId, onComplete, startDelayMs]() {
             logger::info("Waiting {} ms for old thread cleanup tasks to finish...", startDelayMs);
             std::this_thread::sleep_for(std::chrono::milliseconds(startDelayMs));
 
             logger::info("STARTING new thread with {} actors after delay", params.actors.size());
-            int newThreadId = startThread(params);  // acquires lock internally
+            // startThread constructs a Thread object which manipulates actor equipment and
+            // triggers NIF/scene-graph updates - these must happen on the main game thread.
+            GameAPI::Game::runSynced([this, params, state, onComplete]() {
+                int newThreadId = startThread(params);  // acquires lock internally
 
-            if (newThreadId < 0) {
-                logger::error("failed to start new thread after migration");
-                if (onComplete) onComplete(-1);
-                return;
-            }
+                if (newThreadId < 0) {
+                    logger::error("failed to start new thread after migration");
+                    if (onComplete) onComplete(-1);
+                    return;
+                }
 
-            // Get the new thread and restore state
-            Thread* newThread = m_threadMap[newThreadId];
-            if (newThread) {
-                newThread->restoreStateFromMigration(state);
-                logger::info("successfully migrated thread {} to thread {}", oldThreadId, newThreadId);
-                GameAPI::GameCamera::fadeFromBlack(1.0f);
-                if (onComplete) onComplete(newThreadId);
-            } else {
-                logger::error("failed to get new thread after migration");
-                if (onComplete) onComplete(-1);
-            }
+                // Get the new thread and restore state
+                Thread* newThread = m_threadMap[newThreadId];
+                if (newThread) {
+                    newThread->restoreStateFromMigration(state);
+                    logger::info("successfully migrated thread {} to thread {}", oldThreadId, newThreadId);
+                    GameAPI::GameCamera::fadeFromBlack(1.0f);
+                    if (onComplete) onComplete(newThreadId);
+                } else {
+                    logger::error("failed to get new thread after migration");
+                    if (onComplete) onComplete(-1);
+                }
+            });
         }).detach();
 
         logger::info("Migration scheduled - returning immediately");
