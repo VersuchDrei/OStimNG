@@ -16,7 +16,12 @@ namespace UI {
         if (thread) {
             OstimNG_API::Thread::NotifyControlInput(control, thread->m_threadId);
         }
-        
+
+        // When an external UI is active, don't route controls into OStim's Flash menus
+        if (useExternalUI) {
+            return;
+        }
+
         // Handle control in active menu
         switch (activeMenu) {
         case MenuType::kSceneMenu: {
@@ -33,7 +38,12 @@ namespace UI {
 
     void UIState::SwitchActiveMenu(MenuType menu) {
         activeMenu = menu;
-        
+
+        // Don't touch the Flash menus when an external UI has taken over
+        if (useExternalUI) {
+            return;
+        }
+
         UI::Align::AlignMenu::GetMenu()->Hide();
         UI::Search::SearchMenu::GetMenu()->Hide();
 
