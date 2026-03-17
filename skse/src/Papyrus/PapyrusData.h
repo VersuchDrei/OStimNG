@@ -222,6 +222,11 @@ namespace PapyrusData {
 	}
 
 
+    std::string ToLocalizedString(RE::StaticFunctionTag*, std::string text) {
+        StringUtil::toLower(&text);
+        return "$" + text;
+    }
+
     std::string Localize(RE::StaticFunctionTag*, std::string text) {
         StringUtil::toLower(&text);
         return LocaleManager::GetSingleton()->GetLocalization(text);
@@ -271,6 +276,7 @@ namespace PapyrusData {
         BIND(ExportSettings);
         BIND(ImportSettings);
 
+        BIND(ToLocalizedString);
         BIND(Localize);
 
         return true;

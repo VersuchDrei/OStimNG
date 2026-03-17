@@ -2867,8 +2867,8 @@ Function DrawActorsPage()
 	OIDs_ActionMaxStimulation = new int[3]
 	int i = 0
 	While i < 3
-		OIDs_ActionStimulation[i] = AddSliderOption(OData.Localize("$ostim_" + RoleKeys[i] + "_stimulation"), OData.GetActionStimulation(Math.Pow(2, i) as int, CurrentActorID, CurrentAction), "{2}")
-		OIDs_ActionMaxStimulation[i] = AddSliderOption(OData.Localize("$ostim_" + RoleKeys[i] + "_max_stimulation"), OData.GetActionMaxStimulation(Math.Pow(2, i) as int, CurrentActorID, CurrentAction), "{0}")
+		OIDs_ActionStimulation[i] = AddSliderOption(OData.ToLocalizedString("ostim_" + RoleKeys[i] + "_stimulation"), OData.GetActionStimulation(Math.Pow(2, i) as int, CurrentActorID, CurrentAction), "{2}")
+		OIDs_ActionMaxStimulation[i] = AddSliderOption(OData.ToLocalizedString("ostim_" + RoleKeys[i] + "_max_stimulation"), OData.GetActionMaxStimulation(Math.Pow(2, i) as int, CurrentActorID, CurrentAction), "{0}")
 		i += 1
 	EndWhile
 
@@ -2879,8 +2879,8 @@ Function DrawActorsPage()
 	OIDs_EventMaxStimulation = new int[3]
 	i = 0
 	While i < 3
-		OIDs_EventStimulation[i] = AddSliderOption(OData.Localize("$ostim_" + RoleKeys[i] + "_stimulation"), OData.GetEventStimulation(Math.Pow(2, i) as int, CurrentActorID, CurrentEvent), "{2}")
-		OIDs_EventMaxStimulation[i] = AddSliderOption(OData.Localize("$ostim_" + RoleKeys[i] + "_max_stimulation"), OData.GetEventMaxStimulation(Math.Pow(2, i) as int, CurrentActorID, CurrentEvent), "{0}")
+		OIDs_EventStimulation[i] = AddSliderOption(OData.ToLocalizedString("ostim_" + RoleKeys[i] + "_stimulation"), OData.GetEventStimulation(Math.Pow(2, i) as int, CurrentActorID, CurrentEvent), "{2}")
+		OIDs_EventMaxStimulation[i] = AddSliderOption(OData.ToLocalizedString("ostim_" + RoleKeys[i] + "_max_stimulation"), OData.GetEventMaxStimulation(Math.Pow(2, i) as int, CurrentActorID, CurrentEvent), "{0}")
 		i += 1
 	EndWhile
 EndFunction
@@ -2899,16 +2899,16 @@ Function OnOptionHighlightActors(int Option)
 	ElseIf Option == OID_SelectAction
 		SetInfoText("$ostim_tooltip_select_action")
 	ElseIf OIDs_ActionStimulation.Find(Option) >= 0
-		SetInfoText(OData.Localize("$ostim_tooltip_" + RoleKeys[OIDs_ActionStimulation.Find(Option)] + "_stimulation"))
+		SetInfoText(OData.ToLocalizedString("ostim_tooltip_" + RoleKeys[OIDs_ActionStimulation.Find(Option)] + "_stimulation"))
 	ElseIf OIDs_ActionMaxStimulation.Find(Option) >= 0
-		SetInfoText(OData.Localize("$ostim_tooltip_" + RoleKeys[OIDs_ActionMaxStimulation.Find(Option)] + "_max_stimulation"))
+		SetInfoText(OData.ToLocalizedString("ostim_tooltip_" + RoleKeys[OIDs_ActionMaxStimulation.Find(Option)] + "_max_stimulation"))
 
 	ElseIf Option == OID_SelectEvent
 		SetInfoText("$ostim_tooltip_select_event")
 	ElseIf OIDs_EventStimulation.Find(Option) >= 0
-		SetInfoText(OData.Localize("$ostim_tooltip_" + RoleKeys[OIDs_EventStimulation.Find(Option)] + "_stimulation"))
+		SetInfoText(OData.ToLocalizedString("ostim_tooltip_" + RoleKeys[OIDs_EventStimulation.Find(Option)] + "_stimulation"))
 	ElseIf OIDs_EventMaxStimulation.Find(Option) >= 0
-		SetInfoText(OData.Localize("$ostim_tooltip_" + RoleKeys[OIDs_EventMaxStimulation.Find(Option)] + "_max_stimulation"))
+		SetInfoText(OData.ToLocalizedString("ostim_tooltip_" + RoleKeys[OIDs_EventMaxStimulation.Find(Option)] + "_max_stimulation"))
 	EndIf
 EndFunction
 

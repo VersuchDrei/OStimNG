@@ -58,4 +58,5 @@ Function ExportSettings() Global Native
 
 Function ImportSettings() Global Native
 
+string Function ToLocalizedString(string Text) Global Native
 string Function Localize(string Text) Global Native
