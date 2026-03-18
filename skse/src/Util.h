@@ -11,6 +11,7 @@ namespace util {
     std::optional<fs::path> settings_path_legacy();
     std::optional<fs::path> alignment_path();
     std::optional<fs::path> ui_settings_path();
+    std::optional<fs::path> config_path();
 
     bool within_radius(const RE::NiPoint3& a_origin, const RE::NiPoint3& a_obj, float a_radius);
 

@@ -4,6 +4,7 @@
 
 #include <openssl/md5.h>
 
+#include "Config/Config.h"
 #include "Util/StringUtil.h"
 
 namespace Integrity {
@@ -52,6 +53,11 @@ namespace Integrity {
     }
 
     bool verifyTranslationIntegrity() {
+        if (!Config::Config::verifyTranslationIntegrity) {
+            logger::info("skipping translation integrity check");
+            return true;
+        }
+
         std::vector<std::string> files{"Data\\Interface\\translations\\ONav_ENGLISH.txt", "Data\\Interface\\translations\\OScenes_ENGLISH.txt"};
 
         std::ifstream integrity;
@@ -61,7 +67,7 @@ namespace Integrity {
         long length = integrity.tellg();
         integrity.seekg(0, std::ios::beg);
 
-        if (length / MD5_DIGEST_LENGTH != 2) {
+        if (length / MD5_DIGEST_LENGTH != files.size()) {
             logger::warn("translation count mismatch: expected {}, encountered {}", length / MD5_DIGEST_LENGTH, 2);
             return false;
         }

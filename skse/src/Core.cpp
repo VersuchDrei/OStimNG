@@ -2,6 +2,7 @@
 
 #include "ActorProperties/ActorPropertyTable.h"
 #include "Alignment/Alignments.h"
+#include "Config/Config.h"
 #include "Core/ThreadStarter/ThreadBuilder.h"
 #include "Furniture/FurnitureTable.h"
 #include "GameAPI/Game.h"
@@ -28,6 +29,8 @@ namespace Core {
     }
 
     void postLoad() {
+        Config::Config::loadConfig();
+
         Util::Globals::setSceneIntegrityVerified(Integrity::verifySceneIntegrity());
         Util::Globals::setTranslationIntegrityVerified(Integrity::verifyTranslationIntegrity());
     }

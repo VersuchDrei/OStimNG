@@ -7,7 +7,7 @@ message("Using toolchain file ${CMAKE_TOOLCHAIN_FILE}.")
 ########################################################################################################################
 project(
         OStim
-        VERSION 7.4.0.0
+        VERSION 7.4.0.1
         DESCRIPTION ""
         LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 23)
@@ -50,6 +50,7 @@ set(sources
     src/Alignment/ActorKey.cpp
     src/Alignment/Alignments.cpp
     src/Alignment/ThreadKey.cpp
+    src/Config/Config.cpp
     src/Core/Core.cpp
     src/Core/EquipObjectHandler.cpp
     src/Core/ExpressionUpdater.cpp
