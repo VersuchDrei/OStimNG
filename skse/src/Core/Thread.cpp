@@ -101,10 +101,6 @@ namespace Threading {
                 GameAPI::Game::setTimeScale(MCM::MCMTable::customTimeScale());
             }
         }
-
-        if ((params.threadFlags & ThreadFlag::NO_AUTO_MODE) == 0) {
-            evaluateAutoMode();
-        }
         
         if (params.duration > 0) {
             stopTimer = params.duration;
@@ -159,6 +155,8 @@ namespace Threading {
         } else if (!params.startingNodes.empty()) {
             playSequence(params.startingNodes, false, false);
         }
+
+        evaluateAutoMode();
     }
 
     void Thread::rebuildAlignmentKey() {
