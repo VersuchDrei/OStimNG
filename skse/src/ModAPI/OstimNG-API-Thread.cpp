@@ -577,8 +577,10 @@ namespace OstimNG_API::Thread
                 actors.push_back(GameAPI::GameActor(actor));
             }
 
-            std::vector<GameAPI::GameActor> dominants;
-            ActorUtil::sort(actors, dominants, -1);
+            if (actors.size() != thread->getActorCount()) {
+                std::vector<GameAPI::GameActor> dominants;
+                ActorUtil::sort(actors, dominants, -1);
+            }
 
             std::vector<Trait::ActorCondition> conditions;
             for (auto& a : actors) conditions.push_back(Trait::ActorCondition::create(a.form));

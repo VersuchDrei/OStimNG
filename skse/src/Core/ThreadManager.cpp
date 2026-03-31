@@ -234,10 +234,6 @@ namespace Threading {
         ThreadMigrationState state;
         Graph::Node* selectedStartNode = nullptr;
         
-        // Sort new actors in proper order
-        std::vector<GameAPI::GameActor> dominantActors;
-        ActorUtil::sort(newActors, dominantActors, -1);
-        
         // Scope for lock - capture state and release before searching for node
         {
             std::unique_lock<std::shared_mutex> lock(m_threadMapMtx);
@@ -266,6 +262,12 @@ namespace Threading {
                 originator = "swap";
             }
             oldThread->setThreadEndOriginator(originator);
+
+            // Sort new actors in proper order only when actor count changes (add/remove)
+            if (newActorCount != oldActorCount) {
+                std::vector<GameAPI::GameActor> dominantActors;
+                ActorUtil::sort(newActors, dominantActors, -1);
+            }
         }
         // Lock released - can now safely call ActorCondition::create and getRandomNode
         
