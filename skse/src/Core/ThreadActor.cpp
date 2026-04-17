@@ -541,7 +541,8 @@ namespace Threading {
         }
 
         // FORCE SYNCHRONOUS redressing - bypass Papyrus
-        if (!undressedMask.isEmpty()) {
+        // Use undressedItems (not undressedMask) because the Papyrus undressing path never sets undressedMask
+        if (!undressedItems.empty()) {
             for (GameAPI::GameArmor item : undressedItems) {
                 actor.equip(item);
             }
