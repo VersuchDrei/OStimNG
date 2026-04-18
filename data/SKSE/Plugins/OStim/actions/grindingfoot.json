@@ -1,6 +1,6 @@
 {
 	"aliases":[
-		"grindthigh"	
+		"grindfoot"	
 	],
 	"actor":{
 		"info": "the one with the vulva",
@@ -19,36 +19,32 @@
 			54
 		],
 		"faction":{
-			"info": "OStimGrindingThighActorFaction",
+			"info": "OStimGrindingFootActorFaction",
 			"mod": "OStim.esp",
-			"formid": "0xE67"
+			"formid": "0xEFB"
 		},
 		"toySlot": "genital"
 	},
 	"target":{
-		"info": "the one with the thigh",
+		"info": "the one with the foot",
 		"stimulation":0.2,
 		"maxStimulation":75,
 		"moan": true,
 		"talk":true,
 		"strippingSlots":[
-			32,
-			49,
-			52,
-			53,
-			54
+			37
 		],
 		"faction":{
-			"info": "OStimGrindingThighTargetFaction",
+			"info": "OStimGrindingFootTargetFaction",
 			"mod": "OStim.esp",
-			"formid": "0xE68"
+			"formid": "0xEFC"
 		}
 	},
 	"performer":{
 		"faction":{
-			"info": "OStimGrindingThighPerformerFaction",
+			"info": "OStimGrindingFootPerformerFaction",
 			"mod": "OStim.esp",
-			"formid": "0xE69"
+			"formid": "0xEFD"
 		},
 		"floats":{
 			"stamina":1.0
