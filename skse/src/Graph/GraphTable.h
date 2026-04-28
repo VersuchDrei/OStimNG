@@ -36,6 +36,7 @@ namespace Graph{
 #pragma region nodes
     public:
         static void setupNodes();
+        static void reloadNode(std::string sceneId);
         static void addNode(Node* node);
         static void addNavigations(std::vector<RawNavigation> navigations);
         static std::vector<Node*> getNodes();
