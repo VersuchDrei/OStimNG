@@ -184,9 +184,24 @@ namespace Threading {
     void Thread::Navigate(std::string sceneId) {
         for (auto& nav : m_currentNode->navigations) {
             if (sceneId == nav.nodes.front()->scene_id) {
-                ChangeNode(nav.nodes.front());
+                if (playerThread && nav.nodes.front()->fadeOnEntry) {
+                    Graph::Node* node = nav.nodes.front();
+                    std::thread fadeThread = std::thread([node] {
+                        GameAPI::GameCamera::fadeToBlack(1);
+                        std::this_thread::sleep_for(std::chrono::milliseconds(700));
+                        Thread* thread = ThreadManager::GetSingleton()->getPlayerThread();
+                        if (thread) {
+                            thread->ChangeNode(node);
+                        }
+                        std::this_thread::sleep_for(std::chrono::milliseconds(550));
+                        GameAPI::GameCamera::fadeFromBlack(1);
+                    });
+                    fadeThread.detach();
+                } else {
+                    ChangeNode(nav.nodes.front());
+                }
             }
-        }      
+        }
     }
 
     void Thread::ChangeNode(Graph::Node* a_node) {

@@ -47,6 +47,7 @@ namespace Graph {
         int animationLengthMs = 0;
         bool hasIdleSpeed = false;
         bool noRandomSelection = false;
+        bool fadeOnEntry = false;
         Furniture::FurnitureType* furnitureType = nullptr;
         std::unordered_map<std::string, std::string> autoTransitions;
         std::vector<NodeTag> tags;
