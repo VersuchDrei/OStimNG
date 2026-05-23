@@ -198,11 +198,7 @@ namespace Threading {
     void Thread::Navigate(std::string sceneId) {
         for (auto& nav : m_currentNode->navigations) {
             if (sceneId == nav.nodes.front()->scene_id) {
-                if (playerThread && nav.nodes.front()->fadeOnEntry) {
-                    fadeAndChangeNode(nav.nodes.front());
-                } else {
-                    ChangeNode(nav.nodes.front());
-                }
+                warpTo(nav.nodes.front(), nav.nodes.front()->fadeOnEntry);
             }
         }
     }
