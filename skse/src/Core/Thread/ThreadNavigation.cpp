@@ -146,7 +146,7 @@ namespace Threading {
 
         std::vector<Graph::SequenceEntry> nodes = m_currentNode->getRoute(MCM::MCMTable::navigationDistanceMax(), getActorConditions(), node);
         if (nodes.empty()) {
-            warpTo(node, node->fadeOnEntry);
+            warpTo(node, MCM::MCMTable::useAutoModeFades() || node->fadeOnEntry);
             nodeQueueCooldown = duration + 1000;
         } else {
             nodes.back().duration = duration;
@@ -154,19 +154,8 @@ namespace Threading {
                 nodeQueue.push(nodes[i]);
             }
             nodeQueueCooldown = nodes.front().duration;
-            if (playerThread && nodes.front().node->fadeOnEntry) {
-                Graph::Node* firstNode = nodes.front().node;
-                std::thread fadeThread = std::thread([firstNode] {
-                    GameAPI::GameCamera::fadeToBlack(1);
-                    std::this_thread::sleep_for(std::chrono::milliseconds(700));
-                    Thread* thread = ThreadManager::GetSingleton()->getPlayerThread();
-                    if (thread) {
-                        thread->ChangeNode(firstNode);
-                    }
-                    std::this_thread::sleep_for(std::chrono::milliseconds(550));
-                    GameAPI::GameCamera::fadeFromBlack(1);
-                });
-                fadeThread.detach();
+            if (playerThread && (MCM::MCMTable::useAutoModeFades() || nodes.front().node->fadeOnEntry)) {
+                fadeAndChangeNode(nodes.front().node);
             } else {
                 ChangeNode(nodes.front().node);
             }
