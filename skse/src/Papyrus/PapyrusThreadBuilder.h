@@ -124,6 +124,15 @@ namespace PapyrusThreadBuilder {
         params->threadFlags |= Threading::ThreadFlag::NO_PLAYER_CONTROL;
     }
 
+    void NoPostDialogue(RE::StaticFunctionTag*, int builderID) {
+        Threading::ThreadStartParams* params = Threading::ThreadBuilder::get(builderID);
+        if (!params) {
+            return;
+        }
+
+        params->threadFlags |= Threading::ThreadFlag::NO_POST_DIALOGUE;
+    }
+
     void NoUndressing(RE::StaticFunctionTag*, int builderID) {
         Threading::ThreadStartParams* params = Threading::ThreadBuilder::get(builderID);
         if (!params) {
@@ -195,6 +204,7 @@ namespace PapyrusThreadBuilder {
         BIND(UndressActors);
         BIND(NoAutoMode);
         BIND(NoPlayerControl);
+        BIND(NoPostDialogue);
         BIND(NoUndressing);
         BIND(NoFurniture);
         BIND(SetMetadata);

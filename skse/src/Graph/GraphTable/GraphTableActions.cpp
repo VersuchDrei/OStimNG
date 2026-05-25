@@ -46,6 +46,42 @@ namespace Graph {
             }
         }
 
+        if (json.contains("statFaction")) {
+            if (json["statFaction"].is_array()) {
+                for (auto& jsonFaction : json["statFaction"]) {
+                    GameAPI::GameFaction faction;
+                    faction.loadJson(path, jsonFaction);
+                    if (faction) {
+                        actor.statFactions.push_back(faction);
+                    }
+                }
+            } else {
+                GameAPI::GameFaction faction;
+                faction.loadJson(path, json["statFaction"]);
+                if (faction) {
+                    actor.statFactions.push_back(faction);
+                }
+            }
+        }
+
+        if (json.contains("playerStatFaction")) {
+            if (json["playerStatFaction"].is_array()) {
+                for (auto& jsonFaction : json["playerStatFaction"]) {
+                    GameAPI::GameFaction faction;
+                    faction.loadJson(path, jsonFaction);
+                    if (faction) {
+                        actor.playerStatFactions.push_back(faction);
+                    }
+                }
+            } else {
+                GameAPI::GameFaction faction;
+                faction.loadJson(path, json["playerStatFaction"]);
+                if (faction) {
+                    actor.playerStatFactions.push_back(faction);
+                }
+            }
+        }
+
         if (json.contains("ints")) {
             for (auto& [key, val] : json["ints"].items()) {
                 std::string mutableKey = key;

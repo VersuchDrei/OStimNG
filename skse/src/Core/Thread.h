@@ -54,6 +54,8 @@ namespace Threading {
 
         void initContinue(ThreadStartParams params);
 
+        inline int getPlayerIndex() { return playerIndex; }
+
         inline ThreadFlags getThreadFlags() { return threadFlags; }
         inline bool isFlagged(ThreadFlag flag) { return (threadFlags & flag) == flag; }
         inline void flag(ThreadFlag flag) { threadFlags |= flag; }
@@ -121,6 +123,7 @@ namespace Threading {
 
         Graph::Node* m_currentNode = nullptr;
         bool playerThread = false;
+        int playerIndex = -1;
         std::map<int32_t, ThreadActor> m_actors;
 
         std::shared_mutex nodeLock;

@@ -31,8 +31,12 @@ namespace Threading {
     Thread::Thread(int threadID, ThreadStartParams params) : m_threadId{threadID}, furniture{params.furniture} {
         nodeHandler = new Threading::Threads::NodeHandler(this);
 
-        for (GameAPI::GameActor actor : params.actors) {
-            playerThread |= actor.isPlayer();
+        for (int i = 0; i < params.actors.size(); i++) {
+            if (params.actors[i].isPlayer()) {
+                playerThread = true;
+                playerIndex = i;
+                break;
+            }
         }
 
         threadFlags = params.threadFlags;

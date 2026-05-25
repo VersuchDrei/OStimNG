@@ -41,6 +41,10 @@ actor fields:
 "strippingSlots" (list<int>): a list of biped slots to strip on this Skyrim actor when executing this scene (if partial undressing is enabled in the MCM)
 "faction" (object/list<object>): a faction or list of factions the actor is put in while participating in this role in this action (see form fields)
 	this is mainly useful for condition functions for addons / voice sets
+"statFaction" (object/list<object>): a faction or list of factions which rank is incremented whenever the actor participates in this role in this action (see form fields)
+	every action will only be incremented once per scene, no matter how many times the action was executed
+	will stop incrementing at rank 101, since faction ranks are capped at 127
+	note: keep in mind that GetFactionRank will return -2 if the actor is not in the faction, which will be the case if they never participated in the action
 "ints" (map<string, int>): A map of custom ints that can be used by addons
 "intLists" (map<string, list<int>>): a map of custom int lists that can be used by addons
 "floats" (map<string, float>): a map of custom floats that can be used by addons

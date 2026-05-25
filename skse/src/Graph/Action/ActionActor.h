@@ -16,6 +16,8 @@ namespace Graph {
             std::set<std::string> requirements;
             uint32_t strippingMask = 0;
             std::vector<GameAPI::GameFaction> factions;
+            std::vector<GameAPI::GameFaction> statFactions;
+            std::vector<GameAPI::GameFaction> playerStatFactions;
             std::unordered_map<std::string, int> ints;
             std::unordered_map<std::string, std::vector<int>> intLists;
             std::unordered_map<std::string, float> floats;

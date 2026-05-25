@@ -1,5 +1,5 @@
 ;/* OThreadBuilder
-* * helper script to build threads with more complex starting parameter
+* * helper script to build threads with more complex starting parameters
 * * basically a factory but limited by Papyrus, so not really a factory
 * *
 * * required API Version: 7.0 (29)
@@ -156,6 +156,15 @@ Function NoAutoMode(int BuilderID) Global Native
 */;
 Function NoPlayerControl(int BuilderID) Global Native
 
+;/* NoPostDialogue
+* * disables post scene dialogue for the thread
+* *
+* * required API Version: 7.4d (0x07040004)
+* *
+* * @param: BuilderID, the id of the thread builder
+*/;
+Function NoPostDialogue(int BuilderID) Global Native
+
 ;/* NoUnressing
 * * disables all undressing during the scene, no matter the MCM settings
 * * this also overrules UndressActors
@@ -202,6 +211,7 @@ Function SetMetadataCSV(int BuilderID, string Metadata) Global Native
 * * @param: BuilderID, the id of the thread builder
 * *
 * * @return: the id of the thread
+* * note: the BuilderID is most likely not going to be the same as the thread id
 */;
 int Function Start(int BuilderID) Global Native
 

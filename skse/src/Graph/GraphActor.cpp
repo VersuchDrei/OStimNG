@@ -16,6 +16,11 @@ namespace Graph {
                 factions.push_back(faction);
             }
         }
+        for (GameAPI::GameFaction faction : actor.statFactions) {
+            if (!VectorUtil::contains(statFactions, faction)) {
+                statFactions.push_back(faction);
+            }
+        }
     }
 
 

@@ -267,12 +267,8 @@ namespace Threading {
     }
 
     void ThreadActor::changeNode(Graph::GraphActor* graphActor, std::vector<Trait::FacialExpression*>* nodeExpressions, std::vector<Trait::FacialExpression*>* overrideExpressions) {
-        if (this->graphActor) {
-            for (GameAPI::GameFaction faction : this->graphActor->factions) {
-                faction.remove(actor);
-            }
-        }
-
+        changeNodeAPIPre();
+        
         this->graphActor = graphActor;
 
         sosOffset = 0;
@@ -314,9 +310,7 @@ namespace Threading {
             primaryPartner = actor;
         }
 
-        for (GameAPI::GameFaction faction : graphActor->factions) {
-            faction.add(actor);
-        }
+        changeNodeAPIPost();
 
         if (awaitingClimax) {
             climax();
@@ -417,11 +411,7 @@ namespace Threading {
     void ThreadActor::free() {
         logger::info("freeing actor {}-{}: {}", thread->m_threadId, index, actor.getName());
 
-        if (this->graphActor) {
-            for (GameAPI::GameFaction faction : this->graphActor->factions) {
-                faction.remove(actor);
-            }
-        }
+        freeAPI();
 
         for (auto& [type, object] : equipObjects) {
             object.unequip(actor);
@@ -490,7 +480,7 @@ namespace Threading {
 
         logger::info("freed actor {}-{}: {}", thread->m_threadId, index, actor.getName());
 
-        if (!actor.isPlayer() && thread->getActors().size() > 1) {
+        if (!thread->isFlagged(ThreadFlag::NO_POST_DIALOGUE) && !actorMuted && !muted && !actor.isPlayer() && thread->getActors().size() > 1) {
             if (voiceSet.postSceneDialogue) {
                 bool first = true;
                 for (int i = 0; i < index; i++) {
@@ -515,8 +505,13 @@ namespace Threading {
                     const auto skyrimVM = RE::SkyrimVM::GetSingleton();
                     auto vm = skyrimVM ? skyrimVM->impl : nullptr;
                     if (vm) {
+                        GameAPI::GameVoice voice = voiceSet.voice;
+                        if (voice && voice == actor.getVoice()) {
+                            voice = {};
+                        }
+
                         RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-                        auto args = RE::MakeFunctionArguments(std::move(actor.form), std::move(target.form), std::move(voiceSet.postSceneDialogue.form), std::move(RNGUtil::uniformFloat(1.0f, 2.0f)));
+                        auto args = RE::MakeFunctionArguments(std::move(actor.form), std::move(target.form), std::move(voiceSet.postSceneDialogue.form), std::move(voice.form), std::move(RNGUtil::uniformFloat(1.0f, 2.0f)));
                         vm->DispatchStaticCall("OSKSE", "SayPostDialogue", args, callback);
                     }
                 }
@@ -528,11 +523,7 @@ namespace Threading {
         logger::info("freeing actor {}-{} FAST (no animations): {}", thread->m_threadId, index, actor.getName());
 
         // Remove factions
-        if (this->graphActor) {
-            for (GameAPI::GameFaction faction : this->graphActor->factions) {
-                faction.remove(actor);
-            }
-        }
+        freeAPI();
 
         // Remove equip objects
         for (auto& [type, object] : equipObjects) {

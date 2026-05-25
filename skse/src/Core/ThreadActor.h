@@ -168,6 +168,17 @@ namespace Threading {
         void bendSchlong();
 #pragma endregion
 
+#pragma region api
+    private:
+        std::set<GameAPI::GameFaction> statFactions;
+
+        void changeNodeAPIPre();
+        void changeNodeAPIPost();
+        void freeAPI();
+
+        void incrementStatFaction(GameAPI::GameFaction faction);
+#pragma endregion
+
 #pragma region climax
     public:
         inline bool getAwaitingClimax() { return awaitingClimax || awaitingClimaxInner; }
