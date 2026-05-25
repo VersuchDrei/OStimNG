@@ -249,6 +249,7 @@ namespace Threading {
         int nodeQueueCooldown = 0;
         std::queue<Graph::SequenceEntry> nodeQueue;
 
+        void fadeAndChangeNode(Graph::Node* node);
         void clearNodeQueue();
 #pragma endregion
 

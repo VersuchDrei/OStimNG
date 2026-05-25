@@ -245,6 +245,14 @@ namespace Graph {
                 }
             }
 
+            if (json.contains("fadeOnEntry")) {
+                if (json["fadeOnEntry"].is_boolean()) {
+                    node->fadeOnEntry = json["fadeOnEntry"];
+                } else {
+                    logger::warn("fadeOnEntry property of scene {} isn't a boolean", node->scene_id);
+                }
+            }
+
             if (json.contains("furniture")) {
                 if (json["furniture"].is_string()) {
                     node->furnitureType = Furniture::FurnitureTable::getFurnitureType(json["furniture"]);
