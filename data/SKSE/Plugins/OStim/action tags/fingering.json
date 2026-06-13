@@ -1,0 +1,26 @@
+{
+	"actor":{
+		"faction":{
+			"info": "OStimAnyFingeringActorFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF01"
+		},
+		"statFaction":{
+			"info": "OStimAnyFingeringActorCounterFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF05"
+		}
+	},
+	"target":{
+		"faction":{
+			"info": "OStimAnyFingeringTargetFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF02"
+		},
+		"statFaction":{
+			"info": "OStimAnyFingeringTargetCounterFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF06"
+		}
+	}
+}

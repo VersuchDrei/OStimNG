@@ -27,6 +27,11 @@
 			"mod": "OStim.esp",
 			"formid": "0xE55"
 		},
+		"statFaction":{
+			"info": "OStimBoobjobActorCounterFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF52"
+		},
 		"stringLists":{
 			"cum":[
 				"chest"
@@ -46,6 +51,11 @@
 			"info": "OStimBoobjobTargetFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE56"
+		},
+		"statFaction":{
+			"info": "OStimBoobjobTargetCounterFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF53"
 		},
 		"strippingSlots":[
 			32,
@@ -67,6 +77,7 @@
 		}
 	},
 	"tags":[
+		"penilestimulation",
 		"sexual"
 	]
 }

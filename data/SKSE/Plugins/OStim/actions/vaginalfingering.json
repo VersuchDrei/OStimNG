@@ -1,7 +1,9 @@
 {
 	"info": "vaginalfingering is for when actor and target are different, when they are the same use femalemasturbation",
 	"aliases":[
-		"fingering"
+		"fingering",
+		"fingeringvagina",
+		"fingervagina"
 	],
 	"actor":{
 		"info": "the one with the hand",
@@ -19,6 +21,11 @@
 			"info": "OStimVaginalFingeringActorFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE8C"
+		},
+		"statFaction":{
+			"info": "OStimVaginalFingeringActorCounterFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF07"
 		}
 	},
 	"target":{
@@ -42,6 +49,11 @@
 			"mod": "OStim.esp",
 			"formid": "0xE8D"
 		},
+		"statFaction":{
+			"info": "OStimAnalFingeringTargetCounterFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF08"
+		},
 		"toySlot": "genital"
 	},
 	"performer":{
@@ -50,6 +62,8 @@
 		}
 	},
 	"tags":[
-		"sexual"
+		"fingering",
+		"sexual",
+		"vaginalstimulation"
 	]
 }

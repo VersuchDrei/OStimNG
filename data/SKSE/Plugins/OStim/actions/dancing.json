@@ -1,5 +1,7 @@
 {
 	"actor":{
+		"moan": true,
+		"talk":true,
 		"faction":{
 			"info": "OStimDancingFaction",
 			"mod": "OStim.esp",

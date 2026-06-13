@@ -18,18 +18,16 @@
 			53,
 			54
 		],
-		"faction":[
-			{
-				"info": "OStimAnalSexActorFaction",
-				"mod": "OStim.esp",
-				"formid": "0xE4F"
-			},
-			{
-				"info": "OStimAnySexMateFaction",
-				"mod": "OStim.esp",
-				"formid": "0xEC9"
-			}
-		],
+		"faction":{
+			"info": "OStimAnalSexActorFaction",
+			"mod": "OStim.esp",
+			"formid": "0xE4F"
+		},
+		"statFaction":{
+			"info": "OStimAnalSexActorCounterFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF11"
+		},
 		"toySlot": "genital"
 	},
 	"target":{
@@ -48,18 +46,16 @@
 			53,
 			54
 		],
-		"faction":[
-			{
-				"info": "OStimAnalSexTargetFaction",
-				"mod": "OStim.esp",
-				"formid": "0xE50"
-			},
-			{
-				"info": "OStimAnySexMateFaction",
-				"mod": "OStim.esp",
-				"formid": "0xEC9"
-			}
-		],
+		"faction":{
+			"info": "OStimAnalSexTargetFaction",
+			"mod": "OStim.esp",
+			"formid": "0xE50"
+		},
+		"statFaction":{
+			"info": "OStimAnalSexTargetCounterFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF12"
+		},
 		"stringLists":{
 			"cum":[
 				"rectum"
@@ -92,6 +88,8 @@
 		"targetBone":"NPC Anus Deep1"
 	},
 	"tags":[
+		"analpenetration",
+		"analstimulation",
 		"intercourse",
 		"sexual"
 	]

@@ -104,6 +104,7 @@ set(sources
     src/Graph/Action/Peak/Loop/LoopPeakType.cpp
     src/Graph/Action/Peak/PeakType.cpp
     src/Graph/Action/Action.cpp
+    src/Graph/Action/ActionActor.cpp
     src/Graph/Action/ActionAttributes.cpp
     src/Graph/Action/ActionTag.cpp
     src/Graph/GraphTable/GraphTableActions.cpp

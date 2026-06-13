@@ -18,18 +18,16 @@
 			53,
 			54
 		],
-		"faction":[
-			{
-				"info": "OStimVaginalSexActorFaction",
-				"mod": "OStim.esp",
-				"formid": "0xE90"
-			},
-			{
-				"info": "OStimAnySexMateFaction",
-				"mod": "OStim.esp",
-				"formid": "0xEC9"
-			}
-		],
+		"faction":{
+			"info": "OStimVaginalSexActorFaction",
+			"mod": "OStim.esp",
+			"formid": "0xE90"
+		},
+		"statFaction":{
+			"info": "OStimVaginalSexActorCounterFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF14"
+		},
 		"toySlot": "genital"
 	},
 	"target":{
@@ -48,18 +46,16 @@
 			53,
 			54
 		],
-		"faction":[
-			{
-				"info": "OStimVaginalSexTargetFaction",
-				"mod": "OStim.esp",
-				"formid": "0xE91"
-			},
-			{
-				"info": "OStimAnySexMateFaction",
-				"mod": "OStim.esp",
-				"formid": "0xEC9"
-			}
-		],
+		"faction":{
+			"info": "OStimVaginalSexTargetFaction",
+			"mod": "OStim.esp",
+			"formid": "0xE91"
+		},
+		"statFaction":{
+			"info": "OStimAnalSexTargetCounterFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF15"
+		},
 		"stringLists":{
 			"cum":[
 				"vagina"
@@ -93,6 +89,9 @@
 	},
 	"tags":[
 		"intercourse",
-		"sexual"
+		"-penilestimulation",
+		"sexual",
+		"vaginalpenetration",
+		"vaginalstimulation"
 	]
 }

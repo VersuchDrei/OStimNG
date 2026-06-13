@@ -6,6 +6,14 @@
 
 namespace Graph {
     namespace Action {
+        void ActionAttributes::mergeTags() {
+            for (ActionTag& tag : tags) {
+                tag.roles.forEach([&](Graph::Role role, Action::ActionActor& actor) {
+                    roles.get(role)->merge(actor);
+                });
+            }
+        }
+
         bool ActionAttributes::hasTag(std::string tag) {
             StringUtil::toLower(&tag);
             for (ActionTag& actionTag : tags) {

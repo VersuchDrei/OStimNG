@@ -18,6 +18,11 @@
 			"info": "OStimVaginalFistingActorFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE8E"
+		},
+		"statFaction":{
+			"info": "OStimVaginalFistingActorCounterFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF0F"
 		}
 	},
 	"target":{
@@ -41,6 +46,11 @@
 			"mod": "OStim.esp",
 			"formid": "0xE8F"
 		},
+		"statFaction":{
+			"info": "OStimVaginalFistingTargetCounterFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF10"
+		},
 		"toySlot": "genital"
 	},
 	"performer":{
@@ -49,6 +59,9 @@
 		}
 	},
 	"tags":[
-		"sexual"
+		"fisting",
+		"sexual",
+		"vaginalpenetration",
+		"vaginalstimulation"
 	]
 }

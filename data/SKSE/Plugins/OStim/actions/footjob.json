@@ -22,6 +22,11 @@
 			"mod": "OStim.esp",
 			"formid": "0xE5F"
 		},
+		"statFaction":{
+			"info": "OStimFootjobActorCounterFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF5A"
+		},
 		"stringLists":{
 			"cum":[
 				"feet"
@@ -49,6 +54,11 @@
 			"mod": "OStim.esp",
 			"formid": "0xE60"
 		},
+		"statFaction":{
+			"info": "OStimFootjobTargetCounterFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF5B"
+		},
 		"toySlot": "genital"
 	},
 	"performer":{
@@ -74,6 +84,7 @@
 		"targetBone":"NPC Genitals01 [Gen01]"
 	},
 	"tags":[
+		"penilestimulation",
 		"sexual"
 	]
 }

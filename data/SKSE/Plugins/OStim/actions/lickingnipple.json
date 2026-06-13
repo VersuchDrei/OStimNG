@@ -20,18 +20,16 @@
 			44,
 			55
 		],
-		"faction":[
-			{
-				"info": "OStimLickingNipplesActorFaction",
-				"mod": "OStim.esp",
-				"formid": "0xE77"
-			},
-			{
-				"info": "OStimAnyOralActorFaction",
-				"mod": "OStim.esp",
-				"formid": "0xEA7"
-			}
-		]
+		"faction":{
+			"info": "OStimLickingNipplesActorFaction",
+			"mod": "OStim.esp",
+			"formid": "0xE77"
+		},
+		"statFaction":{
+			"info": "OStimLickingNippleActorCounterFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF6B"
+		}
 	},
 	"target":{
 		"info": "the one with the nipple",
@@ -47,18 +45,16 @@
 			46,
 			56
 		],
-		"faction":[
-			{
-				"info": "OStimLickingNipplesTargetFaction",
-				"mod": "OStim.esp",
-				"formid": "0xE78"
-			},
-			{
-				"info": "OStimAnyOralTargetFaction",
-				"mod": "OStim.esp",
-				"formid": "0xEA8"
-			}
-		],
+		"faction":{
+			"info": "OStimLickingNipplesTargetFaction",
+			"mod": "OStim.esp",
+			"formid": "0xE78"
+		},
+		"statFaction":{
+			"info": "OStimLickingNippleTargetCounterFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF6C"
+		},
 		"toySlot": "nipples"
 	},
 	"performer":{
@@ -67,6 +63,7 @@
 		}
 	},
 	"tags":[
+		"licking",
 		"oral",
 		"sexual"
 	]

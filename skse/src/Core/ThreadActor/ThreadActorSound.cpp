@@ -101,14 +101,16 @@ namespace Threading {
             return false;
         }
 
-        for (auto& [index, threadActor] : thread->getActors()) {
-            if (threadActor.actor == actor) {
-                continue;
-            }
+        if (MCM::MCMTable::preventSameVoiceCrossTalk()) {
+            for (auto& [index, threadActor] : thread->getActors()) {
+                if (threadActor.actor == actor) {
+                    continue;
+                }
 
-            if (threadActor.actor.getVoice() == actor.getVoice()) {
-                if (threadActor.actor.isTalking()) {
-                    return false;
+                if (threadActor.actor.getVoice() == actor.getVoice()) {
+                    if (threadActor.actor.isTalking()) {
+                        return false;
+                    }
                 }
             }
         }

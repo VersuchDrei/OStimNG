@@ -23,6 +23,11 @@
 			"mod": "OStim.esp",
 			"formid": "0xE88"
 		},
+		"statFaction":{
+			"info": "OStimThighjobActorCounterFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF73"
+		},
 		"stringLists":{
 			"cum":[
 				"thighs"
@@ -50,6 +55,11 @@
 			"mod": "OStim.esp",
 			"formid": "0xE89"
 		},
+		"statFaction":{
+			"info": "OStimThighjobActorCounterFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF74"
+		},
 		"toySlot": "genital"
 	},
 	"performer":{
@@ -62,6 +72,7 @@
 		}
 	},
 	"tags":[
+		"penisstimulation",
 		"sexual"
 	]
 }

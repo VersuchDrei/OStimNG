@@ -1,0 +1,26 @@
+{
+	"actor":{
+		"faction":{
+			"info": "OStimAnalPenetrationActorFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF2D"
+		},
+		"statFaction":{
+			"info": "OStimAnalPenetrationActorCounterFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF2F"
+		}
+	},
+	"target":{
+		"faction":{
+			"info": "OStimAnalPenetrationTargetFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF2E"
+		},
+		"statFaction":{
+			"info": "OStimAnalPenetrationTargetCounterFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF30"
+		}
+	}
+}

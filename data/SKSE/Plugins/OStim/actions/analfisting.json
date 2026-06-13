@@ -11,11 +11,30 @@
 		"strippingSlots":[
 			33
 		],
-		"faction":{
-			"info": "OStimAnalFistingActorFaction",
-			"mod": "OStim.esp",
-			"formid": "0xE4D"
-		}
+		"faction":[
+			{
+				"info": "OStimAnalFistingActorFaction",
+				"mod": "OStim.esp",
+				"formid": "0xE4D"
+			},
+			{
+				"info": "OStimAnyFistingActorFaction",
+				"mod": "OStim.esp",
+				"formid": "0xF09"
+			}
+		],
+		"statFaction":[
+			{
+				"info": "OStimAnalFistingActorCounterFaction",
+				"mod": "OStim.esp",
+				"formid": "0xF0B"
+			},
+			{
+				"info": "OStimAnyFistingActorCounterFaction",
+				"mod": "OStim.esp",
+				"formid": "0xF0D"
+			}
+		]
 	},
 	"target":{
 		"info": "the one with the butt",
@@ -33,11 +52,30 @@
 			53,
 			54
 		],
-		"faction":{
-			"info": "OStimAnalFistingTargetFaction",
-			"mod": "OStim.esp",
-			"formid": "0xE4E"
-		},
+		"faction":[
+			{
+				"info": "OStimAnalFistingTargetFaction",
+				"mod": "OStim.esp",
+				"formid": "0xE4E"
+			},
+			{
+				"info": "OStimAnyFistingTargetFaction",
+				"mod": "OStim.esp",
+				"formid": "0xF0A"
+			}
+		],
+		"statFaction":[
+			{
+				"info": "OStimAnalFistingTargetCounterFaction",
+				"mod": "OStim.esp",
+				"formid": "0xF0C"
+			},
+			{
+				"info": "OStimAnyFistingTargetCounterFaction",
+				"mod": "OStim.esp",
+				"formid": "0xF0E"
+			}
+		],
 		"toySlot": "anus"
 	},
 	"performer":{
@@ -46,6 +84,9 @@
 		}
 	},
 	"tags":[
+		"analpenetration",
+		"analstimulation",
+		"fisting",
 		"sexual"
 	]
 }

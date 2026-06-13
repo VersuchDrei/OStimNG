@@ -1,10 +1,7 @@
 {
-	"info": "rimjob is without a tongue, if you want a tongue use anallicking",
+	"info": "clitoraleating is without a tongue, if you want a tongue use clitorallicking",
 	"aliases":[
-		"analeating",
-		"anilingus",
-		"rimj",
-		"rj"
+		"cunnilingus"	
 	],
 	"actor":{
 		"info": "the one with the mouth",
@@ -23,24 +20,24 @@
 			55
 		],
 		"faction":{
-			"info": "OStimRimjobActorFaction",
+			"info": "OStimClitoralEatingActorFaction",
 			"mod": "OStim.esp",
-			"formid": "0xF3F"
+			"formid": "0xF46"
 		},
 		"statFaction":{
-			"info": "OStimRimjobActorCounterFaction",
+			"info": "OStimClitoralEatingActorCounterFaction",
 			"mod": "OStim.esp",
-			"formid": "0xF41"
+			"formid": "0xF49"
 		}
 	},
 	"target":{
-		"info": "the one with the butt",
-		"stimulation":0.3,
+		"info": "the one with the vulva",
+		"stimulation":1.4,
 		"fullStrip":true,
 		"moan":true,
 		"talk":true,
 		"requirements":[
-			"anus"
+			"vagina"
 		],
 		"strippingSlots":[
 			32,
@@ -50,30 +47,30 @@
 			54
 		],
 		"faction":{
-			"info": "OStimRimjobTargetFaction",
+			"info": "OStimClitoralEatingTargetFaction",
 			"mod": "OStim.esp",
-			"formid": "0xF40"
+			"formid": "0xF47"
 		},
 		"statFaction":{
-			"info": "OStimRimjobTargetCounterFaction",
+			"info": "OStimClitoralEatingTargetCounterFaction",
 			"mod": "OStim.esp",
-			"formid": "0xF42"
+			"formid": "0xF4A"
 		},
-		"toySlot": "anus"
+		"toySlot": "genital"
 	},
 	"performer":{
 		"faction":{
-			"info": "OStimRimjobPerformerFaction",
+			"info": "OStimClitoralEatingPerformerFaction",
 			"mod": "OStim.esp",
-			"formid": "0xF43"
+			"formid": "0xF48"
 		},
 		"floats":{
 			"stamina":0.75
 		}
 	},
 	"tags":[
-		"analstimulation",
-		"anilingus",
+		"clitoralstimulation",
+		"cunnilingus",
 		"oral",
 		"sexual"
 	]

@@ -2,7 +2,8 @@
 	"aliases":[
 		"lickdick",
 		"lickpenis",
-		"lickingdick"
+		"lickingdick",
+		"lickingpenis"
 	],
 	"actor":{
 		"info": "the one with the mouth",
@@ -20,18 +21,16 @@
 			44,
 			55
 		],
-		"faction":[
-			{
-				"info": "OStimLickingPenisActorFaction",
-				"mod": "OStim.esp",
-				"formid": "0xE79"
-			},
-			{
-				"info": "OStimAnyOralActorFaction",
-				"mod": "OStim.esp",
-				"formid": "0xEA7"
-			}
-		],
+		"faction":{
+			"info": "OStimLickingPenisActorFaction",
+			"mod": "OStim.esp",
+			"formid": "0xE79"
+		},
+		"statFaction":{
+			"info": "OStimPenileLickingActorCounterFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF6D"
+		},
 		"stringLists":{
 			"cum":[
 				"mouth"
@@ -53,18 +52,16 @@
 			52,
 			53
 		],
-		"faction":[
-			{
-				"info": "OStimLickingPenisTargetFaction",
-				"mod": "OStim.esp",
-				"formid": "0xE7A"
-			},
-			{
-				"info": "OStimAnyOralTargetFaction",
-				"mod": "OStim.esp",
-				"formid": "0xEA8"
-			}
-		],
+		"faction":{
+			"info": "OStimLickingPenisTargetFaction",
+			"mod": "OStim.esp",
+			"formid": "0xE7A"
+		},
+		"statFaction":{
+			"info": "OStimPenileLickingTargetCounterFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF6E"
+		},
 		"toySlot": "genital"
 	},
 	"performer":{
@@ -73,7 +70,10 @@
 		}
 	},
 	"tags":[
+		"fellatio",
+		"licking",
 		"oral",
+		"penilestimulation",
 		"sexual"
 	]
 }

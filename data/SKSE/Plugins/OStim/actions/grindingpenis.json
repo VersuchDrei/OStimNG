@@ -25,6 +25,11 @@
 			"mod": "OStim.esp",
 			"formid": "0xE64"
 		},
+		"statFaction":{
+			"info": "OStimGrindingPenisActorCounterFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF60"
+		},
 		"toySlot": "genital"
 	},
 	"target":{
@@ -48,6 +53,11 @@
 			"mod": "OStim.esp",
 			"formid": "0xE65"
 		},
+		"statFaction":{
+			"info": "OStimGrindingPenisTargetCounterFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF61"
+		},
 		"toySlot": "genital"
 	},
 	"performer":{
@@ -61,6 +71,9 @@
 		}
 	},
 	"tags":[
-		"sexual"
+		"grinding",
+		"penilestimulation",
+		"sexual",
+		"-vaginalstimulation"
 	]
 }

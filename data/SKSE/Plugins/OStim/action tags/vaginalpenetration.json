@@ -1,0 +1,26 @@
+{
+	"actor":{
+		"faction":{
+			"info": "OStimVaginalPenetrationActorFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF31"
+		},
+		"statFaction":{
+			"info": "OStimVaginalPenetrationActorCounterFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF33"
+		}
+	},
+	"target":{
+		"faction":{
+			"info": "OStimVaginalPenetrationTargetFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF32"
+		},
+		"statFaction":{
+			"info": "OStimVaginalPenetrationTargetCounterFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF34"
+		}
+	}
+}

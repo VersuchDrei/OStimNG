@@ -1,6 +1,7 @@
 {
 	"aliases":[
 		"rubbingclit",
+		"rubbingclitoris",
 		"rubclitoris",
 		"rubclit"
 	],
@@ -17,9 +18,14 @@
 			33
 		],
 		"faction":{
-			"info": "OStimRubbingClitorisActorFaction",
+			"info": "OStimClitoralRubbingActorFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE82"
+		},
+		"statFaction":{
+			"info": "OStimClitoralRubbingActorCounterFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF6F"
 		}
 	},
 	"target":{
@@ -39,9 +45,14 @@
 			54
 		],
 		"faction":{
-			"info": "OStimRubbingClitorisTargetFaction",
+			"info": "OStimClitoralRubbingTargetFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE83"
+		},
+		"statFaction":{
+			"info": "OStimClitoralRubbingActorCounterFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF70"
 		},
 		"toySlot": "genital"
 	},
@@ -51,6 +62,7 @@
 		}
 	},
 	"tags":[
+		"clitoralstimulation",
 		"sexual"
 	]
 }

@@ -1,0 +1,33 @@
+{
+	"actor":{
+		"faction":{
+			"info": "OStimAnilingusActorFaction",
+			"mod": "OStim.esp",
+			"formid": "0xE99"
+		},
+		"statFaction":{
+			"info": "OStimAnilingusActorCounterFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF3B"
+		}
+	},
+	"target":{
+		"faction":{
+			"info": "OStimAnilingusTargetFaction",
+			"mod": "OStim.esp",
+			"formid": "0xE9A"
+		},
+		"statFaction":{
+			"info": "OStimAnilingusTargetCounterFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF3C"
+		}
+	},
+	"performer":{
+		"faction":{
+			"info": "OStimAnilingusPerformerFaction",
+			"mod": "OStim.esp",
+			"formid": "0xE9B"
+		}
+	}
+}

@@ -117,9 +117,10 @@ namespace MCM {
         inline static int getMaleDialogueCountdownMax() { return settings[0xE96].asInt(); }
         inline static int getFemaleDialogueCountdownMin() { return settings[0xE97].asInt(); }
         inline static int getFemaleDialogueCountdownMax() { return settings[0xE98].asInt(); }
+        inline static bool playerDialogue() { return settings[0xECF].asBool(); }
+        inline static bool preventSameVoiceCrossTalk() { return settings[0xF00].asBool(); }
 
         inline static float getSoundVolume() { return settings[0xE0D].asFloat(); }
-        inline static bool playerDialogue() { return settings[0xECF].asBool(); }
 
         inline static bool intendedSexOnly() { return settings[0xDEE].asBool(); }
         inline static bool playerAlwaysDomStraight() { return settings[0xDEF].asBool(); }
@@ -267,8 +268,9 @@ namespace MCM {
             {0xE96, {6, "maleDialogueCountdownMax"}},
             {0xE97, {1, "femaleDialogueCountdownMin"}},
             {0xE98, {3, "femaleDialogueCountdownMax"}},
-            {0xE0D, {1, "soundVolume"}},
             {0xECF, {1, "playerDialogue"}},
+            {0xF00, {0, "preventSameVoiceCrossTalk"}},
+            {0xE0D, {1, "soundVolume"}},
 
             {0xDEE, {1, "SetOnlyGayAnimsInGayScenes"}},  // intended sex only
             {0XDEF, {0, "PlayerAlwaysDomStraight"}},

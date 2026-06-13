@@ -2,9 +2,11 @@
 	"aliases":[
 		"lickingscrotum",
 		"lickingtesticle",
+		"lickingtesticles",
 		"lickscrotum",
 		"licktesticle",
-		"licktesticles"
+		"licktesticles",
+		"testicularlicking"
 	],
 	"actor":{
 		"info": "the one with the mouth",
@@ -22,18 +24,11 @@
 			44,
 			55
 		],
-		"faction":[
-			{
-				"info": "OStimLickingTesticlesActorFaction",
-				"mod": "OStim.esp",
-				"formid": "0xE7B"
-			},
-			{
-				"info": "OStimAnyOralActorFaction",
-				"mod": "OStim.esp",
-				"formid": "0xEA7"
-			}
-		]
+		"faction":{
+			"info": "OStimLickingTesticlesActorFaction",
+			"mod": "OStim.esp",
+			"formid": "0xE7B"
+		}
 	},
 	"target":{
 		"info": "the one with the penis",
@@ -51,18 +46,11 @@
 			53,
 			54
 		],
-		"faction":[
-			{
-				"info": "OStimLickingTesticlesTargetFaction",
-				"mod": "OStim.esp",
-				"formid": "0xE7C"
-			},
-			{
-				"info": "OStimAnyOralTargetFaction",
-				"mod": "OStim.esp",
-				"formid": "0xEA8"
-			}
-		],
+		"faction":{
+			"info": "OStimLickingTesticlesTargetFaction",
+			"mod": "OStim.esp",
+			"formid": "0xE7C"
+		},
 		"toySlot": "scrotum"
 	},
 	"performer":{
@@ -71,6 +59,7 @@
 		}
 	},
 	"tags":[
+		"licking",
 		"oral",
 		"sexual"
 	]

@@ -1584,17 +1584,6 @@ int Property FemaleDialogueCountdownMax
 	EndFunction
 EndProperty
 
-
-GlobalVariable Property OStimSoundVolume Auto
-float Property SoundVolume
-	float Function Get()
-		Return OStimSoundVolume.value
-	EndFunction
-	Function Set(float Value)
-		OStimSoundVolume.value = Value
-	EndFunction
-EndProperty
-
 GlobalVariable Property OStimPlayerDialogue Auto
 bool Property PlayerDialogue
 	bool Function Get()
@@ -1606,6 +1595,31 @@ bool Property PlayerDialogue
 		Else
 			OStimPlayerDialogue.value = 0
 		EndIf
+	EndFunction
+EndProperty
+
+GlobalVariable Property OStimPreventSameVoiceCrossTalk Auto
+bool Property PreventSameVoiceCrossTalk
+	bool Function Get()
+		Return OStimPreventSameVoiceCrossTalk.value != 0
+	EndFunction
+	Function Set(bool Value)
+		If Value
+			OStimPreventSameVoiceCrossTalk.value = 1
+		Else
+			OStimPreventSameVoiceCrossTalk.value = 0
+		EndIf
+	EndFunction
+EndProperty
+
+
+GlobalVariable Property OStimSoundVolume Auto
+float Property SoundVolume
+	float Function Get()
+		Return OStimSoundVolume.value
+	EndFunction
+	Function Set(float Value)
+		OStimSoundVolume.value = Value
 	EndFunction
 EndProperty
 

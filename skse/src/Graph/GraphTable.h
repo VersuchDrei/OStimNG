@@ -19,6 +19,7 @@ namespace Graph{
         static Action::ActionAttributes* GetActionAttributesByType(std::string type);
 
     private:
+        inline static std::unordered_map<std::string, Action::ActionTag> actionTags;
         inline static std::unordered_map<std::string, std::string> actionAliases;
         inline static std::unordered_map<std::string, Action::ActionAttributes> actions;
 #pragma endregion

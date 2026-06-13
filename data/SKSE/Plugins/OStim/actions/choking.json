@@ -1,0 +1,29 @@
+{
+	"aliases":[
+		"choke"
+	],
+	"actor":{
+		"info": "the one with the hand",
+		"requirements":[
+			"hand"
+		],
+		"strippingSlots":[
+			33
+		],
+		"faction":{
+			"info": "OStimChokingActorFaction",
+			"mod": "OStim.esp",
+			"formid": "0xEFE"
+		}
+	},
+	"target":{
+		"info": "the one with the neck",
+		"stimulation":0.25,
+		"maxStimulation":65,
+		"faction":{
+			"info": "OStimChokingTargetFaction",
+			"mod": "OStim.esp",
+			"formid": "0xEFF"
+		}
+	}
+}

@@ -1,4 +1,8 @@
 {
+	"aliases":[
+		"fingeringanus",
+		"fingeranus"
+	],
 	"actor":{
 		"info": "the one with the hand",
 		"stimulation":0.1,
@@ -15,6 +19,11 @@
 			"info": "OStimAnalFingeringActorFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE4B"
+		},
+		"statFaction":{
+			"info": "OStimAnalFingeringActorCounterFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF03"
 		}
 	},
 	"target":{
@@ -38,6 +47,11 @@
 			"mod": "OStim.esp",
 			"formid": "0xE4C"
 		},
+		"statFaction":{
+			"info": "OStimAnalFingeringTargetCounterFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF04"
+		},
 		"toySlot": "anus"
 	},
 	"performer":{
@@ -46,6 +60,8 @@
 		}
 	},
 	"tags":[
+		"analstimulation",
+		"fingering",
 		"sexual"
 	]
 }

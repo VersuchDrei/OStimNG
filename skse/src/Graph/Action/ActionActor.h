@@ -25,6 +25,8 @@ namespace Graph {
             std::unordered_map<std::string, std::string> strings;
             std::unordered_map<std::string, std::vector<std::string>> stringLists;
             std::vector<std::string> toySlots;
+
+            void merge(ActionActor& other);
         };
     }
 }

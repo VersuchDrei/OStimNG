@@ -15,18 +15,16 @@
 			53,
 			54
 		],
-		"faction":[
-			{
-				"info": "OStimTribbingFaction",
-				"mod": "OStim.esp",
-				"formid": "0xE8B"
-			},
-			{
-				"info": "OStimAnySexMateFaction",
-				"mod": "OStim.esp",
-				"formid": "0xEC9"
-			}
-		],
+		"faction":{
+			"info": "OStimTribbingMateFaction",
+			"mod": "OStim.esp",
+			"formid": "0xE8B"
+		},
+		"statFaction":{
+			"info": "OStimTribbingMateCounterFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF16"
+		},
 		"toySlot": "genital"
 	},
 	"target":{
@@ -44,18 +42,16 @@
 			53,
 			54
 		],
-		"faction":[
-			{
-				"info": "OStimTribbingFaction",
-				"mod": "OStim.esp",
-				"formid": "0xE8B"
-			},
-			{
-				"info": "OStimAnySexMateFaction",
-				"mod": "OStim.esp",
-				"formid": "0xEC9"
-			}
-		],
+		"faction":{
+			"info": "OStimTribbingMateFaction",
+			"mod": "OStim.esp",
+			"formid": "0xE8B"
+		},
+		"statFaction":{
+			"info": "OStimTribbingMateCounterFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF16"
+		},
 		"toySlot": "genital"
 	},
 	"performer":{
@@ -64,6 +60,8 @@
 		}
 	},
 	"tags":[
+		"clitoralstimulation",
+		"-clitoralstimulation",
 		"intercourse",
 		"sexual"
 	]

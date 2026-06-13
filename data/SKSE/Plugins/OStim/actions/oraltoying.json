@@ -6,43 +6,41 @@
 		"moan":true,
 		"talk":true,
 		"faction":{
-			"info": "OStimAnalToyingActorFaction",
+			"info": "OStimOralToyingActorFaction",
 			"mod": "OStim.esp",
-			"formid": "0xEA1"
+			"formid": "0xF27"
 		},
 		"statFaction":{
-			"info": "OStimAnalToyingActorCounterFaction",
+			"info": "OStimOralToyingActorCounterFaction",
 			"mod": "OStim.esp",
-			"formid": "0xF35"
+			"formid": "0xF58"
 		}
 	},
 	"target":{
-		"info": "the one with the vulva",
-		"stimulation":0.3,
-		"fullStrip":true,
+		"info": "the one with the mouth",
+		"stimulation":0.1,
+		"maxStimulation":75,
 		"moan":true,
-		"talk":true,
+		"muffled":true,
 		"requirements":[
-			"anus"
+			"mouth"
 		],
 		"strippingSlots":[
-			32,
-			49,
-			52,
-			53,
-			54
+			30,
+			31,
+			44,
+			55
 		],
 		"faction":{
-			"info": "OStimAnalToyingTargetFaction",
+			"info": "OStimOralToyingTargetFaction",
 			"mod": "OStim.esp",
-			"formid": "0xEA2"
+			"formid": "0xF28"
 		},
 		"statFaction":{
-			"info": "OStimAnalToyingTargetCounterFaction",
+			"info": "OStimOralToyingTargetCounterFaction",
 			"mod": "OStim.esp",
-			"formid": "0xF36"
-		},
-		"toySlot": "anus"
+			"formid": "0xF59"
+		}
 	},
 	"performer":{
 		"floats":{
@@ -50,8 +48,6 @@
 		}
 	},
 	"tags":[
-		"analpenetration",
-		"analstimulation",
 		"sexual",
 		"toying"
 	]

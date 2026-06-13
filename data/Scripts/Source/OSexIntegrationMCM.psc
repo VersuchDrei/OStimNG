@@ -2499,6 +2499,7 @@ EndState
 
 int OID_PlayerVoice = -1
 int OID_PlayerDialogue = -1
+int OID_PreventSameVoiceCrossTalk = -1
 
 Function DrawSoundPage()
 	SetCursorFillMode(TOP_TO_BOTTOM)
@@ -2512,19 +2513,22 @@ Function DrawSoundPage()
 	AddSliderOptionST("OID_MoanVolume", "$ostim_moan_volume", Main.MoanVolume, "{2}")
 	SetCursorPosition(8)
 	OID_PlayerVoice = AddMenuOption("$ostim_player_voice", OData.GetVoiceSetName(0x7))
-	SetCursorPosition(10)
-	OID_PlayerDialogue = AddToggleOption("$ostim_player_dialogue", Main.PlayerDialogue)
 
-	SetCursorPosition(14)
+	SetCursorPosition(12)
 	AddColoredHeader("$ostim_header_dialogue")
-	SetCursorPosition(16)
+	SetCursorPosition(14)
 	AddSliderOptionST("OID_MaleDialogueCountdownMin", "$ostim_male_dialogue_countdown_min", Main.MaleDialogueCountdownMin, "{0}")
-	SetCursorPosition(18)
+	SetCursorPosition(16)
 	AddSliderOptionST("OID_MaleDialogueCountdownMax", "$ostim_male_dialogue_countdown_max", Main.MaleDialogueCountdownMax, "{0}")
-	SetCursorPosition(20)
+	SetCursorPosition(18)
 	AddSliderOptionST("OID_FemaleDialogueCountdownMin", "$ostim_female_dialogue_countdown_min", Main.FemaleDialogueCountdownMin, "{0}")
-	SetCursorPosition(22)
+	SetCursorPosition(20)
 	AddSliderOptionST("OID_FemaleDialogueCountdownMax", "$ostim_female_dialogue_countdown_max", Main.FemaleDialogueCountdownMax, "{0}")
+	SetCursorPosition(22)
+	OID_PlayerDialogue = AddToggleOption("$ostim_player_dialogue", Main.PlayerDialogue)
+	SetCursorPosition(24)
+	OID_PreventSameVoiceCrossTalk = AddToggleOption("$ostim_prevent_same_voice_cross_talk", Main.PreventSameVoiceCrossTalk)
+
 
 	SetCursorPosition(1)
 	AddColoredHeader("$ostim_header_sounds")
@@ -2538,6 +2542,8 @@ Function OnOptionHighlightSound(int Option)
 		SetInfoText("$ostim_tooltip_player_voice")
 	ElseIf Option == OID_PlayerDialogue
 		SetInfoText("$ostim_tooltip_player_dialogue")
+	ElseIf Option == OID_PreventSameVoiceCrossTalk
+		SetInfoText("$ostim_tooltip_prevent_same_voice_cross_talk")
 	EndIf
 EndFunction
 
@@ -2545,6 +2551,9 @@ Function OnOptionSelectSound(int Option)
 	If Option == OID_PlayerDialogue
 		Main.PlayerDialogue = !Main.PlayerDialogue
 		SetToggleOptionValue(Option, Main.PlayerDialogue)
+	ElseIf Option == OID_PreventSameVoiceCrossTalk
+		Main.PreventSameVoiceCrossTalk = !Main.PreventSameVoiceCrossTalk
+		SetToggleOptionValue(Option, Main.PreventSameVoiceCrossTalk)
 	EndIf
 EndFunction
 

@@ -8,6 +8,7 @@
 
 namespace Graph {
     const char* ACTION_FILE_PATH{"Data/SKSE/Plugins/OStim/actions"};
+    const char* ACTION_TAG_FILE_PATH{"Data/SKSE/Plugins/OStim/action tags"};
 
     Action::ActionActor parseActionActor(std::string path, std::string filename, json& json) {
         Action::ActionActor actor;
@@ -155,6 +156,29 @@ namespace Graph {
 
     void GraphTable::SetupActions() {
         Util::JsonFileLoader::LoadFilesInFolder(
+            ACTION_TAG_FILE_PATH, [&](std::string path, std::string filename, json json) {
+                Graph::Action::ActionTag tag;
+                tag.tag = filename;
+                StringUtil::toLower(&tag.tag);
+
+                tag.roles.forEach([&path, &filename, &json](Role role, Action::ActionActor& actor) {
+                    std::string key = *RoleMapAPI::KEYS.get(role);
+                    if (json.contains(key)) {
+                        actor = parseActionActor(path, filename, json[key]);
+                    }
+                });
+
+                Graph::Action::ActionTag inverted = tag;
+                inverted.tag = "-" + tag.tag;
+                inverted.roles.actor = tag.roles.target;
+                inverted.roles.target = tag.roles.actor;
+
+                actionTags[tag.tag] = tag;
+                actionTags[inverted.tag] = inverted;
+            }
+        );
+
+        Util::JsonFileLoader::LoadFilesInFolder(
             ACTION_FILE_PATH, [&](std::string path, std::string filename, json json) {
                 std::string type = filename;
                 StringUtil::toLower(&type);
@@ -203,11 +227,21 @@ namespace Graph {
                     for (auto& tag : json["tags"]) {
                         std::string tagStr = tag.get<std::string>();
                         StringUtil::toLower(&tagStr);
-                        Graph::Action::ActionTag tagObj;
-                        tagObj.tag = tagStr;
-                        attr.tags.push_back(tagObj);
+
+                        auto iter = actionTags.find(tagStr);
+                        if (iter != actionTags.end()) {
+                            attr.tags.push_back(iter->second);
+                        } else {
+                            logger::warn("Action tag '{}' of action '{}' not found, generating empty.", tagStr, type);
+                            Graph::Action::ActionTag tagObj;
+                            tagObj.tag = tagStr;
+                            attr.tags.push_back(tagObj);
+                        }
                     }
+
+                    attr.mergeTags();
                 }
+
 
                 actions[attr.type] = attr;
             });

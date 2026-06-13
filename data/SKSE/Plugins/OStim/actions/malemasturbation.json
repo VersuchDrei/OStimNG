@@ -12,6 +12,11 @@
 			"info": "OStimMaleMasturbationFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE7F"
+		},
+		"statFaction":{
+			"info": "OStimMaleMasturbationCounterFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF57"
 		}
 	},
 	"target":{

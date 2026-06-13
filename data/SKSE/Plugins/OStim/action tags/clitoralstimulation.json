@@ -1,0 +1,26 @@
+{
+	"actor":{
+		"faction":{
+			"info": "OStimVaginalStimulationActorFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF1F"
+		},
+		"statFaction":{
+			"info": "OStimVaginalStimulationActorCounterFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF21"
+		}
+	},
+	"target":{
+		"faction":{
+			"info": "OStimVaginalStimulationTargetFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF20"
+		},
+		"statFaction":{
+			"info": "OStimVaginalStimulationTargetCounterFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF22"
+		}
+	}
+}

@@ -1,20 +1,21 @@
 {
+	"info": "clitorallicking is with a tongue, if you want no tongue use clitoraleating",
 	"aliases":[
-		"bj",
-		"bjob",
-		"blowj",
-		"suckingdick",
-		"suckingpenis",
-		"suckdick",
-		"suckpenis"
+		"lickclitoris",
+		"lickingclitoris",
+		"lickingpussy",
+		"lickingvagina",
+		"lickpussy",
+		"lickvagina",
+		"vaginaleating"
 	],
 	"actor":{
 		"info": "the one with the mouth",
 		"stimulation":0.1,
-		"maxStimulation":75,
+		"maxStimulation":50,
 		"moan":true,
 		"muffled":true,
-		"expressionOverride":"openmouth",
+		"expressionOverride":"tongue",
 		"requirements":[
 			"mouth"
 		],
@@ -25,29 +26,24 @@
 			55
 		],
 		"faction":{
-			"info": "OStimBlowjobActorFaction",
+			"info": "OStimClitoralLickingActorFaction",
 			"mod": "OStim.esp",
-			"formid": "0xE52"
+			"formid": "0xE7D"
 		},
 		"statFaction":{
-			"info": "OStimBlowjobActorCounterFaction",
+			"info": "OStimClitoralLickingActorCounterFaction",
 			"mod": "OStim.esp",
-			"formid": "0xF50"
-		},
-		"stringLists":{
-			"cum":[
-				"mouth"
-			]
+			"formid": "0xF44"
 		}
 	},
 	"target":{
-		"info": "the one with the penis",
+		"info": "the one with the vulva",
 		"stimulation":1.4,
 		"fullStrip":true,
 		"moan":true,
 		"talk":true,
 		"requirements":[
-			"penis"
+			"vagina"
 		],
 		"strippingSlots":[
 			32,
@@ -57,31 +53,27 @@
 			54
 		],
 		"faction":{
-			"info": "OStimBlowjobTargetFaction",
+			"info": "OStimClitoralLickingTargetFaction",
 			"mod": "OStim.esp",
-			"formid": "0xE53"
+			"formid": "0xE7E"
 		},
 		"statFaction":{
-			"info": "OStimBlowjobTargetCounterFaction",
+			"info": "OStimClitoralLickingActorCounterFaction",
 			"mod": "OStim.esp",
-			"formid": "0xF51"
+			"formid": "0xF45"
 		},
 		"toySlot": "genital"
 	},
 	"performer":{
-		"faction":{
-			"info": "OStimBlowjobPerformerFaction",
-			"mod": "OStim.esp",
-			"formid": "0xE54"
-		},
 		"floats":{
 			"stamina":0.75
 		}
 	},
 	"tags":[
-		"fellatio",
+		"clitoralstimulation",
+		"cunnilingus",
+		"licking",
 		"oral",
-		"penilestimulation",
 		"sexual"
 	]
 }

@@ -1,8 +1,8 @@
 {
+	"info": "anallicking is with a tongue, if you want no tongue use rimjob",
 	"aliases":[
-		"sucknipple",
-		"sucknipples",
-		"suckingnipples"
+		"lickanus",
+		"lickinganus"
 	],
 	"actor":{
 		"info": "the one with the mouth",
@@ -10,7 +10,7 @@
 		"maxStimulation":50,
 		"moan":true,
 		"muffled":true,
-		"expressionOverride":"openmouth",
+		"expressionOverride":"tongue",
 		"requirements":[
 			"mouth"
 		],
@@ -21,41 +21,43 @@
 			55
 		],
 		"faction":{
-			"info": "OStimSuckingNipplesActorFaction",
+			"info": "OStimAnalLickingActorFaction",
 			"mod": "OStim.esp",
-			"formid": "0xE86"
+			"formid": "0xE80"
 		},
 		"statFaction":{
-			"info": "OStimSuckingNippleActorCounterFaction",
+			"info": "OStimAnalLickingActorCounterFaction",
 			"mod": "OStim.esp",
-			"formid": "0xF71"
+			"formid": "0xF3D"
 		}
 	},
 	"target":{
-		"info": "the one with the nipples",
-		"stimulation":0.6,
+		"info": "the one with the butt",
+		"stimulation":0.3,
 		"fullStrip":true,
 		"moan":true,
 		"talk":true,
 		"requirements":[
-			"nipple"
+			"anus"
 		],
 		"strippingSlots":[
 			32,
-			46,
-			56
+			49,
+			52,
+			53,
+			54
 		],
 		"faction":{
-			"info": "OStimSuckingNipplesTargetFaction",
+			"info": "OStimAnalLickingTargetFaction",
 			"mod": "OStim.esp",
-			"formid": "0xE87"
+			"formid": "0xE81"
 		},
 		"statFaction":{
-			"info": "OStimSuckingNippleActorCounterFaction",
+			"info": "OStimAnalLickingTargetCounterFaction",
 			"mod": "OStim.esp",
-			"formid": "0xF72"
+			"formid": "0xF3E"
 		},
-		"toySlot": "nipples"
+		"toySlot": "anus"
 	},
 	"performer":{
 		"floats":{
@@ -63,6 +65,8 @@
 		}
 	},
 	"tags":[
+		"analstimulation",
+		"anilingus",
 		"oral",
 		"sexual"
 	]

@@ -20,6 +20,11 @@
 			"info": "OStimHandjobActorFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE70"
+		},
+		"statFaction":{
+			"info": "OStimHandjobActorCounterFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF63"
 		}
 	},
 	"target":{
@@ -42,6 +47,11 @@
 			"info": "OStimHandjobTargetFaction",
 			"mod": "OStim.esp",
 			"formid": "0xE71"
+		},
+		"statFaction":{
+			"info": "OStimHandjobActorCounterFaction",
+			"mod": "OStim.esp",
+			"formid": "0xF64"
 		},
 		"toySlot": "genital"
 	},
@@ -69,6 +79,7 @@
 		"inverse": true
 	},
 	"tags":[
+		"penilestimulation",
 		"sexual"
 	]
 }

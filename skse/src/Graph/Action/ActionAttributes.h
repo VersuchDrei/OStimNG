@@ -18,6 +18,8 @@ namespace Graph {
             std::vector<Sound::SoundType*> sounds;
             std::vector<ActionTag> tags;
 
+            void mergeTags();
+
             bool hasTag(std::string tag);
             bool hasAnyTag(std::vector<std::string> tags);
             bool hasAllTags(std::vector<std::string> tags);
