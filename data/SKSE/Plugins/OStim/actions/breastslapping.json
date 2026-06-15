@@ -1,0 +1,28 @@
+{
+    "info": "slap target's boobs",
+    "aliases": [
+        "slapbreast"
+    ],
+    "actor": {
+        "info": "the one with the hand",
+        "requirements": [
+            "hand"
+        ],
+        "strippingSlots": [
+            33
+        ]
+    },
+    "target": {
+        "info": "the one with the boobs",
+        "strippingSlots": [
+            32,
+            49,
+            52,
+            53,
+            54
+        ]
+    },
+    "tags": [
+        "sexual"
+    ]
+}

@@ -1,0 +1,32 @@
+{
+	"info": "use when massage happens",
+	"aliases": [
+		"massage"
+	],
+	"actor": {
+		"info": "the one who is doing massage with hands"
+	},
+	"target": {
+		"info": "the one who is receiving the massage",
+		"stimulation": 0.1,
+		"maxStimulation": 50,
+		"strippingSlots": [
+			30,
+			31,
+			32,
+			33,
+			34,
+			37,
+			38,
+			44,
+			49,
+			52,
+			53,
+			54,
+			55
+		]
+	},
+	"tags": [
+		"sensual"
+	]
+}
