@@ -735,8 +735,15 @@ namespace PapyrusLibrary {
         return randomScene(actors, furnitureType, [&conditions](Graph::Node* node) {return checkConditions(conditions, node);});
     }
 
+
+    void ReloadScene(RE::StaticFunctionTag*, std::string sceneId) {
+        Graph::GraphTable::reloadNode(sceneId);
+    }
+
     bool Bind(VM* a_vm) {
         const auto obj = "OLibrary"sv;
+
+        BIND(ReloadScene);
 
         BIND(GetAllScenes);
         BIND(GetScenesInRange);
