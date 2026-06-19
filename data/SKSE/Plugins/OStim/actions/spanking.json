@@ -1,0 +1,20 @@
+{
+    "info": "spank target's butt",
+    "aliases": [
+        "spank",
+        "buttslapping"
+    ],
+    "actor": {
+        "info": "the one with the hand",
+        "requirements": [
+            "hand"
+        ],
+        "strippingSlots": [
+            33
+        ]
+    },
+    "target": {
+        "info": "the one with the butt",
+        "strippingSlots": []
+    }
+}

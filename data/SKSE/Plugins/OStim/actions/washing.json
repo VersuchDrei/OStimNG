@@ -1,0 +1,27 @@
+{
+	"info": "use when washing happens outside of water(for example in bed or animation with some kind of bathtub, bath barrel, etc)",
+	"aliases": [
+		"wash"
+	],
+	"actor": {
+		"info": "the one who is doing the washing"
+	},
+	"target": {
+		"info": "the one who is getting washed",
+		"strippingSlots": [
+			30,
+			31,
+			32,
+			33,
+			34,
+			37,
+			38,
+			44,
+			49,
+			52,
+			53,
+			54,
+			55
+		]
+	}
+}

@@ -1,0 +1,39 @@
+{
+	"info": "use when actor slides their boobs on target as part of massage",
+	"aliases": [
+		"breastmassage",
+		"boobmassage",
+		"breastslide"
+	],
+	"actor": {
+		"info": "the one who is doing massage with boobs",
+		"stimulation": 0.1,
+		"maxStimulation": 50,
+		"fullStrip": true,
+		"moan": true,
+		"talk": true,
+		"requirements": [
+			"breast"
+		],
+		"strippingSlots": [
+			32,
+			46,
+			56
+		]
+	},
+	"target": {
+		"info": "the one who is receiving the massage",
+		"stimulation": 0.1,
+		"maxStimulation": 50,
+		"strippingSlots": [
+			32,
+			49,
+			52,
+			53,
+			54
+		]
+	},
+	"tags": [
+		"sensual"
+	]
+}
