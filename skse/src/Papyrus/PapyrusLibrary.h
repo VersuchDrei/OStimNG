@@ -736,14 +736,8 @@ namespace PapyrusLibrary {
     }
 
 
-    void ReloadScene(RE::StaticFunctionTag*, std::string sceneId) {
-        Graph::GraphTable::reloadNode(sceneId);
-    }
-
     bool Bind(VM* a_vm) {
         const auto obj = "OLibrary"sv;
-
-        BIND(ReloadScene);
 
         BIND(GetAllScenes);
         BIND(GetScenesInRange);

@@ -20,14 +20,6 @@
 ScriptName OLibrary
 
 
-;/* ReloadScene
-* *	hot-reloads a single scene json file from disk, updating it in-place
-* *	safe to call while other scenes are running on active threads
-* *
-* * @param sceneId: the scene id to reload (filename without .json extension)
-*/;
-Function ReloadScene(string sceneId) Global Native
-
 ;/* GetAllScenes
 * *	returns the list of all scenes
 * * this has most likely several hundred entries for most end users
