@@ -735,6 +735,7 @@ namespace PapyrusLibrary {
         return randomScene(actors, furnitureType, [&conditions](Graph::Node* node) {return checkConditions(conditions, node);});
     }
 
+
     bool Bind(VM* a_vm) {
         const auto obj = "OLibrary"sv;
 

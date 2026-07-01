@@ -67,10 +67,15 @@ namespace Graph {
                 logger::warn("Couldn't add navigation from {} to {} because their actor types don't match.", raw.origin, raw.destination);
             }
 
+            bool alreadyExists = false;
             for (auto& existingNavigation : start->navigations) {
                 if (existingNavigation.nodes.back() == destination || existingNavigation.nodes.front() == destination) {
-                    continue;
+                    alreadyExists = true;
+                    break;
                 }
+            }
+            if (alreadyExists) {
+                continue;
             }
 
             Navigation navigation;
@@ -85,6 +90,13 @@ namespace Graph {
                         next = GraphTable::getNodeById(nav.destination);
                         break;
                     }
+                }
+
+                // Fallback for partial-reload: the transition's destination isn't in the
+                // local navigations vector (only the reloaded node's navs are present),
+                // so use the transition node's already-built navigation chain instead.
+                if (!next && !currentNode->navigations.empty()) {
+                    next = currentNode->navigations.front().nodes.front();
                 }
 
                 if (!next) {

@@ -232,6 +232,10 @@ namespace PapyrusData {
         return LocaleManager::GetSingleton()->GetLocalization(text);
     }
 
+    void ReloadScene(RE::StaticFunctionTag*, std::string sceneId) {
+        Graph::GraphTable::reloadNode(sceneId);
+    }
+
 
 	bool Bind(VM* a_vm) {
         const auto obj = "OData"sv;
@@ -278,6 +282,8 @@ namespace PapyrusData {
 
         BIND(ToLocalizedString);
         BIND(Localize);
+
+        BIND(ReloadScene);
 
         return true;
 	}
