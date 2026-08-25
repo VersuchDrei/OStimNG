@@ -26,5 +26,8 @@ namespace OStim {
         virtual uint32_t getActionCount() = 0;
         virtual Action* getAction(uint32_t index) = 0;
         virtual void forEachAction(ActionVisitor* visitor) = 0;
+
+        // --- ABI version 0x07060000 ---
+        virtual bool isValid(uint32_t actorCount, void** actors) = 0;
     };
 }

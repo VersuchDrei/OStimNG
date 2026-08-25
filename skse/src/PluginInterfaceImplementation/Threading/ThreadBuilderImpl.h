@@ -27,6 +27,11 @@ namespace Interface {
         virtual int32_t start() override;
         virtual void cancel() override;
 
+        virtual bool setStartingNodeSafe(OStim::Node* node) override;
+        virtual bool setStartingNodeSafe(const char* node) override;
+        virtual bool addStartingNodeSafe(OStim::Node* node, int32_t duration, bool navigateTo) override;
+        virtual bool addStartingNodeSafe(const char* node, int32_t duration, bool navigateTo) override;
+
     private:
         Threading::ThreadStartParams params;
     };

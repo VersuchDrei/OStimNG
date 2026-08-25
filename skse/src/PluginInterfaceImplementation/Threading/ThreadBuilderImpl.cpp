@@ -89,4 +89,49 @@ namespace Interface {
     void ThreadBuilderImpl::cancel() {
         delete this;
     }
+
+
+    bool ThreadBuilderImpl::setStartingNodeSafe(OStim::Node* node) {
+        Graph::Node* internalNode = Graph::GraphTable::getNodeById(node->getNodeID());
+        std::vector<Trait::ActorCondition> conditions = Trait::ActorCondition::create(params.actors);
+        if (!internalNode->fulfilledBy(conditions)) {
+            return false;
+        }
+
+        params.setStartingNode(node->getNodeID()); // TODO if I already have the internal node I might aswell just use it
+        return true;
+    }
+
+    bool ThreadBuilderImpl::setStartingNodeSafe(const char* nodeID) {
+        Graph::Node* node = Graph::GraphTable::getNodeById(nodeID);
+        std::vector<Trait::ActorCondition> conditions = Trait::ActorCondition::create(params.actors);
+        if (!node->fulfilledBy(conditions)) {
+            return false;
+        }
+
+        params.setStartingNode(nodeID);  // TODO if I already have the node I might aswell just use it
+        return true;
+    }
+
+    bool ThreadBuilderImpl::addStartingNodeSafe(OStim::Node* node, int32_t duration, bool navigateTo) {
+        Graph::Node* internalNode = Graph::GraphTable::getNodeById(node->getNodeID());
+        std::vector<Trait::ActorCondition> conditions = Trait::ActorCondition::create(params.actors);
+        if (!internalNode->fulfilledBy(conditions)) {
+            return false;
+        }
+
+        params.addStartingNode(node->getNodeID(), duration, navigateTo); // TODO if I already have the internal node I might aswell just use it
+        return true;
+    }
+
+    bool ThreadBuilderImpl::addStartingNodeSafe(const char* nodeID, int32_t duration, bool navigateTo) {
+        Graph::Node* node = Graph::GraphTable::getNodeById(nodeID);
+        std::vector<Trait::ActorCondition> conditions = Trait::ActorCondition::create(params.actors);
+        if (!node->fulfilledBy(conditions)) {
+            return false;
+        }
+
+        params.addStartingNode(nodeID, duration, navigateTo);  // TODO if I already have the node I might aswell just use it
+        return true;
+    }
 }

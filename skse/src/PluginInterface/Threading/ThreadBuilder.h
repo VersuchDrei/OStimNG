@@ -26,5 +26,11 @@ namespace OStim {
         virtual void setMetadataCSV(const char* metadata) = 0;
         virtual int32_t start() = 0;
         virtual void cancel() = 0;
+
+        // --- ABI version 0x07060000 ---
+        virtual bool setStartingNodeSafe(Node* node) = 0;
+        virtual bool setStartingNodeSafe(const char* node) = 0;
+        virtual bool addStartingNodeSafe(Node* node, int32_t duration, bool navigateTo) = 0;
+        virtual bool addStartingNodeSafe(const char* node, int32_t duration, bool navigateTo) = 0;
     };
 }
