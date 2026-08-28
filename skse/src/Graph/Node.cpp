@@ -447,4 +447,8 @@ namespace Graph {
         std::vector<Trait::ActorCondition> conditions = Trait::ActorCondition::create(gameActors);
         return fulfilledBy(conditions);
     }
+
+    OStim::FurnitureType* Node::getFurnitureType() {
+        return furnitureType;
+    }
 }

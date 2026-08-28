@@ -72,4 +72,8 @@ namespace Furniture{
     bool FurnitureType::isChildOf(const char* other) {
         return isChildOf(FurnitureTable::getFurnitureType(std::string(other)));
     }
+
+    bool FurnitureType::isChildOf(OStim::FurnitureType* other) {
+        return isChildOf(FurnitureTable::getFurnitureType(std::string(other->getID())));
+    }
 }

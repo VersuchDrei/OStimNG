@@ -11,5 +11,8 @@ namespace OStim {
         virtual FurnitureType* getMasterType() = 0;
         virtual FurnitureType* getListType() = 0;
         virtual bool isChildOf(const char* other) = 0;
+
+        // --- ABI version 0x07060000 ---
+        virtual bool isChildOf(FurnitureType* other) = 0;
     };
 }

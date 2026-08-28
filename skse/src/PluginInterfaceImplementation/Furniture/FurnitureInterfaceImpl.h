@@ -9,5 +9,6 @@ namespace Interface {
         virtual uint32_t getVersion() override;
 
         virtual OStim::FurnitureType* getType(const char* id) override;
+        virtual OStim::FurnitureType* getType(void* furniture) override;
     };
 }

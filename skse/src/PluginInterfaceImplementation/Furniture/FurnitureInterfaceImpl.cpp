@@ -13,4 +13,8 @@ namespace Interface {
     OStim::FurnitureType* FurnitureInterfaceImpl::getType(const char* id) {
         return Furniture::FurnitureTable::getFurnitureType(std::string(id));
     }
+
+    OStim::FurnitureType* FurnitureInterfaceImpl::getType(void* furniture) {
+        return Furniture::FurnitureTable::getFurnitureType(furniture, false);
+    }
 }

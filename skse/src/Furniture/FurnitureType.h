@@ -48,6 +48,7 @@ namespace Furniture {
         virtual OStim::FurnitureType* getMasterType() override;
         virtual OStim::FurnitureType* getListType() override;
         virtual bool isChildOf(const char* other) override;
+        virtual bool isChildOf(OStim::FurnitureType* other) override;
 #pragma endregion
     };
 }

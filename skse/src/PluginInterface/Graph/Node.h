@@ -7,6 +7,8 @@
 #include "NodeTag.h"
 #include "NodeTagVisitor.h"
 
+#include "../Furniture/FurnitureType.h"
+
 namespace OStim {
     class Node {
     public:
@@ -29,5 +31,7 @@ namespace OStim {
 
         // --- ABI version 0x07060000 ---
         virtual bool isValid(uint32_t actorCount, void** actors) = 0;
+        
+        virtual FurnitureType* getFurnitureType() = 0;
     };
 }
