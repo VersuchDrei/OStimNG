@@ -126,7 +126,7 @@ namespace Events {
 
             // TODO do this internally once we don't need OSA anymore
             const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-            auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+            auto vm = skyrimVM ? skyrimVM->GetVMRuntimeData().impl : nullptr;
             if (vm) {
                 RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
                 auto args = RE::MakeFunctionArguments();
@@ -189,10 +189,9 @@ namespace Events {
     
     void EventListener::handleGameLoad() {
         const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-        auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+        auto vm = skyrimVM ? skyrimVM->GetVMRuntimeData().impl : nullptr;
         if (vm) {
-            RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback(
-                new CheckPapyrusUndressingCallbackFunctor());
+            RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback(new CheckPapyrusUndressingCallbackFunctor());
             auto args = RE::MakeFunctionArguments();
             vm->DispatchStaticCall("OUndress", "UsePapyrusUndressing", args, callback);
         }

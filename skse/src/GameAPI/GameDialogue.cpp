@@ -10,7 +10,7 @@ namespace GameAPI {
         const auto script = scriptFactory ? scriptFactory->Create() : nullptr;
         if (script) {
             script->SetCommand("SayTo " + std::format("{:x}", target.getFormID()) + " " + std::format("{:x}", getFormID()));
-            GameUtil::CompileAndRun(script, speaker.form);
+            script->CompileAndRun(speaker.form);
             delete script;
         }
     }
@@ -103,7 +103,7 @@ namespace GameAPI {
 
         
         SKSE::GetTaskInterface()->AddTask([actor, path] {
-            actor->PauseCurrentDialogue();
+            actor->StopCurrentDialogue();
             // the SpeakSound console command usually only works on the player if you're in third person and looking at the players face
             // otherwise it will either fail or outright crash the game
             // this is where the IsThirdPerson and GetHeading hooks from GameHooks.h come in
@@ -112,7 +112,7 @@ namespace GameAPI {
             const auto script = scriptFactory ? scriptFactory->Create() : nullptr;
             if (script) {
                 script->SetCommand("SpeakSound \"" + path + "\"");
-                GameUtil::CompileAndRun(script, actor);
+                script->CompileAndRun(actor);
                 delete script;
             }
         });

@@ -506,7 +506,7 @@ namespace Threading {
                     // TODO how to do this with GraphActor?
                     if (MCM::MCMTable::fixDarkFace()) {
                         const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-                        auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+                        auto vm = skyrimVM ? skyrimVM->GetVMRuntimeData().impl : nullptr;
                         if (vm) {
                             RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
                             auto args = RE::MakeFunctionArguments<RE::Actor*>(std::move(actorIt.second.getActor().form));

@@ -101,7 +101,7 @@ namespace GameAPI {
         const auto script = scriptFactory ? scriptFactory->Create() : nullptr;
         if (script) {
             script->SetCommand("tfc");
-            GameUtil::CompileAndRun(script, RE::PlayerCharacter::GetSingleton());
+            script->CompileAndRun(RE::PlayerCharacter::GetSingleton());
             delete script;
         }
         */
@@ -127,7 +127,7 @@ namespace GameAPI {
 
     void GameCamera::fadeToBlack(float fadeDuration) {
         const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-        auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+        auto vm = skyrimVM ? skyrimVM->GetVMRuntimeData().impl : nullptr;
         if (vm) {
             RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
             auto args = RE::MakeFunctionArguments(std::move(fadeDuration));
@@ -137,7 +137,7 @@ namespace GameAPI {
 
     void GameCamera::fadeFromBlack(float fadeDuration) {
         const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-        auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+        auto vm = skyrimVM ? skyrimVM->GetVMRuntimeData().impl : nullptr;
         if (vm) {
             RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
             auto args = RE::MakeFunctionArguments(std::move(fadeDuration));

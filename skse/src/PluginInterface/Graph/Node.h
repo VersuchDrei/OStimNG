@@ -29,7 +29,7 @@ namespace OStim {
         virtual Action* getAction(uint32_t index) = 0;
         virtual void forEachAction(ActionVisitor* visitor) = 0;
 
-        // --- ABI version 0x07060000 ---
+        // --- ABI version 0x07050010 ---
         virtual bool isValid(uint32_t actorCount, void** actors) = 0;
         
         virtual FurnitureType* getFurnitureType() = 0;

@@ -48,7 +48,7 @@ namespace Graph {
 
                 Node* node = getNodeById(entry["id"]);
                 if (!node) {
-                    logger::warn("id {} of scene {} in sequence {} doesn't exist", entry["id"], index, filename);
+                    logger::warn("id {} of scene {} in sequence {} doesn't exist", (std::string)entry["id"], index, filename);
                     return;
                 }
 

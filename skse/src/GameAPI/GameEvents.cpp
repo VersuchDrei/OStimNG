@@ -85,7 +85,7 @@ namespace GameAPI {
             std::string type = graphEvent->id;
 
             const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-            auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+            auto vm = skyrimVM ? skyrimVM->GetVMRuntimeData().impl : nullptr;
             if (vm) {
                 RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
                 auto args = RE::MakeFunctionArguments<>(std::move(threadID), std::move(type), std::move(actors.actor.form), std::move(actors.target.form), std::move(actors.performer.form));

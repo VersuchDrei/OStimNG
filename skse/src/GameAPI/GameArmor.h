@@ -14,7 +14,7 @@ namespace GameAPI {
 
         inline GameItem toItem() { return form; }
 
-        inline GameSlotMask getSlotMask() { return form->GetSlotMask(); }
+        inline GameSlotMask getSlotMask() { return form->GetSlotMask().underlying(); }
 
         inline bool hasKeyword(GameKeyword keyword) const { return form->HasKeyword(keyword.form); }
         inline void addKeyword(GameKeyword keyword) const { form->AddKeyword(keyword.form); }

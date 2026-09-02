@@ -88,25 +88,6 @@ namespace {
     }
 }  // namespace
 
-extern "C" DLLEXPORT constinit auto SKSEPlugin_Version = []() {
-    SKSE::PluginVersionData v;
-    v.PluginVersion(REL::Version("7.5.0.4"sv));
-    v.PluginName("OStim");
-    v.AuthorName("VersuchDrei");
-    v.UsesAddressLibrary();
-    v.UsesNoStructs();
-
-    return v;
-}();
-
-extern "C" DLLEXPORT bool SKSEAPI SKSEPlugin_Query(const SKSE::QueryInterface* a_skse, SKSE::PluginInfo* a_info) {
-    a_info->infoVersion = SKSE::PluginInfo::kVersion;
-    a_info->name = "OStim";
-    a_info->version = 0x07050004;
-
-    return true;
-}
-
 extern "C" DLLEXPORT bool SKSEAPI SKSEPlugin_Load(const LoadInterface* skse) {
     InitializeLogging();
 

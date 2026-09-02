@@ -76,7 +76,7 @@ namespace Threading {
 
         // TODO properly use GameActor
         const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-        auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+        auto vm = skyrimVM ? skyrimVM->GetVMRuntimeData().impl : nullptr;
         if (vm) {
             RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback(new GetRmHeightCallbackFunctor(this));
             auto args = RE::MakeFunctionArguments(std::move(actor.form), std::move(female));
@@ -97,7 +97,7 @@ namespace Threading {
         // TODO properly use GameActor
         if (Util::Globals::usePapyrusUndressing()) {
             const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-            auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+            auto vm = skyrimVM ? skyrimVM->GetVMRuntimeData().impl : nullptr;
             if (vm) {
                 int32_t intMask = mask.mask;
                 RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback(new PapyrusUndressCallbackFunctor(this, false));
@@ -144,7 +144,7 @@ namespace Threading {
         // TODO properly use GameActor
         if (Util::Globals::usePapyrusUndressing()) {
             const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-            auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+            auto vm = skyrimVM ? skyrimVM->GetVMRuntimeData().impl : nullptr;
             if (vm) {
                 int32_t intMask = mask.mask;
                 std::vector<RE::TESObjectARMO*> armors;
@@ -285,7 +285,7 @@ namespace Threading {
 
         // TODO properly use GameActor here
         const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-        auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+        auto vm = skyrimVM ? skyrimVM->GetVMRuntimeData().impl : nullptr;
         if (vm) {
             RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
             auto args = RE::MakeFunctionArguments(std::move(actor.form), std::move(heelOffset), std::move(!remove), std::move(remove), std::move(female));
@@ -314,7 +314,7 @@ namespace Threading {
 
         // TODO properly use GameActor
         const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-        auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+        auto vm = skyrimVM ? skyrimVM->GetVMRuntimeData().impl : nullptr;
         if (vm) {
             RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
             auto args = RE::MakeFunctionArguments(std::move(actor.form), std::move(heelOffset), std::move(oldOffset != 0), std::move(heelOffset != 0), std::move(female));
@@ -336,7 +336,7 @@ namespace Threading {
         // TODO properly use GameActor
         if (MCM::MCMTable::animateRedress() && !isPlayer) {
             const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-            auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+            auto vm = skyrimVM ? skyrimVM->GetVMRuntimeData().impl : nullptr;
             if (vm) {
                 RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
                 std::vector<RE::TESForm*> weapons = {weaponry.rightHand, weaponry.leftHand, weaponry.ammo};
@@ -352,7 +352,7 @@ namespace Threading {
                 // this object will be destroyed before papyrus redressing is done
                 // so for this case we need to invoke Redress without a callback here
                 const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-                auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+                auto vm = skyrimVM ? skyrimVM->GetVMRuntimeData().impl : nullptr;
                 if (vm) {
                     std::vector<RE::TESObjectARMO*> armors;
                     for (GameAPI::GameArmor item : undressedItems) {
@@ -418,7 +418,7 @@ namespace Threading {
                     }
 
                     const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-                    auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+                    auto vm = skyrimVM ? skyrimVM->GetVMRuntimeData().impl : nullptr;
                     if (vm) {
                         GameAPI::GameVoice voice = voiceSet.voice;
                         if (voice && voice == actor.getVoice()) {
@@ -551,7 +551,7 @@ namespace Threading {
         // TODO properly use GameActor
         if (Util::Globals::usePapyrusUndressing()) {
             const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-            auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+            auto vm = skyrimVM ? skyrimVM->GetVMRuntimeData().impl : nullptr;
             if (vm) {
                 RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback(
                     new PapyrusUndressCallbackFunctor(this, false));
@@ -604,7 +604,7 @@ namespace Threading {
         // TODO properly use GameActor
         if (Util::Globals::usePapyrusUndressing()) {
             const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-            auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+            auto vm = skyrimVM ? skyrimVM->GetVMRuntimeData().impl : nullptr;
             if (vm) {
                 std::vector<RE::TESObjectARMO*> armors;
                 for (GameAPI::GameArmor item : undressedItems) {

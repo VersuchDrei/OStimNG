@@ -49,11 +49,6 @@ namespace GameAPI {
             }
         }
 
-        void CompileAndRun(RE::Script* script, RE::TESObjectREFR* targetRef, RE::COMPILER_NAME name) {
-            RE::ScriptCompiler compiler;
-            CompileAndRunImpl(script, &compiler, name, targetRef);
-        }
-
         void ForEachReferenceInRange(RE::TESObjectREFR* a_origin, float a_radius, std::function<RE::BSContainer::ForEachResult(RE::TESObjectREFR* a_ref)> a_callback) {
             RE::TES* TES = RE::TES::GetSingleton();
             if (!TES) {

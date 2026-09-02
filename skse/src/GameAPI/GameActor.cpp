@@ -18,11 +18,11 @@ namespace GameAPI {
 
     void GameActor::update3D() const {
         const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-        auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+        auto vm = skyrimVM ? skyrimVM->GetVMRuntimeData().impl : nullptr;
         if (vm) {
             RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
             auto args = RE::MakeFunctionArguments();
-            auto handle = skyrimVM->handlePolicy.GetHandleForObject(static_cast<RE::VMTypeID>(form->FORMTYPE), form);
+            auto handle = skyrimVM->GetVMRuntimeData().handlePolicy.GetHandleForObject(static_cast<RE::VMTypeID>(form->FORMTYPE), form);
             vm->DispatchMethodCall2(handle, "Actor", "QueueNiNodeUpdate", args, callback);
         }
     }
@@ -190,7 +190,7 @@ namespace GameAPI {
         const auto script = factory ? factory->Create() : nullptr;
         if (script) {
             script->SetCommand("rae WeaponSheathe"sv);
-            GameUtil::CompileAndRun(script, form);
+            script->CompileAndRun(form);
             delete script;
         }
     }
@@ -263,10 +263,10 @@ namespace GameAPI {
 
     void GameActor::equipItemEx(RE::TESForm* item, int slotId, bool preventUnequip, bool equipSound) const {
         const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-        auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+        auto vm = skyrimVM ? skyrimVM->GetVMRuntimeData().impl : nullptr;
         if (vm) {
             RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
-            auto handle = skyrimVM->handlePolicy.GetHandleForObject(static_cast<RE::VMTypeID>(form->FORMTYPE), form);
+            auto handle = skyrimVM->GetVMRuntimeData().handlePolicy.GetHandleForObject(static_cast<RE::VMTypeID>(form->FORMTYPE), form);
             auto args = RE::MakeFunctionArguments(std::move(item), std::move(slotId), std::move(preventUnequip), std::move(equipSound));
             vm->DispatchMethodCall2(handle, "Actor", "EquipItemEx", args, callback);
         }

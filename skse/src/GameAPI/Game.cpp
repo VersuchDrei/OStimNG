@@ -10,7 +10,7 @@ namespace GameAPI {
         const auto script = scriptFactory ? scriptFactory->Create() : nullptr;
         if (script) {
             script->SetCommand("sgtm " + std::to_string(speed));
-            GameUtil::CompileAndRun(script, RE::PlayerCharacter::GetSingleton());
+            script->CompileAndRun(RE::PlayerCharacter::GetSingleton());
             delete script;
         }
     }
@@ -38,7 +38,7 @@ namespace GameAPI {
             RE::TESDataHandler* handler = RE::TESDataHandler::GetSingleton();
             if (handler->GetLoadedModIndex("UIExtensions.esp")) {
                 const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-                auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+                auto vm = skyrimVM ? skyrimVM->GetVMRuntimeData().impl : nullptr;
                 if (vm) {
                     RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> scriptCallback(new UIExtMsgBoxCallbackFunctor(callback));
                     auto args = RE::MakeFunctionArguments(std::move(content), std::move(options));
@@ -55,6 +55,6 @@ namespace GameAPI {
         for (std::string& text : options) {
             messagebox->buttonText.push_back(text.c_str());
         }
-        messagebox->QueueMessage();
+        RE::MessageBoxMenu::QueueMessage(messagebox);
     }
 }

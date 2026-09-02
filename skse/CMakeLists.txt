@@ -1,294 +1,147 @@
+# ---------------------------------------------------- #
+#                 Required envs assert                 #
+# ---------------------------------------------------- #
+
+if(NOT DEFINED ENV{COMMONLIB_SSE_FOLDER})
+  message(FATAL_ERROR "Missing COMMONLIB_SSE_FOLDER environment variable")
+endif()
+
+# ---------------------------------------------------- #
+#               Imports and definitions                #
+# ---------------------------------------------------- #
+
+include(cmake/lib/copyOutputs.cmake)
+include(cmake/lib/automaticGameFolderOutput.cmake)
+include(cmake/lib/autoCollectSources.cmake)
+
+
+add_src_folder(src)
+add_src_folder(vendor/src)
+
+add_include_folder(include)
+add_include_folder(vendor/include)
+
+
 cmake_minimum_required(VERSION 3.21)
-message("Using toolchain file ${CMAKE_TOOLCHAIN_FILE}.")
+set(AUTHOR_NAME "VersuchDrei")
+set(PRODUCT_NAME "OStim")
+set(BEAUTIFUL_NAME "OStim Standalone")
 
-
-########################################################################################################################
-## Define project
-########################################################################################################################
-project(
-        OStim
-        VERSION 7.5.0.4
-        DESCRIPTION ""
-        LANGUAGES CXX)
+project(${PRODUCT_NAME} VERSION 7.5.1.0 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
+list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
-macro(set_from_environment VARIABLE)
-        if (NOT DEFINED ${VARIABLE} AND DEFINED ENV{${VARIABLE}})
-                set(${VARIABLE} $ENV{${VARIABLE}})
-        endif ()
-endmacro()
-
-set_from_environment(VCPKG_ROOT)
-add_compile_definitions(SKYRIM)
-set(CommonLibPath "extern/CommonLibSSE-NG")
-set(CommonLibName "CommonLibSSE")
-set(GameVersion "Skyrim")
-
-if (DEFINED CommonLibPath AND NOT ${CommonLibPath} STREQUAL "")
-        add_subdirectory(${CommonLibPath} ${CommonLibName} EXCLUDE_FROM_ALL)
-else ()
-        message(
-                FATAL_ERROR
-                "Variable ${CommonLibName}Path is not set."
-        )
-endif()
-
-include(GNUInstallDirs)
+# ---------------------------------------------------- #
+#                      Resources                       #
+# ---------------------------------------------------- #
 
 configure_file(
-        ${CMAKE_CURRENT_SOURCE_DIR}/cmake/version.rc.in
-        ${CMAKE_CURRENT_BINARY_DIR}/version.rc
-        @ONLY)
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/version.rc.in
+    ${CMAKE_CURRENT_BINARY_DIR}/version.rc
+    @ONLY)
 
-set(sources
-    src/ActorProperties/ActorPropertyTable.cpp
-    src/Alignment/ActorKey.cpp
-    src/Alignment/Alignments.cpp
-    src/Alignment/ThreadKey.cpp
-    src/Config/Config.cpp
-    src/Core/Core.cpp
-    src/Core/EquipObjectHandler.cpp
-    src/Core/ExpressionUpdater.cpp
-    src/Core/Singleton.h
-    src/Core/Thread/ThreadAutoControl.cpp
-    src/Core/Thread/ThreadClimax.cpp
-    src/Core/Thread/ThreadFurniture.cpp
-    src/Core/Thread/ThreadNavigation.cpp
-    src/Core/Thread/ThreadSound.cpp
-    src/Core/ThreadActor/ThreadActorAnimation.cpp
-    src/Core/ThreadActor/ThreadActorAPI.cpp
-    src/Core/ThreadActor/ThreadActorClimax.cpp
-    src/Core/ThreadActor/ThreadActorEquipObjects.cpp
-    src/Core/ThreadActor/ThreadActorExcitement.cpp
-    src/Core/ThreadActor/ThreadActorExpression.cpp
-    src/Core/ThreadActor/ThreadActorSound.cpp
-    src/Core/ThreadStarter/DebugNPCThreadStarter.cpp
-    src/Core/ThreadStarter/NPCThreadStarter.cpp
-    src/Core/ThreadStarter/PlayerThreadStarter.cpp
-    src/Core/ThreadStarter/ThreadStarter.cpp
-    src/Core/ThreadStarter/ThreadStartParams.cpp
-    src/Core/Thread.cpp
-    src/Core/ThreadActor.cpp
-    src/Core/ThreadManager.cpp
-    src/Events/EventListener.cpp
-    src/Furniture/Furniture.cpp
-    src/Furniture/FurnitureTable.cpp
-    src/Furniture/FurnitureType.cpp
-    src/Game/LocaleManager.cpp
-	src/Game/LocaleManager.h
-	src/Game/Locker.h
-    src/GameAPI/Game.cpp
-    src/GameAPI/GameActor.cpp
-    src/GameAPI/GameArmor.cpp
-    src/GameAPI/GameCamera.cpp
-    src/GameAPI/GameDialogue.cpp
-    src/GameAPI/GameEvents.cpp
-    src/GameAPI/GameFaction.cpp
-    src/GameAPI/GameObject.cpp
-    src/GameAPI/GamePosition.cpp
-    src/GameAPI/GameRecordIdentifier.cpp
-    src/GameAPI/GameSex.cpp
-    src/GameAPI/GameSlotMask.cpp
-    src/GameAPI/GameSound.cpp
-    src/GameAPI/GameUtil.cpp
-    src/GameLogic/GameHooks.cpp
-    src/GameLogic/GameTable.cpp
-    src/Graph/Action/Peak/Distance/BoneDistance/BoneDistancePeakType.cpp
-    src/Graph/Action/Peak/Loop/LoopPeakType.cpp
-    src/Graph/Action/Peak/PeakType.cpp
-    src/Graph/Action/Action.cpp
-    src/Graph/Action/ActionActor.cpp
-    src/Graph/Action/ActionAttributes.cpp
-    src/Graph/Action/ActionTag.cpp
-    src/Graph/GraphTable/GraphTableActions.cpp
-    src/Graph/GraphTable/GraphTableEvents.cpp
-    src/Graph/GraphTable/GraphTableNodes.cpp
-    src/Graph/GraphTable/GraphTableReloadNode.cpp
-    src/Graph/GraphTable/GraphTableSequences.cpp
-    src/Graph/GraphTable/GraphTableSetupNodes.cpp
-    src/Graph/GraphTable/GraphTableSetupOptions.cpp
-    src/Graph/Node/NodeNavigation.cpp
-    src/Graph/Event.cpp
-    src/Graph/GraphActor.cpp
-    src/Graph/GraphActorTag.cpp
-    src/Graph/Node.cpp
-    src/Graph/NodeTag.cpp
-    src/Graph/Sequence.cpp
-    src/MCM/MCMSetting.cpp
-    src/MCM/MCMTable.cpp
-	src/PCH.h
-	src/Papyrus/Papyrus.cpp
-	src/Papyrus/Script.h
-    src/PluginInterfaceImplementation/Furniture/FurnitureInterfaceImpl.cpp
-    src/PluginInterfaceImplementation/Graph/GraphInterfaceImpl.cpp
-    src/PluginInterfaceImplementation/Settings/SettingInterfaceImpl.cpp
-    src/PluginInterfaceImplementation/SexToys/SexToyInterfaceImpl.cpp
-    src/PluginInterfaceImplementation/Threading/ThreadBuilderImpl.cpp
-    src/PluginInterfaceImplementation/Threading/ThreadInterfaceImpl.cpp
-    src/PluginInterfaceImplementation/InterfaceMapImpl.cpp
-	src/ScriptAPI/ActionDataScript.cpp
-	src/ScriptAPI/ActorScript.cpp
-	src/ScriptAPI/JsonScript.cpp
-	src/ScriptAPI/LibraryScript.cpp
-	src/ScriptAPI/MetadataScript.cpp
-	src/ScriptAPI/PlayerThreadScript.cpp
-	src/ScriptAPI/SettingsScript.cpp
-	src/ScriptAPI/ThreadScript.cpp
-	src/Serial/Manager.cpp
-    src/Settings/ExportImport/ExportInstance.cpp
-    src/Settings/ExportImport/ImportInstance.cpp
-    src/Settings/Implementation/BaseTypes/BaseSetting.cpp
-    src/Settings/Implementation/BaseTypes/DropDownSetting.cpp
-    src/Settings/Implementation/BaseTypes/KeyMapSetting.cpp
-    src/Settings/Implementation/BaseTypes/MinMaxSliderSetting.cpp
-    src/Settings/Implementation/BaseTypes/SliderSetting.cpp
-    src/Settings/Implementation/BaseTypes/ToggleSetting.cpp
-    src/Settings/Implementation/GameVariable/GameVariableDropDownSetting.cpp
-    src/Settings/Implementation/GameVariable/GameVariableKeyMapSetting.cpp
-    src/Settings/Implementation/GameVariable/GameVariableSliderSetting.cpp
-    src/Settings/Implementation/GameVariable/GameVariableToggleSetting.cpp
-    src/Settings/Implementation/Lambda/AdvancedLambdaDropDownSetting.cpp
-    src/Settings/Implementation/Lambda/SimpleLambdaDropDownSetting.cpp
-    src/Settings/Implementation/Plugin/PluginSetting.cpp
-    src/Settings/Implementation/Plugin/PluginSettingGroup.cpp
-    src/Settings/Implementation/Plugin/PluginSettingPage.cpp
-    src/Settings/Implementation/Pointer/PointerMinMaxSliderSetting.cpp
-    src/Settings/Implementation/Pointer/PointerProviderMinMaxSliderSetting.cpp
-    src/Settings/Implementation/Pointer/PointerProviderSliderSetting.cpp
-    src/Settings/Implementation/Pointer/PointerProviderToggleSetting.cpp
-    src/Settings/Implementation/Pointer/PointerSliderSetting.cpp
-    src/Settings/Implementation/Pointer/PointerToggleSetting.cpp
-    src/Settings/Implementation/SimpleSettingGroup.cpp
-    src/Settings/Implementation/SimpleSettingPage.cpp
-    src/Settings/AddonPage.cpp
-    src/Settings/SettingTable.cpp
-    src/SexToys/Menu/ToySettingMenu.cpp
-    src/SexToys/Settings/ClimaxSettings.cpp
-    src/SexToys/Settings/ScalingSettings.cpp
-    src/SexToys/Settings/ScalingType.cpp
-    src/SexToys/Settings/Settings.cpp
-    src/SexToys/Settings/SlotSettings.cpp
-    src/SexToys/Settings/SynchronizationSettings.cpp
-    src/SexToys/Settings/SynchronizationType.cpp
-    src/SexToys/Settings/ToySettings.cpp
-    src/SexToys/ToyGroup.cpp
-    src/SexToys/ToyHandler.cpp
-    src/SexToys/ToyTable.cpp
-    src/SexToys/ToyThread.cpp
-    src/SexToys/ToyWrapper.cpp
-	src/Sound/ActionSound/BoneDistanceSoundPlayer.cpp
-	src/Sound/ActionSound/BoneDistanceSoundType.cpp
-	src/Sound/ActionSound/LoopSoundPlayer.cpp
-	src/Sound/ActionSound/LoopSoundType.cpp
-	src/Sound/ActionSound/MultiBoneDistanceSoundPlayer.cpp
-	src/Sound/ActionSound/PeakSoundPlayer.cpp
-	src/Sound/ActionSound/PeakSoundType.cpp
-	src/Sound/ActionSound/SingleBoneDistanceSoundPlayer.cpp
-	src/Sound/ActionSound/SoundPlayer.cpp
-	src/Sound/ActionSound/SoundType.cpp
-	src/Sound/SoundTable.cpp
-    src/Sound/SoundUtil.cpp
-    src/Threading/Thread/Peak/Distance/BoneDistance/MultiBoneDistancePeakHandler.cpp
-    src/Threading/Thread/Peak/Distance/BoneDistance/SingleBoneDistancePeakHandler.cpp
-    src/Threading/Thread/Peak/Distance/DistancePeakHandler.cpp
-    src/Threading/Thread/Peak/Loop/LoopPeakHandler.cpp
-    src/Threading/Thread/Peak/PeakHandler.cpp
-    src/Threading/Thread/NodeHandler.cpp
-    src/Trait/Condition.cpp
-    src/Trait/FacialExpression.cpp
-    src/Trait/TraitTable.cpp
-    src/UI/Align/AlignMenu.cpp
-    src/UI/Align/IncrementValue.cpp
-    src/UI/Scene/SceneMenu.cpp
-    src/UI/Scene/SceneOptions.cpp
-    src/UI/Search/SearchMenu.cpp
-    src/UI/OStimMenu.cpp
-    src/UI/Settings.cpp
-    src/UI/UIState.cpp
-    src/Util/ActorUtil.cpp
-    src/Util/APITable.cpp
-    src/Util/CameraUtil.cpp
-    src/Util/CheckSum.cpp
-    src/Util/CompatibilityTable.cpp
-    src/Util/ControlUtil.cpp
-    src/Util/FormUtil.cpp
-    src/Util/Globals.cpp
-    src/Util/IDGenerator.cpp
-    src/Util/Integrity.cpp
-    src/Util/JsonUtil.cpp
-    src/Util/LegacyUtil.cpp
-    src/Util/LookupTable.cpp
-    src/Util/MathUtil.cpp
-    src/Util/ObjectRefUtil.cpp
-    src/Util/SerializationUtil.cpp
-    src/Util/StringUtil.cpp
-    src/Util/VectorUtil.cpp
-	src/Core.cpp
-	src/Util.cpp
-	src/main.cpp
-        src/ModAPI/OstimNG-API-Main.cpp 
-        src/ModAPI/OstimNG-API-Main.h
-        src/ModAPI/OstimNG-API-Scene.h 
-        src/ModAPI/OstimNG-API-Scene.cpp
-        src/ModAPI/OstimNG-API-Thread.h
-        src/ModAPI/OstimNG-API-Thread.cpp
+set(RESOURCE_FILE ${CMAKE_CURRENT_BINARY_DIR}/version.rc)
+set(RESOURCE_OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/version.res)
 
-        ${CMAKE_CURRENT_BINARY_DIR}/version.rc)
+add_custom_command(
+    OUTPUT ${RESOURCE_OUTPUT}
+    COMMAND rc /fo ${RESOURCE_OUTPUT} ${RESOURCE_FILE}
+    DEPENDS ${RESOURCE_FILE}
+)
+
+add_custom_target(Resource ALL DEPENDS ${RESOURCE_OUTPUT})
+
+# ---------------------------------------------------- #
+#                Plugin Configuration                  #
+# ---------------------------------------------------- #
+
+include(FetchContent)
+
+set(ENABLE_SKYRIM_SE ON CACHE BOOL " " FORCE)
+set(ENABLE_SKYRIM_AE ON CACHE BOOL " " FORCE)
+set(ENABLE_SKYRIM_VR ON CACHE BOOL " " FORCE)
+set(BUILD_TESTS OFF CACHE BOOL " " FORCE)
+
+add_subdirectory("$ENV{COMMONLIB_SSE_FOLDER}" ${CMAKE_CURRENT_BINARY_DIR}/_deps/clib-build)
+get_target_property(COMMONLIB_SRC_DIR CommonLibSSE SOURCE_DIR)
+
+find_path(CLIB_UTIL_INCLUDE_DIRS "ClibUtil/utils.hpp")
+file(
+  GLOB_RECURSE
+  sources
+  ${CMAKE_CURRENT_BINARY_DIR}/version.rc
+  ${sources}
+    imgui/backends/imgui_impl_dx11.cpp
+    imgui/backends/imgui_impl_win32.cpp
+    imgui/imgui.cpp
+    imgui/imgui_demo.cpp
+    imgui/imgui_draw.cpp
+    imgui/imgui_tables.cpp
+    imgui/imgui_widgets.cpp
+)
 
 source_group(
-        TREE ${CMAKE_CURRENT_SOURCE_DIR}
-        FILES
-        ${headers}
-        ${sources})
+  TREE ${CMAKE_CURRENT_SOURCE_DIR}
+  FILES ${headers} ${sources}
+)
 
-########################################################################################################################
-## Configure target DLL
-########################################################################################################################
+set(BUILD_TESTS OFF)
+include(${COMMONLIB_SRC_DIR}/cmake/CommonLibSSE.cmake)
+
+add_commonlibsse_plugin(
+  ${PROJECT_NAME}
+  AUTHOR AUTHOR_NAME
+  SOURCES ${headers} ${sources}
+)
+target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23) 
+target_precompile_headers(${PROJECT_NAME} PRIVATE include/PCH.h)
+target_compile_definitions(${PROJECT_NAME}  PRIVATE BEAUTIFUL_NAME="${BEAUTIFUL_NAME}" IMGUI_DEFINE_MATH_OPERATORS)
+
+
+set(header_dirs "")
+
+foreach(header ${headers})
+    get_filename_component(dir ${header} DIRECTORY)
+    list(APPEND header_dirs ${dir})
+endforeach()
+
+list(REMOVE_DUPLICATES header_dirs)
+
+target_include_directories(
+	${PROJECT_NAME}
+	PRIVATE
+    ${header_dirs}
+    ${CLIB_UTIL_INCLUDE_DIRS}
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/imgui
+    ${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends
+)
+
 find_package(pugixml REQUIRED)
-find_package(nlohmann_json REQUIRED)
-find_package(ryml CONFIG REQUIRED)
 find_package(OpenSSL REQUIRED)
-find_path(ARTICUNO_INCLUDE_DIRS "articuno/articuno.h")
 
-add_library(
-        ${PROJECT_NAME}
-        SHARED
-        ${headers}
-        ${sources}
+target_link_libraries(
+    ${PROJECT_NAME}
+    PRIVATE
+    pugixml
+    OpenSSL::SSL
 )
 
-target_include_directories(${PROJECT_NAME}
-        PRIVATE
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/src>
-        $<INSTALL_INTERFACE:src>
-        ${ARTICUNO_INCLUDE_DIRS})
+target_compile_definitions(${PRODUCT_NAME} PRIVATE MOD_NAME="${BEAUTIFUL_NAME}")
 
-target_include_directories(${PROJECT_NAME}
-        PUBLIC
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
 
-target_link_libraries(${PROJECT_NAME}
-        PRIVATE
-        ryml::ryml
-        pugixml
-        nlohmann_json::nlohmann_json
-        OpenSSL::SSL
-        PUBLIC
-        ${CommonLibName}::${CommonLibName}
-)
+# ---------------------------------------------------- #
+#                        Output                        #
+# ---------------------------------------------------- #
 
-target_precompile_headers(${PROJECT_NAME}
-        PRIVATE
-        src/PCH.h)
+set(wildlander_output false)
+set(steam_owrt_output false)
+set(steam_mods_output true)
+automaticGameFolderOutput(wildlander_output, steam_owrt_output, steam_mods_output)
 
-install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/Sample"
-        DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
-
-install(TARGETS ${PROJECT_NAME}
-        DESTINATION "${CMAKE_INSTALL_LIBDIR}")
 
 set(OUTPUT_FOLDER "../../../data")
 

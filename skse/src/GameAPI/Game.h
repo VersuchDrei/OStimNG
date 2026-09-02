@@ -13,7 +13,7 @@ namespace GameAPI {
         static void shakeController(float leftStrength, float rightStrength, float duration);
         static GameActor getCrosshairActor();
 
-        inline static void notification(std::string text) { RE::DebugNotification(text.c_str()); }
+        inline static void notification(std::string text) { RE::SendHUDMessage::ShowHUDMessage(text.c_str()); }
         inline static int getMessageBoxOptionLimit() { return 9; }
         static void showMessageBox(std::string content, std::vector<std::string> options, std::function<void(unsigned int)> callback);
 
@@ -24,7 +24,7 @@ namespace GameAPI {
         public:
             MessageBoxCallback(std::function<void(unsigned int)> callback) : callback{callback} {}
             ~MessageBoxCallback() override {}
-            void Run(RE::IMessageBoxCallback::Message message) override { callback(static_cast<unsigned int>(message)); }
+            void Run(std::uint8_t message) override { callback(static_cast<unsigned int>(message)); }
         private:
             std::function<void(unsigned int)> callback;
         };

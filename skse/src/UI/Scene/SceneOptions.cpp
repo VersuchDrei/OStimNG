@@ -37,7 +37,7 @@ namespace UI::Scene {
 	void SceneOptions::ExecuteOption(MenuOption& option){
 		auto& state = option.getState();
 		const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-		auto vm = skyrimVM ? skyrimVM->impl : nullptr;
+		auto vm = skyrimVM ? skyrimVM->GetVMRuntimeData().impl : nullptr;
 		if (vm) {
 			RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callback;
 			

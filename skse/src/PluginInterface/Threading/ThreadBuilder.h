@@ -27,7 +27,7 @@ namespace OStim {
         virtual int32_t start() = 0;
         virtual void cancel() = 0;
 
-        // --- ABI version 0x07060000 ---
+        // --- ABI version 0x07050010 ---
         virtual bool setStartingNodeSafe(Node* node) = 0;
         virtual bool setStartingNodeSafe(const char* node) = 0;
         virtual bool addStartingNodeSafe(Node* node, int32_t duration, bool navigateTo) = 0;
