@@ -21,6 +21,9 @@
 #include "nlohmann/json.hpp"
 
 #define DLLEXPORT __declspec(dllexport)
+#ifndef SKSEAPI
+#define SKSEAPI __cdecl
+#endif
 
 using namespace std::literals;
 using namespace REL::literals;
@@ -45,7 +48,6 @@ namespace stld {
     template <class T>
     void write_thunk_call(std::uintptr_t a_src) {
         auto& trampoline = SKSE::GetTrampoline();
-        SKSE::AllocTrampoline(14);
 
         T::func = trampoline.write_call<5>(a_src, T::thunk);
     }
