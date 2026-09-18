@@ -12,6 +12,7 @@ namespace Threading {
     void ThreadActor::loopClimax() {
         if (awaitingOrgasm) {
             if (!stallClimax && !thread->getStallClimax()) {
+                awaitingOrgasm = false;
                 orgasm(false);
             }
         } else if (awaitingClimaxInner) {
@@ -22,8 +23,15 @@ namespace Threading {
     }
 
     void ThreadActor::orgasm(bool ignoreStall) {
-        if (awaitingOrgasm || awaitingClimax) {
+        if (awaitingClimax) {
             return;
+        }
+
+        if (awaitingOrgasm) {
+            if (!ignoreStall && (stallClimax || thread->getStallClimax())) {
+                return;
+            }
+            awaitingOrgasm = false;
         }
 
         excitement = 100;

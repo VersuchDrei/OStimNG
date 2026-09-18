@@ -20,7 +20,6 @@ namespace GameLogic {
         static inline void Install() {
             REL::Relocation<std::uintptr_t> target{RELOCATION_ID(36541, 37542), REL::VariantOffset(0x132, 0x135, 0x132)};
             auto& trampoline = SKSE::GetTrampoline();
-            SKSE::AllocTrampoline(14);
 
             func = trampoline.write_call<5>(target.address(), thunk);
         }
@@ -37,7 +36,6 @@ namespace GameLogic {
         static inline void Install() {
             REL::Relocation<std::uintptr_t> target{RELOCATION_ID(36541, 37542), REL::VariantOffset(0x152, 0x155, 0x152)};
             auto& trampoline = SKSE::GetTrampoline();
-            SKSE::AllocTrampoline(14);
 
             func = trampoline.write_call<5>(target.address(), thunk);
         }
@@ -60,7 +58,6 @@ namespace GameLogic {
         static inline void Install() {
             REL::Relocation<std::uintptr_t> target{RELOCATION_ID(36404, 37398), REL::VariantOffset(0x47, 0x47, 0x47)};
             auto& trampoline = SKSE::GetTrampoline();
-            SKSE::AllocTrampoline(14);
 
             func = trampoline.write_branch<5>(target.address(), thunk);
         }
