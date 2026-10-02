@@ -611,7 +611,31 @@ namespace PapyrusLibrary {
 
     std::string GetRandomSceneSuperloadCSV(RE::StaticFunctionTag*, std::vector<RE::Actor*> actors, std::string furnitureType, std::string anySceneTag, std::string allSceneTags, std::string sceneTagWhitelist, std::string sceneTagBlacklist, std::string anyActorTagForAny, std::string anyActorTagForAll, std::string allActorTagsForAny, std::string allActorTagsForAll, std::string actorTagWhitelistForAny, std::string actorTagWhitelistForAll, std::string actorTagBlacklistForAny, std::string actorTagBlacklistForAll, std::string anyActionType, std::string anyActionActor, std::string anyActionTarget, std::string anyActionPerformer, std::string anyActionMateAny, std::string anyActionMateAll, std::string anyActionParticipantAny, std::string anyActionParticipantAll, std::string allActionTypes, std::string allActionActors, std::string allActionTargets, std::string allActionPerformers, std::string allActionMatesAny, std::string allActionMatesAll, std::string allActionParticipantsAny, std::string allActionParticipantsAll, std::string actionWhitelistTypes, std::string actionWhitelistActors, std::string actionWhitelistTargets, std::string actionWhitelistPerformers, std::string actionWhitelistMatesAny, std::string actionWhitelistMatesAll, std::string actionWhitelistParticipantsAny, std::string actionWhitelistParticipantsAll, std::string actionBlacklistTypes, std::string actionBlacklistActors, std::string actionBlacklistTargets, std::string actionBlacklistPerformers, std::string actionBlacklistMatesAny, std::string actionBlacklistMatesAll, std::string actionBlacklistParticipantsAny, std::string actionBlacklistParticipantsAll) {
         std::vector<std::function<bool(Graph::Node*)>> conditions;
-        
+
+        // Automatically add gender filtering when intendedSexOnly is enabled
+        if (MCM::MCMTable::intendedSexOnly() && actors.size() >= 2) {
+            std::vector<GameAPI::GameActor> gameActors = GameAPI::GameActor::convertVector(actors);
+            bool allFemale = true;
+            bool allMale = true;
+            for (size_t i = 0; i < gameActors.size(); i++) {
+                GameAPI::GameSex sex = gameActors[i].getSex();
+                if (sex != GameAPI::GameSex::FEMALE) {
+                    allFemale = false;
+                }
+                if (sex != GameAPI::GameSex::MALE) {
+                    allMale = false;
+                }
+            }
+
+            if (allFemale) {
+                conditions.push_back([](Graph::Node* node) { return node->hasTag("lesbian"); });
+            } else if (allMale) {
+                conditions.push_back([](Graph::Node* node) { return node->hasTag("gay"); });
+            } else {
+                // Mixed gender - exclude lesbian and gay scenes
+                conditions.push_back([](Graph::Node* node) { return !node->hasTag("lesbian") && !node->hasTag("gay"); });
+            }
+        }
 
         if (!anySceneTag.empty()) {
             std::vector<std::string> anySceneTagVector = StringUtil::toTagVector(anySceneTag);
