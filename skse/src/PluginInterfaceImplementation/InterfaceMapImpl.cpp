@@ -46,3 +46,7 @@ namespace Interface {
         addInterface(OStim::ThreadInterface::NAME, ThreadInterfaceImpl::getSingleton());
     }
 }
+
+SKSE_EXPORT OStim::InterfaceMap* requestInterfaceMap() {
+    return Interface::InterfaceMapImpl::getSingleton();
+}
