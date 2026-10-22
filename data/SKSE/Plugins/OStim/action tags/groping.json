@@ -1,0 +1,16 @@
+{
+	"actor":{
+		"faction":{
+			"info": "OStimAnyGropingActorFaction",
+			"mod": "OStim.esp",
+			"formid": "0xA06"
+		}
+	},
+	"target":{
+		"faction":{
+			"info": "OStimAnyGropingTargetFaction",
+			"mod": "OStim.esp",
+			"formid": "0xA07"
+		}
+	}
+}

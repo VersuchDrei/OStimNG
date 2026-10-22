@@ -1,0 +1,47 @@
+{
+	"info": "gropingchest if for male targets, for female targets use gropingbreast",
+	"aliases":[
+		"gropechest",
+		"holdchest",
+		"holdingchest"
+	],
+	"actor":{
+		"info": "the one with the hands",
+		"stimulation":0.1,
+		"maxStimulation":50,
+		"moan": true,
+		"talk": true,
+		"requirements":[
+			"hand"
+		],
+		"strippingSlots":[
+			33
+		],
+		"faction":{
+			"info": "OStimGropingChestActorFaction",
+			"mod": "OStim.esp",
+			"formid": "0xA04"
+		}
+	},
+	"target":{
+		"info": "the one with the chest",
+		"stimulation":0.1,
+		"maxStimulation":50,
+		"moan": true,
+		"talk": true,
+		"faction":{
+			"info": "OStimGropingChestTargetFaction",
+			"mod": "OStim.esp",
+			"formid": "0xA05"
+		}
+	},
+	"performer":{
+		"floats":{
+			"stamina":0.5
+		}
+	},
+	"tags":[
+		"groping",
+		"sensual"
+	]
+}
