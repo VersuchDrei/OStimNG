@@ -40,7 +40,6 @@
 		"info": "the one with the face",
 		"moan": true,
 		"talk":true,
-		"expressionOverride":"tongue",
 		"strippingSlots":[
 			30,
 			31,

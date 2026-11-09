@@ -105,7 +105,7 @@ namespace Settings {
                 } else if (type == "keymap"){
                     BaseTypes::KeyMapSettingParams keyMapParams;
                     int defaultKey = 0;
-                    JsonUtil::loadInt(jsonSetting, defaultKey, "defaultKalue", filename, objectType, false);
+                    JsonUtil::loadInt(jsonSetting, defaultKey, "defaultValue", filename, objectType, false);
                     keyMapParams.defaultKey = defaultKey;
                     settings.push_back(new GameVariableSettings::GameVariableKeyMapSetting(params, keyMapParams, variable));
                 } else {
