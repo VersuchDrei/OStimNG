@@ -40,7 +40,7 @@ actor fields:
 "requirements" (list<string>): a list of requirements for this Skyrim actor, if they are not met an animation containing this action will not show up in navigation (see actor properties README)
 "strippingSlots" (list<int>): a list of biped slots to strip on this Skyrim actor when executing this scene (if partial undressing is enabled in the MCM)
 "ppaAction" (string): the PPA action to apply to this actor, ppa target will be the partner of the action
-	possible values are: vagina, anus, mouth, hands, handR, handL
+	possible values are: vagina, anus, mouth, hands, handR, handL, none
 "faction" (object/list<object>): a faction or list of factions the actor is put in while participating in this role in this action (see form fields)
 	this is mainly useful for condition functions for addons / voice sets
 "statFaction" (object/list<object>): a faction or list of factions which rank is incremented whenever the actor participates in this role in this action (see form fields)

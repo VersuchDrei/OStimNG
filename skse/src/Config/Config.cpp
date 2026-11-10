@@ -20,6 +20,14 @@ namespace Config {
             return;
         }
 
+        if (json.contains("autoPPA")) {
+            if (json["autoPPA"].is_boolean()) {
+                autoPPA = json["autoPPA"];
+            } else {
+                logger::warn("config setting 'autoPPA' is not a bool");
+            }
+        }
+
         if (json.contains("verifyTranslationIntegrity")) {
             if (json["verifyTranslationIntegrity"].is_boolean()) {
                 verifyTranslationIntegrity = json["verifyTranslationIntegrity"];

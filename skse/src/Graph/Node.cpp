@@ -54,19 +54,19 @@ namespace Graph {
                 }
             });
 
-            if (action.attributes->roles.actor.ppaAction != Frameworks::PPA::PPAAction::NONE) {
+            if (action.attributes->roles.actor.ppaAction != Frameworks::PPA::PPAAction::UNDEFINED) {
                 if (action.roles.actor < actors.size()) {
                     GraphActor& actor = actors[action.roles.actor];
-                    if (actor.ppaAction == Frameworks::PPA::PPAAction::NONE) {
+                    if (actor.ppaAction == Frameworks::PPA::PPAAction::UNDEFINED) {
                         actor.ppaAction = action.attributes->roles.actor.ppaAction;
                         actor.ppaTarget = action.roles.target;
                     }
                 }
             }
-            if (action.attributes->roles.target.ppaAction != Frameworks::PPA::PPAAction::NONE) {
+            if (action.attributes->roles.target.ppaAction != Frameworks::PPA::PPAAction::UNDEFINED) {
                 if (action.roles.target < actors.size()) {
                     GraphActor& actor = actors[action.roles.target];
-                    if (actor.ppaAction == Frameworks::PPA::PPAAction::NONE) {
+                    if (actor.ppaAction == Frameworks::PPA::PPAAction::UNDEFINED) {
                         actor.ppaAction = action.attributes->roles.target.ppaAction;
                         actor.ppaTarget = action.roles.actor;
                     }

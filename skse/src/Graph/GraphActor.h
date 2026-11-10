@@ -15,7 +15,7 @@ namespace Graph {
     struct GraphActor : public OStim::NodeActor {
     public:
         int sosBend = 0;
-        Frameworks::PPA::PPAAction ppaAction = Frameworks::PPA::PPAAction::NONE;
+        Frameworks::PPA::PPAAction ppaAction = Frameworks::PPA::PPAAction::UNDEFINED;
         int ppaTarget = -1;
         float scale = 1.0;
         float scaleHeight = 120.748;

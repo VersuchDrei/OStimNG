@@ -1,5 +1,6 @@
 #include "PPA.h"
 
+#include "Config/Config.h"
 #include "Core/ThreadManager.h"
 #include "PPA/AccuratePenetrationAPI.h"
 #include "Util/StringUtil.h"
@@ -20,6 +21,8 @@ namespace Frameworks {
                 case PPAAction::MOUTH:
                     return AccuratePenetration::API::InteractionAction::Mouth;
                 case PPAAction::NONE:
+                    return AccuratePenetration::API::InteractionAction::None;
+                case PPAAction::UNDEFINED:
                     return AccuratePenetration::API::InteractionAction::None;
                 case PPAAction::VAGINA:
                     return AccuratePenetration::API::InteractionAction::Vagina;
@@ -45,9 +48,11 @@ namespace Frameworks {
                     return PPAAction::HAND_R;
                 } else if (action == "handl") {
                     return PPAAction::HAND_L;
+                } else if (action == "none") {
+                    return PPAAction::NONE;
                 }
 
-                return PPAAction::NONE;
+                return PPAAction::UNDEFINED;
             }
         }
 
@@ -89,7 +94,7 @@ namespace Frameworks {
                     return;
                 }
 
-                if (threadActor->getGraphActor()->ppaAction == PPAAction::NONE) {
+                if (threadActor->getGraphActor()->ppaAction == PPAAction::UNDEFINED || threadActor->getGraphActor()->ppaAction == PPAAction::NONE) {
                     setInteraction(a_event->actors[i].actor, AccuratePenetration::API::InteractionAction::None, RE::ActorHandle());
                 } else {
                     Threading::ThreadActor* target = thread->GetActor(threadActor->getGraphActor()->ppaTarget);
@@ -102,6 +107,10 @@ namespace Frameworks {
 
 
         void setUp() {
+            if (!Config::Config::autoPPA) {
+                return;
+            }
+
             constexpr auto dllPath = "Data/SKSE/Plugins/AccuratePenetration.dll";
             if (!std::filesystem::exists(dllPath)) {
                 logger::info("PPA is not installed");

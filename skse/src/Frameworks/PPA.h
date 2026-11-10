@@ -11,6 +11,7 @@ namespace Frameworks {
             HANDS,
             MOUTH,
             NONE,
+            UNDEFINED,
             VAGINA,
         };
 

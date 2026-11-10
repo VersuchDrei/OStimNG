@@ -15,7 +15,7 @@ namespace Graph {
             bool moan = false;
             bool talk = false;
             bool muffled = false;
-            Frameworks::PPA::PPAAction ppaAction = Frameworks::PPA::PPAAction::NONE;
+            Frameworks::PPA::PPAAction ppaAction = Frameworks::PPA::PPAAction::UNDEFINED;
             std::string expressionOverride = "";
             std::set<std::string> requirements;
             uint32_t strippingMask = 0;

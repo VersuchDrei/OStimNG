@@ -88,7 +88,7 @@ actor fields:
 	sos angles range from -9 to 9, additionally -10 will cause a flaccid schlong
 	these cause the SoSBendX animation event to be send to the actor, with X being the sosBend value
 "ppaAction" (string): the PPA action to apply to this actor
-	possible values are: vagina, anus, mouth, hands, handR, handL
+	possible values are: vagina, anus, mouth, hands, handR, handL, none
 "ppaTarget" (int): the index of the target actor of the ppa action
 "noStrip" (bool): if true the actor does not get undressed, no matter the actions involved (default: false)
 "scale" (float): the scale of the actor (default: 1.0)
