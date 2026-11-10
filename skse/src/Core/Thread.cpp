@@ -2,6 +2,7 @@
 
 #include "ThreadManager.h"
 
+#include "Frameworks/PPA.h"
 #include "Furniture/FurnitureTable.h"
 #include "GameAPI/Game.h"
 #include "GameAPI/GameCamera.h"

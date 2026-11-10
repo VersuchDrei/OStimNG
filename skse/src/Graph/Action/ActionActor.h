@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Frameworks/PPA.h"
 #include "GameAPI/GameFaction.h"
 #include "GameAPI/GameList.h"
 #include "PluginInterface/Graph/ActionActor.h"
@@ -14,6 +15,7 @@ namespace Graph {
             bool moan = false;
             bool talk = false;
             bool muffled = false;
+            Frameworks::PPA::PPAAction ppaAction = Frameworks::PPA::PPAAction::NONE;
             std::string expressionOverride = "";
             std::set<std::string> requirements;
             uint32_t strippingMask = 0;

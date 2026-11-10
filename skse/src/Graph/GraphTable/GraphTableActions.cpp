@@ -20,7 +20,7 @@ namespace Graph {
         JsonUtil::loadBool(json, actor.talk, "talk", filename, "action", false);
         JsonUtil::loadBool(json, actor.muffled, "muffled", filename, "action", false);
         JsonUtil::loadLowerString(json, actor.expressionOverride, "expressionOverride", filename, "action", false);
-
+        JsonUtil::consumeString(json, [&actor](std::string action) { actor.ppaAction = Frameworks::PPA::PPAActionAPI::fromString(action); }, "ppaAction", filename, "action", false);
         JsonUtil::consumeLowerStringList(json, [&actor](std::string requirement) { actor.requirements.insert(requirement); }, "requirements", filename, "action", false);
 
         if (json.contains("strippingSlots")) {

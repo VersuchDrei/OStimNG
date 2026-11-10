@@ -68,6 +68,7 @@
 			53,
 			54
 		],
+		"ppaAction": "hands",
 		"faction":{
 			"info": "OStimHandjobTargetFaction",
 			"mod": "OStim.esp",
