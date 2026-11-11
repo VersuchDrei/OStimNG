@@ -69,37 +69,37 @@ namespace Frameworks {
                 return;
             }
 
-            if (a_event->actorCount == 0) {
+            // a_event->actors only lists the receiver's partners (the receiver itself is excluded),
+            // so its indices don't match OStim positions
+            const auto receiver = a_event->receiver.get();
+            if (!receiver) {
                 return;
             }
 
-            Threading::Thread* thread = Threading::ThreadManager::GetSingleton()->findThread(GameAPI::GameActor(a_event->actors[0].actor.get().get()));
+            Threading::Thread* thread = Threading::ThreadManager::GetSingleton()->findThread(GameAPI::GameActor(receiver.get()));
             if (!thread) {
                 // no OStim thread running
                 // might happen when user also has SL installed
                 return;
             }
 
-            for (std::uint32_t i = 0; i < a_event->actorCount; ++i) {
-                Threading::ThreadActor* threadActor =thread->GetActor(i);
-                if (!threadActor) {
-                    // actor count mismatch
-                    continue;
-                }
+            static const auto setInteraction = reinterpret_cast<AccuratePenetration::API::SetActorInteractionFn>(GetProcAddress(ppa, AccuratePenetration::API::kSetActorInteractionFunctionName));
+            if (!setInteraction) {
+                // something went horribly wrong
+                logger::error("cannot get PPA setInteraction function");
+                return;
+            }
 
-                const auto setInteraction = reinterpret_cast<AccuratePenetration::API::SetActorInteractionFn>(GetProcAddress(ppa, AccuratePenetration::API::kSetActorInteractionFunctionName));
-                if (!setInteraction) {
-                    // something went horribly wrong
-                    logger::error("cannot get PPA setInteraction function");
-                    return;
-                }
+            // every performer is addressed by its own handle, so OStim positions never have to line up with PPA's arrays
+            for (auto& [position, threadActor] : thread->getActors()) {
+                const RE::ActorHandle performer = threadActor.getActor().form->GetHandle();
 
-                if (threadActor->getGraphActor()->ppaAction == PPAAction::UNDEFINED || threadActor->getGraphActor()->ppaAction == PPAAction::NONE) {
-                    setInteraction(a_event->actors[i].actor, AccuratePenetration::API::InteractionAction::None, RE::ActorHandle());
+                if (threadActor.getGraphActor()->ppaAction == PPAAction::UNDEFINED || threadActor.getGraphActor()->ppaAction == PPAAction::NONE) {
+                    setInteraction(performer, AccuratePenetration::API::InteractionAction::None, RE::ActorHandle());
                 } else {
-                    Threading::ThreadActor* target = thread->GetActor(threadActor->getGraphActor()->ppaTarget);
+                    Threading::ThreadActor* target = thread->GetActor(threadActor.getGraphActor()->ppaTarget);
                     if (target) {
-                        setInteraction(a_event->actors[i].actor, toPPAAction(threadActor->getGraphActor()->ppaAction), target->getActor().form->GetHandle());
+                        setInteraction(performer, toPPAAction(threadActor.getGraphActor()->ppaAction), target->getActor().form->GetHandle());
                     }
                 }
             }
