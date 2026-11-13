@@ -16,5 +16,8 @@
 		"strippingSlots":[
 			30
 		]
-	}
+	},
+	"tags":[
+		"holding"
+	]
 }

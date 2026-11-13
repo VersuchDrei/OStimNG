@@ -1,0 +1,16 @@
+{
+	"actor":{
+		"faction":{
+			"info": "OStimAnyHoldingActorFaction",
+			"mod": "OStim.esp",
+			"formid": "0xA08"
+		}
+	},
+	"target":{
+		"faction":{
+			"info": "OStimAnyHoldingTargetFaction",
+			"mod": "OStim.esp",
+			"formid": "0xA09"
+		}
+	}
+}

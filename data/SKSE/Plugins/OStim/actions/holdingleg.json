@@ -16,5 +16,8 @@
 	},
 	"target":{
 		"info": "the one with the leg"
-	}
+	},
+	"tags":[
+		"holding"
+	]
 }

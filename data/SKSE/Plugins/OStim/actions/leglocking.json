@@ -6,9 +6,19 @@
 		"leglock"
 	],
 	"actor":{
-		"info": "the one with the legs"
+		"info": "the one with the legs",
+		"faction":{
+			"info": "OStimLegLockingActorFaction",
+			"mod": "OStim.esp",
+			"formid": "0xA0A"
+		}
 	},
 	"target":{
-		"info": "the one with the body"
+		"info": "the one with the body",
+		"faction":{
+			"info": "OStimLegLockingTargetFaction",
+			"mod": "OStim.esp",
+			"formid": "0xA0B"
+		}
 	}
 }

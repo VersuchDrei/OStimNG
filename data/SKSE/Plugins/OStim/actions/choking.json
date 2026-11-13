@@ -25,5 +25,8 @@
 			"mod": "OStim.esp",
 			"formid": "0xEFF"
 		}
-	}
+	},
+	"tags":[
+		"holding"
+	]
 }
