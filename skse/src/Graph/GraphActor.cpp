@@ -1,5 +1,6 @@
 #include "GraphActor.h"
 
+#include "Config/Config.h"
 #include "Util/StringUtil.h"
 #include "Util/VectorUtil.h"
 
@@ -88,5 +89,18 @@ namespace Graph {
                 break;
             }
         }
+    }
+
+
+    OStim::GenitalAlignment GraphActor::getGenitalAlignment() {
+        if (!Config::Config::automaticGenitalAlignment) {
+            return OStim::GenitalAlignment::UNDEFINED;
+        }
+
+        return genitalAlignment;
+    }
+
+    uint32_t GraphActor::getGenitalAlignmentTarget() {
+        return genitalAlignmentTarget;
     }
 }

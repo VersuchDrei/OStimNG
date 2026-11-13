@@ -4,7 +4,6 @@
 
 #include "Action/Action.h"
 
-#include "Frameworks/PPA.h"
 #include "GameAPI/GamePosition.h"
 #include "GameAPI/GameSex.h"
 #include "PluginInterface/Graph/NodeActor.h"
@@ -15,8 +14,8 @@ namespace Graph {
     struct GraphActor : public OStim::NodeActor {
     public:
         int sosBend = 0;
-        Frameworks::PPA::PPAAction ppaAction = Frameworks::PPA::PPAAction::UNDEFINED;
-        int ppaTarget = -1;
+        OStim::GenitalAlignment genitalAlignment = OStim::GenitalAlignment::UNDEFINED;
+        uint32_t genitalAlignmentTarget = 0;
         float scale = 1.0;
         float scaleHeight = 120.748;
         bool feetOnGround = false;
@@ -57,5 +56,8 @@ namespace Graph {
         virtual uint32_t getTagCount() override;
         virtual OStim::NodeActorTag* getTag(uint32_t index) override;
         virtual void forEachTag(OStim::NodeActorTagVisitor* visitor) override;
+
+        virtual OStim::GenitalAlignment getGenitalAlignment() override;
+        virtual uint32_t getGenitalAlignmentTarget() override;
     };
 }

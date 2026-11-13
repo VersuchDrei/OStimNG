@@ -2,6 +2,7 @@
 
 #include "Furniture/FurnitureTable.h"
 #include "Game/LocaleManager.h"
+#include "PluginInterfaceImplementation/Graph/GenitalAlignmentAPI.h"
 #include "Util/JsonFileLoader.h"
 #include "Util/JsonUtil.h"
 #include "Util/StringUtil.h"
@@ -317,8 +318,8 @@ namespace Graph {
                             JsonUtil::consumeString(jsonActor, [&actor](std::string sex){actor.condition.sex = GameAPI::GameSexAPI::fromString(sex);}, "intendedSex", node->scene_id, objectType, false);
                             JsonUtil::loadInt(jsonActor, actor.sosBend, "sosBend", node->scene_id, objectType, false);
                             JsonUtil::loadInt(jsonActor, actor.sosBend, "tngBend", node->scene_id, objectType, false);
-                            JsonUtil::consumeString(jsonActor, [&actor](std::string action) { actor.ppaAction = Frameworks::PPA::PPAActionAPI::fromString(action); }, "ppaAction", node->scene_id, objectType, false);
-                            JsonUtil::loadInt(jsonActor, actor.ppaTarget, "ppaTarget", node->scene_id, objectType, false);
+                            JsonUtil::consumeString(jsonActor, [&actor](std::string action) { actor.genitalAlignment = Interface::GenitalAlignmentAPI::fromString(action); }, "genitalAlignment", node->scene_id, objectType, false);
+                            JsonUtil::loadUInt(jsonActor, actor.genitalAlignmentTarget, "genitalAlignmentTarget", node->scene_id, objectType, false);
                             JsonUtil::loadFloat(jsonActor, actor.scale, "scale", node->scene_id, objectType, false);
                             JsonUtil::loadFloat(jsonActor, actor.scaleHeight, "scaleHeight", node->scene_id, objectType, false);
                             JsonUtil::loadString(jsonActor, actor.underlyingExpression, "underlyingExpression", node->scene_id, objectType, false);

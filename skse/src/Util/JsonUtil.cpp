@@ -65,6 +65,18 @@ namespace JsonUtil {
             logger::warn("{} {} doesn't have property '{}' defined", objectType, objectName, propertyName);
         }
     }
+
+    void loadUInt(json& json, uint32_t& value, std::string propertyName, std::string& objectName, std::string objectType, bool warnIfNotExists) {
+        if (json.contains(propertyName)) {
+            if (json[propertyName].is_number_integer()) {
+                value = json[propertyName];
+            } else {
+                logger::warn("property '{}' of {} {} isn't an integer", propertyName, objectType, objectName);
+            }
+        } else if (warnIfNotExists) {
+            logger::warn("{} {} doesn't have property '{}' defined", objectType, objectName, propertyName);
+        }
+    }
     
     void loadBool(json& json, bool& value, std::string propertyName, std::string& objectName, std::string objectType, bool warnIfNotExists) {
         if (json.contains(propertyName)) {

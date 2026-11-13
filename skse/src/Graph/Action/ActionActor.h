@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Frameworks/PPA.h"
 #include "GameAPI/GameFaction.h"
 #include "GameAPI/GameList.h"
 #include "PluginInterface/Graph/ActionActor.h"
@@ -15,7 +14,7 @@ namespace Graph {
             bool moan = false;
             bool talk = false;
             bool muffled = false;
-            Frameworks::PPA::PPAAction ppaAction = Frameworks::PPA::PPAAction::UNDEFINED;
+            OStim::GenitalAlignment genitalAlignment = OStim::GenitalAlignment::UNDEFINED;
             std::string expressionOverride = "";
             std::set<std::string> requirements;
             uint32_t strippingMask = 0;
@@ -63,6 +62,9 @@ namespace Graph {
             virtual void* getPlayerMateList();
             virtual void* getPlayerMateClimaxedList();
             virtual void* getPlayerMatePartnerClimaxedList();
+
+
+            virtual OStim::GenitalAlignment getGenitalAlignment() override;
 #pragma endregion
         };
     }

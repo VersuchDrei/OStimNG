@@ -20,11 +20,11 @@ namespace Config {
             return;
         }
 
-        if (json.contains("autoPPA")) {
-            if (json["autoPPA"].is_boolean()) {
-                autoPPA = json["autoPPA"];
+        if (json.contains("automaticGenitalAlignment")) {
+            if (json["automaticGenitalAlignment"].is_boolean()) {
+                automaticGenitalAlignment = json["automaticGenitalAlignment"];
             } else {
-                logger::warn("config setting 'autoPPA' is not a bool");
+                logger::warn("config setting 'automaticGenitalAlignment' is not a bool");
             }
         }
 

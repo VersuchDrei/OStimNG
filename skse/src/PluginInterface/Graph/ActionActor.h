@@ -1,5 +1,7 @@
 #pragma once
 
+#include "GenitalAlignment.h"
+
 namespace OStim {
     class ActionActor {
     public:
@@ -27,5 +29,8 @@ namespace OStim {
         virtual void* getPlayerMateClimaxedList() = 0;
         // list of all actors who made the PC climax while performing this
         virtual void* getPlayerMatePartnerClimaxedList() = 0;
+
+        // --- ABI version 0x07050021
+        virtual GenitalAlignment getGenitalAlignment() = 0;
     };
 }

@@ -8,6 +8,7 @@ namespace JsonUtil {
     void loadTranslatedString(json& json, std::string& value, std::string propertyName, std::string& objectName, std::string objectType, bool warnIfNotExists);
     void loadFloat(json& json, float& value, std::string propertyName, std::string& objectName, std::string objectType, bool warnIfNotExists);
     void loadInt(json& json, int& value, std::string propertyName, std::string& objectName, std::string objectType, bool warnIfNotExists);
+    void loadUInt(json& json, uint32_t& value, std::string propertyName, std::string& objectName, std::string objectType, bool warnIfNotExists);
     void loadBool(json& json, bool& value, std::string propertyName, std::string& objectName, std::string objectType, bool warnIfNotExists);
 
     void loadStringList(json& json, std::vector<std::string>& list, std::string propertyName, std::string& objectName, std::string objectType, bool warnIfNotExists);

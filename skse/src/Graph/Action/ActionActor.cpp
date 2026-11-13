@@ -62,5 +62,7 @@ namespace Graph {
         void* ActionActor::getPlayerMateList() { return displayPlayerStatList.toABIPointer(); }
         void* ActionActor::getPlayerMateClimaxedList() { return displayPlayerClimaxStatList.toABIPointer(); }
         void* ActionActor::getPlayerMatePartnerClimaxedList() { return displayPlayerPartnerClimaxStatList.toABIPointer(); }
+
+        OStim::GenitalAlignment ActionActor::getGenitalAlignment() { return genitalAlignment; }
     }
 }

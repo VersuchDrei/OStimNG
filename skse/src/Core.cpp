@@ -4,7 +4,6 @@
 #include "Alignment/Alignments.h"
 #include "Config/Config.h"
 #include "Core/ThreadStarter/ThreadBuilder.h"
-#include "Frameworks/PPA.h"
 #include "Furniture/FurnitureTable.h"
 #include "GameAPI/Game.h"
 #include "Graph/GraphTable.h"
@@ -34,8 +33,6 @@ namespace Core {
 
         Util::Globals::setSceneIntegrityVerified(Integrity::verifySceneIntegrity());
         Util::Globals::setTranslationIntegrityVerified(Integrity::verifyTranslationIntegrity());
-
-        Frameworks::PPA::setUp();
     }
 
     void postpostLoad() {
