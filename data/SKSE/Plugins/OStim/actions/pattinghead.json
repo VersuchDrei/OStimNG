@@ -4,6 +4,7 @@
 	],
 	"actor":{
 		"info": "the one with the hand",
+		"talk":true,
 		"requirements":[
 			"hand"
 		],
@@ -13,9 +14,13 @@
 	},
 	"target":{
 		"info": "the one with the head",
+		"talk":true,
 		"strippingSlots":[
 			30,
 			31
 		]
-	}
+	},
+	"tags":[
+		"holding"
+	]
 }

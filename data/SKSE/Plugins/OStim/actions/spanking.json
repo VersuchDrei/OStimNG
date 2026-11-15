@@ -6,6 +6,7 @@
     ],
     "actor": {
         "info": "the one with the hand",
+        "talk":true,
         "requirements": [
             "hand"
         ],
@@ -15,6 +16,7 @@
     },
     "target": {
         "info": "the one with the butt",
+        "talk":true,
         "strippingSlots": []
     }
 }

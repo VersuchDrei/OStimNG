@@ -21,6 +21,7 @@
 		"info": "the one who is receiving the massage",
 		"stimulation": 0.1,
 		"maxStimulation": 50,
+		"moan": true,
 		"strippingSlots": [
 			30,
 			31,

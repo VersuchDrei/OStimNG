@@ -18,6 +18,7 @@
 		"info": "the one with the head",
 		"stimulation":0.1,
 		"maxStimulation":50,
+		"moan":true,
 		"requirements":[
 		],
 		"strippingSlots":[

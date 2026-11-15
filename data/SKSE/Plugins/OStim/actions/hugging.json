@@ -4,10 +4,12 @@
 		"hug"
 	],
 	"actor":{
-		"info": "the hugging one"
+		"info": "the hugging one",
+		"talk":true
 	},
 	"target":{
-		"info": "the hugged one"
+		"info": "the hugged one",
+		"talk":true
 	},
 	"tags":[
 		"holding",
