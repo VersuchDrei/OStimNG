@@ -2,6 +2,7 @@
 
 #include "Core/Thread.h"
 
+#include "GameAPI/Game.h"
 #include "MCM/MCMTable.h"
 #include "Trait/TraitTable.h"
 #include "Util/StringUtil.h"
@@ -39,57 +40,76 @@ namespace Threading {
         }
 
         // TODO properly use GameActor
-        auto faceData = actor.form->GetFaceGenAnimationData();
 
-        if (faceData) {
-            if (!modifierUpdaters.empty()) {
-                std::vector<int> toDelete;
-                for (auto& [key, updater] : modifierUpdaters) {
-                    if (updater.delay > 0) {
-                        updater.delay -= Constants::LOOP_TIME_MILLISECONDS;
-                    } else {
-                        if (key >= faceData->modifierKeyFrame.count) {
-                            continue;
-                        }
-
-                        faceData->modifierKeyFrame.values[key] = updater.step() / 100.0f;
-                        if (updater.isDone()) {
-                            toDelete.push_back(key);
-                        }
+        std::map<int, float> modifierUpdates;
+        if (!modifierUpdaters.empty()) {
+            std::vector<int> toDelete;
+            for (auto& [key, updater] : modifierUpdaters) {
+                if (updater.delay > 0) {
+                    updater.delay -= Constants::LOOP_TIME_MILLISECONDS;
+                } else {
+                    modifierUpdates[key] = updater.step() / 100.0f;
+                    if (updater.isDone()) {
+                        toDelete.push_back(key);
                     }
                 }
-
-                for (int i : toDelete) {
-                    modifierUpdaters.erase(i);
-                }
-
-                faceData->modifierKeyFrame.isUpdated = false;
             }
 
-            if (!phonemeUpdaters.empty()) {
-                std::vector<int> toDelete;
-                for (auto& [key, updater] : phonemeUpdaters) {
-                    if (updater.delay > 0) {
-                        updater.delay -= Constants::LOOP_TIME_MILLISECONDS;
-                    } else {
-                        if (key >= faceData->phenomeKeyFrame.count) {
-                            continue;
-                        }
-
-                        faceData->phenomeKeyFrame.values[key] = updater.step() / 100.0f;
-                        if (updater.isDone()) {
-                            toDelete.push_back(key);
-                        }
-                    }
-                }
-
-                for (int i : toDelete) {
-                    phonemeUpdaters.erase(i);
-                }
-
-                faceData->phenomeKeyFrame.isUpdated = false;
+            for (int i : toDelete) {
+                modifierUpdaters.erase(i);
             }
         }
+
+        std::map<int, float> phonemeUpdates;
+        if (!phonemeUpdaters.empty()) {
+            std::vector<int> toDelete;
+            for (auto& [key, updater] : phonemeUpdaters) {
+                if (updater.delay > 0) {
+                    updater.delay -= Constants::LOOP_TIME_MILLISECONDS;
+                } else {
+                    phonemeUpdates[key] = updater.step() / 100.0f;
+                    if (updater.isDone()) {
+                        toDelete.push_back(key);
+                    }
+                }
+            }
+
+            for (int i : toDelete) {
+                phonemeUpdaters.erase(i);
+            }
+
+        }
+
+        // run this in the main thread to avoid race conditions
+        GameAPI::GameActor actorVar = actor;
+        GameAPI::Game::runSynced([actorVar, modifierUpdates, phonemeUpdates]() {
+            auto faceData = actorVar.form->GetFaceGenAnimationData();
+            if (!faceData) {
+                return;
+            }
+
+            if (!modifierUpdates.empty()) {
+                for (auto& [key, value] : modifierUpdates) {
+                    if (key >= faceData->modifierKeyFrame.count) {
+                        continue;
+                    }
+
+                    faceData->modifierKeyFrame.values[key] = value;
+                }
+                faceData->modifierKeyFrame.isUpdated = false;
+            }
+            
+            if (!phonemeUpdates.empty()) {
+                for (auto& [key, value] : phonemeUpdates) {
+                    if (key >= faceData->modifierKeyFrame.count) {
+                        continue;
+                    }
+
+                    faceData->phenomeKeyFrame.values[key] = value;
+                }
+                faceData->phenomeKeyFrame.isUpdated = false;
+            }
+        });
     }
 
     void ThreadActor::updateUnderlyingExpression() {
