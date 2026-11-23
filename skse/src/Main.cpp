@@ -51,8 +51,8 @@ namespace {
     void MessageHandler(SKSE::MessagingInterface::Message* a_msg) {        
         switch (a_msg->type) {
             case SKSE::MessagingInterface::kPostLoad: {
-                SKSE::GetNiNodeUpdateEventSource()->AddEventSink(Events::EventListener::GetSingleton());
-                SKSE::GetCrosshairRefEventSource()->AddEventSink(Events::EventListener::GetSingleton());
+                SKSE::GetNiNodeUpdateEventSource()->PrependEventSink(Events::EventListener::GetSingleton());
+                SKSE::GetCrosshairRefEventSource()->PrependEventSink(Events::EventListener::GetSingleton());
 
                 Core::postLoad();
             } break;
@@ -63,7 +63,7 @@ namespace {
                 GameLogic::installHooksPostPost();
             } break;
             case SKSE::MessagingInterface::kInputLoaded: {
-                RE::BSInputDeviceManager::GetSingleton()->AddEventSink(Events::EventListener::GetSingleton());
+                SKSE::GetTaskInterface()->AddTask([]() { RE::BSInputDeviceManager::GetSingleton()->PrependEventSink(Events::EventListener::GetSingleton()); });
             } break;
             case SKSE::MessagingInterface::kDataLoaded: {
                 GameLogic::GameTable::setup();

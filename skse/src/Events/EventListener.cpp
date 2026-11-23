@@ -135,32 +135,42 @@ namespace Events {
 
             if (keyCode == MCM::MCMTable::keyUp()) {
                 UI::UIState::GetSingleton()->HandleControl(UI::Controls::Up);
+                return RE::BSEventNotifyControl::kStop;
             } else if (keyCode == MCM::MCMTable::keyDown()) {
                 UI::UIState::GetSingleton()->HandleControl(UI::Controls::Down);
+                return RE::BSEventNotifyControl::kStop;
             } else if (keyCode == MCM::MCMTable::keyLeft()) {
                 UI::UIState::GetSingleton()->HandleControl(UI::Controls::Left);
+                return RE::BSEventNotifyControl::kStop;
             } else if (keyCode == MCM::MCMTable::keyRight()) {
                 UI::UIState::GetSingleton()->HandleControl(UI::Controls::Right);
+                return RE::BSEventNotifyControl::kStop;
             } else if (keyCode == MCM::MCMTable::keyYes()) {
                 UI::UIState::GetSingleton()->HandleControl(UI::Controls::Yes);
+                return RE::BSEventNotifyControl::kStop;
             } else if (keyCode == MCM::MCMTable::keyToggle()) {
                 UI::UIState::GetSingleton()->HandleControl(UI::Controls::Toggle);
+                return RE::BSEventNotifyControl::kStop;
             } else if (keyCode == MCM::MCMTable::keyEnd()) {
                 Threading::ThreadManager::GetSingleton()->getPlayerThread()->stopFaded();
+                return RE::BSEventNotifyControl::kStop;
             } else if (keyCode == MCM::MCMTable::keySpeedUp()) {
                 if (Threading::ThreadManager::GetSingleton()->getPlayerThread()->increaseSpeed()) {
                     UI::Scene::SceneMenu::GetMenu()->SpeedUp();
                 }
+                return RE::BSEventNotifyControl::kStop;
             } else if (keyCode == MCM::MCMTable::keySpeedDown()) {
                 if (Threading::ThreadManager::GetSingleton()->getPlayerThread()->decreaseSpeed()) {
                     UI::Scene::SceneMenu::GetMenu()->SpeedDown();
                 }
+                return RE::BSEventNotifyControl::kStop;
             } else if (keyCode == MCM::MCMTable::keyPullOut()){
                 if (UI::UIState::GetSingleton()->GetActiveMenu() == UI::MenuType::kSceneMenu) {
                     Threading::ThreadManager::GetSingleton()->getPlayerThread()->pullOut();
                 } else {
                     UI::UIState::GetSingleton()->HandleControl(UI::Controls::No);
                 }
+                return RE::BSEventNotifyControl::kStop;
             } else if (keyCode == MCM::MCMTable::keyAutoMode()){
                 Threading::Thread* thread = Threading::ThreadManager::GetSingleton()->getPlayerThread();
                 if (thread) {
@@ -170,16 +180,21 @@ namespace Events {
                         thread->startAutoMode();
                     }
                 }
+                return RE::BSEventNotifyControl::kStop;
             } else if (keyCode == MCM::MCMTable::keyFreeCam()) {
                 GameAPI::GameCamera::toggleFreeCam();
+                return RE::BSEventNotifyControl::kStop;
             } else if (keyCode == MCM::MCMTable::keyAlignment()) {
                 UI::UIState::GetSingleton()->ToggleActiveMenu(UI::kAlignMenu);
                 UI::UIState::GetSingleton()->HandleControl(UI::Controls::AlignMenu);
+                return RE::BSEventNotifyControl::kStop;
             } else if (keyCode == MCM::MCMTable::keySearch()) {
                 UI::UIState::GetSingleton()->ToggleActiveMenu(UI::kSearchMenu);
                 UI::UIState::GetSingleton()->HandleControl(UI::Controls::SearchMenu);
+                return RE::BSEventNotifyControl::kStop;
             } else if (keyCode == MCM::MCMTable::keyHideUI()) {
                 UI::UIState::GetSingleton()->HandleControl(UI::Controls::KEY_HIDE);
+                return RE::BSEventNotifyControl::kStop;
             }
         }
 
