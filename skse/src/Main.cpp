@@ -75,12 +75,12 @@ namespace {
             } break;
             case SKSE::MessagingInterface::kPostLoadGame: {
                 Events::EventListener::handleGameLoad();
-                Core::newSession();
+                Core::sessionLoaded();
                 Core::sessionStarted();
             } break;
             case SKSE::MessagingInterface::kNewGame: {
                 Events::EventListener::handleGameLoad();
-                Core::sessionLoaded();
+                Core::newSession();
                 Core::sessionStarted();
             } break;
 
