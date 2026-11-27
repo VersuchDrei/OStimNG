@@ -29,33 +29,41 @@ namespace GameAPI {
             bool inOr = false;
             bool orTrue = false;
             RE::TESConditionItem* condition = info->objConditions.head;
-            while (condition) {
+            for (RE::TESConditionItem* condition = info->objConditions.head; condition; condition = condition->next) {
                 RE::ConditionCheckParams params(speaker.form, target.form);
 
-                if (condition->data.flags.isOR) {
-                    inOr = true;
-                } else if(inOr) {
-                    if (!orTrue) {
-                        valid = false;
-                        break;
-                    } else {
+                if (orTrue) {
+                    if (!condition->data.flags.isOR) {
                         inOr = false;
                         orTrue = false;
                     }
+                    continue;
                 }
 
-                if (!condition->data.functionData.function.all(RE::FUNCTION_DATA::FunctionID::kGetIsVoiceType) && !condition->IsTrue(params)) {
-                    if (!inOr) {
-                        valid = false;
-                        break;
-                    }
-                } else {
-                    if (inOr) {
-                        orTrue = true;
-                    }
+                bool isTrue = condition->data.functionData.function.get() == RE::FUNCTION_DATA::FunctionID::kGetIsVoiceType || condition->IsTrue(params);
+
+                if (condition->data.flags.isOR) {
+                    inOr = true;
+                    orTrue |= isTrue;
+                    continue;
                 }
-                condition = condition->next;
+
+                if (inOr) {
+                    isTrue |= orTrue;
+                    inOr = false;
+                    orTrue = false;
+                }
+
+                if (!isTrue) {
+                    valid = false;
+                    break;
+                }
             }
+
+            if (valid && inOr && !orTrue) {
+                valid = false;
+            }
+
 
             if (valid) {
                 if (random) {
