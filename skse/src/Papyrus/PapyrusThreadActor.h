@@ -148,7 +148,7 @@ namespace PapyrusThreadActor {
     void Unmute(RE::StaticFunctionTag*, RE::Actor* actor) {
         Threading::ThreadActor* threadActor = Threading::ThreadManager::GetSingleton()->findActor(actor);
         if (threadActor) {
-            threadActor->mute();
+            threadActor->unmute();
         }
     }
 
