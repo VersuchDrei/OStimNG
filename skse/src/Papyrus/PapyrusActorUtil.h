@@ -10,16 +10,34 @@
 namespace PapyrusActorUtil {
     using VM = RE::BSScript::IVirtualMachine;
 
-    bool HasSchlong(RE::StaticFunctionTag*, RE::Actor* actor) {
+    bool HasSchlong(RE::BSScript::IVirtualMachine* vm, RE::VMStackID stackID, RE::StaticFunctionTag*, RE::Actor* actor) {
+        if (!actor) {
+            return false;
+        }
         return Compatibility::CompatibilityTable::hasSchlong(actor);
     }
 
-    bool FulfillsCondition(RE::StaticFunctionTag*, RE::Actor* actor, RE::BGSPerk* condition) {
+    bool FulfillsCondition(RE::BSScript::IVirtualMachine* vm, RE::VMStackID stackID, RE::StaticFunctionTag*, RE::Actor* actor, RE::BGSPerk* condition) {
+        if (!actor) {
+            vm->TraceStack("Actor is None", stackID);
+            return false;
+        }
+        if (!condition) {
+            vm->TraceStack("Condition is None", stackID);
+            return false;
+        }
         return GameAPI::GameCondition{condition}.fulfills(actor);
     }
 
-    bool FulfillsAnyCondition(RE::StaticFunctionTag*, RE::Actor* actor, std::vector<RE::BGSPerk*> conditions) {
+    bool FulfillsAnyCondition(RE::BSScript::IVirtualMachine* vm, RE::VMStackID stackID, RE::StaticFunctionTag*, RE::Actor* actor, std::vector<RE::BGSPerk*> conditions) {
+        if (!actor) {
+            vm->TraceStack("Actor is None", stackID);
+            return false;
+        }
         for (RE::BGSPerk* condition : conditions) {
+            if (!condition) {
+                continue;
+            }
             if (GameAPI::GameCondition{condition}.fulfills(actor)) {
                 return true;
             }
@@ -27,8 +45,15 @@ namespace PapyrusActorUtil {
         return false;
     }
 
-    bool FulfillsAllConditions(RE::StaticFunctionTag*, RE::Actor* actor, std::vector<RE::BGSPerk*> conditions) {
+    bool FulfillsAllConditions(RE::BSScript::IVirtualMachine* vm, RE::VMStackID stackID, RE::StaticFunctionTag*, RE::Actor* actor, std::vector<RE::BGSPerk*> conditions) {
+        if (!actor) {
+            vm->TraceStack("Actor is None", stackID);
+            return false;
+        }
         for (RE::BGSPerk* condition : conditions) {
+            if (!condition) {
+                continue;
+            }
             if (!GameAPI::GameCondition{condition}.fulfills(actor)) {
                 return false;
             }
@@ -36,11 +61,39 @@ namespace PapyrusActorUtil {
         return true;
     }
 
-    void SayTo(RE::StaticFunctionTag*, RE::Actor* actor, RE::Actor* target, RE::TESTopic* dialogue) {
+    void SayTo(RE::BSScript::IVirtualMachine* vm, RE::VMStackID stackID, RE::StaticFunctionTag*, RE::Actor* actor, RE::Actor* target, RE::TESTopic* dialogue) {
+        if (!actor) {
+            vm->TraceStack("Actor is None", stackID);
+            return;
+        }
+        if (!target) {
+            vm->TraceStack("Target is None", stackID);
+            return;
+        }
+        if (!dialogue) {
+            vm->TraceStack("Dialogue is None", stackID);
+            return;
+        }
         GameAPI::GameDialogue(dialogue).sayTo(actor, target);
     }
 
-    void SayAs(RE::StaticFunctionTag*, RE::Actor* actor, RE::Actor* target, RE::TESTopic* dialogue, RE::BGSVoiceType* voice) {
+    void SayAs(RE::BSScript::IVirtualMachine* vm, RE::VMStackID stackID, RE::StaticFunctionTag*, RE::Actor* actor, RE::Actor* target, RE::TESTopic* dialogue, RE::BGSVoiceType* voice) {
+        if (!actor) {
+            vm->TraceStack("Actor is None", stackID);
+            return;
+        }
+        if (!target) {
+            vm->TraceStack("Target is None", stackID);
+            return;
+        }
+        if (!dialogue) {
+            vm->TraceStack("Dialogue is None", stackID);
+            return;
+        }
+        if (!voice) {
+            vm->TraceStack("Voice is None", stackID);
+            return;
+        }
         GameAPI::GameDialogue(dialogue).sayAs(actor, target, voice);
     }
 
