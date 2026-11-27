@@ -8,7 +8,7 @@ namespace Graph {
     const char* SEQUENCE_FILE_PATH{"Data/SKSE/Plugins/OStim/sequences"};
 
     void GraphTable::setupSequences() {
-        Util::JsonFileLoader::LoadFilesInFolder(SEQUENCE_FILE_PATH, [&](std::string path, std::string filename, json json) {
+        Util::JsonFileLoader::LoadFilesInSubfolders(SEQUENCE_FILE_PATH, [&](std::string path, std::string filename, json json) {
             std::string id = filename;
             StringUtil::toLower(&id);
 
